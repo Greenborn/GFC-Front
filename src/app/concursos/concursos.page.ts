@@ -10,11 +10,17 @@ import { Concurso } from './concurso.model';
 })
 export class ConcursosPage implements OnInit {
 
-  private concursos: Concurso[] = []
+  private concursos: Concurso[] = [];
+  private searchQuery: string = '';
 
   constructor(
     private db: ConcursoService
   ) { }
+
+  get concursosFiltrados(): Concurso[] {
+    const q = this.searchQuery;
+    return this.concursos.filter(c => c.name.substr(0, q.length) == q)
+  }
 
   async ngOnInit() {
     this.concursos = await this.db.getConcursos()
@@ -23,4 +29,9 @@ export class ConcursosPage implements OnInit {
   async ionViewWillEnter() {
     this.concursos = await this.db.getConcursos()
   }
+
+  // para implementar busqueda con la api (sobrescribe variable de concursos)
+  // async buscarConcursos(searchQuery) {
+  //   console.log(searchQuery)
+  // }
 }

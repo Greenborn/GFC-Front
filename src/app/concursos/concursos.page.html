@@ -53,7 +53,7 @@
 
 </ion-header>
 
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-grid >
       <ion-row class="ion-justify-content-end">
@@ -70,7 +70,7 @@
       </ion-row>
     </ion-grid>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-hide-md-up">
@@ -82,11 +82,12 @@
   <ion-grid >
     <ion-row class="ion-justify-content-end">
       <ion-col size="12" size-md="7">
-
-        <ion-list>
-          <!-- <ion-item > -->
+        <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
+        <!-- <ion-searchbar (ionChange)="buscarConcursos($event.target.value)"></ion-searchbar> -->
+          <ion-list *ngIf="concursosFiltrados.length > 0; else texto">
             <!-- concurso card -->
-            <ion-card *ngFor="let concurso of concursos">
+            <!-- <ion-card *ngFor="let concurso of concursos"> -->
+            <ion-card *ngFor="let concurso of concursosFiltrados">
               <ion-card-header>
                 <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
                 <ion-card-title>{{concurso.name}}</ion-card-title>
@@ -104,11 +105,13 @@
               </ion-row>
               <!-- <ion-label>{{item}}</ion-label> -->
             </ion-card>
-          <!-- </ion-item> -->
-        </ion-list>
+          </ion-list>
+          <ng-template #texto>
+            <ion-item>No hay concursos</ion-item>
+          </ng-template>
       </ion-col>
       <!-- filtro y busqueda -->
-      <ion-col size="4"  class="ion-hide-md-down">
+      <ion-col size="4" class="ion-hide-md-down">
         <ion-button [routerLink]="['nuevo']">Nuevo</ion-button>
       </ion-col>
     </ion-row>
