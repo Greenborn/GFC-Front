@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/concursos"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Concursos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-toolbar>
+        <ion-card-title>{{concurso.name}}</ion-card-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="deleteConcurso()">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-card-subtitle>Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle>
+    </ion-card-header>
+    <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
+    <ion-card-content>{{concurso.description}}</ion-card-content>
+    <!-- <ion-label>{{item}}</ion-label> -->
+  </ion-card>
+  
+  <ion-button [routerLink]="['/concursos/editar/'+concurso.id]">Editar</ion-button>
+</ion-content>
