@@ -31,7 +31,12 @@ const routes: Routes = [
         loadChildren: () => import('./concursos/concurso-detail/concurso-detail.module').then( m => m.ConcursoDetailPageModule)
       }
     ]
+  },
+  {
+    path: 'perfil',
+    loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
   }
+
 
 ];
 

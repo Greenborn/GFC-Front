@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/concursos"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+
+      <ion-avatar>
+        <ion-icon style="font-size:'64px'" name="person-circle-outline"></ion-icon>
+        <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
+      </ion-avatar>
+      
+      <ion-card-title>{{usuario.username}}</ion-card-title>
+      <ion-card-subtitle>{{usuario.email}}</ion-card-subtitle>
+      
+    </ion-card>
+
+  <ion-list>
+
+    <ion-item [routerLink]="['editar']" >
+      <ion-icon slot="start" ios="person-outline" md="person-sharp"></ion-icon>
+      <ion-label>Editar perfil</ion-label>
+    </ion-item>
+
+    <ion-item [routerLink]="['/perfil']" >
+      <ion-icon slot="start" ios="lock-closed-outline" md="lock-closed-sharp"></ion-icon>
+      <ion-label>Terminos y Condiciones</ion-label>
+    </ion-item>
+
+    <ion-item [routerLink]="['/perfil']" >
+      <ion-icon slot="start" ios="help-circle-outline" md="help-circle-sharp"></ion-icon>
+      <ion-label>Ayuda</ion-label>
+    </ion-item>
+
+    <ion-item [routerLink]="['/perfil']" >
+      <ion-icon slot="start" ios="log-out-outline" md="log-out-sharp"></ion-icon>
+      <ion-label>Log Out</ion-label>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
