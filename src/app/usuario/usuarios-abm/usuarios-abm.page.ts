@@ -14,7 +14,7 @@ export class UsuariosAbmPage implements OnInit {
   @ViewChild("tabla-usuarios") tablaUsuariosComponent:TablaUsuariosComponent;
 
   usuarios: Usuario[] = [];
-  private searchQuery: string = '';
+  public searchQuery: string = '';
 
   constructor(
     private db: UsuarioService

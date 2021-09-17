@@ -12,7 +12,7 @@ import { UsuarioService } from '../usuario/usuario.service';
 export class TablaUsuariosComponent implements OnInit {
 
   usuarios: Usuario[] = [];
-  private searchQuery: string = '';
+  public searchQuery: string = '';
   constructor( private db: UsuarioService, ) { }
 
   get usuariosFiltrados() {

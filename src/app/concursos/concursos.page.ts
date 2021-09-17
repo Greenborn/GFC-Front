@@ -15,7 +15,7 @@ import { UsuarioPage } from '../usuario/usuario.page';
 export class ConcursosPage implements OnInit {
 
   private concursos: Concurso[] = [];
-  private searchQuery: string = '';
+  public searchQuery: string = '';
 
   constructor(
     private db: ConcursoService,

@@ -15,7 +15,7 @@
         <ion-item >
           <ion-label color="light">Email</ion-label>
           <ion-input color="light" tabindex="0" type="mail" placeholder="Correo electrónico" class="text-right"
-                      [(ngModel)]="login.username" [ngModelOptions]="{standalone: true}" (keypress)="keyPress($event, 'email')"></ion-input>
+                      ></ion-input>
         </ion-item>
 
       </ion-col>
@@ -26,8 +26,7 @@
         
         <ion-item>
           <ion-label color="light">Contraseña</ion-label>
-          <ion-input color="light" tabindex="0" #pass type="password" placeholder="Contraseña" class="text-right"
-                      [(ngModel)]="login.password" [ngModelOptions]="{standalone: true}" (keypress)="keyPress($event, 'pass')"></ion-input>
+          <ion-input color="light" tabindex="0" #pass type="password" placeholder="Contraseña" class="text-right"></ion-input>
         </ion-item>
 
       </ion-col>
@@ -64,4 +63,3 @@
   </ion-grid>
 
 </div>
-</ion-content>

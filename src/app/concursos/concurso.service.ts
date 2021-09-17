@@ -11,14 +11,14 @@ export class ConcursoService {
     {
         "id": 1,
         "name": "concurso prueba 1",
-        "description": "Reglas?",
+        "description": "Esta es la descripción de un concurso de prueba,  magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam",
         "start_date": "1630355013",
         "end_date": "1630355013"
     },
     {
         "id": 2,
         "name": "concurso prueba 2",
-        "description": "Reglas? no, no hay eso acá",
+        "description": "Esta es la descripción de un concurso de prueba,  magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam",
         "start_date": "1630355013",
         "end_date": "1630355013"
     }
