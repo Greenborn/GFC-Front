@@ -1,17 +1,18 @@
 <ion-header>
   <ion-toolbar color="dark">
     <ion-buttons slot="secondary">
-      <ion-button>
+      <ion-button (click)="mostrarNotificaciones($event)">
         <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
       </ion-button>
-      <ion-button [routerLink]="['/perfil']">
+      <ion-button (click)="mostrarPerfil($event)">
+        <!-- [routerLink]="['/perfil']"> -->
         <ion-icon slot="icon-only" name="person-circle"></ion-icon>
       </ion-button>
       <!-- <ion-button>
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button> -->
     </ion-buttons>
-    <ion-buttons slot="primary">
+    <!-- <ion-buttons slot="primary">
       <ion-button color="danger">
         <ion-icon
           slot="icon-only"
@@ -19,19 +20,23 @@
           md="ellipsis-vertical"
         ></ion-icon>
       </ion-button>
+    </ion-buttons> -->
+    <ion-buttons slot="start" class="ion-hide-md-up">
+      <ion-menu-button (click)="openMenu()" autoHide="false"></ion-menu-button>
     </ion-buttons>
     <ion-title slot="start">Icono Page</ion-title>
     <ion-buttons slot="start" class="ion-hide-md-down">
       <!-- up para PC -->
       <ion-button> Home </ion-button>
       <ion-button> Reglamento </ion-button>
-      <ion-button> Concursos </ion-button>
+      <ion-button [routerLink]="['/concursos']"> Concursos </ion-button>
       <ion-button> Galería </ion-button>
+      <ion-button [routerLink]="['/usuarios']"> Usuarios </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-grid>
       <ion-row class="ion-justify-content-end">
@@ -46,7 +51,7 @@
       </ion-row>
     </ion-grid>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content>
   <ion-fab
@@ -63,31 +68,33 @@
   <ion-grid>
     <ion-row class="ion-justify-content-end">
       <ion-col size="12" size-md="7">
-        <ion-list>
-          <!-- <ion-item > -->
-          <!-- concurso card -->
-          <ion-card *ngFor="let concurso of concursos">
-            <ion-card-header>
-              <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
-              <ion-card-title>{{concurso.name}}</ion-card-title>
-            </ion-card-header>
-            <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
-            <ion-card-content>{{concurso.description}}</ion-card-content>
-            <ion-row class="ion-float-right">
-              <ion-col>
-                <!-- <ion-toolbar> -->
-                <!-- <ion-buttons slot="start"> -->
-                <ion-button size="small" [routerLink]="[concurso.id]"
-                  >Ver concurso</ion-button
-                >
-                <!-- </ion-buttons> -->
-                <!-- </ion-toolbar> -->
-              </ion-col>
-            </ion-row>
-            <!-- <ion-label>{{item}}</ion-label> -->
-          </ion-card>
-          <!-- </ion-item> -->
-        </ion-list>
+        <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
+        <!-- <ion-searchbar (ionChange)="buscarConcursos($event.target.value)"></ion-searchbar> -->
+          <ion-list *ngIf="concursosFiltrados.length > 0; else texto">
+            <!-- concurso card -->
+            <!-- <ion-card *ngFor="let concurso of concursos"> -->
+            <ion-card *ngFor="let concurso of concursosFiltrados">
+              <ion-card-header>
+                <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+                <ion-card-title>{{concurso.name}}</ion-card-title>
+              </ion-card-header>
+              <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
+              <ion-card-content>{{concurso.description}}</ion-card-content>
+              <ion-row class="ion-float-right" >
+                <ion-col >
+                  <!-- <ion-toolbar> -->
+                    <!-- <ion-buttons slot="start"> -->
+                      <ion-button size="small" [routerLink]="[concurso.id]">Ver concurso</ion-button>
+                    <!-- </ion-buttons> -->
+                  <!-- </ion-toolbar> -->
+                </ion-col>
+              </ion-row>
+              <!-- <ion-label>{{item}}</ion-label> -->
+            </ion-card>
+          </ion-list>
+          <ng-template #texto>
+            <ion-item>No hay concursos</ion-item>
+          </ng-template>
       </ion-col>
       <!-- filtro y busqueda -->
       <ion-col size="4" class="ion-hide-md-down">

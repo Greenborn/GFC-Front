@@ -12,13 +12,13 @@ export class UsuarioService {
       id: 0,
       username: 'Admin',
       email: 'admin@admin',
-      img_url: ''
+      img_url: 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y'
     },
     {
       id: 1,
       username: 'Admin2',
       email: 'admin2@admin2',
-      img_url: ''
+      img_url: 'https://tse2.mm.bing.net/th?id=OIP.M2FKW7uS0BfRH6sykSn95wHaHa&pid=Api'
     }
   ];
 
@@ -51,7 +51,7 @@ export class UsuarioService {
       id: 0,
       username: 'Admin',
       email: 'admin@admin',
-      img_url: ''
+      img_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfn92Uz0WoedKHZbOdgPrHJKS9lP90htuueQ&usqp=CAU'
     }
 
   static getUsuario(): Usuario {
@@ -69,8 +69,7 @@ export class UsuarioService {
   static async editUsuario(u: Usuario): Promise<boolean> {
     // console.log('editando usuario desde', UsuarioService.usuario, 'a ', u);
     UsuarioService.usuario = { 
-      ...u,
-      img_url: ''
+      ...u
     };
     // console.log('Usuario editado ', UsuarioService.usuario);
     return true;
