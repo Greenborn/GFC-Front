@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../usuario.model';
 import { UsuarioService } from '../usuario.service';
 import { MenuController } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular';
+
+//componente que voy a mostrar
+import { UsuarioPage } from '../usuario.page';
 
 @Component({
   selector: 'app-usuarios-abm',
@@ -15,8 +19,22 @@ export class UsuariosAbmPage implements OnInit {
 
   constructor(
     private db: UsuarioService,
-    private menu: MenuController
+    private menu: MenuController,
+    public popoverController: PopoverController
   ) { }
+
+  async openPopover( ev:any ){
+    const popover = await this.popoverController.create({
+      component: UsuarioPage, //componente a mostrar
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true
+    });
+    await popover.present();
+
+    const { role } = await popover.onDidDismiss();
+    console.log('onDidDismiss resolved with role', role);
+  }
 
   openMenu(){
     this.menu.toggle();

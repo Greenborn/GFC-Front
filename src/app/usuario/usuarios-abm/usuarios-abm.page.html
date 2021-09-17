@@ -4,14 +4,14 @@
       <ion-button>
         <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
       </ion-button>
-      <ion-button [routerLink]="['/perfil']">
+      <ion-button (click)="openPopover($event)"> <!-- [routerLink]="['/perfil']"> -->
         <ion-icon slot="icon-only" name="person-circle"></ion-icon>
       </ion-button>
       <!-- <ion-button>
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button> -->
     </ion-buttons>
-    <ion-buttons slot="primary">
+    <!-- <ion-buttons slot="primary">
       <ion-button color="danger">
         <ion-icon
           slot="icon-only"
@@ -19,7 +19,7 @@
           md="ellipsis-vertical"
         ></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
     <ion-buttons slot="start" class="ion-hide-md-up">
       <ion-menu-button (click)="openMenu()" autoHide="false"></ion-menu-button>
     </ion-buttons>
@@ -30,6 +30,7 @@
       <ion-button> Reglamento </ion-button>
       <ion-button [routerLink]="['/concursos']"> Concursos </ion-button>
       <ion-button> Galería </ion-button>
+      <ion-button [routerLink]="['/usuarios']"> Usuarios </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

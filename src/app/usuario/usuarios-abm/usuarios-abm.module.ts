@@ -17,4 +17,7 @@ import { UsuariosAbmPage } from './usuarios-abm.page';
   ],
   declarations: [UsuariosAbmPage]
 })
-export class UsuariosAbmPageModule {}
+export class UsuariosAbmPageModule {
+
+
+}
