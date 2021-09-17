@@ -7,15 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { UsuariosAbmPageRoutingModule } from './usuarios-abm-routing.module';
 
 import { UsuariosAbmPage } from './usuarios-abm.page';
+//componente de usuarios
+import { TablaUsuariosComponent } from '../../tabla-usuarios/tabla-usuarios.component'
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UsuariosAbmPageRoutingModule
+    UsuariosAbmPageRoutingModule,
   ],
-  declarations: [UsuariosAbmPage]
+  declarations: [UsuariosAbmPage, TablaUsuariosComponent]
 })
 export class UsuariosAbmPageModule {
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Usuario } from '../usuario.model';
 import { UsuarioService } from '../usuario.service';
 import { MenuController } from '@ionic/angular';
@@ -8,12 +8,16 @@ import { PopoverController } from '@ionic/angular';
 import { UsuarioPage } from '../usuario.page';
 import { NotificacionesPage } from '../../notificaciones/notificaciones.page';
 
+import { TablaUsuariosComponent } from '../../tabla-usuarios/tabla-usuarios.component'
+
+
 @Component({
   selector: 'app-usuarios-abm',
   templateUrl: './usuarios-abm.page.html',
   styleUrls: ['./usuarios-abm.page.scss'],
 })
 export class UsuariosAbmPage implements OnInit {
+  @ViewChild("tabla-usuarios") tablaUsuariosComponent:TablaUsuariosComponent;
 
   usuarios: Usuario[] = [];
   private searchQuery: string = '';
