@@ -85,6 +85,10 @@ export class UsuariosAbmPage implements OnInit {
     }
   }
 
+  async editUsuario(id: number) {
+    //TODO: 
+   }
+
   async ngOnInit() {
     this.refresh();
   }

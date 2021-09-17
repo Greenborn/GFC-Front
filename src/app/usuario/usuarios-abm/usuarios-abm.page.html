@@ -4,7 +4,8 @@
       <ion-button (click)="openPopoverNotifications($event)">
         <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
       </ion-button>
-      <ion-button (click)="openPopoverUser($event)"> <!-- [routerLink]="['/perfil']"> -->
+      <ion-button (click)="openPopoverUser($event)">
+        <!-- [routerLink]="['/perfil']"> -->
         <ion-icon slot="icon-only" name="person-circle"></ion-icon>
       </ion-button>
       <!-- <ion-button>
@@ -41,7 +42,7 @@
       <ion-col size="12" size-md="7">
         <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
         <!-- <ion-searchbar (ionChange)="buscarConcursos($event.target.value)"></ion-searchbar> -->
-        <table *ngIf="usuariosFiltrados.length > 0; else texto">
+        <!-- <table *ngIf="usuariosFiltrados.length > 0; else texto">
           <thead>
             <tr>
               <th *ngFor="let p of usuarioProps">{{p}}</th>
@@ -50,18 +51,73 @@
           </thead>
           <tbody>
             <tr *ngFor="let u of usuariosFiltrados">
-              <td *ngFor="let p of usuarioProps">{{u[p]}}</td>
+              <td>{{u.id}}</td>
+              <td>{{u.username}}</td>
+              <td>{{u.email}}</td>
+              <td>
+                <ion-button [href]="[u.img_url]" target="_blank">
+                  <ion-icon size="small" name="link"></ion-icon>
+                </ion-button>
+              </td>
               <td>
                 <ion-button
+                  slot="end"
                   class="ion-float-right"
                   (click)="deleteUsuario(u.id)"
                 >
                   <ion-icon size="small" name="trash"></ion-icon>
                 </ion-button>
+
+                <ion-button
+                  slot="start"
+                  class="ion-float-right"
+                  (click)="editUsuario(u.id)"
+                >
+                  <ion-icon size="small" name="create"></ion-icon>
+                </ion-button>
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> -->
+
+        <ion-grid *ngIf="usuariosFiltrados.length > 0; else texto">
+          <ion-row>
+            <ion-row style="width: 100%;" class="ion-align-items-center">
+              <ion-col size="2" *ngFor="let p of usuarioProps">{{p}}</ion-col>
+              <ion-col>Acciones</ion-col>
+            </ion-row>
+          </ion-row>
+          <ion-row>
+            <ion-row style="width: 100%;" class="ion-align-items-center" *ngFor="let u of usuariosFiltrados">
+              <ion-col size="2">{{u.id}}</ion-col>
+              <ion-col size="2">{{u.username}}</ion-col>
+              <ion-col size="3">{{u.email}}</ion-col>
+              <ion-col size="2">
+                <ion-button [href]="[u.img_url]" target="_blank">
+                  <ion-icon size="small" name="link"></ion-icon>
+                </ion-button>
+              </ion-col>
+              <ion-col size="3">
+                <ion-button
+                  slot="end"
+                  class="ion-float-right"
+                  (click)="deleteUsuario(u.id)"
+                >
+                  <ion-icon size="small" name="trash"></ion-icon>
+                </ion-button>
+
+                <ion-button
+                  slot="start"
+                  class="ion-float-right"
+                  (click)="editUsuario(u.id)"
+                >
+                  <ion-icon size="small" name="create"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-row>
+        </ion-grid>
+
         <ng-template #texto>
           <ion-item
             >No hay usuarios que empiecen con '{{searchQuery}}'</ion-item
@@ -74,4 +130,14 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    class="ion-hide-md-up"
+  >
+    <ion-fab-button [routerLink]="['nuevo']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
