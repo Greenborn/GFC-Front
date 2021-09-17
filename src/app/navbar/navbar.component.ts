@@ -5,7 +5,7 @@ import { PopoverController } from '@ionic/angular';
 //componente que voy a mostrar
 import { UsuarioPage } from '../usuario/usuario.page';
 import { NotificacionesPage } from '../notificaciones/notificaciones.page';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -33,7 +33,13 @@ export class NavbarComponent implements OnInit {
       });
       await popover.present();
       // this.router.events.subscribe() // dismiss popover cuando cambie de ruta
-
+      this.router.events
+      .pipe() // .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((e) => {
+        if (e instanceof NavigationEnd) {
+          popover.dismiss();
+        }
+      });
       const { role } = await popover.onDidDismiss();
       // console.log('onDidDismiss resolved with role', role);
     }
