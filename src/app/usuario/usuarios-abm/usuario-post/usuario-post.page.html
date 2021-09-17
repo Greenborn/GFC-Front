@@ -1,16 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-grid >
+    <ion-grid>
       <ion-row class="ion-justify-content-end">
         <ion-col size="12" size-md="11">
-
           <ion-row>
-            <ion-buttons >
+            <ion-buttons>
               <ion-back-button defaultHref="/usuarios"></ion-back-button>
             </ion-buttons>
             <ion-title>Agregar usuario</ion-title>
           </ion-row>
-        
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -18,30 +16,52 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid >
+  <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="10">
         <form #f="ngForm" (ngSubmit)="postConcurso(f)">
-          <ion-avatar>
-            <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
-            <img [src]="usuario.img_url" *ngIf="usuario.img_url != ''; else icon">
-            <ng-template #icon>
-              <ion-icon style="font-size:'64px'" name="person-circle-outline"></ion-icon>
-            </ng-template>
-          </ion-avatar>
+          <ion-row class="ion-justify-content-center">
+            <ion-avatar>
+              <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
+              <img 
+                [src]="usuario.img_url"
+                *ngIf="usuario.img_url != ''; else icon"
+              />
+              <ng-template #icon>
+                <ion-icon
+                  style="font-size: '64px'"
+                  name="person-circle-outline"
+                ></ion-icon>
+              </ng-template>
+            </ion-avatar>
+          </ion-row>
           <ion-item>
             <ion-label>Nombre</ion-label>
-            <ion-input name="username" [ngModel]="usuario.username" required></ion-input>
+            <ion-input
+              name="username"
+              [ngModel]="usuario.username"
+              required
+            ></ion-input>
           </ion-item>
           <ion-item>
             <ion-label>Email</ion-label>
-            <ion-input name="email" [ngModel]="usuario.email" required></ion-input>
+            <ion-input
+              name="email"
+              [ngModel]="usuario.email"
+              required
+            ></ion-input>
           </ion-item>
           <ion-item>
             <ion-label>Imagen(url)</ion-label>
-            <ion-input name="img_url" [(ngModel)]="usuario.img_url" required></ion-input>
+            <ion-input
+              name="img_url"
+              [(ngModel)]="usuario.img_url"
+              required
+            ></ion-input>
           </ion-item>
-          <ion-button  expand="block" type="submit" [disabled]="!f.valid">Guardar</ion-button>
+          <ion-button expand="block" type="submit" [disabled]="!f.valid"
+            >Guardar</ion-button
+          >
         </form>
       </ion-col>
     </ion-row>

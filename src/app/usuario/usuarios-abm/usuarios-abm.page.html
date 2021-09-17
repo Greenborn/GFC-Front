@@ -8,19 +8,8 @@
         <!-- [routerLink]="['/perfil']"> -->
         <ion-icon slot="icon-only" name="person-circle"></ion-icon>
       </ion-button>
-      <!-- <ion-button>
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button> -->
     </ion-buttons>
-    <!-- <ion-buttons slot="primary">
-      <ion-button color="danger">
-        <ion-icon
-          slot="icon-only"
-          ios="ellipsis-horizontal"
-          md="ellipsis-vertical"
-        ></ion-icon>
-      </ion-button>
-    </ion-buttons> -->
+
     <ion-buttons slot="start" class="ion-hide-md-up">
       <ion-menu-button (click)="openMenu()" autoHide="false"></ion-menu-button>
     </ion-buttons>
@@ -41,47 +30,8 @@
     <ion-row class="ion-justify-content-end">
       <ion-col size="12" size-md="8">
         <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
-        <!-- <ion-searchbar (ionChange)="buscarConcursos($event.target.value)"></ion-searchbar> -->
-        <!-- <table *ngIf="usuariosFiltrados.length > 0; else texto">
-          <thead>
-            <tr>
-              <th *ngFor="let p of usuarioProps">{{p}}</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let u of usuariosFiltrados">
-              <td>{{u.id}}</td>
-              <td>{{u.username}}</td>
-              <td>{{u.email}}</td>
-              <td>
-                <ion-button [href]="[u.img_url]" target="_blank">
-                  <ion-icon size="small" name="link"></ion-icon>
-                </ion-button>
-              </td>
-              <td>
-                <ion-button
-                  slot="end"
-                  class="ion-float-right"
-                  (click)="deleteUsuario(u.id)"
-                >
-                  <ion-icon size="small" name="trash"></ion-icon>
-                </ion-button>
-
-                <ion-button
-                  slot="start"
-                  class="ion-float-right"
-                  (click)="editUsuario(u.id)"
-                >
-                  <ion-icon size="small" name="create"></ion-icon>
-                </ion-button>
-              </td>
-            </tr>
-          </tbody>
-        </table> -->
 
         <app-tabla-usuarios></app-tabla-usuarios>
-
       </ion-col>
       <!-- filtro y busqueda -->
       <ion-col size="3" class="ion-hide-md-down">
