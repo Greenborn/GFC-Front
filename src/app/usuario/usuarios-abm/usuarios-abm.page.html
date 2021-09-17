@@ -31,7 +31,41 @@
       <ion-col size="12" size-md="8">
         <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
 
-        <app-tabla-usuarios></app-tabla-usuarios>
+        <ion-grid *ngIf="usuariosFiltrados.length > 0; else texto" class="tabla ion-text-center">
+          <ion-row>
+            <ion-col *ngFor="let p of usuarioProps">{{ p }}</ion-col>
+            <ion-col>Acciones</ion-col>
+          </ion-row>
+        
+          <ion-row *ngFor="let u of usuariosFiltrados">
+            <ion-col >{{ u.id }}</ion-col>
+            <ion-col >{{ u.username }}</ion-col>
+            <ion-col >{{ u.email }}</ion-col>
+            <ion-col >
+              <ion-button [href]="[u.img_url]" target="_blank">
+                <ion-icon name="link"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col >
+              <ion-button
+                (click)="deleteUsuario(u.id)"
+              >
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+        
+              <!-- <ion-button
+                (click)="editUsuario(u.id)"
+              >
+                <ion-icon name="create"></ion-icon>
+              </ion-button> -->
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        
+        <ng-template #texto>
+          <ion-item>No hay usuarios que empiecen con '{{ searchQuery }}'</ion-item>
+        </ng-template>
+        
       </ion-col>
       <!-- filtro y busqueda -->
       <ion-col size="3" class="ion-hide-md-down">
@@ -39,6 +73,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <ion-fab
     vertical="bottom"
     horizontal="end"
@@ -49,4 +84,5 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
 </ion-content>
