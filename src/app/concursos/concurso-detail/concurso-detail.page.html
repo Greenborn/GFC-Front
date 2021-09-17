@@ -1,16 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-grid >
+    <ion-grid>
       <ion-row class="ion-justify-content-end">
         <ion-col size="12" size-md="11">
-
           <ion-row>
-            <ion-buttons >
+            <ion-buttons>
               <ion-back-button defaultHref="/concursos"></ion-back-button>
             </ion-buttons>
             <ion-title>Concurso</ion-title>
           </ion-row>
-        
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -18,25 +16,26 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid >
+  <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="10">
         <ion-card>
           <ion-card-header>
-          
             <ion-row>
               <ion-col>
-                  <ion-card-title>{{concurso.name}}</ion-card-title>
-                  <ion-card-subtitle>Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle>
-                </ion-col>
-                <ion-col>
-                  <!-- <ion-buttons slot="end"> -->
-                    <ion-button class="ion-float-right" (click)="deleteConcurso()">
-                      <ion-icon name="trash"></ion-icon>
-                    </ion-button>
-                  <!-- </ion-buttons> -->
-                  </ion-col>
-                  </ion-row>
+                <ion-card-title>{{concurso.name}}</ion-card-title>
+                <ion-card-subtitle
+                  >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
+                >
+              </ion-col>
+              <ion-col>
+                <!-- <ion-buttons slot="end"> -->
+                <ion-button class="ion-float-right" (click)="deleteConcurso()">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button>
+                <!-- </ion-buttons> -->
+              </ion-col>
+            </ion-row>
           </ion-card-header>
           <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
           <ion-card-content>
@@ -45,9 +44,13 @@
           </ion-card-content>
           <!-- <ion-label>{{item}}</ion-label> -->
         </ion-card>
-  
-        <ion-button expand="block" class="ion-margin" [routerLink]="['/concursos/editar/'+concurso.id]">Editar</ion-button>
 
+        <ion-button
+          expand="block"
+          class="ion-margin"
+          [routerLink]="['/concursos/editar/'+concurso.id]"
+          >Editar</ion-button
+        >
       </ion-col>
     </ion-row>
   </ion-grid>

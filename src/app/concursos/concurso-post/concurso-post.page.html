@@ -1,16 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-grid >
+    <ion-grid>
       <ion-row class="ion-justify-content-end">
         <ion-col size="12" size-md="11">
-
           <ion-row>
-            <ion-buttons >
+            <ion-buttons>
               <ion-back-button defaultHref="/concursos"></ion-back-button>
             </ion-buttons>
             <ion-title>{{formTitle}}</ion-title>
           </ion-row>
-        
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -18,27 +16,47 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid >
+  <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="10">
         <form #f="ngForm" (ngSubmit)="postConcurso(f)">
           <ion-item>
             <ion-label>Nombre</ion-label>
-            <ion-input name="name" [ngModel]="concurso.name" required></ion-input>
+            <ion-input
+              name="name"
+              [ngModel]="concurso.name"
+              required
+            ></ion-input>
           </ion-item>
           <ion-item>
             <ion-label>Descripcion</ion-label>
-            <ion-textarea name="description" [ngModel]="concurso.description" required></ion-textarea>
+            <ion-textarea
+              name="description"
+              [ngModel]="concurso.description"
+              required
+            ></ion-textarea>
           </ion-item>
           <ion-item>
             <ion-label>Fecha de inicio</ion-label>
-            <input type="date" name="start_date" [ngModel]="concurso.start_date" required>
+            <input
+              type="date"
+              name="start_date"
+              [ngModel]="concurso.start_date"
+              required
+            />
           </ion-item>
           <ion-item>
             <ion-label>Fecha de finalizacion</ion-label>
-            <input type="date" name="end_date" [ngModel]="concurso.end_date" required>
+            <input
+              type="date"
+              name="end_date"
+              [ngModel]="concurso.end_date"
+              required
+            />
           </ion-item>
-          <ion-button  expand="block" type="submit" [disabled]="!f.valid">Guardar</ion-button>
+          <ion-button expand="block" type="submit" [disabled]="!f.valid"
+            >Guardar</ion-button
+          >
         </form>
       </ion-col>
     </ion-row>
