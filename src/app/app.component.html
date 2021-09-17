@@ -1,25 +1,11 @@
 <ion-app>
   <ion-header>
     <app-navbar></app-navbar>
+    
   </ion-header>
   
   <!-- <ion-split-pane contentId="main-content"> -->
-    <ion-menu type="reveal" side="start" menuId="first" contentId="main-content">
-      <ion-header>
-        <ion-toolbar color="primary">
-          <ion-title>Start Menu</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
-        <ion-list>
-          <ion-item>Home</ion-item>
-          <ion-item>Reglamento</ion-item>
-          <ion-item [routerLink]="['/concursos']">Concursos</ion-item>
-          <ion-item>Galería</ion-item>
-          <ion-item [routerLink]="['/usuarios']">Usuarios</ion-item>
-        </ion-list>
-      </ion-content>
-    </ion-menu>
+   
    <!--   <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
@@ -53,6 +39,22 @@
     </ion-menu> -->
 
     <ion-content>
+      <ion-menu type="reveal" side="start" menuId="first" contentId="main-content">
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-title>Start Menu</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-list>
+            <ion-item>Home</ion-item>
+            <ion-item>Reglamento</ion-item>
+            <ion-item [routerLink]="['/concursos']">Concursos</ion-item>
+            <ion-item>Galería</ion-item>
+            <ion-item [routerLink]="['/usuarios']">Usuarios</ion-item>
+          </ion-list>
+        </ion-content>
+      </ion-menu>
       <ion-router-outlet id="main-content"></ion-router-outlet>
     </ion-content>
   <!-- </ion-split-pane> -->

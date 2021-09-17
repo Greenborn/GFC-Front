@@ -42,6 +42,10 @@ const routes: Routes = [
   },  {
     path: 'notificaciones',
     loadChildren: () => import('./notificaciones/notificaciones.module').then( m => m.NotificacionesPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   }
 
 
