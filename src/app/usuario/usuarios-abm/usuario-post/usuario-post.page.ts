@@ -21,7 +21,10 @@ export class UsuarioPostPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.usuario = UsuarioService.usuarioTemplate();
+    this.usuario = {...UsuarioService.usuarioTemplate()};
+  }
+  async ionViewWillEnter() {
+    this.usuario = {...UsuarioService.usuarioTemplate()};
   }
 
   async postConcurso(f: NgForm) {

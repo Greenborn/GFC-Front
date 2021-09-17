@@ -22,6 +22,13 @@
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="10">
         <form #f="ngForm" (ngSubmit)="postConcurso(f)">
+          <ion-avatar>
+            <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
+            <img [src]="usuario.img_url" *ngIf="usuario.img_url != ''; else icon">
+            <ng-template #icon>
+              <ion-icon style="font-size:'64px'" name="person-circle-outline"></ion-icon>
+            </ng-template>
+          </ion-avatar>
           <ion-item>
             <ion-label>Nombre</ion-label>
             <ion-input name="username" [ngModel]="usuario.username" required></ion-input>
@@ -31,8 +38,8 @@
             <ion-input name="email" [ngModel]="usuario.email" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label>Imagen (url)</ion-label>
-            <ion-input name="img_url" [ngModel]="usuario.img_url" required></ion-input>
+            <ion-label>Imagen(url)</ion-label>
+            <ion-input name="img_url" [(ngModel)]="usuario.img_url" required></ion-input>
           </ion-item>
           <ion-button  expand="block" type="submit" [disabled]="!f.valid">Guardar</ion-button>
         </form>
