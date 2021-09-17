@@ -5,7 +5,7 @@
         <ion-col size="12" size-md="11">
           <ion-row>
             <ion-buttons>
-              <ion-back-button defaultHref="/perfil"></ion-back-button>
+              <ion-back-button defaultHref="/perfil" class="ion-hide-md-up"></ion-back-button>
             </ion-buttons>
             <ion-title>Perfil</ion-title>
           </ion-row>
@@ -48,7 +48,7 @@
           <ion-header>
             <ion-toolbar>
               <ion-list>
-                <ion-item [routerLink]="['editar']">
+                <ion-item [routerLink]="['/perfil/editar']">
                   <ion-icon
                     slot="start"
                     ios="person-outline"
