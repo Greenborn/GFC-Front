@@ -10,10 +10,13 @@ import { AppRoutingModule } from './app-routing.module';
 //componente de usuarios
 // import { TablaUsuariosComponent } from './tabla-usuarios/tabla-usuarios.component'
 
+//componente navbar
+import { NavbarComponent } from './navbar/navbar.component'
 @NgModule({
   declarations: [
     AppComponent,
-    //  TablaUsuariosComponent
+    //  TablaUsuariosComponent,
+    NavbarComponent
     ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
