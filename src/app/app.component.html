@@ -1,5 +1,7 @@
 <ion-app>
-<app-navbar></app-navbar>
+  <ion-header>
+    <app-navbar></app-navbar>
+  </ion-header>
   
   <!-- <ion-split-pane contentId="main-content"> -->
     <ion-menu type="reveal" side="start" menuId="first" contentId="main-content">
@@ -50,7 +52,8 @@
       </ion-content>
     </ion-menu> -->
 
-    
-    <ion-router-outlet id="main-content"></ion-router-outlet>
+    <ion-content>
+      <ion-router-outlet id="main-content"></ion-router-outlet>
+    </ion-content>
   <!-- </ion-split-pane> -->
 </ion-app>
