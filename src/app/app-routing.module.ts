@@ -39,7 +39,11 @@ const routes: Routes = [
   {
     path: 'usuarios',
     loadChildren: () => import('./usuario/usuarios-abm/usuarios-abm.module').then( m => m.UsuariosAbmPageModule)
+  },  {
+    path: 'notificaciones',
+    loadChildren: () => import('./notificaciones/notificaciones.module').then( m => m.NotificacionesPageModule)
   }
+
 
 ];
 

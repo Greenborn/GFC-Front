@@ -6,6 +6,7 @@ import { PopoverController } from '@ionic/angular';
 
 //componente que voy a mostrar
 import { UsuarioPage } from '../usuario.page';
+import { NotificacionesPage } from '../../notificaciones/notificaciones.page';
 
 @Component({
   selector: 'app-usuarios-abm',
@@ -23,12 +24,27 @@ export class UsuariosAbmPage implements OnInit {
     public popoverController: PopoverController
   ) { }
 
-  async openPopover( ev:any ){
+  async openPopoverUser( ev:any ){
     const popover = await this.popoverController.create({
       component: UsuarioPage, //componente a mostrar
       cssClass: 'my-custom-class',
       event: ev,
-      translucent: true
+      translucent: true,
+      // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
+    });
+    await popover.present();
+
+    const { role } = await popover.onDidDismiss();
+    console.log('onDidDismiss resolved with role', role);
+  }
+
+  async openPopoverNotifications( ev:any ) {
+    const popover = await this.popoverController.create({
+      component: NotificacionesPage, //componente a mostrar
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true,
+      // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
     });
     await popover.present();
 
