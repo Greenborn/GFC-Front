@@ -13,54 +13,59 @@
     </ion-buttons>
     <ion-buttons slot="primary">
       <ion-button color="danger">
-        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+        <ion-icon
+          slot="icon-only"
+          ios="ellipsis-horizontal"
+          md="ellipsis-vertical"
+        ></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-buttons slot="start" class="ion-hide-md-up">
+      <ion-menu-button (click)="openMenu()" autoHide="false"></ion-menu-button>
+    </ion-buttons>
     <ion-title slot="start">Icono Page</ion-title>
-    <ion-buttons slot="start" class="ion-hide-md-down"> <!-- up para PC -->
-      <ion-button>
-        Home
-      </ion-button>
-      <ion-button>
-        Reglamento
-      </ion-button>
-      <ion-button [routerLink]="['/concursos']">
-        Concursos
-      </ion-button>
-      <ion-button>
-        Galería
-      </ion-button>
+    <ion-buttons slot="start" class="ion-hide-md-down">
+      <!-- up para PC -->
+      <ion-button> Home </ion-button>
+      <ion-button> Reglamento </ion-button>
+      <ion-button [routerLink]="['/concursos']"> Concursos </ion-button>
+      <ion-button> Galería </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid >
+  <ion-grid>
     <ion-row class="ion-justify-content-end">
       <ion-col size="12" size-md="7">
         <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
         <!-- <ion-searchbar (ionChange)="buscarConcursos($event.target.value)"></ion-searchbar> -->
-          <table *ngIf="usuariosFiltrados.length > 0; else texto">
-            <thead>
-              <tr>
-                <th *ngFor="let p of usuarioProps">{{p}}</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let u of usuariosFiltrados">
-                <td *ngFor="let p of usuarioProps">{{u[p]}}</td>
-                <td>
-                  <ion-button class="ion-float-right" (click)="deleteUsuario(u.id)">
-                    <ion-icon size="small" name="trash"></ion-icon>
-                  </ion-button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <ng-template #texto>
-            <ion-item>No hay usuarios que empiecen con '{{searchQuery}}'</ion-item>
-          </ng-template>
+        <table *ngIf="usuariosFiltrados.length > 0; else texto">
+          <thead>
+            <tr>
+              <th *ngFor="let p of usuarioProps">{{p}}</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of usuariosFiltrados">
+              <td *ngFor="let p of usuarioProps">{{u[p]}}</td>
+              <td>
+                <ion-button
+                  class="ion-float-right"
+                  (click)="deleteUsuario(u.id)"
+                >
+                  <ion-icon size="small" name="trash"></ion-icon>
+                </ion-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ng-template #texto>
+          <ion-item
+            >No hay usuarios que empiecen con '{{searchQuery}}'</ion-item
+          >
+        </ng-template>
       </ion-col>
       <!-- filtro y busqueda -->
       <ion-col size="4" class="ion-hide-md-down">

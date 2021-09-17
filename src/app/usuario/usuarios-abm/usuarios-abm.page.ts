@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../usuario.model';
 import { UsuarioService } from '../usuario.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-usuarios-abm',
@@ -13,8 +14,26 @@ export class UsuariosAbmPage implements OnInit {
   private searchQuery: string = '';
 
   constructor(
-    private db: UsuarioService
+    private db: UsuarioService,
+    private menu: MenuController
   ) { }
+
+  openMenu(){
+    this.menu.toggle();
+  }
+  openFirst() {
+    this.menu.enable(true, 'first');
+    this.menu.open('first');
+  }
+
+  openEnd() {
+    this.menu.open('end');
+  }
+
+  openCustom() {
+    this.menu.enable(true, 'custom');
+    this.menu.open('custom');
+  }
 
   get usuariosFiltrados() {
     // return [ ...this.usuarios ];
