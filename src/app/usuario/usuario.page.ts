@@ -22,7 +22,7 @@ export class UsuarioPage implements OnInit {
   ionViewWillEnter() {
     this.usuario = UsuarioService.getUsuario();
     // this.usuario = this.db.getUsuario();
-    console.log('Por entrar a vista con usuario ', this.usuario)
+    // console.log('Por entrar a vista con usuario ', this.usuario)
   }
 
 }
