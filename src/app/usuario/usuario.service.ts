@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { Api } from '../api.service';
 import { Usuario } from './usuario.model';
 
 @Injectable({
@@ -7,52 +8,22 @@ import { Usuario } from './usuario.model';
 })
 export class UsuarioService {
 
-  private usuarios: Usuario[] = [
-    {
-      id: 0,
-      username: 'Admin',
-      email: 'admin@admin',
-      img_url: 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y'
-    },
-    {
-      id: 1,
-      username: 'Admin2',
-      email: 'admin2@admin2',
-      img_url: 'https://tse2.mm.bing.net/th?id=OIP.M2FKW7uS0BfRH6sykSn95wHaHa&pid=Api'
-    }
-  ];
-
   constructor() { }
 
   async getUsuarios(): Promise<Usuario[]> {
-    return [ ...this.usuarios ];
+    return Api.getAll('usuario');
   }
 
   async getUsuario(id: number): Promise<Usuario> {
-    return { ...this.usuarios.find(u => u.id == id) }
+    return Api.get('usuario', id);
   }
 
   async postUsuario(u: Usuario): Promise<number> {
-    if (u.id == undefined) { // post
-      let id = Math.floor(Math.random()*10**10);
-      u.id = id;
-      this.usuarios.push({ ...u });
-    }
-    else { // put
-      this.usuarios[this.usuarios.findIndex(u1 => u.id == u1.id)] = { ...u };
-    }
-    return u.id;
+    return Api.post('usuario', u);
   }
 
   async deleteUsuario(id: number): Promise<boolean> {
-    const i = this.usuarios.findIndex(u => u.id == id);
-    if (i != -1) {
-      this.usuarios.splice(i, 1);
-      return true;
-    }
-    else {
-      return false;
-    }
+    return Api.delete('usuario', id);
   }
 
   // usuario: Usuario = {

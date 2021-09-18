@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { Api } from '../api.service';
 import { Concurso } from './concurso.model';
 
 @Injectable({
@@ -7,51 +8,22 @@ import { Concurso } from './concurso.model';
 })
 export class ConcursoService {
 
-  private concursos: Concurso[] = [
-    {
-        "id": 1,
-        "name": "concurso prueba 1",
-        "description": "Esta es la descripción de un concurso de prueba,  magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam",
-        "start_date": "1630355013",
-        "end_date": "1630355013"
-    },
-    {
-        "id": 2,
-        "name": "concurso prueba 2",
-        "description": "Esta es la descripción de un concurso de prueba,  magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam",
-        "start_date": "1630355013",
-        "end_date": "1630355013"
-    }
-]
-
   constructor() { }
 
   async getConcursos(): Promise<Concurso[]> {
-    return [ ...this.concursos ]
-    // return fetch('https://grupofotografico.api.greenborn.com.ar/contest').then(r => r.json()).then(j => {
-    //   return j.items
-    // })
+    return Api.getAll('concurso');
   }
 
   async getConcurso(id: number): Promise<Concurso> {
-    return { ...this.concursos.find(c => c.id == id) }
+    return Api.get('concurso', id);
   }
 
   async postConcurso(c: Concurso): Promise<number> {
-    if (c.id == undefined) { // post
-      let id = Math.floor(Math.random()*10**10);
-      c.id = id;
-      this.concursos.push({ ...c });
-    }
-    else { // put
-      this.concursos[this.concursos.findIndex(c1 => c.id == c1.id)] = { ...c };
-    }
-    // console.log(c);
-    return c.id;
+    return Api.post('concurso', c);
   }
 
   async deleteConcurso(id: number) {
-    this.concursos.splice(this.concursos.findIndex(c => c.id == id), 1)
+    return Api.delete('concurso', id);
   }
 
   static concursoTemplate(): Concurso {
