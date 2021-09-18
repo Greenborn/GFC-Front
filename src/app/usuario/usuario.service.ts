@@ -28,11 +28,20 @@ export class UsuarioService {
     return [ ...this.usuarios ];
   }
 
-  async postUsuario(u: Usuario): Promise<boolean> {
-    let id = Math.floor(Math.random()*10**10);
-    u.id = id;
-    this.usuarios.push({ ...u });
-    return true;
+  async getUsuario(id: number): Promise<Usuario> {
+    return { ...this.usuarios.find(u => u.id == id) }
+  }
+
+  async postUsuario(u: Usuario): Promise<number> {
+    if (u.id == undefined) { // post
+      let id = Math.floor(Math.random()*10**10);
+      u.id = id;
+      this.usuarios.push({ ...u });
+    }
+    else { // put
+      this.usuarios[this.usuarios.findIndex(u1 => u.id == u1.id)] = { ...u };
+    }
+    return u.id;
   }
 
   async deleteUsuario(id: number): Promise<boolean> {

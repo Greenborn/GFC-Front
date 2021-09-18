@@ -21,16 +21,15 @@
             </ion-col>
             <ion-col >
               <ion-button
+                [routerLink]="['editar/' + u.id]"
+              >
+                <ion-icon name="create"></ion-icon>
+              </ion-button>
+              <ion-button
                 (click)="deleteUsuario(u.id)"
               >
                 <ion-icon name="trash"></ion-icon>
               </ion-button>
-        
-              <!-- <ion-button
-                (click)="editUsuario(u.id)"
-              >
-                <ion-icon name="create"></ion-icon>
-              </ion-button> -->
             </ion-col>
           </ion-row>
         </ion-grid>

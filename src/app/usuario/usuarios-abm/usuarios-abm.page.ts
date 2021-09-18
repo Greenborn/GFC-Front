@@ -3,6 +3,7 @@ import { Usuario } from '../usuario.model';
 import { UsuarioService } from '../usuario.service';
 
 import { TablaUsuariosComponent } from '../../tabla-usuarios/tabla-usuarios.component'
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class UsuariosAbmPage implements OnInit {
   public searchQuery: string = '';
 
   constructor(
-    private db: UsuarioService
+    private db: UsuarioService,
+    private alertCtrl: AlertController
   ) { }
 
   get usuariosFiltrados() {
@@ -30,15 +32,28 @@ export class UsuariosAbmPage implements OnInit {
   }
 
   async deleteUsuario(id: number) {
-    const r = await this.db.deleteUsuario(id);
-    if (r) {
-      this.refresh();
-    }
-  }
 
-  async editUsuario(id: number) {
-    //TODO: 
-   }
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar borrado',
+      message: 'Cuidado',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }, {
+          text: 'Confirmar',
+          handler: async () => {
+            const r = await this.db.deleteUsuario(id);
+            if (r) {
+              this.refresh();
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 
   async ngOnInit() {
     this.refresh();

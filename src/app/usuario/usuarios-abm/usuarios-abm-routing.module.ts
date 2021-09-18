@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'nuevo',
     loadChildren: () => import('./usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
+  },
+  {
+    path: 'editar/:id',
+    loadChildren: () => import('./usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
   }
 
 ];

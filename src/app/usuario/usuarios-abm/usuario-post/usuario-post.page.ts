@@ -22,12 +22,24 @@ export class UsuarioPostPage implements OnInit {
 
   async ngOnInit() {
     this.usuario = {...UsuarioService.usuarioTemplate()};
-  }
-  async ionViewWillEnter() {
-    this.usuario = {...UsuarioService.usuarioTemplate()};
-  }
 
-  async postConcurso(f: NgForm) {
+    this.activatedRoute.paramMap.subscribe(async paramMap => {
+      const id = paramMap.get('id');
+
+      let c = UsuarioService.usuarioTemplate();
+      this.usuario = c;
+      if (id != null) {
+        c = await this.db.getUsuario(parseInt(id));
+      }
+
+      this.usuario = c;
+    })
+  }
+  // async ionViewWillEnter() {
+  //   this.usuario = {...UsuarioService.usuarioTemplate()};
+  // }
+
+  async postUsuario(f: NgForm) {
     if (f.valid) {
       // console.log(f.value);
       const u = {
@@ -35,10 +47,10 @@ export class UsuarioPostPage implements OnInit {
         ...f.value,
       };
       // console.log('Posteando concurso: ', c);
-      const result = await this.db.postUsuario(u);
-      if (result) {
+      const id = await this.db.postUsuario(u);
+      // if (id) {
         this.router.navigate(['/usuarios']);
-      }
+      // }
     }
     else {
       console.log('Form usuario no valido:', f.value);
