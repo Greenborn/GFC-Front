@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { AuthService } from 'src/app/auth/auth.service';
 import { Usuario } from '../usuario.model';
-import { UsuarioService } from '../usuario.service';
 
 @Component({
   selector: 'app-usuario-edit',
@@ -20,11 +20,11 @@ export class UsuarioEditPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.usuario = UsuarioService.getUsuario();
+    this.usuario = AuthService.getUsuario();
     // this.usuario = this.db.getUsuario();
   }
   ionViewWillEnter() {
-    this.usuario = UsuarioService.getUsuario();
+    this.usuario = AuthService.getUsuario();
     // this.usuario = this.db.getUsuario();
   }
   
@@ -36,7 +36,7 @@ export class UsuarioEditPage implements OnInit {
         ...f.value
       };
       // console.log('Posteando concurso: ', c);
-      const result = await UsuarioService.editUsuario(u);
+      const result = await AuthService.editUsuario(u);
       // const result = await this.db.editUsuario(u);
       if (result) {
         this.router.navigate(['/perfil']);

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
 import { Usuario } from './usuario.model';
-import { UsuarioService } from './usuario.service';
 
 @Component({
   selector: 'app-usuario',
@@ -16,11 +16,11 @@ export class UsuarioPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.usuario = UsuarioService.getUsuario();
+    this.usuario = AuthService.getUsuario();
     // this.usuario = this.db.getUsuario();
   }
   ionViewWillEnter() {
-    this.usuario = UsuarioService.getUsuario();
+    this.usuario = AuthService.getUsuario();
     // this.usuario = this.db.getUsuario();
     // console.log('Por entrar a vista con usuario ', this.usuario)
   }
