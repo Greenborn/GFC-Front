@@ -92,7 +92,7 @@
           <ion-footer>
             <ion-toolbar>
               <ion-list>
-                <ion-item [routerLink]="['/perfil']">
+                <ion-item (click)="logout()">
                   <ion-icon
                     slot="start"
                     ios="log-out-outline"

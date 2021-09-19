@@ -1,65 +1,79 @@
-<div class="padding">
-  <ion-grid>
 
-    <ion-row>
-      <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
-
-        <div class="logo"><img  src="assets/imgs/logo.png" /></div>
-      
-      </ion-col>
-    </ion-row> 
+<ion-content>
+  <div class="padding">
     
-    <ion-row>
-      <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
-        
-        <ion-item >
-          <ion-label color="light">Email</ion-label>
-          <ion-input color="light" tabindex="0" type="mail" placeholder="Correo electrónico" class="text-right"
-                      ></ion-input>
-        </ion-item>
+    <form #f="ngForm" (ngSubmit)="login(f)">
+      <ion-grid>
 
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
-        
-        <ion-item>
-          <ion-label color="light">Contraseña</ion-label>
-          <ion-input color="light" tabindex="0" #pass type="password" placeholder="Contraseña" class="text-right"></ion-input>
-        </ion-item>
-
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
-        
-        <ion-item lines="none">
-          <ion-button color="light" slot="end" fill="clear" routerLink="/reset-password">¿Olvidó su contraseña?</ion-button>
-        </ion-item>
-
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-
-      <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
-      
         <ion-row>
-          <ion-col>
-            <ion-button color="light" expand="block" shape="round" fill="outline" (click)="next()">Ingresar</ion-button>
+          <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
+
+            <div class="logo"><img  src="assets/imgs/logo.png" /></div>
+          
           </ion-col>
-  
-          <ion-col>
-            <ion-button color="tertiary" expand="block" shape="round" routerLink="/register">Registrarse</ion-button>
+        </ion-row> 
+        
+        <ion-row>
+          <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
+            
+            <ion-item >
+              <ion-label>Username</ion-label>
+              <!-- <ion-input tabindex="0" type="mail" placeholder="Correo electrónico" class="text-right" -->
+              <ion-input name="username" [ngModel]="username"  required class="text-right"></ion-input>
+            </ion-item>
+
           </ion-col>
         </ion-row>
 
-      </ion-col>
+        <ion-row>
+          <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
+            
+            <ion-item>
+              <ion-label>Contraseña</ion-label>
+              <ion-input tabindex="0" name="password" [ngModel]="password"  required type="password" class="text-right"></ion-input>
+            </ion-item>
 
-    </ion-row>
+          </ion-col>
+        </ion-row>
 
-  </ion-grid>
+        <!-- <ion-row>
+          <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
+            
+            <ion-item lines="none">
+              <ion-button slot="end" fill="clear" routerLink="/reset-password">¿Olvidó su contraseña?</ion-button>
+            </ion-item>
 
-</div>
+          </ion-col>
+        </ion-row> -->
+
+        <ion-row>
+
+          <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
+          
+            <ion-row>
+              <ion-col>
+                <ion-button expand="block" shape="round" fill="outline" 
+                  [disabled]="!f.valid" type="submit">Ingresar</ion-button>
+              </ion-col>
+      
+              <!-- <ion-col>
+                <ion-button color="tertiary" expand="block" shape="round" routerLink="/register">Registrarse</ion-button>
+              </ion-col> -->
+            </ion-row>
+
+            <ion-row *ngIf="error != undefined;">
+              <ion-col>
+                <ion-item color="danger">
+                  <ion-label>{{error}}</ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+    </form>
+  </div>
+</ion-content>
