@@ -4,36 +4,58 @@
       <ion-col size="12" size-md="8">
         <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
 
-        <ion-grid *ngIf="usuariosFiltrados.length > 0; else texto" class="tabla ion-text-center">
+       <!-- <ion-grid *ngIf="usuariosFiltrados.length > 0; else texto" class="tabla ion-text-center">
           <ion-row>
             <ion-col *ngFor="let p of usuarioProps">{{ p }}</ion-col>
             <ion-col>Acciones</ion-col>
-          </ion-row>
-        
-          <ion-row *ngFor="let u of usuariosFiltrados">
-            <ion-col >{{ u.id }}</ion-col>
-            <ion-col >{{ u.username }}</ion-col>
-            <ion-col >{{ u.email }}</ion-col>
-            <ion-col >
-              <ion-button [href]="[u.img_url]" target="_blank">
-                <ion-icon name="link"></ion-icon>
+        </ion-row> -->
+        <ion-list>
+          <ion-item *ngFor="let u of usuariosFiltrados">
+            <ion-thumbnail slot="start">
+            <ion-avatar >
+                <img src="{{u.img_url}}" onError="src = 'https://tse4.mm.bing.net/th?id=OIP.a7Zys9Q4iyh7nBNJDLsLIgHaDV&pid=Api'">
+                <ion-icon
+                style="font-size: '64px'"
+                name="person-circle-outline"
+              ></ion-icon>
+            </ion-avatar>
+          </ion-thumbnail>
+            <ion-label>
+                  <ion-card-subtitle>{{u.username}}</ion-card-subtitle>
+                  <ion-card-title>Mark Otto</ion-card-title>
+                  <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle>
+                  <!-- <ion-row class="ion-hide-md-up">
+                    <ion-text>mark.otto@gmail.com</ion-text>
+                    <ion-text>Los Tulipanes</ion-text>
+                  </ion-row> -->
+            </ion-label>
+              <ion-col class="ion-hide-md-down">
+                <ion-text>{{ u.email }}</ion-text>
+              </ion-col>
+              <ion-col class="ion-hide-md-down">
+                <ion-text>Los Tulipanes</ion-text>
+              </ion-col>
+              <ion-buttons class="ion-hide-md-down">
+                <ion-button
+                  [routerLink]="['editar/' + u.id]"
+                >
+                  <ion-icon name="create"></ion-icon>
+                </ion-button>
+                <ion-button
+                  (click)="deleteUsuario(u.id)"
+                >
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+                <ion-buttons class="ion-hide-md-up">
+                <ion-button>
+                  <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
               </ion-button>
-            </ion-col>
-            <ion-col >
-              <ion-button
-                [routerLink]="['editar/' + u.id]"
-              >
-                <ion-icon name="create"></ion-icon>
-              </ion-button>
-              <ion-button
-                (click)="deleteUsuario(u.id)"
-              >
-                <ion-icon name="trash"></ion-icon>
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
+              </ion-buttons>
+          </ion-item>
+
+        </ion-list>
+    
         <ng-template #texto>
           <ion-item>No hay usuarios que empiecen con '{{ searchQuery }}'</ion-item>
         </ng-template>
