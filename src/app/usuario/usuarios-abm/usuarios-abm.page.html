@@ -23,27 +23,26 @@
             <ion-grid>
               <ion-row size="12">
                 <ion-col size="10" size-md="6">
-                            <ion-avatar class="ion-float-left ion-margin-end">
-                              <img
-                                src="{{u.img_url}}"
-                                onError="this.className='ion-hide'"
-                              />
-                              <ion-icon
-                                style="font-size: '64px'"
-                                name="person-circle-outline"
-                              ></ion-icon>
-                            </ion-avatar>
-                        <ion-label  class="ion-float-left">
-                          <ion-card-subtitle>{{u.username}}</ion-card-subtitle>
-                          <ion-card-title>Leonardo Martinez Martinez</ion-card-title>
-                          <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle>
-                        </ion-label>
+                  <app-usuario-img
+                    class="ion-float-left ion-margin-end"
+                    [src]="u.img_url"
+                  ></app-usuario-img>
+                  <ion-label class="ion-float-left">
+                    <ion-card-subtitle>{{u.username}}</ion-card-subtitle>
+                    <ion-card-title>Leonardo Martinez Martinez</ion-card-title>
+                    <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle>
+                  </ion-label>
                 </ion-col>
-
-                <ion-col size="2" class="ion-hide-md-down ion-align-self-center">
+                <ion-col
+                  size="2"
+                  class="ion-hide-md-down ion-align-self-center"
+                >
                   <ion-text>{{ u.email }}</ion-text>
                 </ion-col>
-                <ion-col size="2" class="ion-hide-md-down ion-align-self-center">
+                <ion-col
+                  size="2"
+                  class="ion-hide-md-down ion-align-self-center"
+                >
                   <ion-text>Los Tulipanes</ion-text>
                 </ion-col>
                 <ion-col size="2" class="ion-align-self-center">

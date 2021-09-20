@@ -26,19 +26,20 @@
           <ion-item>
             <ion-col>
               <ion-row class="ion-justify-content-center">
-                <ion-avatar>
-                  <img
+                <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
+                <!-- <ion-avatar> -->
+                  <!-- <ion-img
                     src="{{usuario.img_url}}"
-                    (error)="falsear($event)"
+                    (ionError)="falsear($event)"
                     *ngIf="yepImg==true; else noImg"
-                  />
+                  ></ion-img>
                   <ng-template #noImg>
                     <ion-icon
                       style="font-size: '64px'"
                       name="person-circle-outline"
                     ></ion-icon>
-                  </ng-template>
-                </ion-avatar>
+                  </ng-template> -->
+                <!-- </ion-avatar> -->
               </ion-row>
               <ion-col class="ion-justify-content-center">
                 <ion-card-title class="ion-text-center"

@@ -1,0 +1,16 @@
+<ion-avatar>
+  <ion-img
+    #img
+    [src]="src"
+    (ionError)="yepImg = false"
+    *ngIf="yepImg==true; else noImg"
+    ></ion-img>
+    <!-- (ionImgWillLoad)="yepImg = true" -->
+    <!-- (ionError)="mostrarIcono($event, true)" -->
+  <ng-template #noImg>
+    <ion-icon
+      style="font-size: '64px'"
+      name="person-circle-outline"
+    ></ion-icon>
+  </ng-template>
+</ion-avatar>

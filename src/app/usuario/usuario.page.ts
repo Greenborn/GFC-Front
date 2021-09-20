@@ -12,18 +12,18 @@ export class UsuarioPage implements OnInit {
 
   usuario: Usuario;
   
-  public yepImg: boolean = true;
+  // public yepImg: boolean = true;
 
   constructor(
     // private db: UsuarioService
     private router: Router
   ) { }
 
-  falsear(ev: any){
-    if(ev) {
-      this.yepImg = false;
-    }
-  }
+  // falsear(ev: any){
+  //   if(ev) {
+  //     this.yepImg = false;
+  //   }
+  // }
   ngOnInit() {
     this.usuario = AuthService.getUsuario();
     // this.usuario = this.db.getUsuario();

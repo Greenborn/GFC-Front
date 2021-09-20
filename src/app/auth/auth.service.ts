@@ -9,15 +9,13 @@ export class AuthService {
 
   constructor() { }
 
-  // usuario: Usuario = {
-    // static usuario: Usuario = {
-    //   id: 0,
-    //   username: 'Admin',
-    //   email: 'admin@admin',
-    //   img_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfn92Uz0WoedKHZbOdgPrHJKS9lP90htuueQ&usqp=CAU'
-    // }
-
-  private static usuario: Usuario = undefined;
+  // private static usuario: Usuario = undefined;
+  private static usuario: Usuario = {
+    id: 0,
+    username: 'Admin',
+    email: 'admin@admin',
+    img_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfn92Uz0WoedKHZbOdgPrHJKS9lP90htuueQ&usqp=CAU'
+  };
 
   private static setUsuario(u: Usuario) {
     AuthService.usuario = u;

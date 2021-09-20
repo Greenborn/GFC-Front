@@ -13,13 +13,7 @@
       <ion-col size="12" size-md="10">
         <form #f="ngForm" (ngSubmit)="editUsuario(f)">
           <ion-row class="ion-justify-content-center">
-            <ion-avatar>
-              <img src="{{usuario.img_url}}" onError="this.className='ion-hide'">
-              <ion-icon
-              style="font-size: '64px'"
-              name="person-circle-outline"
-            ></ion-icon>
-            </ion-avatar>
+            <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
           </ion-row>
           <ion-item>
             <ion-label>Nombre</ion-label>
