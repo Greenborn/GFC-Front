@@ -7,8 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { UsuariosAbmPageRoutingModule } from './usuarios-abm-routing.module';
 
 import { UsuariosAbmPage } from './usuarios-abm.page';
+import { SharedModule } from 'src/app/shared/shared.module';
+// import { UsuarioImgComponent } from 'src/app/components/usuario-img/usuario-img.component';
 //componente de usuarios
-import { TablaUsuariosComponent } from '../../tabla-usuarios/tabla-usuarios.component'
 
 @NgModule({
   imports: [
@@ -16,8 +17,9 @@ import { TablaUsuariosComponent } from '../../tabla-usuarios/tabla-usuarios.comp
     FormsModule,
     IonicModule,
     UsuariosAbmPageRoutingModule,
+    SharedModule
   ],
-  declarations: [UsuariosAbmPage, TablaUsuariosComponent]
+  declarations: [UsuariosAbmPage]
 })
 export class UsuariosAbmPageModule {
 

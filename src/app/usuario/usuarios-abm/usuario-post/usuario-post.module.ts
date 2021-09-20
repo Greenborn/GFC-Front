@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { UsuarioPostPageRoutingModule } from './usuario-post-routing.module';
 
 import { UsuarioPostPage } from './usuario-post.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UsuarioPostPageRoutingModule
+    UsuarioPostPageRoutingModule,
+    SharedModule
   ],
   declarations: [UsuarioPostPage]
 })

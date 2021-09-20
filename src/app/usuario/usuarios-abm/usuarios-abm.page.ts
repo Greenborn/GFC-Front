@@ -3,7 +3,9 @@ import { Usuario } from '../usuario.model';
 import { UsuarioService } from '../usuario.service';
 
 import { TablaUsuariosComponent } from '../../tabla-usuarios/tabla-usuarios.component'
-import { AlertController } from '@ionic/angular';
+import { AlertController, PopoverController } from '@ionic/angular';
+import { MenuAccionesComponent } from './menu-acciones/menu-acciones.component';
+import { NavigationEnd, Router } from '@angular/router';
 
 
 @Component({
@@ -16,10 +18,13 @@ export class UsuariosAbmPage implements OnInit {
 
   usuarios: Usuario[] = [];
   public searchQuery: string = '';
+  private popover: HTMLIonPopoverElement = undefined;
 
   constructor(
     private db: UsuarioService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private popoverCtrl: PopoverController,
+    private router: Router
   ) { }
 
   get usuariosFiltrados() {
@@ -31,7 +36,16 @@ export class UsuariosAbmPage implements OnInit {
     return Object.keys(this.usuarios[0]);
   }
 
+  async dismissPopover() {
+    await this.popover.dismiss();
+    this.popover = undefined;
+  }
+
   async deleteUsuario(id: number) {
+
+    if (this.popover != undefined) {
+      this.dismissPopover();
+    }
 
     const alert = await this.alertCtrl.create({
       header: 'Confirmar borrado',
@@ -53,6 +67,31 @@ export class UsuariosAbmPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async mostrarAcciones(ev: any, id: number) {
+    this.popover = await this.popoverCtrl.create({
+      component: MenuAccionesComponent, //componente a mostrar
+      componentProps: {
+        id,
+        abmPage: this
+      },
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true,
+      // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
+    });
+    await this.popover.present();
+    // const t = this;
+    // this.router.events.subscribe() // dismiss popover cuando cambie de ruta
+    const s = this.router.events
+    .pipe() // .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(async (e) => {
+      if (e instanceof NavigationEnd) {
+        await this.dismissPopover();
+        s.unsubscribe();
+      }
+    });
   }
 
   async ngOnInit() {

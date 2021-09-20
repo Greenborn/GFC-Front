@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { UsuarioEditPageRoutingModule } from './usuario-edit-routing.module';
 
 import { UsuarioEditPage } from './usuario-edit.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UsuarioEditPageRoutingModule
+    UsuarioEditPageRoutingModule,
+    SharedModule
   ],
   declarations: [UsuarioEditPage]
 })
