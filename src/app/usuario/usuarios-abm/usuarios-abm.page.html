@@ -4,62 +4,77 @@
       <ion-col size="12" size-md="8">
         <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
 
-       <!-- <ion-grid *ngIf="usuariosFiltrados.length > 0; else texto" class="tabla ion-text-center">
+        <!-- <ion-grid *ngIf="usuariosFiltrados.length > 0; else texto" class="tabla ion-text-center">
           <ion-row>
             <ion-col *ngFor="let p of usuarioProps">{{ p }}</ion-col>
             <ion-col>Acciones</ion-col>
         </ion-row> -->
+        <!-- usuario, email, fotoclub -->
+        <ion-grid>
+          <ion-row class="ion-hide-md-down">
+            <ion-col size="6">Usuario</ion-col>
+            <ion-col size="2">Email</ion-col>
+            <ion-col size="2">Fotoclub</ion-col>
+            <ion-col size="2">Acciones</ion-col>
+          </ion-row>
+        </ion-grid>
         <ion-list>
           <ion-item *ngFor="let u of usuariosFiltrados">
-            <ion-thumbnail slot="start">
-            <ion-avatar >
-                <img src="{{u.img_url}}" onError="this.className='ion-hide'">
-                <ion-icon
-                style="font-size: '64px'"
-                name="person-circle-outline"
-              ></ion-icon>
-            </ion-avatar>
-          </ion-thumbnail>
-            <ion-label>
-                  <ion-card-subtitle>{{u.username}}</ion-card-subtitle>
-                  <ion-card-title>Mark Otto</ion-card-title>
-                  <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle>
-                  <!-- <ion-row class="ion-hide-md-up">
-                    <ion-text>mark.otto@gmail.com</ion-text>
-                    <ion-text>Los Tulipanes</ion-text>
-                  </ion-row> -->
-            </ion-label>
-              <ion-col class="ion-hide-md-down">
-                <ion-text>{{ u.email }}</ion-text>
-              </ion-col>
-              <ion-col class="ion-hide-md-down">
-                <ion-text>Los Tulipanes</ion-text>
-              </ion-col>
-              <ion-buttons class="ion-hide-md-down">
-                <ion-button
-                  [routerLink]="['editar/' + u.id]"
-                >
-                  <ion-icon name="create"></ion-icon>
-                </ion-button>
-                <ion-button
-                  (click)="deleteUsuario(u.id)"
-                >
-                  <ion-icon name="trash"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-                <ion-buttons class="ion-hide-md-up">
-                <ion-button>
-                  <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-              </ion-button>
-              </ion-buttons>
-          </ion-item>
+            <ion-grid>
+              <ion-row size="12">
+                <ion-col size="10" size-md="6">
+                            <ion-avatar class="ion-float-left ion-margin-end">
+                              <img
+                                src="{{u.img_url}}"
+                                onError="this.className='ion-hide'"
+                              />
+                              <ion-icon
+                                style="font-size: '64px'"
+                                name="person-circle-outline"
+                              ></ion-icon>
+                            </ion-avatar>
+                        <ion-label  class="ion-float-left">
+                          <ion-card-subtitle>{{u.username}}</ion-card-subtitle>
+                          <ion-card-title>Leonardo Martinez Martinez</ion-card-title>
+                          <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle>
+                        </ion-label>
+                </ion-col>
 
+                <ion-col size="2" class="ion-hide-md-down ion-align-self-center">
+                  <ion-text>{{ u.email }}</ion-text>
+                </ion-col>
+                <ion-col size="2" class="ion-hide-md-down ion-align-self-center">
+                  <ion-text>Los Tulipanes</ion-text>
+                </ion-col>
+                <ion-col size="2" class="ion-align-self-center">
+                  <ion-buttons class="ion-hide-md-down">
+                    <ion-button [routerLink]="['editar/' + u.id]">
+                      <ion-icon name="create"></ion-icon>
+                    </ion-button>
+                    <ion-button (click)="deleteUsuario(u.id)">
+                      <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                  <ion-buttons class="ion-hide-md-up">
+                    <ion-button>
+                      <ion-icon
+                        slot="icon-only"
+                        ios="ellipsis-horizontal"
+                        md="ellipsis-vertical"
+                      ></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
         </ion-list>
-    
+
         <ng-template #texto>
-          <ion-item>No hay usuarios que empiecen con '{{ searchQuery }}'</ion-item>
+          <ion-item
+            >No hay usuarios que empiecen con '{{ searchQuery }}'</ion-item
+          >
         </ng-template>
-        
       </ion-col>
       <!-- filtro y busqueda -->
       <ion-col size="3" class="ion-hide-md-down">
@@ -78,5 +93,4 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>
