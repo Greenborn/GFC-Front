@@ -23,29 +23,43 @@
           <ion-row class="ion-justify-content-center">
             <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
           </ion-row>
-          <ion-item>
-            <ion-label position="stacked">Nombre</ion-label>
-            <ion-input
-              name="username"
-              [ngModel]="usuario.username"
-              required
-            ></ion-input>
+          <ion-item class="ion-padding-top">
+            <ion-col>
+              <label>Nombre</label>
+              <input
+              class="expand-full"
+                name="username"
+                [ngModel]="usuario.username"
+                required
+              >
+            </ion-col>
           </ion-item>
           <ion-item>
-            <ion-label position="stacked">Email</ion-label>
-            <ion-input
-              name="email"
-              [ngModel]="usuario.email"
-              required
-            ></ion-input>
+            <ion-col>
+              <ion-row>
+                <label>Email</label>
+              </ion-row>
+              <ion-row>
+                <input
+                class="expand-full"
+                name="email"
+                type="email"
+                [ngModel]="usuario.email"
+                required
+              >
+              </ion-row>
+            </ion-col>
           </ion-item>
           <ion-item>
-            <ion-label position="stacked">Imagen(url)</ion-label>
-            <ion-input
-              name="img_url"
-              [(ngModel)]="usuario.img_url"
-              required
-            ></ion-input>
+            <ion-col>
+              <label>Imagen(url)</label>
+              <input
+              class="expand-full"
+                name="img_url"
+                [(ngModel)]="usuario.img_url"
+                required
+              >
+            </ion-col>
           </ion-item>
           <ion-button expand="block" type="submit" [disabled]="!f.valid"
             >Guardar</ion-button

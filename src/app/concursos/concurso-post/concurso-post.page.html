@@ -20,40 +20,58 @@
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="10">
         <form #f="ngForm" (ngSubmit)="postConcurso(f)">
-          <ion-item>
-            <ion-label position="stacked">Nombre</ion-label>
-            <ion-input
-            name="name"
-            [ngModel]="concurso.name"
-            required
-          ></ion-input>
+          <ion-item class="ion-padding-top">
+            <ion-col>
+              <label>Nombre</label>
+              <input
+                class="expand-full"
+                name="name"
+                [ngModel]="concurso.name"
+                required
+              />
+            </ion-col>
           </ion-item>
 
           <ion-item>
-            <ion-label position="stacked">Descripción</ion-label>
-            <ion-textarea
-              name="description"
-              [ngModel]="concurso.description"
-              required
-            ></ion-textarea>
+            <ion-col>
+              <label>Descripción</label>
+              <textarea
+                class="expand-full"
+                name="description"
+                [ngModel]="concurso.description"
+                required
+              ></textarea>
+            </ion-col>
           </ion-item>
           <ion-item>
-              <ion-label position="stacked">Fecha de inicio</ion-label>
-              <input
-                type="date"
-                name="start_date"
-                [ngModel]="concurso.start_date"
-                required
-              />
+            <ion-col>
+              <ion-row>
+                <label>Fecha de inicio</label>
+              </ion-row>
+              <ion-row>
+                <input
+                  type="date"
+                  name="start_date"
+                  [ngModel]="concurso.start_date"
+                  required
+                />
+              </ion-row>
+            </ion-col>
           </ion-item>
           <ion-item>
-              <ion-label position="stacked">Fecha de finalizacion</ion-label>
-              <input
-                type="date"
-                name="end_date"
-                [ngModel]="concurso.end_date"
-                required
-              />
+            <ion-col>
+              <ion-row>
+                <label>Fecha de finalización</label>
+              </ion-row>
+              <ion-row>
+                <input
+                  type="date"
+                  name="end_date"
+                  [ngModel]="concurso.end_date"
+                  required
+                />
+              </ion-row>
+            </ion-col>
           </ion-item>
           <ion-button expand="block" type="submit" [disabled]="!f.valid"
             >Guardar</ion-button
