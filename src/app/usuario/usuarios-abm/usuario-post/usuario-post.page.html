@@ -22,11 +22,11 @@
         <form #f="ngForm" (ngSubmit)="postUsuario(f)">
           <ion-row class="ion-justify-content-center">
             <ion-avatar>
-              <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
-              <img 
-                [src]="usuario.img_url"
-                *ngIf="usuario.img_url != ''; else icon"
-              />
+              <img src="{{usuario.img_url}}" onError="this.className='ion-hide'">
+              <ion-icon
+              style="font-size: '64px'"
+              name="person-circle-outline"
+            ></ion-icon>
               <ng-template #icon>
                 <ion-icon
                   style="font-size: '64px'"

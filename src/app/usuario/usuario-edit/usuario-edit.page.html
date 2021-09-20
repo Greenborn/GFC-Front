@@ -14,9 +14,11 @@
         <form #f="ngForm" (ngSubmit)="editUsuario(f)">
           <ion-row class="ion-justify-content-center">
             <ion-avatar>
-              <!-- <ion-icon style="font-size:'64px'" name="person-circle-outline"></ion-icon> -->
-              <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
-              <img [src]="usuario.img_url" />
+              <img src="{{usuario.img_url}}" onError="this.className='ion-hide'">
+              <ion-icon
+              style="font-size: '64px'"
+              name="person-circle-outline"
+            ></ion-icon>
             </ion-avatar>
           </ion-row>
           <ion-item>
