@@ -24,7 +24,7 @@
             <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
           </ion-row>
           <ion-item>
-            <ion-label>Nombre</ion-label>
+            <ion-label position="stacked">Nombre</ion-label>
             <ion-input
               name="username"
               [ngModel]="usuario.username"
@@ -32,7 +32,7 @@
             ></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label>Email</ion-label>
+            <ion-label position="stacked">Email</ion-label>
             <ion-input
               name="email"
               [ngModel]="usuario.email"
@@ -40,7 +40,7 @@
             ></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label>Imagen(url)</ion-label>
+            <ion-label position="stacked">Imagen(url)</ion-label>
             <ion-input
               name="img_url"
               [(ngModel)]="usuario.img_url"
