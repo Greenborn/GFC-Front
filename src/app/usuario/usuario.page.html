@@ -5,7 +5,10 @@
         <ion-col size="12" size-md="11">
           <ion-row>
             <ion-buttons>
-              <ion-back-button defaultHref="/perfil" class="ion-hide-md-up"></ion-back-button>
+              <ion-back-button
+                defaultHref="/perfil"
+                class="ion-hide-md-up"
+              ></ion-back-button>
             </ion-buttons>
             <ion-title>Perfil</ion-title>
           </ion-row>
@@ -21,28 +24,31 @@
       <ion-col size="12" size-md="10" class="altura-cien">
         <ion-row class="ion-justify-content-center altura-treinta">
           <ion-item>
-            <ion-card>
-              <ion-card-header>
+            <ion-col>
+              <ion-row class="ion-justify-content-center">
                 <ion-avatar>
-                  <!-- <ion-icon
-                    style="font-size: '64px'"
-                    name="person-circle-outline"
-                  ></ion-icon> -->
-                  <!-- <img
-                    src="https://tse2.mm.bing.net/th?id=OIP.M2FKW7uS0BfRH6sykSn95wHaHa&pid=Api"
-                  /> -->
-                  
-                  <img [src]="usuario.img_url">
+                  <img
+                    src="{{usuario.img_url}}"
+                    (error)="falsear($event)"
+                    *ngIf="yepImg==true; else noImg"
+                  />
+                  <ng-template #noImg>
+                    <ion-icon
+                      style="font-size: '64px'"
+                      name="person-circle-outline"
+                    ></ion-icon>
+                  </ng-template>
                 </ion-avatar>
-              </ion-card-header>
-
-              <ion-card-title class="ion-text-center"
-                >{{usuario.username}}</ion-card-title
-              >
-              <ion-card-subtitle class="ion-text-center"
-                >{{usuario.email}}</ion-card-subtitle
-              >
-            </ion-card>
+              </ion-row>
+              <ion-col class="ion-justify-content-center">
+                <ion-card-title class="ion-text-center"
+                  >{{usuario.username}}</ion-card-title
+                >
+                <ion-card-subtitle class="ion-text-center"
+                  >{{usuario.email}}</ion-card-subtitle
+                >
+              </ion-col>
+            </ion-col>
           </ion-item>
         </ion-row>
 

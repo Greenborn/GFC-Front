@@ -21,7 +21,7 @@ export class Api {
       id: 1,
       username: 'Admin2',
       email: 'admin2@admin2',
-      img_url: 'https://tse2.mm.bing.net/th?id=OIP.M2FKW7uS0BfRH6sykSn95wHaHa&pid=Api'
+      img_url: 'kk'
     }
   ];
 

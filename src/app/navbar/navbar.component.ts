@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
     private menu: MenuController,
     public popoverController: PopoverController,
     private router: Router,
-    private auth: AuthService
+    public auth: AuthService //lo puse público!
     ) { }
 
   ngOnInit() {}
