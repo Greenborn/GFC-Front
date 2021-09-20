@@ -6,6 +6,7 @@ import { ConcursoService } from './concurso.service';
 import { Concurso } from './concurso.model';
 import { NotificacionesPage } from '../notificaciones/notificaciones.page';
 import { UsuarioPage } from '../usuario/usuario.page';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-concursos',
@@ -20,7 +21,8 @@ export class ConcursosPage implements OnInit {
   constructor(
     private db: ConcursoService,
     public popoverController: PopoverController,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) { }
 
   get concursosFiltrados(): Concurso[] {

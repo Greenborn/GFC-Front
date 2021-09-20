@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Usuario } from '../usuario/usuario.model';
+import { UsuarioService } from '../usuario/usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,14 +8,43 @@ import { Usuario } from '../usuario/usuario.model';
 export class AuthService {
 
   constructor() { }
-  
+
   // usuario: Usuario = {
-    static usuario: Usuario = {
-      id: 0,
-      username: 'Admin',
-      email: 'admin@admin',
-      img_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfn92Uz0WoedKHZbOdgPrHJKS9lP90htuueQ&usqp=CAU'
+    // static usuario: Usuario = {
+    //   id: 0,
+    //   username: 'Admin',
+    //   email: 'admin@admin',
+    //   img_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfn92Uz0WoedKHZbOdgPrHJKS9lP90htuueQ&usqp=CAU'
+    // }
+
+  private static usuario: Usuario = undefined;
+
+  private static setUsuario(u: Usuario) {
+    AuthService.usuario = u;
+  }
+
+  static loggedIn(): boolean {
+    return AuthService.usuario != undefined;
+  }
+  loggedIn(): boolean {
+    return AuthService.usuario != undefined;
+  }
+
+  static async login(username, password): Promise<boolean> {
+    // fetch(...)
+    const u = (await (new UsuarioService).getUsuarios()).find(u => u.username == username);
+    if (u != undefined) {
+      AuthService.setUsuario(u);
+      return true;
     }
+    else {
+      return false;
+    }
+  }
+  static async logout(): Promise<boolean> {
+    AuthService.usuario = undefined;
+    return true;
+  }
 
   static getUsuario(): Usuario {
     // console.log('Get usuario ', UsuarioService.usuario);

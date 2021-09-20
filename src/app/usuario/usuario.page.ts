@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Usuario } from './usuario.model';
 
@@ -13,6 +14,7 @@ export class UsuarioPage implements OnInit {
 
   constructor(
     // private db: UsuarioService
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -23,6 +25,11 @@ export class UsuarioPage implements OnInit {
     this.usuario = AuthService.getUsuario();
     // this.usuario = this.db.getUsuario();
     // console.log('Por entrar a vista con usuario ', this.usuario)
+  }
+
+  logout() {
+    AuthService.logout();
+    this.router.navigateByUrl('/');
   }
 
 }

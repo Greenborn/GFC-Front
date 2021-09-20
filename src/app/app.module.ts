@@ -7,6 +7,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+import { LoggedInGuard } from './guards/logged-in.guard'
+
 //componente de usuarios
 // import { TablaUsuariosComponent } from './tabla-usuarios/tabla-usuarios.component'
 
@@ -20,7 +22,7 @@ import { NavbarComponent } from './navbar/navbar.component'
     ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, LoggedInGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

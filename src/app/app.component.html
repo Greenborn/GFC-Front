@@ -39,19 +39,20 @@
     </ion-menu> -->
 
     <ion-content>
+      <!-- sidebar -->
       <ion-menu type="reveal" side="start" menuId="first" contentId="main-content">
-        <ion-header>
+        <!-- <ion-header>
           <ion-toolbar color="primary">
             <ion-title>Start Menu</ion-title>
           </ion-toolbar>
-        </ion-header>
+        </ion-header> -->
         <ion-content>
           <ion-list>
             <ion-item>Home</ion-item>
             <ion-item>Reglamento</ion-item>
             <ion-item [routerLink]="['/concursos']">Concursos</ion-item>
             <ion-item>Galería</ion-item>
-            <ion-item [routerLink]="['/usuarios']">Usuarios</ion-item>
+            <ion-item [routerLink]="['/usuarios']" *ngIf="auth.loggedIn()">Usuarios</ion-item>
           </ion-list>
         </ion-content>
       </ion-menu>

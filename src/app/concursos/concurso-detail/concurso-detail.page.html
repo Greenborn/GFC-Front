@@ -28,7 +28,7 @@
                   >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
                 >
               </ion-col>
-              <ion-col>
+              <ion-col *ngIf="auth.loggedIn()">
                 <!-- <ion-buttons slot="end"> -->
                 <ion-button class="ion-float-right" (click)="deleteConcurso()">
                   <ion-icon name="trash"></ion-icon>
@@ -45,7 +45,7 @@
           <!-- <ion-label>{{item}}</ion-label> -->
         </ion-card>
 
-        <ion-button
+        <ion-button *ngIf="auth.loggedIn()"
           expand="block"
           class="ion-margin"
           [routerLink]="['/concursos/editar/'+concurso.id]"

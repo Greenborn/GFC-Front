@@ -5,6 +5,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 
 import { ConcursoService } from '../concurso.service';
 import { Concurso } from '../concurso.model';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-concurso-detail',
@@ -20,7 +21,8 @@ export class ConcursoDetailPage implements OnInit {
     private db: ConcursoService,
     private router: Router,
     private alertCtrl: AlertController,
-    // private loadingCtrl: LoadingController
+    // private loadingCtrl: LoadingController,
+    private auth: AuthService
   ) { }
 
   async ngOnInit() {

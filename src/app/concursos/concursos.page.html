@@ -16,7 +16,8 @@
 </ion-header> -->
 
 <ion-content>
-  <ion-fab
+
+  <ion-fab *ngIf="auth.loggedIn()"
     vertical="bottom"
     horizontal="end"
     slot="fixed"
@@ -28,7 +29,9 @@
   </ion-fab>
 
   <ion-grid>
+
     <ion-row class="ion-justify-content-end">
+      
       <ion-col size="12" size-md="7">
         <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
         <!-- <ion-searchbar (ionChange)="buscarConcursos($event.target.value)"></ion-searchbar> -->
@@ -59,9 +62,11 @@
           </ng-template>
       </ion-col>
       <!-- filtro y busqueda -->
-      <ion-col size="4" class="ion-hide-md-down">
+
+      <ion-col size="4" class="ion-hide-md-down" *ngIf="auth.loggedIn()">
         <ion-button [routerLink]="['nuevo']">Nuevo</ion-button>
       </ion-col>
+      
     </ion-row>
   </ion-grid>
 </ion-content>

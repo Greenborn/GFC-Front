@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { LoggedInGuard } from './guards/logged-in.guard';
 
 const routes: Routes = [
   {
@@ -20,10 +21,12 @@ const routes: Routes = [
       },
       {
         path: 'nuevo',
+        canActivate: [LoggedInGuard],
         loadChildren: () => import('./concursos/concurso-post/concurso-post.module').then( m => m.ConcursoPostPageModule)
       },
       {
         path: 'editar/:id',
+        canActivate: [LoggedInGuard],
         loadChildren: () => import('./concursos/concurso-post/concurso-post.module').then( m => m.ConcursoPostPageModule)
       },
       {
@@ -34,13 +37,17 @@ const routes: Routes = [
   },
   {
     path: 'perfil',
+    canActivate: [LoggedInGuard],
     loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
   },
   {
     path: 'usuarios',
+    canActivate: [LoggedInGuard],
     loadChildren: () => import('./usuario/usuarios-abm/usuarios-abm.module').then( m => m.UsuariosAbmPageModule)
-  },  {
+  },
+  {
     path: 'notificaciones',
+    canActivate: [LoggedInGuard],
     loadChildren: () => import('./notificaciones/notificaciones.module').then( m => m.NotificacionesPageModule)
   },
   {
