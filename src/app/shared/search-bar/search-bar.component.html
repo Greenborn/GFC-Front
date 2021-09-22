@@ -1,0 +1,21 @@
+<ion-item class="search-bar">
+  <ion-searchbar #queryInput
+    (ionInput)="output()"
+    show-clear-button="never"
+    [showCancelButton]="cancelbuttonStatus"
+    cancel-button-icon="close-outline"
+  ></ion-searchbar>
+  <ion-select #atributoSelect
+    (ionChange)="output()"
+    [value]="getAtributoValor(atributosPasados[0])"
+    interface="popover" class="ion-margin-end"
+  >
+    <ion-select-option 
+      *ngFor="let a of atributosPasados" 
+      [value]="getAtributoValor(a)"
+    >{{getAtributoValorMostrado(a)}}</ion-select-option>
+    
+    <!-- <ion-select-option value="username">Username</ion-select-option>
+    <ion-select-option value="email">Email</ion-select-option> -->
+  </ion-select>
+</ion-item>

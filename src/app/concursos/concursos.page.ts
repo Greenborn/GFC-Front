@@ -7,6 +7,7 @@ import { Concurso } from './concurso.model';
 import { NotificacionesPage } from '../notificaciones/notificaciones.page';
 import { UsuarioPage } from '../usuario/usuario.page';
 import { AuthService } from '../auth/auth.service';
+import { SearchBarComponentAtributo, SearchBarComponentParams } from '../shared/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-concursos',
@@ -15,8 +16,12 @@ import { AuthService } from '../auth/auth.service';
 })
 export class ConcursosPage implements OnInit {
 
-  private concursos: Concurso[] = [];
-  public searchQuery: string = '';
+  public concursos: Concurso[] = [];
+  public searchParams: SearchBarComponentParams;
+  public atributosBusqueda: SearchBarComponentAtributo[] = [
+    { valor: 'name', valorMostrado: 'Nombre' },
+    { valor: 'description', valorMostrado: 'Descripcion' }
+  ];
 
   constructor(
     private db: ConcursoService,
@@ -25,9 +30,23 @@ export class ConcursosPage implements OnInit {
     private auth: AuthService
   ) { }
 
-  get concursosFiltrados(): Concurso[] {
-    const q = this.searchQuery;
-    return this.concursos.filter(c => c.name.substr(0, q.length) == q)
+  // get concursosFiltrados(): Concurso[] {
+  //   const q = this.searchQuery;
+  //   return this.concursos.filter(c => c.name.substr(0, q.length) == q)
+  // }
+  async filtrarConcursos(output: SearchBarComponentParams) {
+    if (output != undefined) {
+      // console.log('buscando', output)
+      let { atributo, query } = output;
+      this.searchParams = output;
+      this.concursos = (await this.db.getConcursos()).filter(u => {
+        console.log('buscando', atributo, query)
+        switch (atributo) {
+          case 'description': return u[atributo].search(new RegExp(query, 'i')) > -1;
+          default: return u[atributo].search(new RegExp(`^${query}`, 'i')) > -1
+        }
+      });
+    }
   }
 
   async ngOnInit() {

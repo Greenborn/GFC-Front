@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ConcursosPageRoutingModule } from './concursos-routing.module';
 
 import { ConcursosPage } from './concursos.page';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ConcursosPageRoutingModule
+    ConcursosPageRoutingModule,
+    SharedModule
   ],
   declarations: [ConcursosPage]
 })

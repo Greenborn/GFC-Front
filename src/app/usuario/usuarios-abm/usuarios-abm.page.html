@@ -2,7 +2,10 @@
   <ion-grid>
     <ion-row class="ion-justify-content-end">
       <ion-col size="12" size-md="8">
-        <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
+        <app-search-bar 
+          (buscar)="filtrarUsuarios($event)"
+          [atributos]="['username', 'email']"
+        ></app-search-bar>
 
         <!-- <ion-grid *ngIf="usuariosFiltrados.length > 0; else texto" class="tabla ion-text-center">
           <ion-row>
@@ -18,8 +21,8 @@
             <ion-col size="2">Acciones</ion-col>
           </ion-row>
         </ion-grid>
-        <ion-list>
-          <ion-item *ngFor="let u of usuariosFiltrados">
+        <ion-list *ngIf="usuarios.length > 0; else texto">
+          <ion-item *ngFor="let u of usuarios">
             <ion-grid>
               <ion-row size="12">
                 <ion-col size="10" size-md="6">
@@ -71,12 +74,10 @@
             </ion-grid>
           </ion-item>
         </ion-list>
-
-        <ng-template #texto>
-          <ion-item
-            >No hay usuarios que empiecen con '{{ searchQuery }}'</ion-item
-          >
+        <ng-template #texto >
+          <ion-item *ngIf="searchParams != undefined">No hay usuarios con {{searchParams.atributo}} que empiece con '{{ searchParams.query }}'</ion-item>
         </ng-template>
+
       </ion-col>
       <!-- filtro y busqueda -->
       <ion-col size="3" class="ion-hide-md-down">

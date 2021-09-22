@@ -6,6 +6,7 @@ import { TablaUsuariosComponent } from '../../tabla-usuarios/tabla-usuarios.comp
 import { AlertController, PopoverController } from '@ionic/angular';
 import { MenuAccionesComponent } from './menu-acciones/menu-acciones.component';
 import { NavigationEnd, Router } from '@angular/router';
+import { SearchBarComponentParams } from 'src/app/shared/search-bar/search-bar.component';
 
 
 @Component({
@@ -17,6 +18,9 @@ export class UsuariosAbmPage implements OnInit {
   @ViewChild("tabla-usuarios") tablaUsuariosComponent:TablaUsuariosComponent;
 
   usuarios: Usuario[] = [];
+  // usuariosFiltrados: Usuario[] = [];
+  searchParams: SearchBarComponentParams;
+
   public searchQuery: string = '';
   private popover: HTMLIonPopoverElement = undefined;
 
@@ -27,11 +31,21 @@ export class UsuariosAbmPage implements OnInit {
     private router: Router
   ) { }
 
-  get usuariosFiltrados() {
-    // return [ ...this.usuarios ];
-    const q = this.searchQuery;
-    return this.usuarios.filter(u => u.username.substr(0, q.length) == q)
+  // filtrarUsuarios({ atributo, query }: SearchBarComponentParams) {
+  //   this.usuariosFiltrados = this.usuarios.filter(u => u[atributo].substr(0, query.length) == query)
+  // }
+  async filtrarUsuarios(output: SearchBarComponentParams) {
+    if (output != undefined) {
+      // console.log('buscando', output)
+      let { atributo, query } = output;
+      this.searchParams = output;
+      this.usuarios = (await this.db.getUsuarios()).filter(u => u[atributo].substr(0, query.length) == query);
+    }
   }
+  // get usuariosFiltrados() {
+  //   const q = this.searchQuery;
+  //   return this.usuarios.filter(u => u.username.substr(0, q.length) == q)
+  // }
   get usuarioProps() {
     return Object.keys(this.usuarios[0]);
   }
