@@ -16,42 +16,42 @@
             <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
           </ion-row>
           <ion-item class="ion-padding-top">
-            <ion-col>
-              <label>Nombre</label>
-              <input
+            <!-- <ion-col> -->
+              <ion-label position="floating">Nombre</ion-label>
+              <ion-input
               class="expand-full"
                 name="username"
                 [ngModel]="usuario.username"
                 required
-              >
-            </ion-col>
+              ></ion-input>
+            <!-- </ion-col> -->
           </ion-item>
           <ion-item>
-            <ion-col>
-              <ion-row>
-                <label>Email</label>
-              </ion-row>
-              <ion-row>
-                <input
+            <!-- <ion-col> -->
+              <!-- <ion-row> -->
+                <ion-label position="floating">Email</ion-label>
+              <!-- </ion-row> -->
+              <!-- <ion-row> -->
+                <ion-input
                 class="expand-full"
                 name="email"
                 type="email"
                 [ngModel]="usuario.email"
                 required
-              >
-              </ion-row>
-            </ion-col>
+              ></ion-input>
+              <!-- </ion-row> -->
+            <!-- </ion-col> -->
           </ion-item>
           <ion-item>
-            <ion-col>
-              <label>Imagen(url)</label>
-              <input
+            <!-- <ion-col> -->
+              <ion-label position="floating">Imagen(url)</ion-label>
+              <ion-input
               class="expand-full"
                 name="img_url"
                 [(ngModel)]="usuario.img_url"
                 required
-              >
-            </ion-col>
+              ></ion-input>
+            <!-- </ion-col> -->
           </ion-item>
           <ion-button expand="block" type="submit" [disabled]="!f.valid"
             >Guardar</ion-button
