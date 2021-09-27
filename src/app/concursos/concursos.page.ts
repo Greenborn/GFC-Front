@@ -40,7 +40,7 @@ export class ConcursosPage implements OnInit {
       let { atributo, query } = output;
       this.searchParams = output;
       this.concursos = (await this.db.getConcursos()).filter(u => {
-        console.log('buscando', atributo, query)
+        // console.log('buscando', atributo, query)
         switch (atributo) {
           case 'description': return u[atributo].search(new RegExp(query, 'i')) > -1;
           default: return u[atributo].search(new RegExp(`^${query}`, 'i')) > -1

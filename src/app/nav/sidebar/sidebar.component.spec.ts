@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TablaUsuariosComponent } from './tabla-usuarios.component';
+import { SidebarComponent } from './sidebar.component';
 
-describe('TablaUsuariosComponent', () => {
-  let component: TablaUsuariosComponent;
-  let fixture: ComponentFixture<TablaUsuariosComponent>;
+describe('SidebarComponent', () => {
+  let component: SidebarComponent;
+  let fixture: ComponentFixture<SidebarComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TablaUsuariosComponent ],
+      declarations: [ SidebarComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TablaUsuariosComponent);
+    fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -12,17 +12,20 @@ import { LoggedInGuard } from './guards/logged-in.guard'
 //componente de usuarios
 // import { TablaUsuariosComponent } from './tabla-usuarios/tabla-usuarios.component'
 
-//componente navbar
-import { NavbarComponent } from './navbar/navbar.component'
+import { NavModule } from './nav/nav.module';
+
 @NgModule({
   declarations: [
     AppComponent,
-    //  TablaUsuariosComponent,
-    NavbarComponent
-    ],
+  ],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [
+    BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule,
+    NavModule
+  ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, LoggedInGuard],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -3,11 +3,11 @@ import { MenuController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 
 //componente que voy a mostrar
-import { UsuarioPage } from '../usuario/usuario.page';
-import { NotificacionesPage } from '../notificaciones/notificaciones.page';
+import { UsuarioPage } from '../../usuario/usuario.page';
+import { NotificacionesPage } from '../../notificaciones/notificaciones.page';
 import { NavigationEnd, Router } from '@angular/router';
 
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-navbar',

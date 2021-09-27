@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Usuario } from '../usuario.model';
 import { UsuarioService } from '../usuario.service';
 
-import { TablaUsuariosComponent } from '../../tabla-usuarios/tabla-usuarios.component'
 import { AlertController, PopoverController } from '@ionic/angular';
 import { MenuAccionesComponent } from './menu-acciones/menu-acciones.component';
 import { NavigationEnd, Router } from '@angular/router';
@@ -15,7 +14,6 @@ import { SearchBarComponentParams } from 'src/app/shared/search-bar/search-bar.c
   styleUrls: ['./usuarios-abm.page.scss'],
 })
 export class UsuariosAbmPage implements OnInit {
-  @ViewChild("tabla-usuarios") tablaUsuariosComponent:TablaUsuariosComponent;
 
   usuarios: Usuario[] = [];
   // usuariosFiltrados: Usuario[] = [];
