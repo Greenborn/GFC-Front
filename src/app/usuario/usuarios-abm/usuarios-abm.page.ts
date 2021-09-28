@@ -3,10 +3,11 @@ import { Usuario } from '../usuario.model';
 import { UsuarioService } from '../usuario.service';
 
 import { AlertController, PopoverController } from '@ionic/angular';
-import { MenuAccionesComponent } from './menu-acciones/menu-acciones.component';
 import { NavigationEnd, Router } from '@angular/router';
 import { SearchBarComponentParams } from 'src/app/shared/search-bar/search-bar.component';
 
+import { MenuAccionesComponent } from '../../shared/menu-acciones/menu-acciones.component';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-usuarios-abm',
@@ -26,8 +27,15 @@ export class UsuariosAbmPage implements OnInit {
     private db: UsuarioService,
     private alertCtrl: AlertController,
     private popoverCtrl: PopoverController,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) { }
+
+  get titulo() {
+    const u = this.auth.getUser()
+    return this.auth.isAdmin() ? 'Miembros' : 
+      `Concursantes del fotoclub ${u.fotoclub_id}`
+  }
 
   // filtrarUsuarios({ atributo, query }: SearchBarComponentParams) {
   //   this.usuariosFiltrados = this.usuarios.filter(u => u[atributo].substr(0, query.length) == query)
@@ -85,14 +93,37 @@ export class UsuariosAbmPage implements OnInit {
     this.popover = await this.popoverCtrl.create({
       component: MenuAccionesComponent, //componente a mostrar
       componentProps: {
-        id,
-        abmPage: this
+        acciones: [
+          {
+            accion: (params: string[]) => this.router.navigate(params),
+            params: ['/usuarios', 'editar', id],
+            icon: 'create',
+            label: 'Editar'
+          },
+          {
+            accion: (params: number[]) => this.deleteUsuario(params[0]),
+            params: [id],
+            icon: 'trash',
+            label: 'Borrar'
+          }
+        ]
       },
       cssClass: 'my-custom-class',
       event: ev,
       translucent: true,
       // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
     });
+    // this.popover = await this.popoverCtrl.create({
+    //   component: MenuAccionesComponent, //componente a mostrar
+    //   componentProps: {
+    //     id,
+    //     abmPage: this
+    //   },
+    //   cssClass: 'my-custom-class',
+    //   event: ev,
+    //   translucent: true,
+    //   // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
+    // });
     await this.popover.present();
     // const t = this;
     // this.router.events.subscribe() // dismiss popover cuando cambie de ruta

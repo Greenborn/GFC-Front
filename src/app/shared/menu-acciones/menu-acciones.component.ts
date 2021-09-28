@@ -1,6 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UsuariosAbmPage } from '../usuarios-abm.page';
+
+export interface MenuAccionesComponentAccion {
+  accion: CallableFunction;
+  params: string[];
+  icon: string;
+  label: string;
+}
 
 @Component({
   selector: 'app-menu-acciones',
@@ -9,16 +15,18 @@ import { UsuariosAbmPage } from '../usuarios-abm.page';
 })
 export class MenuAccionesComponent implements OnInit {
 
-  @Input() id: number;
-  @Input() abmPage: UsuariosAbmPage;
+  // @Input() id: number;
+  // @Input() abmPage: UsuariosAbmPage;
+
+  @Input() acciones: MenuAccionesComponentAccion[] = [];
 
   constructor(
     private router: Router
   ) { }
 
-  editUsuario() {
-    this.router.navigate(['/usuarios/editar/' + this.id])  
-  }
+  // editUsuario() {
+  //   this.router.navigate(['/usuarios/editar/' + this.id])  
+  // }
 
   ngOnInit() {}
 

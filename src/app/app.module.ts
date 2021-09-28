@@ -23,7 +23,7 @@ import { SidebarComponent } from './nav/sidebar/sidebar.component';
   ],
   entryComponents: [],
   imports: [
-    BrowserModule, 
+    BrowserModule,
     IonicModule.forRoot(), 
     AppRoutingModule,
   ],

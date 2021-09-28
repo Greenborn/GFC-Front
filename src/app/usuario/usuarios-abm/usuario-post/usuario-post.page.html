@@ -7,7 +7,7 @@
             <ion-buttons>
               <ion-back-button defaultHref="/usuarios"></ion-back-button>
             </ion-buttons>
-            <ion-title>Agregar usuario</ion-title>
+            <ion-title>{{formTitle}}</ion-title>
           </ion-row>
         </ion-col>
       </ion-row>
@@ -18,46 +18,144 @@
 <ion-content>
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-md="10">
-        <form #f="ngForm" (ngSubmit)="postUsuario(f)">
-          <ion-row class="ion-justify-content-center">
-            <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
-          </ion-row>
-          <ion-item class="ion-padding-top">
-            <!-- <ion-col> -->
-              <ion-label position="floating">Nombre</ion-label>
-              <ion-input
-                name="username"
-                [ngModel]="usuario.username"
-                required
-              ></ion-input>
-            <!-- </ion-col> -->
-          </ion-item>
-          <ion-item>
-            <!-- <ion-col> -->
-              <ion-label position="floating">Email</ion-label>
-              <ion-input
-                name="email"
-                type="email"
-                [ngModel]="usuario.email"
-                required
-              ></ion-input>
-            <!-- </ion-col> -->
-          </ion-item>
-          <ion-item>
-            <!-- <ion-col> -->
-              <ion-label position="floating">Imagen (url)</ion-label>
-              <ion-input
-                name="img_url"
-                [(ngModel)]="usuario.img_url"
-                required
-              ></ion-input>
-            <!-- </ion-col> -->
-          </ion-item>
-          <ion-button expand="block" type="submit" [disabled]="!f.valid"
-          >Guardar</ion-button
-          >
-        </form>
+      <ion-col size="2" class="ion-hide-md-down ion-padding-top ion-margin-top">
+        <ion-row class="ion-justify-content-center">
+          <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
+        </ion-row>
+      </ion-col>
+      <ion-col size-sm="12" size-md="9" size-lg="7">
+        <ion-row>
+            <form #f="ngForm" (ngSubmit)="postUsuario()">
+              <!-- <ion-row class="ion-justify-content-center">
+                <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
+              </ion-row> -->
+              <ion-row>
+                <h6>Datos del perfil</h6>
+              </ion-row>
+              <ion-row>
+                <ion-col size-md="3" size="12">
+                  <ion-item>
+                      <ion-label position="floating">Nombre</ion-label>
+                      <ion-input
+                        name="name"
+                        [ngModel]="usuario.name"
+                        required
+                      ></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size-md="3" size="12">
+                  <ion-item>
+                      <ion-label position="floating">Apellido</ion-label>
+                      <ion-input
+                        name="last_name"
+                        [ngModel]="usuario.last_name"
+                        required
+                      ></ion-input>
+                  </ion-item>
+    
+                </ion-col>
+                <ion-col size-md="3" size="12">
+                  <ion-item>
+                      <ion-label position="floating">DNI</ion-label>
+                      <ion-input
+                        name="dni"
+                        [ngModel]="usuario.dni"
+                        required
+                      ></ion-input>
+                  </ion-item>
+    
+                </ion-col>
+                <ion-col size-md="3" size="12">
+                  <ion-item>
+                    <ion-label [position]="(usuario.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub</ion-label>
+                    <ion-select #sFotoclub
+                      name="fotoclub_id" 
+                      [value]="usuario.fotoclub_id"
+                      required
+                    >
+                      <ion-select-option 
+                        *ngFor="let f of fotoclubes" 
+                        [value]="f.id"
+                      >{{f.name}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+    
+                </ion-col>
+    
+              </ion-row>
+              <ion-row>
+                <h6>Datos del usuario</h6>
+              </ion-row>
+              <ion-row>
+                <ion-col size-md="3" size="12">
+                  <ion-item>
+                      <ion-label position="floating">Username</ion-label>
+                      <ion-input
+                        name="username"
+                        [ngModel]="usuario.username"
+                        required
+                      ></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size-md="4" size="12">
+                  <ion-item>
+                    <ion-label position="floating">Email</ion-label>
+                    <ion-input
+                      name="email"
+                      type="email"
+                      [ngModel]="usuario.email"
+                      required
+                    ></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size-md="5" size="12">
+                  <ion-item>
+                    <!-- <ion-label [position]="(usuario.rol_id != undefined) ? 'stacked' : 'floating'">Rol</ion-label> -->
+                    <ion-label [position]="'stacked'">Rol</ion-label>
+                      <ion-select #sRol
+                        name="rol_id"
+                        [value]="(usuario.rol_id == undefined) ? 2 : usuario.rol_id"
+                        interface="popover"
+                        [disabled]="!auth.isAdmin()"
+                        required
+                      >
+                        <ion-select-option 
+                          *ngFor="let r of roles" 
+                          [value]="r.id"
+                        >{{r.type}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="9" size-md="12">
+                  <ion-item>
+                    <ion-label position="floating">Imagen (url)</ion-label>
+                    <ion-input
+                      name="img_url"
+                      [(ngModel)]="usuario.img_url"
+                      required
+                    ></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="3" size-md="1" class="ion-align-self-center ion-hide-sm-up">
+                  <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
+                </ion-col>
+              </ion-row>
+    
+              <ion-row class="ion-justify-content-end">
+                <ion-col size="12" >
+                  <ion-row class="ion-justify-content-end">
+                    <ion-back-button text="Cancelar" icon="" defaultHref="/usuarios"></ion-back-button>
+                    <ion-button 
+                      expand="block" type="submit" class="ion-margin-start"
+                      [disabled]="!datosCargados()"
+                    >Guardar</ion-button>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </form>
+        </ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>

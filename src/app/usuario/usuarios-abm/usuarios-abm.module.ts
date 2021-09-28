@@ -21,7 +21,4 @@ import { SharedModule } from 'src/app/shared/shared.module';
   ],
   declarations: [UsuariosAbmPage]
 })
-export class UsuariosAbmPageModule {
-
-
-}
+export class UsuariosAbmPageModule {}

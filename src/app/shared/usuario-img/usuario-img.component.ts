@@ -9,6 +9,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@
 export class UsuarioImgComponent implements OnInit, OnChanges {
 // export class UsuarioImgComponent implements OnInit {
 
+  @Input() tam: number = -1;
   @Input() src: string;
   @ViewChild('img') img: HTMLIonImgElement;
   public yepImg: boolean = true;
@@ -31,6 +32,11 @@ export class UsuarioImgComponent implements OnInit, OnChanges {
   //     this.yepImg = false;
   //   }
   // }
+
+  getSize() {
+    return this.tam == -1 ? '' : 
+      `height: ${this.tam}px; width: ${this.tam}px`
+  }
 
   mostrarIcono(e: any, mostrar: boolean) {
     // console.log('toggle icono', e.target.src)

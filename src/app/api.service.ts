@@ -13,16 +13,59 @@ export class Api {
   private static usuarios: Usuario[] = [
     {
       id: 0,
-      username: 'Admin',
+      username: 'admin',
       email: 'admin@admin',
-      img_url: 'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y'
+      rol_id: 0,
+      img_url: 'https://gravatar.com/avatar/dba6bae8c566d4041fb9cd9ada7741?d=identicon&f=y',
+      name: 'Luis',
+      last_name: 'Lu',
+      dni: "1455123",
+      fotoclub_id: 0
     },
     {
       id: 1,
-      username: 'Admin2',
+      username: 'd1',
+      rol_id: 1,
       email: 'admin2@admin2',
-      img_url: 'kk'
-    }
+      img_url: 'https://gravatar.com/avatar/dba6bae8c566f9ssdd4041fb9cd9ada7741?d=identicon&f=y',
+      name: 'Laura',
+      last_name: 'Lu',
+      dni: "4112321",
+      fotoclub_id: 0
+    },
+    {
+      id: 2,
+      username: 'd2',
+      rol_id: 1,
+      email: 'admin2@admin2',
+      img_url: 'https://gravatar.com/avatar/dba6bae8c12522fb9cd9ada7741?d=identicon&f=y',
+      name: 'Migujel',
+      last_name: 'Lu',
+      dni: "4112321",
+      fotoclub_id: 1
+    },
+    {
+      id: 3,
+      username: 'c1',
+      rol_id: 2,
+      email: 'admin2@admin2',
+      img_url: 'https://gravatar.com/avatar/dba6bae8c566f1424041fb9cd9ada7741?d=identicon&f=y',
+      name: 'Maria',
+      last_name: 'Lu',
+      dni: "4112321",
+      fotoclub_id: 0
+    },
+    {
+      id: 4,
+      username: 'c2',
+      rol_id: 2,
+      email: 'admin2@admin2',
+      img_url: 'https://gravatar.com/avatar/dba6bae8c566f1421452b9cd9ada7741?d=identicon&f=y',
+      name: 'Lucas',
+      last_name: 'Lu',
+      dni: "4112321",
+      fotoclub_id: 1
+    },
   ];
 
   private static concursos: Concurso[] = [
@@ -40,6 +83,36 @@ export class Api {
         "start_date": "1630355013",
         "end_date": "1630355013"
     }
+  ];
+  
+  private static fotoclubes = [
+    {
+      id: 0,
+      name: 'El Portal'
+    },
+    {
+      id: 1,
+      name: 'Olavarria'
+    },
+    {
+      id: 2,
+      name: 'Necochea'
+    },
+  ];
+
+  private static roles = [
+    {
+      id: 0,
+      type: 'Administrador'
+    },
+    {
+      id: 1,
+      type: 'Delegado de fotoclub'
+    },
+    {
+      id: 2,
+      type: 'Concursante'
+    },
   ];
 
 
@@ -65,7 +138,7 @@ export class Api {
     else { // put
       d[d.findIndex(e => obj.id == e.id)] = { ...obj };
     }
-    // console.log(c);
+    // console.log('post', obj);
     return obj.id;
   }
 
@@ -79,6 +152,8 @@ export class Api {
     switch(r) {
       case 'concurso':  return Api.concursos;
       case 'usuario':   return Api.usuarios;
+      case 'fotoclub':  return Api.fotoclubes;
+      case 'rol':       return Api.roles;
       default:          return [];
     }
   }

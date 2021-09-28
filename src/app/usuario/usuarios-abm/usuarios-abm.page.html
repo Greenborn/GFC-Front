@@ -7,6 +7,7 @@
           [atributos]="['username', 'email']"
         ></app-search-bar>
 
+
         <!-- <ion-grid *ngIf="usuariosFiltrados.length > 0; else texto" class="tabla ion-text-center">
           <ion-row>
             <ion-col *ngFor="let p of usuarioProps">{{ p }}</ion-col>
@@ -14,29 +15,36 @@
         </ion-row> -->
         <!-- usuario, email, fotoclub -->
         <ion-grid>
+          <ion-row>
+            <h2>{{titulo}}</h2>
+          </ion-row>
           <ion-row class="ion-hide-md-down">
             <ion-col size="6">Usuario</ion-col>
-            <ion-col size="2">Email</ion-col>
+            <!-- <ion-col size="2">Email</ion-col> -->
+            <ion-col size="2">Rol</ion-col>
             <ion-col size="2">Fotoclub</ion-col>
             <ion-col size="2">Acciones</ion-col>
           </ion-row>
         </ion-grid>
         <ion-list *ngIf="usuarios.length > 0; else texto">
           <ion-item *ngFor="let u of usuarios">
-            <ion-grid>
+            <ion-grid >
               <ion-row size="12">
-                <ion-col size="10" size-md="6">
-                  <ion-item lines="none">
-                    <app-usuario-img
-                      class="ion-float-left ion-margin-end"
-                      [src]="u.img_url"
-                    ></app-usuario-img>
-
-                    <ion-label class="ion-float-left">
-                      <ion-card-subtitle>{{u.username}}</ion-card-subtitle>
-                      <ion-text><b>Leonardo Martinez Martinez</b></ion-text>
-                      <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle>
-                    </ion-label>
+                <ion-col size="12" size-md="6">
+                  <ion-row class="ion-align-items-center ion-justify-content-between">
+                    <ion-item lines="none">
+                      <app-usuario-img
+                        class="ion-float-left ion-margin-end"
+                        [src]="u.img_url"
+                      ></app-usuario-img>
+  
+                      <ion-label class="ion-float-left">
+                        <ion-card-subtitle>{{u.username}}</ion-card-subtitle>
+                        <ion-text><b>{{u.name + ' ' + u.last_name}}</b></ion-text>
+                        <ion-card-subtitle><a [href]="'mailto:'+u.email"> {{ u.email }} </a></ion-card-subtitle>
+                        <ion-card-subtitle>DNI {{u.dni}}</ion-card-subtitle>
+                      </ion-label>
+                    </ion-item>
                     <ion-buttons class="ion-hide-md-up">
                       <ion-button (click)="mostrarAcciones($event, u.id)">
                         <ion-icon
@@ -46,22 +54,67 @@
                         ></ion-icon>
                       </ion-button>
                     </ion-buttons>
-                  </ion-item>
+                    
+                  </ion-row>
+
+                    <!-- </ion-col>
+                    <ion-col size="2" class="ion-hide-md-up"> -->
+                      <!-- <ion-buttons>
+                        <ion-button (click)="mostrarAcciones($event, u.id)">
+                          <ion-icon
+                            slot="icon-only"
+                            ios="ellipsis-horizontal"
+                            md="ellipsis-vertical"
+                          ></ion-icon>
+                        </ion-button>
+                      </ion-buttons> -->
+                    <!-- </ion-col>
+                  </ion-row> -->
+
+                  <!-- <ion-item lines="none">
+                    <app-usuario-img
+                      class="ion-float-left ion-margin-end"
+                      [src]="u.img_url"
+                    ></app-usuario-img>
+
+                    <ion-label class="ion-float-left">
+                      <ion-card-subtitle>{{u.username}}</ion-card-subtitle>
+                      <ion-text><b>{{u.name + ' ' + u.last_name}}</b></ion-text>
+                      <ion-card-subtitle><a [href]="'mailto:'+u.email"> {{ u.email }} </a></ion-card-subtitle>
+                      <ion-card-subtitle>DNI {{u.dni}}</ion-card-subtitle>
+                    </ion-label>
+                  
+                    <ion-buttons class="ion-hide-md-up">
+                      <ion-button (click)="mostrarAcciones($event, u.id)">
+                        <ion-icon
+                          slot="icon-only"
+                          ios="ellipsis-horizontal"
+                          md="ellipsis-vertical"
+                        ></ion-icon>
+                      </ion-button>
+                    </ion-buttons>
+                  </ion-item> -->
                 </ion-col>
                 <ion-col
+                  size="2"
+                  class="ion-hide-md-down ion-align-self-center "
+                >
+                  <ion-text>{{ u.rol_id }}</ion-text>
+                </ion-col>
+                <!-- <ion-col
                   size="2"
                   class="ion-hide-md-down ion-align-self-center"
                 >
                 <a [href]="'mailto:'+u.email"> {{ u.email }} </a>
-                </ion-col>
+                </ion-col> -->
                 <ion-col
                   size="2"
-                  class="ion-hide-md-down ion-align-self-center"
+                  class="ion-hide-md-down ion-align-self-center "
                 >
-                  <ion-text>Los Tulipanes</ion-text>
+                  <ion-text>{{ u.fotoclub_id }}</ion-text>
                 </ion-col>
-                <ion-col size="2" class="ion-align-self-center"> 
-                  <ion-buttons class="ion-hide-md-down">
+                <ion-col size="2" class="ion-align-self-center ion-hide-md-down"> 
+                  <ion-buttons>
                     <ion-button [routerLink]="['editar/' + u.id]">
                       <ion-icon name="create"></ion-icon>
                     </ion-button>

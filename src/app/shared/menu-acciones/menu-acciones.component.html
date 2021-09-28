@@ -10,18 +10,21 @@
 </ion-buttons> -->
 
 <ion-list>  
-  <ion-item (click)="router.navigate(['/usuarios/editar/', id])">
-    <!-- <ion-avatar slot="start"> -->
-      <ion-icon name="create"></ion-icon>
-    <!-- </ion-avatar> -->
+  <ion-item 
+    *ngFor="let a of acciones"
+    (click)="a.accion(a.params)"
+  >
+    <ion-icon [name]="a.icon"></ion-icon>
+    <ion-label class="ion-margin-start">{{a.label}}</ion-label>
+  </ion-item>
+  <!-- <ion-item (click)="router.navigate(['/usuarios/editar/', id])">
+    <ion-icon name="create"></ion-icon>
     <ion-label class="ion-margin-start">Editar</ion-label>
   </ion-item>
   <ion-item (click)="abmPage.deleteUsuario(id)">
-    <!-- <ion-avatar slot="start"> -->
-      <ion-icon name="trash"></ion-icon>
-    <!-- </ion-avatar> -->
+    <ion-icon name="trash"></ion-icon>
     <ion-label class="ion-margin-start">Borrar</ion-label>
-  </ion-item>
+  </ion-item> -->
 
 
 </ion-list>

@@ -14,7 +14,12 @@ export class AuthService {
     id: 0,
     username: 'Admin',
     email: 'admin@admin',
-    img_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfn92Uz0WoedKHZbOdgPrHJKS9lP90htuueQ&usqp=CAU'
+    rol_id: 0,
+    img_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfn92Uz0WoedKHZbOdgPrHJKS9lP90htuueQ&usqp=CAU',
+    name: 'Luis',
+    last_name: 'Lu',
+    dni: "1455123",
+    fotoclub_id: 1
   };
 
   private static setUsuario(u: Usuario) {
@@ -24,13 +29,20 @@ export class AuthService {
   static loggedIn(): boolean {
     return AuthService.usuario != undefined;
   }
+  getUser(): Usuario {
+    return AuthService.getUsuario()
+  }
   loggedIn(): boolean {
     return AuthService.usuario != undefined;
+  }
+  isAdmin(): boolean {
+    return this.loggedIn() && AuthService.getUsuario().rol_id == 0
   }
 
   static async login(username, password): Promise<boolean> {
     // fetch(...)
-    const u = (await (new UsuarioService).getUsuarios()).find(u => u.username == username);
+    const u = (await (new UsuarioService(new AuthService)).getUsuarios()).find(u => u.username == username);
+    // console.log(username, u)
     if (u != undefined) {
       AuthService.setUsuario(u);
       return true;
@@ -47,11 +59,12 @@ export class AuthService {
   static getUsuario(): Usuario {
     // console.log('Get usuario ', UsuarioService.usuario);
     return { ...AuthService.usuario }
-  // getUsuario(): Usuario {
+  // getUser(): Usuario {
     // console.log('Get usuario ', this.usuario);
     // return { ...this.usuario }
   }
 
+  /*
   // async editUsuario(u: Usuario): Promise<boolean> {
     // console.log('editando usuario desde', this.usuario, 'a ', u);
     // this.usuario = { 
@@ -63,5 +76,5 @@ export class AuthService {
     };
     // console.log('Usuario editado ', UsuarioService.usuario);
     return true;
-  }
+  }*/
 }

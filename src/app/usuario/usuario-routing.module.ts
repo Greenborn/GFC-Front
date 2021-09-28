@@ -8,10 +8,10 @@ const routes: Routes = [
     path: '',
     component: UsuarioPage
   },
-  {
-    path: 'editar',
-    loadChildren: () => import('./usuario-edit/usuario-edit.module').then( m => m.UsuarioEditPageModule)
-  }
+  // {
+  //   path: 'editar',
+  //   loadChildren: () => import('./usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
+  // }
 ];
 
 @NgModule({

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Api } from '../api.service';
+import { AuthService } from '../auth/auth.service';
 import { Usuario } from './usuario.model';
 
 @Injectable({
@@ -8,10 +9,17 @@ import { Usuario } from './usuario.model';
 })
 export class UsuarioService {
 
-  constructor() { }
+  constructor(
+    private auth: AuthService
+  ) { }
 
   async getUsuarios(): Promise<Usuario[]> {
-    return Api.getAll('usuario');
+    let usuarios = await Api.getAll('usuario')
+
+    if (this.auth.loggedIn() && !this.auth.isAdmin()) {
+      usuarios = usuarios.filter(u => u.rol_id == 2 && u.fotoclub_id == this.auth.getUser().fotoclub_id)
+    } 
+    return usuarios;
   }
 
   async getUsuario(id: number): Promise<Usuario> {
@@ -31,7 +39,12 @@ export class UsuarioService {
       id: undefined,
       username: undefined,
       email: undefined,
-      img_url: undefined
+      rol_id: undefined,
+      img_url: undefined,
+      name: undefined,
+      last_name: undefined,
+      dni: undefined,
+      fotoclub_id: undefined
     };
   }
 }

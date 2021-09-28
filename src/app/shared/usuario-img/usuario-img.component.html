@@ -3,7 +3,8 @@
     #img
     [src]="src"
     (ionError)="yepImg = false"
-    *ngIf="yepImg==true; else noImg"
+    *ngIf="src != undefined && yepImg==true; else noImg"
+    [style]="getSize()"
     ></ion-img>
     <!-- (ionImgWillLoad)="yepImg = true" -->
     <!-- (ionError)="mostrarIcono($event, true)" -->

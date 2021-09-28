@@ -57,7 +57,8 @@
           <ion-header>
             <ion-toolbar>
               <ion-list>
-                <ion-item [routerLink]="['/perfil/editar']">
+                <ion-item [routerLink]="['/usuarios', 'editar', usuario.id]">
+                <!-- <ion-item [routerLink]="['/perfil', 'editar']"> -->
                   <ion-icon
                     slot="start"
                     ios="person-outline"
