@@ -8,12 +8,14 @@ import { ConcursoDetailPageRoutingModule } from './concurso-detail-routing.modul
 
 import { ConcursoDetailPage } from './concurso-detail.page';
 
+import { SharedModule } from '../../shared/shared.module';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     ConcursoDetailPageRoutingModule,
+    SharedModule 
   ],
   declarations: [ConcursoDetailPage]
 })

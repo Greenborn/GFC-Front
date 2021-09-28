@@ -22,7 +22,7 @@ export class ConcursoDetailPage implements OnInit {
     private router: Router,
     private alertCtrl: AlertController,
     // private loadingCtrl: LoadingController,
-    private auth: AuthService
+    public auth: AuthService
   ) { }
 
   async ngOnInit() {
