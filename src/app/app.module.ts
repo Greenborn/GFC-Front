@@ -8,22 +8,24 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { LoggedInGuard } from './guards/logged-in.guard'
+import { NavbarComponent } from './nav/navbar/navbar.component';
+import { SidebarComponent } from './nav/sidebar/sidebar.component';
 
 //componente de usuarios
 // import { TablaUsuariosComponent } from './tabla-usuarios/tabla-usuarios.component'
 
-import { NavModule } from './nav/nav.module';
-
+// import { NavModule } from './nav/nav.module';
 @NgModule({
   declarations: [
     AppComponent,
+    NavbarComponent,
+    SidebarComponent
   ],
   entryComponents: [],
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    NavModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, LoggedInGuard],
   bootstrap: [AppComponent],
