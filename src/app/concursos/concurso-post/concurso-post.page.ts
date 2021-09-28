@@ -38,9 +38,11 @@ export class ConcursoPostPage implements OnInit {
 
   get formTitle(): string {
     const c = this.concurso;
-    return c == undefined || c.id ? 
-      `Editar concurso ${c != undefined ? c.id : ''}` : 
-      'Crear concurso'
+    return (c.id != null ? 'Editar' : 'Agregar') + ' concurso'
+  }
+  get backUrl(): string {
+    const c = this.concurso 
+    return '/concursos' + (c.id != null ? `/${c.id}` : '')
   }
 
   async postConcurso(f: NgForm) {
