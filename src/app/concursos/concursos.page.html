@@ -16,7 +16,6 @@
 </ion-header> -->
 
 <ion-content>
-
   <ion-fab *ngIf="auth.loggedIn()"
     vertical="bottom"
     horizontal="end"
@@ -33,6 +32,13 @@
     <ion-row >
       
       <ion-col size="12" size-md="7" offset="1">
+        <ion-row class="ion-justify-content-start ion-align-items-center ion-margin-top ion-margin-bottom ion-hide-md-down"  *ngIf="auth.loggedIn()">
+          <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">Concursos</h1>
+          <ion-fab-button [routerLink]="['nuevo']" size="small" 
+          >
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+        </ion-row>
         <!-- <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar> -->
         <!-- <ion-searchbar (ionChange)="buscarConcursos($event.target.value)"></ion-searchbar> -->
 
@@ -67,12 +73,7 @@
             <ion-item>No se encontraron concursos</ion-item>
           </ng-template>
       </ion-col>
-      <!-- filtro y busqueda -->
-
-      <ion-col size="4" class="ion-hide-md-down" *ngIf="auth.loggedIn()">
-        <ion-button [routerLink]="['nuevo']">Nuevo</ion-button>
-      </ion-col>
-      
+      <!-- filtro y busqueda -->      
     </ion-row>
   </ion-grid>
 </ion-content>
