@@ -4,6 +4,7 @@ import { Api } from '../api.service';
 import { Concurso } from '../concursos/concurso.model';
 import { Image } from 'src/app/models/image.model'
 import { ContestResult } from '../models/contest_result.model';
+import { Metric } from '../models/metric.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,28 +12,30 @@ export class ConcursoService {
 
   constructor() { }
 
+  /** contest */
   async getConcursos(): Promise<Concurso[]> {
     return Api.getAll('concurso');
   }
-
   async getConcurso(id: number): Promise<Concurso> {
     return Api.get('concurso', id);
   }
-
   async postConcurso(c: Concurso): Promise<number> {
     return Api.post('concurso', c);
   }
-
   async deleteConcurso(id: number) {
     return Api.delete('concurso', id);
   }
-
+  /** contest result */
   async getContestResults(contest_id: number): Promise<ContestResult[]> {
     return (await Api.getAll('contest-result')).filter(r => r.contest_id == contest_id)
   }
   async postContestResult(r: ContestResult) {
     return Api.post('contest-result', r)
   }
+  async deleteContestResult(id: number) {
+    return Api.delete('contest-result', id)
+  }
+  /** image */
   async getImage(id: number): Promise<Image> {
     return await Api.get('image', id)
   }
@@ -40,9 +43,21 @@ export class ConcursoService {
     return Api.post('image', i)
   }
   async deleteImage(id: number) {
-    return true
+    return Api.delete('image', id)
+  }
+  /** metric */
+  async getMetric(id: number): Promise<Metric> {
+    return Api.get('metric', id)
+  }
+  async postMetric(m: Metric): Promise<number> {
+    return Api.post('metric', m)
+  }
+  async deleteMetric(id: number) {
+    return Api.delete('metric', id)
   }
 
+
+  /** STATIC */
   static concursoTemplate(): Concurso {
     return {
       id: undefined,

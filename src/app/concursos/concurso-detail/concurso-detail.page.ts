@@ -15,6 +15,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { ImageReviewPage } from './image-review/image-review.page';
+import { Metric } from 'src/app/models/metric.model';
 
 @Component({
   selector: 'app-concurso-detail',
@@ -28,6 +29,7 @@ export class ConcursoDetailPage implements OnInit {
   images: Image[] = [];
   profiles: Profile[] = [];
   fotoclubs: Fotoclub[] = [];
+  metrics: Metric[] = [];
   popover: HTMLIonPopoverElement = undefined;
   loading: boolean = true;
 
@@ -71,8 +73,11 @@ export class ConcursoDetailPage implements OnInit {
     const p = this.getProfile(result)
     return this.fotoclubs.find(f => f.id == p.fotoclub_id).name
   }
+  getMetric(result: ContestResult): Metric {
+    return this.metrics.find(i => i.id == result.metric_id)
+  }
 
-  async puntuarImage(i: Image, r: ContestResult) {
+  async reviewImage(i: Image, r: ContestResult) {
     if (this.popover != undefined) {
       this.popoverCtrl.dismiss(this.popover)
       this.popover = undefined
@@ -85,7 +90,8 @@ export class ConcursoDetailPage implements OnInit {
         "concurso": this.concurso.name,
         "modalController": this.modalController,
         "image": i,
-        "contestResult": r
+        "contestResult": r,
+        "review": this.getMetric(r)
       }
     });
     await modal.present()
@@ -93,6 +99,15 @@ export class ConcursoDetailPage implements OnInit {
     const { data } = await modal.onWillDismiss();
 
     console.log('punteado imagen', data)
+    const { metric } = data
+    if (metric != undefined) {
+      const i = this.metrics.findIndex(m => m.id == metric.id)
+      if (i != -1) {
+        this.metrics[i] = metric
+      } else {
+        this.metrics.push(metric)
+      }
+    }
   }
 
   async postImage(i: Image = undefined) {
@@ -140,11 +155,16 @@ export class ConcursoDetailPage implements OnInit {
       const r = this.contestResults.find(r => r.image_id == data.image_id)
       
       if (r == undefined) {
+        const metric_id = await this.contestSvc.postMetric({
+          id: undefined,
+          prize: null,
+          score: null
+        })
         const id = await this.contestSvc.postContestResult({
           id: r != undefined ? r.id : null,
           contest_id: this.concurso.id,
           image_id: data.image_id,
-          metric_id: r != undefined ? r.id : null
+          metric_id
         })
         // console.log('posted contest result', id)
       } 
@@ -184,7 +204,7 @@ export class ConcursoDetailPage implements OnInit {
     await alert.present();
   }
 
-  async deleteFoto(id: number) {
+  async deleteImage(image_id: number, result_id: number, metric_id: number) {
     if (this.popover != undefined) {
       this.popoverCtrl.dismiss(this.popover)
       this.popover = undefined
@@ -199,8 +219,14 @@ export class ConcursoDetailPage implements OnInit {
         }, {
           text: 'Confirmar',
           handler: async () => {
-            await this.contestSvc.deleteImage(id);
-            this.reloadContestResults()
+            await this.contestSvc.deleteImage(image_id);
+            this.images.splice(this.images.findIndex(i => i.id == image_id), 1)
+            await this.contestSvc.deleteContestResult(result_id);
+            this.contestResults.splice(this.contestResults.findIndex(c => c.id == result_id), 1)
+            await this.contestSvc.deleteMetric(metric_id);
+            this.metrics.splice(this.metrics.findIndex(m => m.id == metric_id), 1)
+
+            // this.reloadContestResults()
           }
         }
       ]
@@ -212,6 +238,7 @@ export class ConcursoDetailPage implements OnInit {
     // console.log('reloading contest results')
     this.contestResults = await this.contestSvc.getContestResults(this.concurso.id)
     for (const r of this.contestResults) {
+      this.contestSvc.getMetric(r.metric_id).then(m => this.metrics.push(m))
       const i = await this.contestSvc.getImage(r.image_id)
       if (this.images.find(i => i.id == r.image_id) == undefined) {
         this.images.push(i)
@@ -234,7 +261,7 @@ export class ConcursoDetailPage implements OnInit {
       componentProps: {
         acciones: [
           {
-            accion: (params: []) => this.puntuarImage(i, r),
+            accion: (params: []) => this.reviewImage(i, r),
             params: [],
             icon: 'star-outline',
             label: 'Puntuar'
@@ -246,7 +273,7 @@ export class ConcursoDetailPage implements OnInit {
             label: 'Editar'
           },
           {
-            accion: (params: number[]) => this.deleteFoto(params[0]),
+            accion: (params: number[]) => this.deleteImage(params[0], r.id, r.metric_id),
             params: [r.image_id],
             icon: 'trash',
             label: 'Borrar'

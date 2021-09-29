@@ -94,7 +94,7 @@
                     > Cancelar</ion-button>                    
                     <ion-button 
                       expand="block" type="submit" class="ion-margin-start"
-                      [disabled]="!datosCargados(formImage)"
+                      [disabled]="loading || !datosCargados(formImage)"
                     >Guardar</ion-button>
                   </ion-row>
                 </ion-col>

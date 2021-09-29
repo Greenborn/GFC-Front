@@ -4,6 +4,7 @@ import { Concurso } from './concursos/concurso.model';
 import { ContestResult } from './models/contest_result.model';
 import { Fotoclub } from './models/fotoclub.model';
 import { Image } from './models/image.model';
+import { Metric } from './models/metric.model';
 import { Profile } from './models/profile.model';
 import { Role } from './models/Role.model';
 import { Usuario } from './usuario/usuario.model';
@@ -171,6 +172,14 @@ export class Api {
     }
   ]
 
+  private static metrics: Metric[] = [
+    {
+      id: 0,
+      prize: 'R',
+      score: 8
+    }
+  ]
+
   static async get(recurso: string, id: number): Promise<any> {
      const data = await Api.getAll(recurso);
      return data.find(e => e.id == id)
@@ -212,6 +221,7 @@ export class Api {
       case 'contest-result':      return Api.contestResults;
       case 'image':               return Api.images;
       case 'profile':             return Api.profiles;
+      case 'metric':              return Api.metrics;
       default:                    return [];
     }
   }
