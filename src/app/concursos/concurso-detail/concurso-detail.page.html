@@ -7,7 +7,7 @@
             <ion-buttons>
               <ion-back-button defaultHref="/concursos"></ion-back-button>
             </ion-buttons>
-            <!-- <ion-title>Concurso</ion-title> -->
+            <ion-title>Concurso</ion-title>
           </ion-row>
         </ion-col>
       </ion-row>
@@ -54,17 +54,20 @@
 
         
         <!-- <app-search-bar> </app-search-bar> -->
-        <ion-row class="ion-justify-content-start">
-          <ion-title class="ion-margin-top">Fotografías</ion-title>
-          <ion-fab-button >
+        <ion-row class="ion-justify-content-start ion-align-items-center ion-margin-top ion-margin-bottom ">
+          <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">Fotografías</h1>
+          <ion-fab-button size="small" 
+            (click)="postImage()"
+          >
+          <!-- [routerLink]="['agregar-foto']"   -->
             <ion-icon name="add"></ion-icon>
           </ion-fab-button>
         </ion-row>
      
         <ion-grid >
           <ion-row class="ion-padding-end"> <!-- class="ion-text-center" -->
-            <ion-col size="6" size-md="3"></ion-col>
-            <ion-col class="ion-hide-md-down ion-text-center" size="4"></ion-col>
+            <ion-col size="6" size-md="3" class="">Foto</ion-col>
+            <ion-col class="ion-hide-md-down ion-padding-start" size="4">Concursante</ion-col>
             <ion-col  class="ion-text-center"  size="3" size-md="2">Premio</ion-col>
             <ion-col class="ion-hide-md-down ion-text-center" size="2">Puntaje</ion-col>
             <ion-col class="ion-hide-md-up ion-text-center" size="2">Ptje</ion-col>
@@ -73,27 +76,31 @@
         </ion-grid>
         <ion-list>
           <ion-item class="ion-no-padding">
-            <ion-grid > <!-- class="ion-text-center" -->
-              <ion-row size="12" >
+            <ion-grid *ngIf="!loading"> <!-- class="ion-text-center" -->
+              <ion-row size="12" *ngFor="let r of contestResults">
                 <ion-col size="6" size-md="3" class="ion-align-self-center">
-                  <ion-card-subtitle>TE.2021.9881</ion-card-subtitle>
+                  <ion-card-subtitle>{{ getImage(r).code }}</ion-card-subtitle>
                   <!-- <ion-card-title >Prueba de Riendas</ion-card-title> -->
                   
-                  <ion-text > <b>Prueba de Riendas</b></ion-text>
+                  <ion-text><b>{{ getImage(r).title }}</b></ion-text>
                 </ion-col>
                 <ion-col  class="ion-hide-md-down ion-text-center ion-align-self-center"  size="4">
                   <!-- <ion-text>Martin Martinez  Martinez</ion-text> -->
                <!--    TODO: componente usuario -->
                   <ion-item lines="none">
-                    <app-usuario-img
+                    <!-- <app-usuario-img
                       class="ion-float-left ion-margin-end"
                      
-                    ></app-usuario-img>
+                    ></app-usuario-img> -->
 
-                    <ion-label class="ion-float-left">
-                      <ion-card-subtitle>username</ion-card-subtitle>
-                      <ion-text><b>Leonardo Martinez Martinez</b></ion-text>
-                      <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle>
+                    <!-- <ion-label class="ion-float-left"> -->
+                    <ion-label>
+                      <!-- <ion-card-subtitle>username</ion-card-subtitle> -->
+                      <!-- <ion-card-subtitle><a [href]="'mailto:'+'@'"> lmm@gmail </a></ion-card-subtitle> -->
+                      <!-- <ion-text><b>Perfil id {{ getImage(r).profile_id }}</b></ion-text> -->
+                      <ion-card-subtitle>{{ getFotoclubName(r) }}</ion-card-subtitle>
+                      <ion-text><b>{{ getProfile(r).name + ' ' + getProfile(r).last_name }}</b></ion-text>
+                      <!-- <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle> -->
                     </ion-label>
 
                   </ion-item>
@@ -115,8 +122,8 @@
                     </ion-button>
                   </ion-buttons>
                   <ion-buttons class="ion-hide-lg-up">
-                    <ion-button>
-                      <ion-icon
+                    <ion-button (click)="mostrarAcciones($event, r)">
+                      <ion-icon 
                         slot="icon-only"
                         ios="ellipsis-horizontal"
                         md="ellipsis-vertical"

@@ -1,13 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Usuario } from '../usuario.model';
-import { UsuarioService } from '../usuario.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 import { AlertController, PopoverController } from '@ionic/angular';
 import { NavigationEnd, Router } from '@angular/router';
 import { SearchBarComponentParams } from 'src/app/shared/search-bar/search-bar.component';
 
 import { MenuAccionesComponent } from '../../shared/menu-acciones/menu-acciones.component';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { Role } from 'src/app/models/Role.model';
+import { Fotoclub } from 'src/app/models/fotoclub.model';
+import { FotoclubService } from 'src/app/services/fotoclub.service';
 
 @Component({
   selector: 'app-usuarios-abm',
@@ -17,6 +20,8 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class UsuariosAbmPage implements OnInit {
 
   usuarios: Usuario[] = [];
+  roles: Role[] = [];
+  fotoclubs: Fotoclub[] = [];
   // usuariosFiltrados: Usuario[] = [];
   searchParams: SearchBarComponentParams;
 
@@ -24,7 +29,8 @@ export class UsuariosAbmPage implements OnInit {
   private popover: HTMLIonPopoverElement = undefined;
 
   constructor(
-    private db: UsuarioService,
+    private usuarioSvc: UsuarioService,
+    private fotoclubSvc: FotoclubService,
     private alertCtrl: AlertController,
     private popoverCtrl: PopoverController,
     private router: Router,
@@ -36,6 +42,16 @@ export class UsuariosAbmPage implements OnInit {
     return this.auth.isAdmin() ? 'Miembros' : 
       `Concursantes del fotoclub ${u.fotoclub_id}`
   }
+  getFotoclubName(id: number) {
+    const a = this.fotoclubs
+    return a.find(e => e.id == id).name
+    // return this.usuarioSvc.getFotoclubName(id)
+  }
+  getRoleType(id: number) {
+    const a = this.roles
+    return a.find(e => e.id == id).type
+    // return this.usuarioSvc.getRoleType(id)
+  }
 
   // filtrarUsuarios({ atributo, query }: SearchBarComponentParams) {
   //   this.usuariosFiltrados = this.usuarios.filter(u => u[atributo].substr(0, query.length) == query)
@@ -45,26 +61,19 @@ export class UsuariosAbmPage implements OnInit {
       // console.log('buscando', output)
       let { atributo, query } = output;
       this.searchParams = output;
-      this.usuarios = (await this.db.getUsuarios()).filter(u => u[atributo].substr(0, query.length) == query);
+      this.usuarios = (await this.usuarioSvc.getUsuarios()).filter(u => u[atributo].substr(0, query.length) == query);
     }
   }
   // get usuariosFiltrados() {
   //   const q = this.searchQuery;
   //   return this.usuarios.filter(u => u.username.substr(0, q.length) == q)
   // }
-  get usuarioProps() {
-    return Object.keys(this.usuarios[0]);
-  }
-
-  async dismissPopover() {
-    await this.popover.dismiss();
-    this.popover = undefined;
-  }
 
   async deleteUsuario(id: number) {
 
     if (this.popover != undefined) {
-      this.dismissPopover();
+      this.popoverCtrl.dismiss(this.popover);
+      this.popover = undefined
     }
 
     const alert = await this.alertCtrl.create({
@@ -77,7 +86,7 @@ export class UsuariosAbmPage implements OnInit {
         }, {
           text: 'Confirmar',
           handler: async () => {
-            const r = await this.db.deleteUsuario(id);
+            const r = await this.usuarioSvc.deleteUsuario(id);
             if (r) {
               this.refresh();
             }
@@ -125,13 +134,19 @@ export class UsuariosAbmPage implements OnInit {
     //   // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
     // });
     await this.popover.present();
+
+    
+    this.popover.onDidDismiss().then(_ => this.popover = undefined)
     // const t = this;
     // this.router.events.subscribe() // dismiss popover cuando cambie de ruta
     const s = this.router.events
     .pipe() // .pipe(filter(event => event instanceof NavigationEnd))
     .subscribe(async (e) => {
       if (e instanceof NavigationEnd) {
-        await this.dismissPopover();
+        if (this.popover != undefined) {
+          await this.popoverCtrl.dismiss(this.popover);
+          this.popover = undefined
+        }
         s.unsubscribe();
       }
     });
@@ -139,6 +154,9 @@ export class UsuariosAbmPage implements OnInit {
 
   async ngOnInit() {
     this.refresh();
+    const t = this
+    this.fotoclubSvc.getFotoclubs().then(r => t.fotoclubs = r)
+    this.usuarioSvc.getRoles().then(r => t.roles = r)
   }
 
   async ionViewWillEnter() {
@@ -146,7 +164,7 @@ export class UsuariosAbmPage implements OnInit {
   }
 
   async refresh() {
-    this.usuarios = await this.db.getUsuarios();
+    this.usuarios = await this.usuarioSvc.getUsuarios();
   }
 
   // para implementar busqueda con la api (sobrescribe variable de usuarios)

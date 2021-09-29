@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { Api } from '../api.service';
-import { AuthService } from '../auth/auth.service';
-import { Usuario } from './usuario.model';
+import { AuthService } from './auth/auth.service';
+import { Usuario } from '../usuario/usuario.model';
+import { Fotoclub } from '../models/fotoclub.model';
+import { Role } from '../models/Role.model';
+import { Profile } from '../models/profile.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,5 +49,25 @@ export class UsuarioService {
       dni: undefined,
       fotoclub_id: undefined
     };
+  }
+
+  /** role */
+
+  async getRoles(): Promise<Role[]> {
+    const d = await Api.getAll('role')
+    return d
+  }
+
+
+  /** profile */
+
+  async getProfiles(): Promise<Profile[]> {
+    const d = await Api.getAll('profile')
+    return d
+  }
+
+  async getProfile(id: number): Promise<Profile> {
+    const d = await Api.get('profile', id)
+    return d
   }
 }

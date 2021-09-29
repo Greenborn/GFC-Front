@@ -1,6 +1,11 @@
 import { ApplicationInitStatus, Injectable } from '@angular/core';
 
 import { Concurso } from './concursos/concurso.model';
+import { ContestResult } from './models/contest_result.model';
+import { Fotoclub } from './models/fotoclub.model';
+import { Image } from './models/image.model';
+import { Profile } from './models/profile.model';
+import { Role } from './models/Role.model';
 import { Usuario } from './usuario/usuario.model';
 
 @Injectable({
@@ -13,58 +18,58 @@ export class Api {
   private static usuarios: Usuario[] = [
     {
       id: 0,
+      name: 'Luis',
+      last_name: 'Lu',
+      fotoclub_id: 0,
       username: 'admin',
       email: 'admin@admin',
       rol_id: 0,
       img_url: 'https://gravatar.com/avatar/dba6bae8c566d4041fb9cd9ada7741?d=identicon&f=y',
-      name: 'Luis',
-      last_name: 'Lu',
       dni: "1455123",
-      fotoclub_id: 0
     },
     {
       id: 1,
+      name: 'Laura',
+      last_name: 'Lu',
+      fotoclub_id: 0,
       username: 'd1',
       rol_id: 1,
       email: 'admin2@admin2',
       img_url: 'https://gravatar.com/avatar/dba6bae8c566f9ssdd4041fb9cd9ada7741?d=identicon&f=y',
-      name: 'Laura',
-      last_name: 'Lu',
       dni: "4112321",
-      fotoclub_id: 0
     },
     {
       id: 2,
+      name: 'Migujel',
+      last_name: 'Lu',
+      fotoclub_id: 1,
       username: 'd2',
       rol_id: 1,
       email: 'admin2@admin2',
       img_url: 'https://gravatar.com/avatar/dba6bae8c12522fb9cd9ada7741?d=identicon&f=y',
-      name: 'Migujel',
-      last_name: 'Lu',
       dni: "4112321",
-      fotoclub_id: 1
     },
     {
       id: 3,
+      name: 'Maria',
+      last_name: 'Lu',
+      fotoclub_id: 0,
       username: 'c1',
       rol_id: 2,
       email: 'admin2@admin2',
       img_url: 'https://gravatar.com/avatar/dba6bae8c566f1424041fb9cd9ada7741?d=identicon&f=y',
-      name: 'Maria',
-      last_name: 'Lu',
       dni: "4112321",
-      fotoclub_id: 0
     },
     {
       id: 4,
+      name: 'Lucas',
+      last_name: 'Lu',
+      fotoclub_id: 1,
       username: 'c2',
       rol_id: 2,
       email: 'admin2@admin2',
       img_url: 'https://gravatar.com/avatar/dba6bae8c566f1421452b9cd9ada7741?d=identicon&f=y',
-      name: 'Lucas',
-      last_name: 'Lu',
       dni: "4112321",
-      fotoclub_id: 1
     },
   ];
 
@@ -85,7 +90,7 @@ export class Api {
     }
   ];
   
-  private static fotoclubes = [
+  private static fotoclubes: Fotoclub[] = [
     {
       id: 0,
       name: 'El Portal'
@@ -100,14 +105,14 @@ export class Api {
     },
   ];
 
-  private static roles = [
+  private static roles: Role[] = [
     {
       id: 0,
       type: 'Administrador'
     },
     {
       id: 1,
-      type: 'Delegado de fotoclub'
+      type: 'Delegado'
     },
     {
       id: 2,
@@ -115,6 +120,56 @@ export class Api {
     },
   ];
 
+  private static contestResults: ContestResult[] = [
+    {
+      id: 0,
+      metric_id: 0,
+      image_id: 0,
+      contest_id: 1
+    }
+  ];
+
+  private static images: Image[]= [
+    {
+      id: 0,
+      code: 'TE.2021.9881',
+      title: 'Prueba de Riendas',
+      profile_id: 0
+    }
+  ]
+
+  private static profiles: Profile[] = [
+    {
+      id: 0,
+      name: 'Luis',
+      last_name: 'Lu',
+      fotoclub_id: 0,
+    },
+    {
+      id: 1,
+      name: 'Laura',
+      last_name: 'Lu',
+      fotoclub_id: 0,
+    },
+    {
+      id: 2,
+      name: 'Migujel',
+      last_name: 'Lu',
+      fotoclub_id: 1,
+    },
+    {
+      id: 3,
+      name: 'Maria',
+      last_name: 'Lu',
+      fotoclub_id: 0,
+    },
+    {
+      id: 4,
+      name: 'Lucas',
+      last_name: 'Lu',
+      fotoclub_id: 1,
+    }
+  ]
 
   static async get(recurso: string, id: number): Promise<any> {
      const data = await Api.getAll(recurso);
@@ -150,11 +205,14 @@ export class Api {
 
   private static getRecursoData(r: string): any[] {
     switch(r) {
-      case 'concurso':  return Api.concursos;
-      case 'usuario':   return Api.usuarios;
-      case 'fotoclub':  return Api.fotoclubes;
-      case 'rol':       return Api.roles;
-      default:          return [];
+      case 'concurso':            return Api.concursos;
+      case 'usuario':             return Api.usuarios;
+      case 'fotoclub':            return Api.fotoclubes;
+      case 'role':                return Api.roles;
+      case 'contest-result':      return Api.contestResults;
+      case 'image':               return Api.images;
+      case 'profile':             return Api.profiles;
+      default:                    return [];
     }
   }
 

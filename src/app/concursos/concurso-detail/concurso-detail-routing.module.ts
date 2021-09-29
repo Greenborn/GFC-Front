@@ -7,7 +7,18 @@ const routes: Routes = [
   {
     path: '',
     component: ConcursoDetailPage
+  },
+  {
+    path: 'agregar-foto',
+    loadChildren: () => import('./image-post/image-post.module').then( m => m.ImagePostPageModule),
+    pathMatch: 'full'
+  },
+  {
+    path: 'image-review',
+    loadChildren: () => import('./image-review/image-review.module').then( m => m.ImageReviewPageModule)
   }
+
+
 ];
 
 @NgModule({

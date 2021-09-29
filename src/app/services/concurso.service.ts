@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { Api } from '../api.service';
-import { Concurso } from './concurso.model';
-
+import { Concurso } from '../concursos/concurso.model';
+import { Image } from 'src/app/models/image.model'
+import { ContestResult } from '../models/contest_result.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -24,6 +25,22 @@ export class ConcursoService {
 
   async deleteConcurso(id: number) {
     return Api.delete('concurso', id);
+  }
+
+  async getContestResults(contest_id: number): Promise<ContestResult[]> {
+    return (await Api.getAll('contest-result')).filter(r => r.contest_id == contest_id)
+  }
+  async postContestResult(r: ContestResult) {
+    return Api.post('contest-result', r)
+  }
+  async getImage(id: number): Promise<Image> {
+    return await Api.get('image', id)
+  }
+  async postImage(i: Image): Promise<number> {
+    return Api.post('image', i)
+  }
+  async deleteImage(id: number) {
+    return true
   }
 
   static concursoTemplate(): Concurso {

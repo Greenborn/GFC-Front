@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-import { UsuarioService } from '../../usuario.service';
+import { UsuarioService } from '../../../services/usuario.service';
 import { Usuario } from '../../usuario.model';
 import { Api } from 'src/app/api.service';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-usuario-post',

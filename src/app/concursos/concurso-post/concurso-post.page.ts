@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-import { ConcursoService } from '../concurso.service';
+import { ConcursoService } from '../../services/concurso.service';
 import { Concurso } from '../concurso.model';
 
 @Component({

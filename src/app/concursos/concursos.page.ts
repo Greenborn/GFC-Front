@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-import { ConcursoService } from './concurso.service';
+import { ConcursoService } from '../services/concurso.service';
 import { Concurso } from './concurso.model';
 import { NotificacionesPage } from '../notificaciones/notificaciones.page';
 import { UsuarioPage } from '../usuario/usuario.page';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../services/auth/auth.service';
 import { SearchBarComponentAtributo, SearchBarComponentParams } from '../shared/search-bar/search-bar.component';
 
 @Component({
