@@ -35,7 +35,9 @@ export class ImagePostPage implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.loading = true
     this.profiles = await this.userSvc.getProfiles()
+    this.loading = false
   }
 
   async postImage(f: NgForm) {

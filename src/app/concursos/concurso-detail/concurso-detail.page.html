@@ -193,7 +193,10 @@
               <ion-row class="ion-padding-end">
                 <!-- class="ion-text-center" -->
                 <ion-col size="6" size-md="3" class="">Obra</ion-col>
-                <ion-col class="ion-hide-md-down ion-padding-start" size="4"
+                <ion-col
+                  class="ion-hide-md-down ion-padding-start"
+                  size="4"
+                  size-md="3"
                   >Autor</ion-col
                 >
                 <ion-col class="ion-text-center" size="3" size-md="2"
@@ -205,7 +208,7 @@
                 <ion-col class="ion-hide-md-up ion-text-center" size="2"
                   >Ptje</ion-col
                 >
-                <ion-col size="1"></ion-col>
+                <ion-col size="2"></ion-col>
               </ion-row>
             </ion-grid>
             <ion-list>
@@ -228,6 +231,7 @@
                         ion-hide-md-down ion-text-center ion-align-self-center
                       "
                       size="4"
+                      size-md="3"
                     >
                       <!-- <ion-text>Martin Martinez  Martinez</ion-text> -->
                       <!--    TODO: componente usuario -->
@@ -260,21 +264,26 @@
                       size="3"
                       size-md="2"
                     >
-                      <ion-text>R</ion-text>
+                      <ion-text>{{ getMetric(r).prize }}</ion-text>
                     </ion-col>
                     <ion-col
                       class="ion-text-center ion-align-self-center"
                       size="2"
                     >
-                      <ion-text>-</ion-text>
+                      <ion-text>{{ getMetric(r).score }}</ion-text>
                     </ion-col>
 
-                    <ion-col size="1" class="ion-align-self-center">
-                      <ion-buttons class="ion-hide-lg-down">
-                        <ion-button>
+                    <ion-col size="1" size-md="2" class="ion-align-self-center">
+                      <ion-buttons
+                        class="ion-hide-lg-down ion-justify-content-end"
+                      >
+                        <ion-button (click)="reviewImage(getImage(r), r)">
+                          <ion-icon name="star-outline"></ion-icon>
+                        </ion-button>
+                        <ion-button (click)="postImage(getImage(r))">
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
-                        <ion-button>
+                        <ion-button (click)="deleteImage(r.image_id, r.contest_id, r.metric_id )">
                           <ion-icon name="trash"></ion-icon>
                         </ion-button>
                       </ion-buttons>

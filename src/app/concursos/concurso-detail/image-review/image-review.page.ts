@@ -4,6 +4,8 @@ import { NgForm } from '@angular/forms';
 
 import { Image } from 'src/app/models/image.model';
 import { ContestResult } from 'src/app/models/contest_result.model';
+import { Metric } from 'src/app/models/metric.model';
+import { ConcursoService } from 'src/app/services/concurso.service';
 
 @Component({
   selector: 'app-image-review',
@@ -15,6 +17,7 @@ export class ImageReviewPage implements OnInit {
   @Input() concurso: string;
   @Input() modalController: ModalController;
   @Input() image: Image;
+  @Input() review: Metric;
   // = {
   //   id: null,
   //   title: undefined,
@@ -25,20 +28,30 @@ export class ImageReviewPage implements OnInit {
   
   // @ViewChild('formReview') formReview: HTMLFormElement;
   
-  constructor() { }
+  constructor(
+    private contestSvc: ConcursoService
+  ) { }
 
   ngOnInit() {
   }
 
   async postReview(f: NgForm) {
-    console.log('posting review', f.valid, f.value, 'de', this.contestResult.contest_id)
-    this.dismiss()
+    if (f.valid) {
+      const metric = {
+        id: this.review.id,
+        ...f.value
+      }
+      console.log('posting review', metric, 'de', this.contestResult.contest_id)
+      await this.contestSvc.postMetric(metric)
+      this.dismiss(metric)
+    }
   }
 
-  dismiss() {
+  dismiss(metric: Metric = undefined) {
     // using the injected ModalController this page
     // can "dismiss" itself and optionally pass back data
     this.modalController.dismiss({
+      metric
       // 'image_id': id
     });
   }
