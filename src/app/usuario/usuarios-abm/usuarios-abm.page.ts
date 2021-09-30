@@ -19,6 +19,7 @@ import { FotoclubService } from 'src/app/services/fotoclub.service';
 })
 export class UsuariosAbmPage implements OnInit {
 
+  mostrarFiltro: boolean = false;
   usuarios: Usuario[] = [];
   roles: Role[] = [];
   fotoclubs: Fotoclub[] = [];
@@ -37,6 +38,10 @@ export class UsuariosAbmPage implements OnInit {
     private auth: AuthService
   ) { }
 
+  toggleFiltro() {
+    this.mostrarFiltro = !this.mostrarFiltro;
+  }
+  
   get titulo() {
     const u = this.auth.getUser()
     return this.auth.isAdmin() ? 'Miembros' : 

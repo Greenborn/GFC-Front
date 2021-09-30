@@ -16,6 +16,8 @@ import { SearchBarComponentAtributo, SearchBarComponentParams } from '../shared/
 })
 export class ConcursosPage implements OnInit {
 
+  markChip: boolean = false;
+  mostrarFiltro: boolean = false;
   public concursos: Concurso[] = [];
   public searchParams: SearchBarComponentParams;
   public atributosBusqueda: SearchBarComponentAtributo[] = [
@@ -48,7 +50,14 @@ export class ConcursosPage implements OnInit {
       });
     }
   }
+  toggleChipMark() {
+    this.markChip = !this.markChip;
+  }
 
+  toggleFiltro() {
+    this.mostrarFiltro = !this.mostrarFiltro;
+  }
+  
   async ngOnInit() {
     this.concursos = await this.db.getConcursos()
   }

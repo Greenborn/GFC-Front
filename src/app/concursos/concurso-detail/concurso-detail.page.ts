@@ -23,6 +23,7 @@ import { ImageReviewPage } from './image-review/image-review.page';
 })
 export class ConcursoDetailPage implements OnInit {
 
+  mostrarFiltro: boolean = false;
   concurso: Concurso;
   contestResults: ContestResult[] = [];
   images: Image[] = [];
@@ -58,6 +59,10 @@ export class ConcursoDetailPage implements OnInit {
       // loading.dismiss();
       this.loading = false
     })
+  }
+
+  toggleFiltro() {
+    this.mostrarFiltro = !this.mostrarFiltro;
   }
 
   getImage(result): Image {
