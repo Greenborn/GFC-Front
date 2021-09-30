@@ -116,7 +116,7 @@
                         name="rol_id"
                         [value]="(usuario.rol_id == undefined) ? 2 : usuario.rol_id"
                         interface="popover"
-                        [disabled]="!auth.isAdmin()"
+                        [disabled]="!userIsAdmin()"
                         required
                       >
                         <ion-select-option 

@@ -16,7 +16,7 @@
 </ion-header> -->
 
 <ion-content>
-  <ion-fab *ngIf="auth.loggedIn()"
+  <ion-fab *ngIf="isLogedIn()"
     vertical="bottom"
     horizontal="end"
     slot="fixed"
@@ -32,7 +32,7 @@
     <ion-row >
       
       <ion-col size="12" size-md="7" offset="1">
-        <ion-row class="ion-justify-content-start ion-align-items-center ion-margin-top ion-margin-bottom ion-hide-md-down"  *ngIf="auth.loggedIn()">
+        <ion-row class="ion-justify-content-start ion-align-items-center ion-margin-top ion-margin-bottom ion-hide-md-down"  *ngIf="isLogedIn()">
           <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">Concursos</h1>
           <ion-fab-button [routerLink]="['nuevo']" size="small" 
           >
