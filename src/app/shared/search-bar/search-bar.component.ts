@@ -32,7 +32,7 @@ export class SearchBarComponent implements OnInit {
     }
   }
 
-  get atributosPasados() {
+  get atributosPasados():Array<any> {
     return this.atributos != undefined ? this.atributos : this.atributosObj;
   }
 
