@@ -6,7 +6,7 @@ import { Fotoclub } from './models/fotoclub.model';
 import { Image } from './models/image.model';
 import { Metric } from './models/metric.model';
 import { Profile } from './models/profile.model';
-import { Role } from './models/Role.model';
+import { Role } from './models/role.model';
 import { Usuario } from './usuario/usuario.model';
 
 @Injectable({
