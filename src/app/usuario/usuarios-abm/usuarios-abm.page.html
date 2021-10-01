@@ -157,24 +157,30 @@
                     class="ion-align-items-center ion-justify-content-between"
                   >
                     <!-- <ion-item lines="none"> -->
-                    <ion-row class="ion-justify-content-between">
+                    <!-- <ion-row class="ion-justify-content-between"> -->
                       <!-- class="ion-float-left ion-margin-end" -->
-                      <app-usuario-img [src]="u.img_url"></app-usuario-img>
+                      <ion-col size="3" size-md="2">
+                        <app-usuario-img [src]="u.img_url"></app-usuario-img>
 
-                      <!-- class="ion-float-left"> -->
-                      <ion-label class="ion-margin-start">
-                        <ion-card-subtitle title="Username">{{u.username}}</ion-card-subtitle>
-                        <ion-text title="Nombre"
-                          ><b>{{u.name + ' ' + u.last_name}}</b></ion-text
-                        >
-                        <ion-card-subtitle title="e-mail"
-                          ><a [href]="'mailto:'+u.email">
-                            {{ u.email }}
-                          </a></ion-card-subtitle
-                        >
-                        <ion-card-subtitle title="DNI">DNI {{u.dni}}</ion-card-subtitle>
-                      </ion-label>
-                    </ion-row>
+                      </ion-col>
+                      <ion-col size-md="10">
+                        <!-- class="ion-float-left"> -->
+                        <ion-label class="ion-margin-start">
+                          <ion-card-subtitle title="Username">{{u.username}}</ion-card-subtitle>
+                          <ion-text title="Nombre"
+                            ><b>{{u.name + ' ' + u.last_name}}</b></ion-text
+                          >
+                          <ion-card-subtitle title="e-mail"
+                            ><a [href]="'mailto:'+u.email">
+                              {{ u.email }}
+                            </a></ion-card-subtitle
+                          >
+                          <ion-card-subtitle title="DNI">DNI {{u.dni}}</ion-card-subtitle>
+                        </ion-label>
+
+                      </ion-col>
+
+                    <!-- </ion-row> -->
                     <!-- </ion-item> -->
                     <ion-buttons class="ion-hide-md-up">
                       <ion-button (click)="mostrarAcciones($event, u.id)">
