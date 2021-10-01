@@ -30,6 +30,10 @@ export class UsuarioPostPage implements OnInit {
     private auth: AuthService
   ) { }
 
+  userIsAdmin(){ //agregado para evitar error de que auth no es publico
+    return this.auth.isAdmin();
+  }
+
   get formTitle(): string {
     const u = this.auth.getUser()
     const c = this.usuario;

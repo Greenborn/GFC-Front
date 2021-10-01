@@ -8,7 +8,7 @@ import { SearchBarComponentParams } from 'src/app/shared/search-bar/search-bar.c
 
 import { MenuAccionesComponent } from '../../shared/menu-acciones/menu-acciones.component';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { Role } from 'src/app/models/Role.model';
+import { Role } from 'src/app/models/role.model';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
 

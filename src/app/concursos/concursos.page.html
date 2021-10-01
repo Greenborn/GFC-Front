@@ -16,8 +16,7 @@
 </ion-header> -->
 
 <ion-content>
-  <ion-fab
-    *ngIf="auth.loggedIn()"
+  <ion-fab *ngIf="isLogedIn()"
     vertical="bottom"
     horizontal="end"
     slot="fixed"
@@ -34,6 +33,7 @@
         <ion-col>
           <ion-title class="ion-margin-top">Búsqueda</ion-title>
 
+<<<<<<< HEAD
           <ion-list>
             <ion-radio-group value="biff">
               <ion-list-header>
@@ -99,7 +99,7 @@
                 ion-margin-bottom
                 ion-hide-md-down
               "
-              *ngIf="auth.loggedIn()"
+              *ngIf="isLogedIn()"
             >
               <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
                 Concursos

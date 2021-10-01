@@ -17,4 +17,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {}
 
+  isLoggedIn(){ //agregado para no tener error al querer usar la funcion de auth desde la vista
+    return this.auth.loggedIn;
+  }
 }
