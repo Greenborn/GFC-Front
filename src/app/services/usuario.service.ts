@@ -4,7 +4,7 @@ import { Api } from '../api.service';
 import { AuthService } from './auth/auth.service';
 import { Usuario } from '../usuario/usuario.model';
 import { Fotoclub } from '../models/fotoclub.model';
-import { Role } from '../models/Role.model';
+import { Role } from '../models/role.model';
 import { Profile } from '../models/profile.model';
 
 @Injectable({

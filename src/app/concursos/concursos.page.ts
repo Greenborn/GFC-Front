@@ -29,8 +29,12 @@ export class ConcursosPage implements OnInit {
     private db: ConcursoService,
     public popoverController: PopoverController,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService  
   ) { }
+
+  isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
+    return this.auth.loggedIn();
+  }
 
   // get concursosFiltrados(): Concurso[] {
   //   const q = this.searchQuery;
