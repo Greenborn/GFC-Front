@@ -25,14 +25,14 @@
             >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
           >
         </ion-col>
-        <ion-col *ngIf="auth.loggedIn()" class="ion-align-self-end">
+        <ion-col *ngIf="isLogedIn()" class="ion-align-self-end">
           <!-- <ion-buttons slot="end"> -->
           <ion-button class="ion-float-right" (click)="deleteConcurso()">
             <ion-icon name="trash"></ion-icon>
           </ion-button>
           <ion-button
             class="ion-float-right"
-            *ngIf="auth.loggedIn()"
+            *ngIf="isLogedIn()"
             [routerLink]="['/concursos/editar/'+concurso.id]"
           >
             <ion-icon name="create"></ion-icon>
@@ -214,7 +214,8 @@
             </ion-grid>
             <ion-list>
               <ion-item class="ion-no-padding">
-                <ion-grid *ngIf="!loading">
+                <!-- <ion-grid *ngIf="!loading"> -->
+                <ion-grid>
                   <!-- class="ion-text-center" -->
                   <ion-row size="12" *ngFor="let r of contestResults">
                     <ion-col size="6" size-md="3" class="ion-align-self-center">
@@ -252,8 +253,7 @@
                           >
                           <ion-text title="Autor de la obra"
                             ><b
-                              >{{ getProfile(r).name + ' ' +
-                              getProfile(r).last_name }}</b
+                              >{{ (getProfile(r).name ?? '') + ' ' + (getProfile(r).last_name ?? '') }}</b
                             ></ion-text
                           >
                           <!-- <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle> -->
@@ -274,7 +274,7 @@
                       <ion-text>{{ getMetric(r).score }}</ion-text>
                     </ion-col>
 
-                    <ion-col size="1" size-md="2" class="ion-align-self-center">
+                    <ion-col size="1" size-md="2" class="ion-align-self-center" *ngIf="getImage(r).title != undefined">
                       <ion-buttons
                         class="ion-hide-lg-down ion-justify-content-end"
                       >
@@ -284,7 +284,7 @@
                         <ion-button (click)="postImage(getImage(r))">
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
-                        <ion-button (click)="deleteImage(r.image_id, r.contest_id, r.metric_id )">
+                        <ion-button (click)="deleteImage(r.image_id, r.id, r.metric_id)">
                           <ion-icon name="trash"></ion-icon>
                         </ion-button>
                       </ion-buttons>

@@ -1,6 +1,6 @@
 export interface ContestResult {
-    id: number;
+    id?: number;
     contest_id: number;
     image_id: number;
-    metric_id?: number;
+    metric_id: number;
 }

@@ -7,16 +7,16 @@
     <ion-title class="ion-hide-md-down ion-no-padding">Grupo Fotográfico Centro</ion-title>
   </ion-buttons>
   <!-- <ion-title slot="start">Icono Page</ion-title> -->
-  <ion-buttons slot="secondary" class="ion-hide-md-down ion-padding-start"> <!-- up para PC -->
+  <ion-buttons slot="secondary" class="ion-hide-md-down ion-padding-start" *ngIf="isLoggedIn()"> <!-- up para PC -->
     <!-- <ion-button [routerLink]="['/']"> Home </ion-button> -->
     <!-- <ion-button> Reglamento </ion-button> -->
     <ion-button [routerLink]="['/concursos']"> Concursos </ion-button>
     <!-- <ion-button> Galería </ion-button> -->
-    <ion-button [routerLink]="['/usuarios']" *ngIf="auth.loggedIn()">
+    <ion-button [routerLink]="['/usuarios']" >
       Usuarios
     </ion-button>
   </ion-buttons>
-  <ion-buttons slot="secondary" *ngIf="auth.loggedIn(); else login">
+  <ion-buttons slot="secondary" *ngIf="isLoggedIn(); else login">
     <!-- <ion-button (click)="mostrarNotificaciones($event)">
       <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
     </ion-button> -->

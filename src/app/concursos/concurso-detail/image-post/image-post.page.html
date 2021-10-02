@@ -6,7 +6,7 @@
       <ion-button (click)="dismiss()" fill="clear" class="">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
-      <h5 class="ion-text-wrap">Agregar image a {{ concurso }}</h5>
+      <h5 class="ion-text-wrap">{{ formTitle }}</h5>
     </ion-row>
   </ion-toolbar>
 </ion-header>
@@ -23,7 +23,7 @@
       </ion-col> -->
       <ion-col size-sm="12" size-md="10" class="">
         <ion-row >
-            <form #formImage="ngForm" (ngSubmit)="postImage(formImage)">
+            <!-- <form #formImage="ngForm" (ngSubmit)="postImage(formImage)"> -->
               <!-- <ion-row class="ion-justify-content-center">
                 <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
               </ion-row> -->
@@ -38,9 +38,8 @@
                     <ion-item class="w-100 ion-margin-bottom">
                         <ion-label position="floating">Titulo</ion-label>
                         <ion-input
-                          name="title"
-                          [ngModel]="image.title"
-                          required
+                          [(ngModel)]="image.title"
+                           ngDefaultControl 
                         ></ion-input>
                     </ion-item>
                   <!-- </ion-col> -->
@@ -48,9 +47,8 @@
                     <ion-item class="w-100 ion-margin-bottom">
                         <ion-label position="floating">Código</ion-label>
                         <ion-input
-                          name="code"
-                          [ngModel]="image.code"
-                          required
+                          [(ngModel)]="image.code"
+                           ngDefaultControl 
                         ></ion-input>
                     </ion-item>
                   <!-- </ion-col> -->
@@ -58,10 +56,10 @@
                     <ion-item class="w-100 ion-margin-bottom">
                       <ion-label [position]="(image.profile_id != undefined) ? 'stacked' : 'floating'">Concursante</ion-label>
                       <ion-select #s
-                        name="profile_id" 
-                        [value]="image.profile_id"
-                        required
-                      >
+                        [(ngModel)]="image.profile_id"
+                        ngDefaultControl 
+                        >
+                        <!-- [(value)]="image.profile_id" -->
                         <ion-select-option 
                           *ngFor="let p of profiles" 
                           [value]="p.id"
@@ -91,15 +89,19 @@
                 <ion-col size="12" >
                   <ion-row class="ion-justify-content-end">
                     <ion-button (click)="dismiss()" fill="clear" class="ion-margin-start"
-                    > Cancelar</ion-button>                    
-                    <ion-button 
-                      expand="block" type="submit" class="ion-margin-start"
-                      [disabled]="loading || !datosCargados(formImage)"
-                    >Guardar</ion-button>
+                    > Cancelar</ion-button>
+
+                    <ion-button expand="block" type="submit" class="ion-margin-start"
+                      (click)="postImage()"
+                      [disabled]="!datosCargados()"
+                    >
+                      <ion-spinner *ngIf="posting" class="ion-margin-end" size="small"></ion-spinner>
+                      Guardar
+                    </ion-button>
                   </ion-row>
                 </ion-col>
               </ion-row>
-            </form>
+            <!-- </form> -->
         </ion-row>
       </ion-col>
     </ion-row>

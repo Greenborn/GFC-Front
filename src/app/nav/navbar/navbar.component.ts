@@ -6,8 +6,7 @@ import { PopoverController } from '@ionic/angular';
 import { UsuarioPage } from '../../usuario/usuario.page';
 import { NotificacionesPage } from '../../notificaciones/notificaciones.page';
 import { NavigationEnd, Router } from '@angular/router';
-
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,10 +19,14 @@ export class NavbarComponent implements OnInit {
     private menu: MenuController,
     public popoverController: PopoverController,
     private router: Router,
-    public auth: AuthService //lo puse público!
+    private auth: AuthService //lo puse público!
     ) { }
 
   ngOnInit() {}
+
+  isLoggedIn(){ //agregado para no tener error al querer usar la funcion de auth desde la vista
+    return this.auth.loggedIn;
+  }
 
   async openPopover( ev:any, ctrl: any, url: string ){
     if (window.innerWidth > 767) {

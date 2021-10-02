@@ -81,13 +81,16 @@
                   size="12"
                   size-sm="3"
                   class="ion-align-self-center"
-                  ><ion-button
+                >
+                  <ion-button
                     expand="block"
                     type="submit"
                     [disabled]="!f.valid"
-                    >Guardar</ion-button
-                  ></ion-col
-                >
+                    >
+                      <ion-spinner *ngIf="posting" class="ion-margin-end" size="small"></ion-spinner>
+                      Guardar
+                    </ion-button>
+                </ion-col>
 
                 <ion-col
                   class="ion-align-self-center"

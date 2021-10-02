@@ -5,12 +5,14 @@
     </ion-toolbar>
   </ion-header> -->
   <ion-content>
-    <ion-list>
+    <!-- <ion-list *ngIf="auth.loggedIn"> -->
+    <ion-list *ngIf="isLoggedIn()">
       <!-- <ion-item>Home</ion-item> -->
       <!-- <ion-item>Reglamento</ion-item> -->
       <ion-item [routerLink]="['/concursos']">Concursos</ion-item>
       <!-- <ion-item>Galería</ion-item> -->
-      <ion-item [routerLink]="['/usuarios']" *ngIf="isLoggedIn()">Usuarios</ion-item>
+      <!-- <ion-item [routerLink]="['/usuarios']" *ngIf="isLoggedIn()">Usuarios</ion-item> -->
+      <ion-item [routerLink]="['/usuarios']">Usuarios</ion-item>
     </ion-list>
   </ion-content>
 </ion-menu>

@@ -1,20 +1,21 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Api } from '../api.service';
 import { Fotoclub } from '../models/fotoclub.model';
+import { ApiService } from './api.service';
+import { ConfigService } from './config/config.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FotoclubService {
+export class FotoclubService extends ApiService<Fotoclub> {
 
-  constructor() { }
-
-  async getFotoclubs(): Promise<Fotoclub[]> {
-    const d = await Api.getAll('fotoclub')
-    return d
-  }
-  async getFotoclub(id: number): Promise<Fotoclub> {
-    const f = await Api.get('fotoclub', id)
-    return f
-  }
+  constructor(
+    http: HttpClient,
+    config: ConfigService
+  ) {
+    super('fotoclub', http, config, {
+      id: undefined,
+      name: undefined
+    })
+   }
 }

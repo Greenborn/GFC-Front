@@ -148,8 +148,8 @@
           </ion-row>
         </ion-grid>
 
-        <ion-list *ngIf="usuarios.length > 0; else texto">
-          <ion-item *ngFor="let u of usuarios">
+        <ion-list *ngIf="usuariosFiltrados.length > 0; else texto">
+          <ion-item *ngFor="let u of usuariosFiltrados">
             <ion-grid>
               <ion-row size="12">
                 <ion-col size="12" size-md="6">
@@ -168,14 +168,14 @@
                         <ion-label class="ion-margin-start">
                           <ion-card-subtitle title="Username">{{u.username}}</ion-card-subtitle>
                           <ion-text title="Nombre"
-                            ><b>{{u.name + ' ' + u.last_name}}</b></ion-text
+                            ><b>{{getFullName(u.profile_id)}}</b></ion-text
                           >
-                          <ion-card-subtitle title="e-mail"
+                          <!-- <ion-card-subtitle title="e-mail"
                             ><a [href]="'mailto:'+u.email">
                               {{ u.email }}
                             </a></ion-card-subtitle
-                          >
-                          <ion-card-subtitle title="DNI">DNI {{u.dni}}</ion-card-subtitle>
+                          > -->
+                          <!-- <ion-card-subtitle title="DNI">DNI {{u.dni}}</ion-card-subtitle> -->
                         </ion-label>
 
                       </ion-col>
@@ -236,7 +236,7 @@
                   class="ion-hide-md-down ion-align-self-center"
                 >
                   <!-- <ion-text>{{ u.rol_id }}</ion-text> -->
-                  <ion-text>{{ getRoleType(u.rol_id) }}</ion-text>
+                  <ion-text>{{ getRoleType(u.role_id) }}</ion-text>
                   <!-- <ion-text>{{ db.getRoleType(u.rol_id) }}</ion-text> -->
                 </ion-col>
                 <!-- <ion-col
@@ -250,7 +250,7 @@
                   class="ion-hide-md-down ion-align-self-center"
                 >
                   <!-- <ion-text>{{  u.fotoclub_id }}</ion-text> -->
-                  <ion-text>{{ getFotoclubName(u.fotoclub_id) }}</ion-text>
+                  <ion-text>{{  getFotoclubName(u.profile_id) }}</ion-text>
                   <!-- <ion-text>{{ db.getFotoclubName(u.fotoclub_id) }}</ion-text> -->
                 </ion-col>
                 <ion-col
@@ -270,11 +270,12 @@
             </ion-grid>
           </ion-item>
         </ion-list>
-        <ng-template #texto>
-          <ion-item *ngIf="searchParams != undefined"
-            >No hay usuarios con {{searchParams.atributo}} que empiece con '{{
-            searchParams.query }}'</ion-item
-          >
+        <ng-template #texto >
+          <ion-item>
+            <ion-spinner *ngIf="loading"></ion-spinner>
+            <ion-item *ngIf="!loading">No hay usuarios</ion-item>
+            <ion-item *ngIf="searchParams != undefined"> con {{searchParams.atributo}} que empiece con '{{ searchParams.query }}'</ion-item>
+          </ion-item>
         </ng-template>
       </ion-col>
     </ion-row>

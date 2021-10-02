@@ -103,7 +103,10 @@
                     <ion-button 
                       expand="block" type="submit" class="ion-margin-start"
                       [disabled]="!formReview.valid"
-                    >Guardar</ion-button>
+                    >
+                      <ion-spinner *ngIf="posting" class="ion-margin-end" size="small"></ion-spinner>
+                      Guardar
+                    </ion-button>
                   </ion-row>
                 </ion-col>
               </ion-row>

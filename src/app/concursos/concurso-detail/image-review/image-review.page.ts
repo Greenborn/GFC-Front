@@ -1,18 +1,20 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 
 import { Image } from 'src/app/models/image.model';
 import { ContestResult } from 'src/app/models/contest_result.model';
 import { Metric } from 'src/app/models/metric.model';
-import { ConcursoService } from 'src/app/services/concurso.service';
+// import { ConcursoService } from 'src/app/services/concurso.service';
+import { MetricService } from 'src/app/services/metric.service';
+import { ApiConsumer } from 'src/app/models/ApiConsumer';
 
 @Component({
   selector: 'app-image-review',
   templateUrl: './image-review.page.html',
   styleUrls: ['./image-review.page.scss'],
 })
-export class ImageReviewPage implements OnInit {
+export class ImageReviewPage extends ApiConsumer implements OnInit {
 
   @Input() concurso: string;
   @Input() modalController: ModalController;
@@ -27,23 +29,44 @@ export class ImageReviewPage implements OnInit {
   @Input() contestResult: ContestResult;
   
   // @ViewChild('formReview') formReview: HTMLFormElement;
+  public posting: boolean = false;
   
   constructor(
-    private contestSvc: ConcursoService
-  ) { }
+    // private contestSvc: ConcursoService,
+    private metricService: MetricService,
+    alertCtrl: AlertController
+  ) { 
+    super('image review page', alertCtrl)
+  }
 
   ngOnInit() {
   }
 
   async postReview(f: NgForm) {
     if (f.valid) {
-      const metric = {
-        id: this.review.id,
+      this.posting = true
+      const metric: Metric = {
+        // id: this.review.id,
         ...f.value
       }
-      console.log('posting review', metric, 'de', this.contestResult.contest_id)
-      await this.contestSvc.postMetric(metric)
-      this.dismiss(metric)
+      super.fetch<Metric>(() => this.metricService.post(metric, this.review.id)).subscribe(
+        m => this.dismiss(m),
+        async err => {
+          (await this.alertCtrl.create({
+            header: 'Error',
+            message: err.error['error-info'][2],
+            buttons: [{
+              text: 'Ok',
+              role: 'cancel'
+            }]
+          })).present()
+        },
+        () => this.posting = false
+      )
+      
+      // console.log('posting review', metric, 'de', this.contestResult.contest_id)
+      // await this.contestSvc.postMetric(metric)
+      // this.dismiss(metric)
     }
   }
 

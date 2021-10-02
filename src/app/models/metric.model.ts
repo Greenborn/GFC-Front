@@ -1,5 +1,5 @@
 export interface Metric {
-    id: number;
+    id?: number;
     prize: string;
     score: number;
 }

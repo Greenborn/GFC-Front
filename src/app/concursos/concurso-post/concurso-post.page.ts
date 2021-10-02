@@ -2,37 +2,43 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-import { ConcursoService } from '../../services/concurso.service';
-import { Concurso } from '../concurso.model';
+import { ContestService } from 'src/app/services/contest.service';
+import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { Contest } from 'src/app/models/contest.model';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-concurso-post',
   templateUrl: './concurso-post.page.html',
   styleUrls: ['./concurso-post.page.scss'],
 })
-export class ConcursoPostPage implements OnInit {
+export class ConcursoPostPage extends ApiConsumer implements OnInit {
 
-  concurso: Concurso;
+  concurso: Contest = this.contestService.template;
+  public posting: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private db: ConcursoService,
-    private router: Router
-  ) { }
+    private contestService: ContestService,
+    private router: Router,
+    alertCtrl: AlertController
+  ) { 
+    super('concurso post page', alertCtrl)
+  }
 
   async ngOnInit() {
     this.activatedRoute.paramMap.subscribe(async paramMap => {
       const id = paramMap.get('id');
 
-      let c = ConcursoService.concursoTemplate();
-      this.concurso = c;
       if (id != null) {
-        c = await this.db.getConcurso(parseInt(id));
-        c.start_date = ConcursoService.formatearFechaParaHTML(c.start_date);
-        c.end_date = ConcursoService.formatearFechaParaHTML(c.end_date);
+        super.fetch<Contest>(() => 
+          this.contestService.get(parseInt(id))
+        ).subscribe(c => {
+          c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
+          c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
+          this.concurso = c
+        })
       }
-
-      this.concurso = c;
     })
   }
 
@@ -47,16 +53,34 @@ export class ConcursoPostPage implements OnInit {
 
   async postConcurso(f: NgForm) {
     if (f.valid) {
-      // console.log(f.value);
-      const c = {
-        id: this.concurso.id,
+      const model = {
         ...f.value,
-        start_date: ConcursoService.formatearFechaParaBD(f.value.start_date),
-        end_date: ConcursoService.formatearFechaParaBD(f.value.end_date)
-      };
-      // console.log('Posteando concurso: ', c);
-      const id = await this.db.postConcurso(c);
-      this.router.navigate(['/concursos/' + id]);
+        start_date: this.contestService.formatearFechaParaBD(f.value.start_date),
+        end_date: this.contestService.formatearFechaParaBD(f.value.end_date)
+      }
+      console.log('posting concurso', model, this.concurso.id)
+      this.posting = true
+      super.fetch<Contest>(() =>
+        this.contestService.post(model, this.concurso.id)
+      ).subscribe(
+        c => {
+          this.posting = false
+          console.log('posteado', c)
+          this.router.navigate(['/concursos/', c.id]);
+        },
+        async err => {
+          this.posting = false;
+          (await this.alertCtrl.create({
+            header: 'Error',
+            message: (err.error as []).map(e => (e as any).message).join('<br>'),
+            buttons: [{
+              text: 'Ok',
+              role: 'cancel'
+            }]
+          })).present()
+        },
+      )
+      // this.router.navigate(['/concursos/' + id]);
     }
     else {
       console.log('Form concurso no valido:', f.value);

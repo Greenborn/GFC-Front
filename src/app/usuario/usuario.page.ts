@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth/auth.service';
-import { Usuario } from './usuario.model';
+import { User } from '../models/user.model';
+import { AuthService } from '../modules/auth/services/auth.service';
+import { UserService } from '../services/user.service';
+// import { AuthService } from '../services/auth/auth.service';
+// import { Usuario } from './usuario.model';
 
 @Component({
   selector: 'app-usuario',
@@ -10,33 +13,26 @@ import { Usuario } from './usuario.model';
 })
 export class UsuarioPage implements OnInit {
 
-  usuario: Usuario;
-  
-  // public yepImg: boolean = true;
+  user: User;
+  public username: string;
+  public userId: number;
 
   constructor(
-    // private db: UsuarioService
-    private router: Router
+    private authService: AuthService,
+    private userService: UserService
   ) { }
 
-  // falsear(ev: any){
-  //   if(ev) {
-  //     this.yepImg = false;
-  //   }
-  // }
   ngOnInit() {
-    this.usuario = AuthService.getUsuario();
-    // this.usuario = this.db.getUsuario();
+    this.user = this.userService.template;
+    this.userId = this.authService.userId
   }
   ionViewWillEnter() {
-    this.usuario = AuthService.getUsuario();
-    // this.usuario = this.db.getUsuario();
-    // console.log('Por entrar a vista con usuario ', this.usuario)
+    this.username = this.authService.username;
+    this.authService.user.then(u => this.user = u)
   }
 
   logout() {
-    AuthService.logout();
-    this.router.navigateByUrl('/');
+    this.authService.logout();
   }
 
 }

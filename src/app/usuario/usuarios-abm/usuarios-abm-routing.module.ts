@@ -8,14 +8,14 @@ const routes: Routes = [
     path: '',
     component: UsuariosAbmPage
   },
-  {
-    path: 'nuevo',
-    loadChildren: () => import('./usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
-  },
-  {
-    path: 'editar/:id',
-    loadChildren: () => import('./usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
-  }
+  // {
+  //   path: 'nuevo',
+  //   loadChildren: () => import('./usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
+  // },
+  // {
+  //   path: 'editar/:id',
+  //   loadChildren: () => import('./usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
+  // }
 
 ];
 

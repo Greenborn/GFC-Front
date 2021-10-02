@@ -2,50 +2,58 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 
-
-import { ConcursoService } from '../../services/concurso.service';
-import { Concurso } from '../concurso.model';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { ImagePostPage } from './image-post/image-post.page';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { Image } from 'src/app/models/image.model';
 import { ContestResult } from 'src/app/models/contest_result.model';
 import { Profile } from 'src/app/models/profile.model';
-import { UsuarioService } from 'src/app/services/usuario.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { ImageReviewPage } from './image-review/image-review.page';
 import { Metric } from 'src/app/models/metric.model';
+import { ContestService } from 'src/app/services/contest.service';
+import { Contest } from 'src/app/models/contest.model';
+import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { ProfileService } from 'src/app/services/profile.service';
+import { MetricService } from 'src/app/services/metric.service';
+import { ContestResultService } from 'src/app/services/contest-result.service';
+import { ImageService } from 'src/app/services/image.service';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
   selector: 'app-concurso-detail',
   templateUrl: './concurso-detail.page.html',
   styleUrls: ['./concurso-detail.page.scss'],
 })
-export class ConcursoDetailPage implements OnInit {
+export class ConcursoDetailPage extends ApiConsumer implements OnInit {
 
   mostrarFiltro: boolean = false;
-  concurso: Concurso;
+  concurso: Contest = this.contestService.template;
   contestResults: ContestResult[] = [];
   images: Image[] = [];
   profiles: Profile[] = [];
   fotoclubs: Fotoclub[] = [];
   metrics: Metric[] = [];
   popover: HTMLIonPopoverElement = undefined;
-  loading: boolean = true;
+  // loading: boolean = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private contestSvc: ConcursoService,
-    private userSvc: UsuarioService,
-    private fotoclubSvc: FotoclubService,
     private router: Router,
-    private alertCtrl: AlertController,
-    // private loadingCtrl: LoadingController,
-    public auth: AuthService,
+    alertCtrl: AlertController,
     public modalController: ModalController,
-    public popoverCtrl: PopoverController
-  ) { }
+    public popoverCtrl: PopoverController,
+    public auth: AuthService,
+    
+    private contestService: ContestService,
+    private contestResultService: ContestResultService,
+    private fotoclubService: FotoclubService,
+    private profileService: ProfileService,
+    private metricService: MetricService,
+    private imageService: ImageService,
+  ) {
+    super('concurso detail page', alertCtrl)
+   }
 
   async ngOnInit() {
     this.activatedRoute.paramMap.subscribe(async paramMap => {
@@ -54,13 +62,44 @@ export class ConcursoDetailPage implements OnInit {
       // });
     
       // loading.present();
-      this.loading = true
-      this.concurso = ConcursoService.concursoTemplate();
-      this.concurso = await this.contestSvc.getConcurso(parseInt(paramMap.get('id')));
-      this.reloadContestResults()
-      // loading.dismiss();
-      this.loading = false
+      const id = parseInt(paramMap.get('id'))
+      // this.loading = true
+      // this.contestService.get(id).subscribe(c => this.concurso = c)
+
+      super.fetch<Contest>(() => 
+        this.contestService.get(id)
+      ).subscribe(c => {
+        // console.log('recibi concurso', c)
+        this.concurso = c
+        // obtener todos los contest result de este concurso
+        super.fetch<ContestResult[]>(() => 
+          this.contestResultService.getAll(`filter[contest_id]=${c.id}`)
+        ).subscribe(rs => {  // console.log('recibi contest results', rs)
+          this.contestResults = rs
+          // para cada contest result
+          for (const r of rs) {
+            //->obtener todas las metricas asociadas
+            super.fetch<Metric>(() => 
+              this.metricService.get(r.metric_id)
+            ).subscribe(m => this.metrics.push(m))
+          //->obtener todas las imagenes asociadas
+            super.fetch<Image>(() =>
+              this.imageService.get(r.image_id)
+            ).subscribe(async i => {
+              // console.log('recibi imagen con id', r.image_id, i)
+              this.images.push(i)
+            })
+          }
+        })
+      })
     })
+    
+    super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
+    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
+  }
+
+  isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
+    return this.auth.loggedIn;
   }
 
   toggleFiltro() {
@@ -68,18 +107,37 @@ export class ConcursoDetailPage implements OnInit {
   }
 
   getImage(result): Image {
-    return this.images.find(i => i.id == result.image_id)
+    // if (this.loading) {
+    //   return this.imageService.template
+    // } else {
+      const i = this.images.find(i => i.id == result.image_id)
+      return i != undefined ? i : this.imageService.template
+    // }
   }
   getProfile(result): Profile {
-    const i = this.getImage(result)
-    return this.profiles.find(p => p.id == i.profile_id)
+    // if (this.loading) {
+    //   return this.profileService.template
+    // } else {
+      const i = this.getImage(result)
+      const p = this.profiles.find(p => p.id == i.profile_id)
+      return p != undefined ? p : this.profileService.template
+    // }
   }
   getFotoclubName(result): string {
-    const p = this.getProfile(result)
-    return this.fotoclubs.find(f => f.id == p.fotoclub_id).name
+    // if (this.loading) {
+    //   return ''
+    // } else {
+      const p = this.getProfile(result)
+      const fc = this.fotoclubs.find(f => f.id == p.fotoclub_id)
+      return fc != undefined ? fc.name : ''
+    // }
   }
   getMetric(result: ContestResult): Metric {
-    return this.metrics.find(i => i.id == result.metric_id)
+    // if (this.loading) {
+    //   return this.metricService.template
+    // } else {
+      return this.metrics.find(i => i.id == result.metric_id) ?? this.metricService.template
+    // }
   }
 
   async reviewImage(i: Image, r: ContestResult) {
@@ -107,7 +165,7 @@ export class ConcursoDetailPage implements OnInit {
     const { metric } = data
     if (metric != undefined) {
       const i = this.metrics.findIndex(m => m.id == metric.id)
-      if (i != -1) {
+      if (i > -1) {
         this.metrics[i] = metric
       } else {
         this.metrics.push(metric)
@@ -125,14 +183,16 @@ export class ConcursoDetailPage implements OnInit {
     const componentProps : {
       concurso: string;
       modalController: ModalController;
+      profiles: Profile[]
       image?: Image
     } = {
       "concurso": this.concurso.name,
       "modalController": this.modalController,
+      "profiles": this.profiles
     }
 
     if (i != undefined) {
-      componentProps.image = i
+      componentProps.image = {...i}
     }
 
     const modal = await this.modalController.create({
@@ -143,48 +203,44 @@ export class ConcursoDetailPage implements OnInit {
     await modal.present()
 
     const { data } = await modal.onWillDismiss();
-    // console.log(data);
-    
-    if (data != undefined && data.image_id != undefined) {
+    console.log('dismiss image post popup con data', data);
+    const { image } = data
+    if (image != undefined) {
       // this.loading = true
-      const i = await this.contestSvc.getImage(data.image_id)
-      if (this.profiles.find(p => p.id == i.profile_id) == undefined) {
-        const p = await this.userSvc.getProfile(i.profile_id)
-        if (this.fotoclubs.find(f => f.id == p.fotoclub_id) == undefined) {
-          this.fotoclubs.push(await this.fotoclubSvc.getFotoclub(p.fotoclub_id))
-        }
-        this.profiles.push(p)
+      const i_index = this.images.findIndex(e => e.id == image.id)
+      if (i_index < 0) {
+        this.images.push(image)
+        super.fetch<Metric>(() =>
+        this.metricService.post({
+          prize: '0',
+          score: 0
+        })
+      ).subscribe(m => {
+        this.metrics.push(m)
+        super.fetch<ContestResult>(() =>
+          this.contestResultService.post({
+            contest_id: this.concurso.id,
+            image_id: image.id,
+            metric_id: m.id
+          })
+        ).subscribe(
+          cr => this.contestResults.push(cr),
+          async err => super.displayAlert(err.error['error-info'][2])
+        )
+      })
+        // console.log('posted image', image, 'index', i)
+      } else {
+        this.images.splice(i_index, 1, image)
+        // console.log('replaced image', image, 'index', i)
       }
-      this.images[this.images.findIndex(i1 => i1.id == data.image_id)] = i
-
-      const r = this.contestResults.find(r => r.image_id == data.image_id)
-      
-      if (r == undefined) {
-        const metric_id = await this.contestSvc.postMetric({
-          id: undefined,
-          prize: null,
-          score: null
-        })
-        const id = await this.contestSvc.postContestResult({
-          id: r != undefined ? r.id : null,
-          contest_id: this.concurso.id,
-          image_id: data.image_id,
-          metric_id
-        })
-        // console.log('posted contest result', id)
-      } 
-      await this.reloadContestResults()
-      // this.loading = false
     }
-
-    // return ;
   }
   
   get fechaInicio(): string {
-    return ConcursoService.formatearFechaParaHTML(this.concurso.start_date);
+    return this.contestService.formatearFechaParaHTML(this.concurso.start_date);
   }
   get fechaFin(): string {
-    return ConcursoService.formatearFechaParaHTML(this.concurso.end_date);
+    return this.contestService.formatearFechaParaHTML(this.concurso.end_date);
   }
 
   async deleteConcurso() {
@@ -198,9 +254,27 @@ export class ConcursoDetailPage implements OnInit {
           role: 'cancel'
         }, {
           text: 'Confirmar',
-          handler: async () => {
-            await this.contestSvc.deleteConcurso(this.concurso.id);
-            this.router.navigate(['/concursos']);
+          // handler: async () => {
+          handler: () => {
+            // await this.contestSvc.deleteConcurso(this.concurso.id);
+            super.fetch<void>(() => 
+              this.contestService.delete(this.concurso.id)
+            ).subscribe(
+              _ => {
+                console.log('deleted', _)
+                this.router.navigate(['/concursos']);
+              }, 
+              async err => {
+                (await this.alertCtrl.create({
+                  header: 'Error',
+                  message: err.error['error-info'][2],
+                  buttons: [{
+                    text: 'Ok',
+                    role: 'cancel'
+                  }]
+                })).present()
+              }
+            )
           }
         }
       ]
@@ -214,6 +288,7 @@ export class ConcursoDetailPage implements OnInit {
       this.popoverCtrl.dismiss(this.popover)
       this.popover = undefined
     }
+
     const alert = await this.alertCtrl.create({
       header: 'Confirmar borrado',
       message: 'Cuidado',
@@ -223,15 +298,24 @@ export class ConcursoDetailPage implements OnInit {
           role: 'cancel'
         }, {
           text: 'Confirmar',
-          handler: async () => {
-            await this.contestSvc.deleteImage(image_id);
-            this.images.splice(this.images.findIndex(i => i.id == image_id), 1)
-            await this.contestSvc.deleteContestResult(result_id);
-            this.contestResults.splice(this.contestResults.findIndex(c => c.id == result_id), 1)
-            await this.contestSvc.deleteMetric(metric_id);
-            this.metrics.splice(this.metrics.findIndex(m => m.id == metric_id), 1)
+          handler: () => {
+            super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe(
+              _ => {
+                // this.alertCtrl.dismiss()
+                this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
+                super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
+                  _ => this.images.splice(this.images.findIndex(i => i.id == image_id), 1),
+                  async err => super.displayAlert(err.error['error-info'][2])
+                )
+                super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe(
+                  _ => this.metrics.splice(this.metrics.findIndex(i => i.id == metric_id), 1),
+                  async err => super.displayAlert(err.error['error-info'][2])
+                )
 
-            // this.reloadContestResults()
+              },
+              async err => super.displayAlert(err)
+            )
+            // return false
           }
         }
       ]
@@ -239,25 +323,6 @@ export class ConcursoDetailPage implements OnInit {
 
     await alert.present();
   } 
-  async reloadContestResults() {
-    // console.log('reloading contest results')
-    this.contestResults = await this.contestSvc.getContestResults(this.concurso.id)
-    for (const r of this.contestResults) {
-      this.contestSvc.getMetric(r.metric_id).then(m => this.metrics.push(m))
-      const i = await this.contestSvc.getImage(r.image_id)
-      if (this.images.find(i => i.id == r.image_id) == undefined) {
-        this.images.push(i)
-        if (this.profiles.find(p => p.id == i.profile_id) == undefined) {
-          const p = await this.userSvc.getProfile(i.profile_id)
-          this.profiles.push(p)
-          if (this.fotoclubs.find(f => f.id == p.fotoclub_id) == undefined) {
-            const f = await this.fotoclubSvc.getFotoclub(p.fotoclub_id)
-            this.fotoclubs.push(f)
-          }
-        }
-      }
-    }
-  }
 
   async mostrarAcciones(ev: any, r: ContestResult) {
     const i = this.getImage(r)
@@ -294,15 +359,5 @@ export class ConcursoDetailPage implements OnInit {
     await this.popover.present();
 
     this.popover.onDidDismiss().then(_ => this.popover = undefined)
-    // const t = this;
-    // this.router.events.subscribe() // dismiss popover cuando cambie de ruta
-    // const s = this.router.events
-    // .pipe() // .pipe(filter(event => event instanceof NavigationEnd))
-    // .subscribe(async (e) => {
-    //   if (e instanceof NavigationEnd) {
-    //     await this.dismissPopover();
-    //     s.unsubscribe();
-    //   }
-    // });
   }
 }

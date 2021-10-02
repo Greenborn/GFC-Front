@@ -1,5 +1,5 @@
 export interface Image {
-    id: number;
+    id?: number;
     code: string;
     title: string;
     profile_id: number;
