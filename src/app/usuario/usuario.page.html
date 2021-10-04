@@ -25,31 +25,23 @@
         <ion-row class="ion-justify-content-center altura-treinta">
           <ion-item>
             <ion-col>
-              <ion-row class="ion-justify-content-center">
-                <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img> -->
-                <app-usuario-img src="fafafa"></app-usuario-img>
-                <!-- <ion-avatar> -->
-                  <!-- <ion-img
-                    src="{{usuario.img_url}}"
-                    (ionError)="falsear($event)"
-                    *ngIf="yepImg==true; else noImg"
-                  ></ion-img>
-                  <ng-template #noImg>
-                    <ion-icon
-                      style="font-size: '64px'"
-                      name="person-circle-outline"
-                    ></ion-icon>
-                  </ng-template> -->
-                <!-- </ion-avatar> -->
+              <ion-row size="8" class="ion-justify-content-center ion-align-items-center">
+                <ion-col size="12" class="ion-align-items-center">
+                  <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img> -->
+                  <app-usuario-img src="fafafa"></app-usuario-img>
+                </ion-col>
               </ion-row>
-              <ion-col class="ion-justify-content-center">
-                <ion-card-title class="ion-text-center"
+              <ion-row size="4">
+                <ion-col class="ion-justify-content-center">
+                  <ion-card-title class="ion-text-center"
                   >{{user.username}}</ion-card-title
-                >
-                <!-- <ion-card-subtitle class="ion-text-center"
-                  >{{usuario.email}}</ion-card-subtitle
-                > -->
-              </ion-col>
+                  >
+                  <!-- <ion-card-subtitle class="ion-text-center"
+                    >{{usuario.email}}</ion-card-subtitle
+                    > -->
+                  </ion-col>
+
+              </ion-row>
             </ion-col>
           </ion-item>
         </ion-row>
