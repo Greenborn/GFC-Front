@@ -22,7 +22,7 @@ export class AppComponent implements OnDestroy {
 
   // https://stackoverflow.com/questions/59552387/how-to-reload-a-page-in-angular-8-the-proper-way
   constructor(
-    private router: Router, 
+    public router: Router, 
     private activatedRoute: ActivatedRoute
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

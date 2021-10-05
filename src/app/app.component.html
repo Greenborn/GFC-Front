@@ -1,6 +1,6 @@
 <ion-app>
   <ion-header>
-    <app-navbar></app-navbar>
+    <app-navbar *ngIf="router.url != '/login'"></app-navbar>
   </ion-header>
 
     <ion-content >
