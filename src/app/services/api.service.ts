@@ -22,34 +22,23 @@ export class ApiService<T> {
     return {...this._template}
   }
 
-  get(id: number): Observable<T> {
+  get<K = T>(id: number, getParams: string = ''): Observable<K> {
     console.log('get', this.recurso, id)
-    return this.http.get<T>(
-      this.config.apiUrl(`${this.recurso}/${id}`)
+    return this.http.get<K>(
+      this.config.apiUrl(`${this.recurso}/${id}?${getParams}`)
     )
   }
 
   // https://www.yiiframework.com/doc/guide/2.0/en/rest-response-formatting
-  getAll(getParams: string = ''): Observable<T[]> {
-    return this.http.get<ApiSerializedResponse<T>>(
-      this.config.apiUrl(`${this.recurso}?${getParams}`)
-    ).pipe(
+  getAll<K = T>(getParams: string = ''): Observable<K[]> {
+    const url = this.config.apiUrl(`${this.recurso}?${getParams}`)
+    // console.log('getting', url))
+    return this.http.get<ApiSerializedResponse<K>>(url).pipe(
       map((data) => {
-        console.log('get all', this.recurso, data)
+        console.log('get all', url, data)
         return data.items
       })
     )
-
-
-    // return this.fetch((url: string) => 
-    //   this.http.get<ApiSerializedResponse<T>>(url)
-    //   .pipe(
-    //     map((data) => {
-    //       console.log('get all', this.recurso, data)
-    //       return data.items
-    //     })
-    //   )
-    // )
   }
 
   post(model: T, id: number = undefined): Observable<T> {
@@ -72,24 +61,5 @@ export class ApiService<T> {
       `${this.config.apiUrl(this.recurso)}/${id}`
     )
   }
-
-
-  // ngOnDestroy() {
-  //   console.log(`destroy ${this.recurso}Service`)
-  //   this.unsubscribe$.next();
-  //   this.unsubscribe$.complete();
-  // }
-
-  // // https://dev.to/re4388/use-rxjs-takeuntil-to-unsubscribe-1ffj
-  // private readonly unsubscribe$: Subject<void> = new Subject();
-
-  // private fetch(callback: CallableFunction, recurso: string = undefined) {
-  //   console.log(`fetching api desde ${this.recurso}Service - ` , recurso)
-  //   return callback(
-  //     this.config.apiUrl(recurso ?? this.recurso)
-  //   ).pipe(
-  //     takeUntil(this.unsubscribe$)
-  //   )
-  // }
 
 }

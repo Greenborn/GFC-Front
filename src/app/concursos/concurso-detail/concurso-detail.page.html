@@ -50,6 +50,7 @@
   </ion-card>
   <ion-grid>
     <ion-row class="ion-justify-content-center">
+      <!-- filtro -->
       <ion-col size="3" *ngIf="mostrarFiltro">
         <ion-col>
           <ion-title class="ion-margin-top">Búsqueda</ion-title>
@@ -215,18 +216,19 @@
             <ion-list>
               <ion-item class="ion-no-padding">
                 <!-- <ion-grid *ngIf="!loading"> -->
-                <ion-grid>
+                <ion-grid *ngIf="resultadosConcurso.length > 0; else texto">
+                <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
                   <!-- class="ion-text-center" -->
-                  <ion-row size="12" *ngFor="let r of contestResults">
+                  <ion-row size="12" *ngFor="let r of resultadosConcurso">
                     <ion-col size="6" size-md="3" class="ion-align-self-center">
                       <ion-card-subtitle title="Código de la obra"
-                        >{{ getImage(r).code }}</ion-card-subtitle
-                      >
+                      >{{ r.image.code }}</ion-card-subtitle>
+                      <!-- >{{ getImage(r).code }}</ion-card-subtitle> -->
                       <!-- <ion-card-title >Prueba de Riendas</ion-card-title> -->
 
                       <ion-text title="Nombre de la obra"
-                        ><b>{{ getImage(r).title }}</b></ion-text
-                      >
+                      ><b>{{ r.image.title }}</b></ion-text>
+                      <!-- ><b>{{ getImage(r).title }}</b></ion-text> -->
                     </ion-col>
                     <ion-col
                       class="
@@ -249,13 +251,12 @@
                           <!-- <ion-card-subtitle><a [href]="'mailto:'+'@'"> lmm@gmail </a></ion-card-subtitle> -->
                           <!-- <ion-text><b>Perfil id {{ getImage(r).profile_id }}</b></ion-text> -->
                           <ion-card-subtitle title="Entidad del autor"
-                            >{{ getFotoclubName(r) }}</ion-card-subtitle
-                          >
-                          <ion-text title="Autor de la obra"
-                            ><b
-                              >{{ (getProfile(r).name ?? '') + ' ' + (getProfile(r).last_name ?? '') }}</b
-                            ></ion-text
-                          >
+                          >{{ getFotoclubName(r.image.profile_id) }}</ion-card-subtitle>
+                          <!-- >{{ getFotoclubName(r) }}</ion-card-subtitle> -->
+                          <ion-text title="Autor de la obra">
+                            <b>{{ getFullName(r.image.profile_id) }}</b>
+                            <!-- <b>{{ (getProfile(r).name ?? '') + ' ' + (getProfile(r).last_name ?? '') }}</b> -->
+                          </ion-text>
                           <!-- <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle> -->
                         </ion-label>
                       </ion-item>
@@ -265,23 +266,27 @@
                       size="3"
                       size-md="2"
                     >
-                      <ion-text>{{ getMetric(r).prize }}</ion-text>
+                      <ion-text>{{ r.metric.prize }}</ion-text>
+                      <!-- <ion-text>{{ getMetric(r).prize }}</ion-text> -->
                     </ion-col>
                     <ion-col
                       class="ion-text-center ion-align-self-center"
                       size="2"
                     >
-                      <ion-text>{{ getMetric(r).score }}</ion-text>
+                      <ion-text>{{ r.metric.score }}</ion-text>
+                      <!-- <ion-text>{{ getMetric(r).score }}</ion-text> -->
                     </ion-col>
 
-                    <ion-col size="1" size-md="2" class="ion-align-self-center" *ngIf="getImage(r).title != undefined">
+                    <ion-col size="1" size-md="2" class="ion-align-self-center">
                       <ion-buttons
                         class="ion-hide-lg-down ion-justify-content-end"
                       >
-                        <ion-button (click)="reviewImage(getImage(r), r)">
+                        <ion-button (click)="reviewImage(r)">
+                        <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
                           <ion-icon name="star-outline"></ion-icon>
                         </ion-button>
-                        <ion-button (click)="postImage(getImage(r))">
+                        <ion-button (click)="postImage(r.image)">
+                        <!-- <ion-button (click)="postImage(getImage(r))"> -->
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
                         <ion-button (click)="deleteImage(r.image_id, r.id, r.metric_id)">
@@ -300,6 +305,7 @@
                     </ion-col>
                   </ion-row>
                 </ion-grid>
+                <!-- <ng-template #texto>No hay fotografias</ng-template> -->
               </ion-item>
             </ion-list>
           </ion-col>

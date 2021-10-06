@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Contest } from '../models/contest.model';
+import { Observable } from 'rxjs';
+import { Contest, ContestExpanded } from '../models/contest.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
 
@@ -21,6 +22,12 @@ export class ContestService extends ApiService<Contest> {
       end_date: undefined
     })
   }
+
+  
+  // getContestWithResults(id: number): Observable<ContestExpanded> {
+  //   return super.get<ContestExpanded>(id, `expand=contestResults,contestResults.image.profile`)
+  //   // return super.fetchAll<ContestExpanded>(`expand=image,metric&filter[contest_id]=${contestId}`)
+  // }
 
   formatearFechaParaHTML(fecha: string): string {
     const d = new Date(parseInt(fecha));

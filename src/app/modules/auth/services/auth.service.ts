@@ -6,15 +6,17 @@ import { Router }                  from '@angular/router';
 
 import { Login } from '../models/login.model';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { User } from 'src/app/models/user.model';
+import { User, UserLogged } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
+import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private _user: User;
+  // private _user: User;
+  private _user: Promise<UserLogged>;
 
   constructor(
     private  router: Router,
@@ -22,72 +24,94 @@ export class AuthService {
     private  config: ConfigService,
     private userService: UserService
     // private  gral:        AppUIUtilsService
-  ) { }
+  ) { 
+    // this.updateUser()
+  }
 
   get token(): string{ 
     return localStorage.getItem(this.config.tokenKey)
   }
   set token(t: string) { 
-    // localStorage.setItem(this.config.tokenKey, t)
-    this.setLocalStorage('token', t)
-  }
-  get username(): string {
-    // return localStorage.getItem(this.config.data.appName + 'username')
-    return this.getLocalStorage('token')
+    this.config.setLocalStorage('token', t)
   }
   set username(n: string) {
-    this.setLocalStorage('username', n)
+    this.config.setLocalStorage('username', n)
   }
   get userId(): number {
-    // return parseInt(localStorage.getItem(this.config.data.appName + 'userId'))
-    return parseInt(this.getLocalStorage('userId'))
+    return parseInt(this.config.getLocalStorage('userId'))
   }
   set userId(id: number) {
-    // localStorage.setItem(this.config.data.appName + 'userId', id.toString())
-    this.setLocalStorage('userId', id)
+    this.config.setLocalStorage('userId', id)
   }
-  get user(): Promise<User> {
-    return new Promise<User>(resolve => {
-      let u: User;
-      if (this._user == undefined) {
-        const s = this.http.get<User>(`${this.config.apiUrl('user')}/${this.userId}`).subscribe(
+
+  get user(): Promise<UserLogged|null> {
+    // return this._user
+
+    if (this._user == undefined && this.loggedIn) {
+      this._user = new Promise<UserLogged>(resolve => {
+        // console.log('get user ' + this._user)
+        // 
+        const s = this.http.get<UserLogged>(
+          `${this.config.apiUrl('user')}/${this.userId}?expand=profile,profile.fotoclub,role`
+        ).subscribe(
           u => {
             console.log('fetching user data', u)
-            this._user = u
-            resolve(this._user)
+            resolve(u)
           },
           err => {
-            console.log('error fetchingu ser data', err, 'Logging out')
-            this.logout()
-            resolve(this.userService.template)
+            console.log('error fetching profile data', err)
+            resolve(null)
           },
           () => s.unsubscribe()
         )
-      } else {
-        resolve(this._user)
-      }
-      
-    })
-    // return {...this._user} 
+        // const s = this.http.get<User>(`${this.config.apiUrl('user')}/${this.userId}`).subscribe(
+        //   u => {
+        //     console.log('fetching user data', u)
+        //     const s1 = this.http.get<Profile>(`${this.config.apiUrl('profile')}/${u.profile_id}`).subscribe(
+        //       p => {
+        //         console.log('fetching profile data', p)
+        //         resolve({
+        //           user: u,
+        //           profile: p
+        //         })
+        //       },
+        //       err => {
+        //         console.log('error fetching profile data', err, 'Logging out')
+        //         resolve(null)
+        //       },
+        //       () => s1.unsubscribe()
+        //     )
+        //     // this._user = u
+        //     // resolve(this._user)
+        //     // resolve(u)
+        //   },
+        //   err => {
+        //     console.log('error fetchingu ser data', err, 'Logging out')
+        //     resolve(null)
+        //     // this.logout()
+        //     // resolve(this.userService.template)
+        //   },
+        //   () => s.unsubscribe()
+        // )
+        
+      })
+    } else {
+      // console.log('return user')
+    }
+    
+    return this._user
   }
+
+  // updateUser(u: User = undefined): void {
+  //   this._user = u ? new Promise<User>(resolve => resolve(u)) : undefined
+  // }
+
   // isAdmin(): boolean {
   //   return true
   // }
   // set user(u: User) { 
   //   this._user = u 
   // }
-  private setLocalStorage(r: string, v: any): void {
-    if (v == null) {
-      localStorage.removeItem(this.config.data.appName + r)
-    } else {
-      localStorage.setItem(this.config.data.appName + r, v .toString())
-    }
-
-  }
-  private getLocalStorage(r: string): string {
-    return localStorage.getItem(this.config.data.appName + r)
-  }
-
 
   get loggedIn(): boolean {
     // console.log(localStorage)
@@ -108,7 +132,6 @@ export class AuthService {
           if ( r.hasOwnProperty("token") ){
             console.log('login de usuario', data)
             this.token = r.token
-            this.username = r.username
             this.userId = r.id
             resolve(true)
             // localStorage.setItem( this.confGral['appName']+'logedIn', JSON.stringify( true ) );
@@ -137,7 +160,7 @@ export class AuthService {
   }
 
   async logout() { // cerrar sesion en api
-    this.token = this.username = this.userId = null
+    this.token = this.userId = null
     this._user = undefined 
     this.router.navigateByUrl('/login')
   }

@@ -13,9 +13,12 @@ import { UserService } from 'src/app/services/user.service';
 import { RoleService } from 'src/app/services/role.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ProfileService } from 'src/app/services/profile.service';
-import { User } from 'src/app/models/user.model';
-import { Profile } from 'src/app/models/profile.model';
+import { User, UserLogged } from 'src/app/models/user.model';
+import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-usuarios-abm',
@@ -26,12 +29,13 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
   mostrarFiltro: boolean = false;
   user: User = undefined;
-  users: User[] = [];
-  profiles: Profile[] = [];
+  miembros: Observable<ProfileExpanded[]>;
+  // users: Observable<User[]>;
+  // profiles: Profile[] = [];
+
   roles: Role[] = [];
   fotoclubs: Fotoclub[] = [];
   
-  usuarios: Usuario[] = [];
   // usuariosFiltrados: Usuario[] = [];
   searchParams: SearchBarComponentParams;
 
@@ -47,7 +51,8 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     alertCtrl: AlertController,
     private popoverCtrl: PopoverController,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    public rolificador: RolificadorService
   ) { 
     super('usuarios abm page', alertCtrl)
   }
@@ -55,38 +60,47 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
   toggleFiltro() {
     this.mostrarFiltro = !this.mostrarFiltro;
   }
-  
-  get titulo() {
-    if (this.user != undefined) {
-      if (this.user.role_id != 1) {
-        const p = this.profiles.find(p => p.id == this.user.profile_id)
-        if (p != undefined && this.fotoclubs.length > 0) {
-          return `Concursantes del fotoclub ${this.fotoclubs.find(f => f.id == p.fotoclub_id).name}`
-        } else return ''
-      } else return 'Miembros'
-    } else return ''
-    // return this.user == undefined ? '' : 
-    //   this.user.role_id == 1 ? 
-    //     'Miembros' : 
-    //     `Concursantes del fotoclub ${( || this.profileService.template).fotoclub_id}`
+
+  getTitulo(u: UserLogged) {
+    const nombreUsuarios = this.rolificador.getNombreUsuarios(u.role_id)
+    if (!this.rolificador.isAdmin(u)) {        
+      // const p = this.profiles.find(p => p.id == u.profile_id)
+      // if (p != undefined && this.fotoclubs.length > 0) {
+      if (this.fotoclubs.length > 0) {
+        return `${nombreUsuarios} del fotoclub ${this.fotoclubs.find(f => f.id == u.profile.fotoclub_id).name}`
+      } else return ''
+    } else return nombreUsuarios
   }
-  getFotoclubName(profile_id: number) {
+  
+  // get titulo() {
+  //   if (this.user != undefined) {
+  //     if (this.user.role_id != 1) {
+  //       const p = this.profiles.find(p => p.id == this.user.profile_id)
+  //       if (p != undefined && this.fotoclubs.length > 0) {
+  //         return `Concursantes del fotoclub ${this.fotoclubs.find(f => f.id == p.fotoclub_id).name}`
+  //       } else return ''
+  //     } else return 'Miembros'
+  //   } else return ''
+  // }
+
+  getFotoclubName(fotoclub_id: number) {
     let name = ''
-    const p = this.profiles.find(e => e.id == profile_id)
-    if (p != undefined) {
-      let fc = this.fotoclubs.find(e => e.id == p.fotoclub_id)
-      if (fc != undefined) name = fc.name
-    }
+    // const p = this.profiles.find(e => e.id == profile_id)
+    // console.log(p)
+    // if (p != undefined) {
+    let fc = this.fotoclubs.find(e => e.id == fotoclub_id)
+    if (fc != undefined) name = fc.name
+    // }
     return name
   }
   getRoleType(id: number) {
     const a = this.roles.find(e => e.id == id)
     return a != undefined ? a.type : ''
   }
-  getFullName(profile_id: number) {
-    const a = this.profiles.find(e => e.id == profile_id)
-    return a != undefined ? `${a.name} ${a.last_name}` : ''
-  }
+  // getFullName(profile_id: number) {
+  //   const a = this.profiles.find(e => e.id == profile_id)
+  //   return a != undefined ? `${a.name} ${a.last_name}` : ''
+  // }
 
   // filtrarUsuarios({ atributo, query }: SearchBarComponentParams) {
   //   this.usuariosFiltrados = this.usuarios.filter(u => u[atributo].substr(0, query.length) == query)
@@ -99,17 +113,17 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       // this.usuarios = (await this.usuarioSvc.getUsuarios()).filter(u => u[atributo].substr(0, query.length) == query);
     }
   }
-  get usuariosFiltrados() {
-    if (this.user != undefined && this.profiles.length > 0) {
-      if (this.user.role_id != 1) {
-        const fc_id = this.profiles.find(p => p.id == this.user.profile_id).fotoclub_id
-        return this.users.filter(u => this.profiles.find(p => p.id == u.profile_id).fotoclub_id == fc_id)
-      } else return this.users
-    } else return []
+  // get usuariosFiltrados() {
+  //   if (this.user != undefined && this.profiles.length > 0) {
+  //     if (this.user.role_id != 1) {
+  //       const fc_id = this.profiles.find(p => p.id == this.user.profile_id).fotoclub_id
+  //       return this.users.filter(u => this.profiles.find(p => p.id == u.profile_id).fotoclub_id == fc_id)
+  //     } else return this.users
+  //   } else return []
 
-    // const q = this.searchQuery;
-    // return this.usuarios.filter(u => u.username.substr(0, q.length) == q)
-  }
+  //   // const q = this.searchQuery;
+  //   // return this.usuarios.filter(u => u.username.substr(0, q.length) == q)
+  // }
 
   async deleteUsuario(id: number) {
 
@@ -190,14 +204,29 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
   async ionViewWillEnter() {
     // super.fetch<User[]>(() => this.userService.getAll()).subscribe(r => this.users = r)
-    this.loading = true
-    this.auth.user.then(u => this.user = u)
-    this.users = this.profiles = []
-    super.fetch<User[]>(() => this.userService.getAll()).subscribe(r => this.users = r)
-    super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(r => {
-      this.profiles = r
-      this.loading = false
+    // this.loading = true
+    // this.profiles = []
+
+    this.auth.user.then(u => {
+      this.user = u
+      // this.users = super.fetch<User[]>(() => this.userService.getAll('expand=profile'))
+      this.miembros = super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u))
+      // this.users = super.fetch<User[]>(() => this.rolificador.getUsers(u)).pipe(
+      //   filter()
+      // )
+      // super.fetch<Profile[]>(() => this.rolificador.getProfiles(u)).subscribe(r => this.profiles = r)
+      // if (this.rolificador.isAdmin(u)) {
+      //   this.users = super.fetch<User[]>(() => this.userService.getAll())
+      //   super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(r => this.profiles = r)
+      // } else {
+
+      // }
     })
+    // super.fetch<User[]>(() => this.userService.getAll()).subscribe(r => this.users = r)
+    // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(r => {
+    //   this.profiles = r
+    //   // this.loading = false
+    // })
   }
 
   // para implementar busqueda con la api (sobrescribe variable de usuarios)

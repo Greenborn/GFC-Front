@@ -32,13 +32,14 @@
                 </ion-col>
               </ion-row>
               <ion-row size="4">
-                <ion-col class="ion-justify-content-center">
+                <ion-col class="ion-justify-content-center"
+                  *ngIf="(authService.user | async) as u"
+                >
                   <ion-card-title class="ion-text-center"
-                  >{{user.username}}</ion-card-title
-                  >
-                  <!-- <ion-card-subtitle class="ion-text-center"
-                    >{{usuario.email}}</ion-card-subtitle
-                    > -->
+                  >{{ u.user.username }}</ion-card-title>
+
+                  <ion-card-subtitle class="ion-text-center"
+                  >{{u.profile.name}} {{u.profile.last_name}}</ion-card-subtitle>
                   </ion-col>
 
               </ion-row>
@@ -51,7 +52,7 @@
             <ion-toolbar>
               <ion-list>
                 <!-- <ion-item lines="none" [routerLink]="['/usuarios', 'editar', userId]"> -->
-                <ion-item lines="none" [routerLink]="['/usuarios', 'editar', user.id]">
+                <ion-item lines="none" [routerLink]="['/usuarios', 'editar', authService.userId]">
                 <!-- <ion-item [routerLink]="['/perfil', 'editar']"> -->
                   <ion-icon
                     slot="start"
@@ -94,7 +95,7 @@
           <ion-footer>
             <ion-toolbar>
               <ion-list>
-                <ion-item lines="none" (click)="logout()" button="true">
+                <ion-item lines="none" (click)="authService.logout()" button="true">
                   <ion-icon
                     slot="start"
                     ios="log-out-outline"
