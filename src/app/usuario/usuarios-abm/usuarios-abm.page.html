@@ -1,68 +1,44 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-    <ion-col size="3" *ngIf="mostrarFiltro">
-      <ion-col>
-        <ion-title class="ion-margin-top">Búsqueda</ion-title>
-
-        <ion-list>
-          <ion-radio-group value="biff">
-            <ion-list-header>
-              <ion-label>Filtrar por:</ion-label>
-            </ion-list-header>
-
-            <ion-item>
-              <ion-label>Nombre</ion-label>
-              <ion-radio slot="start" value="nombre"></ion-radio>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Username</ion-label>
-              <ion-radio slot="start" value="codigo"></ion-radio>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>DNI</ion-label>
-              <ion-radio slot="start" value="concursante"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>email</ion-label>
-              <ion-radio slot="start" value="concursante"></ion-radio>
-            </ion-item>
-            <ion-item>
-              <ion-label>Entidad</ion-label>
-              <ion-radio slot="start" value="fotoclub"></ion-radio>
-            </ion-item>
-          </ion-radio-group>
-        </ion-list>
-
-        <!-- <ion-row>
-          <ion-list-header>
-            <ion-label>Puntaje:</ion-label>
-          </ion-list-header>
-          <ion-col>
-            <ion-item>
-              <ion-label position="stacked">Desde</ion-label>
-              <ion-input type="number" min="1" max="13" name="desde_puntaje">
-              </ion-input> </ion-item
-          ></ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="stacked">Hasta</ion-label>
-              <ion-input type="number" min="1" max="13" name="hasta_puntaje">
-              </ion-input> </ion-item
-          ></ion-col>
-          <ion-col
-            ><ion-fab-button size="small">
-              <ion-icon
-                name="arrow-forward-circle"
-              ></ion-icon> </ion-fab-button
-          ></ion-col>
-        </ion-row> -->
-
+      <ion-col size="3" *ngIf="mostrarFiltro">
         <ion-col>
-          <!-- opcion 1 -->
-          <!--   <ion-list>
+          <ion-title class="ion-margin-top">Búsqueda</ion-title>
+
+          <ion-list>
+            <ion-radio-group value="biff">
+              <ion-list-header>
+                <ion-label>Filtrar por:</ion-label>
+              </ion-list-header>
+
+              <ion-item>
+                <ion-label>Nombre</ion-label>
+                <ion-radio slot="start" value="nombre"></ion-radio>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>Username</ion-label>
+                <ion-radio slot="start" value="codigo"></ion-radio>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>DNI</ion-label>
+                <ion-radio slot="start" value="concursante"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>email</ion-label>
+                <ion-radio slot="start" value="concursante"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>Entidad</ion-label>
+                <ion-radio slot="start" value="fotoclub"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+
+          <ion-col>
+            <!-- opcion 1 -->
+            <!--   <ion-list>
             <ion-list-header>
               <ion-label>Premio:</ion-label>
             </ion-list-header>
@@ -73,214 +49,156 @@
             <ion-button fill="clear" href="#">1° Premio</ion-button>
           </ion-list> -->
 
-          <!-- opcion 2 -->
-          <ion-list>
-            <ion-list-header>
-              <ion-label>Rol:</ion-label>
-            </ion-list-header>
-            <ion-item
-              ><ion-button fill="clear" href="#"
-                >Administrador</ion-button
-              ></ion-item
-            >
-            <ion-item
-              ><ion-button fill="clear" href="#"
-                >Concursante</ion-button
-              ></ion-item
-            >
-            <ion-item>
-              <ion-button fill="clear" href="#">Jurado</ion-button></ion-item
-            >
-            <ion-item>
-              <ion-button fill="clear" href="#"
-                >Delegado</ion-button
-              ></ion-item
-            >
-          </ion-list>
+            <!-- opcion 2 -->
+            <ion-list>
+              <ion-list-header>
+                <ion-label>Rol:</ion-label>
+              </ion-list-header>
+              <ion-item
+                ><ion-button fill="clear" href="#"
+                  >Administrador</ion-button
+                ></ion-item
+              >
+              <ion-item
+                ><ion-button fill="clear" href="#"
+                  >Concursante</ion-button
+                ></ion-item
+              >
+              <ion-item>
+                <ion-button fill="clear" href="#">Jurado</ion-button></ion-item
+              >
+              <ion-item>
+                <ion-button fill="clear" href="#"
+                  >Delegado</ion-button
+                ></ion-item
+              >
+            </ion-list>
+          </ion-col>
         </ion-col>
       </ion-col>
-    </ion-col>
-    
-    
-    <ion-col>
-    <ion-row>
-      <ion-col size="11.5" push="0.25">
-        <!-- usuario, email, fotoclub -->
-        <ion-grid>
-          <ion-row
-            class="
-              ion-justify-content-start
-              ion-align-items-center
-              ion-margin-top
-              ion-margin-bottom
-            "
-          >
-            <h2 class="ion-margin-top ion-margin-bottom ion-margin-end">
-              {{titulo}}
-            </h2>
-            <ion-fab-button [routerLink]="['nuevo']" size="small">
-              <ion-icon name="add"></ion-icon>
-            </ion-fab-button>
-          </ion-row>
 
-          <ion-row class="ion-align-items-center">
-            <ion-col size="11"
-              ><app-search-bar
-                (buscar)="filtrarUsuarios($event)"
-                [atributos]="['username', 'email']"
-              >
-              </app-search-bar
-            ></ion-col>
-            <ion-col size="1">
-              <ion-button (click)="toggleFiltro()" color="medium">
-                <ion-icon name="funnel"></ion-icon>
-                <!-- <ion-icon name="options"></ion-icon> -->
-              </ion-button></ion-col
-            >
-          </ion-row>
-
-          <ion-row class="ion-hide-md-down">
-            <ion-col size="6">Usuario</ion-col>
-            <!-- <ion-col size="2">Email</ion-col> -->
-            <ion-col size="2">Rol</ion-col>
-            <ion-col size="2">Entidad</ion-col>
-            <ion-col size="2">Acciones</ion-col>
-          </ion-row>
-        </ion-grid>
-
-        <ion-list *ngIf="usuariosFiltrados.length > 0; else texto">
-          <ion-item *ngFor="let u of usuariosFiltrados">
+      <ion-col>
+        <ion-row>
+          <ion-col size="11.5" push="0.25">
+            <!-- usuario, email, fotoclub/Entidad -->
             <ion-grid>
-              <ion-row size="12">
-                <ion-col size="12" size-md="6">
-                  <ion-row
-                    class="ion-align-items-center ion-justify-content-between"
+              <ion-row
+                class="
+                  ion-justify-content-start
+                  ion-align-items-center
+                  ion-margin-top
+                  ion-margin-bottom
+                "
+              >
+                <h2 class="ion-margin-top ion-margin-bottom ion-margin-end">
+                  {{titulo}}
+                </h2>
+                <ion-fab-button [routerLink]="['nuevo']" size="small">
+                  <ion-icon name="add"></ion-icon>
+                </ion-fab-button>
+              </ion-row>
+
+              <ion-row class="ion-align-items-center">
+                <ion-col size="11"
+                  ><app-search-bar
+                    (buscar)="filtrarUsuarios($event)"
+                    [atributos]="['username', 'email']"
                   >
-                    <!-- <ion-item lines="none"> -->
-                    <!-- <ion-row class="ion-justify-content-between"> -->
-                      <!-- class="ion-float-left ion-margin-end" -->
-                      <ion-col size="3" size-md="2">
-                        <app-usuario-img [src]="u.img_url"></app-usuario-img>
-
-                      </ion-col>
-                      <ion-col size-md="10">
-                        <!-- class="ion-float-left"> -->
-                        <ion-label class="ion-margin-start">
-                          <ion-card-subtitle title="Username">{{u.username}}</ion-card-subtitle>
-                          <ion-text title="Nombre"
-                            ><b>{{getFullName(u.profile_id)}}</b></ion-text
-                          >
-                          <!-- <ion-card-subtitle title="e-mail"
-                            ><a [href]="'mailto:'+u.email">
-                              {{ u.email }}
-                            </a></ion-card-subtitle
-                          > -->
-                          <!-- <ion-card-subtitle title="DNI">DNI {{u.dni}}</ion-card-subtitle> -->
-                        </ion-label>
-
-                      </ion-col>
-
-                    <!-- </ion-row> -->
-                    <!-- </ion-item> -->
-                    <ion-buttons class="ion-hide-md-up">
-                      <ion-button (click)="mostrarAcciones($event, u.id)">
-                        <ion-icon
-                          slot="icon-only"
-                          ios="ellipsis-horizontal"
-                          md="ellipsis-vertical"
-                        ></ion-icon>
-                      </ion-button>
-                    </ion-buttons>
-                  </ion-row>
-
-                  <!-- </ion-col>
-                    <ion-col size="2" class="ion-hide-md-up"> -->
-                  <!-- <ion-buttons>
-                        <ion-button (click)="mostrarAcciones($event, u.id)">
-                          <ion-icon
-                            slot="icon-only"
-                            ios="ellipsis-horizontal"
-                            md="ellipsis-vertical"
-                          ></ion-icon>
-                        </ion-button>
-                      </ion-buttons> -->
-                  <!-- </ion-col>
-                  </ion-row> -->
-
-                  <!-- <ion-item lines="none">
-                    <app-usuario-img
-                      class="ion-float-left ion-margin-end"
-                      [src]="u.img_url"
-                    ></app-usuario-img>
-
-                    <ion-label class="ion-float-left">
-                      <ion-card-subtitle>{{u.username}}</ion-card-subtitle>
-                      <ion-text><b>{{u.name + ' ' + u.last_name}}</b></ion-text>
-                      <ion-card-subtitle><a [href]="'mailto:'+u.email"> {{ u.email }} </a></ion-card-subtitle>
-                      <ion-card-subtitle>DNI {{u.dni}}</ion-card-subtitle>
-                    </ion-label>
-                  
-                    <ion-buttons class="ion-hide-md-up">
-                      <ion-button (click)="mostrarAcciones($event, u.id)">
-                        <ion-icon
-                          slot="icon-only"
-                          ios="ellipsis-horizontal"
-                          md="ellipsis-vertical"
-                        ></ion-icon>
-                      </ion-button>
-                    </ion-buttons>
-                  </ion-item> -->
-                </ion-col>
-                <ion-col
-                  size="2"
-                  class="ion-hide-md-down ion-align-self-center"
+                  </app-search-bar
+                ></ion-col>
+                <ion-col size="1">
+                  <ion-button (click)="toggleFiltro()" color="medium">
+                    <ion-icon name="funnel"></ion-icon>
+                    <!-- <ion-icon name="options"></ion-icon> -->
+                  </ion-button></ion-col
                 >
-                  <!-- <ion-text>{{ u.rol_id }}</ion-text> -->
-                  <ion-text>{{ getRoleType(u.role_id) }}</ion-text>
-                  <!-- <ion-text>{{ db.getRoleType(u.rol_id) }}</ion-text> -->
-                </ion-col>
-                <!-- <ion-col
-                  size="2"
-                  class="ion-hide-md-down ion-align-self-center"
-                >
-                <a [href]="'mailto:'+u.email"> {{ u.email }} </a>
-                </ion-col> -->
-                <ion-col
-                  size="2"
-                  class="ion-hide-md-down ion-align-self-center"
-                >
-                  <!-- <ion-text>{{  u.fotoclub_id }}</ion-text> -->
-                  <ion-text>{{  getFotoclubName(u.profile_id) }}</ion-text>
-                  <!-- <ion-text>{{ db.getFotoclubName(u.fotoclub_id) }}</ion-text> -->
-                </ion-col>
-                <ion-col
-                  size="2"
-                  class="ion-align-self-center ion-hide-md-down"
-                >
-                  <ion-buttons>
-                    <ion-button [routerLink]="['editar/' + u.id]">
-                      <ion-icon name="create"></ion-icon>
-                    </ion-button>
-                    <ion-button (click)="deleteUsuario(u.id)">
-                      <ion-icon name="trash"></ion-icon>
-                    </ion-button>
-                  </ion-buttons>
-                </ion-col>
+              </ion-row>
+
+              <ion-row class="ion-hide-md-down">
+                <ion-col size="6">Usuario</ion-col>
+                <ion-col size="2">Rol</ion-col>
+                <ion-col size="2">Entidad</ion-col>
+                <ion-col size="2">Acciones</ion-col>
               </ion-row>
             </ion-grid>
-          </ion-item>
-        </ion-list>
-        <ng-template #texto >
-          <ion-item>
-            <ion-spinner *ngIf="loading"></ion-spinner>
-            <ion-item *ngIf="!loading">No hay usuarios</ion-item>
-            <ion-item *ngIf="searchParams != undefined"> con {{searchParams.atributo}} que empiece con '{{ searchParams.query }}'</ion-item>
-          </ion-item>
-        </ng-template>
+
+            <ion-list *ngIf="usuariosFiltrados.length > 0; else texto">
+              <ion-item *ngFor="let u of usuariosFiltrados">
+                <ion-grid>
+                  <ion-row size="12">
+                    <ion-col size="12" size-md="6">
+                      <ion-row
+                        class="
+                          ion-align-items-center ion-justify-content-between
+                        "
+                      >
+                        <ion-col size="3" size-md="2">
+                          <app-usuario-img [src]="u.img_url"></app-usuario-img>
+                        </ion-col>
+                        <ion-col size-md="10">
+                          <ion-label class="ion-margin-start">
+                            <ion-card-subtitle title="Username"
+                              >{{u.username}}</ion-card-subtitle
+                            >
+                            <ion-text title="Nombre"
+                              ><b>{{getFullName(u.profile_id)}}</b></ion-text
+                            >
+                          </ion-label>
+                        </ion-col>
+                        <ion-buttons class="ion-hide-md-up">
+                          <ion-button (click)="mostrarAcciones($event, u.id)">
+                            <ion-icon
+                              slot="icon-only"
+                              ios="ellipsis-horizontal"
+                              md="ellipsis-vertical"
+                            ></ion-icon>
+                          </ion-button>
+                        </ion-buttons>
+                      </ion-row>
+                    </ion-col>
+                    <ion-col
+                      size="2"
+                      class="ion-hide-md-down ion-align-self-center"
+                    >
+                      <ion-text>{{ getRoleType(u.role_id) }}</ion-text>
+                    </ion-col>
+                    <ion-col
+                      size="2"
+                      class="ion-hide-md-down ion-align-self-center"
+                    >
+                      <ion-text>{{ getFotoclubName(u.profile_id) }}</ion-text>
+                    </ion-col>
+                    <ion-col
+                      size="2"
+                      class="ion-align-self-center ion-hide-md-down"
+                    >
+                      <ion-buttons>
+                        <ion-button [routerLink]="['editar/' + u.id]">
+                          <ion-icon name="create"></ion-icon>
+                        </ion-button>
+                        <ion-button (click)="deleteUsuario(u.id)">
+                          <ion-icon name="trash"></ion-icon>
+                        </ion-button>
+                      </ion-buttons>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </ion-list>
+            <ng-template #texto>
+              <ion-item>
+                <ion-spinner *ngIf="loading"></ion-spinner>
+                <ion-item *ngIf="!loading">No hay usuarios</ion-item>
+                <ion-item *ngIf="searchParams != undefined">
+                  con {{searchParams.atributo}} que empiece con '{{
+                  searchParams.query }}'</ion-item
+                >
+              </ion-item>
+            </ng-template>
+          </ion-col>
+        </ion-row>
       </ion-col>
     </ion-row>
-    </ion-col>
-  </ion-row>
   </ion-grid>
 
   <ion-fab
