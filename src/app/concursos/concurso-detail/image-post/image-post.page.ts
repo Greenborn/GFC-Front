@@ -20,6 +20,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   // @Input() contestResult: ContestResult;
   @Input() image: Image = this.imageService.template;
   @Input() profiles: Profile[];
+  public tamWidth = window.screen.width;
   
   // @ViewChild('s') selectConcursante: ElementRef;
   // @ViewChild('formImage') formImage: HTMLFormElement;
@@ -41,7 +42,12 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     return (this.image.id != undefined ? 'Editar' : 'Agregar') + ` imagen a ${this.concurso}`
   }
 
-  async ngOnInit() {}
+  async ngOnInit() {
+    window.onresize = this.actualizarWidth;
+  }
+  actualizarWidth(){
+    this.tamWidth = window.screen.width;
+  }
 
   async postImage() {
     // console.log({

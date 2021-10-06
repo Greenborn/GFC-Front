@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -25,25 +25,31 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-ion-modal.auto-width {
-  &.bottom {
+.ion-page {
+}
+
+@media (min-width: 768px) {
+  ion-modal.auto-width {
+    &.bottom {
       align-items: flex-end;
-  }
+    }
 
-  --height: auto;
+    --height: auto;
 
-  .ion-page {
+    .ion-page {
       position: relative;
       display: block;
       contain: content;
 
       .inner-content {
-          max-height: 80vh;
-          overflow: auto;
-          padding: 10px;
+        max-height: 80vh;
+        overflow: auto;
+        padding: 10px;
       }
+    }
   }
 }
 
 .w-100 {
-  width: 100%; }
+  width: 100%;
+}
