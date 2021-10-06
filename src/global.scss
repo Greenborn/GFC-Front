@@ -25,19 +25,23 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+ion-modal.auto-width {
+  &.bottom {
+      align-items: flex-end;
+  }
 
-.small-modal{
-  .modal-wrapper {
-    position: absolute;
-    bottom: 0;
-    min-height: initial;
-    // max-width: 900px;
-    top: initial;
-    height: 66%;
-    @media (min-width: 1300px) {
-      bottom: 25%;
-      height: 50%;
-    }
+  --height: auto;
+
+  .ion-page {
+      position: relative;
+      display: block;
+      contain: content;
+
+      .inner-content {
+          max-height: 80vh;
+          overflow: auto;
+          padding: 10px;
+      }
   }
 }
 

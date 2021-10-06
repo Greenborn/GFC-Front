@@ -148,7 +148,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
 
     const modal = await this.modalController.create({
       component: ImageReviewPage,
-      cssClass: 'small-modal',
+      cssClass: 'auto-width',
       componentProps: {
         "concurso": this.concurso.name,
         "modalController": this.modalController,
@@ -197,7 +197,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
 
     const modal = await this.modalController.create({
       component: ImagePostPage,
-      cssClass: 'small-modal',
+      cssClass: 'auto-width',
       componentProps
     });
     await modal.present()
@@ -350,7 +350,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
           }
         ]
       },
-      cssClass: 'my-custom-class',
+      cssClass: 'auto-width',
       event: ev,
       translucent: true,
       // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto

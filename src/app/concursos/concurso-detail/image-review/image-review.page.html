@@ -1,83 +1,92 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-row class="ion-align-items-center">
-      <!-- <ion-back-button [defaultHref]="'/concursos/' + id"></ion-back-button> -->
-      <!-- <ion-back-button (click)="dismiss()"></ion-back-button> -->
-      <ion-button (click)="dismiss()" fill="clear" class="">
-        <ion-icon name="close-outline"></ion-icon>
-      </ion-button>
-      <h5 class="ion-text-wrap">Puntuar imagen de {{ concurso }}</h5>
-    </ion-row>
-  </ion-toolbar>
-</ion-header>
+<div class="ion-page">
+  <ion-header>
+    <ion-toolbar>
+      <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
+        <!-- <ion-back-button [defaultHref]="'/concursos/' + id"></ion-back-button> -->
+        <!-- <ion-back-button (click)="dismiss()"></ion-back-button> -->
+        <ion-col>
+          <h5 class="ion-text-wrap">Puntuar imagen de {{ concurso }}</h5>
+        </ion-col>
+        <ion-col size="1">
+          <ion-button (click)="dismiss()" fill="clear" class="">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-content>
-  <ion-grid>
-    <ion-row class="ion-justify-content-center ion-align-self-center">
-      <ion-col>
-        <ion-row>
-          <ion-col>
-            <ion-row>
-              <ion-col class="ion-align-self-center">
-                <ion-card-subtitle title="Código de la obra"
-                  >{{ image.code }}</ion-card-subtitle
-                >
-                <ion-text title="Nombre de la obra"
-                  ><b>{{image.title}}</b></ion-text
-                >
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <form #formReview="ngForm" (ngSubmit)="postReview(formReview)">
-                  <ion-item class="w-100 ion-margin-bottom">
-                    <ion-label position="floating">Premio</ion-label>
-                    <ion-input
-                      [ngModel]="review.prize"
-                      name="prize"
-                      required
-                    ></ion-input>
-                  </ion-item>
-                  <ion-item class="w-100 ion-margin-bottom">
-                    <ion-label position="floating">Puntaje</ion-label>
-                    <ion-input
-                      [ngModel]="review.score"
-                      name="score"
-                      required
-                    ></ion-input>
-                  </ion-item>
-                  <ion-row class="ion-justify-content-end">
-                    <ion-col size="12">
-                      <ion-row class="ion-justify-content-end">
-                        <ion-button
-                          (click)="dismiss()"
-                          fill="clear"
-                          class="ion-margin-start"
-                        >
-                          Cancelar</ion-button
-                        >
-                        <ion-button
-                          expand="block"
-                          type="submit"
-                          class="ion-margin-start"
-                          [disabled]="!formReview.valid"
-                        >
-                          <ion-spinner
-                            *ngIf="posting"
-                            class="ion-margin-end"
-                            size="small"
-                          ></ion-spinner>
-                          Guardar
-                        </ion-button>
-                      </ion-row>
-                    </ion-col>
-                  </ion-row>
-                </form>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+  <div class="inner-content">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center ion-align-self-center">
+        <ion-col>
+          <ion-row>
+            <ion-col>
+              <ion-row>
+                <ion-col class="ion-align-self-center">
+                  <ion-card-subtitle title="Código de la obra"
+                    >{{ image.code }}</ion-card-subtitle
+                  >
+                  <ion-text title="Nombre de la obra"
+                    ><b>{{image.title}}</b></ion-text
+                  >
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <form
+                    #formReview="ngForm"
+                    (ngSubmit)="postReview(formReview)"
+                  >
+                    <ion-item class="w-100 ion-margin-bottom">
+                      <ion-label position="floating">Premio</ion-label>
+                      <ion-input
+                        [ngModel]="review.prize"
+                        name="prize"
+                        required
+                      ></ion-input>
+                    </ion-item>
+                    <ion-item class="w-100 ion-margin-bottom">
+                      <ion-label position="floating">Puntaje</ion-label>
+                      <ion-input
+                        [ngModel]="review.score"
+                        name="score"
+                        required
+                      ></ion-input>
+                    </ion-item>
+                    <ion-row class="ion-justify-content-end">
+                      <ion-col size="12">
+                        <ion-row class="ion-justify-content-end">
+                          <ion-button
+                            (click)="dismiss()"
+                            fill="clear"
+                            class="ion-margin-start"
+                          >
+                            Cancelar</ion-button
+                          >
+                          <ion-button
+                            expand="block"
+                            type="submit"
+                            class="ion-margin-start"
+                            [disabled]="!formReview.valid"
+                          >
+                            <ion-spinner
+                              *ngIf="posting"
+                              class="ion-margin-end"
+                              size="small"
+                            ></ion-spinner>
+                            Guardar
+                          </ion-button>
+                        </ion-row>
+                      </ion-col>
+                    </ion-row>
+                  </form>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</div>
