@@ -46,7 +46,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     private fotoclubService: FotoclubService,
     alertCtrl: AlertController
   ) { 
-    super('usuario post page', alertCtrl)
+    super(alertCtrl)
   }
 
   // userIsAdmin(){ //agregado para evitar error de que auth no es publico

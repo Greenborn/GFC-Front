@@ -13,11 +13,15 @@ export class ImageService extends ApiService<Image> {
     http: HttpClient,
     config: ConfigService
   ) {
-    super('image', http, config, {
+    super('image', http, config)
+   }
+
+   get template(): Image {
+    return {
       id: undefined,
       code: undefined,
       title: undefined,
       profile_id: undefined
-    })
-   }
+    }
+  }
 }

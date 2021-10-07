@@ -51,10 +51,10 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     alertCtrl: AlertController,
     private popoverCtrl: PopoverController,
     private router: Router,
-    private auth: AuthService,
+    public auth: AuthService,
     public rolificador: RolificadorService
   ) { 
-    super('usuarios abm page', alertCtrl)
+    super(alertCtrl)
   }
 
   toggleFiltro() {

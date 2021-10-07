@@ -13,11 +13,15 @@ export class ProfileService extends ApiService<Profile> {
     http: HttpClient,
     config: ConfigService
   ) {
-    super('profile', http, config, {
+    super('profile', http, config)
+   }
+
+   get template(): Profile {
+    return {
       id: undefined,
       name: undefined,
       last_name: undefined,
       fotoclub_id: undefined
-    })
-   }
+    }
+  }
 }

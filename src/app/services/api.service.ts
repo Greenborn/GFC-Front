@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiSerializedResponse } from '../models/ApiResponse';
@@ -8,19 +8,17 @@ import { ConfigService } from './config/config.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService<T> {
+export abstract class ApiService<T> {
 
   
   constructor(
-    private recurso: string,
+    @Inject(String) private recurso: string,
     private  http: HttpClient,
     private config: ConfigService,
-    private _template: T
+    // private _template: T
   ) { }
 
-  get template() {
-    return {...this._template}
-  }
+  abstract get template(): T;
 
   get<K = T>(id: number, getParams: string = ''): Observable<K> {
     console.log('get', this.recurso, id)

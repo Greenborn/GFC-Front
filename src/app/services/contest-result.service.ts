@@ -14,11 +14,15 @@ export class ContestResultService extends ApiService<ContestResult> {
     http: HttpClient,
     config: ConfigService
   ) {
-    super('contest-result', http, config, {
+    super('contest-result', http, config)
+  }
+
+  get template(): ContestResult {
+    return {
       id: undefined,
       contest_id: undefined,
       image_id: undefined,
       metric_id: undefined
-    })
+    }
   }
 }

@@ -23,7 +23,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     private router: Router,
     alertCtrl: AlertController
   ) { 
-    super('concurso post page', alertCtrl)
+    super(alertCtrl)
   }
 
   async ngOnInit() {

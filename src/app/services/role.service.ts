@@ -13,9 +13,13 @@ export class RoleService extends ApiService<Role> {
     http: HttpClient,
     config: ConfigService
   ) {
-    super('role', http, config, {
+    super('role', http, config)
+   }
+
+   get template(): Role {
+    return {
       id: undefined,
       type: undefined
-    })
-   }
+    }
+  }
 }
