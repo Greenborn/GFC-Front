@@ -35,7 +35,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     // private profileService: ProfileService,
     alertCtrl: AlertController
   ) { 
-    super('image post page', alertCtrl)
+    super(alertCtrl)
   }
 
   get formTitle(): string {

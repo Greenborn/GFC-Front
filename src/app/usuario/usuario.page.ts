@@ -29,7 +29,7 @@ export class UsuarioPage extends ApiConsumer implements OnInit {
     private userService: UserService,
     public profileService: ProfileService
   ) { 
-    super('usuario page', alertCtrl)
+    super(alertCtrl)
   }
 
   ngOnInit() {

@@ -61,7 +61,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     private imageService: ImageService,
     private rolificador: RolificadorService
   ) {
-    super('concurso detail page', alertCtrl)
+    super(alertCtrl)
    }
 
   async ngOnInit() {
@@ -326,13 +326,16 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
             super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe(
               _ => {
                 // this.alertCtrl.dismiss()
-                this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
+                // this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
+                this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
                 super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
-                  _ => this.images.splice(this.images.findIndex(i => i.id == image_id), 1),
+                  _ => {},
+                  // _ => this.images.splice(this.images.findIndex(i => i.id == image_id), 1),
                   async err => super.displayAlert(err.error['error-info'][2])
                 )
                 super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe(
-                  _ => this.metrics.splice(this.metrics.findIndex(i => i.id == metric_id), 1),
+                  _ => {},
+                  // _ => this.metrics.splice(this.metrics.findIndex(i => i.id == metric_id), 1),
                   async err => super.displayAlert(err.error['error-info'][2])
                 )
 
@@ -367,8 +370,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
             label: 'Editar'
           },
           {
-            accion: (params: number[]) => this.deleteImage(params[0], r.id, r.metric_id),
-            params: [r.image_id],
+            accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
+            params: [],
             icon: 'trash',
             label: 'Borrar'
           }

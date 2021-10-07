@@ -13,10 +13,14 @@ export class MetricService extends ApiService<Metric> {
     http: HttpClient,
     config: ConfigService
   ) {
-    super('metric', http, config, {
+    super('metric', http, config)
+   }
+
+   get template(): Metric {
+    return {
       id: undefined,
       prize: undefined,
       score: undefined
-    })
-   }
+    }
+  }
 }

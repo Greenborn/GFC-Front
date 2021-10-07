@@ -15,12 +15,16 @@ export class UserService extends ApiService<User> {
     http: HttpClient,
     config: ConfigService
   ) {
-    super('user', http, config, {
+    super('user', http, config)
+   }
+
+   get template(): User {
+    return {
       id: undefined,
       username: undefined,
       role_id: undefined,
       profile_id: undefined
-    })
-   }
+    }
+  }
    
 }

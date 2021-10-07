@@ -37,7 +37,7 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
     private metricService: MetricService,
     alertCtrl: AlertController
   ) { 
-    super('image review page', alertCtrl)
+    super(alertCtrl)
   }
 
   ngOnInit() {

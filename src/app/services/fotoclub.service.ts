@@ -13,9 +13,13 @@ export class FotoclubService extends ApiService<Fotoclub> {
     http: HttpClient,
     config: ConfigService
   ) {
-    super('fotoclub', http, config, {
+    super('fotoclub', http, config)
+   }
+
+   get template(): Fotoclub {
+    return {
       id: undefined,
       name: undefined
-    })
-   }
+    }
+  }
 }

@@ -1,15 +1,18 @@
-import { OnDestroy } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { AlertController } from "@ionic/angular";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
+@Component({
+  template: ''
+})
 export abstract class ApiConsumer implements OnDestroy {
 
   // // https://dev.to/re4388/use-rxjs-takeuntil-to-unsubscribe-1ffj
   private readonly unsubscribe$: Subject<void> = new Subject();
 
   constructor(
-    private name: string,
+    // private name: string,
     protected alertCtrl: AlertController
   ) { }
 
@@ -33,7 +36,7 @@ async displayAlert(message: string) {
   }
 
   ngOnDestroy() {
-    console.log(`unsuscribed ${this.name}`)
+    // console.log(`unsuscribed ${this.name}`)
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

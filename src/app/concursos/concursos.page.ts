@@ -38,7 +38,8 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     private contestService: ContestService,
     alertController: AlertController
   ) { 
-    super('concursos page', alertController)
+    // super('concursos page', alertController)
+    super(alertController)
   }
 
   isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
