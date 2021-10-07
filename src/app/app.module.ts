@@ -18,6 +18,9 @@ import { GestionModule } from './modules/gestion/gestion.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './modules/auth/services/auth-interceptor.service';
 
+//componente de ojo
+// import { InputOjoComponent } from '../app/shared/input-ojo/input-ojo.component'
+
 //componente de usuarios
 // import { TablaUsuariosComponent } from './tabla-usuarios/tabla-usuarios.component'
 
@@ -27,6 +30,7 @@ import { AuthInterceptorService } from './modules/auth/services/auth-interceptor
     AppComponent,
     NavbarComponent,
     SidebarComponent
+    // InputOjoComponent
   ],
   entryComponents: [],
   imports: [
@@ -35,7 +39,7 @@ import { AuthInterceptorService } from './modules/auth/services/auth-interceptor
     AppRoutingModule,
     ConcursosPageModule,
     SharedModule,
-    AuthModule,
+    AuthModule
     // GestionModule
   ],
   providers: [

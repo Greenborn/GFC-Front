@@ -3,19 +3,20 @@ import { CommonModule } from '@angular/common';
 import { UsuarioImgComponent } from './usuario-img/usuario-img.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { MenuAccionesComponent } from './menu-acciones/menu-acciones.component';
-
+import { InputOjoComponent } from './input-ojo/input-ojo.component';
 
 
 @NgModule({
   declarations: [
     UsuarioImgComponent,
     SearchBarComponent,
-    MenuAccionesComponent
+    MenuAccionesComponent,
+    InputOjoComponent
   ],
   imports: [
     CommonModule,
   ],
-  exports: [UsuarioImgComponent, SearchBarComponent, MenuAccionesComponent],
+  exports: [UsuarioImgComponent, SearchBarComponent, MenuAccionesComponent, InputOjoComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule { }
