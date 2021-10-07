@@ -36,7 +36,7 @@
                   *ngIf="(authService.user | async) as u"
                 >
                   <ion-card-title class="ion-text-center"
-                  >{{ u.user.username }}</ion-card-title>
+                  >{{ u.username }}</ion-card-title>
 
                   <ion-card-subtitle class="ion-text-center"
                   >{{u.profile.name}} {{u.profile.last_name}}</ion-card-subtitle>

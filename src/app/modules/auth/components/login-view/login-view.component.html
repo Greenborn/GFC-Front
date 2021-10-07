@@ -1,89 +1,62 @@
-
 <ion-content>
-  <div class="padding">
-      <ion-grid>
+  <ion-grid>
+    <ion-col>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" size-md="4">
+          <ion-row class="ion-justify-content-center margin-top">
+            <ion-img
+              class="logoEntrada"
+              src="../../assets/portadaGFC.png"
+            ></ion-img>
+          </ion-row>
 
-        <ion-row class="ion-justify-content-center">
-          <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="4">
+          <ion-row class="">
+            <ion-card class="ion-margin-top expand-full">
+              
+                <ion-item class="ion-margin">
+                  <ion-label position="stacked">Username</ion-label>
+                  <ion-input
+                    class="text-right"
+                    (keypress)="keyPress($event)"
+                    [(ngModel)]="login.username"
+                    ngDefaultControl
+                  ></ion-input>
+                </ion-item>
 
-            <div class="logo"><ion-img  src="assets/imgs/logo.png" ></ion-img></div>
-          
-          </ion-col>
-        </ion-row> 
-        
-        <ion-row class="ion-justify-content-center">
-          <ion-col size-xs="11" size-sm="8" size-md="4"  size-lg="2">
-            
-            <ion-item >
-              <ion-label position="stacked">Username</ion-label>
-              <!-- <ion-input tabindex="0" type="mail" placeholder="Correo electrónico" class="text-right" -->
-              <ion-input class="text-right"
-                (keypress)="keyPress($event)"
-                [(ngModel)]="login.username" ngDefaultControl 
-              ></ion-input>
-            </ion-item>
+                <ion-item class="ion-margin">
+                  <ion-label position="stacked">Contraseña</ion-label>
+                  <ion-input
+                    #passInput
+                    tabindex="0"
+                    type="password"
+                    class="text-right"
+                    (keypress)="keyPress($event, 'next')"
+                    [(ngModel)]="login.password"
+                    ngDefaultControl
+                  ></ion-input>
+                </ion-item>
 
-          <!-- </ion-col> -->
-        <!-- </ion-row> -->
-
-        <!-- <ion-row> -->
-          <!-- <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4"> -->
-            
-            <ion-item>
-              <ion-label position="stacked">Contraseña</ion-label>
-              <ion-input #passInput tabindex="0" type="password" class="text-right" 
-                (keypress)="keyPress($event, 'next')"
-                [(ngModel)]="login.password" ngDefaultControl 
-              ></ion-input>
-            </ion-item>
-
-          <!-- </ion-col> -->
-        <!-- </ion-row> -->
-
-        <!-- <ion-row>
-          <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4">
-            
-            <ion-item lines="none">
-              <ion-button slot="end" fill="clear" routerLink="/reset-password">¿Olvidó su contraseña?</ion-button>
-            </ion-item>
-
-          </ion-col>
-        </ion-row> -->
-
-        <!-- <ion-row> -->
-
-          <!-- <ion-col size-xs="12" size-md="8" offset-md="2" size-lg="4" offset-lg="4"> -->
-          
-            <!-- <ion-row> -->
-              <!-- <ion-col> -->
-                <ion-button expand="block" shape="round" fill="outline"  class="ion-margin-vertical"
-                  *ngIf="login.username != '' && login.password != ''" (click)="next()"
+                <!-- color="primary" -->
+                <ion-button
+                color="primary"
+                  expand="block"
+                  class="ion-margin"
+                  (click)="next()"
                 >
-                  <ion-label *ngIf="!loading; else spinner"
-                  >Ingresar</ion-label>
+                  <ion-label *ngIf="!loading; else spinner">Ingresar</ion-label>
                   <ng-template #spinner>
                     <ion-spinner></ion-spinner>
                   </ng-template>
                 </ion-button>
-              <!-- </ion-col> -->
-      
-              <!-- <ion-col>
-                <ion-button color="tertiary" expand="block" shape="round" routerLink="/register">Registrarse</ion-button>
-              </ion-col> -->
-            <!-- </ion-row> -->
 
-            <!-- <ion-row *ngIf="error != undefined;"> -->
-              <!-- <ion-col> -->
-                <ion-item color="danger" *ngIf="error != undefined;">
-                  <ion-label>{{error}}</ion-label>
+                <ion-item color="danger" *ngIf="error != undefined">
+                  <ion-label>{{ error }}</ion-label>
                 </ion-item>
-              <!-- </ion-col> -->
-            <!-- </ion-row> -->
-
-          </ion-col>
-
-        </ion-row>
-
-      </ion-grid>
-  </div>
+              
+            </ion-card>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-grid>
 </ion-content>

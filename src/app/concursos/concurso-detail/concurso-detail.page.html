@@ -26,7 +26,6 @@
           >
         </ion-col>
         <ion-col *ngIf="isLogedIn()" class="ion-align-self-end">
-          <!-- <ion-buttons slot="end"> -->
           <ion-button class="ion-float-right" (click)="deleteConcurso()">
             <ion-icon name="trash"></ion-icon>
           </ion-button>
@@ -237,19 +236,8 @@
                       size="4"
                       size-md="3"
                     >
-                      <!-- <ion-text>Martin Martinez  Martinez</ion-text> -->
-                      <!--    TODO: componente usuario -->
                       <ion-item lines="none">
-                        <!-- <app-usuario-img
-                        class="ion-float-left ion-margin-end"
-                       
-                      ></app-usuario-img> -->
-
-                        <!-- <ion-label class="ion-float-left"> -->
                         <ion-label>
-                          <!-- <ion-card-subtitle>username</ion-card-subtitle> -->
-                          <!-- <ion-card-subtitle><a [href]="'mailto:'+'@'"> lmm@gmail </a></ion-card-subtitle> -->
-                          <!-- <ion-text><b>Perfil id {{ getImage(r).profile_id }}</b></ion-text> -->
                           <ion-card-subtitle title="Entidad del autor"
                           >{{ getFotoclubName(r.image.profile_id) }}</ion-card-subtitle>
                           <!-- >{{ getFotoclubName(r) }}</ion-card-subtitle> -->
