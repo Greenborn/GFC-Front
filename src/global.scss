@@ -48,6 +48,20 @@
       }
     }
   }
+
+  .picker-wrapper.sc-ion-picker-md {
+    bottom: auto;
+    top: 40%;
+  }
+
+  .picker-wrapper ion-picker-column{
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+  }
+  }
+
+  
 }
 
 .w-100 {

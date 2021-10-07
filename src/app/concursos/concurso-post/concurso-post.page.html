@@ -38,23 +38,50 @@
               <ion-col size="6" class="ion-no-padding">
                 <ion-item class="ion-no-padding">
                   <ion-label position="stacked">Inicio</ion-label>
-                  <ion-input
+                  <!-- <ion-input
                     type="date"
                     name="start_date"
                     [ngModel]="concurso.start_date"
                     required
-                  ></ion-input>
+                  ></ion-input> -->
+                  <!-- TODO: revisar scroll en PC, ver css global -->
+                  <!-- TODO: modificar el max de fecha como la fecha actual + 10 años -->
+                  <ion-datetime 
+                    displayFormat="DD/MMM/YYYY"
+                    monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
+                    monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
+                    min="1967"
+                    max="2050"
+                    name="start_date"
+                    [ngModel]="concurso.start_date"
+                    required
+                    doneText="Elegir"
+                    cancelText="Cancelar"
+                  ></ion-datetime>
                 </ion-item>
               </ion-col>
               <ion-col size="6" class="ion-no-padding">
                 <ion-item class="ion-no-padding">
                   <ion-label position="stacked">Finalización</ion-label>
-                  <ion-input
+                  <!-- <ion-input
                     type="date"
                     name="end_date"
                     [ngModel]="concurso.end_date"
                     required
-                  ></ion-input>
+                  ></ion-input> --> 
+                  <!-- TODO: modificar el max de fecha como la fecha actual + 10 años -->
+                  <ion-datetime 
+                    displayFormat="DD/MMM/YYYY"
+                    monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
+                    monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
+                    min="1967"
+                    max="2050"
+                    name="end_date"
+                    [ngModel]="concurso.end_date"
+                    required
+                    doneText="Elegir"
+                    cancelText="Cancelar"
+                  ></ion-datetime>
                 </ion-item>
               </ion-col>
             </ion-item>
@@ -86,10 +113,14 @@
                     expand="block"
                     type="submit"
                     [disabled]="!f.valid"
-                    >
-                      <ion-spinner *ngIf="posting" class="ion-margin-end" size="small"></ion-spinner>
-                      Guardar
-                    </ion-button>
+                  >
+                    <ion-spinner
+                      *ngIf="posting"
+                      class="ion-margin-end"
+                      size="small"
+                    ></ion-spinner>
+                    Guardar
+                  </ion-button>
                 </ion-col>
 
                 <ion-col

@@ -23,16 +23,16 @@ export class ContestService extends ApiService<Contest> {
   }
 
   formatearFechaParaHTML(fecha: string): string {
-    const d = new Date(parseInt(fecha));
-    let anio = d.getFullYear().toString();
-    let mes = (d.getMonth()+1).toString();
-    if (mes.length == 1) mes = '0' + mes;
-    let dia = d.getDate().toString();
-    if (dia.length == 1) dia = '0' + dia;
-    return `${anio}-${mes}-${dia}`;
+    // console.log("lo que trae: " + fecha)
+    let cadena:string[] = fecha.split("-");
+    let meses = ['','ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    return `${cadena[0]}/${meses[parseInt(cadena[1])]}/${cadena[2]}`;
   }
+
+  //TODO: cambiar en la db los tipos de las fechas por date
   
   formatearFechaParaBD(fecha: string): string {
-    return Date.parse(fecha).toString();
+    const d = new Date(fecha);
+    return d.toISOString();
   }
 }
