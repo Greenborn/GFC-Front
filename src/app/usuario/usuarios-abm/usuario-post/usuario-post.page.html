@@ -65,11 +65,12 @@
 
               <!-- </ion-col> -->
               <!-- <ion-col size-md="3" size="12"> -->
-              <ion-item class="expand-full">
+              <ion-item class="expand-full" *ngIf="!updatingSelect; else spinner">
                 <ion-label [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub</ion-label>
                 <ion-select #sFotoclub
                   name="fotoclub_id" 
                   [(ngModel)]="profile.fotoclub_id"
+                  [disabled]="!isAdmin"
                   required
                 >
                   <ion-select-option 
@@ -108,7 +109,7 @@
               <!-- </ion-col> -->
               <!-- <ion-col size-md="5" size="12"> -->
 
-              <ion-item class="expand-full">
+              <ion-item class="expand-full" *ngIf="!updatingSelect; else spinner">
                 <!-- <ion-label [position]="(usuario.rol_id != undefined) ? 'stacked' : 'floating'">Rol</ion-label> -->
                 <ion-label [position]="'stacked'">Rol</ion-label>
                 <!-- [value]="(usuario.role_id == undefined) ? 2 : usuario.role_id" -->
@@ -191,3 +192,7 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<ng-template #spinner>
+  <ion-spinner></ion-spinner> 
+</ng-template>

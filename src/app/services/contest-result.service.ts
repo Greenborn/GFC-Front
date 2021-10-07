@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ContestResult } from '../models/contest_result.model';
+import { Observable } from 'rxjs';
+import { ContestResult, ContestResultExpanded } from '../models/contest_result.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
 
@@ -19,5 +20,5 @@ export class ContestResultService extends ApiService<ContestResult> {
       image_id: undefined,
       metric_id: undefined
     })
-   }
+  }
 }

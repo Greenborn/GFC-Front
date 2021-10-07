@@ -33,7 +33,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
   public isPost: boolean = true;
   public posting: boolean = false;
-  public user: User;
+  public userLogged: User;
+  public updatingSelect: boolean = false
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -54,14 +55,14 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   // }
 
   get formTitle(): string {
-    if (this.user == undefined) return ''
+    if (this.userLogged == undefined) return ''
     const c = this.usuario;
     return  (c.id != null ? 'Editar ' : 'Agregar ') + 
-              (c.id == this.user.id ? 'perfil' : 
-              (this.user.role_id == 0 ? 'miembro' : 'concursante'))
+              (c.id == this.userLogged.id ? 'perfil' : 
+              (this.userLogged.role_id == 0 ? 'miembro' : 'concursante'))
   }
   get isAdmin(): boolean {
-    return this.user == undefined ? false : this.user.role_id == 1
+    return this.userLogged == undefined ? false : this.userLogged.role_id == 1
   }
 
   async ngOnInit() {
@@ -72,8 +73,11 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       const id = paramMap.get('id');
       if (id != null) {
         this.isPost = false
-        super.fetch<User>(() => this.userService.get(parseInt(id))).subscribe(u => this.usuario = u)
-        super.fetch<Profile>(() => this.profileService.get(parseInt(id))).subscribe(p => this.profile = p)
+        super.fetch<User>(() => this.userService.get(parseInt(id))).subscribe(u => {
+          this.usuario = u
+          super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => this.profile = p)
+        })
+        
       } else {
         this.isPost = true
       }
@@ -83,9 +87,13 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   ionViewWillEnter() {
     // super.fetch<User[]>(() => this.userService.getAll()).subscribe(r => this.users = r)
     this.auth.user.then(u => {
-      this.user = u
+      this.userLogged = u
       if (this.isPost) {
-        this.usuario.role_id = 2 // los no admin cargan delegados (select rol desactivado)
+        this.updatingSelect = true
+        console.log('si')
+        this.usuario.role_id = 3 // los no admin cargan delegados (select rol desactivado)
+        this.profile.fotoclub_id = u.profile.fotoclub_id
+        setTimeout(() => this.updatingSelect = false, 420)
       }
     })
   }
@@ -100,10 +108,13 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
   async postUsuario(f: NgForm) {
     if (f.valid) {
+      // console.log('posteando form', f.value, this.selectRol.value, this.selectFotoclub.value)
+      
       const pm: Profile = {
         name: f.value.name, 
         last_name: f.value.last_name, 
-        fotoclub_id: f.value.fotoclub_id
+        // fotoclub_id: f.value.fotoclub_id
+        fotoclub_id: this.selectFotoclub.value
       }
       
       this.posting = true
@@ -113,7 +124,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           // console.log('posteado perfil', p)
           const um: User = {
             username: f.value.username,
-            role_id: f.value.role_id,
+            role_id: this.selectRol.value,
+            // role_id: f.value.role_id,
             profile_id: p.id
           }
           super.fetch<User>(() => this.userService.post(um, this.usuario.id)).subscribe(
@@ -133,6 +145,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         err => {
           this.posting = false
           console.log('error post profile', err)
+          super.displayAlert(err.error[0].message)
         }
       )
     }
