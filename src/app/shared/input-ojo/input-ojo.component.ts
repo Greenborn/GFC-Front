@@ -9,19 +9,24 @@ export class InputOjoComponent implements OnInit {
 
   @Input('inputId') inputId:string;
   public visibility: boolean = false;
+  public passwordInput: HTMLIonInputElement;
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.passwordInput = document.querySelector(`#${this.inputId}`);
 
-toggleVisibility(){
-  let elem = document.querySelector(`#${this.inputId}`);
-  let tipo = elem.getAttribute('type');
-  if (tipo == "password"){
-    elem.setAttribute('type','text');
-    this.visibility = true;
-  } else {
-    elem.setAttribute('type','password');
-    this.visibility = false;
   }
-}
+
+  toggleVisibility(){
+    let elem = this.passwordInput
+    // console.log(elem)
+    let tipo = elem.getAttribute('type');
+    if (tipo == "password"){
+      elem.setAttribute('type','text');
+      this.visibility = true;
+    } else {
+      elem.setAttribute('type','password');
+      this.visibility = false;
+    }
+  }
 }

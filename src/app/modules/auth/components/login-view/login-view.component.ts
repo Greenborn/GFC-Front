@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
 export class LoginViewComponent implements OnInit {
 
   @ViewChild('passInput') passInput: ElementRef
-
+  public visibility: boolean = false;
   public loading: boolean;
   public error: string;
   public login: Login = {
@@ -25,7 +25,17 @@ export class LoginViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {}
-
+  // toggleVisibility(){
+  //   let elem = document.querySelector(`#ctr-1`);
+  //   let tipo = elem.getAttribute('type');
+  //   if (tipo == "password"){
+  //     elem.setAttribute('type','text');
+  //     this.visibility = true;
+  //   } else {
+  //     elem.setAttribute('type','password');
+  //     this.visibility = false;
+  //   }
+  // }
   keyPress(e, input = ''){
     if (e.key == "Enter"){
       

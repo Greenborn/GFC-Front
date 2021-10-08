@@ -11,12 +11,12 @@ import { InputOjoComponent } from './input-ojo/input-ojo.component';
     UsuarioImgComponent,
     SearchBarComponent,
     MenuAccionesComponent,
-    InputOjoComponent
+    InputOjoComponent,
   ],
   imports: [
     CommonModule,
   ],
-  exports: [UsuarioImgComponent, SearchBarComponent, MenuAccionesComponent, InputOjoComponent],
+  exports: [UsuarioImgComponent, SearchBarComponent, MenuAccionesComponent, InputOjoComponent, ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule { }
