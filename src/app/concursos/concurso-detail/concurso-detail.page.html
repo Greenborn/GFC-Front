@@ -83,10 +83,29 @@
           </ion-list>
 
           <ion-row>
-            <ion-list-header>
-              <ion-label>Puntaje:</ion-label>
-            </ion-list-header>
-            <ion-col>
+            <ion-col class="ion-no-padding ion-margin-top">
+              <ion-item>
+                <ion-col>
+                  <ion-row>
+                    <ion-label>Puntaje:</ion-label>
+                  </ion-row>
+                  <ion-row>
+                    <ion-range
+                      dualKnobs="true"
+                      [(ngModel)]="value"
+                      min="1000"
+                      max="2000"
+                      step="100"
+                      snaps="true"
+                      ticks="false"
+                      color="secondary"
+                    ></ion-range>
+                  </ion-row>
+                </ion-col>
+              </ion-item>
+            </ion-col>
+
+            <!-- <ion-col>
               <ion-item>
                 <ion-label position="stacked">Desde</ion-label>
                 <ion-input type="number" min="1" max="13" name="desde_puntaje">
@@ -103,7 +122,7 @@
                 <ion-icon
                   name="arrow-forward-circle"
                 ></ion-icon> </ion-fab-button
-            ></ion-col>
+            ></ion-col> -->
           </ion-row>
 
           <ion-col>
@@ -216,17 +235,19 @@
               <ion-item class="ion-no-padding">
                 <!-- <ion-grid *ngIf="!loading"> -->
                 <ion-grid *ngIf="resultadosConcurso.length > 0; else texto">
-                <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
+                  <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
                   <!-- class="ion-text-center" -->
                   <ion-row size="12" *ngFor="let r of resultadosConcurso">
                     <ion-col size="6" size-md="3" class="ion-align-self-center">
                       <ion-card-subtitle title="Código de la obra"
-                      >{{ r.image.code }}</ion-card-subtitle>
+                        >{{ r.image.code }}</ion-card-subtitle
+                      >
                       <!-- >{{ getImage(r).code }}</ion-card-subtitle> -->
                       <!-- <ion-card-title >Prueba de Riendas</ion-card-title> -->
 
                       <ion-text title="Nombre de la obra"
-                      ><b>{{ r.image.title }}</b></ion-text>
+                        ><b>{{ r.image.title }}</b></ion-text
+                      >
                       <!-- ><b>{{ getImage(r).title }}</b></ion-text> -->
                     </ion-col>
                     <ion-col
@@ -239,7 +260,9 @@
                       <ion-item lines="none">
                         <ion-label>
                           <ion-card-subtitle title="Entidad del autor"
-                          >{{ getFotoclubName(r.image.profile_id) }}</ion-card-subtitle>
+                            >{{ getFotoclubName(r.image.profile_id)
+                            }}</ion-card-subtitle
+                          >
                           <!-- >{{ getFotoclubName(r) }}</ion-card-subtitle> -->
                           <ion-text title="Autor de la obra">
                             <b>{{ getFullName(r.image.profile_id) }}</b>
@@ -270,14 +293,16 @@
                         class="ion-hide-lg-down ion-justify-content-end"
                       >
                         <ion-button (click)="reviewImage(r)">
-                        <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
+                          <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
                           <ion-icon name="star-outline"></ion-icon>
                         </ion-button>
                         <ion-button (click)="postImage(r.image)">
-                        <!-- <ion-button (click)="postImage(getImage(r))"> -->
+                          <!-- <ion-button (click)="postImage(getImage(r))"> -->
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
-                        <ion-button (click)="deleteImage(r.image_id, r.id, r.metric_id)">
+                        <ion-button
+                          (click)="deleteImage(r.image_id, r.id, r.metric_id)"
+                        >
                           <ion-icon name="trash"></ion-icon>
                         </ion-button>
                       </ion-buttons>
