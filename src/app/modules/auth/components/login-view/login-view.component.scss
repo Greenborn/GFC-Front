@@ -15,6 +15,10 @@ ion-card{
     border: solid 1px #cecece;
 }
 
+ion-item {
+    --inner-padding-end: 0px;
+}
+
 @media (prefers-color-scheme: dark) {
     /*
      * Dark Colors
