@@ -127,10 +127,30 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
       })
     })
 
-    this.concursoDetailService.postImage.subscribe(i => this.postImage(i))
-    this.concursoDetailService.reviewImage.subscribe(r => this.reviewImage(r))
-    this.concursoDetailService.deleteImage.subscribe(r => this.deleteImage(r))
-    this.concursoDetailService.mostrarAcciones.subscribe(o => this.mostrarAcciones(o))
+    const s1 = this.concursoDetailService.postImage.subscribe(
+      i => {
+        this.postImage(i)
+        s1.unsubscribe()
+      }
+    )
+    const s2 = this.concursoDetailService.reviewImage.subscribe(
+      r => {
+        this.reviewImage(r)
+        s2.unsubscribe()
+      }     
+    )
+    const s3 = this.concursoDetailService.deleteImage.subscribe(
+      r => {
+        this.deleteImage(r)
+        s3.unsubscribe()
+      }
+    )
+    const s4 = this.concursoDetailService.mostrarAcciones.subscribe(
+      o => {
+        this.mostrarAcciones(o)
+        s4.unsubscribe()
+      }
+    )
     
     // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)

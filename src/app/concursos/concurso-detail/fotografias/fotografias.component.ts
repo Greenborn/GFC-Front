@@ -30,8 +30,18 @@ export class FotografiasComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.concursoDetailService.concursantes.subscribe(cs => this.concursantes = cs)
-    this.concursoDetailService.resultadosConcurso.subscribe(rs => this.resultadosConcurso = rs)
+    const s1 = this.concursoDetailService.concursantes.subscribe(
+      cs => {
+        this.concursantes = cs
+        s1.unsubscribe()
+      }
+    )
+    const s2 = this.concursoDetailService.resultadosConcurso.subscribe(
+      rs => {
+        this.resultadosConcurso = rs
+        s2.unsubscribe()
+      }
+    )
   }
 
   toggleFiltro() {
@@ -55,7 +65,7 @@ export class FotografiasComponent implements OnInit {
       componentProps: {
         acciones: [
           {
-            accion: (params: []) => this.reviewImage.emit(r),
+            accion: (params: []) => this.concursoDetailService.reviewImage.emit(r),
             // accion: (params: []) => this.reviewImage(r),
             params: [],
             icon: 'star-outline',
@@ -69,7 +79,7 @@ export class FotografiasComponent implements OnInit {
             label: 'Editar'
           },
           {
-            accion: (params: number[]) => this.deleteImage.emit(r),
+            accion: (params: number[]) => this.concursoDetailService.deleteImage.emit(r),
             // accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
             params: [],
             icon: 'trash',
