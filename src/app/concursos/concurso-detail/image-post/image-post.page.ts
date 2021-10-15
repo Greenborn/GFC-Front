@@ -61,6 +61,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     // })
     this.posting = true
     let i: Image;
+    // console.log('posting', {...this.image})
     super.fetch<Image>(() =>
       this.imageService.post({
         title: this.image.title,
@@ -70,7 +71,10 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     ).subscribe(
       // image => this.dismiss(image),
       image => i = image,
-      async err => super.displayAlert(err.error['error-info'][2]),
+      async err => {
+        super.displayAlert(err.error['error-info'][2])
+        this.posting = false
+      },
       () => { // on complete.. pero no cacha el error
         // console.log(i)
         this.posting = false

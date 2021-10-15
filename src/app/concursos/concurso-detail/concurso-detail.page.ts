@@ -19,7 +19,7 @@ import { MetricService } from 'src/app/services/metric.service';
 import { ContestResultService } from 'src/app/services/contest-result.service';
 import { ImageService } from 'src/app/services/image.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { map } from 'rxjs/operators';
 import { FotografiasComponent } from './fotografias/fotografias.component';
@@ -49,6 +49,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
   metrics: Metric[] = [];
   popover: HTMLIonPopoverElement = undefined;
   // loading: boolean = true;
+  subs: Subscription[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -102,58 +103,44 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
             this.concursoDetailService.resultadosConcurso.emit(rs)
           })
         })
-
-
-
-        // super.fetch<ContestResult[]>(() => 
-        //   this.contestResultService.getAll(`filter[contest_id]=${c.id}`)
-        // ).subscribe(rs => {  // console.log('recibi contest results', rs)
-        //   this.contestResults = rs
-        //   // para cada contest result
-        //   for (const r of rs) {
-        //     //->obtener todas las metricas asociadas
-        //     super.fetch<Metric>(() => 
-        //       this.metricService.get(r.metric_id)
-        //     ).subscribe(m => this.metrics.push(m))
-        //   //->obtener todas las imagenes asociadas
-        //     super.fetch<Image>(() =>
-        //       this.imageService.get(r.image_id)
-        //     ).subscribe(async i => {
-        //       // console.log('recibi imagen con id', r.image_id, i)
-        //       this.images.push(i)
-        //     })
-        //   }
-        // })
       })
     })
+
+
 
     const s1 = this.concursoDetailService.postImage.subscribe(
       i => {
         this.postImage(i)
-        s1.unsubscribe()
+        // s1.unsubscribe()
       }
     )
     const s2 = this.concursoDetailService.reviewImage.subscribe(
       r => {
         this.reviewImage(r)
-        s2.unsubscribe()
+        // s2.unsubscribe()
       }     
     )
     const s3 = this.concursoDetailService.deleteImage.subscribe(
       r => {
         this.deleteImage(r)
-        s3.unsubscribe()
+        // s3.unsubscribe()
       }
     )
     const s4 = this.concursoDetailService.mostrarAcciones.subscribe(
       o => {
         this.mostrarAcciones(o)
-        s4.unsubscribe()
+        // s4.unsubscribe()
       }
     )
+    this.subs.push(s1, s2, s3, s4)
     
     // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
+  }
+  ionViewWillLeave() {
+    this.subs.forEach(s => s.unsubscribe())
+    this.subs = []
+    console.log('subscriptions', this.subs)
   }
 
   // https://stackoverflow.com/questions/41451375/passing-data-into-router-outlet-child-components
@@ -294,6 +281,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     if (i != undefined) {
       componentProps.image = {...i}
     }
+
+    // console.log('props post image', componentProps)
 
     const modal = await this.modalController.create({
       component: ImagePostPage,

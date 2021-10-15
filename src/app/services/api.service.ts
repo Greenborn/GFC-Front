@@ -40,6 +40,7 @@ export abstract class ApiService<T> {
   }
 
   post(model: T, id: number = undefined): Observable<T> {
+    console.log('posting', model, 'id: ', id)
     const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
     return id == undefined ? 
       this.http.post<T>(

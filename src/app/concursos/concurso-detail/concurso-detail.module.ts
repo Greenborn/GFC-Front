@@ -29,6 +29,6 @@ import { ImageReviewPage } from './image-review/image-review.page';
     ImagePostPage, 
     ImageReviewPage
   ],
-  // providers: [ConcursoDetailService]
+  providers: [ConcursoDetailService]
 })
 export class ConcursoDetailPageModule {}

@@ -18,10 +18,10 @@ export class FotografiasComponent implements OnInit {
   @Input() resultadosConcurso: ContestResultExpanded[] = [];
   @Input() fotoclubs: Fotoclub[] = [];
 
-  @Output() openPopup = new EventEmitter<any>();
-  @Output() postImage = new EventEmitter<Image|undefined>();
-  @Output() reviewImage = new EventEmitter<ContestResultExpanded>();
-  @Output() deleteImage = new EventEmitter<ContestResultExpanded>();
+  // @Output() openPopup = new EventEmitter<any>();
+  // @Output() postImage = new EventEmitter<Image|undefined>();
+  // @Output() reviewImage = new EventEmitter<ContestResultExpanded>();
+  // @Output() deleteImage = new EventEmitter<ContestResultExpanded>();
 
 
   mostrarFiltro: boolean = false;
@@ -33,13 +33,13 @@ export class FotografiasComponent implements OnInit {
     const s1 = this.concursoDetailService.concursantes.subscribe(
       cs => {
         this.concursantes = cs
-        s1.unsubscribe()
+        // s1.unsubscribe()
       }
     )
     const s2 = this.concursoDetailService.resultadosConcurso.subscribe(
       rs => {
         this.resultadosConcurso = rs
-        s2.unsubscribe()
+        // s2.unsubscribe()
       }
     )
   }
@@ -56,6 +56,11 @@ export class FotografiasComponent implements OnInit {
   getFullName(profile_id: number) {
     const p = this.concursantes.find(p => p.id == profile_id)
     return p != undefined ? `${p.name} ${p.last_name}` : ''
+  }
+
+  postImage() {
+    console.log('posting new img')
+    this.concursoDetailService.postImage.emit(undefined)
   }
 
   async mostrarAcciones(ev: any, r: ContestResultExpanded) {
