@@ -22,21 +22,25 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { Observable } from 'rxjs';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { map } from 'rxjs/operators';
+import { FotografiasComponent } from './fotografias/fotografias.component';
+import { ConcursantesComponent } from './concursantes/concursantes.component';
+import { ConcursoDetailService } from './concurso-detail.service';
 
 @Component({
   selector: 'app-concurso-detail',
   templateUrl: './concurso-detail.page.html',
   styleUrls: ['./concurso-detail.page.scss'],
+  // providers: [ ConcursoDetailService ]
 })
 export class ConcursoDetailPage extends ApiConsumer implements OnInit {
 
   mostrarFiltro: boolean = false;
   concurso: Contest = this.contestService.template;
-  resultadosConcurso: ContestResultExpanded[] = [];
   contestResults: ContestResult[] = [];
   images: Image[] = [];
   // profiles: Profile[] = [];
   
+  resultadosConcurso: ContestResultExpanded[] = [];
   concursantes: ProfileExpanded[] = [];
   // contest: Observable<ContestExpanded>;
 
@@ -59,7 +63,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     private profileService: ProfileService,
     private metricService: MetricService,
     private imageService: ImageService,
-    private rolificador: RolificadorService
+    private rolificador: RolificadorService,
+    private concursoDetailService: ConcursoDetailService
   ) {
     super(alertCtrl)
    }
@@ -85,6 +90,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
         super.fetch<ProfileExpanded[]>(() => this.rolificador.getConcursantes(u)).subscribe(cs => {
           console.log('concursantes', cs)
           this.concursantes = cs
+          this.concursoDetailService.concursantes.emit(cs)
           // this.resultadosConcurso = super.fetch<ContestResultExpanded[]>(() => 
           super.fetch<ContestResultExpanded[]>(() => 
             this.contestResultService.getAll<ContestResultExpanded>(`filter[contest_id]=${c.id}`)
@@ -92,6 +98,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
             map(results => results.filter(r => cs.find(cc => cc.id == r.image.profile_id) != undefined))
           ).subscribe(rs => {
             this.resultadosConcurso = rs
+            this.concursoDetailService.resultadosConcurso.emit(rs)
           })
         })
 
@@ -118,10 +125,25 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
         // })
       })
     })
+
+    this.concursoDetailService.postImage.subscribe(i => this.postImage(i))
+    this.concursoDetailService.reviewImage.subscribe(r => this.reviewImage(r))
+    this.concursoDetailService.deleteImage.subscribe(r => this.deleteImage(r))
+    this.concursoDetailService.mostrarAcciones.subscribe(o => this.mostrarAcciones(o))
     
     // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
   }
+
+  // https://stackoverflow.com/questions/41451375/passing-data-into-router-outlet-child-components
+//   onOutletLoaded(component: FotografiasComponent | ConcursantesComponent) {
+//     component.fotoclubs = this.fotoclubs;
+//     component.concursantes = this.concursantes;
+//     component.resultadosConcurso = this.resultadosConcurso;
+//     // component.openPopup.subscribe((options: any) => this.openPopup(options))
+//     component.postImage.subscribe((i: Image) => this.postImage(i))
+//     console.log('suscribed')
+// } 
 
   isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
     return this.auth.loggedIn;
@@ -144,6 +166,50 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
   getFullName(profile_id) {
     const p = this.concursantes.find(p => p.id == profile_id)
     return p != undefined ? `${p.name} ${p.last_name}` : ''
+  }
+
+  async openPopup(options: any) {
+    this.popover = await this.popoverCtrl.create(options)
+    await this.popover.present();
+    this.popover.onDidDismiss().then(_ => this.popover = undefined)
+  }
+
+  // async mostrarAcciones(ev: any, r: ContestResultExpanded) {
+  async mostrarAcciones(options: any) {
+    // const i = r.image
+    // this.popover = await this.popoverCtrl.create({
+    //   component: MenuAccionesComponent, //componente a mostrar
+    //   componentProps: {
+    //     acciones: [
+    //       {
+    //         accion: (params: []) => this.reviewImage(r),
+    //         params: [],
+    //         icon: 'star-outline',
+    //         label: 'Puntuar'
+    //       },
+    //       {
+    //         accion: (params: []) => this.postImage(i),
+    //         params: [],
+    //         icon: 'create',
+    //         label: 'Editar'
+    //       },
+    //       {
+    //         accion: (params: number[]) => this.deleteImage(r),
+    //         params: [],
+    //         icon: 'trash',
+    //         label: 'Borrar'
+    //       }
+    //     ]
+    //   },
+    //   cssClass: 'auto-width',
+    //   event: ev,
+    //   translucent: true,
+    //   // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
+    // });
+
+    this.popover = await this.popoverCtrl.create(options)
+    await this.popover.present();
+    this.popover.onDidDismiss().then(_ => this.popover = undefined)
   }
 
   async reviewImage(r: ContestResultExpanded) {
@@ -178,6 +244,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
         console.log('udpating metric', r, metric)
         r.metric = metric
         console.log('udpated metric', r)
+        this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
       } 
       // else {
       //   this.metrics.push(metric)
@@ -240,11 +307,14 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
             })
           ).subscribe(
             // console.log('posted new result', cr)
-            cr => this.resultadosConcurso.push({
-              ...cr,
-              image,
-              metric
-            }),
+            cr => {
+              this.resultadosConcurso.push({
+                ...cr,
+                image,
+                metric
+              })
+              this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+            },
             // cr => this.contestResults.push(cr),
             async err => super.displayAlert(err.error['error-info'][2])
           )
@@ -255,16 +325,17 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
         console.log('updated image. updating result', r_updated)
         r_updated.image = image
         console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
+        this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
         // console.log('replaced image', image, 'index', i)
       }
     }
   }
   
   get fechaInicio(): string {
-    return this.contestService.formatearFechaParaHTML(this.concurso.start_date);
+    return this.contestService.formatearFechaParaHTML(this.concurso.start_date ?? '');
   }
   get fechaFin(): string {
-    return this.contestService.formatearFechaParaHTML(this.concurso.end_date);
+    return this.contestService.formatearFechaParaHTML(this.concurso.end_date ?? '');
   }
 
   async deleteConcurso() {
@@ -307,7 +378,9 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     await alert.present();
   }
 
-  async deleteImage(image_id: number, result_id: number, metric_id: number) {
+  async deleteImage(r: ContestResultExpanded) {
+    const { id: result_id, image_id, metric_id } = r;
+
     if (this.popover != undefined) {
       this.popoverCtrl.dismiss(this.popover)
       this.popover = undefined
@@ -328,6 +401,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
                 // this.alertCtrl.dismiss()
                 // this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
                 this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
+                this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
                 super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
                   _ => {},
                   // _ => this.images.splice(this.images.findIndex(i => i.id == image_id), 1),
@@ -351,40 +425,4 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     await alert.present();
   } 
 
-  async mostrarAcciones(ev: any, r: ContestResultExpanded) {
-    const i = r.image
-    this.popover = await this.popoverCtrl.create({
-      component: MenuAccionesComponent, //componente a mostrar
-      componentProps: {
-        acciones: [
-          {
-            accion: (params: []) => this.reviewImage(r),
-            params: [],
-            icon: 'star-outline',
-            label: 'Puntuar'
-          },
-          {
-            accion: (params: []) => this.postImage(i),
-            params: [],
-            icon: 'create',
-            label: 'Editar'
-          },
-          {
-            accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
-            params: [],
-            icon: 'trash',
-            label: 'Borrar'
-          }
-        ]
-      },
-      cssClass: 'auto-width',
-      event: ev,
-      translucent: true,
-      // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
-    });
-
-    await this.popover.present();
-
-    this.popover.onDidDismiss().then(_ => this.popover = undefined)
-  }
 }

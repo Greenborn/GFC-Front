@@ -1,22 +1,56 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ConcursantesComponent } from './concursantes/concursantes.component';
 
 import { ConcursoDetailPage } from './concurso-detail.page';
+import { FotografiasComponent } from './fotografias/fotografias.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ConcursoDetailPage
+    component: ConcursoDetailPage,
+    children: [
+      {
+        path: 'concursantes',
+        component: ConcursantesComponent,
+        // outlet: 'concurso-detail'
+      },
+      {
+        path: 'fotografias',
+        component: FotografiasComponent,
+        // outlet: 'concurso-detail'
+      },
+      {
+        path: '',
+        redirectTo: 'concursantes',
+        pathMatch: 'full'
+      }
+    ]
   },
-  {
-    path: 'agregar-foto',
-    loadChildren: () => import('./image-post/image-post.module').then( m => m.ImagePostPageModule),
-    pathMatch: 'full'
-  },
-  {
-    path: 'image-review',
-    loadChildren: () => import('./image-review/image-review.module').then( m => m.ImageReviewPageModule)
-  }
+  // {
+  //   path: 'concursantes',
+  //   component: ConcursantesComponent,
+  //   outlet: 'concurso'
+  // },
+  // {
+  //   path: 'fotografias',
+  //   component: FotografiasComponent,
+  //   outlet: 'concurso'
+  // },
+  // {
+  //   path: 'agregar-foto',
+  //   loadChildren: () => import('./image-post/image-post.module').then( m => m.ImagePostPageModule),
+  //   pathMatch: 'full'
+  // },
+  // {
+  //   path: 'image-review',
+  //   loadChildren: () => import('./image-review/image-review.module').then( m => m.ImageReviewPageModule)
+  // },
+  // {
+  //   path: 'concursantes',
+  //   component: ConcursantesComponent
+  // }
+
 
 
 ];

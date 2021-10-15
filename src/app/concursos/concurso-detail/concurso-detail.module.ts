@@ -9,6 +9,11 @@ import { ConcursoDetailPageRoutingModule } from './concurso-detail-routing.modul
 import { ConcursoDetailPage } from './concurso-detail.page';
 
 import { SharedModule } from '../../shared/shared.module';
+import { ConcursantesComponent } from './concursantes/concursantes.component';
+import { FotografiasComponent } from './fotografias/fotografias.component';
+import { ConcursoDetailService } from './concurso-detail.service';
+import { ImagePostPage } from './image-post/image-post.page';
+import { ImageReviewPage } from './image-review/image-review.page';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +22,13 @@ import { SharedModule } from '../../shared/shared.module';
     ConcursoDetailPageRoutingModule,
     SharedModule 
   ],
-  declarations: [ConcursoDetailPage]
+  declarations: [
+    ConcursoDetailPage, 
+    ConcursantesComponent, 
+    FotografiasComponent, 
+    ImagePostPage, 
+    ImageReviewPage
+  ],
+  // providers: [ConcursoDetailService]
 })
 export class ConcursoDetailPageModule {}
