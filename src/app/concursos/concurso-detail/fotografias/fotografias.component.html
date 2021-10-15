@@ -1,5 +1,5 @@
-<ion-grid class="ion-no-margin">
-  <ion-row class="ion-justify-content-center ">
+<ion-grid class="ion-no-padding">
+  <ion-row class="ion-justify-content-center">
     <!-- filtro -->
     <ion-col size="3" *ngIf="mostrarFiltro">
       <ion-col>
@@ -34,10 +34,29 @@
         </ion-list>
 
         <ion-row>
-          <ion-list-header>
-            <ion-label>Puntaje:</ion-label>
-          </ion-list-header>
-          <ion-col>
+          <ion-col class="ion-no-padding ion-margin-top">
+            <ion-item>
+              <ion-col>
+                <ion-row>
+                  <ion-label>Puntaje:</ion-label>
+                </ion-row>
+                <ion-row>
+                  <ion-range
+                    dualKnobs="true"
+                    [(ngModel)]="value"
+                    min="1000"
+                    max="2000"
+                    step="100"
+                    snaps="true"
+                    ticks="false"
+                    color="secondary"
+                  ></ion-range>
+                </ion-row>
+              </ion-col>
+            </ion-item>
+          </ion-col>
+
+          <!-- <ion-col>
             <ion-item>
               <ion-label position="stacked">Desde</ion-label>
               <ion-input type="number" min="1" max="13" name="desde_puntaje">
@@ -54,7 +73,7 @@
               <ion-icon
                 name="arrow-forward-circle"
               ></ion-icon> </ion-fab-button
-          ></ion-col>
+          ></ion-col> -->
         </ion-row>
 
         <ion-col>
@@ -122,67 +141,95 @@
             <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
               Fotografías
             </h1>
-            <ion-fab-button size="small" (click)="concursoDetailService.postImage.emit(undefined)">
+            <ion-fab-button size="small" 
+              (click)="concursoDetailService.postImage.emit(undefined)">
               <!-- [routerLink]="['agregar-foto']"   -->
               <ion-icon name="add"></ion-icon>
             </ion-fab-button>
           </ion-row>
 
-          <ion-row class="ion-align-items-center">
-            <ion-col size="11"
+          <ion-row class="ion-align-items-center ion-padding-bottom">
+            <ion-col size="10" size-sm="11"
               ><app-search-bar [atributos]="['Titulo', 'Codigo']">
               </app-search-bar
             ></ion-col>
-            <ion-col size="1">
-              <ion-button (click)="toggleFiltro()" color="medium">
-                <ion-icon name="funnel"></ion-icon>
-                <!-- <ion-icon name="options"></ion-icon> -->
-              </ion-button></ion-col
-            >
+            <ion-col size="2" size-sm="1">
+              <ion-row
+                class="
+                  ion-justify-content-center
+                  ion-align-items-center
+                  ion-align-self-center
+                "
+              >
+                <ion-button
+                  (click)="toggleFiltro()"
+                  color="medium"
+                  expand="block"
+                  class="
+                    ion-justify-content-center
+                    ion-align-items-center
+                    ion-align-self-center
+                  "
+                >
+                  <ion-icon name="funnel"></ion-icon>
+                  <!-- <ion-icon name="options"></ion-icon> -->
+                </ion-button>
+              </ion-row>
+            </ion-col>
           </ion-row>
-          <ion-grid>
-            <ion-row class="ion-padding-end">
-              <!-- class="ion-text-center" -->
-              <ion-col size="6" size-md="3" class="">Obra</ion-col>
-              <ion-col
-                class="ion-hide-md-down ion-padding-start"
-                size="4"
-                size-md="3"
-                >Autor</ion-col
-              >
-              <ion-col class="ion-text-center" size="3" size-md="2"
-                >Premio</ion-col
-              >
-              <ion-col class="ion-hide-md-down ion-text-center" size="2"
-                >Puntaje</ion-col
-              >
-              <ion-col class="ion-hide-md-up ion-text-center" size="2"
-                >Ptje</ion-col
-              >
+          <ion-list>
+            <ion-item color="dark">
+              <ion-grid>
+                <ion-row class="ion-padding-end">
+                  <!-- class="ion-text-center" -->
+                  <ion-col size="6" size-md="3" class=""><b>Obra</b></ion-col>
+                  <ion-col
+                    class="ion-hide-md-down ion-padding-start"
+                    size="4"
+                    size-md="3"
+                    ><b>Autor</b></ion-col
+                  >
+                  <ion-col size="3" size-md="2"
+                    ><b>Premio</b></ion-col
+                  >
+                  <ion-col class="ion-hide-md-down " size="2"
+                    ><b>Puntaje</b></ion-col
+                  >
+                  <ion-col class="ion-hide-md-up" size="2"
+                    ><b>Ptje</b></ion-col
+                  >
 
-              <ion-col size="2"></ion-col>
-            </ion-row>
-          </ion-grid>
+                  <ion-col size="2"></ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-list>
           <ion-list>
             <ion-item class="ion-no-padding">
               <!-- <ion-grid *ngIf="!loading"> -->
               <ion-grid *ngIf="resultadosConcurso.length > 0; else texto">
-              <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
+                <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
                 <!-- class="ion-text-center" -->
-                <ion-row size="12" *ngFor="let r of resultadosConcurso">
+                <ion-row *ngFor="let r of resultadosConcurso">
                   <ion-col size="6" size-md="3" class="ion-align-self-center">
-                    <ion-card-subtitle title="Código de la obra"
-                    >{{ r.image.code }}</ion-card-subtitle>
-                    <!-- >{{ getImage(r).code }}</ion-card-subtitle> -->
-                    <!-- <ion-card-title >Prueba de Riendas</ion-card-title> -->
+                    <ion-item>
+                      <ion-col>
+                        <ion-card-subtitle title="Código de la obra"
+                          >{{ r.image.code }}</ion-card-subtitle
+                        >
+                        <!-- >{{ getImage(r).code }}</ion-card-subtitle> -->
+                        <!-- <ion-card-title >Prueba de Riendas</ion-card-title> -->
 
-                    <ion-text title="Nombre de la obra"
-                    ><b>{{ r.image.title }}</b></ion-text>
-                    <!-- ><b>{{ getImage(r).title }}</b></ion-text> -->
+                        <ion-text title="Nombre de la obra"
+                          ><b>{{ r.image.title }}</b></ion-text
+                        >
+                        <!-- ><b>{{ getImage(r).title }}</b></ion-text> -->
+                      </ion-col>
+                    </ion-item>
                   </ion-col>
                   <ion-col
                     class="
-                      ion-hide-md-down ion-text-center ion-align-self-center
+                      ion-hide-md-down ion-align-self-center
                     "
                     size="4"
                     size-md="3"
@@ -190,7 +237,9 @@
                     <ion-item lines="none">
                       <ion-label>
                         <ion-card-subtitle title="Entidad del autor"
-                        >{{ getFotoclubName(r.image.profile_id) }}</ion-card-subtitle>
+                          >{{ getFotoclubName(r.image.profile_id)
+                          }}</ion-card-subtitle
+                        >
                         <!-- >{{ getFotoclubName(r) }}</ion-card-subtitle> -->
                         <ion-text title="Autor de la obra">
                           <b>{{ getFullName(r.image.profile_id) }}</b>
@@ -201,7 +250,7 @@
                     </ion-item>
                   </ion-col>
                   <ion-col
-                    class="ion-text-center ion-align-self-center"
+                    class="ion-align-self-center"
                     size="3"
                     size-md="2"
                   >
@@ -209,7 +258,7 @@
                     <!-- <ion-text>{{ getMetric(r).prize }}</ion-text> -->
                   </ion-col>
                   <ion-col
-                    class="ion-text-center ion-align-self-center"
+                    class="ion-align-self-center"
                     size="2"
                   >
                     <ion-text>{{ r.metric.score }}</ion-text>
@@ -218,21 +267,23 @@
 
                   <ion-col size="1" size-md="2" class="ion-align-self-center">
                     <ion-buttons
-                      class="ion-hide-lg-down ion-justify-content-end"
+                      class="ion-hide-md-down ion-justify-content-center"
                     >
                       <ion-button (click)="concursoDetailService.reviewImage.emit(r)">
-                      <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
+                        <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
                         <ion-icon name="star-outline"></ion-icon>
                       </ion-button>
                       <ion-button (click)="concursoDetailService.postImage.emit(r.image)">
-                      <!-- <ion-button (click)="postImage(getImage(r))"> -->
+                        <!-- <ion-button (click)="postImage(getImage(r))"> -->
                         <ion-icon name="create"></ion-icon>
                       </ion-button>
-                      <ion-button (click)="concursoDetailService.deleteImage.emit(r)">
+                      <ion-button
+                        (click)="concursoDetailService.deleteImage.emit(r)"
+                      >
                         <ion-icon name="trash"></ion-icon>
                       </ion-button>
                     </ion-buttons>
-                    <ion-buttons class="ion-hide-lg-up">
+                    <ion-buttons class="ion-hide-md-up">
                       <ion-button (click)="concursoDetailService.mostrarAcciones($event, r)">
                         <ion-icon
                           slot="icon-only"

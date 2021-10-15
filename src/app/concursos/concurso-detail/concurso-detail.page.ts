@@ -39,6 +39,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
   contestResults: ContestResult[] = [];
   images: Image[] = [];
   // profiles: Profile[] = [];
+  value = { lower: 1000, upper: 1500 };
   
   resultadosConcurso: ContestResultExpanded[] = [];
   concursantes: ProfileExpanded[] = [];

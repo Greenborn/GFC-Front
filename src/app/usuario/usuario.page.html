@@ -25,23 +25,29 @@
         <ion-row class="ion-justify-content-center altura-treinta">
           <ion-item>
             <ion-col>
-              <ion-row size="8" class="ion-justify-content-center ion-align-items-center">
+              <ion-row
+                size="8"
+                class="ion-justify-content-center ion-align-items-center"
+              >
                 <ion-col size="12" class="ion-align-items-center">
                   <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img> -->
                   <app-usuario-img src="fafafa"></app-usuario-img>
                 </ion-col>
               </ion-row>
               <ion-row size="4">
-                <ion-col class="ion-justify-content-center"
+                <ion-col
+                  class="ion-justify-content-center"
                   *ngIf="(authService.user | async) as u"
                 >
                   <ion-card-title class="ion-text-center"
-                  >{{ u.username }}</ion-card-title>
+                    >{{ u.username }}</ion-card-title
+                  >
 
                   <ion-card-subtitle class="ion-text-center"
-                  >{{u.profile.name}} {{u.profile.last_name}}</ion-card-subtitle>
-                  </ion-col>
-
+                    >{{u.profile.name}}
+                    {{u.profile.last_name}}</ion-card-subtitle
+                  >
+                </ion-col>
               </ion-row>
             </ion-col>
           </ion-item>
@@ -51,9 +57,10 @@
           <ion-header>
             <ion-toolbar>
               <ion-list>
-                <!-- <ion-item lines="none" [routerLink]="['/usuarios', 'editar', userId]"> -->
-                <ion-item lines="none" [routerLink]="['/usuarios', 'editar', authService.userId]">
-                <!-- <ion-item [routerLink]="['/perfil', 'editar']"> -->
+                <ion-item
+                  lines="none"
+                  [routerLink]="['/usuarios', 'editar', authService.userId]"
+                >
                   <ion-icon
                     slot="start"
                     ios="person-outline"
@@ -62,31 +69,22 @@
                   <ion-label>Editar perfil</ion-label>
                 </ion-item>
 
-                <ion-item lines="none" [routerLink]="['/perfil']">
+                <!-- <ion-item lines="none" [routerLink]="['/perfil']">
                   <ion-icon
                     slot="start"
                     ios="lock-closed-outline"
                     md="lock-closed-sharp"
                   ></ion-icon>
                   <ion-label>Terminos y Condiciones</ion-label>
-                </ion-item>
+                </ion-item> -->
 
-                <ion-item lines="none" [routerLink]="['/perfil']">
+                <!-- <ion-item lines="none" [routerLink]="['/perfil']">
                   <ion-icon
                     slot="start"
                     ios="help-circle-outline"
                     md="help-circle-sharp"
                   ></ion-icon>
                   <ion-label>Ayuda</ion-label>
-                </ion-item>
-
-                <!-- <ion-item lines="none" [routerLink]="['/perfil']" >
-                  <ion-icon
-                    slot="start"
-                    ios="log-out-outline"
-                    md="log-out-sharp"
-                  ></ion-icon>
-                  <ion-label>Log Out</ion-label>
                 </ion-item> -->
               </ion-list>
             </ion-toolbar>
@@ -95,7 +93,11 @@
           <ion-footer>
             <ion-toolbar>
               <ion-list>
-                <ion-item lines="none" (click)="authService.logout()" button="true">
+                <ion-item
+                  lines="none"
+                  (click)="authService.logout()"
+                  button="true"
+                >
                   <ion-icon
                     slot="start"
                     ios="log-out-outline"
