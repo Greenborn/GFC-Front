@@ -5,14 +5,14 @@ import { Injectable } from '@angular/core';
 })
 export class ConfigService {
 
-  private local = true;
+  private local = false;
 
   constructor() { }
 
   get data() {
     return {
       // apiBaseUrl: this.local ? "http://localhost:8080/" : "https://grupofotografico.api.greenborn.com.ar/",
-      apiBaseUrl: this.local ? "http://localhost:8080/" : "https://greenborn-gfc.herokuapp.com/",
+      apiBaseUrl: this.local ? "http://localhost:8888/" : "https://greenborn-gfc-api.herokuapp.com/",
       loginAction:"login",
       appName: "app_gfc_dev-"
     };
