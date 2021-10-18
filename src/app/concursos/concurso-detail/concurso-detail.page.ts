@@ -260,6 +260,10 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
   }
 
   async desinscribirConcursante(profileContest: ProfileContestExpanded) {
+    if (this.popover != undefined) {
+      this.popoverCtrl.dismiss(this.popover)
+      this.popover = undefined
+    }
     const alert = await this.alertCtrl.create({
       header: 'Confirmar desinscripción',
       message: `Confirma desinscribir ${profileContest.profile.name} ${profileContest.profile.last_name} del concurso ${this.concurso.name}?`,

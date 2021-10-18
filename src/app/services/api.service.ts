@@ -39,17 +39,17 @@ export abstract class ApiService<T> {
     )
   }
 
-  post(model: T, id: number = undefined): Observable<T> {
+  post(model: T, id: number = undefined, getParams: string = ''): Observable<T> {
     console.log('posting', model, 'id: ', id)
     const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
     return id == undefined ? 
       this.http.post<T>(
-        this.config.apiUrl(this.recurso), 
+        this.config.apiUrl(`${this.recurso}?${getParams}`), 
         model,
         { headers }
       ) :
       this.http.put<T>(
-        `${this.config.apiUrl(this.recurso)}/${id}`, 
+        `${this.config.apiUrl(this.recurso)}/${id}?${getParams}`, 
         model,
         { headers }
       ) 

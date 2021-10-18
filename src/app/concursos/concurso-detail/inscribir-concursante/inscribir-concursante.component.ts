@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Contest } from 'src/app/models/contest.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
+import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 
 @Component({
@@ -9,17 +11,21 @@ import { ProfileContestService } from 'src/app/services/profile-contest.service'
   templateUrl: './inscribir-concursante.component.html',
   styleUrls: ['./inscribir-concursante.component.scss'],
 })
-export class InscribirConcursanteComponent implements OnInit {
+export class InscribirConcursanteComponent extends ApiConsumer implements OnInit {
 
   @Input() modalController: ModalController;
   @Input() contest: Contest;
   @Input() concursantes: ProfileExpanded;
 
   public profile_id: number = undefined;
+  public posting: boolean = false;
 
   constructor(
-    private profileContestService: ProfileContestService
-  ) { }
+    private profileContestService: ProfileContestService,
+    alertCtrl: AlertController
+  ) { 
+    super(alertCtrl)
+  }
 
   ngOnInit() {}
 
@@ -29,10 +35,22 @@ export class InscribirConcursanteComponent implements OnInit {
 
   inscribirConcursante() {
     console.log('inscribiendo', this.profile_id, ' a ', this.contest.id)
-    this.profileContestService.post({
-      profile_id: this.profile_id,
-      contest_id: this.contest.id
-    })
+    this.posting = true
+    super.fetch<ProfileContestExpanded>(() => this.profileContestService.post({
+        profile_id: this.profile_id,
+        contest_id: this.contest.id
+      }, undefined, 'expand=profile,profile.user,profile.fotoclub'
+    )).subscribe(
+      profileContest => {
+        this.posting = false
+        this.modalController.dismiss({ profileContest })
+      },
+      err => {
+        console.log('error inscripcion concursante', err)
+        super.displayAlert(err.error['error-info'][2])
+      }
+    )
+    
   }
 
 }

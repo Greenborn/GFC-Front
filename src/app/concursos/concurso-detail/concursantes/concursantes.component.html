@@ -234,7 +234,7 @@
                           >
                             <ion-buttons>
                               <ion-button
-                                (click)="mostrarAcciones($event, m.profile.user.id)"
+                                (click)="mostrarAcciones($event, m)"
                               >
                               <!-- <ion-thumbnail></ion-thumbnail> -->
                                 <ion-icon
@@ -264,14 +264,18 @@
                       >
                         <ion-buttons>
                           <ion-button (click)="concursoDetailService.postImage.emit({
-                            id: undefined,
-                            profile_id: m.profile_id,
-                            code: undefined,
-                            title: undefined
-                          })">
+                              id: undefined,
+                              profile_id: m.profile_id,
+                              code: undefined,
+                              title: undefined
+                            })"
+                            title="Agregar fotografía"
+                          >
                             <ion-icon name="camera-outline"></ion-icon>
                           </ion-button>
-                          <ion-button (click)="concursoDetailService.desinscribirConcursante.emit(m)">
+                          <ion-button (click)="concursoDetailService.desinscribirConcursante.emit(m)"
+                            title="Desinscribir"
+                          >
                             <ion-icon name="trash"></ion-icon>
                           </ion-button>
                         </ion-buttons>
