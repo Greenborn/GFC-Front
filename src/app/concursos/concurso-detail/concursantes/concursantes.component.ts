@@ -6,6 +6,7 @@ import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
+import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 
 @Component({
@@ -54,5 +55,48 @@ export class ConcursantesComponent implements OnInit {
   getFullName(profile_id: number) {
     const p = this.concursantes.find(p => p.id == profile_id)
     return p != undefined ? `${p.name} ${p.last_name}` : ''
+  }
+
+  async mostrarAcciones(ev: any, p: ProfileContestExpanded) {
+    const options = {
+      component: MenuAccionesComponent, //componente a mostrar
+      componentProps: {
+        acciones: [
+          // {
+          //   accion: (params: []) => this.concursoDetailService.reviewImage.emit(r),
+          //   // accion: (params: []) => this.reviewImage(r),
+          //   params: [],
+          //   icon: 'star-outline',
+          //   label: 'Puntuar'
+          // },
+          {
+            accion: (params: []) => this.concursoDetailService.postImage.emit({
+              id: undefined,
+              profile_id: p.profile_id,
+              code: undefined,
+              title: undefined
+            }),
+            // accion: (params: []) => this.postImage(i),
+            params: [],
+            icon: 'camera-outline',
+            label: 'Agregar fotografía'
+          },
+          {
+            accion: (params: number[]) => this.concursoDetailService.desinscribirConcursante.emit(p),
+            // accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
+            params: [],
+            icon: 'trash',
+            label: 'Desinscribir'
+          }
+        ]
+      },
+      cssClass: 'auto-width',
+      event: ev,
+      translucent: true,
+      // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
+    }
+
+    // this.openPopup.emit(options)
+    this.concursoDetailService.mostrarAcciones.emit(options)
   }
 }
