@@ -3,6 +3,7 @@ import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { Image } from 'src/app/models/image.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
+import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 
@@ -14,9 +15,10 @@ import { ConcursoDetailService } from '../concurso-detail.service';
 })
 export class FotografiasComponent implements OnInit {
 
-  @Input() concursantes: ProfileExpanded[] = [];
-  @Input() resultadosConcurso: ContestResultExpanded[] = [];
-  @Input() fotoclubs: Fotoclub[] = [];
+  concursantes: ProfileExpanded[] = [];
+  inscriptos: ProfileContestExpanded[] = [];
+  resultadosConcurso: ContestResultExpanded[] = [];
+  fotoclubs: Fotoclub[] = [];
 
   // @Output() openPopup = new EventEmitter<any>();
   // @Output() postImage = new EventEmitter<Image|undefined>();
@@ -37,11 +39,11 @@ export class FotografiasComponent implements OnInit {
         // s1.unsubscribe()
       }
     )
-    const s2 = this.concursoDetailService.resultadosConcurso.subscribe(
+    const s2 = this.concursoDetailService.inscriptos.subscribe(cs => this.inscriptos = cs)
+    const s3 = this.concursoDetailService.resultadosConcurso.subscribe(
       rs => {
         this.resultadosConcurso = rs
         this.loading = false
-        // s2.unsubscribe()
       }
     )
   }

@@ -24,6 +24,7 @@ export class ConcursantesComponent implements OnInit {
   inscriptos: ProfileContestExpanded[] = [];
   resultadosConcurso: ContestResultExpanded[] = [];
   // fotoclubs: Fotoclub[];
+  mostrarFiltro: boolean = false
   
   // @Output() openPopup = new EventEmitter<any>();
   // @Output() postImage = new EventEmitter<Image|undefined>();
