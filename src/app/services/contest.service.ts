@@ -35,6 +35,7 @@ export class ContestService extends ApiService<Contest> {
 
   formatearFechaParaHTML(fecha: string): string {
     // console.log("lo que trae: " + fecha)
+    if (fecha == null) return '' 
     let cadena:string[] = fecha.split("-");
     let meses = ['','ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
     return `${cadena[0]}/${meses[parseInt(cadena[1])]}/${cadena[2]}`;

@@ -151,7 +151,7 @@
                 </ion-row>
               </ion-col>
             </ion-row>
-            <ion-list *ngIf="concursos.length > 0; else texto">
+            <ion-list *ngIf="concursos.length > 0; else (loading ? spinner : texto)">
               <!-- concurso card -->
               <!-- <ion-card *ngFor="let concurso of concursos"> -->
               <ion-card *ngFor="let concurso of concursos">
@@ -177,6 +177,9 @@
             </ion-list>
             <ng-template #texto>
               <ion-item>No se encontraron concursos</ion-item>
+            </ng-template>
+            <ng-template #spinner>
+              <ion-spinner></ion-spinner> 
             </ng-template>
           </ion-col>
         </ion-row>

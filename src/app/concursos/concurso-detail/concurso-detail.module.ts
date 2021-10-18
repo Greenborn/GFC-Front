@@ -14,6 +14,7 @@ import { FotografiasComponent } from './fotografias/fotografias.component';
 import { ConcursoDetailService } from './concurso-detail.service';
 import { ImagePostPage } from './image-post/image-post.page';
 import { ImageReviewPage } from './image-review/image-review.page';
+import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir-concursante.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,7 +28,8 @@ import { ImageReviewPage } from './image-review/image-review.page';
     ConcursantesComponent, 
     FotografiasComponent, 
     ImagePostPage, 
-    ImageReviewPage
+    ImageReviewPage,
+    InscribirConcursanteComponent
   ],
   providers: [ConcursoDetailService]
 })

@@ -24,6 +24,7 @@ export class FotografiasComponent implements OnInit {
   // @Output() deleteImage = new EventEmitter<ContestResultExpanded>();
 
 
+  public loading: boolean = true;
   mostrarFiltro: boolean = false;
   constructor(
     public concursoDetailService: ConcursoDetailService
@@ -39,6 +40,7 @@ export class FotografiasComponent implements OnInit {
     const s2 = this.concursoDetailService.resultadosConcurso.subscribe(
       rs => {
         this.resultadosConcurso = rs
+        this.loading = false
         // s2.unsubscribe()
       }
     )
@@ -48,9 +50,9 @@ export class FotografiasComponent implements OnInit {
     this.mostrarFiltro = !this.mostrarFiltro;
   }
 
-  getFotoclubName(fotoclub_id: number): string {
-    const fc = this.fotoclubs.find(f => f.id == fotoclub_id)
-    return fc != undefined ? fc.name : ''
+  getFotoclubName(profile_id: number): string {
+    const profile = this.concursantes.find(p => p.id == profile_id)
+    return profile != undefined ? profile.fotoclub.name : ''
   }
 
   getFullName(profile_id: number) {

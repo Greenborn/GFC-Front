@@ -162,7 +162,7 @@
             </ion-list>
 
             <!-- <div *ngIf="(users | async) as usuarios"> -->
-            <div *ngIf="(miembros | async) as miembros">
+            <div *ngIf="(miembros | async) as miembros; else spinner">
               <ion-list *ngIf="miembros.length > 0; else texto">
                 <ion-item *ngFor="let m of miembros">
                   <ion-grid>
@@ -243,16 +243,18 @@
                   </ion-grid>
                 </ion-item>
               </ion-list>
+              <ng-template #texto>
+                <ion-item>
+                  <ion-item *ngIf="!loading">No hay usuarios</ion-item>
+                  <ion-item *ngIf="searchParams != undefined">
+                    con {{searchParams.atributo}} que empiece con '{{
+                    searchParams.query }}'</ion-item
+                  >
+                </ion-item>
+              </ng-template>
             </div>
-            <ng-template #texto>
-              <ion-item>
-                <ion-spinner *ngIf="loading"></ion-spinner>
-                <ion-item *ngIf="!loading">No hay usuarios</ion-item>
-                <ion-item *ngIf="searchParams != undefined">
-                  con {{searchParams.atributo}} que empiece con '{{
-                  searchParams.query }}'</ion-item
-                >
-              </ion-item>
+            <ng-template #spinner>
+              <ion-spinner></ion-spinner> 
             </ng-template>
           </ion-col>
         </ion-row>

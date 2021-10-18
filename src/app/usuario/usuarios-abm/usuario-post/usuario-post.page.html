@@ -19,11 +19,11 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="2" class="ion-hide-md-down">
-     <app-usuario-img src="fafafa"></app-usuario-img>       
-     <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img>        -->
+        <app-usuario-img src="fafafa"></app-usuario-img>       
+        <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img>        -->
       </ion-col>
       <ion-col size-sm="12" size-md="9" size-lg="7">
-        <ion-row>
+        <ion-row *ngIf="!loading; else spinner">
           <form #f="ngForm" (ngSubmit)="postUsuario(f)">
             <!-- <ion-row class="ion-justify-content-center">
                 <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
@@ -89,7 +89,7 @@
               <!-- <ion-col size-md="3" size="12"> -->
               <ion-item class="expand-full">
                 <ion-label position="floating">Username</ion-label>
-                <ion-input
+                <ion-input disabled
                   name="username"
                   [(ngModel)]="usuario.username"
                   required
@@ -114,13 +114,13 @@
                 <ion-label [position]="'stacked'">Rol</ion-label>
                 <!-- [value]="(usuario.role_id == undefined) ? 2 : usuario.role_id" -->
                 <!-- (value)="usuario.role_id" -->
-                <ion-select #sRol
+                <ion-select #sRol disabled
                   name="role_id"
                   [(ngModel)]="usuario.role_id"
                   interface="popover"
-                  [disabled]="!isAdmin"
                   required
                   >
+                  <!-- [disabled]="!isAdmin" -->
                     <ion-select-option 
                       *ngFor="let r of roles" 
                       [value]="r.id"

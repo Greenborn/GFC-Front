@@ -41,9 +41,9 @@
                   <ion-label>Puntaje:</ion-label>
                 </ion-row>
                 <ion-row>
+                  <!-- [(ngModel)]="value" -->
                   <ion-range
                     dualKnobs="true"
-                    [(ngModel)]="value"
                     min="1000"
                     max="2000"
                     step="100"
@@ -204,7 +204,7 @@
               </ion-grid>
             </ion-item>
           </ion-list>
-          <ion-list>
+          <ion-list *ngIf="!loading; else spinner">
             <ion-item class="ion-no-padding">
               <!-- <ion-grid *ngIf="!loading"> -->
               <ion-grid *ngIf="resultadosConcurso.length > 0; else texto">
@@ -298,6 +298,9 @@
               <ng-template #texto>No hay fotografias</ng-template>
             </ion-item>
           </ion-list>
+          <ng-template #spinner>
+            <ion-spinner></ion-spinner>
+          </ng-template>
         </ion-col>
       </ion-row>
     </ion-col>

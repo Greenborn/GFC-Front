@@ -22,6 +22,7 @@ import { AuthService } from '../modules/auth/services/auth.service';
 export class ConcursosPage extends ApiConsumer implements OnInit {
 
   markChip: boolean = false;
+  public loading: boolean = true;
   mostrarFiltro: boolean = false;
   // public concursos: Concurso[] = [];
   public concursos: Contest[] = [];
@@ -82,6 +83,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     ).subscribe(r => {
       // console.log('concursos recibidos', r)
       this.concursos = r
+      this.loading = false
     })
   }
 

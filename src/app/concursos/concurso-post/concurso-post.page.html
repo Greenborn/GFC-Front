@@ -19,7 +19,7 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="10">
-        <form #f="ngForm" (ngSubmit)="postConcurso(f)">
+        <form #f="ngForm" (ngSubmit)="postConcurso(f)" *ngIf="!loading; else spinner">
           <ion-list class="ion-align-items-end">
             <!-- <ion-col size="12" size-md="4" > -->
             <ion-item>
@@ -139,6 +139,9 @@
             </ion-col>
           </ion-row>
         </form>
+        <ng-template #spinner>
+          <ion-spinner></ion-spinner>
+        </ng-template>
       </ion-col>
     </ion-row>
   </ion-grid>

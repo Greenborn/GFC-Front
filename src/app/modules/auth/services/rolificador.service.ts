@@ -3,8 +3,10 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
+import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { User, UserLogged } from 'src/app/models/user.model';
 import { ContestResultService } from 'src/app/services/contest-result.service';
+import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from './auth.service';
@@ -18,7 +20,8 @@ export class RolificadorService {
     private auth: AuthService,
     private userService: UserService,
     private profileService: ProfileService,
-    private contestResultService: ContestResultService
+    private contestResultService: ContestResultService,
+    private profileContestService: ProfileContestService
   ) { }
 
   getNombreUsuarios(role_id: number): string {
@@ -51,10 +54,18 @@ export class RolificadorService {
   }
 
   getConcursantes(u: UserLogged): Observable<ProfileExpanded[]> {
-    return this.profileService.getAll<ProfileExpanded>("expand=user" + (!this.isAdmin(u) ? `&filter[fotoclub_id]=${u.profile.fotoclub_id}` : '')).pipe(
+    return this.profileService.getAll<ProfileExpanded>("expand=user,fotoclub" + (!this.isAdmin(u) ? `&filter[fotoclub_id]=${u.profile.fotoclub_id}` : '')).pipe(
       map(profiles => {
         // console.log('mapeando perfiles', profiles)
         return profiles.filter(p => (p.id == u.profile_id || p.user.role_id != 3) ? false : (this.isAdmin(u) ? true : p.fotoclub_id == u.profile.fotoclub_id))
+      })
+    )
+  }
+  getConcursantesInscriptos(u: UserLogged, contest_id: number): Observable<ProfileContestExpanded[]> {
+    return this.profileContestService.getAll<ProfileContestExpanded>(`expand=profile,profile.user,profile.fotoclub&filter[contest_id]=${contest_id}` + (!this.isAdmin(u) ? `&filter[fotoclub_id]=${u.profile.fotoclub_id}` : '')).pipe(
+      map(inscriptos => {
+        // console.log('mapeando perfiles', profiles)
+        return inscriptos.filter(i => (i.profile.id == u.profile_id || i.profile.user.role_id != 3) ? false : (this.isAdmin(u) ? true : i.profile.fotoclub_id == u.profile.fotoclub_id))
       })
     )
   }

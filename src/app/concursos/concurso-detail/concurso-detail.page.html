@@ -16,7 +16,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card class="ion-no-margin">
+  <ion-card *ngIf="!loading; else spinner" class="ion-no-margin">
     <ion-card-header>
       <ion-row>
         <ion-col>
@@ -47,6 +47,9 @@
     </ion-card-content>
     <!-- <ion-label>{{item}}</ion-label> -->
   </ion-card>
+  <ng-template #spinner>
+    <ion-spinner></ion-spinner>
+  </ng-template>
 
 
   <ion-content>
@@ -55,7 +58,7 @@
         <ion-tab-button tab="concursantes">
           <ion-icon name="people-outline"></ion-icon>
           <ion-label>Concursantes</ion-label>
-          <ion-badge>6</ion-badge>
+          <ion-badge>{{ loading ? '' : inscriptos.length }}</ion-badge>
         </ion-tab-button>
     
         <ion-tab-button tab="fotografias">
@@ -73,9 +76,8 @@
     (deleteImage)="deleteImage($event)" -->
     <router-outlet
       name="concurso"
-      (activate)="onOutletLoaded($event)"
-      
-    ></router-outlet>
+      ></router-outlet>
+      <!-- (activate)="onOutletLoaded($event)" -->
   </ion-content>
 
 

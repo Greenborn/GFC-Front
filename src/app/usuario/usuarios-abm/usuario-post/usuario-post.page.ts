@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import {Location} from '@angular/common';
 
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { AlertController } from '@ionic/angular';
@@ -33,6 +34,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
   public isPost: boolean = true;
   public posting: boolean = false;
+  public loading: boolean = false;
   public userLogged: User;
   public updatingSelect: boolean = false
 
@@ -44,7 +46,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     private profileService: ProfileService,
     private roleService: RoleService,
     private fotoclubService: FotoclubService,
-    alertCtrl: AlertController
+    alertCtrl: AlertController,
+    private location: Location
   ) { 
     super(alertCtrl)
   }
@@ -55,7 +58,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   // }
 
   get formTitle(): string {
-    if (this.userLogged == undefined) return ''
+    if (this.userLogged == undefined || this.loading) return ''
     const c = this.usuario;
     return  (c.id != null ? 'Editar ' : 'Agregar ') + 
               (c.id == this.userLogged.id ? 'perfil' : 
@@ -73,9 +76,13 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       const id = paramMap.get('id');
       if (id != null) {
         this.isPost = false
+        this.loading = true
         super.fetch<User>(() => this.userService.get(parseInt(id))).subscribe(u => {
           this.usuario = u
-          super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => this.profile = p)
+          super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => {
+            this.profile = p
+            this.loading = false
+          })
         })
         
       } else {
@@ -128,19 +135,20 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
             // role_id: f.value.role_id,
             profile_id: p.id
           }
-          super.fetch<User>(() => this.userService.post(um, this.usuario.id)).subscribe(
-            u => {
-              this.posting = false
-              console.log('exito post user', u)
-              this.router.navigate(['/usuarios']);
-            },
-            err => {
-              this.posting = false
-              console.log('posteado perfil', p)
-              super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(_ => {})
-              super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${err.statusText}`)
-            }
-          )
+          // super.fetch<User>(() => this.userService.post(um, this.usuario.id)).subscribe(
+          //   u => {
+          //     this.posting = false
+          //     console.log('exito post user', u)
+              this.location.back()
+              // this.router.navigate(['/usuarios']);
+          //   },
+          //   err => {
+          //     this.posting = false
+          //     console.log('posteado perfil', p)
+          //     super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(_ => {})
+          //     super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${err.statusText}`)
+          //   }
+          // )
         },
         err => {
           this.posting = false

@@ -16,6 +16,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
 
   concurso: Contest = this.contestService.template;
   public posting: boolean = false;
+  public loading: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -31,18 +32,21 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
       const id = paramMap.get('id');
 
       if (id != null) {
+        this.loading = true
         super.fetch<Contest>(() => 
           this.contestService.get(parseInt(id))
         ).subscribe(c => {
           c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
           c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
           this.concurso = c
+          this.loading = false
         })
       }
     })
   }
 
   get formTitle(): string {
+    if (this.loading) return ''
     const c = this.concurso;
     return (c.id != null ? 'Editar' : 'Agregar') + ' concurso'
   }

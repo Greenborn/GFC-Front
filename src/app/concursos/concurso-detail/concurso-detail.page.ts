@@ -25,6 +25,9 @@ import { map } from 'rxjs/operators';
 import { FotografiasComponent } from './fotografias/fotografias.component';
 import { ConcursantesComponent } from './concursantes/concursantes.component';
 import { ConcursoDetailService } from './concurso-detail.service';
+import { ProfileContestExpanded } from 'src/app/models/profile_contest';
+import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir-concursante.component';
+import { ProfileContestService } from 'src/app/services/profile-contest.service';
 
 @Component({
   selector: 'app-concurso-detail',
@@ -43,12 +46,13 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
   
   resultadosConcurso: ContestResultExpanded[] = [];
   concursantes: ProfileExpanded[] = [];
+  inscriptos: ProfileContestExpanded[] = [];
   // contest: Observable<ContestExpanded>;
 
   fotoclubs: Fotoclub[] = [];
   metrics: Metric[] = [];
   popover: HTMLIonPopoverElement = undefined;
-  // loading: boolean = true;
+  loading: boolean = true;
   subs: Subscription[] = [];
 
   constructor(
@@ -66,7 +70,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     private metricService: MetricService,
     private imageService: ImageService,
     private rolificador: RolificadorService,
-    private concursoDetailService: ConcursoDetailService
+    public concursoDetailService: ConcursoDetailService,
+    private profileContestService: ProfileContestService
   ) {
     super(alertCtrl)
    }
@@ -89,6 +94,11 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
         this.concurso = c
         // obtener todos los contest result de este concurso
         const u = await this.auth.user
+        super.fetch<ProfileContestExpanded[]>(() => this.rolificador.getConcursantesInscriptos(u, id)).subscribe(is => {
+          this.inscriptos = is
+          console.log('inscriptos', is)
+          this.concursoDetailService.inscriptos.emit(is)
+        })
         super.fetch<ProfileExpanded[]>(() => this.rolificador.getConcursantes(u)).subscribe(cs => {
           console.log('concursantes', cs)
           this.concursantes = cs
@@ -101,13 +111,16 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
           ).subscribe(rs => {
             this.resultadosConcurso = rs
             this.concursoDetailService.resultadosConcurso.emit(rs)
+            this.loading = false
           })
         })
       })
     })
-
-
-
+    
+    // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
+    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
+  }
+  ionViewWillEnter() {
     const s1 = this.concursoDetailService.postImage.subscribe(
       i => {
         this.postImage(i)
@@ -132,10 +145,9 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
         // s4.unsubscribe()
       }
     )
-    this.subs.push(s1, s2, s3, s4)
-    
-    // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
-    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
+    const s5 = this.concursoDetailService.inscribirConcursante.subscribe(_ => this.inscribirConcursante())
+    const s6 = this.concursoDetailService.desinscribirConcursante.subscribe(profileContest => this.desinscribirConcursante(profileContest))
+    this.subs.push(s1, s2, s3, s4, s5, s6)
   }
   ionViewWillLeave() {
     this.subs.forEach(s => s.unsubscribe())
@@ -220,6 +232,74 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     this.popover.onDidDismiss().then(_ => this.popover = undefined)
   }
 
+  async inscribirConcursante() {
+    if (this.popover != undefined) {
+      this.popoverCtrl.dismiss(this.popover)
+      this.popover = undefined
+    }
+
+    const modal = await this.modalController.create({
+      component: InscribirConcursanteComponent,
+      cssClass: 'auto-width',
+      componentProps: {
+        "concursantes": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) < 0),
+        "modalController": this.modalController,
+        "contest": this.concurso
+      }
+    });
+    await modal.present()
+
+    const { data } = await modal.onWillDismiss();
+
+    console.log('inscribiendo concursante', data)
+    const { profileContest } = data ?? {}
+    if (profileContest != undefined) {
+      this.inscriptos.push(profileContest)
+      this.concursoDetailService.inscriptos.emit(this.inscriptos)  
+    }
+  }
+
+  async desinscribirConcursante(profileContest: ProfileContestExpanded) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar desinscripción',
+      message: `Confirma desinscribir ${profileContest.profile.name} ${profileContest.profile.last_name} del concurso ${this.concurso.name}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }, {
+          text: 'Confirmar',
+          // handler: async () => {
+          handler: () => {
+            // await this.contestSvc.deleteConcurso(this.concurso.id);
+            super.fetch<void>(() => 
+              this.profileContestService.delete(profileContest.id)
+            ).subscribe(
+              _ => {
+                console.log('deleted', _)
+                this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
+                this.concursoDetailService.inscriptos.emit(this.inscriptos)
+                // this.router.navigate(['/concursos']);
+              }, 
+              async err => {
+                (await this.alertCtrl.create({
+                  header: 'Error',
+                  message: err.error['error-info'][2],
+                  buttons: [{
+                    text: 'Ok',
+                    role: 'cancel'
+                  }]
+                })).present()
+              }
+            )
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   async reviewImage(r: ContestResultExpanded) {
     if (this.popover != undefined) {
       this.popoverCtrl.dismiss(this.popover)
@@ -242,7 +322,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     const { data } = await modal.onWillDismiss();
 
     console.log('punteado imagen', data)
-    const { metric } = data
+    const { metric } = data ?? {}
     if (metric != undefined) {
       // const i = this.metrics.findIndex(m => m.id == metric.id)
       const r = this.resultadosConcurso.find(e => e.metric_id == metric.id)
@@ -293,7 +373,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
 
     const { data } = await modal.onWillDismiss();
     console.log('dismiss image post popup con data', data);
-    const { image } = data
+    const { image } = data ?? {}
     if (image != undefined) {
       // this.loading = true
       // const i_index = this.images.findIndex(e => e.id == image.id)
