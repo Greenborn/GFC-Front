@@ -64,7 +64,9 @@
               >
                 <ion-label *ngIf="!loading; else spinner">Ingresar</ion-label>
                 <ng-template #spinner>
-                  <ion-spinner></ion-spinner>
+                  <ion-row class="ion-justify-content-center">
+                    <ion-spinner ></ion-spinner>
+                  </ion-row>
                 </ng-template>
               </ion-button>
 

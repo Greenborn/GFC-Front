@@ -25,6 +25,7 @@ export class ConcursantesComponent implements OnInit {
   resultadosConcurso: ContestResultExpanded[] = [];
   // fotoclubs: Fotoclub[];
   mostrarFiltro: boolean = false
+  public loading: boolean = true
   
   // @Output() openPopup = new EventEmitter<any>();
   // @Output() postImage = new EventEmitter<Image|undefined>();
@@ -41,7 +42,10 @@ export class ConcursantesComponent implements OnInit {
   ngOnInit() {
     this.concursoDetailService.concursantes.subscribe(cs => this.concursantes = cs)
     this.concursoDetailService.inscriptos.subscribe(is => this.inscriptos = is)
-    this.concursoDetailService.resultadosConcurso.subscribe(rs => this.resultadosConcurso = rs)
+    this.concursoDetailService.resultadosConcurso.subscribe(rs => {
+      this.resultadosConcurso = rs 
+      this.loading = false
+    })
   }
 
   getFotosCargadas(profile_id: number) {
