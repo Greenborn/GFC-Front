@@ -181,32 +181,30 @@
             <ion-item color="dark">
               <ion-grid>
                 <ion-row>
-                  <ion-col size="6.5" size-md="9"
+                  <ion-col 
                     ><b
                       >Concursante</b
                     ></ion-col
                   >
                   <!-- *ngIf="rolificador.isAdmin(userLogged)" -->
-                  <ion-col size="3.5" size-md="2"
-                  ><ion-text 
-                  ><b>Entidad</b></ion-text
-                  ></ion-col
+                  <ion-col size="3.5" size-md="2" *ngIf="rolificador.isAdmin(userLogged)"
+                  ><b>Entidad</b></ion-col
                   >
-                  <ion-col size="2" size-md="1"><b>Acciones</b></ion-col>
+                  <ion-col size="2" size-md="1"><b></b></ion-col>
                 </ion-row>
               </ion-grid>
             </ion-item>
           </ion-list>
           <ion-list *ngIf="!loading; else spinner">
-            <ion-item class="ion-no-padding">
+            <ion-item class="">
               <!-- <ion-grid *ngIf="!loading"> -->
               <ion-grid *ngIf="inscriptos.length > 0; else texto">
                 <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
                 <!-- class="ion-text-center" -->
-                <ion-item *ngFor="let m of inscriptos">
+                <ion-item class="ion-no-padding lista-elem" *ngFor="let m of inscriptos">
                   <ion-grid>
                     <ion-row size="12">
-                      <ion-col size="12" size-md="7" size-sm="5.5">
+                      <ion-col >
                         <ion-row
                           class="
                             ion-align-items-center ion-justify-content-between
@@ -216,7 +214,7 @@
                           <ion-col size="3" size-sm="1.3">
                             <app-usuario-img src="fafafa"></app-usuario-img>
                           </ion-col>
-                          <ion-col size="8" size-sm="10.7">
+                          <ion-col size="9" size-sm="10.7">
                             <ion-label class="ion-margin-start">
                               <ion-card-subtitle title="Username"
                                 >{{m.profile.user.username}}</ion-card-subtitle
@@ -249,16 +247,16 @@
                         </ion-row>
                       </ion-col>
                       <ion-col
-                        size="2.5"
-                        size-md="2"
+                      size="3.5" size-md="2"
                         class="ion-hide-sm-down ion-align-self-center"
+                        *ngIf="rolificador.isAdmin(userLogged)"
                       >
-                        <ion-text *ngIf="rolificador.isAdmin(userLogged)"
+                        <ion-text title="Entidad" 
                           >{{ getFotoclubName(m.profile_id) }}</ion-text
                         >
                       </ion-col>
                       <ion-col
-                        size="1.5"
+                        size="2"
                         size-md="1"
                         class="ion-align-self-center ion-hide-sm-down"
                       >

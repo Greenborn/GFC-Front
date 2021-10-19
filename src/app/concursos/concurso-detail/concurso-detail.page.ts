@@ -77,6 +77,35 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
    }
 
   async ngOnInit() {
+    const content: HTMLIonContentElement = document.querySelector('#concurso-tab')
+    // content.scrollEvents = true
+    // content.addEventListener('ionScroll', ev => console.log('scroll', (ev as any).detail))
+    let tiempoScroll = new Date().getTime()
+    let scrolling = false
+    content.addEventListener('wheel', ev => {
+      // console.log('wheel', ev)
+      const scrollDown = ev.deltaY > 0
+      if (!scrolling) {
+        let scrolling = true
+        content.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
+      }
+      // if (!scrolling && new Date().getTime() - tiempoScroll > 100) {
+      //   console.log('scroll',content.scrollTop)
+      //   scrolling = true
+      //   content.scrollToPoint(content.scrollLeft, content.scrollTop + (scrollDown ? 10 : -10), 10).then(() => scrolling = false)
+      //   tiempoScroll = new Date().getTime()
+      // } else {
+      //   console.log('ignorando scroll')
+      // }
+      // content.getScrollElement().then(e => {
+      //   console.log(e.scrollHeight)
+        
+      // })
+      // content.scrollByPoint({ y: scrollDown ? 1 : -1 })
+    })
+    // content.addEventListener('ionScrollStart', () => console.log('scroll start'))
+    // content.addEventListener('ionScrollEnd', () => console.log('scroll end'))
+
     this.activatedRoute.paramMap.subscribe(async paramMap => {
       // let loading = await this.loadingCtrl.create({
       //   message: 'Please wait...'

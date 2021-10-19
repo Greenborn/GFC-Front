@@ -15,7 +15,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content id="concurso-tab">
   <ion-card *ngIf="!loading; else spinner" class="ion-no-margin">
     <ion-card-header>
       <ion-row>
@@ -55,7 +55,7 @@
   </ng-template>
 
 
-  <ion-content>
+  <ion-content overflow-scroll="true" >
     <ion-tabs>
       <ion-tab-bar slot="top">
         <ion-tab-button tab="concursantes">

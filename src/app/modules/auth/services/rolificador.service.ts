@@ -62,7 +62,7 @@ export class RolificadorService {
     )
   }
   getConcursantesInscriptos(u: UserLogged, contest_id: number): Observable<ProfileContestExpanded[]> {
-    return this.profileContestService.getAll<ProfileContestExpanded>(`expand=profile,profile.user,profile.fotoclub&filter[contest_id]=${contest_id}` + (!this.isAdmin(u) ? `&filter[fotoclub_id]=${u.profile.fotoclub_id}` : '')).pipe(
+    return this.profileContestService.getAll<ProfileContestExpanded>(`expand=profile,profile.user,profile.fotoclub&filter[contest_id]=${contest_id}`).pipe(
       map(inscriptos => {
         // console.log('mapeando perfiles', profiles)
         return inscriptos.filter(i => (i.profile.id == u.profile_id || i.profile.user.role_id != 3) ? false : (this.isAdmin(u) ? true : i.profile.fotoclub_id == u.profile.fotoclub_id))
