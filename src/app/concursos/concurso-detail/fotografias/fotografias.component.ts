@@ -106,4 +106,14 @@ export class FotografiasComponent implements OnInit {
     this.concursoDetailService.mostrarAcciones.emit(options)
   }
 
+  ordenarPorAutor(e1: ContestResultExpanded, e2: ContestResultExpanded, creciente: boolean) {
+    const n1 = e1.image.profile.last_name
+    const n2 = e2.image.profile.last_name
+    // const n1 = this.inscriptos.find(i => e1.image.profile_id == i.profile_id).profile.last_name ?? ''
+    // const n2 = this.inscriptos.find(i => e2.image.profile_id == i.profile_id).profile.last_name ?? ''
+    
+    return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
+      (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+  }
+
 }

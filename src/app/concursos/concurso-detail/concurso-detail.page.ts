@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 
@@ -36,6 +36,9 @@ import { ProfileContestService } from 'src/app/services/profile-contest.service'
   // providers: [ ConcursoDetailService ]
 })
 export class ConcursoDetailPage extends ApiConsumer implements OnInit {
+
+  // @ViewChild('ConcursoContent') pageContent: HTMLIonContentElement
+  // @ViewChild('ConcursoTabs') pageTabs: HTMLIonContentElement
 
   mostrarFiltro: boolean = false;
   concurso: Contest = this.contestService.template;
@@ -77,32 +80,24 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
    }
 
   async ngOnInit() {
-    const content: HTMLIonContentElement = document.querySelector('#concurso-tab')
-    // content.scrollEvents = true
-    // content.addEventListener('ionScroll', ev => console.log('scroll', (ev as any).detail))
-    let tiempoScroll = new Date().getTime()
-    let scrolling = false
-    content.addEventListener('wheel', ev => {
-      // console.log('wheel', ev)
-      const scrollDown = ev.deltaY > 0
-      if (!scrolling) {
-        let scrolling = true
-        content.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
-      }
-      // if (!scrolling && new Date().getTime() - tiempoScroll > 100) {
-      //   console.log('scroll',content.scrollTop)
-      //   scrolling = true
-      //   content.scrollToPoint(content.scrollLeft, content.scrollTop + (scrollDown ? 10 : -10), 10).then(() => scrolling = false)
-      //   tiempoScroll = new Date().getTime()
-      // } else {
-      //   console.log('ignorando scroll')
-      // }
-      // content.getScrollElement().then(e => {
-      //   console.log(e.scrollHeight)
-        
-      // })
-      // content.scrollByPoint({ y: scrollDown ? 1 : -1 })
-    })
+    const tabsContent: HTMLElement = document.querySelector('#concurso-tabs')
+    if (window.screen.width > 768) {
+      const content: HTMLIonContentElement = document.querySelector('#concurso-content')
+      // content.scrollEvents = true
+      // content.addEventListener('ionScroll', ev => console.log('scroll', (ev as any).detail))
+      let tiempoScroll = new Date().getTime()
+      let scrolling = false
+      content.addEventListener('wheel', ev => {
+      // this.pageContent.addEventListener('wheel', ev => {
+        // console.log('wheel', ev)
+        const scrollDown = ev.deltaY > 0
+        if (!scrolling) {
+          let scrolling = true
+          content.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
+          // this.pageContent.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
+        }
+      })
+    }
     // content.addEventListener('ionScrollStart', () => console.log('scroll start'))
     // content.addEventListener('ionScrollEnd', () => console.log('scroll end'))
 
@@ -134,13 +129,22 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
           this.concursoDetailService.concursantes.emit(cs)
           // this.resultadosConcurso = super.fetch<ContestResultExpanded[]>(() => 
           super.fetch<ContestResultExpanded[]>(() => 
-            this.contestResultService.getAll<ContestResultExpanded>(`filter[contest_id]=${c.id}`)
+            this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile&filter[contest_id]=${c.id}`)
           ).pipe(
             map(results => results.filter(r => cs.find(cc => cc.id == r.image.profile_id) != undefined))
           ).subscribe(rs => {
             this.resultadosConcurso = rs
             this.concursoDetailService.resultadosConcurso.emit(rs)
             this.loading = false
+            setTimeout(() => { // porque no muestra todo el contenido
+              // const c = this.pageTabs
+              // if (this.router.url.includes('fotografias')) {
+                tabsContent.style.setProperty('height', '')
+                const height = tabsContent.getBoundingClientRect().height
+                // console.log('tabs content height', height)
+                tabsContent.style.setProperty('height', `${height + 200}px`) 
+              // }
+            }, 100)
           })
         })
       })
@@ -258,7 +262,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
 
     this.popover = await this.popoverCtrl.create(options)
     await this.popover.present();
-    this.popover.onDidDismiss().then(_ => this.popover = undefined)
+    if (this.popover != undefined)
+      this.popover.onDidDismiss().then(_ => this.popover = undefined)
   }
 
   async inscribirConcursante() {

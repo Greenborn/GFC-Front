@@ -13,12 +13,12 @@ const routes: Routes = [
       {
         path: 'concursantes',
         component: ConcursantesComponent,
-        // outlet: 'concurso-detail'
+        // outlet: 'concurso'
       },
       {
         path: 'fotografias',
         component: FotografiasComponent,
-        // outlet: 'concurso-detail'
+        // outlet: 'concurso'
       },
       {
         path: '',

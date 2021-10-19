@@ -15,7 +15,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="concurso-tab">
+<ion-content #ConcursoContent id="concurso-content">
+  <ion-row size="12">
+    <ion-col>
   <ion-card *ngIf="!loading; else spinner" class="ion-no-margin">
     <ion-card-header>
       <ion-row>
@@ -51,11 +53,15 @@
     <ion-row class="ion-justify-content-center">
       <ion-spinner ></ion-spinner>
     </ion-row>
-   
   </ng-template>
+</ion-col>
+</ion-row>
 
+<!-- <ion-content>
+  <app-concurso-tabs [totConcursantes]="loading ? '' : inscriptos.length"></app-concurso-tabs>
+</ion-content> -->
 
-  <ion-content overflow-scroll="true" >
+  <ion-content #ConcursoTabs id="concurso-tabs">
     <ion-tabs>
       <ion-tab-bar slot="top">
         <ion-tab-button tab="concursantes">
@@ -70,18 +76,12 @@
         </ion-tab-button>
       </ion-tab-bar>
     </ion-tabs>
-    <!-- [resultados]="resultadosConcurso"
-    [concursantes]="concursantes"
-    [fotoclubs]="fotoclubs" -->
-    <!-- (openPopup)="openPopup($event)"
-    (postImage)="postImage($event)"
-    (reviewImage)="reviewImage($event)"
-    (deleteImage)="deleteImage($event)" -->
-    <router-outlet
+
+    <router-outlet 
       name="concurso"
-      ></router-outlet>
-      <!-- (activate)="onOutletLoaded($event)" -->
-  </ion-content>
+    ></router-outlet>
+      
+    </ion-content>
 
 
 </ion-content>

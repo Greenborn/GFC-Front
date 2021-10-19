@@ -3,10 +3,16 @@
     <app-navbar *ngIf="router.url != '/login'"></app-navbar>
   </ion-header>
 
-    <ion-content >
-      <!-- sidebar -->
-      <app-sidebar></app-sidebar>
-      <ion-router-outlet id="main-content"></ion-router-outlet>
-    </ion-content>
+  <ion-content >
+    <!-- sidebar -->
+    <app-sidebar></app-sidebar>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-content>
+  <!-- <ion-footer class="ion-no-border">
+    <ion-toolbar>
+      <ion-title>Footer - No Border</ion-title>
+    </ion-toolbar>
+  </ion-footer> -->
   <!-- </ion-split-pane> -->
+
 </ion-app>

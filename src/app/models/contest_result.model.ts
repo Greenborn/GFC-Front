@@ -1,4 +1,4 @@
-import { Image } from "./image.model"
+import { Image, ImageExpanded } from "./image.model"
 import { Metric } from "./metric.model";
 
 export interface ContestResult {
@@ -9,6 +9,6 @@ export interface ContestResult {
 }
 
 export interface ContestResultExpanded extends ContestResult {
-    "image": Image,
-    "metric": Metric
+    "image": ImageExpanded,
+    "metric": Metric,
 }

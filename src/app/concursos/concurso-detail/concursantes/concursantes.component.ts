@@ -26,7 +26,6 @@ export class ConcursantesComponent implements OnInit {
   // fotoclubs: Fotoclub[];
   mostrarFiltro: boolean = false
   public loading: boolean = true
-  
   // @Output() openPopup = new EventEmitter<any>();
   // @Output() postImage = new EventEmitter<Image|undefined>();
   // @Output() reviewImage = new EventEmitter<ContestResultExpanded>();
@@ -61,6 +60,24 @@ export class ConcursantesComponent implements OnInit {
     const p = this.concursantes.find(p => p.id == profile_id)
     return p != undefined ? `${p.name} ${p.last_name}` : ''
   }
+
+
+  ordenarPorApellido(e1: ProfileContestExpanded, e2: ProfileContestExpanded, creciente: boolean) {
+    const n1 = e1.profile.last_name
+    const n2 = e2.profile.last_name;
+    
+    return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
+      (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+  }
+  ordenarPorFotoclub(e1: ProfileContestExpanded, e2: ProfileContestExpanded, creciente: boolean) {
+    const n1 = e1.profile.fotoclub.name
+    const n2 = e2.profile.fotoclub.name
+    
+    return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
+      (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+  }
+
+
 
   async mostrarAcciones(ev: any, p: ProfileContestExpanded) {
     const options = {

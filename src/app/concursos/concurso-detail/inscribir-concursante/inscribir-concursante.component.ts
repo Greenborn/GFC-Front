@@ -15,10 +15,11 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
 
   @Input() modalController: ModalController;
   @Input() contest: Contest;
-  @Input() concursantes: ProfileExpanded;
+  @Input() concursantes: ProfileExpanded[];
 
   public profile_id: number = undefined;
   public posting: boolean = false;
+  public tamWidth = window.screen.width;
 
   constructor(
     private profileContestService: ProfileContestService,

@@ -187,8 +187,18 @@
                     class="ion-hide-md-down ion-padding-start"
                     size="4"
                     size-md="3"
-                    ><b>Autor</b></ion-col
                   >
+                    <ion-row class="ion-align-items-center">
+                      <b>Autor</b>
+                      <app-btn-sort class="ion-margin-start"
+                        [sortFn]="ordenarPorAutor"
+                        [data]="resultadosConcurso"
+                        (sorted)="resultadosConcurso = $event"
+                      ></app-btn-sort>
+                    </ion-row>
+                    <!-- <b>Autor</b> -->
+                  </ion-col>
+                  
                   <ion-col size="3" size-md="2"
                     ><b>Premio</b></ion-col
                   >
