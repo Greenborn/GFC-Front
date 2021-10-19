@@ -388,7 +388,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     } = {
       "concurso": this.concurso.name,
       "modalController": this.modalController,
-      "profiles": this.concursantes
+      "profiles": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) > -1)
     }
 
     if (i != undefined) {
