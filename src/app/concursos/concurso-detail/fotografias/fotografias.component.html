@@ -182,32 +182,101 @@
               <ion-grid>
                 <ion-row class="ion-padding-end">
                   <!-- class="ion-text-center" -->
-                  <ion-col size="6" size-md="3" class=""><b>Obra</b></ion-col>
+                  <ion-col size="6" size-md="3" class="">
+                    <!-- <b>Obra</b> -->
+                    <ion-row>
+                      <app-th-sort
+                        [sortFn]="ordenarPorObra"
+                        [(data)]="resultadosConcurso"
+                        title="Obra"
+                      ></app-th-sort>
+                      <!-- <div class="thead">
+                        <b>Obra</b>
+                        <app-btn-sort
+                          [sortFn]="ordenarPorObra"
+                          [data]="resultadosConcurso"
+                          (sorted)="resultadosConcurso = $event"
+                        ></app-btn-sort>
+                      </div> -->
+                    </ion-row>
+                  </ion-col>
                   <ion-col
                     class="ion-hide-md-down ion-padding-start"
                     size="4"
                     size-md="3"
                   >
-                    <ion-row class="ion-align-items-center">
-                      <b>Autor</b>
-                      <app-btn-sort class="ion-margin-start"
+                    <ion-row>
+                      <app-th-sort
                         [sortFn]="ordenarPorAutor"
-                        [data]="resultadosConcurso"
-                        (sorted)="resultadosConcurso = $event"
-                      ></app-btn-sort>
+                        [(data)]="resultadosConcurso"
+                        title="Autor"
+                      ></app-th-sort>
+                      <!-- <div class="thead">
+                        <b>Autor</b>
+                        <app-btn-sort 
+                          [sortFn]="ordenarPorAutor"
+                          [data]="resultadosConcurso"
+                          (sorted)="resultadosConcurso = $event"
+                        ></app-btn-sort>
+                      </div> -->
                     </ion-row>
                     <!-- <b>Autor</b> -->
                   </ion-col>
                   
-                  <ion-col size="3" size-md="2"
-                    ><b>Premio</b></ion-col
-                  >
-                  <ion-col class="ion-hide-md-down " size="2"
-                    ><b>Puntaje</b></ion-col
-                  >
-                  <ion-col class="ion-hide-md-up" size="2"
-                    ><b>Ptje</b></ion-col
-                  >
+                  <ion-col size="3" size-md="2">
+                    <!-- <b>Premio</b> -->
+                    <ion-row>
+                      <app-th-sort
+                        [(data)]="resultadosConcurso"
+                        title="Premio"
+                      ></app-th-sort>
+                      <!-- <div class="thead">
+                        <b>Premio</b>
+                        <app-btn-sort 
+                          [sortFn]=""
+                          [data]="resultadosConcurso"
+                          (sorted)="resultadosConcurso = $event"
+                          [disabled]="true"
+                        ></app-btn-sort>
+                      </div> -->
+                    </ion-row>
+                  </ion-col>
+                  <ion-col class="ion-hide-md-down " size="2">
+                    <!-- <b>Puntaje</b> -->
+                    <ion-row>
+                      <app-th-sort
+                        [(data)]="resultadosConcurso"
+                        title="Puntaje"
+                      ></app-th-sort>
+                      <!-- <div class="thead">
+                        <b>Puntaje</b>
+                        <app-btn-sort 
+                          [sortFn]=""
+                          [data]="resultadosConcurso"
+                          (sorted)="resultadosConcurso = $event"
+                          [disabled]="true"
+                        ></app-btn-sort>
+                      </div> -->
+                    </ion-row>
+                  </ion-col>
+                  <ion-col class="ion-hide-md-up" size="2">
+                    <!-- <b>Ptje</b> -->
+                    <ion-row>
+                      <app-th-sort
+                        [(data)]="resultadosConcurso"
+                        title="Ptje"
+                      ></app-th-sort>
+                      <!-- <div class="thead">
+                        <b>Ptje</b>
+                        <app-btn-sort 
+                          [sortFn]=""
+                          [data]="resultadosConcurso"
+                          (sorted)="resultadosConcurso = $event"
+                          [disabled]="true"
+                        ></app-btn-sort>
+                      </div> -->
+                    </ion-row>
+                  </ion-col>
 
                   <ion-col size="2"></ion-col>
                 </ion-row>

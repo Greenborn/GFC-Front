@@ -9,6 +9,7 @@ export class BtnSortComponent implements OnInit, OnChanges {
 
   @Input() sortFn: Function;
   @Input() data: any[];
+  @Input() disabled: boolean = false;
   @Output() sorted = new EventEmitter<any[]>()
 
   public ordenamientoCreciente: boolean = true

@@ -2,6 +2,12 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    
+    @media(min-width: 768px) {
+        app-btn-sort {
+            margin-left: 4px;
+        }
+    }
 
     @media(max-width:767px) {
         flex-direction: column;

@@ -182,13 +182,20 @@
               <ion-grid>
                 <ion-row>
                   <ion-col>
-                    <ion-row class="ion-align-items-center">
-                      <b>Concursante</b>
-                      <app-btn-sort style="margin-left: 8px"
+                    <ion-row>
+                      <app-th-sort
                         [sortFn]="ordenarPorApellido"
-                        [data]="inscriptos"
-                        (sorted)="inscriptos = $event"
-                      ></app-btn-sort>
+                        [(data)]="inscriptos"
+                        title="Concursantes"
+                      ></app-th-sort>
+                      <!-- <div class="thead">
+                        <b>Concursante</b>
+                        <app-btn-sort style="margin-left: 8px"
+                          [sortFn]="ordenarPorApellido"
+                          [data]="inscriptos"
+                          (sorted)="inscriptos = $event"
+                        ></app-btn-sort>
+                      </div> -->
                       <!-- <ion-button (click)="ordenarPorApellido()"
                         size="small" [fill]="ordenamientoFill" color="light"
                         [title]="ordenamientoTitle"
@@ -207,13 +214,20 @@
                   >
                     <!-- <b>Entidad</b> -->
                     
-                    <ion-row class="ion-align-items-center">
-                      <b>Entidad</b>
-                      <app-btn-sort style="margin-left: 8px"
+                    <ion-row>
+                      <app-th-sort
                         [sortFn]="ordenarPorFotoclub"
-                        [data]="inscriptos"
-                        (sorted)="inscriptos = $event"
-                      ></app-btn-sort>
+                        [(data)]="inscriptos"
+                        title="Entidad"
+                      ></app-th-sort>
+                      <!-- <div class="thead">
+                        <b>Entidad</b>
+                        <app-btn-sort style="margin-left: 8px"
+                          [sortFn]="ordenarPorFotoclub"
+                          [data]="inscriptos"
+                          (sorted)="inscriptos = $event"
+                        ></app-btn-sort>
+                      </div> -->
                     </ion-row>
                   </ion-col>
                   <ion-col size="2" size-md="1"><b></b></ion-col>

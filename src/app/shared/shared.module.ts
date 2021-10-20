@@ -5,6 +5,7 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 import { MenuAccionesComponent } from './menu-acciones/menu-acciones.component';
 import { InputOjoComponent } from './input-ojo/input-ojo.component';
 import { BtnSortComponent } from './btn-sort/btn-sort.component';
+import { ThSortComponent } from './th-sort/th-sort.component';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { BtnSortComponent } from './btn-sort/btn-sort.component';
     SearchBarComponent,
     MenuAccionesComponent,
     InputOjoComponent,
-    BtnSortComponent
+    BtnSortComponent,
+    ThSortComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { BtnSortComponent } from './btn-sort/btn-sort.component';
     SearchBarComponent, 
     MenuAccionesComponent, 
     InputOjoComponent,
-    BtnSortComponent
+    BtnSortComponent,
+    ThSortComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
