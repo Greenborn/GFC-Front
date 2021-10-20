@@ -6,6 +6,7 @@ import { MenuAccionesComponent } from './menu-acciones/menu-acciones.component';
 import { InputOjoComponent } from './input-ojo/input-ojo.component';
 import { BtnSortComponent } from './btn-sort/btn-sort.component';
 import { ThSortComponent } from './th-sort/th-sort.component';
+import { BtnPostComponent } from './btn-post/btn-post.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ThSortComponent } from './th-sort/th-sort.component';
     MenuAccionesComponent,
     InputOjoComponent,
     BtnSortComponent,
-    ThSortComponent
+    ThSortComponent,
+    BtnPostComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { ThSortComponent } from './th-sort/th-sort.component';
     MenuAccionesComponent, 
     InputOjoComponent,
     BtnSortComponent,
-    ThSortComponent
+    ThSortComponent,
+    BtnPostComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

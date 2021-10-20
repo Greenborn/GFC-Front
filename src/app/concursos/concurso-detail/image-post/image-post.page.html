@@ -65,7 +65,12 @@
                       size-sm="3"
                       class="ion-align-self-center"
                     >
-                      <ion-button
+                      <app-btn-post
+                        [posting]="posting"
+                        [disabled]="!datosCargados()"
+                        (click)="postImage()"
+                      ></app-btn-post>
+                      <!-- <ion-button
                         expand="block"
                         type="submit"
                         (click)="postImage()"
@@ -77,7 +82,7 @@
                           size="small"
                         ></ion-spinner>
                         Guardar
-                      </ion-button>
+                      </ion-button> -->
                     </ion-col>
               
                     <ion-col
