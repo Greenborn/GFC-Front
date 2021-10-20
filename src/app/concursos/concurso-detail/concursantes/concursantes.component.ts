@@ -7,6 +7,7 @@ import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
+import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 
 @Component({
@@ -26,6 +27,22 @@ export class ConcursantesComponent implements OnInit {
   // fotoclubs: Fotoclub[];
   mostrarFiltro: boolean = false
   public loading: boolean = true
+
+  public atributosBusqueda: SearchBarComponentAtributo[] = [
+    { 
+      valor: 'nombre', 
+      valorMostrado: 'Nombre', 
+      // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())      
+      callback: (p: ProfileContestExpanded, query: string) => p.profile.name.match(new RegExp(`^${query}`, 'i'))
+    },
+    { 
+      valor: 'apellido', 
+      valorMostrado: 'Apellido', 
+      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+      callback: (p: ProfileContestExpanded, query: string) => p.profile.last_name.match(new RegExp(`^${query}`, 'i'))
+    }
+  ];
+
   // @Output() openPopup = new EventEmitter<any>();
   // @Output() postImage = new EventEmitter<Image|undefined>();
   // @Output() reviewImage = new EventEmitter<ContestResultExpanded>();

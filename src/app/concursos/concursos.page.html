@@ -121,10 +121,15 @@
                 size="10"
                 size-sm="11"
               >
-                <app-search-bar
+                <!-- <app-search-bar
                   (buscar)="filtrarConcursos($event)"
                   [atributosObj]="atributosBusqueda"
                 >
+                </app-search-bar> -->
+                
+                <app-search-bar 
+                  [(data)]="concursos"
+                  [atributosObj]="atributosBusqueda">
                 </app-search-bar>
               </ion-col>
               <ion-col size="2" size-sm="1">

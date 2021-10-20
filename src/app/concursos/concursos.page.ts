@@ -28,8 +28,12 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   public concursos: Contest[] = [];
   public searchParams: SearchBarComponentParams;
   public atributosBusqueda: SearchBarComponentAtributo[] = [
-    { valor: 'name', valorMostrado: 'Nombre' },
-    { valor: 'description', valorMostrado: 'Descripcion' }
+    { valor: 'name', valorMostrado: 'Nombre',
+      callback: (c: Contest, query: string) => c.name.match(new RegExp(`^${query}`, 'i'))
+    },
+    // { valor: 'description', valorMostrado: 'Descripcion',
+    //   callback: (c: Contest, query: string) => c.description.match(new RegExp(`^${query}`, 'i'))
+    // }
   ];
 
   constructor(

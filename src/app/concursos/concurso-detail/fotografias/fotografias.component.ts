@@ -5,6 +5,7 @@ import { Image } from 'src/app/models/image.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
+import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 
 @Component({
@@ -19,6 +20,21 @@ export class FotografiasComponent implements OnInit {
   inscriptos: ProfileContestExpanded[] = [];
   resultadosConcurso: ContestResultExpanded[] = [];
   fotoclubs: Fotoclub[] = [];
+
+  public atributosBusqueda: SearchBarComponentAtributo[] = [
+    { 
+      valor: 'title', 
+      valorMostrado: 'Título', 
+      // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())      
+      callback: (c: ContestResultExpanded, query: string) => c.image.title.match(new RegExp(`^${query}`, 'i'))
+    },
+    { 
+      valor: 'code', 
+      valorMostrado: 'Código', 
+      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+      callback: (c: ContestResultExpanded, query: string) => c.image.code.match(new RegExp(`^${query}`, 'i'))
+    }
+  ];
 
   // @Output() openPopup = new EventEmitter<any>();
   // @Output() postImage = new EventEmitter<Image|undefined>();

@@ -149,10 +149,14 @@
           </ion-row>
 
           <ion-row class="ion-align-items-center ion-padding-bottom">
-            <ion-col size="10" size-sm="11"
-              ><app-search-bar [atributos]="['Titulo', 'Codigo']">
-              </app-search-bar
-            ></ion-col>
+            <ion-col size="10" size-sm="11">
+              <app-search-bar 
+                [(data)]="inscriptos"
+                [atributosObj]="atributosBusqueda">
+              </app-search-bar>
+              <!-- <app-search-bar [atributos]="['Titulo', 'Codigo']">
+              </app-search-bar> -->
+            </ion-col>
             <ion-col size="2" size-sm="1">
               <ion-row
                 class="
