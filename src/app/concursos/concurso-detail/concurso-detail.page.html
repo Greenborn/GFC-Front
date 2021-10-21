@@ -22,7 +22,10 @@
     <ion-card-header>
       <ion-row>
         <ion-col>
-          <ion-card-title>{{concurso.name}}</ion-card-title>
+          <ion-row class="ion-align-items-center">
+            <ion-card-title>{{concurso.name}}</ion-card-title>
+            <app-contest-status-chip [contest]="concurso"></app-contest-status-chip>
+          </ion-row>
           <ion-card-subtitle
             >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
           >

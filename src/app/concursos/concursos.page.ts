@@ -40,7 +40,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     public popoverController: PopoverController,
     private router: Router,
     private auth: AuthService,
-    private contestService: ContestService,
+    public contestService: ContestService,
     alertController: AlertController
   ) { 
     // super('concursos page', alertController)

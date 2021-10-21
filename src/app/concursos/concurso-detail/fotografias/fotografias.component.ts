@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Contest } from 'src/app/models/contest.model';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { Image } from 'src/app/models/image.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
+import { ContestService } from 'src/app/services/contest.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
@@ -16,6 +18,8 @@ import { ConcursoDetailService } from '../concurso-detail.service';
 })
 export class FotografiasComponent implements OnInit {
 
+  
+  concurso: Contest = this.contestService.template;
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   resultadosConcurso: ContestResultExpanded[] = [];
@@ -45,7 +49,8 @@ export class FotografiasComponent implements OnInit {
   public loading: boolean = true;
   mostrarFiltro: boolean = false;
   constructor(
-    public concursoDetailService: ConcursoDetailService
+    public concursoDetailService: ConcursoDetailService,
+    public contestService: ContestService
   ) { }
 
   ngOnInit() {
@@ -62,6 +67,8 @@ export class FotografiasComponent implements OnInit {
         this.loading = false
       }
     )
+    
+    this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
   }
 
   toggleFiltro() {

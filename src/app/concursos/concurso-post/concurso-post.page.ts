@@ -20,7 +20,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private contestService: ContestService,
+    public contestService: ContestService,
     private router: Router,
     alertCtrl: AlertController
   ) { 
@@ -36,8 +36,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
         super.fetch<Contest>(() => 
           this.contestService.get(parseInt(id))
         ).subscribe(c => {
-          c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
-          c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
+          // c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
+          // c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
           this.concurso = c
           this.loading = false
         })

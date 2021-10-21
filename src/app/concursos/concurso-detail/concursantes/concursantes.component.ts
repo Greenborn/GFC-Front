@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Contest } from 'src/app/models/contest.model';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { Image } from 'src/app/models/image.model';
@@ -6,6 +7,7 @@ import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
+import { ContestService } from 'src/app/services/contest.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
@@ -21,6 +23,7 @@ export class ConcursantesComponent implements OnInit {
   // @Input() concursantes: ProfileExpanded[];
   // @Input() resultadosConcurso: ContestResultExpanded[];
   // @Input() fotoclubs: Fotoclub[];
+  concurso: Contest = this.contestService.template;
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   resultadosConcurso: ContestResultExpanded[] = [];
@@ -52,12 +55,14 @@ export class ConcursantesComponent implements OnInit {
   constructor(
     public concursoDetailService: ConcursoDetailService,
     public rolificador: RolificadorService,
-    public auth: AuthService
+    public auth: AuthService,
+    public contestService: ContestService
   ) { }
 
   ngOnInit() {
     this.concursoDetailService.concursantes.subscribe(cs => this.concursantes = cs)
     this.concursoDetailService.inscriptos.subscribe(is => this.inscriptos = is)
+    this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
     this.concursoDetailService.resultadosConcurso.subscribe(rs => {
       this.resultadosConcurso = rs 
       this.loading = false

@@ -159,18 +159,23 @@
             <ion-list *ngIf="concursos.length > 0; else (loading ? spinner : texto)">
               <!-- concurso card -->
               <!-- <ion-card *ngFor="let concurso of concursos"> -->
-              <ion-card *ngFor="let concurso of concursos">
+              <ion-card *ngFor="let c of concursos">
                 <ion-card-header>
+                  <ion-row class="ion-align-items-center">
+                    <ion-card-title>{{c.name}}</ion-card-title>
+                    <app-contest-status-chip
+                      [contest]="c"
+                    ></app-contest-status-chip>
+                  </ion-row>
                   <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
-                  <ion-card-title>{{concurso.name}}</ion-card-title>
                 </ion-card-header>
                 <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
-                <ion-card-content>{{concurso.description}}</ion-card-content>
+                <ion-card-content>{{c.description}}</ion-card-content>
                 <ion-row class="ion-float-right">
                   <ion-col>
                     <!-- <ion-toolbar> -->
                     <!-- <ion-buttons slot="start"> -->
-                    <ion-button size="small" [routerLink]="[concurso.id]"
+                    <ion-button size="small" [routerLink]="[c.id]"
                       >Ver concurso</ion-button
                     >
                     <!-- </ion-buttons> -->

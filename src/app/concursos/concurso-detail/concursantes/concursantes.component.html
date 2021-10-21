@@ -141,7 +141,8 @@
             <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
               Inscriptos
             </h1>
-            <ion-fab-button size="small" 
+            <ion-fab-button size="small"
+              *ngIf="contestService.isActive(concurso)" 
               (click)="concursoDetailService.inscribirConcursante.emit()">
               <!-- [routerLink]="['agregar-foto']"   -->
               <ion-icon name="add"></ion-icon>
@@ -261,7 +262,7 @@
                           <ion-col size="8" size-sm="10.7">
                             <ion-label class="ion-margin-start">
                               <ion-card-subtitle title="Username"
-                                >{{m.profile.user.username}}</ion-card-subtitle
+                                ><i>@{{m.profile.user.username}}</i></ion-card-subtitle
                               >
                               <ion-text title="Nombre">
                                 <b>{{m.profile.name}} {{m.profile.last_name}}</b>
@@ -274,7 +275,7 @@
                             size="1"
                             class="ion-hide-sm-up ion-justify-content-center"
                           >
-                            <ion-buttons>
+                            <ion-buttons *ngIf="contestService.isActive(concurso)">
                               <ion-button
                                 (click)="mostrarAcciones($event, m)"
                               >
@@ -304,7 +305,7 @@
                         size-md="1"
                         class="ion-align-self-center ion-hide-sm-down"
                       >
-                        <ion-buttons>
+                        <ion-buttons *ngIf="contestService.isActive(concurso)">
                           <ion-button (click)="concursoDetailService.postImage.emit({
                               id: undefined,
                               profile_id: m.profile_id,

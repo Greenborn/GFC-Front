@@ -38,6 +38,7 @@
                 <ion-input
                   name="name"
                   [(ngModel)]="profile.name"
+                  autocapitalize="words"
                   required
                 ></ion-input>
               </ion-item>
@@ -48,6 +49,7 @@
                 <ion-input
                   name="last_name"
                   [(ngModel)]="profile.last_name"
+                  autocapitalize="words"
                   required
                 ></ion-input>
               </ion-item>
@@ -89,6 +91,7 @@
               <!-- <ion-col size-md="3" size="12"> -->
               <ion-item class="expand-full">
                 <ion-label position="floating">Username</ion-label>
+                <!-- <span>@</span> -->
                 <ion-input disabled
                   name="username"
                   [(ngModel)]="usuario.username"

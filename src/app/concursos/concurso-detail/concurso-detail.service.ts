@@ -3,6 +3,7 @@ import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
 import { Image } from 'src/app/models/image.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
+import { Contest } from 'src/app/models/contest.model';
 
 
 @Injectable({
@@ -10,6 +11,7 @@ import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 })
 export class ConcursoDetailService {
 
+  public concurso = new EventEmitter<Contest>();
   public concursantes = new EventEmitter<ProfileExpanded[]>();
   public inscriptos = new EventEmitter<ProfileContestExpanded[]>();
   public resultadosConcurso = new EventEmitter<ContestResultExpanded[]>();

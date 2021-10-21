@@ -66,7 +66,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     public popoverCtrl: PopoverController,
     public auth: AuthService,
     
-    private contestService: ContestService,
+    public contestService: ContestService,
     private contestResultService: ContestResultService,
     private fotoclubService: FotoclubService,
     private profileService: ProfileService,
@@ -116,6 +116,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
       ).subscribe(async c => {
         // console.log('recibi concurso', c)
         this.concurso = c
+        this.concursoDetailService.concurso.emit(c)
         // obtener todos los contest result de este concurso
         const u = await this.auth.user
         super.fetch<ProfileContestExpanded[]>(() => this.rolificador.getConcursantesInscriptos(u, id)).subscribe(is => {

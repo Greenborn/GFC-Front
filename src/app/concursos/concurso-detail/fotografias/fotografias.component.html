@@ -142,6 +142,7 @@
               Fotografías
             </h1>
             <ion-fab-button size="small" 
+              *ngIf="contestService.isActive(concurso)"
               (click)="postImage()">
               <!-- [routerLink]="['agregar-foto']"   -->
               <ion-icon name="add"></ion-icon>
@@ -347,7 +348,7 @@
                   </ion-col>
 
                   <ion-col size="1" size-md="2" class="ion-align-self-center">
-                    <ion-buttons
+                    <ion-buttons *ngIf="contestService.isActive(concurso)"
                       class="ion-hide-md-down ion-justify-content-center"
                     >
                       <ion-button (click)="concursoDetailService.reviewImage.emit(r)">
@@ -364,7 +365,9 @@
                         <ion-icon name="trash"></ion-icon>
                       </ion-button>
                     </ion-buttons>
-                    <ion-buttons class="ion-hide-md-up">
+                    <ion-buttons *ngIf="contestService.isActive(concurso)"
+                      class="ion-hide-md-up"
+                    >
                       <ion-button (click)="mostrarAcciones($event, r)">
                         <ion-icon
                           slot="icon-only"

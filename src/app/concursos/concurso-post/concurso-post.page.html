@@ -26,8 +26,9 @@
               <!-- <ion-col> -->
               <ion-label position="floating">Nombre</ion-label>
               <ion-input
-                name="name"
-                [ngModel]="concurso.name"
+              name="name"
+              [ngModel]="concurso.name"
+              autocapitalize="sentences"
                 required
               ></ion-input>
               <!-- </ion-col> -->
@@ -91,6 +92,7 @@
               <!-- <ion-col> -->
               <ion-label position="floating">Descripción</ion-label>
               <ion-textarea
+              autocapitalize="sentences"
                 auto-grow="true"
                 name="description"
                 [ngModel]="concurso.description"

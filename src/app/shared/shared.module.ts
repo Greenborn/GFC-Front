@@ -7,6 +7,7 @@ import { InputOjoComponent } from './input-ojo/input-ojo.component';
 import { BtnSortComponent } from './btn-sort/btn-sort.component';
 import { ThSortComponent } from './th-sort/th-sort.component';
 import { BtnPostComponent } from './btn-post/btn-post.component';
+import { ContestStatusChipComponent } from './contest-status-chip/contest-status-chip.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { BtnPostComponent } from './btn-post/btn-post.component';
     InputOjoComponent,
     BtnSortComponent,
     ThSortComponent,
-    BtnPostComponent
+    BtnPostComponent,
+    ContestStatusChipComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { BtnPostComponent } from './btn-post/btn-post.component';
     InputOjoComponent,
     BtnSortComponent,
     ThSortComponent,
-    BtnPostComponent
+    BtnPostComponent,
+    ContestStatusChipComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

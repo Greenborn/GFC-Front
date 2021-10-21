@@ -27,6 +27,10 @@ export class ContestService extends ApiService<Contest> {
     }
   }
 
+  isActive(c: Contest): boolean {
+    return new Date(c.end_date) > new Date()
+  }
+
   
   // getContestWithResults(id: number): Observable<ContestExpanded> {
   //   return super.get<ContestExpanded>(id, `expand=contestResults,contestResults.image.profile`)
