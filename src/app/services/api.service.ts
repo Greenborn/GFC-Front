@@ -10,6 +10,8 @@ import { ConfigService } from './config/config.service';
 })
 export abstract class ApiService<T> {
 
+  protected fetchAllOnce: boolean = false;
+  protected all: any[];
   
   constructor(
     @Inject(String) private recurso: string,
@@ -29,14 +31,26 @@ export abstract class ApiService<T> {
 
   // https://www.yiiframework.com/doc/guide/2.0/en/rest-response-formatting
   getAll<K = T>(getParams: string = ''): Observable<K[]> {
-    const url = this.config.apiUrl(`${this.recurso}?${getParams}`)
-    // console.log('getting', url))
-    return this.http.get<ApiSerializedResponse<K>>(url).pipe(
-      map((data) => {
-        console.log('get all', url, data)
-        return data.items
+
+    if (this.fetchAllOnce && this.all != undefined) {
+      console.log('get all stored', this.all)
+      return new Observable(suscriber => {
+        suscriber.next(this.all as K[])
       })
-    )
+    } else {
+      const url = this.config.apiUrl(`${this.recurso}?${getParams}`)
+      // console.log('getting', url))
+      return this.http.get<ApiSerializedResponse<K>>(url).pipe(
+        map((data) => {
+          console.log('get all', url, data)
+          if (this.fetchAllOnce) {
+            this.all = data.items
+          }
+          return data.items
+        })
+      )
+    }
+
   }
 
   post(model: T, id: number = undefined, getParams: string = ''): Observable<T> {
@@ -59,6 +73,16 @@ export abstract class ApiService<T> {
     return this.http.delete(
       `${this.config.apiUrl(this.recurso)}/${id}`
     )
+  }
+
+  put(model: any, id: number, recurso: string = null): Observable<any> {
+    console.log('put', model, 'id: ', id)
+    const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
+    return this.http.put(
+      `${this.config.apiUrl(recurso ?? this.recurso)}/${id}`, 
+      model,
+      { headers }
+    ) 
   }
 
 }

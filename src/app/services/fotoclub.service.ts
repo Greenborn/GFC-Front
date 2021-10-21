@@ -14,6 +14,7 @@ export class FotoclubService extends ApiService<Fotoclub> {
     config: ConfigService
   ) {
     super('fotoclub', http, config)
+    this.fetchAllOnce = true
    }
 
    get template(): Fotoclub {

@@ -8,6 +8,7 @@ import { UsuarioPostPageRoutingModule } from './usuario-post-routing.module';
 
 import { UsuarioPostPage } from './usuario-post.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     UsuarioPostPageRoutingModule,
     SharedModule
   ],
-  declarations: [UsuarioPostPage]
+  declarations: [
+    UsuarioPostPage, 
+    ChangePasswordComponent
+  ]
 })
 export class UsuarioPostPageModule {}

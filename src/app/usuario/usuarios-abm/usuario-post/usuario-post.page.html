@@ -23,7 +23,7 @@
         <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img>        -->
       </ion-col>
       <ion-col size-sm="12" size-md="9" size-lg="7">
-        <ion-row *ngIf="!loading; else spinner">
+        <ion-row>
           <form #f="ngForm" (ngSubmit)="postUsuario(f)">
             <!-- <ion-row class="ion-justify-content-center">
                 <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
@@ -92,7 +92,7 @@
               <ion-item class="expand-full">
                 <ion-label position="floating">Username</ion-label>
                 <!-- <span>@</span> -->
-                <ion-input disabled
+                <ion-input
                   name="username"
                   [(ngModel)]="usuario.username"
                   required
@@ -112,18 +112,46 @@
               <!-- </ion-col> -->
               <!-- <ion-col size-md="5" size="12"> -->
 
+              <ion-item class="expand-full" *ngIf="!isUserProfile">
+                <ion-col class="ion-no-padding">
+                  <ion-row >
+                    <ion-col class="ion-no-padding" size="10">
+                      <ion-label position="floating">Contraseña</ion-label>
+                      <ion-input
+                        tabindex="0"
+                        id="ctr-1"
+                        type="password"
+                        class="text-right"
+                        name="password"
+                        [(ngModel)]="usuario.password"
+                      ></ion-input>
+                    </ion-col>
+                    <ion-col class="ion-no-padding ion-align-self-center" size="2">
+    
+                      <app-ojo inputId="ctr-1"></app-ojo>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-item>
+
+              <ion-item class="expand-full" *ngIf="isUserProfile">
+                <ion-button
+                  (click)="changePassword()"
+                >Cambiar contraseña</ion-button>
+              </ion-item>
+
               <ion-item class="expand-full" *ngIf="!updatingSelect; else spinner">
                 <!-- <ion-label [position]="(usuario.rol_id != undefined) ? 'stacked' : 'floating'">Rol</ion-label> -->
                 <ion-label [position]="'stacked'">Rol</ion-label>
                 <!-- [value]="(usuario.role_id == undefined) ? 2 : usuario.role_id" -->
                 <!-- (value)="usuario.role_id" -->
-                <ion-select #sRol disabled
+                <ion-select #sRol
                   name="role_id"
                   [(ngModel)]="usuario.role_id"
-                  interface="popover"
                   required
+                  [disabled]="!isAdmin"
                   >
-                  <!-- [disabled]="!isAdmin" -->
+                  <!-- interface="popover" -->
                     <ion-select-option 
                       *ngFor="let r of roles" 
                       [value]="r.id"
@@ -203,9 +231,3 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-
-<ng-template #spinner>
-  <ion-row class="ion-justify-content-center">
-    <ion-spinner ></ion-spinner>
-  </ion-row>
-</ng-template>

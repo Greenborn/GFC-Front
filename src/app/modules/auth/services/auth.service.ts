@@ -101,6 +101,9 @@ export class AuthService {
     
     return this._user
   }
+  updateUser(): void {
+    this._user = undefined
+  }
 
   // updateUser(u: User = undefined): void {
   //   this._user = u ? new Promise<User>(resolve => resolve(u)) : undefined

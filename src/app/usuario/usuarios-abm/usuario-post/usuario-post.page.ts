@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import {Location} from '@angular/common';
 
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
@@ -14,6 +14,7 @@ import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { Profile } from 'src/app/models/profile.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @Component({
   selector: 'app-usuario-post',
@@ -34,7 +35,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
   public isPost: boolean = true;
   public posting: boolean = false;
-  public loading: boolean = false;
   public userLogged: User;
   public updatingSelect: boolean = false
 
@@ -47,7 +47,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     private roleService: RoleService,
     private fotoclubService: FotoclubService,
     alertCtrl: AlertController,
-    private location: Location
+    private location: Location,
+    public loadingController: LoadingController,
+    public modalController: ModalController
   ) { 
     super(alertCtrl)
   }
@@ -58,36 +60,71 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   // }
 
   get formTitle(): string {
-    if (this.userLogged == undefined || this.loading) return ''
+    if (this.userLogged == undefined) return ''
     const c = this.usuario;
     return  (c.id != null ? 'Editar ' : 'Agregar ') + 
-              (c.id == this.userLogged.id ? 'perfil' : 
+              (this.isUserProfile ? 'perfil' : 
+              // (c.id == this.userLogged.id ? 'perfil' : 
               (this.userLogged.role_id == 0 ? 'miembro' : 'concursante'))
   }
   get isAdmin(): boolean {
     return this.userLogged == undefined ? false : this.userLogged.role_id == 1
   }
+  get isUserProfile(): boolean {
+    if (this.userLogged == undefined) return false
+    return this.usuario.id == this.userLogged.id
+  }
 
   async ngOnInit() {
-    super.fetch<Role[]>(() => this.roleService.getAll()).subscribe(r => this.roles = r)
-    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => this.fotoclubes = r)
+    const dataPromises: Promise<boolean>[] = [];
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Cargando...'
+    })
+    await loading.present();
 
+    dataPromises.push(
+      new Promise(resolve => super.fetch<Role[]>(() => this.roleService.getAll()).subscribe(r => {
+        this.roles = r
+        resolve(true)
+      }))
+    )
+    dataPromises.push(
+      new Promise(resolve => super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => {
+        this.fotoclubes = r
+        resolve(true)
+      }))
+    )
     this.activatedRoute.paramMap.subscribe(async paramMap => {
       const id = paramMap.get('id');
       if (id != null) {
         this.isPost = false
-        this.loading = true
-        super.fetch<User>(() => this.userService.get(parseInt(id))).subscribe(u => {
-          this.usuario = u
-          super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => {
-            this.profile = p
-            this.loading = false
-          })
-        })
+        dataPromises.push(
+          new Promise(resolve => super.fetch<User>(() => this.userService.get(parseInt(id))).subscribe(u => {
+            this.usuario = u
+            super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => {
+              this.profile = p
+              // loading.dismiss()
+              resolve(true)
+            })
+          }))
+        )
+        // super.fetch<User>(() => this.userService.get(parseInt(id))).subscribe(u => {
+        //   this.usuario = u
+        //   super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => {
+        //     this.profile = p
+        //     loading.dismiss()
+        //   })
+        // })
         
       } else {
         this.isPost = true
       }
+      Promise.all(dataPromises).then(r => {
+        this.updatingSelect = true // pq no se actualizan los select
+        setTimeout(() => this.updatingSelect = false)
+        loading.dismiss()
+      })
     })
   }
   
@@ -96,11 +133,11 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     this.auth.user.then(u => {
       this.userLogged = u
       if (this.isPost) {
-        this.updatingSelect = true
-        console.log('si')
+        // this.updatingSelect = true
+        // console.log('si')
         this.usuario.role_id = 3 // los no admin cargan delegados (select rol desactivado)
         this.profile.fotoclub_id = u.profile.fotoclub_id
-        setTimeout(() => this.updatingSelect = false, 420)
+        // setTimeout(() => this.updatingSelect = false, 420)
       }
     })
   }
@@ -131,24 +168,30 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           // console.log('posteado perfil', p)
           const um: User = {
             username: f.value.username,
-            role_id: this.selectRol.value,
+            role_id: this.isAdmin ? this.selectRol.value : this.usuario.role_id,
+            password: f.value.password,
             // role_id: f.value.role_id,
             profile_id: p.id
           }
-          // super.fetch<User>(() => this.userService.post(um, this.usuario.id)).subscribe(
-          //   u => {
-          //     this.posting = false
-          //     console.log('exito post user', u)
+          super.fetch<User>(() => this.userService.post(um, this.usuario.id)).subscribe(
+            u => {
+              this.posting = false
+              console.log('exito post user', u)
+              if (this.isUserProfile) {
+                this.auth.updateUser()
+              }
               this.location.back()
               // this.router.navigate(['/usuarios']);
-          //   },
-          //   err => {
-          //     this.posting = false
+            },
+            err => {
+              this.posting = false
           //     console.log('posteado perfil', p)
-          //     super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(_ => {})
-          //     super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${err.statusText}`)
-          //   }
-          // )
+            super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${err.statusText}`)
+            super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(_ => {
+              console.log(`Perfil ${p.id} eliminado`)
+            })
+            }
+          )
         },
         err => {
           this.posting = false
@@ -160,5 +203,28 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     else {
       console.log('Form usuario no valido:', f.value);
     }
+  }
+
+  async changePassword() {
+    console.log('change password')
+
+    const modal = await this.modalController.create({
+      component: ChangePasswordComponent,
+      cssClass: 'auto-width',
+      componentProps: {
+        "modalController": this.modalController,
+        "userId": this.userLogged.id
+      }
+    });
+    await modal.present()
+
+    // const { data } = await modal.onWillDismiss();
+
+    // console.log('inscribiendo concursante', data)
+    // const { profileContest } = data ?? {}
+    // if (profileContest != undefined) {
+    //   this.inscriptos.push(profileContest)
+    //   this.concursoDetailService.inscriptos.emit(this.inscriptos)  
+    // }
   }
 }

@@ -14,6 +14,7 @@ export class RoleService extends ApiService<Role> {
     config: ConfigService
   ) {
     super('role', http, config)
+    this.fetchAllOnce = true
    }
 
    get template(): Role {
