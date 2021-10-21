@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Usuario } from '../usuario.model';
 
-import { AlertController, PopoverController } from '@ionic/angular';
-import { NavigationEnd, Router } from '@angular/router';
-import { SearchBarComponentParams } from 'src/app/shared/search-bar/search-bar.component';
+import { AlertController, LoadingController, PopoverController } from '@ionic/angular';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { SearchBarComponentAtributo, SearchBarComponentParams } from 'src/app/shared/search-bar/search-bar.component';
 
 import { MenuAccionesComponent } from '../../shared/menu-acciones/menu-acciones.component';
 import { Role } from 'src/app/models/role.model';
@@ -29,7 +29,9 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
   mostrarFiltro: boolean = false;
   user: User = undefined;
-  miembros: Observable<ProfileExpanded[]>;
+  miembros: ProfileExpanded[] = [];
+  miembrosOrig: ProfileExpanded[] = [];
+  // miembros: Observable<ProfileExpanded[]>;
   // users: Observable<User[]>;
   // profiles: Profile[] = [];
 
@@ -38,6 +40,25 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
   
   // usuariosFiltrados: Usuario[] = [];
   searchParams: SearchBarComponentParams;
+
+  public atributosBusqueda: SearchBarComponentAtributo[] = [
+    { 
+      valor: 'name', 
+      valorMostrado: 'Nombre y apellido', 
+      // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())      
+      callback: (c: ProfileExpanded, query: string) => `${c.name} ${c.last_name}`.match(new RegExp(`${query}`, 'i'))
+    },
+    { 
+      valor: 'username', 
+      valorMostrado: 'Username', 
+      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+      callback: (c: ProfileExpanded, query: string) => c.user.username.match(new RegExp(`^${query}`, 'i'))
+    }
+  ];
+  
+  public funcionesOrdenamiento: Function[] = [];
+  // public funcionesFiltrado: Function[] = [];
+  public filtrado: any[] = [];
 
   public loading: boolean = false;
   public searchQuery: string = '';
@@ -52,9 +73,63 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     private popoverCtrl: PopoverController,
     private router: Router,
     public auth: AuthService,
-    public rolificador: RolificadorService
+    public rolificador: RolificadorService,
+    public loadingController: LoadingController,
+    private route: ActivatedRoute,
   ) { 
     super(alertCtrl)
+    // this.funcionesOrdenamiento['fotoclub'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
+    this.funcionesOrdenamiento['usuario'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
+      const n1 = e1.last_name
+      const n2 = e2.last_name
+      
+      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
+        (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+    }
+    this.funcionesOrdenamiento['fotoclub'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
+      const n1 = this.getFotoclubName(e1.fotoclub_id)
+      const n2 = this.getFotoclubName(e2.fotoclub_id)
+      
+      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
+        (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+    }
+    this.funcionesOrdenamiento['rol'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
+      const n1 = this.getRoleType(e1.user.role_id)
+      const n2 = this.getRoleType(e2.user.role_id)
+      
+      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
+        (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+    }
+
+    this.filtrado['fotoclub'] = {
+      options: {
+        valueProp: 'id', 
+        titleProp: 'name',
+        queryParam: 'asociacion_id'
+      },
+      filterCallback: (p: ProfileExpanded, atributoValue: string) => {
+        return p.fotoclub_id == parseInt(atributoValue)
+      }
+    }
+    this.filtrado['rol'] = {
+      options: {
+        valueProp: 'id', 
+        titleProp: 'type',
+        queryParam: 'rol_id'
+      },
+      filterCallback: (p: ProfileExpanded, atributoValue: string) => {
+        return p.user.role_id == parseInt(atributoValue)
+      }
+    }
+
+    // this.funcionesFiltrado['fotoclub'] = (p: ProfileExpanded, atributoValue: string) => {
+
+    //   return p.fotoclub_id == parseInt(atributoValue)
+    // }
+    // this.funcionesFiltrado['role'] = (p: ProfileExpanded, atributoValue: string) => {
+
+    //   return p.user.role_id == parseInt(atributoValue)
+    // }
   }
 
   toggleFiltro() {
@@ -198,6 +273,43 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
   }
 
   async ngOnInit() {
+
+    this.route.queryParams.subscribe(params => {
+
+      // console.log('detecting query params change', params)
+
+      this.miembros = [...this.miembrosOrig]
+
+      const filterCallbacks: {
+        queryValue: string;
+        callback: Function;
+      }[] = [];
+
+      for (const f of [this.filtrado['rol'], this.filtrado['fotoclub']]) {
+        // console.log('analizando filter callback', f)
+        if (params[f.options.queryParam] != undefined) {
+          // console.log('agregando filter callback', f.options.queryParam)
+          filterCallbacks.push({
+            callback: f.filterCallback,
+            queryValue: params[f.options.queryParam]
+          })
+        }
+      }
+
+
+      for (const f of filterCallbacks) {
+        this.miembros = this.miembros.filter(p => f.callback(p, f.queryValue))
+      }
+      // const selected = params[this.optionsProps.queryParam]
+      // console.log('detecting selected quer yparam', selected)
+      // if (selected != undefined) {
+      //   this.atributoSelected = selected
+      // } else {
+      //   this.atributoSelected = ''
+      // }
+      // this.output()
+    });
+    
     super.fetch<Role[]>( () => this.roleService.getAll()).subscribe(r => this.roles = r)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => this.fotoclubs = r)
   }
@@ -206,11 +318,21 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     // super.fetch<User[]>(() => this.userService.getAll()).subscribe(r => this.users = r)
     // this.loading = true
     // this.profiles = []
-
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Cargando...'
+    })
+    await loading.present()
     this.auth.user.then(u => {
       this.user = u
       // this.users = super.fetch<User[]>(() => this.userService.getAll('expand=profile'))
-      this.miembros = super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u))
+      // this.miembros = super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u))
+      
+      super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u)).subscribe(m => {
+        this.miembros = m
+        this.miembrosOrig = [...m]
+        loading.dismiss();
+      })
       // this.users = super.fetch<User[]>(() => this.rolificador.getUsers(u)).pipe(
       //   filter()
       // )
