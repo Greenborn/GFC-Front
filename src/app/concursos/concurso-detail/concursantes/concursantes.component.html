@@ -223,7 +223,7 @@
                       <app-th-sort
                         [sortFn]="ordenarPorFotoclub"
                         [(data)]="inscriptos"
-                        title="Entidad"
+                        title="Fotoclub/Agrupación"
                       ></app-th-sort>
                       <!-- <div class="thead">
                         <b>Entidad</b>
@@ -296,7 +296,7 @@
                         class="ion-hide-sm-down ion-align-self-center"
                         *ngIf="rolificador.isAdmin(userLogged)"
                       >
-                        <ion-text title="Entidad" 
+                        <ion-text title="Fotoclub/Agrupación" 
                           >{{ getFotoclubName(m.profile_id) }}</ion-text
                         >
                       </ion-col>

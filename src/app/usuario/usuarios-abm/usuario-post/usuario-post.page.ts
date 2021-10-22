@@ -32,6 +32,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public profile: Profile = this.profileService.template;
   public fotoclubes: Fotoclub[] = []
   public roles: Role[] = []
+  public usernameFocus = false
+  public passFocus = false
 
   public isPost: boolean = true;
   public posting: boolean = false;

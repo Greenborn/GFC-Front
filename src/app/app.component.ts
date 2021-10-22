@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy} from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -19,6 +19,10 @@ export class AppComponent implements OnDestroy {
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   
   private routerSub: Subscription;
+
+  public get tamWidth() {
+    return window.innerWidth
+  }
 
   // https://stackoverflow.com/questions/59552387/how-to-reload-a-page-in-angular-8-the-proper-way
   constructor(

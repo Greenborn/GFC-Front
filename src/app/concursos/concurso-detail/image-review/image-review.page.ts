@@ -27,7 +27,10 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   //   profile_id: undefined
   // };
   @Input() contestResult: ContestResult;
-  public tamWidth = window.screen.width;
+  // public tamWidth = window.screen.width;
+  public get tamWidth() {
+    return window.innerWidth
+  }
   
   // @ViewChild('formReview') formReview: HTMLFormElement;
   public posting: boolean = false;
@@ -41,12 +44,12 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   }
 
   ngOnInit() {
-    window.onresize = this.actualizarWidth;
+    // window.onresize = this.actualizarWidth;
   }
 
-  actualizarWidth(){
-    this.tamWidth = window.screen.width;
-  }
+  // actualizarWidth(){
+  //   this.tamWidth = window.screen.width;
+  // }
 
   async postReview(f: NgForm) {
     if (f.valid) {

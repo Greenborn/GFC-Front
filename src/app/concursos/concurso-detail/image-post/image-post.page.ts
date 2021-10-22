@@ -20,7 +20,10 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   // @Input() contestResult: ContestResult;
   @Input() image: Image = this.imageService.template;
   @Input() profiles: Profile[];
-  public tamWidth = window.screen.width;
+  // public tamWidth = window.screen.width;
+  public get tamWidth() {
+    return window.innerWidth
+  }
   
   // @ViewChild('s') selectConcursante: ElementRef;
   // @ViewChild('formImage') formImage: HTMLFormElement;
@@ -43,11 +46,11 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   async ngOnInit() {
-    window.onresize = this.actualizarWidth;
+    // window.onresize = this.actualizarWidth;
   }
-  actualizarWidth(){
-    this.tamWidth = window.screen.width;
-  }
+  // actualizarWidth(){
+  //   this.tamWidth = window.screen.width;
+  // }
 
   async postImage() {
     // console.log({

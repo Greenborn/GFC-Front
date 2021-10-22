@@ -30,7 +30,7 @@
                 <ion-radio slot="start" value="concursante"></ion-radio>
               </ion-item>
               <ion-item>
-                <ion-label>Entidad</ion-label>
+                <ion-label>Fotoclub/Agrupación</ion-label>
                 <ion-radio slot="start" value="fotoclub"></ion-radio>
               </ion-item>
             </ion-radio-group>
@@ -141,7 +141,7 @@
               <ion-item color="dark">
                 <ion-grid>
                   <ion-col>
-                    <ion-row>
+                    <ion-row class="ion-align-items-center">
                       <ion-col size="5.5" size-md="7"
                         ><b
                           >{{rolificador.getNombreUsuarios(userLogged.role_id)}}</b
@@ -155,10 +155,10 @@
                       >
                       <ion-col size="2.5" size-md="2"
                         ><ion-text *ngIf="rolificador.isAdmin(userLogged)"
-                          ><b>Entidad</b></ion-text
+                          ><b>Fotoclub / Agrupación</b></ion-text
                         ></ion-col
                       >
-                      <ion-col size="1.5" size-md="1"><b>Acciones</b></ion-col>
+                      <ion-col size="1.5" size-md="1"><b></b></ion-col>
                     </ion-row>
                   </ion-col>
                 </ion-grid>

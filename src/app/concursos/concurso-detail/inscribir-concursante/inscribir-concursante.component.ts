@@ -19,7 +19,10 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
 
   public profile_id: number = undefined;
   public posting: boolean = false;
-  public tamWidth = window.screen.width;
+  // public tamWidth = window.screen.width;
+  public get tamWidth() {
+    return window.innerWidth
+  }
 
   constructor(
     private profileContestService: ProfileContestService,

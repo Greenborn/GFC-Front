@@ -17,7 +17,11 @@ export class ChangePasswordComponent extends ApiConsumer implements OnInit {
   public posting: boolean = false;
   public old_password: string;
   public new_password: string;
-  public tamWidth = window.screen.width;
+  // public tamWidth = window.screen.width;
+  public get tamWidth() {
+    return window.innerWidth
+  }
+  public passChangeFocus=false;
 
   constructor(
     private userService: UserService,

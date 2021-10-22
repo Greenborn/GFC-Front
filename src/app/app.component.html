@@ -5,7 +5,7 @@
 
   <ion-content >
     <!-- sidebar -->
-    <app-sidebar></app-sidebar>
+    <app-sidebar *ngIf="tamWidth < 768"></app-sidebar>
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-content>
   <!-- <ion-footer class="ion-no-border">
