@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 
 export interface SearchBarComponentParams {
   atributo: string;
@@ -15,7 +15,7 @@ export interface SearchBarComponentAtributo {
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnChanges {
 
   @ViewChild('atributoSelect') atributoSelect: ElementRef;
   @ViewChild('queryInput') queryInput: ElementRef;
@@ -28,6 +28,7 @@ export class SearchBarComponent implements OnInit {
   @Output() buscar = new EventEmitter<SearchBarComponentParams>()
   
   private origData: any[];
+  private dataFiltered: any[];
   public atributoSelected: string = '';
 
   constructor() { }
@@ -54,6 +55,16 @@ export class SearchBarComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    // console.log('detectomg data change', changes.data.currentValue)
+    if (changes.data.currentValue != this.dataFiltered) {
+      this.origData = changes.data.currentValue
+      this.atributoSelected = ''
+      if (this.queryInput != undefined)
+        this.queryInput.nativeElement.value = ''
+    }
+  } 
+
   output() {
     if (this.origData == undefined) {
       this.origData = [...this.data]
@@ -72,8 +83,8 @@ export class SearchBarComponent implements OnInit {
         return e[atributo].includes(q)
       } 
     } else {
-      console.log('TODO: Filtrando por todos los callbacks y atributos...')
-      filterCallback = () => true
+      // console.log('TODO: Filtrando por todos los callbacks y atributos...')
+      filterCallback = (e: any, q: string) => this.atributosObj.map(o => o.callback(e, q)).reduce((acc, v) => acc || v)
     }
     // console.log('Buscando ', query, ' atributo: ', this.atributoSelect.nativeElement.value)
     // this.buscar.emit({
@@ -81,8 +92,9 @@ export class SearchBarComponent implements OnInit {
     //   atributo
     // });
     // console.log('searching', atributo, query, this.atributoSelect.nativeElement)
+    this.dataFiltered = this.origData.filter(e => filterCallback(e, query))
     this.dataChange.emit(
-      this.origData.filter(e => filterCallback(e, query))
+      this.dataFiltered
     )
   }
 

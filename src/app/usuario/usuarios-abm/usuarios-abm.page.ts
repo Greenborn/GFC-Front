@@ -46,13 +46,19 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       valor: 'name', 
       valorMostrado: 'Nombre y apellido', 
       // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())      
-      callback: (c: ProfileExpanded, query: string) => `${c.name} ${c.last_name}`.match(new RegExp(`${query}`, 'i'))
+      callback: (c: ProfileExpanded, query: string) => `${c.name} ${c.last_name}`.match(new RegExp(`${query}`, 'i')) 
     },
     { 
       valor: 'username', 
       valorMostrado: 'Username', 
       // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
       callback: (c: ProfileExpanded, query: string) => c.user.username.match(new RegExp(`^${query}`, 'i'))
+    },
+    { 
+      valor: 'fotoclub_id', 
+      valorMostrado: 'Asociación', 
+      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+      callback: (c: ProfileExpanded, query: string) => this.getFotoclubName(c.fotoclub_id).match(new RegExp(`^${query}`, 'i'))
     }
   ];
   
@@ -274,41 +280,32 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
   async ngOnInit() {
 
-    this.route.queryParams.subscribe(params => {
+    // this.route.queryParams.subscribe(params => {
 
-      // console.log('detecting query params change', params)
+    //   // console.log('detecting query params change', params)
 
-      this.miembros = [...this.miembrosOrig]
+    //   this.miembros = [...this.miembrosOrig]
 
-      const filterCallbacks: {
-        queryValue: string;
-        callback: Function;
-      }[] = [];
+    //   const filterCallbacks: {
+    //     queryValue: string;
+    //     callback: Function;
+    //   }[] = [];
 
-      for (const f of [this.filtrado['rol'], this.filtrado['fotoclub']]) {
-        // console.log('analizando filter callback', f)
-        if (params[f.options.queryParam] != undefined) {
-          // console.log('agregando filter callback', f.options.queryParam)
-          filterCallbacks.push({
-            callback: f.filterCallback,
-            queryValue: params[f.options.queryParam]
-          })
-        }
-      }
+    //   for (const f of [this.filtrado['rol'], this.filtrado['fotoclub']]) {
+    //     // console.log('analizando filter callback', f)
+    //     if (params[f.options.queryParam] != undefined) {
+    //       // console.log('agregando filter callback', f.options.queryParam)
+    //       filterCallbacks.push({
+    //         callback: f.filterCallback,
+    //         queryValue: params[f.options.queryParam]
+    //       })
+    //     }
+    //   }
 
-
-      for (const f of filterCallbacks) {
-        this.miembros = this.miembros.filter(p => f.callback(p, f.queryValue))
-      }
-      // const selected = params[this.optionsProps.queryParam]
-      // console.log('detecting selected quer yparam', selected)
-      // if (selected != undefined) {
-      //   this.atributoSelected = selected
-      // } else {
-      //   this.atributoSelected = ''
-      // }
-      // this.output()
-    });
+    //   for (const f of filterCallbacks) {
+    //     this.miembros = this.miembros.filter(p => f.callback(p, f.queryValue))
+    //   }
+    // });
     
     super.fetch<Role[]>( () => this.roleService.getAll()).subscribe(r => this.roles = r)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => this.fotoclubs = r)
@@ -332,6 +329,32 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
         this.miembros = m
         this.miembrosOrig = [...m]
         loading.dismiss();
+        this.route.queryParams.subscribe(params => {
+
+          // console.log('detecting query params change', params)
+    
+          this.miembros = [...this.miembrosOrig]
+    
+          const filterCallbacks: {
+            queryValue: string;
+            callback: Function;
+          }[] = [];
+    
+          for (const f of [this.filtrado['rol'], this.filtrado['fotoclub']]) {
+            // console.log('analizando filter callback', f)
+            if (params[f.options.queryParam] != undefined) {
+              // console.log('agregando filter callback', f.options.queryParam)
+              filterCallbacks.push({
+                callback: f.filterCallback,
+                queryValue: params[f.options.queryParam]
+              })
+            }
+          }
+    
+          for (const f of filterCallbacks) {
+            this.miembros = this.miembros.filter(p => f.callback(p, f.queryValue))
+          }
+        });
       })
       // this.users = super.fetch<User[]>(() => this.rolificador.getUsers(u)).pipe(
       //   filter()
