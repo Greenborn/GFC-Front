@@ -35,22 +35,30 @@ export class SearchSelectComponent implements OnInit, OnChanges {
   private dataFiltered: any[];
   public atributoSelected: string = '';
   public queryParams: Params;
+  public updatingSelect: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
+  get atributoSelectedAsInt() {
+    return parseInt(this.atributoSelected)
+  }
+
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.queryParams = {...params}
       const selected = params[this.optionsProps.queryParam]
       // console.log('detecting selected quer yparam', selected)
+      this.updatingSelect = true
       if (selected != undefined) {
         this.atributoSelected = selected
       } else {
         this.atributoSelected = ''
       }
+      // console.log('updated atributoSelected', this.atributoSelected)
+      setTimeout(() => this.updatingSelect = false, 100)
       // this.output()
     });
 
