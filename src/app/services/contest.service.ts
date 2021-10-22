@@ -42,7 +42,7 @@ export class ContestService extends ApiService<Contest> {
     if (fecha == null) return '' 
     let cadena:string[] = fecha.split("-");
     let meses = ['','ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    return `${cadena[0]}/${meses[parseInt(cadena[1])]}/${cadena[2]}`;
+    return `${cadena[2]}/${meses[parseInt(cadena[1])]}/${cadena[0]}`;
   }
 
   //TODO: cambiar en la db los tipos de las fechas por date

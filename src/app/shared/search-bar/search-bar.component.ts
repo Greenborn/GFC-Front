@@ -98,9 +98,12 @@ export class SearchBarComponent implements OnInit, OnChanges {
     )
   }
 
-  changeRadio(atributoValue: string = '') {
+  changeRadio(atributoValue: string | EventTarget = '') {
+    if (typeof atributoValue != 'string') {
+      atributoValue = (atributoValue as HTMLIonRadioGroupElement).value
+    }
     // console.log('changing radio', ev.target.value)
-    this.atributoSelected = atributoValue
+    this.atributoSelected = atributoValue as string
     this.output()
   }
 

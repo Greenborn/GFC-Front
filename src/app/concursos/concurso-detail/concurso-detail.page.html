@@ -18,7 +18,8 @@
 <ion-content #ConcursoContent id="concurso-content">
   <ion-row size="12">
     <ion-col>
-      <ion-card *ngIf="!loading; else spinner" class="ion-no-margin">
+      <!-- <ion-card *ngIf="!loading; else spinner" class="ion-no-margin"> -->
+      <ion-card class="ion-no-margin">
         <ion-card-header>
           <ion-row>
             <ion-col class="ion-no-padding">
@@ -56,11 +57,11 @@
         </ion-card-content>
         <!-- <ion-label>{{item}}</ion-label> -->
       </ion-card>
-      <ng-template #spinner>
+      <!-- <ng-template #spinner>
         <ion-row class="ion-justify-content-center">
           <ion-spinner></ion-spinner>
         </ion-row>
-      </ng-template>
+      </ng-template> -->
     </ion-col>
   </ion-row>
 
@@ -74,7 +75,8 @@
         <ion-tab-button tab="concursantes">
           <ion-icon name="people-outline"></ion-icon>
           <ion-label>Concursantes</ion-label>
-          <ion-badge>{{ loading ? '' : inscriptos.length }}</ion-badge>
+          <!-- <ion-badge>{{ loading ? '' : inscriptos.length }}</ion-badge> -->
+          <ion-badge>{{inscriptos.length }}</ion-badge>
         </ion-tab-button>
 
         <ion-tab-button tab="fotografias">

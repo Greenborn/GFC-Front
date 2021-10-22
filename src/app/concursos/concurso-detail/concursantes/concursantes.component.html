@@ -246,8 +246,9 @@
               </ion-grid>
             </ion-item>
           </ion-list>
-          <ion-list *ngIf="!loading; else spinner">
-            <ion-item class="">
+          <!-- <ion-list *ngIf="!loading; else spinner"> -->
+            <ion-list *ngIf="!loading; else spinner">
+            <ion-item lines="none">
               <!-- <ion-grid *ngIf="!loading"> -->
               <ion-grid *ngIf="inscriptos.length > 0; else texto">
                 <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->

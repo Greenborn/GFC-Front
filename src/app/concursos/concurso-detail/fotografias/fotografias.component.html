@@ -287,97 +287,116 @@
               </ion-grid>
             </ion-item>
           </ion-list>
-          <ion-list *ngIf="!loading; else spinner">
-            <ion-item class="ion-no-padding">
+          <!-- <ion-list *ngIf="!loading; else spinner"> -->
+            <ion-list *ngIf="!loading; else spinner">
+            <ion-item lines="none" class="ion-no-padding lista-elem">
               <!-- <ion-grid *ngIf="!loading"> -->
               <ion-grid *ngIf="resultadosConcurso.length > 0; else texto">
                 <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
                 <!-- class="ion-text-center" -->
-                <ion-row *ngFor="let r of resultadosConcurso">
-                  <ion-col size="6" size-md="3" class="ion-align-self-center">
-                    <ion-item>
-                      <ion-col>
-                        <ion-card-subtitle title="Código de la obra">{{
-                          r.image.code
-                        }}</ion-card-subtitle>
-                        <!-- >{{ getImage(r).code }}</ion-card-subtitle> -->
-                        <!-- <ion-card-title >Prueba de Riendas</ion-card-title> -->
+                <ion-item class="ion-no-padding" *ngFor="let r of resultadosConcurso">
+                  <ion-grid class="ion-no-padding">
+                    <ion-row size="12">
+                      <ion-col
+                        size="6"
+                        size-md="3"
+                        class="ion-align-self-center"
+                      >
+                        <ion-item lines="none">
+                          <ion-col>
+                            <ion-card-subtitle title="Código de la obra">{{
+                              r.image.code
+                            }}</ion-card-subtitle>
+                            <!-- >{{ getImage(r).code }}</ion-card-subtitle> -->
+                            <!-- <ion-card-title >Prueba de Riendas</ion-card-title> -->
 
-                        <ion-text title="Nombre de la obra"
-                          ><b>{{ r.image.title }}</b></ion-text
-                        >
-                        <!-- ><b>{{ getImage(r).title }}</b></ion-text> -->
+                            <ion-text title="Nombre de la obra"
+                              ><b>{{ r.image.title }}</b></ion-text
+                            >
+                            <!-- ><b>{{ getImage(r).title }}</b></ion-text> -->
+                          </ion-col>
+                        </ion-item>
                       </ion-col>
-                    </ion-item>
-                  </ion-col>
-                  <ion-col
-                    class="ion-hide-md-down ion-align-self-center"
-                    size="4"
-                    size-md="3"
-                  >
-                    <ion-item lines="none">
-                      <ion-label>
-                        <ion-card-subtitle
-                          title="Fotoclub/Agrupación del autor"
-                          >{{
-                            getFotoclubName(r.image.profile_id)
-                          }}</ion-card-subtitle
-                        >
-                        <!-- >{{ getFotoclubName(r) }}</ion-card-subtitle> -->
-                        <ion-text title="Autor de la obra">
-                          <b>{{ getFullName(r.image.profile_id) }}</b>
-                          <!-- <b>{{ (getProfile(r).name ?? '') + ' ' + (getProfile(r).last_name ?? '') }}</b> -->
-                        </ion-text>
-                        <!-- <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle> -->
-                      </ion-label>
-                    </ion-item>
-                  </ion-col>
-                  <ion-col class="ion-align-self-center" size="3" size-md="2">
-                    <ion-text>{{ r.metric.prize }}</ion-text>
-                    <!-- <ion-text>{{ getMetric(r).prize }}</ion-text> -->
-                  </ion-col>
-                  <ion-col class="ion-align-self-center" size="2">
-                    <ion-text>{{ r.metric.score }}</ion-text>
-                    <!-- <ion-text>{{ getMetric(r).score }}</ion-text> -->
-                  </ion-col>
+                      <ion-col
+                        class="ion-hide-md-down ion-align-self-center"
+                        size="4"
+                        size-md="3"
+                      >
+                        <ion-item lines="none">
+                          <ion-label>
+                            <ion-card-subtitle
+                              title="Fotoclub/Agrupación del autor"
+                              >{{
+                                getFotoclubName(r.image.profile_id)
+                              }}</ion-card-subtitle
+                            >
+                            <!-- >{{ getFotoclubName(r) }}</ion-card-subtitle> -->
+                            <ion-text title="Autor de la obra">
+                              <b>{{ getFullName(r.image.profile_id) }}</b>
+                              <!-- <b>{{ (getProfile(r).name ?? '') + ' ' + (getProfile(r).last_name ?? '') }}</b> -->
+                            </ion-text>
+                            <!-- <ion-card-subtitle>DNI 11.111.111</ion-card-subtitle> -->
+                          </ion-label>
+                        </ion-item>
+                      </ion-col>
+                      <ion-col
+                        class="ion-align-self-center"
+                        size="3"
+                        size-md="2"
+                      >
+                        <ion-text>{{ r.metric.prize }}</ion-text>
+                        <!-- <ion-text>{{ getMetric(r).prize }}</ion-text> -->
+                      </ion-col>
+                      <ion-col class="ion-align-self-center" size="2">
+                        <ion-text>{{ r.metric.score }}</ion-text>
+                        <!-- <ion-text>{{ getMetric(r).score }}</ion-text> -->
+                      </ion-col>
 
-                  <ion-col size="1" size-md="2" class="ion-align-self-center">
-                    <ion-buttons
-                      *ngIf="contestService.isActive(concurso)"
-                      class="ion-hide-md-down ion-justify-content-center"
-                    >
-                      <ion-button
-                        (click)="concursoDetailService.reviewImage.emit(r)"
+                      <ion-col
+                        size="1"
+                        size-md="2"
+                        class="ion-align-self-center"
                       >
-                        <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
-                        <ion-icon name="star-outline"></ion-icon>
-                      </ion-button>
-                      <ion-button
-                        (click)="concursoDetailService.postImage.emit(r.image)"
-                      >
-                        <!-- <ion-button (click)="postImage(getImage(r))"> -->
-                        <ion-icon name="create"></ion-icon>
-                      </ion-button>
-                      <ion-button
-                        (click)="concursoDetailService.deleteImage.emit(r)"
-                      >
-                        <ion-icon name="trash"></ion-icon>
-                      </ion-button>
-                    </ion-buttons>
-                    <ion-buttons
-                      *ngIf="contestService.isActive(concurso)"
-                      class="ion-hide-md-up"
-                    >
-                      <ion-button (click)="mostrarAcciones($event, r)">
-                        <ion-icon
-                          slot="icon-only"
-                          ios="ellipsis-horizontal"
-                          md="ellipsis-vertical"
-                        ></ion-icon>
-                      </ion-button>
-                    </ion-buttons>
-                  </ion-col>
-                </ion-row>
+                        <ion-buttons
+                          *ngIf="contestService.isActive(concurso)"
+                          class="ion-hide-md-down ion-justify-content-center"
+                        >
+                          <ion-button
+                            (click)="concursoDetailService.reviewImage.emit(r)"
+                          >
+                            <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
+                            <ion-icon name="star-outline"></ion-icon>
+                          </ion-button>
+                          <ion-button
+                            (click)="
+                              concursoDetailService.postImage.emit(r.image)
+                            "
+                          >
+                            <!-- <ion-button (click)="postImage(getImage(r))"> -->
+                            <ion-icon name="create"></ion-icon>
+                          </ion-button>
+                          <ion-button
+                            (click)="concursoDetailService.deleteImage.emit(r)"
+                          >
+                            <ion-icon name="trash"></ion-icon>
+                          </ion-button>
+                        </ion-buttons>
+                        <ion-buttons
+                          *ngIf="contestService.isActive(concurso)"
+                          class="ion-hide-md-up"
+                        >
+                          <ion-button (click)="mostrarAcciones($event, r)">
+                            <ion-icon
+                              slot="icon-only"
+                              ios="ellipsis-horizontal"
+                              md="ellipsis-vertical"
+                            ></ion-icon>
+                          </ion-button>
+                        </ion-buttons>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-item>
               </ion-grid>
               <ng-template #texto>No hay fotografias</ng-template>
             </ion-item>

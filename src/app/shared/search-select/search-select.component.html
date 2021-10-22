@@ -20,7 +20,7 @@
           >
           <ion-select
             *ngIf="!updatingSelect"
-            (ionChange)="changeQuery($event.target.value)"
+            (ionChange)="changeQuery($event.target)"
             [value]="atributoSelectedAsInt"
             interface="popover"
           >

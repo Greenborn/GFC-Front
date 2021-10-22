@@ -55,7 +55,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
   fotoclubs: Fotoclub[] = [];
   metrics: Metric[] = [];
   popover: HTMLIonPopoverElement = undefined;
-  loading: boolean = true;
+  // loading: boolean = true;
   subs: Subscription[] = [];
 
   constructor(
@@ -65,6 +65,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     public modalController: ModalController,
     public popoverCtrl: PopoverController,
     public auth: AuthService,
+    public loadingController: LoadingController,
     
     public contestService: ContestService,
     private contestResultService: ContestResultService,
@@ -105,6 +106,12 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
       // let loading = await this.loadingCtrl.create({
       //   message: 'Please wait...'
       // });
+
+      const loading = await this.loadingController.create({
+        cssClass: 'my-custom-class',
+        message: 'Cargando...'
+      })
+      await loading.present()
     
       // loading.present();
       const id = parseInt(paramMap.get('id'))
@@ -117,6 +124,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
         // console.log('recibi concurso', c)
         this.concurso = c
         this.concursoDetailService.concurso.emit(c)
+        loading.dismiss()
         // obtener todos los contest result de este concurso
         const u = await this.auth.user
         super.fetch<ProfileContestExpanded[]>(() => this.rolificador.getConcursantesInscriptos(u, id)).subscribe(is => {
@@ -136,7 +144,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
           ).subscribe(rs => {
             this.resultadosConcurso = rs
             this.concursoDetailService.resultadosConcurso.emit(rs)
-            this.loading = false
+            // this.loading = false
             setTimeout(() => { // porque no muestra todo el contenido
               // const c = this.pageTabs
               // if (this.router.url.includes('fotografias')) {

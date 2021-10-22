@@ -19,7 +19,7 @@
           <!-- [(data)]="miembros" -->
           <app-search-select
             title="Fotoclub / Agrupación"
-            [optionsProps]="filtrado.fotoclub.options"
+            [optionsProps]="filtrado['fotoclub'].options"
             [optionsData]="fotoclubs"
             interface="popover"
           >
@@ -28,7 +28,7 @@
           <!-- [(data)]="miembros" -->
           <app-search-select
             title="Rol"
-            [optionsProps]="filtrado.rol.options"
+            [optionsProps]="filtrado['rol'].options"
             [optionsData]="roles"
           >
             <!-- [filterCallback]="funcionesFiltrado['role']" -->
