@@ -17,41 +17,41 @@
           </ion-row>
           <ion-item class="ion-padding-top">
             <!-- <ion-col> -->
-              <ion-label position="floating">Nombre</ion-label>
-              <ion-input
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input
               class="expand-full"
-                name="username"
-                [ngModel]="usuario.username"
-                autocapitalize="words"
-                required
-              ></ion-input>
+              name="username"
+              [ngModel]="usuario.username"
+              autocapitalize="words"
+              required
+            ></ion-input>
             <!-- </ion-col> -->
           </ion-item>
           <ion-item>
             <!-- <ion-col> -->
-              <!-- <ion-row> -->
-                <ion-label position="floating">Email</ion-label>
-              <!-- </ion-row> -->
-              <!-- <ion-row> -->
-                <ion-input
-                class="expand-full"
-                name="email"
-                type="email"
-                [ngModel]="usuario.email"
-                required
-              ></ion-input>
-              <!-- </ion-row> -->
+            <!-- <ion-row> -->
+            <ion-label position="floating">Email</ion-label>
+            <!-- </ion-row> -->
+            <!-- <ion-row> -->
+            <ion-input
+              class="expand-full"
+              name="email"
+              type="email"
+              [ngModel]="usuario.email"
+              required
+            ></ion-input>
+            <!-- </ion-row> -->
             <!-- </ion-col> -->
           </ion-item>
           <ion-item>
             <!-- <ion-col> -->
-              <ion-label position="floating">Imagen(url)</ion-label>
-              <ion-input
+            <ion-label position="floating">Imagen(url)</ion-label>
+            <ion-input
               class="expand-full"
-                name="img_url"
-                [(ngModel)]="usuario.img_url"
-                required
-              ></ion-input>
+              name="img_url"
+              [(ngModel)]="usuario.img_url"
+              required
+            ></ion-input>
             <!-- </ion-col> -->
           </ion-item>
           <ion-button expand="block" type="submit" [disabled]="!f.valid"

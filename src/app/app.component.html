@@ -3,7 +3,7 @@
     <app-navbar *ngIf="router.url != '/login'"></app-navbar>
   </ion-header>
 
-  <ion-content >
+  <ion-content>
     <!-- sidebar -->
     <app-sidebar *ngIf="tamWidth < 768"></app-sidebar>
     <ion-router-outlet id="main-content"></ion-router-outlet>
@@ -14,5 +14,4 @@
     </ion-toolbar>
   </ion-footer> -->
   <!-- </ion-split-pane> -->
-
 </ion-app>

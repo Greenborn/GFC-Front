@@ -19,16 +19,20 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="10">
-        <form #f="ngForm" (ngSubmit)="postConcurso(f)" *ngIf="!loading; else spinner">
+        <form
+          #f="ngForm"
+          (ngSubmit)="postConcurso(f)"
+          *ngIf="!loading; else spinner"
+        >
           <ion-list class="ion-align-items-end">
             <!-- <ion-col size="12" size-md="4" > -->
             <ion-item>
               <!-- <ion-col> -->
               <ion-label position="floating">Nombre</ion-label>
               <ion-input
-              name="name"
-              [ngModel]="concurso.name"
-              autocapitalize="sentences"
+                name="name"
+                [ngModel]="concurso.name"
+                autocapitalize="sentences"
                 required
               ></ion-input>
               <!-- </ion-col> -->
@@ -47,7 +51,7 @@
                   ></ion-input> -->
                   <!-- TODO: revisar scroll en PC, ver css global -->
                   <!-- TODO: modificar el max de fecha como la fecha actual + 10 años -->
-                  <ion-datetime 
+                  <ion-datetime
                     displayFormat="DD/MMM/YYYY"
                     monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
                     monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
@@ -69,9 +73,9 @@
                     name="end_date"
                     [ngModel]="concurso.end_date"
                     required
-                  ></ion-input> --> 
+                  ></ion-input> -->
                   <!-- TODO: modificar el max de fecha como la fecha actual + 10 años -->
-                  <ion-datetime 
+                  <ion-datetime
                     displayFormat="DD/MMM/YYYY"
                     monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
                     monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
@@ -92,7 +96,7 @@
               <!-- <ion-col> -->
               <ion-label position="floating">Descripción</ion-label>
               <ion-textarea
-              autocapitalize="sentences"
+                autocapitalize="sentences"
                 auto-grow="true"
                 name="description"
                 [ngModel]="concurso.description"
@@ -147,7 +151,7 @@
         </form>
         <ng-template #spinner>
           <ion-row class="ion-justify-content-center">
-            <ion-spinner ></ion-spinner>
+            <ion-spinner></ion-spinner>
           </ion-row>
         </ng-template>
       </ion-col>

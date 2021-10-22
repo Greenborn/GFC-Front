@@ -18,52 +18,53 @@
 <ion-content #ConcursoContent id="concurso-content">
   <ion-row size="12">
     <ion-col>
-  <ion-card *ngIf="!loading; else spinner" class="ion-no-margin">
-    <ion-card-header>
-      <ion-row>
-        <ion-col class="ion-no-padding">
-          <ion-row class="ion-align-items-center">
+      <ion-card *ngIf="!loading; else spinner" class="ion-no-margin">
+        <ion-card-header>
+          <ion-row>
             <ion-col class="ion-no-padding">
-
-              <app-contest-status-chip [contest]="concurso"></app-contest-status-chip>
-              <ion-card-title>{{concurso.name}}</ion-card-title>
+              <ion-row class="ion-align-items-center">
+                <ion-col class="ion-no-padding">
+                  <app-contest-status-chip
+                    [contest]="concurso"
+                  ></app-contest-status-chip>
+                  <ion-card-title>{{concurso.name}}</ion-card-title>
+                </ion-col>
+              </ion-row>
+              <ion-card-subtitle
+                >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
+              >
             </ion-col>
-            </ion-row>
-          <ion-card-subtitle
-            >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
-          >
-        </ion-col>
-        <ion-col *ngIf="isLogedIn()" class="ion-align-self-end">
-          <ion-button class="ion-float-right" (click)="deleteConcurso()">
-            <ion-icon name="trash"></ion-icon>
-          </ion-button>
-          <ion-button
-            class="ion-float-right"
-            *ngIf="isLogedIn()"
-            [routerLink]="['/concursos/editar/'+concurso.id]"
-          >
-            <ion-icon name="create"></ion-icon>
-          </ion-button>
-          <!-- </ion-buttons> -->
-        </ion-col>
-      </ion-row>
-    </ion-card-header>
-    <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
-    <ion-card-content>
-      <!-- <ion-card-title>Descripcion</ion-card-title> -->
-      <ion-text>{{concurso.description}}</ion-text>
-    </ion-card-content>
-    <!-- <ion-label>{{item}}</ion-label> -->
-  </ion-card>
-  <ng-template #spinner>
-    <ion-row class="ion-justify-content-center">
-      <ion-spinner ></ion-spinner>
-    </ion-row>
-  </ng-template>
-</ion-col>
-</ion-row>
+            <ion-col *ngIf="isLogedIn()" class="ion-align-self-end">
+              <ion-button class="ion-float-right" (click)="deleteConcurso()">
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+              <ion-button
+                class="ion-float-right"
+                *ngIf="isLogedIn()"
+                [routerLink]="['/concursos/editar/'+concurso.id]"
+              >
+                <ion-icon name="create"></ion-icon>
+              </ion-button>
+              <!-- </ion-buttons> -->
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+        <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
+        <ion-card-content>
+          <!-- <ion-card-title>Descripcion</ion-card-title> -->
+          <ion-text>{{concurso.description}}</ion-text>
+        </ion-card-content>
+        <!-- <ion-label>{{item}}</ion-label> -->
+      </ion-card>
+      <ng-template #spinner>
+        <ion-row class="ion-justify-content-center">
+          <ion-spinner></ion-spinner>
+        </ion-row>
+      </ng-template>
+    </ion-col>
+  </ion-row>
 
-<!-- <ion-content>
+  <!-- <ion-content>
   <app-concurso-tabs [totConcursantes]="loading ? '' : inscriptos.length"></app-concurso-tabs>
 </ion-content> -->
 
@@ -75,7 +76,7 @@
           <ion-label>Concursantes</ion-label>
           <ion-badge>{{ loading ? '' : inscriptos.length }}</ion-badge>
         </ion-tab-button>
-    
+
         <ion-tab-button tab="fotografias">
           <ion-icon name="images-outline"></ion-icon>
           <ion-label>Fotografias</ion-label>
@@ -83,11 +84,6 @@
       </ion-tab-bar>
     </ion-tabs>
 
-    <router-outlet 
-      name="concurso"
-    ></router-outlet>
-      
-    </ion-content>
-
-
+    <router-outlet name="concurso"></router-outlet>
+  </ion-content>
 </ion-content>

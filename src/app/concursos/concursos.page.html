@@ -79,8 +79,8 @@
             <ion-list-header>
               <ion-label>Etiquetas:</ion-label>
             </ion-list-header> -->
-            <!-- <ion-row> -->
-            <!-- <ion-chip (click)="toggleChipMark()">
+          <!-- <ion-row> -->
+          <!-- <ion-chip (click)="toggleChipMark()">
               <ion-icon
                 *ngIf="markChip"
                 name="checkmark-circle"
@@ -107,7 +107,11 @@
                 Concursos
               </h1>
               <!-- <ion-fab *ngIf="isLogedIn()"> -->
-              <ion-fab-button size="small" *ngIf="isLogedIn()" [routerLink]="['nuevo']">
+              <ion-fab-button
+                size="small"
+                *ngIf="isLogedIn()"
+                [routerLink]="['nuevo']"
+              >
                 <ion-icon name="add"></ion-icon>
               </ion-fab-button>
               <!-- </ion-fab> -->
@@ -116,20 +120,17 @@
             <!-- <ion-searchbar (ionChange)="buscarConcursos($event.target.value)"></ion-searchbar> -->
 
             <ion-row class="ion-align-items-center ion-padding-bottom">
-              <ion-col
-                class="ion-no-padding"
-                size="10"
-                size-sm="11"
-              >
+              <ion-col class="ion-no-padding" size="10" size-sm="11">
                 <!-- <app-search-bar
                   (buscar)="filtrarConcursos($event)"
                   [atributosObj]="atributosBusqueda"
                 >
                 </app-search-bar> -->
-                
-                <app-search-bar 
+
+                <app-search-bar
                   [(data)]="concursos"
-                  [atributosObj]="atributosBusqueda">
+                  [atributosObj]="atributosBusqueda"
+                >
                 </app-search-bar>
               </ion-col>
               <ion-col size="2" size-sm="1">
@@ -156,14 +157,15 @@
                 </ion-row>
               </ion-col>
             </ion-row>
-            <ion-list *ngIf="concursos.length > 0; else (loading ? spinner : texto)">
+            <ion-list
+              *ngIf="concursos.length > 0; else (loading ? spinner : texto)"
+            >
               <!-- concurso card -->
               <!-- <ion-card *ngFor="let concurso of concursos"> -->
               <ion-card *ngFor="let c of concursos">
                 <ion-card-header>
                   <ion-row class="ion-align-items-center">
                     <ion-col class="ion-no-padding">
-
                       <app-contest-status-chip
                         [contest]="c"
                       ></app-contest-status-chip>
@@ -193,7 +195,7 @@
             </ng-template>
             <ng-template #spinner>
               <ion-row class="ion-justify-content-center">
-                <ion-spinner ></ion-spinner>
+                <ion-spinner></ion-spinner>
               </ion-row>
             </ng-template>
           </ion-col>

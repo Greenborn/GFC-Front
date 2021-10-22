@@ -1,6 +1,5 @@
 <ion-item class="search-select">
   <ion-col>
-
     <!-- <ion-row>
       <ion-searchbar #queryInput
         (ionInput)="output()"
@@ -9,63 +8,73 @@
         cancel-button-icon="close-outline"
       ></ion-searchbar>
     </ion-row> -->
-      <ion-row *ngIf="interface == 'popover'; else list" class="ion-align-items-center">
-        <ion-col class="ion-no-padding">
-          <ion-item
-            class="expand-full"
+    <ion-row
+      *ngIf="interface == 'popover'; else list"
+      class="ion-align-items-center"
+    >
+      <ion-col class="ion-no-padding">
+        <ion-item class="expand-full">
+          <ion-label
+            [position]="atributoSelected == '' ? 'floating' : 'stacked'"
+            >{{ title }}</ion-label
           >
-            <ion-label [position]="atributoSelected == '' ? 'floating' : 'stacked'">{{title}}</ion-label>
-            <ion-select *ngIf="!updatingSelect"
-              (ionChange)="changeQuery($event.target.value)"
-              [value]="atributoSelectedAsInt"
-              interface="popover"
+          <ion-select
+            *ngIf="!updatingSelect"
+            (ionChange)="changeQuery($event.target.value)"
+            [value]="atributoSelectedAsInt"
+            interface="popover"
+          >
+            <ion-select-option
+              *ngFor="let o of optionsData"
+              [value]="o[optionsProps.valueProp]"
+              >{{ o[optionsProps.titleProp] }}</ion-select-option
             >
-              <ion-select-option 
-                *ngFor="let o of optionsData" 
-                [value]="o[optionsProps.valueProp]"
-              >{{o[optionsProps.titleProp]}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-        </ion-col>
-        <ion-col size="2" class="ion-no-padding" *ngIf="atributoSelected != ''">
-          <ion-button 
-            (click)="changeQuery()" fill="clear" class="">
-            <ion-icon name="close-outline"></ion-icon>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-      <!-- #atributoSelect -->
-      
-      <ng-template #list>
-        <ion-row>
-          <ion-list>
-            <ion-list-header>
-              <ion-row class="ion-align-items-center">
-                <ion-label>{{title}}</ion-label>
-                <ion-button *ngIf="atributoSelected != ''"
-                  (click)="changeQuery()" fill="clear" class=""
-                  >
-                  <!-- (click)="output()" fill="clear" class="" -->
-                  <ion-icon name="close-outline"></ion-icon>
-                </ion-button>
-              </ion-row>
-            </ion-list-header>
-            <ion-item *ngFor="let o of optionsData">
-              <!-- (click)="output(o[optionsProps.valueProp])" -->
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2" class="ion-no-padding" *ngIf="atributoSelected != ''">
+        <ion-button (click)="changeQuery()" fill="clear" class="">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <!-- #atributoSelect -->
+
+    <ng-template #list>
+      <ion-row>
+        <ion-list>
+          <ion-list-header>
+            <ion-row class="ion-align-items-center">
+              <ion-label>{{ title }}</ion-label>
               <ion-button
-                (click)="changeQuery(o[optionsProps.valueProp])"
-                
-                [fill]="atributoSelected == o[optionsProps.valueProp] ? 'solid' : 'clear'"
-                expand="block"  
+                *ngIf="atributoSelected != ''"
+                (click)="changeQuery()"
+                fill="clear"
+                class=""
               >
-                {{o[optionsProps.titleProp]}}
+                <!-- (click)="output()" fill="clear" class="" -->
+                <ion-icon name="close-outline"></ion-icon>
               </ion-button>
-            </ion-item>
-          </ion-list>
-        </ion-row>
+            </ion-row>
+          </ion-list-header>
+          <ion-item *ngFor="let o of optionsData">
+            <!-- (click)="output(o[optionsProps.valueProp])" -->
+            <ion-button
+              (click)="changeQuery(o[optionsProps.valueProp])"
+              [fill]="
+                atributoSelected == o[optionsProps.valueProp]
+                  ? 'solid'
+                  : 'clear'
+              "
+              expand="block"
+            >
+              {{ o[optionsProps.titleProp] }}
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-row>
 
-
-        <!-- <ion-list>
+      <!-- <ion-list>
           <ion-radio-group 
             (ionChange)="changeRadio($event.target.value)"
             [value]="atributoSelected"
@@ -87,8 +96,6 @@
             </ion-item>
           </ion-radio-group>
         </ion-list> -->
-      </ng-template>
-
+    </ng-template>
   </ion-col>
-
 </ion-item>

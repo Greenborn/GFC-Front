@@ -1,18 +1,25 @@
 <!-- <ion-header> -->
 <ion-toolbar color="dark">
-  <ion-buttons [routerLink]="['/concursos']"  slot="start">
+  <ion-buttons [routerLink]="['/concursos']" slot="start">
     <ion-thumbnail>
       <ion-img src="../../../assets/GFC logo.png"></ion-img>
     </ion-thumbnail>
-    <ion-title class="ion-hide-md-down ion-no-padding">Grupo Fotográfico Centro</ion-title>
+    <ion-title class="ion-hide-md-down ion-no-padding"
+      >Grupo Fotográfico Centro</ion-title
+    >
   </ion-buttons>
   <!-- <ion-title slot="start">Icono Page</ion-title> -->
-  <ion-buttons slot="secondary" class="ion-hide-md-down ion-padding-start" *ngIf="(auth.user | async) as u"> <!-- up para PC -->
+  <ion-buttons
+    slot="secondary"
+    class="ion-hide-md-down ion-padding-start"
+    *ngIf="auth.user | async as u"
+  >
+    <!-- up para PC -->
     <!-- <ion-button [routerLink]="['/']"> Home </ion-button> -->
     <!-- <ion-button> Reglamento </ion-button> -->
     <ion-button [routerLink]="['/concursos']"> Concursos </ion-button>
     <!-- <ion-button> Galería </ion-button> -->
-    <ion-button [routerLink]="['/usuarios']" >
+    <ion-button [routerLink]="['/usuarios']">
       {{ rolificador.getNombreUsuarios(u.role_id) }}
     </ion-button>
   </ion-buttons>
@@ -21,7 +28,8 @@
     <!-- <ion-button (click)="mostrarNotificaciones($event)">
       <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
     </ion-button> -->
-    <ion-button (click)="mostrarPerfil($event)"> <!-- [routerLink]="['/perfil']"> -->
+    <ion-button (click)="mostrarPerfil($event)">
+      <!-- [routerLink]="['/perfil']"> -->
       <ion-icon slot="icon-only" name="person-circle"></ion-icon>
     </ion-button>
   </ion-buttons>

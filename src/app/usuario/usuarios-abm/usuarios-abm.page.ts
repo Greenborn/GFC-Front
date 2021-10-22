@@ -56,7 +56,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     },
     { 
       valor: 'fotoclub_id', 
-      valorMostrado: 'Asociación', 
+      valorMostrado: 'Fotoclub / Agrupación', 
       // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
       callback: (c: ProfileExpanded, query: string) => this.getFotoclubName(c.fotoclub_id).match(new RegExp(`^${query}`, 'i'))
     }

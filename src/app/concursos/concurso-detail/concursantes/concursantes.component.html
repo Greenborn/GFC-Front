@@ -1,4 +1,7 @@
-<ion-grid class="ion-no-padding ion-no-margin" *ngIf="(auth.user | async) as userLogged">
+<ion-grid
+  class="ion-no-padding ion-no-margin"
+  *ngIf="auth.user | async as userLogged"
+>
   <ion-row class="ion-justify-content-center">
     <!-- filtro -->
     <ion-col size="3" *ngIf="mostrarFiltro">
@@ -100,9 +103,7 @@
               ></ion-item
             >
             <ion-item
-              ><ion-button fill="clear" href="#"
-                >Aprobado</ion-button
-              ></ion-item
+              ><ion-button fill="clear" href="#">Aprobado</ion-button></ion-item
             >
             <ion-item>
               <ion-button fill="clear" href="#">Mención</ion-button></ion-item
@@ -141,9 +142,11 @@
             <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
               Inscriptos
             </h1>
-            <ion-fab-button size="small"
-              *ngIf="contestService.isActive(concurso)" 
-              (click)="concursoDetailService.inscribirConcursante.emit()">
+            <ion-fab-button
+              size="small"
+              *ngIf="contestService.isActive(concurso)"
+              (click)="concursoDetailService.inscribirConcursante.emit()"
+            >
               <!-- [routerLink]="['agregar-foto']"   -->
               <ion-icon name="add"></ion-icon>
             </ion-fab-button>
@@ -151,9 +154,10 @@
 
           <ion-row class="ion-align-items-center ion-padding-bottom">
             <ion-col size="10" size-sm="11">
-              <app-search-bar 
+              <app-search-bar
                 [(data)]="inscriptos"
-                [atributosObj]="atributosBusqueda">
+                [atributosObj]="atributosBusqueda"
+              >
               </app-search-bar>
               <!-- <app-search-bar [atributos]="['Titulo', 'Codigo']">
               </app-search-bar> -->
@@ -211,14 +215,16 @@
                         ></ion-icon>
                       </ion-button> -->
                     </ion-row>
-                  </ion-col
-                  >
+                  </ion-col>
                   <!-- *ngIf="rolificador.isAdmin(userLogged)" -->
-                  <ion-col size="3.5" size-md="2" *ngIf="rolificador.isAdmin(userLogged)"
+                  <ion-col
+                    size="3.5"
+                    size-md="2"
+                    *ngIf="rolificador.isAdmin(userLogged)"
                     class="ion-hide-sm-down"
                   >
                     <!-- <b>Entidad</b> -->
-                    
+
                     <ion-row>
                       <app-th-sort
                         [sortFn]="ordenarPorFotoclub"
@@ -246,10 +252,13 @@
               <ion-grid *ngIf="inscriptos.length > 0; else texto">
                 <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
                 <!-- class="ion-text-center" -->
-                <ion-item class="ion-no-padding lista-elem" *ngFor="let m of inscriptos">
+                <ion-item
+                  class="ion-no-padding lista-elem"
+                  *ngFor="let m of inscriptos"
+                >
                   <ion-grid>
                     <ion-row size="12">
-                      <ion-col >
+                      <ion-col>
                         <ion-row
                           class="
                             ion-align-items-center ion-justify-content-between
@@ -262,27 +271,33 @@
                           <ion-col size="8" size-sm="10.7">
                             <ion-label class="ion-margin-start">
                               <ion-card-subtitle title="Username"
-                                ><i>@{{m.profile.user.username}}</i></ion-card-subtitle
+                                ><i
+                                  >@{{ m.profile.user.username }}</i
+                                ></ion-card-subtitle
                               >
                               <ion-text title="Nombre">
-                                <b>{{m.profile.name}} {{m.profile.last_name}}</b>
+                                <b
+                                  >{{ m.profile.name }}
+                                  {{ m.profile.last_name }}</b
+                                >
                               </ion-text>
                               <ion-card-subtitle title="Username"
-                              >{{getFotosCargadas(m.profile_id)}} fotos cargadas</ion-card-subtitle>
+                                >{{ getFotosCargadas(m.profile_id) }} fotos
+                                cargadas</ion-card-subtitle
+                              >
                             </ion-label>
                           </ion-col>
                           <ion-col
                             size="1"
                             class="ion-hide-sm-up ion-justify-content-center"
                           >
-                            <ion-buttons *ngIf="contestService.isActive(concurso)">
-                              <ion-button
-                                (click)="mostrarAcciones($event, m)"
-                              >
-                              <!-- <ion-thumbnail></ion-thumbnail> -->
+                            <ion-buttons
+                              *ngIf="contestService.isActive(concurso)"
+                            >
+                              <ion-button (click)="mostrarAcciones($event, m)">
+                                <!-- <ion-thumbnail></ion-thumbnail> -->
                                 <ion-icon
-
-                                slot="start"
+                                  slot="start"
                                   ios="ellipsis-horizontal"
                                   md="ellipsis-vertical"
                                 ></ion-icon>
@@ -292,13 +307,14 @@
                         </ion-row>
                       </ion-col>
                       <ion-col
-                      size="3.5" size-md="2"
+                        size="3.5"
+                        size-md="2"
                         class="ion-hide-sm-down ion-align-self-center"
                         *ngIf="rolificador.isAdmin(userLogged)"
                       >
-                        <ion-text title="Fotoclub/Agrupación" 
-                          >{{ getFotoclubName(m.profile_id) }}</ion-text
-                        >
+                        <ion-text title="Fotoclub/Agrupación">{{
+                          getFotoclubName(m.profile_id)
+                        }}</ion-text>
                       </ion-col>
                       <ion-col
                         size="2"
@@ -306,17 +322,25 @@
                         class="ion-align-self-center ion-hide-sm-down"
                       >
                         <ion-buttons *ngIf="contestService.isActive(concurso)">
-                          <ion-button (click)="concursoDetailService.postImage.emit({
-                              id: undefined,
-                              profile_id: m.profile_id,
-                              code: undefined,
-                              title: undefined
-                            })"
+                          <ion-button
+                            (click)="
+                              concursoDetailService.postImage.emit({
+                                id: undefined,
+                                profile_id: m.profile_id,
+                                code: undefined,
+                                title: undefined
+                              })
+                            "
                             title="Agregar fotografía"
                           >
                             <ion-icon name="camera-outline"></ion-icon>
                           </ion-button>
-                          <ion-button (click)="concursoDetailService.desinscribirConcursante.emit(m)"
+                          <ion-button
+                            (click)="
+                              concursoDetailService.desinscribirConcursante.emit(
+                                m
+                              )
+                            "
                             title="Desinscribir"
                           >
                             <ion-icon name="trash"></ion-icon>
@@ -332,7 +356,7 @@
           </ion-list>
           <ng-template #spinner>
             <ion-row class="ion-justify-content-center">
-              <ion-spinner ></ion-spinner>
+              <ion-spinner></ion-spinner>
             </ion-row>
           </ng-template>
         </ion-col>

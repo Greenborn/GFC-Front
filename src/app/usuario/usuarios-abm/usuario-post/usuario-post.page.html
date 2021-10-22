@@ -19,7 +19,7 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="2" class="ion-hide-md-down">
-        <app-usuario-img src="fafafa"></app-usuario-img>       
+        <app-usuario-img src="fafafa"></app-usuario-img>
         <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img>        -->
       </ion-col>
       <ion-col size-sm="12" size-md="9" size-lg="7">
@@ -67,18 +67,24 @@
 
               <!-- </ion-col> -->
               <!-- <ion-col size-md="3" size="12"> -->
-              <ion-item class="expand-full" *ngIf="!updatingSelect; else spinner">
-                <ion-label [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub</ion-label>
-                <ion-select #sFotoclub
-                  name="fotoclub_id" 
+              <ion-item
+                class="expand-full"
+                *ngIf="!updatingSelect; else spinner"
+              >
+                <ion-label
+                  [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'"
+                  >Fotoclub</ion-label
+                >
+                <ion-select
+                  #sFotoclub
+                  name="fotoclub_id"
                   [(ngModel)]="profile.fotoclub_id"
                   [disabled]="!isAdmin"
                   required
                 >
-                  <ion-select-option 
-                    *ngFor="let f of fotoclubes" 
-                    [value]="f.id"
-                  >{{f.name}}</ion-select-option>
+                  <ion-select-option *ngFor="let f of fotoclubes" [value]="f.id"
+                    >{{f.name}}</ion-select-option
+                  >
                 </ion-select>
               </ion-item>
 
@@ -100,9 +106,18 @@
                   name="username"
                   [(ngModel)]="usuario.username"
                   required
-                >  <ion-icon *ngIf="usernameFocus" name="at-outline" item-left></ion-icon> </ion-input>
+                >
+                  <ion-icon
+                    *ngIf="usernameFocus"
+                    name="at-outline"
+                    item-left
+                  ></ion-icon>
+                </ion-input>
               </ion-item>
-              <ion-note *ngIf="usernameFocus"> Máximo 20 caracteres alfanuméricos sin símbolos ni espacios</ion-note>
+              <ion-note *ngIf="usernameFocus">
+                Máximo 20 caracteres alfanuméricos sin símbolos ni
+                espacios</ion-note
+              >
               <!-- </ion-col> -->
               <!-- <ion-col size-md="4" size="12"> -->
               <!-- <ion-item class="expand-full">
@@ -119,13 +134,13 @@
 
               <ion-item class="expand-full" *ngIf="!isUserProfile">
                 <ion-col class="ion-no-padding">
-                  <ion-row >
+                  <ion-row>
                     <ion-col class="ion-no-padding" size="10">
                       <ion-label position="floating">Contraseña</ion-label>
                       <ion-input
                         tabindex="0"
                         (ionFocus)="passFocus=true"
-                  (ionBlur)="passFocus=false"
+                        (ionBlur)="passFocus=false"
                         id="ctr-1"
                         pattern=".{8,}"
                         type="password"
@@ -134,8 +149,10 @@
                         [(ngModel)]="usuario.password"
                       ></ion-input>
                     </ion-col>
-                    <ion-col class="ion-no-padding ion-align-self-center" size="2">
-    
+                    <ion-col
+                      class="ion-no-padding ion-align-self-center"
+                      size="2"
+                    >
                       <app-ojo inputId="ctr-1"></app-ojo>
                     </ion-col>
                   </ion-row>
@@ -144,27 +161,30 @@
               <ion-note *ngIf="passFocus">Mínimo 8 caracteres</ion-note>
 
               <ion-item class="expand-full" *ngIf="isUserProfile">
-                <ion-button
-                  (click)="changePassword()"
-                >Cambiar contraseña</ion-button>
+                <ion-button (click)="changePassword()"
+                  >Cambiar contraseña</ion-button
+                >
               </ion-item>
 
-              <ion-item class="expand-full" *ngIf="!updatingSelect; else spinner">
+              <ion-item
+                class="expand-full"
+                *ngIf="!updatingSelect; else spinner"
+              >
                 <!-- <ion-label [position]="(usuario.rol_id != undefined) ? 'stacked' : 'floating'">Rol</ion-label> -->
                 <ion-label [position]="'stacked'">Rol</ion-label>
                 <!-- [value]="(usuario.role_id == undefined) ? 2 : usuario.role_id" -->
                 <!-- (value)="usuario.role_id" -->
-                <ion-select #sRol
+                <ion-select
+                  #sRol
                   name="role_id"
                   [(ngModel)]="usuario.role_id"
                   required
                   [disabled]="!isAdmin"
-                  >
+                >
                   <!-- interface="popover" -->
-                    <ion-select-option 
-                      *ngFor="let r of roles" 
-                      [value]="r.id"
-                    >{{r.type}}</ion-select-option>
+                  <ion-select-option *ngFor="let r of roles" [value]="r.id"
+                    >{{r.type}}</ion-select-option
+                  >
                 </ion-select>
               </ion-item>
               <!-- </ion-col> -->
@@ -217,23 +237,22 @@
                       Guardar
                     </ion-button> -->
                   </ion-col>
-            
+
                   <ion-col
                     class="ion-align-self-center"
                     pull-sm="3"
                     size="12"
                     size-sm="3"
                   >
-                  <ion-back-button
-                                  text="Cancelar"
-                                  icon=""
-                                  defaultHref="/usuarios"
-                                ></ion-back-button
-                              ></ion-col>
+                    <ion-back-button
+                      text="Cancelar"
+                      icon=""
+                      defaultHref="/usuarios"
+                    ></ion-back-button
+                  ></ion-col>
                 </ion-row>
               </ion-col>
             </ion-row>
-            
           </form>
         </ion-row>
       </ion-col>

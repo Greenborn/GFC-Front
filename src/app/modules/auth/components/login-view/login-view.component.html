@@ -12,18 +12,18 @@
 
           <ion-row>
             <ion-card class="ion-margin-top expand-full">
-              <div class="expand-full ion-padding-start  ion-padding-end">
+              <div class="expand-full ion-padding-start ion-padding-end">
                 <ion-item class="expand-full">
                   <ion-col class="ion-no-padding">
-                        <ion-label position="stacked">Username</ion-label>
-                        <ion-input
-                          class="text-right"
-                          (keypress)="keyPress($event)"
-                          [(ngModel)]="login.username"
-                          ngDefaultControl
-                        ></ion-input>
-                    </ion-col>
-                  </ion-item>
+                    <ion-label position="stacked">Username</ion-label>
+                    <ion-input
+                      class="text-right"
+                      (keypress)="keyPress($event)"
+                      [(ngModel)]="login.username"
+                      ngDefaultControl
+                    ></ion-input>
+                  </ion-col>
+                </ion-item>
                 <ion-item class="expand-full">
                   <ion-col class="ion-no-padding">
                     <ion-row>
@@ -39,36 +39,37 @@
                           [(ngModel)]="login.password"
                           ngDefaultControl
                         ></ion-input>
-                        </ion-col>
-                        <ion-col class="ion-no-padding ion-align-self-center" size="2">
-      <ion-row>
-  
-        <app-ojo inputId="ctr-1"></app-ojo>
-      </ion-row>
-                        </ion-col>
-                      </ion-row>
-                    </ion-col>
-                  </ion-item>
-  
-                </div>
-                <!-- color="primary" -->
-                <ion-button
-                  color="primary"
-                  expand="block"
-                  class="ion-margin"
-                  (click)="next()"
-                >
-                  <ion-label *ngIf="!loading; else spinner">Ingresar</ion-label>
-                  <ng-template #spinner>
-                    <ion-row class="ion-justify-content-center">
-                      <ion-spinner ></ion-spinner>
+                      </ion-col>
+                      <ion-col
+                        class="ion-no-padding ion-align-self-center"
+                        size="2"
+                      >
+                        <ion-row>
+                          <app-ojo inputId="ctr-1"></app-ojo>
+                        </ion-row>
+                      </ion-col>
                     </ion-row>
-                  </ng-template>
-                </ion-button>
-  
-                <ion-item color="danger" *ngIf="error != undefined">
-                  <ion-label>{{ error }}</ion-label>
+                  </ion-col>
                 </ion-item>
+              </div>
+              <!-- color="primary" -->
+              <ion-button
+                color="primary"
+                expand="block"
+                class="ion-margin"
+                (click)="next()"
+              >
+                <ion-label *ngIf="!loading; else spinner">Ingresar</ion-label>
+                <ng-template #spinner>
+                  <ion-row class="ion-justify-content-center">
+                    <ion-spinner></ion-spinner>
+                  </ion-row>
+                </ng-template>
+              </ion-button>
+
+              <ion-item color="danger" *ngIf="error != undefined">
+                <ion-label>{{ error }}</ion-label>
+              </ion-item>
             </ion-card>
           </ion-row>
         </ion-col>
