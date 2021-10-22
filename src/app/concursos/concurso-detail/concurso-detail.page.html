@@ -21,11 +21,14 @@
   <ion-card *ngIf="!loading; else spinner" class="ion-no-margin">
     <ion-card-header>
       <ion-row>
-        <ion-col>
+        <ion-col class="ion-no-padding">
           <ion-row class="ion-align-items-center">
-            <ion-card-title>{{concurso.name}}</ion-card-title>
-            <app-contest-status-chip [contest]="concurso"></app-contest-status-chip>
-          </ion-row>
+            <ion-col class="ion-no-padding">
+
+              <app-contest-status-chip [contest]="concurso"></app-contest-status-chip>
+              <ion-card-title>{{concurso.name}}</ion-card-title>
+            </ion-col>
+            </ion-row>
           <ion-card-subtitle
             >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
           >

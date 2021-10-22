@@ -22,11 +22,13 @@ export class SearchBarComponent implements OnInit {
   @Input() atributos: string[] = undefined;
   @Input() atributosObj: SearchBarComponentAtributo[] = undefined;
   @Input() data: any[];
+  @Input() innerSelect: boolean = false;
 
   @Output() dataChange = new EventEmitter<any[]>()
   @Output() buscar = new EventEmitter<SearchBarComponentParams>()
   
   private origData: any[];
+  public atributoSelected: string = '';
 
   constructor() { }
 
@@ -56,18 +58,22 @@ export class SearchBarComponent implements OnInit {
     if (this.origData == undefined) {
       this.origData = [...this.data]
     }
-    let atributo: string = this.atributoSelect.nativeElement.value;
+    // let atributo: string = this.atributoSelect.nativeElement.value;
+    let atributo: string = this.atributoSelected;
     let query: string = this.queryInput.nativeElement.value;
 
     let atributoObj: SearchBarComponentAtributo = (this.atributosObj ?? []).find(a => atributo == a.valor)
     let filterCallback: Function;
     if (atributoObj != undefined && atributoObj.callback != undefined) {
       filterCallback = atributoObj.callback
-    } else {
-      filterCallback = (e: any) => {
+    } else if (atributo != '') {
+      filterCallback = (e: any, q: string) => {
         console.log(e[atributo])
-        return e[atributo].includes(query)
+        return e[atributo].includes(q)
       } 
+    } else {
+      console.log('TODO: Filtrando por todos los callbacks y atributos...')
+      filterCallback = () => true
     }
     // console.log('Buscando ', query, ' atributo: ', this.atributoSelect.nativeElement.value)
     // this.buscar.emit({
@@ -78,6 +84,12 @@ export class SearchBarComponent implements OnInit {
     this.dataChange.emit(
       this.origData.filter(e => filterCallback(e, query))
     )
+  }
+
+  changeRadio(atributoValue: string = '') {
+    // console.log('changing radio', ev.target.value)
+    this.atributoSelected = atributoValue
+    this.output()
   }
 
 }

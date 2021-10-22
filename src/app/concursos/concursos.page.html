@@ -162,10 +162,13 @@
               <ion-card *ngFor="let c of concursos">
                 <ion-card-header>
                   <ion-row class="ion-align-items-center">
-                    <ion-card-title>{{c.name}}</ion-card-title>
-                    <app-contest-status-chip
-                      [contest]="c"
-                    ></app-contest-status-chip>
+                    <ion-col class="ion-no-padding">
+
+                      <app-contest-status-chip
+                        [contest]="c"
+                      ></app-contest-status-chip>
+                      <ion-card-title>{{c.name}}</ion-card-title>
+                    </ion-col>
                   </ion-row>
                   <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
                 </ion-card-header>
