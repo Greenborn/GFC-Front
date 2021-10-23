@@ -101,15 +101,19 @@ export class SearchSelectComponent implements OnInit, OnChanges {
   // }
 
   public changeQuery(value: string | EventTarget = '') {
-    if (typeof value != 'string') {
+    // if (typeof value != 'string') {
+    if (!['string', 'number'].includes(typeof value)) {
+      // console.log('changing query from select element', value)
       value = (value as HTMLIonSelectElement).value
     }
     // const queryParams: Params = { myParam: 'myNewValue' };
     // const queryParams: Params = {...this.queryParams};
     const queryParams: Params = this.queryParams;
     if (value != '') {
+      // console.log('updating query', this.optionsProps.queryParam, value)
       queryParams[this.optionsProps.queryParam] = value
     } else {
+      // console.log('resetting query')
       delete queryParams[this.optionsProps.queryParam]
     }
     // console.log('changing query', queryParams)

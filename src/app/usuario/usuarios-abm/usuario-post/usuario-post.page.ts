@@ -208,7 +208,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   async changePassword() {
-    console.log('change password')
+    // console.log('change password')
 
     const modal = await this.modalController.create({
       component: ChangePasswordComponent,
