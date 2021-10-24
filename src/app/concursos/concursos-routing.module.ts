@@ -16,6 +16,15 @@ const routes: Routes = [
   //   path: 'concurso-post',
   //   loadChildren: () => import('./concurso-post/concurso-post.module').then( m => m.ConcursoPostPageModule)
   // }
+  // {
+  //   path: 'secciones',
+  //   component: AbmSeccionesComponent
+  // },
+  {
+    path: 'secciones',
+    loadChildren: () => import('./secciones-abm/secciones-abm.module').then( m => m.SeccionesAbmPageModule)
+  }
+
 ];
 
 @NgModule({

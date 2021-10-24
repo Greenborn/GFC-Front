@@ -1,6 +1,7 @@
 import { Component, OnDestroy} from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ResponsiveService } from './services/ui/responsive.service';
 
 @Component({
   selector: 'app-root',
@@ -20,14 +21,11 @@ export class AppComponent implements OnDestroy {
   
   private routerSub: Subscription;
 
-  public get tamWidth() {
-    return window.innerWidth
-  }
-
   // https://stackoverflow.com/questions/59552387/how-to-reload-a-page-in-angular-8-the-proper-way
   constructor(
     public router: Router, 
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public responsiveService: ResponsiveService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.routerSub = this.router.events.subscribe((event) => {

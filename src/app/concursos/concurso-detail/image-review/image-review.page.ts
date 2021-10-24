@@ -8,6 +8,7 @@ import { Metric } from 'src/app/models/metric.model';
 // import { ConcursoService } from 'src/app/services/concurso.service';
 import { MetricService } from 'src/app/services/metric.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 
 @Component({
   selector: 'app-image-review',
@@ -27,10 +28,6 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   //   profile_id: undefined
   // };
   @Input() contestResult: ContestResult;
-  // public tamWidth = window.screen.width;
-  public get tamWidth() {
-    return window.innerWidth
-  }
   
   // @ViewChild('formReview') formReview: HTMLFormElement;
   public posting: boolean = false;
@@ -38,18 +35,13 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   constructor(
     // private contestSvc: ConcursoService,
     private metricService: MetricService,
-    alertCtrl: AlertController
+    alertCtrl: AlertController,
+    public responsiveService: ResponsiveService
   ) { 
     super(alertCtrl)
   }
 
-  ngOnInit() {
-    // window.onresize = this.actualizarWidth;
-  }
-
-  // actualizarWidth(){
-  //   this.tamWidth = window.screen.width;
-  // }
+  ngOnInit() {}
 
   async postReview(f: NgForm) {
     if (f.valid) {

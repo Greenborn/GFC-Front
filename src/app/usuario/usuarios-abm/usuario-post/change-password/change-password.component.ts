@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -17,15 +18,12 @@ export class ChangePasswordComponent extends ApiConsumer implements OnInit {
   public posting: boolean = false;
   public old_password: string;
   public new_password: string;
-  // public tamWidth = window.screen.width;
-  public get tamWidth() {
-    return window.innerWidth
-  }
   public passChangeFocus=false;
 
   constructor(
     private userService: UserService,
-    alertCtrl: AlertController
+    alertCtrl: AlertController,
+    public responsiveService: ResponsiveService
   ) { 
     super(alertCtrl)
   }

@@ -12,7 +12,7 @@
 <ion-list>  
   <ion-item 
     *ngFor="let a of acciones"
-    (click)="a.accion(a.params)"
+    (click)="action(a.accion, a.params)"
   >
     <ion-icon [name]="a.icon"></ion-icon>
     <ion-label class="ion-margin-start">{{a.label}}</ion-label>

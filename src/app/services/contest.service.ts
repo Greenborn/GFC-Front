@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Contest, ContestExpanded } from '../models/contest.model';
+import { ContestCategory } from '../models/contest_category.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
 
@@ -25,6 +26,10 @@ export class ContestService extends ApiService<Contest> {
       start_date: undefined,
       end_date: undefined
     }
+  }
+
+  getCategoriasInscriptas(contest_id: number): Observable<ContestCategory[]> {
+    return super.getAll<ContestCategory>(`filter[contest_id]=${contest_id}`, 'contest-category')
   }
 
   isActive(c: Contest): boolean {

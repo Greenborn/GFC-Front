@@ -8,6 +8,7 @@ import { ConcursosPageRoutingModule } from './concursos-routing.module';
 
 import { ConcursosPage } from './concursos.page';
 import { SharedModule } from '../shared/shared.module';
+import { SeccionPostComponent } from './secciones-abm/seccion-post/seccion-post.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { SharedModule } from '../shared/shared.module';
     ConcursosPageRoutingModule,
     SharedModule
   ],
-  declarations: [ConcursosPage]
+  declarations: [ConcursosPage, SeccionPostComponent]
 })
 export class ConcursosPageModule {}

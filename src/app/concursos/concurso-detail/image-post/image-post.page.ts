@@ -7,6 +7,7 @@ import { Profile } from 'src/app/models/profile.model';
 
 import { ImageService } from 'src/app/services/image.service';
 import { ProfileService } from 'src/app/services/profile.service';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 
 @Component({
   selector: 'app-image-post',
@@ -20,10 +21,6 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   // @Input() contestResult: ContestResult;
   @Input() image: Image = this.imageService.template;
   @Input() profiles: Profile[];
-  // public tamWidth = window.screen.width;
-  public get tamWidth() {
-    return window.innerWidth
-  }
   
   // @ViewChild('s') selectConcursante: ElementRef;
   // @ViewChild('formImage') formImage: HTMLFormElement;
@@ -36,7 +33,8 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     // private contestSvc: ConcursoService,
     private imageService: ImageService,
     // private profileService: ProfileService,
-    alertCtrl: AlertController
+    alertCtrl: AlertController,
+    responsiveService: ResponsiveService
   ) { 
     super(alertCtrl)
   }
@@ -48,9 +46,6 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   async ngOnInit() {
     // window.onresize = this.actualizarWidth;
   }
-  // actualizarWidth(){
-  //   this.tamWidth = window.screen.width;
-  // }
 
   async postImage() {
     // console.log({

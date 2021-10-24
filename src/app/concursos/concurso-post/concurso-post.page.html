@@ -37,6 +37,73 @@
               ></ion-input>
               <!-- </ion-col> -->
             </ion-item>
+
+            <ion-row>
+              <!-- <ion-col> -->
+
+                <ion-item>
+                  <ion-label>Categorías</ion-label>
+                  <ion-select  *ngIf="!updatingSelect"
+                    (ionChange)="agregarCategoria($event)" 
+                    interface="popover"
+                    ngDefaultControl
+                    [disabled]="categoriasNoInscriptas.length == 0"
+                  >
+                    <!-- required -->
+                    <!-- [(value)]="image.profile_id" -->
+                    <ion-select-option
+                      *ngFor="let c of categoriasNoInscriptas"
+                      [value]="c.id"
+                      >{{ c.name }}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                
+                <ion-list>
+                  <ion-card-title>Categorias inscriptas</ion-card-title>
+                  <ul>
+                    <li *ngFor="let c1 of categoriasInscriptas">
+                      <ion-row class="w-100 ion-align-items-center">
+                        <ion-label>
+                          <ion-card-subtitle>{{getCategoryName(c1.category_id)}}</ion-card-subtitle>
+                          <!-- <h3>I'm a big deal</h3>
+                          <p>Listen, I've had a pretty messed up day...</p> -->
+                        </ion-label>
+                        <ion-buttons
+                          class="ion-justify-content-center ion-margin-start"
+                        >
+                          <!-- <ion-button size="small"
+                            (click)="
+                              postSection(s1)
+                            "
+                          >
+                            <ion-icon name="create"></ion-icon>
+                          </ion-button> -->
+                          <ion-button size="small"
+                            (click)="desinscribirCategoria(c1.id)"
+                          >
+                            <ion-icon name="trash"></ion-icon>
+                          </ion-button>
+                        </ion-buttons>
+                        <!-- <ion-buttons
+                          class="ion-hide-md-up"
+                        >
+                          <ion-button (click)="mostrarAcciones($event, s1)">
+                            <ion-icon
+                              slot="icon-only"
+                              ios="ellipsis-horizontal"
+                              md="ellipsis-vertical"
+                            ></ion-icon>
+                          </ion-button>
+                        </ion-buttons> -->
+                      </ion-row>
+                    </li>
+            
+                  </ul>
+                
+                </ion-list>
+              <!-- </ion-col> -->
+            </ion-row>
             <!-- </ion-col> -->
             <!-- <ion-col size="12" size-md="8"> -->
             <ion-item>

@@ -1,26 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ProfileContest } from '../models/profile_contest';
+import { Category } from '../models/category.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProfileContestService extends ApiService<ProfileContest> {
+export class CategoryService extends ApiService<Category> {
 
   constructor(
     http: HttpClient,
     config: ConfigService
   ) {
-    super('profile-contest', http, config)
+    super('category', http, config)
+    this.fetchAllOnce = true
    }
 
-   get template(): ProfileContest {
+   get template(): Category {
     return {
       id: undefined,
-      profile_id: undefined,
-      contest_id: undefined,
-      category_id: undefined
+      name: undefined
     }
-  }}
+  }
+}

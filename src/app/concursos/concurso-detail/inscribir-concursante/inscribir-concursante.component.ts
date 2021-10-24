@@ -5,6 +5,7 @@ import { Contest } from 'src/app/models/contest.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 
 @Component({
   selector: 'app-inscribir-concursante',
@@ -19,14 +20,11 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
 
   public profile_id: number = undefined;
   public posting: boolean = false;
-  // public tamWidth = window.screen.width;
-  public get tamWidth() {
-    return window.innerWidth
-  }
 
   constructor(
+    alertCtrl: AlertController,
     private profileContestService: ProfileContestService,
-    alertCtrl: AlertController
+    public responsiveService: ResponsiveService
   ) { 
     super(alertCtrl)
   }
@@ -42,7 +40,8 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
     this.posting = true
     super.fetch<ProfileContestExpanded>(() => this.profileContestService.post({
         profile_id: this.profile_id,
-        contest_id: this.contest.id
+        contest_id: this.contest.id,
+        category_id: undefined // TODO: FALTAN ATRIBUTOS
       }, undefined, 'expand=profile,profile.user,profile.fotoclub'
     )).subscribe(
       profileContest => {

@@ -6,6 +6,7 @@ export interface ContestResult {
     contest_id: number;
     image_id: number;
     metric_id: number;
+    section_id: number;
 }
 
 export interface ContestResultExpanded extends ContestResult {

@@ -440,7 +440,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
             this.contestResultService.post({
               contest_id: this.concurso.id,
               image_id: image.id,
-              metric_id: metric.id
+              metric_id: metric.id,
+              section_id: 0 // TODO: FALTAN ATRIBUTOS
             })
           ).subscribe(
             // console.log('posted new result', cr)

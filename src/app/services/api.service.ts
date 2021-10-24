@@ -30,7 +30,7 @@ export abstract class ApiService<T> {
   }
 
   // https://www.yiiframework.com/doc/guide/2.0/en/rest-response-formatting
-  getAll<K = T>(getParams: string = ''): Observable<K[]> {
+  getAll<K = T>(getParams: string = '', resource: string = null): Observable<K[]> {
 
     if (this.fetchAllOnce && this.all != undefined) {
       console.log('get all stored', this.all)
@@ -38,7 +38,7 @@ export abstract class ApiService<T> {
         suscriber.next(this.all as K[])
       })
     } else {
-      const url = this.config.apiUrl(`${this.recurso}?${getParams}`)
+      const url = this.config.apiUrl(`${resource ?? this.recurso}?${getParams}`)
       // console.log('getting', url))
       return this.http.get<ApiSerializedResponse<K>>(url).pipe(
         map((data) => {
