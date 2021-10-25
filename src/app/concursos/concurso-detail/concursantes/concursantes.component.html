@@ -31,14 +31,14 @@
             <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
               Inscriptos
             </h1>
-            <ion-button
+            <ion-fab-button
               size="small"
               *ngIf="contestService.isActive(concurso)"
               (click)="inscribirConcursante()"
             >
               <!-- [routerLink]="['agregar-foto']"   -->
               <ion-icon name="add"></ion-icon>
-            </ion-button>
+            </ion-fab-button>
             <!-- <ion-fab-button
               size="small"
               *ngIf="contestService.isActive(concurso)"
@@ -182,8 +182,10 @@
                       <ion-col>
                         <ion-row
                           class="
-                            ion-align-items-center ion-justify-content-between
+                            ion-align-items-center
                           "
+                          size-md="7"
+                          size-sm="5.5"
                         >
                           <!-- user card -->
                           <ion-col size="3" size-sm="1.3">
