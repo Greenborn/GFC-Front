@@ -55,9 +55,8 @@ export class UiUtilsService {
     let popover: HTMLIonPopoverElement;
     // loading: boolean = true;
     const options = {
-      onClick: () => popover.dismiss(),
       component: MenuAccionesComponent,
-      componentProps: { acciones },
+      componentProps: { acciones, onClick: () => popover.dismiss() },
       cssClass: 'auto-width',
       event,
       translucent: true,

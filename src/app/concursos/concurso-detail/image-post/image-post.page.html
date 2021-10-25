@@ -8,7 +8,7 @@
           <h5 class="ion-text-wrap">{{ formTitle }}</h5>
         </ion-col>
         <ion-col size="1" class="ion-hide-md-down">
-          <ion-button (click)="dismiss()" fill="clear" class="">
+          <ion-button (click)="modalController.dismiss()" fill="clear" class="">
             <ion-icon name="close-outline"></ion-icon>
           </ion-button>
         </ion-col>
@@ -33,8 +33,9 @@
                 </ion-item>
                 <ion-item class="w-100 ion-margin-bottom">
                   <ion-label position="floating">Código</ion-label>
-                  <ion-input
-                    [(ngModel)]="image.code"
+                  <!-- [(ngModel)]="image.code" -->
+                  <ion-input readonly
+                    [value]="code"
                     ngDefaultControl
                   ></ion-input>
                 </ion-item>
@@ -49,8 +50,22 @@
                     ngDefaultControl
                   >
                     <!-- [(value)]="image.profile_id" -->
-                    <ion-select-option *ngFor="let p of profiles" [value]="p.id"
-                      >{{p.name + ' ' + p.last_name}}</ion-select-option
+                    <ion-select-option *ngFor="let p of profiles" [value]="p.profile.id"
+                      >{{p.profile.name + ' ' + p.profile.last_name}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+              </ion-row>
+              <ion-row>
+                <ion-item class="w-100 ion-margin-bottom">
+                  <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
+                  <ion-label position="floating">Sección</ion-label>
+                  <ion-select [(ngModel)]="section_id" ngDefaultControl>
+                    <!-- [(value)]="image.profile_id" -->
+                    <ion-select-option
+                      *ngFor="let s of secciones"
+                      [value]="s.id"
+                      >{{ s.name }}</ion-select-option
                     >
                   </ion-select>
                 </ion-item>
@@ -100,7 +115,7 @@
                 > -->
                       <ion-button
                         expand="block"
-                        (click)="dismiss()"
+                        (click)="modalController.dismiss()"
                         fill="clear"
                       >
                         Cancelar</ion-button

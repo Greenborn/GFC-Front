@@ -77,7 +77,7 @@ export class SeccionesAbmPage extends ApiConsumer implements OnInit {
   deleteSection(section: Section) {
     this.UIUtilsService.mostrarAlert({
       header: 'Confirmar borrado',
-      message: 'No se podrá eliminar si tiene imagenes o subsecciones asociadas.'
+      message: 'No se podrá eliminar si tiene imagenes, concursos o subsecciones asociadas.'
       }, async () => {
         const tieneSubsecciones = this.sections.find(s => s.parent_id == section.id) != undefined
         if (tieneSubsecciones) {

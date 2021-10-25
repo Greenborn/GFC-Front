@@ -23,4 +23,5 @@ export class ProfileContestService extends ApiService<ProfileContest> {
       contest_id: undefined,
       category_id: undefined
     }
-  }}
+  }
+}

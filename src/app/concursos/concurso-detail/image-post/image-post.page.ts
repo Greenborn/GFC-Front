@@ -4,10 +4,18 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Image } from 'src/app/models/image.model';
 import { Profile } from 'src/app/models/profile.model';
+import { ProfileContestExpanded } from 'src/app/models/profile_contest';
+import { Section } from 'src/app/models/section.model';
 
 import { ImageService } from 'src/app/services/image.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+
+export interface ImagePostParams {
+  image?: Image;
+  section_id?: number;
+  category_id?: number;
+}
 
 @Component({
   selector: 'app-image-post',
@@ -20,7 +28,10 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   @Input() modalController: ModalController;
   // @Input() contestResult: ContestResult;
   @Input() image: Image = this.imageService.template;
-  @Input() profiles: Profile[];
+  @Input() profiles: ProfileContestExpanded[];
+  @Input() secciones: Section[];
+
+  @Input() section_id: number = undefined;
   
   // @ViewChild('s') selectConcursante: ElementRef;
   // @ViewChild('formImage') formImage: HTMLFormElement;
@@ -34,9 +45,17 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     private imageService: ImageService,
     // private profileService: ProfileService,
     alertCtrl: AlertController,
-    responsiveService: ResponsiveService
+    public responsiveService: ResponsiveService
   ) { 
     super(alertCtrl)
+  }
+
+  get categoryId(): number {
+    const p = this.profiles.find(p => p.profile_id == this.image.profile_id)
+    return p != undefined ? p.category_id : undefined
+  }
+  get code(): string {
+    return `#c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-${(this.image.title ?? '').replace(/ /g, '_').toLowerCase().normalize()}`
   }
 
   get formTitle(): string {
@@ -48,49 +67,60 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   async postImage() {
-    // console.log({
-    //   ...this.formImage.value,
-    //   profile_id: this.selectConcursante.value
-    // })
-    // const id = await this.contestSvc.postImage({
-    //   id: this.image.id,
-    //   ...f.value,
-    //   profile_id: this.selectConcursante.value
-    // })
-    this.posting = true
-    let i: Image;
-    // console.log('posting', {...this.image})
-    super.fetch<Image>(() =>
-      this.imageService.post({
-        title: this.image.title,
-        code: this.image.code,
-        profile_id: this.image.profile_id
-      }, this.image.id)
-    ).subscribe(
-      // image => this.dismiss(image),
-      image => i = image,
-      async err => {
-        super.displayAlert(err.error['error-info'][2])
-        this.posting = false
-      },
-      () => { // on complete.. pero no cacha el error
-        // console.log(i)
-        this.posting = false
-        this.dismiss(i)
-      })
-    // console.log('posted img con id', id)
-    // this.dismiss(id)
+    if (this.datosCargados()) {
+      // console.log({
+      //   ...this.formImage.value,
+      //   profile_id: this.selectConcursante.value
+      // })
+      // const id = await this.contestSvc.postImage({
+      //   id: this.image.id,
+      //   ...f.value,
+      //   profile_id: this.selectConcursante.value
+      // })
+      this.posting = true
+      let i: Image;
+      // console.log('posting', {...this.image})
+      super.fetch<Image>(() =>
+        this.imageService.post({
+          title: this.image.title,
+          code: this.code,
+          profile_id: this.image.profile_id
+        }, this.image.id)
+      ).subscribe(
+        // image => this.dismiss(image),
+        image => {
+          this.posting = false
+          i = image
+          this.dismiss(i, this.section_id)
+        },
+        async err => {
+          super.displayAlert(err.error['error-info'][2])
+          this.posting = false
+        },
+        // () => { // on complete.. pero no cacha el error
+          // console.log(i)
+          // this.posting = false
+          
+        // })
+      )
+      // console.log('posted img con id', id)
+      // this.dismiss(id)
+    }
   }
 
   datosCargados() {
-    return this.image.code !=  undefined && this.image.title !=  undefined && this.image.profile_id != undefined
+    //return this.image.code !=  undefined 
+    return this.image.title !=  undefined 
+        && this.image.profile_id != undefined
+        && this.section_id != undefined
   }
   
-  dismiss(image: Image = undefined) {
+  dismiss(image: Image = undefined, section_id: number) {
     // using the injected ModalController this page
     // can "dismiss" itself and optionally pass back data
     this.modalController.dismiss({
-      image
+      image,
+      section_id
     });
   }
 }

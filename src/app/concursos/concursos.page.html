@@ -24,27 +24,14 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col size="3" *ngIf="mostrarFiltro">
+      <ion-col size="12" size-md="3" *ngIf="mostrarFiltro">
         <ion-col>
           <ion-title class="ion-margin-top">Búsqueda</ion-title>
-
-          <ion-list>
-            <ion-radio-group value="biff">
-              <ion-list-header>
-                <ion-label>Filtrar por:</ion-label>
-              </ion-list-header>
-
-              <ion-item>
-                <ion-label>Nombre</ion-label>
-                <ion-radio slot="start" value="nombre"></ion-radio>
-              </ion-item>
-
-              <ion-item>
-                <ion-label>Descripción</ion-label>
-                <ion-radio slot="start" value="codigo"></ion-radio>
-              </ion-item>
-            </ion-radio-group>
-          </ion-list>
+          <app-search-bar
+            [(data)]="concursos"
+            [atributosObj]="atributosBusqueda"
+          >
+          </app-search-bar>
 
           <ion-row>
             <ion-list-header>
@@ -70,7 +57,7 @@
               </ion-item>
             </ion-col>
             <ion-col>
-              <ion-fab-button size="small">
+              <ion-fab-button size="small" disabled>
                 <ion-icon name="arrow-forward-circle"></ion-icon>
               </ion-fab-button>
             </ion-col>
@@ -126,17 +113,12 @@
 
             <ion-row class="ion-align-items-center ion-padding-bottom">
               <ion-col class="ion-no-padding" size="10" size-sm="11">
-                <!-- <app-search-bar
-                  (buscar)="filtrarConcursos($event)"
-                  [atributosObj]="atributosBusqueda"
-                >
-                </app-search-bar> -->
 
-                <app-search-bar
+                <!-- <app-search-bar
                   [(data)]="concursos"
                   [atributosObj]="atributosBusqueda"
                 >
-                </app-search-bar>
+                </app-search-bar> -->
               </ion-col>
               <ion-col size="2" size-sm="1">
                 <ion-row

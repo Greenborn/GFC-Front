@@ -4,127 +4,16 @@
 >
   <ion-row class="ion-justify-content-center">
     <!-- filtro -->
-    <ion-col size="3" *ngIf="mostrarFiltro">
+    <ion-col size="12" size-md="3" *ngIf="mostrarFiltro">
       <ion-col>
         <ion-title class="ion-margin-top">Búsqueda</ion-title>
 
-        <ion-list>
-          <ion-radio-group value="biff">
-            <ion-list-header>
-              <ion-label>Filtrar por:</ion-label>
-            </ion-list-header>
+        <app-search-bar
+          [(data)]="inscriptos"
+          [atributosObj]="atributosBusqueda"
+        ></app-search-bar>
 
-            <ion-item>
-              <ion-label>Nombre</ion-label>
-              <ion-radio slot="start" value="nombre"></ion-radio>
-            </ion-item>
 
-            <ion-item>
-              <ion-label>Código</ion-label>
-              <ion-radio slot="start" value="codigo"></ion-radio>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Concursante</ion-label>
-              <ion-radio slot="start" value="concursante"></ion-radio>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Fotoclub</ion-label>
-              <ion-radio slot="start" value="fotoclub"></ion-radio>
-            </ion-item>
-          </ion-radio-group>
-        </ion-list>
-
-        <ion-row>
-          <ion-col class="ion-no-padding ion-margin-top">
-            <ion-item>
-              <ion-col>
-                <ion-row>
-                  <ion-label>Puntaje:</ion-label>
-                </ion-row>
-                <ion-row>
-                  <!-- [(ngModel)]="value" -->
-                  <ion-range
-                    dualKnobs="true"
-                    min="1000"
-                    max="2000"
-                    step="100"
-                    snaps="true"
-                    ticks="false"
-                    color="secondary"
-                  ></ion-range>
-                </ion-row>
-              </ion-col>
-            </ion-item>
-          </ion-col>
-
-          <!-- <ion-col>
-            <ion-item>
-              <ion-label position="stacked">Desde</ion-label>
-              <ion-input type="number" min="1" max="13" name="desde_puntaje">
-              </ion-input> </ion-item
-          ></ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="stacked">Hasta</ion-label>
-              <ion-input type="number" min="1" max="13" name="hasta_puntaje">
-              </ion-input> </ion-item
-          ></ion-col>
-          <ion-col
-            ><ion-fab-button size="small">
-              <ion-icon
-                name="arrow-forward-circle"
-              ></ion-icon> </ion-fab-button
-          ></ion-col> -->
-        </ion-row>
-
-        <ion-col>
-          <!-- opcion 1 -->
-          <!--   <ion-list>
-            <ion-list-header>
-              <ion-label>Premio:</ion-label>
-            </ion-list-header>
-            <ion-button fill="clear" href="#">Reprobado</ion-button>
-            <ion-button fill="clear" href="#">Aprobado</ion-button>
-            <ion-button fill="clear" href="#">Mención</ion-button>
-            <ion-button fill="clear" href="#">Medalla</ion-button>
-            <ion-button fill="clear" href="#">1° Premio</ion-button>
-          </ion-list> -->
-
-          <!-- opcion 2 -->
-          <ion-list>
-            <ion-list-header>
-              <ion-label>Premio:</ion-label>
-            </ion-list-header>
-            <ion-item
-              ><ion-button fill="clear" href="#"
-                >Reprobado</ion-button
-              ></ion-item
-            >
-            <ion-item
-              ><ion-button fill="clear" href="#">Aprobado</ion-button></ion-item
-            >
-            <ion-item>
-              <ion-button fill="clear" href="#">Mención</ion-button></ion-item
-            >
-            <ion-item>
-              <ion-button fill="clear" href="#"
-                >Medalla Oro</ion-button
-              ></ion-item
-            >
-            <ion-item>
-              <ion-button fill="clear" href="#"
-                >Medalla Plata</ion-button
-              ></ion-item
-            >
-            <ion-item>
-              <ion-button fill="clear" href="#"
-                >Medalla Bronce</ion-button
-              ></ion-item
-            >
-          </ion-list>
-        </ion-col>
       </ion-col>
     </ion-col>
 
@@ -145,7 +34,7 @@
             <ion-fab-button
               size="small"
               *ngIf="contestService.isActive(concurso)"
-              (click)="concursoDetailService.inscribirConcursante.emit()"
+              (click)="inscribirConcursante()"
             >
               <!-- [routerLink]="['agregar-foto']"   -->
               <ion-icon name="add"></ion-icon>
@@ -154,13 +43,36 @@
 
           <ion-row class="ion-align-items-center ion-padding-bottom">
             <ion-col size="10" size-sm="11">
-              <app-search-bar
+              <!-- <app-search-bar
                 [(data)]="inscriptos"
                 [atributosObj]="atributosBusqueda"
               >
-              </app-search-bar>
+              </app-search-bar> -->
               <!-- <app-search-bar [atributos]="['Titulo', 'Codigo']">
               </app-search-bar> -->
+              <ion-row class="ion-justify-content-end ion-align-items-end">
+                <ion-button *ngIf="categoriaSeleccionada != null" 
+                  (click)="categoriaSeleccionada = null" fill="clear" class="">
+                  <ion-icon name="close-outline"></ion-icon>
+                </ion-button>
+                <ion-item >
+                  <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
+                  <ion-label position="floating">Categoría</ion-label>
+                  <!-- (ionChange)="seleccionarCategoría($event.target)"  -->
+                  <ion-select
+                    [(ngModel)]="categoriaSeleccionada"
+                    interface="popover"
+                  >
+                    <!-- [(value)]="image.profile_id" -->
+                    <!-- <ion-select-option [value]="null" *ngIf="categoriaSeleccionada != null">Todas</ion-select-option> -->
+                    <ion-select-option
+                      *ngFor="let c of categoriasInscriptas"
+                      [value]="c.category"
+                      >{{ c.category.name }}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+              </ion-row>
             </ion-col>
             <ion-col size="2" size-sm="1">
               <ion-row
@@ -219,7 +131,7 @@
                   <!-- *ngIf="rolificador.isAdmin(userLogged)" -->
                   <ion-col
                     size="3.5"
-                    size-md="2"
+                    size-md="3.5"
                     *ngIf="rolificador.isAdmin(userLogged)"
                     class="ion-hide-sm-down"
                   >
@@ -241,21 +153,21 @@
                       </div> -->
                     </ion-row>
                   </ion-col>
-                  <ion-col size="2" size-md="1"><b></b></ion-col>
+                  <ion-col size="2" size-md="2"><b></b></ion-col>
                 </ion-row>
               </ion-grid>
             </ion-item>
           </ion-list>
           <!-- <ion-list *ngIf="!loading; else spinner"> -->
-            <ion-list *ngIf="!loading; else spinner">
+          <ion-list> 
             <ion-item lines="none">
               <!-- <ion-grid *ngIf="!loading"> -->
-              <ion-grid *ngIf="inscriptos.length > 0; else texto">
+              <ion-grid *ngIf="inscriptosFiltrados.length > 0; else texto">
                 <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
                 <!-- class="ion-text-center" -->
                 <ion-item
                   class="ion-no-padding lista-elem"
-                  *ngFor="let m of inscriptos"
+                  *ngFor="let m of inscriptosFiltrados"
                 >
                   <ion-grid>
                     <ion-row size="12">
@@ -269,7 +181,7 @@
                           <ion-col size="3" size-sm="1.3">
                             <app-usuario-img src="fafafa"></app-usuario-img>
                           </ion-col>
-                          <ion-col size="8" size-sm="10.7">
+                          <ion-col size="8" size-sm="8.2">
                             <ion-label class="ion-margin-start">
                               <ion-card-subtitle title="Username"
                                 ><i
@@ -292,8 +204,8 @@
                             size="1"
                             class="ion-hide-sm-up ion-justify-content-center"
                           >
+                          <!-- *ngIf="contestService.isActive(concurso)" -->
                             <ion-buttons
-                              *ngIf="contestService.isActive(concurso)"
                             >
                               <ion-button (click)="mostrarAcciones($event, m)">
                                 <!-- <ion-thumbnail></ion-thumbnail> -->
@@ -309,7 +221,7 @@
                       </ion-col>
                       <ion-col
                         size="3.5"
-                        size-md="2"
+                        size-md="3.5"
                         class="ion-hide-sm-down ion-align-self-center"
                         *ngIf="rolificador.isAdmin(userLogged)"
                       >
@@ -319,24 +231,28 @@
                       </ion-col>
                       <ion-col
                         size="2"
-                        size-md="1"
+                        size-md="2"
                         class="ion-align-self-center ion-hide-sm-down"
                       >
-                        <ion-buttons *ngIf="contestService.isActive(concurso)">
+                        <ion-buttons >
                           <ion-button
+                            [routerLink]="
+                              ['../', 'fotografias']
+                            "
+                            [queryParams]="{concursante_id: m.profile_id}"
+                            title="Ver fotografías"
+                          >
+                            <ion-icon name="images-outline"></ion-icon>
+                          </ion-button>
+                          <ion-button *ngIf="contestService.isActive(concurso)"
                             (click)="
-                              concursoDetailService.postImage.emit({
-                                id: undefined,
-                                profile_id: m.profile_id,
-                                code: undefined,
-                                title: undefined
-                              })
+                              postImage(m.profile_id)
                             "
                             title="Agregar fotografía"
                           >
                             <ion-icon name="camera-outline"></ion-icon>
                           </ion-button>
-                          <ion-button
+                          <ion-button *ngIf="contestService.isActive(concurso)"
                             (click)="
                               concursoDetailService.desinscribirConcursante.emit(
                                 m

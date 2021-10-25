@@ -1,39 +1,25 @@
 <ion-grid class="ion-no-padding ion-no-margin">
   <ion-row class="ion-justify-content-center">
     <!-- filtro -->
-    <ion-col size="3" *ngIf="mostrarFiltro">
+    <ion-col size="12" size-md="3" *ngIf="mostrarFiltro">
       <ion-col>
         <ion-title class="ion-margin-top">Búsqueda</ion-title>
 
-        <ion-list>
-          <ion-radio-group value="biff">
-            <ion-list-header>
-              <ion-label>Filtrar por:</ion-label>
-            </ion-list-header>
+        <app-search-bar
+          [(data)]="resultadosConcurso"
+          [atributosObj]="atributosBusqueda"
+        ></app-search-bar>
 
-            <ion-item>
-              <ion-label>Nombre</ion-label>
-              <ion-radio slot="start" value="nombre"></ion-radio>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Código</ion-label>
-              <ion-radio slot="start" value="codigo"></ion-radio>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Concursante</ion-label>
-              <ion-radio slot="start" value="concursante"></ion-radio>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Fotoclub</ion-label>
-              <ion-radio slot="start" value="fotoclub"></ion-radio>
-            </ion-item>
-          </ion-radio-group>
-        </ion-list>
-
-        <ion-row>
+        <app-search-select
+          title="Concursante"
+          [optionsProps]="filtrado['perfil'].options"
+          [optionsData]="inscriptosProfiles"
+          [emptyMessage]="inscriptosEmptyMessage"
+          interface="popover"
+      >
+        <!-- [filterCallback]="funcionesFiltrado['fotoclub']" -->
+      </app-search-select>
+        <!-- <ion-row>
           <ion-col class="ion-no-padding ion-margin-top">
             <ion-item>
               <ion-col>
@@ -41,7 +27,6 @@
                   <ion-label>Puntaje:</ion-label>
                 </ion-row>
                 <ion-row>
-                  <!-- [(ngModel)]="value" -->
                   <ion-range
                     dualKnobs="true"
                     min="1000"
@@ -56,7 +41,7 @@
             </ion-item>
           </ion-col>
 
-          <!-- <ion-col>
+          <!- - <ion-col>
             <ion-item>
               <ion-label position="stacked">Desde</ion-label>
               <ion-input type="number" min="1" max="13" name="desde_puntaje">
@@ -73,12 +58,12 @@
               <ion-icon
                 name="arrow-forward-circle"
               ></ion-icon> </ion-fab-button
-          ></ion-col> -->
+          ></ion-col> - ->
         </ion-row>
 
         <ion-col>
-          <!-- opcion 1 -->
-          <!--   <ion-list>
+          <!- - opcion 1 - ->
+          <!- -   <ion-list>
             <ion-list-header>
               <ion-label>Premio:</ion-label>
             </ion-list-header>
@@ -87,9 +72,9 @@
             <ion-button fill="clear" href="#">Mención</ion-button>
             <ion-button fill="clear" href="#">Medalla</ion-button>
             <ion-button fill="clear" href="#">1° Premio</ion-button>
-          </ion-list> -->
+          </ion-list> - ->
 
-          <!-- opcion 2 -->
+          <!- - opcion 2 - ->
           <ion-list>
             <ion-list-header>
               <ion-label>Premio:</ion-label>
@@ -121,7 +106,7 @@
               ></ion-item
             >
           </ion-list>
-        </ion-col>
+        </ion-col> -->
       </ion-col>
     </ion-col>
 
@@ -151,11 +136,56 @@
 
           <ion-row class="ion-align-items-center ion-padding-bottom">
             <ion-col size="10" size-sm="11">
-              <app-search-bar
+              <!-- <app-search-bar
                 [(data)]="resultadosConcurso"
                 [atributosObj]="atributosBusqueda"
               >
-              </app-search-bar>
+              </app-search-bar> -->
+              <ion-row class="ion-justify-content-end ion-align-items-end">
+                <ion-button *ngIf="categoriaSeleccionada != null" 
+                  (click)="categoriaSeleccionada = null" fill="clear" class="">
+                  <ion-icon name="close-outline"></ion-icon>
+                </ion-button>
+                <ion-item class="ion-margin-end">
+                  <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
+                  <ion-label position="stacked">Categoría</ion-label>
+                  <!-- (ionChange)="seleccionarCategoría($event.target)"  -->
+                  <ion-select
+                    [(ngModel)]="categoriaSeleccionada"
+                    interface="popover"
+                  >
+                    <!-- [(value)]="image.profile_id" -->
+                    <!-- <ion-select-option [value]="null" *ngIf="categoriaSeleccionada != null">Todas</ion-select-option> -->
+                    <ion-select-option
+                      *ngFor="let c of categoriasInscriptas"
+                      [value]="c.category"
+                      >{{ c.category.name }}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                <ion-button *ngIf="seccionSeleccionada != null" 
+                  (click)="seccionSeleccionada = null" fill="clear" class="">
+                  <ion-icon name="close-outline"></ion-icon>
+                </ion-button>
+                <ion-item >
+                  <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
+                  <ion-label position="stacked">Sección</ion-label>
+                  <!-- (ionChange)="seleccionarSeccion($event.target)"  -->
+                  <ion-select
+                    [(ngModel)]="seccionSeleccionada"
+                    interface="popover"
+                  >
+                    <!-- [(value)]="image.profile_id" -->
+                    <!-- <ion-select-option [value]="null" *ngIf="seccionSeleccionada != null">Todas</ion-select-option> -->
+                    <ion-select-option
+                      *ngFor="let s of seccionesInscriptas"
+                      [value]="s.section"
+                      >{{ s.section.name }}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+              </ion-row>
+
             </ion-col>
             <ion-col size="2" size-sm="1">
               <ion-row
@@ -288,13 +318,13 @@
             </ion-item>
           </ion-list>
           <!-- <ion-list *ngIf="!loading; else spinner"> -->
-            <ion-list *ngIf="!loading; else spinner">
+          <ion-list>
             <ion-item lines="none" class="ion-no-padding lista-elem">
               <!-- <ion-grid *ngIf="!loading"> -->
-              <ion-grid *ngIf="resultadosConcurso.length > 0; else texto">
+              <ion-grid *ngIf="resultadosConcursoFiltrados.length > 0; else texto">
                 <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
                 <!-- class="ion-text-center" -->
-                <ion-item class="ion-no-padding" *ngFor="let r of resultadosConcurso">
+                <ion-item class="ion-no-padding" *ngFor="let r of resultadosConcursoFiltrados">
                   <ion-grid class="ion-no-padding">
                     <ion-row size="12">
                       <ion-col
@@ -369,7 +399,7 @@
                           </ion-button>
                           <ion-button
                             (click)="
-                              concursoDetailService.postImage.emit(r.image)
+                              postImage(r.image, r.section_id)
                             "
                           >
                             <!-- <ion-button (click)="postImage(getImage(r))"> -->

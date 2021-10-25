@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 
-import { ImagePostPage } from './image-post/image-post.page';
+import { ImagePostPage, ImagePostParams } from './image-post/image-post.page';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { Image } from 'src/app/models/image.model';
 import { ContestResult, ContestResultExpanded } from 'src/app/models/contest_result.model';
@@ -28,6 +28,9 @@ import { ConcursoDetailService } from './concurso-detail.service';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir-concursante.component';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
+import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
+import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
+import { Section } from 'src/app/models/section.model';
 
 @Component({
   selector: 'app-concurso-detail',
@@ -50,6 +53,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
   resultadosConcurso: ContestResultExpanded[] = [];
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
+  categoriasInscriptas: ContestCategoryExpanded[] = [];
+  seccionesInscriptas: ContestSectionExpanded[] = [];
   // contest: Observable<ContestExpanded>;
 
   fotoclubs: Fotoclub[] = [];
@@ -106,15 +111,20 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
       // let loading = await this.loadingCtrl.create({
       //   message: 'Please wait...'
       // });
-
-      const loading = await this.loadingController.create({
-        cssClass: 'my-custom-class',
-        message: 'Cargando...'
-      })
-      await loading.present()
+      // let loading: HTMLIonLoadingElement;
+      // if (this.concurso.id == undefined) {
+      //   loading = await this.loadingController.create({
+      //     cssClass: 'my-custom-class',
+      //     message: 'Cargando...'
+      //   })
+      //   await loading.present()
+      // }
     
       // loading.present();
       const id = parseInt(paramMap.get('id'))
+      console.log('subs', this.subs)
+      console.log('subs destr', [...this.subs])
+      // this.ionViewWillLeave()
       // this.loading = true
       // this.contestService.get(id).subscribe(c => this.concurso = c)
 
@@ -124,13 +134,24 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
         // console.log('recibi concurso', c)
         this.concurso = c
         this.concursoDetailService.concurso.emit(c)
-        loading.dismiss()
+        // this.ionViewWillEnter()
+        // loading.dismiss()
         // obtener todos los contest result de este concurso
         const u = await this.auth.user
         super.fetch<ProfileContestExpanded[]>(() => this.rolificador.getConcursantesInscriptos(u, id)).subscribe(is => {
           this.inscriptos = is
           console.log('inscriptos', is)
           this.concursoDetailService.inscriptos.emit(is)
+        })
+        super.fetch<ContestCategoryExpanded[]>(() => this.contestService.getCategoriasInscriptas(id)).subscribe(cs => {
+          this.categoriasInscriptas = cs
+          console.log('categorias inscriptas', cs)
+          this.concursoDetailService.categoriasInscriptas.emit(cs)
+        })
+        super.fetch<ContestSectionExpanded[]>(() => this.contestService.getSeccionesInscriptas(id)).subscribe(cs => {
+          this.seccionesInscriptas = cs
+          console.log('secciones inscriptas', cs)
+          this.concursoDetailService.seccionesInscriptas.emit(cs)
         })
         super.fetch<ProfileExpanded[]>(() => this.rolificador.getConcursantes(u)).subscribe(cs => {
           console.log('concursantes', cs)
@@ -144,6 +165,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
           ).subscribe(rs => {
             this.resultadosConcurso = rs
             this.concursoDetailService.resultadosConcurso.emit(rs)
+            // if (loading)
+            //   loading.dismiss()
             // this.loading = false
             setTimeout(() => { // porque no muestra todo el contenido
               // const c = this.pageTabs
@@ -151,7 +174,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
                 tabsContent.style.setProperty('height', '')
                 const height = tabsContent.getBoundingClientRect().height
                 // console.log('tabs content height', height)
-                tabsContent.style.setProperty('height', `${height + 200}px`) 
+                tabsContent.style.setProperty('height', `${height + 500}px`) 
               // }
             }, 100)
           })
@@ -163,9 +186,10 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
   }
   ionViewWillEnter() {
+    console.log('subscriptions', this.subs)
     const s1 = this.concursoDetailService.postImage.subscribe(
-      i => {
-        this.postImage(i)
+      params => {
+        this.postImage(params)
         // s1.unsubscribe()
       }
     )
@@ -187,14 +211,18 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
         // s4.unsubscribe()
       }
     )
-    const s5 = this.concursoDetailService.inscribirConcursante.subscribe(_ => this.inscribirConcursante())
+    const s5 = this.concursoDetailService.inscribirConcursante.subscribe(category_id => this.inscribirConcursante(category_id))
     const s6 = this.concursoDetailService.desinscribirConcursante.subscribe(profileContest => this.desinscribirConcursante(profileContest))
+    // this.subs.push(s2, s3, s4, s6)
     this.subs.push(s1, s2, s3, s4, s5, s6)
   }
   ionViewWillLeave() {
-    this.subs.forEach(s => s.unsubscribe())
+    this.subs.forEach(s => {
+      s.unsubscribe()
+    })
+    this.subs = undefined
     this.subs = []
-    console.log('subscriptions', this.subs)
+    console.log('subscriptions deleted', [...this.subs])
   }
 
   // https://stackoverflow.com/questions/41451375/passing-data-into-router-outlet-child-components
@@ -275,11 +303,14 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
       this.popover.onDidDismiss().then(_ => this.popover = undefined)
   }
 
-  async inscribirConcursante() {
+  async inscribirConcursante(category_id: number = undefined) {
     if (this.popover != undefined) {
       this.popoverCtrl.dismiss(this.popover)
       this.popover = undefined
     }
+
+    const pc = this.profileContestService.template
+    pc.category_id = category_id
 
     const modal = await this.modalController.create({
       component: InscribirConcursanteComponent,
@@ -287,7 +318,9 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
       componentProps: {
         "concursantes": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) < 0),
         "modalController": this.modalController,
-        "contest": this.concurso
+        "contest": this.concurso,
+        "categorias": this.categoriasInscriptas.map(c => c.category),
+        profileContest: pc
       }
     });
     await modal.present()
@@ -387,8 +420,9 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     }
   }
 
-  async postImage(i: Image = undefined) {
-    
+  async postImage(params: ImagePostParams) {
+    const i = params.image
+    const s = params.section_id
     if (this.popover != undefined) {
       this.popoverCtrl.dismiss(this.popover)
       this.popover = undefined
@@ -397,19 +431,26 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
     const componentProps : {
       concurso: string;
       modalController: ModalController;
-      profiles: Profile[]
-      image?: Image
+      profiles: ProfileContestExpanded[];
+      secciones: Section[];
+      image?: Image;
+      section_id?: number;
     } = {
       "concurso": this.concurso.name,
       "modalController": this.modalController,
-      "profiles": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) > -1)
+      "profiles": this.inscriptos,
+      // "profiles": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) > -1),
+      "secciones": this.seccionesInscriptas.map(s => s.section)
     }
 
     if (i != undefined) {
       componentProps.image = {...i}
     }
+    if (s != undefined) {
+      componentProps.section_id = s
+    }
 
-    // console.log('props post image', componentProps)
+    console.log('props post image', componentProps)
 
     const modal = await this.modalController.create({
       component: ImagePostPage,
@@ -420,8 +461,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
 
     const { data } = await modal.onWillDismiss();
     console.log('dismiss image post popup con data', data);
-    const { image } = data ?? {}
-    if (image != undefined) {
+    const { image, section_id } = data ?? {}
+    if (image != undefined && section_id != undefined) {
       // this.loading = true
       // const i_index = this.images.findIndex(e => e.id == image.id)
       const r_updated = this.resultadosConcurso.find(e => e.image_id == image.id)
@@ -441,7 +482,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit {
               contest_id: this.concurso.id,
               image_id: image.id,
               metric_id: metric.id,
-              section_id: 0 // TODO: FALTAN ATRIBUTOS
+              section_id
             })
           ).subscribe(
             // console.log('posted new result', cr)

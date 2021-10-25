@@ -1,14 +1,23 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { Category } from 'src/app/models/category.model';
 import { Contest } from 'src/app/models/contest.model';
-import { ContestResultExpanded } from 'src/app/models/contest_result.model';
+import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
+import { ContestResult, ContestResultExpanded } from 'src/app/models/contest_result.model';
+import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { Image } from 'src/app/models/image.model';
-import { ProfileExpanded } from 'src/app/models/profile.model';
+import { Metric } from 'src/app/models/metric.model';
+import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
+import { Section } from 'src/app/models/section.model';
 import { ContestService } from 'src/app/services/contest.service';
+import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
+import { ImagePostParams, ImagePostPage } from '../image-post/image-post.page';
 
 @Component({
   selector: 'app-fotografias',
@@ -22,7 +31,10 @@ export class FotografiasComponent implements OnInit {
   concurso: Contest = this.contestService.template;
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
+  categoriasInscriptas: ContestCategoryExpanded[] = [];
+  seccionesInscriptas: ContestSectionExpanded[] = [];
   resultadosConcurso: ContestResultExpanded[] = [];
+  resultadosConcursoOrig: ContestResultExpanded[] = [];
   fotoclubs: Fotoclub[] = [];
 
   public atributosBusqueda: SearchBarComponentAtributo[] = [
@@ -30,30 +42,49 @@ export class FotografiasComponent implements OnInit {
       valor: 'title', 
       valorMostrado: 'Título', 
       // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())      
-      callback: (c: ContestResultExpanded, query: string) => c.image.title.match(new RegExp(`^${query}`, 'i'))
+      callback: (c: ContestResultExpanded, query: string) => c.image.title.match(new RegExp(`${query}`, 'i'))
     },
     { 
       valor: 'code', 
       valorMostrado: 'Código', 
       // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
-      callback: (c: ContestResultExpanded, query: string) => c.image.code.match(new RegExp(`^${query}`, 'i'))
+      callback: (c: ContestResultExpanded, query: string) => c.image.code.match(new RegExp(`${query}`, 'i'))
     }
   ];
+  public filtrado: any[] = [];
 
   // @Output() openPopup = new EventEmitter<any>();
   // @Output() postImage = new EventEmitter<Image|undefined>();
   // @Output() reviewImage = new EventEmitter<ContestResultExpanded>();
   // @Output() deleteImage = new EventEmitter<ContestResultExpanded>();
 
-
-  public loading: boolean = true;
+  public seccionSeleccionada: Section = null;
+  public categoriaSeleccionada: Category = null;
+  // public loading: boolean = true;
   mostrarFiltro: boolean = false;
   constructor(
     public concursoDetailService: ConcursoDetailService,
-    public contestService: ContestService
-  ) { }
+    public contestService: ContestService,
+    public UIUtilsService: UiUtilsService,
+    private route: ActivatedRoute,
+  ) { 
+    this.filtrado['perfil'] = {
+      options: {
+        valueProp: 'id', 
+        titleProp: (p: Profile) => `${(p.name)[0].toUpperCase()}${p.name.substr(1)} ${(p.last_name)[0].toUpperCase()}${p.last_name.substr(1)}`,
+        queryParam: 'concursante_id'
+      },
+      filterCallback: (c: ContestResultExpanded, atributoValue: string) => {
+        return c.image.profile_id == parseInt(atributoValue)
+      }
+    }
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
+    // let loading: HTMLIonLoadingElement;
+    if (this.concurso.id == undefined) {
+      await this.UIUtilsService.presentLoading()
+    }
     const s1 = this.concursoDetailService.concursantes.subscribe(
       cs => {
         this.concursantes = cs
@@ -64,11 +95,66 @@ export class FotografiasComponent implements OnInit {
     const s3 = this.concursoDetailService.resultadosConcurso.subscribe(
       rs => {
         this.resultadosConcurso = rs
-        this.loading = false
+        this.resultadosConcursoOrig = [...rs]
+        this.UIUtilsService.dismissLoading()
+        this.route.queryParams.subscribe(params => {
+
+          // console.log('detecting query params change', params)
+    
+          this.resultadosConcurso = [...this.resultadosConcursoOrig]
+    
+          const filterCallbacks: {
+            queryValue: string;
+            callback: Function;
+          }[] = [];
+    
+          for (const f of [this.filtrado['perfil']]) {
+            // console.log('analizando filter callback', f)
+            if (params[f.options.queryParam] != undefined) {
+              // console.log('agregando filter callback', f.options.queryParam)
+              filterCallbacks.push({
+                callback: f.filterCallback,
+                queryValue: params[f.options.queryParam]
+              })
+            }
+          }
+    
+          for (const f of filterCallbacks) {
+            this.resultadosConcurso = this.resultadosConcurso.filter(p => f.callback(p, f.queryValue))
+          }
+        });
+        // this.loading = false
       }
     )
     
     this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
+    this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
+    this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs)
+    
+  }
+
+  get inscriptosProfiles(): Profile[] {
+    const inscriptos = this.categoriaSeleccionada != null ? this.inscriptos.filter(i => i.category_id == this.categoriaSeleccionada.id) : this.inscriptos
+    return inscriptos.map(i => i.profile)
+  }
+  get inscriptosEmptyMessage(): string {
+    return 'No hay inscriptos'
+  }
+
+  get resultadosConcursoFiltrados() {
+    return this.resultadosConcurso.filter(rc => {
+      let cond1: boolean = true;
+      if (this.categoriaSeleccionada != undefined) {
+        // console.log(this.categoriaSeleccionada, 'categoria')
+        cond1 = this.categoriaSeleccionada.id == this.inscriptos.find(i => i.profile_id == rc.image.profile_id).category_id
+      }
+      let cond2: boolean = true;
+      if (this.seccionSeleccionada != undefined) {
+        // console.log(this.seccionSeleccionada, 'seccion')
+        cond2 = this.seccionSeleccionada.id == rc.section_id
+      }
+      return cond1 && cond2
+    })
   }
 
   toggleFiltro() {
@@ -85,13 +171,19 @@ export class FotografiasComponent implements OnInit {
     return p != undefined ? `${p.name} ${p.last_name}` : ''
   }
 
-  postImage() {
+  postImage(image: Image = undefined, section_id: number = undefined) {
     console.log('posting new img')
-    this.concursoDetailService.postImage.emit(undefined)
+    if (section_id == undefined) {
+      section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
+    }
+    this.concursoDetailService.postImage.emit({
+      image,
+      section_id
+    })
   }
 
   async mostrarAcciones(ev: any, r: ContestResultExpanded) {
-    const i = r.image
+    const image = r.image
     const options = {
       component: MenuAccionesComponent, //componente a mostrar
       componentProps: {
@@ -104,7 +196,7 @@ export class FotografiasComponent implements OnInit {
             label: 'Puntuar'
           },
           {
-            accion: (params: []) => this.concursoDetailService.postImage.emit(i),
+            accion: (params: []) => this.postImage(image),
             // accion: (params: []) => this.postImage(i),
             params: [],
             icon: 'create',

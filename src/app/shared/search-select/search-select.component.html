@@ -24,11 +24,16 @@
             [value]="atributoSelectedAsInt"
             interface="popover"
           >
-            <ion-select-option
+          <!-- <div *ngIf="optionsData.length > 0; else texto"> -->
+            <ion-select-option 
               *ngFor="let o of optionsData"
               [value]="o[optionsProps.valueProp]"
-              >{{ o[optionsProps.titleProp] }}</ion-select-option
+              >{{ getPropertyName(o) }}</ion-select-option
             >
+          <!-- </div> -->
+          <!-- <ng-template #texto>
+            <ion-text>{{emptyMessage}}</ion-text>
+          </ng-template> -->
           </ion-select>
         </ion-item>
       </ion-col>
@@ -68,7 +73,7 @@
               "
               expand="block"
             >
-              {{ o[optionsProps.titleProp] }}
+              {{ getPropertyName(o) }}
             </ion-button>
           </ion-item>
         </ion-list>

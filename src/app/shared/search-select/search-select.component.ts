@@ -11,7 +11,7 @@ export interface SearchSelectOptions {
   // data: any[];
   valueProp: string;
   queryParam : string;
-  titleProp: string;
+  titleProp: string | ((e: any) => string);
 }
 
 @Component({
@@ -28,6 +28,7 @@ export class SearchSelectComponent implements OnInit, OnChanges {
   @Input() optionsData: any[];
   // @Input() filterCallback: Function; // (obj: any, atributoValue: string) => boolean
   @Input() interface: string;
+  @Input() emptyMessage: string;
 
   // @Output() dataChange = new EventEmitter<any[]>()
   
@@ -44,6 +45,15 @@ export class SearchSelectComponent implements OnInit, OnChanges {
 
   get atributoSelectedAsInt() {
     return parseInt(this.atributoSelected)
+  }
+
+  getPropertyName(o: SearchSelectOptions) {
+    if (typeof this.optionsProps.titleProp == 'string') {
+      let s: string = this.optionsProps.titleProp
+      return o[s]
+    } else {
+      return this.optionsProps.titleProp(o)
+    }
   }
 
   ngOnInit() {
