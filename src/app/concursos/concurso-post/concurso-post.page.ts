@@ -111,14 +111,14 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
             id: c.id,
             seleccionada: true
           }))
-          this.mostrarCategorias = true
+          this.mostrarCategorias = false
         })
         getSecciones.then(() => {
           this.seccionesSeleccionadas = this.secciones.map(s => ({
             id: s.id,
             seleccionada: s.parent_id == null
           }))
-          this.mostrarSecciones = true
+          this.mostrarSecciones = false
         })
       }
     })
