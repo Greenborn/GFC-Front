@@ -87,7 +87,7 @@ export class UiUtilsService {
     await modal.present()
 
     const { data } = await modal.onWillDismiss();
-    return data
+    return data ?? {}
   }
 
   async mostrarAlert(

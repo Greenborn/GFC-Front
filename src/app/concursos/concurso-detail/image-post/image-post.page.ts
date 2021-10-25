@@ -35,6 +35,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   
   // @ViewChild('s') selectConcursante: ElementRef;
   // @ViewChild('formImage') formImage: HTMLFormElement;
+  private cont: number = 0;
 
   // public profiles: Profile[];
   public posting: boolean = false; 
@@ -68,43 +69,46 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
 
   async postImage() {
     if (this.datosCargados()) {
-      // console.log({
-      //   ...this.formImage.value,
-      //   profile_id: this.selectConcursante.value
-      // })
-      // const id = await this.contestSvc.postImage({
-      //   id: this.image.id,
-      //   ...f.value,
-      //   profile_id: this.selectConcursante.value
-      // })
-      this.posting = true
-      let i: Image;
-      // console.log('posting', {...this.image})
-      super.fetch<Image>(() =>
-        this.imageService.post({
-          title: this.image.title,
-          code: this.code,
-          profile_id: this.image.profile_id
-        }, this.image.id)
-      ).subscribe(
-        // image => this.dismiss(image),
-        image => {
-          this.posting = false
-          i = image
-          this.dismiss(i, this.section_id)
-        },
-        async err => {
-          super.displayAlert(err.error['error-info'][2])
-          this.posting = false
-        },
-        // () => { // on complete.. pero no cacha el error
-          // console.log(i)
-          // this.posting = false
-          
+      if (this.cont < 1) {
+        this.cont++
+        // console.log({
+        //   ...this.formImage.value,
+        //   profile_id: this.selectConcursante.value
         // })
-      )
-      // console.log('posted img con id', id)
-      // this.dismiss(id)
+        // const id = await this.contestSvc.postImage({
+        //   id: this.image.id,
+        //   ...f.value,
+        //   profile_id: this.selectConcursante.value
+        // })
+        this.posting = true
+        let i: Image;
+        console.log('posting', {...this.image})
+        super.fetch<Image>(() =>
+          this.imageService.post({
+            title: this.image.title,
+            code: this.code,
+            profile_id: this.image.profile_id
+          }, this.image.id)
+        ).subscribe(
+          // image => this.dismiss(image),
+          image => {
+            this.posting = false
+            i = image
+            this.dismiss(i, this.section_id)
+          },
+          async err => {
+            super.displayAlert(err.error['error-info'][2])
+            this.posting = false
+          },
+          // () => { // on complete.. pero no cacha el error
+          //   console.log(i)
+          //   this.posting = false
+            
+          // })
+        )
+        // console.log('posted img con id', id)
+        // this.dismiss(id)
+      }
     }
   }
 

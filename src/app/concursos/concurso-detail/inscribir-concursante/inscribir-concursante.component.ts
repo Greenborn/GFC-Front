@@ -25,6 +25,8 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
   // @Input() category_id: number = undefined;
   public posting: boolean = false;
 
+  private cont: number = 0;
+
   constructor(
     alertCtrl: AlertController,
     private profileContestService: ProfileContestService,
@@ -42,23 +44,45 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
 
   inscribirConcursante() {
     if (this.datosCargados()) {
-      console.log('inscribiendo', this.profileContest.profile_id, ' a ', this.contest.id)
-      this.posting = true
-      super.fetch<ProfileContestExpanded>(() => this.profileContestService.post({
-          profile_id: this.profileContest.profile_id,
-          contest_id: this.contest.id,
-          category_id: this.profileContest.category_id
-        }, undefined, 'expand=profile,profile.user,profile.fotoclub,category'
-      )).subscribe(
-        profileContest => {
-          this.posting = false
-          this.modalController.dismiss({ profileContest })
-        },
-        err => {
-          console.log('error inscripcion concursante', err)
-          super.displayAlert(err.error['error-info'][2])
-        }
-      )
+      if (this.cont < 1) {
+        this.cont++
+        console.log('inscribiendo', this.profileContest.profile_id, ' a ', this.contest.id)
+        this.posting = true
+        const s = this.profileContestService.post({
+            profile_id: this.profileContest.profile_id,
+            contest_id: this.contest.id,
+            category_id: this.profileContest.category_id
+          }, undefined, 'expand=profile,profile.user,profile.fotoclub,category'
+        ).subscribe(
+          profileContest => {
+            this.posting = false
+            this.modalController.dismiss({ profileContest })
+          },
+          err => {
+            console.log('error inscripcion concursante', err)
+            super.displayAlert(err.error['error-info'][2])
+          },
+          () => {
+            // console.log('unsubsssss')
+            s.unsubscribe()
+          }
+        )
+      }
+      // super.fetch<ProfileContestExpanded>(() => this.profileContestService.post({
+      //     profile_id: this.profileContest.profile_id,
+      //     contest_id: this.contest.id,
+      //     category_id: this.profileContest.category_id
+      //   }, undefined, 'expand=profile,profile.user,profile.fotoclub,category'
+      // )).subscribe(
+      //   profileContest => {
+      //     this.posting = false
+      //     this.modalController.dismiss({ profileContest })
+      //   },
+      //   err => {
+      //     console.log('error inscripcion concursante', err)
+      //     super.displayAlert(err.error['error-info'][2])
+      //   }
+      // )
     }
     
   }

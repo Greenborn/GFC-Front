@@ -163,7 +163,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
       super.fetch<Contest>(() =>
         this.contestService.post(model, this.concurso.id)
       ).subscribe(
-        async c => {
+        async contest => {
 
           // check y post categorias inscriptas
 
@@ -177,7 +177,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
             if (c.seleccionada) {
               if (cc == undefined) {
                 // eliminar
-                inscripcionesCategorias.push(this.agregarCategoria(c.id).catch(e => e))
+                inscripcionesCategorias.push(this.agregarCategoria(c.id, contest.id).catch(e => e))
               }
             } else if (cc != undefined) {
               desinscripcionesCategorias.push(this.desinscribirCategoria(cc))
@@ -198,7 +198,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
             if (c.seleccionada) {
               if (cc == undefined) {
                 // eliminar
-                inscripcionesSecciones.push(this.agregarSeccion(c.id).catch(e => e))
+                inscripcionesSecciones.push(this.agregarSeccion(c.id, contest.id).catch(e => e))
               }
             } else if (cc != undefined) {
               desinscripcionesSecciones.push(this.desinscribirSeccion(cc))
@@ -212,9 +212,9 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
           // // TODO: eliminar desinscripciones
 
           this.posting = false
-          console.log('posteado', c)
+          console.log('posteado', contest)
           if (resDesinscripcionesCategorias.find(r => r === false) == undefined && resDesinscripcionesSecciones.find(r => r === false) == undefined)
-            this.router.navigate(['/concursos/', c.id]);
+            this.router.navigate(['/concursos/', contest.id]);
         },
         async err => {
           this.posting = false;
@@ -245,10 +245,10 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
 
   // async agregarCategoria(ev) {
     // const category_id: number = (ev.target as HTMLIonSelectElement).value
-  async agregarCategoria(category_id: number): Promise<ContestCategory> {
+  async agregarCategoria(category_id: number, contest_id: number): Promise<ContestCategory> {
     return new Promise((resolve, reject) => {
       const model: ContestCategory = {
-        contest_id: this.concurso.id,
+        contest_id,
         category_id
       }
       console.log('agregando categoria', model)
@@ -297,10 +297,10 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
       )
     })
   }
-  async agregarSeccion(section_id: number): Promise<ContestSection> {
+  async agregarSeccion(section_id: number, contest_id: number): Promise<ContestSection> {
     return new Promise((resolve, reject) => {
       const model: ContestSection = {
-        contest_id: this.concurso.id,
+        contest_id,
         section_id
       }
       console.log('agregando seccion', model)

@@ -17,6 +17,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { GestionModule } from './modules/gestion/gestion.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './modules/auth/services/auth-interceptor.service';
+import { ImageService } from './services/image.service';
+import { ConcursoDetailService } from './concursos/concurso-detail/concurso-detail.service';
 
 //componente de ojo
 // import { InputOjoComponent } from '../app/shared/input-ojo/input-ojo.component'

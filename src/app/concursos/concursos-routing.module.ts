@@ -25,6 +25,7 @@ const routes: Routes = [
     loadChildren: () => import('./secciones-abm/secciones-abm.module').then( m => m.SeccionesAbmPageModule)
   }
 
+
 ];
 
 @NgModule({

@@ -28,6 +28,11 @@ const routes: Routes = [
     ]
   },
   // {
+  //   path: 'profile-contests',
+  //   loadChildren: () => import('./profile-contests/profile-contests.module').then( m => m.ProfileContestsPageModule)
+  // },
+
+  // {
   //   path: 'concursantes',
   //   component: ConcursantesComponent,
   //   outlet: 'concurso'

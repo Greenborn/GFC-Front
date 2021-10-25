@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from "@angular/core";
 import { AlertController } from "@ionic/angular";
 import { Observable, Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { first, takeUntil } from "rxjs/operators";
 
 @Component({
   template: ''
@@ -36,7 +36,8 @@ async displayAlert(message: string) {
   }
 
   ngOnDestroy() {
-    // console.log(`unsuscribed ${this.name}`)
+  // ionViewWillLeave() {
+    // console.log(`unsuscribed fetch`)
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

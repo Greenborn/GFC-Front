@@ -31,14 +31,22 @@
             <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
               Inscriptos
             </h1>
-            <ion-fab-button
+            <ion-button
               size="small"
               *ngIf="contestService.isActive(concurso)"
               (click)="inscribirConcursante()"
             >
               <!-- [routerLink]="['agregar-foto']"   -->
               <ion-icon name="add"></ion-icon>
-            </ion-fab-button>
+            </ion-button>
+            <!-- <ion-fab-button
+              size="small"
+              *ngIf="contestService.isActive(concurso)"
+              (click)="inscribirConcursante()"
+            >
+              
+              <ion-icon name="add"></ion-icon>
+            </ion-fab-button> -->
           </ion-row>
 
           <ion-row class="ion-align-items-center ion-padding-bottom">

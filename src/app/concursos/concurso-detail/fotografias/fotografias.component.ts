@@ -85,6 +85,13 @@ export class FotografiasComponent implements OnInit {
     if (this.concurso.id == undefined) {
       await this.UIUtilsService.presentLoading()
     }
+    
+    this.concursoDetailService.concurso.subscribe(c => {
+      console.log('got contest', c)
+      this.concurso = c
+    })
+    this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
+    this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs)
     const s1 = this.concursoDetailService.concursantes.subscribe(
       cs => {
         this.concursantes = cs
@@ -126,10 +133,6 @@ export class FotografiasComponent implements OnInit {
         // this.loading = false
       }
     )
-    
-    this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
-    this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
-    this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs)
     
   }
 

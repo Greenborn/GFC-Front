@@ -128,7 +128,8 @@ export class ConcursantesComponent implements OnInit {
   }
 
 inscribirConcursante() {
-  this.concursoDetailService.inscribirConcursante.emit(this.categoriaSeleccionada ? this.categoriaSeleccionada.id : undefined)
+  // this.concursoDetailService.inscribirConcursante.emit(this.categoriaSeleccionada ? this.categoriaSeleccionada.id : undefined)
+  this.concursoDetailService.inscribirConcursante(this.categoriaSeleccionada ? this.categoriaSeleccionada.id : undefined)
 }
 
 postImage(profile_id: number) {
