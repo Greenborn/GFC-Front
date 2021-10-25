@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Contest, ContestExpanded } from '../models/contest.model';
 import { ContestCategory } from '../models/contest_category.model';
+import { ContestSection } from '../models/contest_section.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
 
@@ -30,6 +31,9 @@ export class ContestService extends ApiService<Contest> {
 
   getCategoriasInscriptas(contest_id: number): Observable<ContestCategory[]> {
     return super.getAll<ContestCategory>(`filter[contest_id]=${contest_id}`, 'contest-category')
+  }
+  getSeccionesInscriptas(contest_id: number): Observable<ContestSection[]> {
+    return super.getAll<ContestSection>(`filter[contest_id]=${contest_id}`, 'contest-section')
   }
 
   isActive(c: Contest): boolean {

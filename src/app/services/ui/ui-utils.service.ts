@@ -93,7 +93,8 @@ export class UiUtilsService {
 
   async mostrarAlert(
     options: AlertOptions,
-    confirmHandler: () => boolean | Promise<void> = async () => {}
+    confirmHandler: () => boolean | Promise<void> = async () => {},
+    cancelHandler: () => boolean | Promise<void> = async () => {}
   ) {    
     if (this.popover != undefined) {
     this.popoverController.dismiss(this.popover)
@@ -110,7 +111,8 @@ export class UiUtilsService {
       options.buttons = [
         {
           text: 'Cancelar',
-          role: 'cancel'
+          role: 'cancel',
+          handler: cancelHandler
         }, {
           text: 'Confirmar',
           handler: confirmHandler
@@ -121,6 +123,8 @@ export class UiUtilsService {
     const alert = await this.alertController.create(options);
 
     await alert.present();
+
+    return alert
   }
 
   async mostrarError(options: AlertOptions) {
