@@ -15,6 +15,7 @@ import { Section } from 'src/app/models/section.model';
 import { SectionService } from 'src/app/services/section.service';
 import { ContestSectionService } from 'src/app/services/contest-section.service';
 import { ContestSection } from 'src/app/models/contest_section.model';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 
 @Component({
   selector: 'app-concurso-post',
@@ -31,10 +32,10 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   seccionesSeleccionadas: { id: number; seleccionada: boolean; }[] = [];
   seccionesInscriptas: ContestSection[] = [];
   public posting: boolean = false;
-  public loading: boolean = false;
+  // public loading: boolean = false;
   public updatingSelect: boolean = false;
-  public mostrarCategorias: boolean = false;
-  public mostrarSecciones: boolean = false;
+  public mostrarCategorias: boolean;
+  public mostrarSecciones: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -45,12 +46,16 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     private contestSectionService: ContestSectionService,
     private router: Router,
     alertCtrl: AlertController,
-    private UIUtilsService: UiUtilsService
+    public UIUtilsService: UiUtilsService,
+    public responsiveService: ResponsiveService
   ) { 
     super(alertCtrl)
   }
 
   async ngOnInit() {
+    await this.UIUtilsService.presentLoading();
+    this.mostrarCategorias = false
+    this.mostrarSecciones = false
     this.activatedRoute.paramMap.subscribe(async paramMap => {
       const id = paramMap.get('id');
 
@@ -68,7 +73,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
       )
       
       if (id != null) {
-        this.loading = true
+        // this.loading = true
         super.fetch<Contest>(() => 
           this.contestService.get(parseInt(id))
         ).subscribe(c => {
@@ -88,7 +93,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
             //   id: c.id,
             //   seleccionada: this.seccionesInscriptas.find(s1 => s1.section_id == c.id) != undefined
             // }))
-            this.loading = false
+            // this.loading = false
           })
           super.fetch<ContestSection[]>(() => this.contestService.getSeccionesInscriptas(c.id)).subscribe(async s => {
             this.seccionesInscriptas = s
@@ -98,11 +103,12 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
               seleccionada: this.seccionesInscriptas.find(s1 => s1.section_id == s.id) != undefined
             }))
             await getSecciones
+            this.UIUtilsService.dismissLoading()
             // this.seccionesSeleccionadas = this.secciones.map(c => ({
             //   id: c.id,
             //   seleccionada: this.seccionesInscriptas.find(s1 => s1.section_id == c.id) != undefined
             // }))
-            this.loading = false
+            // this.loading = false
           })
         })
       } else {
@@ -111,20 +117,17 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
             id: c.id,
             seleccionada: true
           }))
-          this.mostrarCategorias = false
         })
         getSecciones.then(() => {
           this.seccionesSeleccionadas = this.secciones.map(s => ({
             id: s.id,
             seleccionada: s.parent_id == null
           }))
-          this.mostrarSecciones = false
+          this.UIUtilsService.dismissLoading()
         })
       }
     })
   }
-  
-
   
   getCategoriaSeleccionada(id: number) {
     return this.categoriasSeleccionadas.find(c => c.id == id)
@@ -142,9 +145,9 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   }
 
   get formTitle(): string {
-    if (this.loading) return ''
+    // if (this.loading) return ''
     const c = this.concurso;
-    return (c.id != null ? 'Editar' : 'Agregar') + ' concurso'
+    return c ? ((c.id != null ? 'Editar' : 'Agregar') + ' concurso') : ''
   }
   get backUrl(): string {
     const c = this.concurso 

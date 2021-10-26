@@ -22,8 +22,8 @@
         <form
           #f="ngForm"
           (ngSubmit)="postConcurso(f)"
-          *ngIf="!loading; else spinner"
-        >
+          >
+          <!-- *ngIf="!loading; else spinner" -->
           <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
           <ion-list class="ion-align-items-end">
             <!-- <ion-col size="12" size-md="4" > -->
@@ -186,146 +186,165 @@
           </ion-list>
 
           <!-- <ion-item> -->
-            
-          <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
-          <ion-list >
-            <ion-row class="ion-align-items-center">
-              <ion-col size="10" size-md="2">
-                <ion-list-header>Categorias</ion-list-header>
-              </ion-col>
-              <ion-col>
-                <ion-button
-                  (click)="mostrarCategorias = !mostrarCategorias"
-                  size="small"
-                  fill="clear"
-                >
-                  <ion-icon
-                    name="chevron-{{mostrarCategorias ? 'up' : 'down'}}-outline"
-                  ></ion-icon>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-            <!-- <ion-label>Categorias</ion-label> -->
-            <div *ngIf="mostrarCategorias">
-              <ion-item *ngFor="let c of categorias" lines="none">
-                <ion-label>{{c.name}}</ion-label>
-                <ion-checkbox
-                  slot="start"
-                  [(ngModel)]="getCategoriaSeleccionada(c.id).seleccionada"
-                  [ngModelOptions]="{standalone: true}"
-                ></ion-checkbox>
-              </ion-item>
-            </div>
-          </ion-list>
-          <!-- </ion-item> -->
-          <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
-          <ion-list>
-            <ion-row class="ion-align-items-center">
-              <ion-col size="10" size-md="2">
-                <ion-list-header>Secciones</ion-list-header>
-              </ion-col>
-              <ion-col>
-                <ion-button
-                  (click)="mostrarSecciones = !mostrarSecciones"
-                  size="small"
-                  fill="clear"
-                >
-                  <ion-icon
-                    name="chevron-{{mostrarSecciones ? 'up' : 'down'}}-outline"
-                  ></ion-icon>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-            <!-- <ion-label>Categorias</ion-label> -->
-            <div *ngIf="mostrarSecciones">
-              <!-- <ion-item *ngFor="let s of getParentSections()" lines="none">
-                              <ion-label>{{s.name}}</ion-label>
-                              <ion-checkbox slot="end" [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
-                                [ngModelOptions]="{standalone: true}"></ion-checkbox>
-                            </ion-item> -->
-
-              <ion-item-group *ngFor="let s of getParentSections()">
-                <ion-item-divider lines="full" mode="ios">
-                  <ion-label> <b>{{ s.name }}</b></ion-label>
-                  <ion-checkbox
-                    slot="end"
-                    [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
-                    [ngModelOptions]="{standalone: true}"
-                  ></ion-checkbox>
-                  <!-- <ion-col slot="end" size="1" size-md="2" class="ion-align-self-start ion-align-self-center">
-                                  <ion-buttons class="
-                                              ion-hide-md-down ion-justify-content-center
-                                            ">
-                                    <ion-button title="Agregar subsección" (click)="postSubSection(s)">
-                                      <ion-icon name="add-outline"></ion-icon>
-                                    </ion-button>
-                                    <ion-button title="Editar sección" (click)="postSection(s)">
-                                      <ion-icon name="create"></ion-icon>
-                                    </ion-button>
-                                    <ion-button title="Eliminar sección" (click)="deleteSection(s)">
-                                      <ion-icon name="trash"></ion-icon>
-                                    </ion-button>
-                                  </ion-buttons>
-                                  <ion-buttons class="ion-hide-md-up">
-                                    <ion-button (click)="mostrarAcciones($event, s)">
-                                      <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-                                    </ion-button>
-                                  </ion-buttons>
-                                </ion-col> -->
-                </ion-item-divider>
-
-                <ng-template #textoSeccion>
-                  <ion-item>
-                    <ion-label>
-                      <ion-card-subtitle
-                        >No contiene subsecciones
-                      </ion-card-subtitle>
-                    </ion-label>
-                  </ion-item>
-                </ng-template>
-                <!-- TODO: refactorizar el ngIf -->
-                <div *ngIf="getSubSections(s.id).length > 0; else textoSeccion">
-                  <ion-item
-                    *ngFor="let s1 of getSubSections(s.id) as subsections"
-                  >
-                    <ion-label>{{s1.name}}</ion-label>
+          <ion-row>
+            <!-- <ion-col size="12" size-lg="6"> -->
+            <ion-col size="12" >
+              <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
+              <ion-list >
+                <ion-row class="ion-align-items-center">
+                  <!-- <ion-col size="10" size-md="2"> -->
+                    <ion-list-header style="width: initial">Categorias</ion-list-header>
+                  <!-- </ion-col> -->
+                  <!-- <ion-col> -->
+                    <!-- class="ion-hide-lg-up" -->
+                    <ion-button 
+                      class="ion-margin-start"
+                      (click)="mostrarCategorias = !mostrarCategorias"
+                      size="small"
+                      fill="clear"
+                    >
+                      <ion-icon
+                        name="chevron-{{mostrarCategorias ? 'up' : 'down'}}-outline"
+                      ></ion-icon>
+                    </ion-button>
+                  <!-- </ion-col> -->
+                </ion-row>
+                <!-- <ion-label>Categorias</ion-label> -->
+                <div *ngIf="mostrarCategorias">
+                  <ion-item *ngFor="let c of categorias" lines="none">
+                    <ion-label>{{c.name}}</ion-label>
                     <ion-checkbox
                       slot="start"
-                      [(ngModel)]="getSeccionSeleccionada(s1.id).seleccionada"
+                      [(ngModel)]="getCategoriaSeleccionada(c.id).seleccionada"
                       [ngModelOptions]="{standalone: true}"
                     ></ion-checkbox>
-
-                    <!-- <ion-row class="w-100 ion-align-items-center">
-                                    <ion-col>
-                                      <ion-row>
-                                        <ion-col size="10">
-                                          <ion-text>{{s1.name}} </ion-text>
-                                        </ion-col>
-                                        <ion-col size="2" size-md="2" class="ion-float-end">
-                                          <ion-buttons class="
-                                                      ion-justify-content-end
-                                                      ion-margin-start
-                                                    ">
-                                            <ion-button title="Editar subsección" size="small" (click)="
-                                                                    postSection(s1)
-                                                                  ">
-                                              <ion-icon name="create"></ion-icon>
-                                            </ion-button>
-                                            <ion-button title="Eliminar subsección" size="small" (click)="deleteSection(s1)">
-                                              <ion-icon name="trash"></ion-icon>
-                                            </ion-button>
-                                          </ion-buttons>
-                                        </ion-col>
-                                      </ion-row>
-                                    </ion-col>
-                                  </ion-row> -->
                   </ion-item>
                 </div>
-              </ion-item-group>
-            </div>
-          </ion-list>
+              </ion-list>
+              <!-- </ion-item> -->
 
-          <ion-row class="ion-justify-content-end">
+            </ion-col>
+            <!-- <ion-col size="12" size-lg="6"> -->
+            <ion-col size="12">
+              <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
+              <ion-list>
+                <ion-row class="ion-align-items-center">
+                  <!-- <ion-col size="10" size-md="2"> -->
+                    <ion-list-header style="width: initial">Secciones</ion-list-header>
+                  <!-- </ion-col> -->
+                  <!-- <ion-col> -->
+                    <!-- class="ion-hide-lg-up" -->
+                    <ion-button 
+                      class="ion-margin-start"
+                      (click)="mostrarSecciones = !mostrarSecciones"
+                      size="small"
+                      fill="clear"
+                    >
+                      <ion-icon
+                        name="chevron-{{mostrarSecciones ? 'up' : 'down'}}-outline"
+                      ></ion-icon>
+                    </ion-button>
+                  <!-- </ion-col> -->
+                </ion-row>
+                <!-- <ion-label>Categorias</ion-label> -->
+                <div *ngIf="mostrarSecciones">
+                  <!-- <ion-item *ngFor="let s of getParentSections()" lines="none">
+                                  <ion-label>{{s.name}}</ion-label>
+                                  <ion-checkbox slot="end" [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
+                                    [ngModelOptions]="{standalone: true}"></ion-checkbox>
+                                </ion-item> -->
+    
+                  <ion-item-group
+                    *ngFor="let s of getParentSections()" 
+                  >
+                    <ion-item-divider lines="full" mode="ios"
+                      class="ion-padding-top ion-padding-bottom ion-padding-end" 
+                      style="--ion-padding: 8px"
+                    >
+                      <ion-label> <b>{{ s.name }}</b></ion-label>
+                      <ion-checkbox
+                        slot="end"
+                        [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
+                        [ngModelOptions]="{standalone: true}"
+                      ></ion-checkbox>
+                      <!-- <ion-col slot="end" size="1" size-md="2" class="ion-align-self-start ion-align-self-center">
+                                      <ion-buttons class="
+                                                  ion-hide-md-down ion-justify-content-center
+                                                ">
+                                        <ion-button title="Agregar subsección" (click)="postSubSection(s)">
+                                          <ion-icon name="add-outline"></ion-icon>
+                                        </ion-button>
+                                        <ion-button title="Editar sección" (click)="postSection(s)">
+                                          <ion-icon name="create"></ion-icon>
+                                        </ion-button>
+                                        <ion-button title="Eliminar sección" (click)="deleteSection(s)">
+                                          <ion-icon name="trash"></ion-icon>
+                                        </ion-button>
+                                      </ion-buttons>
+                                      <ion-buttons class="ion-hide-md-up">
+                                        <ion-button (click)="mostrarAcciones($event, s)">
+                                          <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                                        </ion-button>
+                                      </ion-buttons>
+                                    </ion-col> -->
+                    </ion-item-divider>
+    
+                    <ng-template #textoSeccion>
+                      <ion-item lines="full">
+                        <ion-label>
+                          <ion-card-subtitle
+                            >No contiene subsecciones
+                          </ion-card-subtitle>
+                        </ion-label>
+                      </ion-item>
+                    </ng-template>
+                    <!-- TODO: refactorizar el ngIf -->
+                    <div *ngIf="getSubSections(s.id).length > 0; else textoSeccion">
+                      <ion-item lines="full"
+                        *ngFor="let s1 of getSubSections(s.id) as subsections"
+                      >
+                        <ion-label>{{s1.name}}</ion-label>
+                        <ion-checkbox
+                          slot="start"
+                          [(ngModel)]="getSeccionSeleccionada(s1.id).seleccionada"
+                          [ngModelOptions]="{standalone: true}"
+                        ></ion-checkbox>
+    
+                        <!-- <ion-row class="w-100 ion-align-items-center">
+                                        <ion-col>
+                                          <ion-row>
+                                            <ion-col size="10">
+                                              <ion-text>{{s1.name}} </ion-text>
+                                            </ion-col>
+                                            <ion-col size="2" size-md="2" class="ion-float-end">
+                                              <ion-buttons class="
+                                                          ion-justify-content-end
+                                                          ion-margin-start
+                                                        ">
+                                                <ion-button title="Editar subsección" size="small" (click)="
+                                                                        postSection(s1)
+                                                                      ">
+                                                  <ion-icon name="create"></ion-icon>
+                                                </ion-button>
+                                                <ion-button title="Eliminar subsección" size="small" (click)="deleteSection(s1)">
+                                                  <ion-icon name="trash"></ion-icon>
+                                                </ion-button>
+                                              </ion-buttons>
+                                            </ion-col>
+                                          </ion-row>
+                                        </ion-col>
+                                      </ion-row> -->
+                      </ion-item>
+                    </div>
+                  </ion-item-group>
+                </div>
+              </ion-list>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row class="ion-margin-top ion-justify-content-end">
             <ion-col size="12">
               <ion-row class="ion-justify-content-end">
                 <ion-col

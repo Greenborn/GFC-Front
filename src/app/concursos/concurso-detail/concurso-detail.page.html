@@ -22,20 +22,49 @@
       <ion-card class="ion-no-margin">
         <ion-card-header>
           <ion-row>
-            <ion-col class="ion-no-padding">
+            <ion-col >
               <ion-row class="ion-align-items-center">
                 <ion-col class="ion-no-padding">
                   <app-contest-status-chip
                     [contest]="concurso"
                   ></app-contest-status-chip>
-                  <ion-card-title>{{concurso.name}}</ion-card-title>
+                  <ion-card-title
+                  >{{concurso.name}}</ion-card-title>
                 </ion-col>
               </ion-row>
-              <ion-card-subtitle
-                >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
-              >
+              <ion-row class="ion-margin-top">
+                <ion-card-subtitle
+                  >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
+                >
+              </ion-row>
+              <ion-row class="ion-margin-top">
+                <b>Categorias:</b>
+                <ion-badge color="light" class="ion-margin-start"
+                  *ngFor="let c of categoriasInscriptasAsc"
+                >
+                  {{c.category.name}}
+                </ion-badge>
+                <!-- <ion-chip outline color="dark"
+                  *ngFor="let c of categoriasInscriptas"
+                >
+                  <ion-label>{{c.category.name}}</ion-label>
+                </ion-chip> -->
+              </ion-row>
+              <ion-row class="ion-margin-top">
+                <b>Secciones:</b>
+                <ion-badge color="light" class="ion-margin-start"
+                  *ngFor="let s of seccionesInscriptasAsc"
+                >
+                  {{s.section.name}}
+                </ion-badge>
+                <!-- <ion-chip outline color="dark"
+                  *ngFor="let c of categoriasInscriptas"
+                >
+                  <ion-label>{{c.category.name}}</ion-label>
+                </ion-chip> -->
+              </ion-row>
             </ion-col>
-            <ion-col *ngIf="isLogedIn()" class="ion-align-self-end">
+            <ion-col *ngIf="isLogedIn()" class="ion-align-self-start">
               <ion-button class="ion-float-right" (click)="deleteConcurso()">
                 <ion-icon name="trash"></ion-icon>
               </ion-button>

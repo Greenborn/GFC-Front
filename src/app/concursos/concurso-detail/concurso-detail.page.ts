@@ -588,6 +588,21 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     }
   }
   
+  get categoriasInscriptasAsc() {
+    return this.categoriasInscriptas.sort( (c1, c2) => {
+        const n1 = c1.category.name
+        const n2 = c2.category.name
+        return (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1))
+      })
+  }
+  get seccionesInscriptasAsc() {
+    return this.seccionesInscriptas.sort((s1, s2) => {
+      const n1 = s1.section.name
+      const n2 = s2.section.name
+        return (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1))
+    })
+  }
+
   get fechaInicio(): string {
     return this.contestService.formatearFechaParaHTML(this.concurso.start_date ?? '');
   }
