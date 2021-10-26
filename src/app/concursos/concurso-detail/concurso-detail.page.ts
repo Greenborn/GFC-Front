@@ -559,8 +559,30 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
         // this.images.splice(i_index, 1, image)
         console.log('updated image. updating result', r_updated)
         r_updated.image = image
-        console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
-        this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+        if (section_id != r_updated.section_id) {
+          console.log('updated section. updating result', r_updated)
+          const model = {
+            ...r_updated,
+            section_id
+          }
+          delete model.id
+          super.fetch<ContestResult>(() =>
+            this.contestResultService.post(model, r_updated.id)
+          ).subscribe(
+            cr => {
+              console.log('updated result', cr)
+              r_updated.section_id = section_id
+              this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+            },
+            err => {
+              this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+              this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+            },
+          )  
+        } else {
+          console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
+          this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+        }
         // console.log('replaced image', image, 'index', i)
       }
     }

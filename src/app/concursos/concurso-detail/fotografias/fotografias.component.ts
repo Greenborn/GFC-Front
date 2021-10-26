@@ -243,4 +243,20 @@ export class FotografiasComponent implements OnInit {
       (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
   }
 
+
+  ionViewWillEnter() {
+    if (this.concurso.id == undefined) {
+      // console.log('hola')
+      if (this.concursoDetailService.concursoObj != undefined) {
+        this.concurso = this.concursoDetailService.concursoObj
+      } else {
+        setTimeout(() => {
+          this.concurso = this.concursoDetailService.concursoObj
+          // console.log('timeout concurso fetch', this.concurso)
+        }, 1000)
+      }
+    } else {
+      console.log(this.concurso, this.contestService.template)
+    }
+  }
 }

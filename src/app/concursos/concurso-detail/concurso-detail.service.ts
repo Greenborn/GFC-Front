@@ -41,7 +41,7 @@ export class ConcursoDetailService implements OnInit {
   // public mostrarAcciones = new EventEmitter<any>();
 
 
-  private concursoObj: Contest = undefined
+  public concursoObj: Contest = undefined
   private concursantesArray: ProfileExpanded[] = [];
   private categoriasInscriptasArray: ContestCategoryExpanded[] = [];
   private inscriptosArray: ProfileContestExpanded[] = [];
