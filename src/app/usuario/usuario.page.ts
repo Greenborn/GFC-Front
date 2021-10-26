@@ -32,6 +32,22 @@ export class UsuarioPage extends ApiConsumer implements OnInit {
     super(alertCtrl)
   }
 
+  private _dark: boolean = false
+  get darkMode() {
+    return document.body.classList.contains('dark')
+  }
+  set darkMode(l: boolean) {
+    if (l) {
+      document.body.classList.add('dark')
+      // document.body.classList.add('')
+    } else {
+      document.body.classList.remove('dark')
+      // document.body.classList.remove('')
+
+    }
+    this._dark = l
+  }
+
   ngOnInit() {
     // this.user = this.userService.template;
     // this.userId = this.authService.userId

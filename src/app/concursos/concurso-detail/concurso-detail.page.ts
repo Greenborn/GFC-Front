@@ -111,6 +111,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
           content.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
           // this.pageContent.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
         }
+      }, {
+        passive: true
       })
     }
     const s1 = this.concursoDetailService.postImage.subscribe(

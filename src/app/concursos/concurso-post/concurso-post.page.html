@@ -191,35 +191,39 @@
             <ion-col size="12" >
               <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
               <ion-list >
-                <ion-row class="ion-align-items-center">
-                  <!-- <ion-col size="10" size-md="2"> -->
-                    <ion-list-header style="width: initial">Categorias</ion-list-header>
-                  <!-- </ion-col> -->
-                  <!-- <ion-col> -->
-                    <!-- class="ion-hide-lg-up" -->
-                    <ion-button 
-                      class="ion-margin-start"
-                      (click)="mostrarCategorias = !mostrarCategorias"
-                      size="small"
-                      fill="clear"
-                    >
-                      <ion-icon
-                        name="chevron-{{mostrarCategorias ? 'up' : 'down'}}-outline"
-                      ></ion-icon>
-                    </ion-button>
-                  <!-- </ion-col> -->
-                </ion-row>
-                <!-- <ion-label>Categorias</ion-label> -->
-                <div *ngIf="mostrarCategorias">
-                  <ion-item *ngFor="let c of categorias" lines="none">
-                    <ion-label>{{c.name}}</ion-label>
-                    <ion-checkbox
-                      slot="start"
-                      [(ngModel)]="getCategoriaSeleccionada(c.id).seleccionada"
-                      [ngModelOptions]="{standalone: true}"
-                    ></ion-checkbox>
+                  <ion-item class="ion-no-padding " lines="full"
+                    button (click)="mostrarCategorias = !mostrarCategorias"
+                    [disabled]="loadingCategorias"
+                  >
+                    <ion-row class="ion-align-items-center ion-justify-content-between w-100">
+                    <!-- <ion-col size="10" size-md="2"> -->
+                      <ion-list-header style="width: initial">Categorias</ion-list-header>
+                    <!-- </ion-col> -->
+                    <!-- <ion-col> -->
+                      <!-- class="ion-hide-lg-up" -->
+                      <ion-button 
+                        class="ion-margin-start"
+                        size="small"
+                        fill="clear"
+                      >
+                        <ion-icon
+                          name="chevron-{{mostrarCategorias ? 'up' : 'down'}}-outline"
+                        ></ion-icon>
+                      </ion-button>
+                    </ion-row>
                   </ion-item>
-                </div>
+                    <!-- </ion-col> -->
+                  <!-- <ion-label>Categorias</ion-label> -->
+                  <div *ngIf="mostrarCategorias">
+                    <ion-item *ngFor="let c of categorias" lines="none">
+                      <ion-label>{{c.name}}</ion-label>
+                      <ion-checkbox
+                        slot="start"
+                        [(ngModel)]="getCategoriaSeleccionada(c.id).seleccionada"
+                        [ngModelOptions]="{standalone: true}"
+                      ></ion-checkbox>
+                    </ion-item>
+                  </div>
               </ion-list>
               <!-- </ion-item> -->
 
@@ -228,24 +232,30 @@
             <ion-col size="12">
               <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
               <ion-list>
-                <ion-row class="ion-align-items-center">
-                  <!-- <ion-col size="10" size-md="2"> -->
-                    <ion-list-header style="width: initial">Secciones</ion-list-header>
-                  <!-- </ion-col> -->
-                  <!-- <ion-col> -->
-                    <!-- class="ion-hide-lg-up" -->
-                    <ion-button 
-                      class="ion-margin-start"
-                      (click)="mostrarSecciones = !mostrarSecciones"
-                      size="small"
-                      fill="clear"
-                    >
-                      <ion-icon
-                        name="chevron-{{mostrarSecciones ? 'up' : 'down'}}-outline"
-                      ></ion-icon>
-                    </ion-button>
-                  <!-- </ion-col> -->
-                </ion-row>
+                <ion-item class="ion-no-padding " lines="full"
+                  button (click)="mostrarSecciones = !mostrarSecciones"
+                  [disabled]="loadingSecciones"
+                >
+                <ion-row class="ion-align-items-center ion-justify-content-between w-100">
+                    <!-- <ion-col size="10" size-md="2"> -->
+                      <ion-list-header style="width: initial">Secciones</ion-list-header>
+
+                    <!-- </ion-col> -->
+                    <!-- <ion-col> -->
+                      <!-- class="ion-hide-lg-up" -->
+                      <ion-button 
+                        class="ion-margin-start"
+                        
+                        size="small"
+                        fill="clear"
+                      >
+                        <ion-icon
+                          name="chevron-{{mostrarSecciones ? 'up' : 'down'}}-outline"
+                        ></ion-icon>
+                      </ion-button>
+                    <!-- </ion-col> -->
+                  </ion-row>
+                </ion-item>
                 <!-- <ion-label>Categorias</ion-label> -->
                 <div *ngIf="mostrarSecciones">
                   <!-- <ion-item *ngFor="let s of getParentSections()" lines="none">

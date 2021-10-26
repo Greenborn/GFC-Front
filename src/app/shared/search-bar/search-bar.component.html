@@ -5,9 +5,10 @@
         #queryInput
         (ionInput)="output()"
         show-clear-button="never"
-        [showCancelButton]="cancelbuttonStatus"
+        [showCancelButton]="getCancelbuttonStatus(queryInput)"
         cancel-button-icon="close-outline"
-      ></ion-searchbar>
+        ></ion-searchbar>
+        <!-- [showCancelButton]="cancelbuttonStatus" -->
       <!-- #atributoSelect -->
       <ion-select
         *ngIf="innerSelect"

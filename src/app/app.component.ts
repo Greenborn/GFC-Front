@@ -35,6 +35,15 @@ export class AppComponent implements OnDestroy {
       }
     }); 
 
+    var DEBUG = !window.location.href.includes('heroku');
+    if(!DEBUG){
+        // if(!window.console) window.console = undefined;
+        var methods = ["log"];
+        // var methods = ["log", "debug", "warn", "info"];
+        for(var i=0;i<methods.length;i++){
+            console[methods[i]] = function(){};
+        }
+    }
   }
 
   ngOnDestroy(){

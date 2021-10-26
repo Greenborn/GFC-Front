@@ -33,6 +33,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   seccionesInscriptas: ContestSection[] = [];
   public posting: boolean = false;
   // public loading: boolean = false;
+  public loadingCategorias: boolean = true;
+  public loadingSecciones: boolean = true;
   public updatingSelect: boolean = false;
   public mostrarCategorias: boolean;
   public mostrarSecciones: boolean;
@@ -62,12 +64,14 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
       const getCategorias = new Promise<void>(resolve => 
         super.fetch<Category[]>(() => this.categoryService.getAll()).subscribe(c => {
           this.categorias = c
+          this.loadingCategorias = false
           resolve()
         })
       )
       const getSecciones = new Promise<void>(resolve => 
         super.fetch<Section[]>(() => this.sectionService.getAll()).subscribe(s => {
           this.secciones = s
+          this.loadingSecciones = false
           resolve()
         })
       )

@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { IonSearchbar } from '@ionic/angular';
 
 export interface SearchBarComponentParams {
   atributo: string;
@@ -19,6 +20,7 @@ export class SearchBarComponent implements OnInit, OnChanges {
 
   @ViewChild('atributoSelect') atributoSelect: ElementRef;
   @ViewChild('queryInput') queryInput: ElementRef;
+  // @ViewChild('queryInput') queryInput: IonSearchbar;
   @Input() atributos: string[] = undefined;
   @Input() atributosObj: SearchBarComponentAtributo[] = undefined;
   @Input() data: any[];
@@ -33,12 +35,10 @@ export class SearchBarComponent implements OnInit, OnChanges {
 
   constructor() { }
 
-  get cancelbuttonStatus() {
-    if (this.queryInput) {
-      return this.queryInput.nativeElement.value == '' ? 'never' : 'always'
-    } else {
-      return 'never'
-    }
+  getCancelbuttonStatus(q: HTMLIonSearchbarElement) {
+    // console.log(q.value)
+    const empty = q.value == undefined || q.value == '' 
+    return empty ? 'never' : 'always'
   }
 
   get atributosPasados():Array<any> {
@@ -55,13 +55,17 @@ export class SearchBarComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges(changes: SimpleChanges) {
     // console.log('detectomg data change', changes.data.currentValue)
     if (changes.data.currentValue != this.dataFiltered) {
       this.origData = changes.data.currentValue
       this.atributoSelected = ''
-      if (this.queryInput != undefined)
+      // this.searchQuery = ''
+      if (this.queryInput != undefined) {
+        // const q = await this.queryInput.getInputElement()
+        // q.value = ''
         this.queryInput.nativeElement.value = ''
+      }
     }
   } 
 
@@ -72,6 +76,7 @@ export class SearchBarComponent implements OnInit, OnChanges {
     // let atributo: string = this.atributoSelect.nativeElement.value;
     let atributo: string = this.atributoSelected;
     let query: string = this.queryInput.nativeElement.value;
+    // let query: string = this.queryInput.value;
 
     let atributoObj: SearchBarComponentAtributo = (this.atributosObj ?? []).find(a => atributo == a.valor)
     let filterCallback: Function;

@@ -62,14 +62,17 @@ export class SeccionesAbmPage extends ApiConsumer implements OnInit {
     // componentProps.parentSections = this.sections.filter(s => s.parent_id == null && (section ? s.id != section.id : true))
     componentProps.parentSections = this.getParentSections(section ? section.id : undefined)
     console.log('post section props', componentProps)
-    const data = await this.UIUtilsService.mostrarModal(SeccionPostComponent, componentProps)
-    if (data != undefined) {
-      const { section } = data
-      const i = this.sections.findIndex(s => s.id == section.id)
+    // const data = await this.UIUtilsService.mostrarModal(SeccionPostComponent, componentProps)
+    // if (data != undefined) {
+      // const { s } = data
+    const { section: s } = await this.UIUtilsService.mostrarModal(SeccionPostComponent, componentProps)
+    console.log('received', section)
+    if (s) {
+      const i = this.sections.findIndex(s1 => s1.id == s.id)
       if (i > -1) {
-        this.sections[i] = section
+        this.sections[i] = s
       } else {
-        this.sections.push(section)
+        this.sections.push(s)
       }
     }
   }
@@ -99,6 +102,11 @@ export class SeccionesAbmPage extends ApiConsumer implements OnInit {
 
   async mostrarAcciones(ev: any, section: Section) {
     const acciones = [
+      {
+        accion: () => this.postSubSection(section),
+        icon: 'add-outline',
+        label: 'Agregar subsección'
+      },
       {
         accion: () => this.postSection(section),
         icon: 'create',
