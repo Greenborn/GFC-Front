@@ -14,4 +14,8 @@ export class ResponsiveService {
   public get isDesktop() {
     return this.tamWidth > 768
   }
+
+  public get darkMode() {
+    return document.body.classList.contains('dark')
+  }
 }

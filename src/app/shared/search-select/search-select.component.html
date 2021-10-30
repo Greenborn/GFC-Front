@@ -1,5 +1,5 @@
-<ion-item class="search-select">
-  <ion-col>
+<!-- <ion-item class="search-select"> -->
+  <!-- <ion-col> -->
     <!-- <ion-row>
       <ion-searchbar #queryInput
         (ionInput)="output()"
@@ -10,19 +10,27 @@
     </ion-row> -->
     <ion-row
       *ngIf="interface == 'popover'; else list"
-      class="ion-align-items-center"
+      class="ion-align-items-center ion-margin-end"
     >
-      <ion-col class="ion-no-padding">
-        <ion-item class="expand-full">
+      <!-- <ion-col size="2" class="ion-no-padding" *ngIf="atributoSelected != ''"> -->
+        <ion-button (click)="changeQuery()" fill="clear" class=""
+          *ngIf="atributoSelected != ''"
+        >
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      <!-- </ion-col> -->
+      <!-- <ion-col class="ion-no-padding"> -->
+        <ion-item >
+          <!-- [position]="atributoSelected == '' ? 'floating' : 'stacked'" -->
           <ion-label
-            [position]="atributoSelected == '' ? 'floating' : 'stacked'"
+            position="stacked"
             >{{ title }}</ion-label
           >
-          <ion-select
+          <ion-select #atributoSelect
             *ngIf="!updatingSelect"
             (ionChange)="changeQuery($event.target)"
-            [value]="atributoSelectedAsInt"
             interface="popover"
+            [value]="atributoSelectedAsInt"
           >
           <!-- <div *ngIf="optionsData.length > 0; else texto"> -->
             <ion-select-option 
@@ -36,12 +44,7 @@
           </ng-template> -->
           </ion-select>
         </ion-item>
-      </ion-col>
-      <ion-col size="2" class="ion-no-padding" *ngIf="atributoSelected != ''">
-        <ion-button (click)="changeQuery()" fill="clear" class="">
-          <ion-icon name="close-outline"></ion-icon>
-        </ion-button>
-      </ion-col>
+      <!-- </ion-col> -->
     </ion-row>
     <!-- #atributoSelect -->
 
@@ -102,5 +105,5 @@
           </ion-radio-group>
         </ion-list> -->
     </ng-template>
-  </ion-col>
-</ion-item>
+  <!-- </ion-col> -->
+<!-- </ion-item> -->

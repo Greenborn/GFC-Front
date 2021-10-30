@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IonGrid } from '@ionic/angular';
 import { Category } from 'src/app/models/category.model';
 import { Contest } from 'src/app/models/contest.model';
 import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
@@ -9,6 +10,7 @@ import { Image } from 'src/app/models/image.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { Section } from 'src/app/models/section.model';
+import { UserLogged } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { ContestService } from 'src/app/services/contest.service';
@@ -25,6 +27,7 @@ import { ConcursoDetailService } from '../concurso-detail.service';
 })
 export class ConcursantesComponent implements OnInit {
 
+  @ViewChild('concursantesContent') content: HTMLElement
   // @Input() concursantes: ProfileExpanded[];
   // @Input() resultadosConcurso: ContestResultExpanded[];
   // @Input() fotoclubs: Fotoclub[];
@@ -37,7 +40,7 @@ export class ConcursantesComponent implements OnInit {
   mostrarFiltro: boolean = false
   // public loading: boolean = true
   public categoriaSeleccionada: Category = null;
-
+  user: UserLogged
 
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
@@ -70,6 +73,14 @@ export class ConcursantesComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) { }
 
+  ionViewDidEnter() {
+
+  }
+
+  get isAdmin() {
+    return (this.user != undefined ? this.rolificador.isAdmin(this.user) : false)
+  }
+
   async ngOnInit() {
     if (this.concurso.id == undefined) {
       await this.UIUtilsService.presentLoading()
@@ -78,12 +89,29 @@ export class ConcursantesComponent implements OnInit {
     this.concursoDetailService.inscriptos.subscribe(is => {
       this.inscriptos = is
       this.UIUtilsService.dismissLoading()
+      setTimeout(() => {
+        // console.log(this.content)
+        
+        // let concursantesContent = document.querySelector('#concursantesContent') as HTMLElement
+        // let content = document.querySelector('#concurso-content') as HTMLElement
+        // // let content = this.content
+        // console.log(content)
+        // content.style.setProperty('height', '')
+        // // content.style.height = ''
+        // const height = content.getBoundingClientRect().height
+        // const height2 = concursantesContent.getBoundingClientRect().height
+        // // console.log('tabs content height', height)
+        // content.style.setProperty('height', `${height + height2 + 500}px`) 
+        // // content.style.height = `${height + 500}px`
+  
+      }, 500)
     })
     this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
     this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
     this.concursoDetailService.resultadosConcurso.subscribe(rs => 
       this.resultadosConcurso = rs 
     )
+    this.auth.user.then(u => this.user = u)
   }
 
   get inscriptosFiltrados() {

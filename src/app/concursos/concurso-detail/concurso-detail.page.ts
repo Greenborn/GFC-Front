@@ -41,8 +41,9 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 })
 export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy {
 
-  // @ViewChild('ConcursoContent') pageContent: HTMLIonContentElement
   // @ViewChild('ConcursoTabs') pageTabs: HTMLIonContentElement
+  @ViewChild('pageContent') pageContent: HTMLIonContentElement
+  @ViewChild('tabsContent') tabsContent: HTMLIonRowElement
 
   mostrarFiltro: boolean = false;
   concurso: Contest = this.contestService.template;
@@ -216,10 +217,10 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
             setTimeout(() => { // porque no muestra todo el contenido
               // const c = this.pageTabs
               // if (this.router.url.includes('fotografias')) {
-                tabsContent.style.setProperty('height', '')
-                const height = tabsContent.getBoundingClientRect().height
-                // console.log('tabs content height', height)
-                tabsContent.style.setProperty('height', `${height + 500}px`) 
+                // this.tabsContent.nativeElement.style.setProperty('height', '')
+                // const height = this.tabsContent.nativeElement.getBoundingClientRect().height
+                // // console.log('tabs content height', height)
+                // this.tabsContent.nativeElement.style.setProperty('height', `${height + 500}px`) 
               // }
             }, 100)
           })
@@ -230,6 +231,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
   }
+
+
   // ionViewWillEnter() {
   subsc() {
     console.log('subscriptions', this.subs)

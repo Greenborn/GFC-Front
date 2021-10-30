@@ -15,7 +15,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content #ConcursoContent id="concurso-content">
+<ion-content #pageContent id="concurso-content" >
+  <!-- <ion-fab-button slot="fixed" style="bottom: 0; right: 0">
+    <ion-icon
+      name="arrow-up"
+    ></ion-icon> 
+  </ion-fab-button> -->
   <ion-row size="12">
     <ion-col>
       <!-- <ion-card *ngIf="!loading; else spinner" class="ion-no-margin"> -->
@@ -98,24 +103,35 @@
   <app-concurso-tabs [totConcursantes]="loading ? '' : inscriptos.length"></app-concurso-tabs>
 </ion-content> -->
 
-  <ion-content #ConcursoTabs id="concurso-tabs">
-    <ion-tabs>
-      <ion-tab-bar slot="top">
-        <ion-tab-button tab="concursantes">
-          <ion-icon name="people-outline"></ion-icon>
-          <ion-label>Concursantes</ion-label>
-          <!-- <ion-badge>{{ loading ? '' : inscriptos.length }}</ion-badge> -->
-          <ion-badge>{{inscriptos.length }}</ion-badge>
-        </ion-tab-button>
+  <!-- <ion-content #ConcursoTabs id="concurso-tabs"> -->
 
-        <ion-tab-button tab="fotografias">
-          <ion-icon name="images-outline"></ion-icon>
-          <ion-label>Fotografias</ion-label>
-          <ion-badge>{{resultadosConcurso.length }}</ion-badge>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
-
-    <router-outlet name="concurso"></router-outlet>
-  </ion-content>
+      <ion-row id="concurso-tabs" #tabsContent>
+        <ion-col>
+          <ion-row>
+            <ion-tabs>
+              <ion-tab-bar slot="top">
+                <ion-tab-button tab="concursantes">
+                  <ion-icon name="people-outline"></ion-icon>
+                  <ion-label>Concursantes</ion-label>
+                  <!-- <ion-badge>{{ loading ? '' : inscriptos.length }}</ion-badge> -->
+                  <ion-badge>{{inscriptos.length }}</ion-badge>
+                </ion-tab-button>
+        
+                <ion-tab-button tab="fotografias">
+                  <ion-icon name="images-outline"></ion-icon>
+                  <ion-label>Fotografias</ion-label>
+                  <ion-badge>{{resultadosConcurso.length }}</ion-badge>
+                </ion-tab-button>
+              </ion-tab-bar>
+            </ion-tabs>
+        
+          </ion-row>
+  
+          <ion-row>
+            <router-outlet></router-outlet>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    <!-- <router-outlet name="concurso"></router-outlet> -->
+  <!-- </ion-content> -->
 </ion-content>

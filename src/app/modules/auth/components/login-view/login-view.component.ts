@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { Login } from '../../models/login.model';
 import { AuthService } from '../../services/auth.service';
 
@@ -21,7 +22,8 @@ export class LoginViewComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    public responsiveService: ResponsiveService
   ) { }
 
   ngOnInit() {}

@@ -29,14 +29,14 @@ export class SearchSelectComponent implements OnInit, OnChanges {
   // @Input() filterCallback: Function; // (obj: any, atributoValue: string) => boolean
   @Input() interface: string;
   @Input() emptyMessage: string;
-
+  @Input('updating') updatingSelect: boolean = false;
+  
   // @Output() dataChange = new EventEmitter<any[]>()
   
   private origData: any[];
   private dataFiltered: any[];
   public atributoSelected: string = '';
   public queryParams: Params;
-  public updatingSelect: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +44,9 @@ export class SearchSelectComponent implements OnInit, OnChanges {
   ) { }
 
   get atributoSelectedAsInt() {
-    return parseInt(this.atributoSelected)
+    let v = parseInt(this.atributoSelected)
+    // console.log('returning', v)
+    return v
   }
 
   getPropertyName(o: SearchSelectOptions) {
@@ -57,7 +59,7 @@ export class SearchSelectComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    const s = this.route.queryParams.subscribe(params => {
       this.queryParams = {...params}
       const selected = params[this.optionsProps.queryParam]
       // console.log('detecting selected quer yparam', selected)
@@ -67,12 +69,13 @@ export class SearchSelectComponent implements OnInit, OnChanges {
       } else {
         this.atributoSelected = ''
       }
+      setTimeout(() => this.updatingSelect = false)
+      // setTimeout(() => this.updatingSelect = false, 100)
       // console.log('updated atributoSelected', this.atributoSelected)
-      setTimeout(() => this.updatingSelect = false, 100)
       // this.output()
     });
-
   }
+
 
   ngOnChanges(changes: SimpleChanges) {
     // console.log('changed', changes.data.currentValue, 'from', changes.data.previousValue, 'selected', this.selected, 'sorted', this.dataSorted)
@@ -111,6 +114,7 @@ export class SearchSelectComponent implements OnInit, OnChanges {
   // }
 
   public changeQuery(value: string | EventTarget = '') {
+    console.log('changing query', value)
     // if (typeof value != 'string') {
     if (!['string', 'number'].includes(typeof value)) {
       // console.log('changing query from select element', value)
@@ -119,11 +123,11 @@ export class SearchSelectComponent implements OnInit, OnChanges {
     // const queryParams: Params = { myParam: 'myNewValue' };
     // const queryParams: Params = {...this.queryParams};
     const queryParams: Params = this.queryParams;
-    if (value != '') {
+    if (value != '' && value != undefined) {
       // console.log('updating query', this.optionsProps.queryParam, value)
       queryParams[this.optionsProps.queryParam] = value
     } else {
-      // console.log('resetting query')
+      console.log('resetting query')
       delete queryParams[this.optionsProps.queryParam]
     }
     // console.log('changing query', queryParams)

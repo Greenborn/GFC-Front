@@ -17,16 +17,19 @@ const routes: Routes = [
       },
       {
         path: 'fotografias',
+        // loadChildren: () => import('./contest-results/contest-results.module').then( m => m.ContestResultsPageModule)
+
         component: FotografiasComponent,
         // outlet: 'concurso'
       },
-      {
-        path: '',
-        redirectTo: 'concursantes',
-        pathMatch: 'full'
-      }
+      // {
+      //   path: '',
+      //   redirectTo: 'concursantes',
+      //   pathMatch: 'full'
+      // }
     ]
-  },
+  }
+
   // {
   //   path: 'profile-contests',
   //   loadChildren: () => import('./profile-contests/profile-contests.module').then( m => m.ProfileContestsPageModule)

@@ -61,6 +61,7 @@ export class FotografiasComponent implements OnInit {
   public seccionSeleccionada: Section = null;
   public categoriaSeleccionada: Category = null;
   // public loading: boolean = true;
+  public updatingInscriptos: boolean = false;
   mostrarFiltro: boolean = false;
   constructor(
     public concursoDetailService: ConcursoDetailService,
@@ -98,7 +99,11 @@ export class FotografiasComponent implements OnInit {
         // s1.unsubscribe()
       }
     )
-    const s2 = this.concursoDetailService.inscriptos.subscribe(cs => this.inscriptos = cs)
+    const s2 = this.concursoDetailService.inscriptos.subscribe(cs =>{
+      this.updatingInscriptos = true
+      this.inscriptos = cs
+      setTimeout(() => this.updatingInscriptos = false)
+    })
     const s3 = this.concursoDetailService.resultadosConcurso.subscribe(
       rs => {
         this.resultadosConcurso = rs
