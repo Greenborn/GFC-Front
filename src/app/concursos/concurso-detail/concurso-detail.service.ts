@@ -10,24 +10,32 @@ import { ImagePostParams } from './image-post/image-post.page';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir-concursante.component';
+import { BehaviorSubject } from 'rxjs';
+import { ContestService } from 'src/app/services/contest.service';
+import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
+import { UserLogged } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { filter, map } from 'rxjs/operators';
+import { ContestResultService } from 'src/app/services/contest-result.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConcursoDetailService implements OnInit {
 
-  public concurso: EventEmitter<Contest>;
-  // public concurso = new EventEmitter<Contest>();
-  public concursantes: EventEmitter<ProfileExpanded[]>;
-  // public concursantes = new EventEmitter<ProfileExpanded[]>();
-  public inscriptos: EventEmitter<ProfileContestExpanded[]>;
-  // public inscriptos = new EventEmitter<ProfileContestExpanded[]>();
-  public categoriasInscriptas: EventEmitter<ContestCategoryExpanded[]>;
-  // public categoriasInscriptas = new EventEmitter<ContestCategoryExpanded[]>();
-  public seccionesInscriptas: EventEmitter<ContestSectionExpanded[]>;
-  // public seccionesInscriptas = new EventEmitter<ContestSectionExpanded[]>();
-  public resultadosConcurso: EventEmitter<ContestResultExpanded[]>;
-  // public resultadosConcurso = new EventEmitter<ContestResultExpanded[]>();
+  
+  public concurso: BehaviorSubject<Contest>;
+  // public concurso: EventEmitter<Contest>;
+  public concursantes: BehaviorSubject<ProfileExpanded[]>;
+  // public concursantes: EventEmitter<ProfileExpanded[]>;
+  public inscriptos: BehaviorSubject<ProfileContestExpanded[]>;
+  // public inscriptos: EventEmitter<ProfileContestExpanded[]>;
+  public categoriasInscriptas: BehaviorSubject<ContestCategoryExpanded[]>;
+  // public categoriasInscriptas: EventEmitter<ContestCategoryExpanded[]>;
+  public seccionesInscriptas: BehaviorSubject<ContestSectionExpanded[]>;
+  // public seccionesInscriptas: EventEmitter<ContestSectionExpanded[]>;
+  public resultadosConcurso: BehaviorSubject<ContestResultExpanded[]>;
+  // public resultadosConcurso: EventEmitter<ContestResultExpanded[]>;
   // public inscribirConcursante = new EventEmitter<number|undefined>();
   public desinscribirConcursante: EventEmitter<ProfileContestExpanded>;
   // public desinscribirConcursante = new EventEmitter<ProfileContestExpanded>();
@@ -41,14 +49,18 @@ export class ConcursoDetailService implements OnInit {
   // public mostrarAcciones = new EventEmitter<any>();
 
 
-  public concursoObj: Contest = undefined
-  private concursantesArray: ProfileExpanded[] = [];
-  private categoriasInscriptasArray: ContestCategoryExpanded[] = [];
-  private inscriptosArray: ProfileContestExpanded[] = [];
+  // public concursoObj: Contest = undefined
+  // private concursantesArray: ProfileExpanded[] = [];
+  // private categoriasInscriptasArray: ContestCategoryExpanded[] = [];
+  // private inscriptosArray: ProfileContestExpanded[] = [];
   
   constructor(
     public UIUtilsService: UiUtilsService,
-    private profileContestService: ProfileContestService
+    private profileContestService: ProfileContestService,
+    private contestService: ContestService,
+    private contestResultService: ContestResultService,
+    private rolificador: RolificadorService,
+    private authService: AuthService
   ) { 
     // const s1 = this.concursoDetailService.postImage.subscribe(
     //   params => {
@@ -57,25 +69,117 @@ export class ConcursoDetailService implements OnInit {
     //   }
     // )
     // const s5 = this.inscribirConcursante.subscribe(category_id => this.inscribirConcursante(category_id))
-    this.concurso = new EventEmitter<Contest>();
-    this.concursantes = new EventEmitter<ProfileExpanded[]>();
-    this.inscriptos = new EventEmitter<ProfileContestExpanded[]>();
-    this.categoriasInscriptas = new EventEmitter<ContestCategoryExpanded[]>();
-    this.seccionesInscriptas = new EventEmitter<ContestSectionExpanded[]>();
-    this.resultadosConcurso = new EventEmitter<ContestResultExpanded[]>();
+    this.concurso = new BehaviorSubject<Contest>(this.contestService.template);
+    // this.concurso = new EventEmitter<Contest>();
+    this.concursantes = new BehaviorSubject<ProfileExpanded[]>([]);
+    // this.concursantes = new EventEmitter<ProfileExpanded[]>();
+    this.inscriptos = new BehaviorSubject<ProfileContestExpanded[]>([]);
+    // this.inscriptos = new EventEmitter<ProfileContestExpanded[]>();
+    this.categoriasInscriptas = new BehaviorSubject<ContestCategoryExpanded[]>([]);
+    // this.categoriasInscriptas = new EventEmitter<ContestCategoryExpanded[]>();
+    this.seccionesInscriptas = new BehaviorSubject<ContestSectionExpanded[]>([]);
+    // this.seccionesInscriptas = new EventEmitter<ContestSectionExpanded[]>();
+    this.resultadosConcurso = new BehaviorSubject<ContestResultExpanded[]>([]);
     // this.ic inscribirConcursante = new EventEmitter<number|undefined>();
     this.desinscribirConcursante = new EventEmitter<ProfileContestExpanded>();
     this.postImage = new EventEmitter<ImagePostParams>();
     this.reviewImage = new EventEmitter<ContestResultExpanded>();
     this.deleteImage = new EventEmitter<ContestResultExpanded>();
     this.mostrarAcciones = new EventEmitter<any>();
-    this.concurso.subscribe(c => this.concursoObj = c)
-    this.concursantes.subscribe(c => this.concursantesArray = c)
-    this.categoriasInscriptas.subscribe(c => this.categoriasInscriptasArray = c)
-    this.inscriptos.subscribe(c => this.inscriptosArray = c)
+    // this.concurso.subscribe(c => this.concursoObj = c)
+    // this.concursantes.subscribe(c => this.concursantesArray = c)
+    // this.categoriasInscriptas.subscribe(c => this.categoriasInscriptasArray = c)
+    // this.inscriptos.subscribe(c => this.inscriptosArray = c)
+      this.loadConcursantes()
+      this.loadProfileContests()
+      this.loadContestResults()
   }
 
   ngOnInit() {
+  }
+
+  loadContest(id: number): Promise<void> {
+    const all: Promise<void>[] = []
+
+    all.push(new Promise(resolve => {
+      const s = this.contestService.get(id, 'expand=countContestResults,countProfileContests').subscribe(c => {
+        this.concurso.next(c)
+        s.unsubscribe()
+        resolve()
+      })
+    }))
+    all.push(new Promise(resolve => {
+
+      const s = this.contestService.getCategoriasInscriptas(id).subscribe(ci => {
+        this.categoriasInscriptas.next(ci)
+        s.unsubscribe()
+        resolve()
+      })
+    }))
+
+    all.push(new Promise(resolve => {
+      const s = this.contestService.getSeccionesInscriptas(id).subscribe(si => {
+        this.seccionesInscriptas.next(si)
+        s.unsubscribe()
+        resolve()
+      })
+    }))
+
+    return new Promise(resolve => Promise.all(all).then(() => resolve()))
+  }
+
+  async loadProfileContests() {
+    const u = await this.authService.user
+    this.concurso.pipe(
+      filter(c => c.id != undefined)
+    ).subscribe(c => {
+      // const s = this.rolificador.getConcursantesInscriptos(u, c.id).subscribe(is => {
+      const s = this.profileContestService.getAll<ProfileContestExpanded>(`expand=profile,profile.user,profile.fotoclub&filter[contest_id]=${c.id}`).subscribe(is => {
+        // console.log('updated inscriptos', is)
+        this.inscriptos.next(is)
+        s.unsubscribe()
+      })
+    })
+  }
+  async loadConcursantes() {
+    // const u = await this.authService.user
+    
+    this.concurso.pipe(
+      filter(c => c.id != undefined)
+    ).subscribe(c => {
+      const s = this.profileContestService.getAll<ProfileExpanded>(`contest_id=${c.id}&expand=fotoclub`, 'profile-registrable').subscribe(cs => {
+        // console.log('updated inscriptos', is)
+        this.concursantes.next(cs)
+        s.unsubscribe()
+      })
+    })
+    // const s = this.rolificador.getConcursantes(u).subscribe(cs => {
+    //   // console.log('updated inscriptos', is)
+    //   this.concursantes.next(cs)
+    //   s.unsubscribe()
+    // })
+  }
+  async loadContestResults() {
+    this.concurso.pipe(
+      filter(c => c.id != undefined)
+    ).subscribe(c => {
+      const s = this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile&filter[contest_id]=${c.id}`).subscribe(rs => {
+        this.resultadosConcurso.next(rs)
+        s.unsubscribe()
+      })
+
+      // const load = () => {
+      //   if (this.concursantes.getValue().length > 0 && this.inscriptos.getValue().length > 0) {
+      //     const s = this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile&filter[contest_id]=${this.concurso.getValue().id}`).pipe(
+      //       map(results => results.filter(r => this.concursantes.getValue().find(cc => cc.id == r.image.profile_id) != undefined && this.inscriptos.getValue().find(cc => cc.profile_id == r.image.profile_id) != undefined))
+      //     ).subscribe(rs => {
+      //       this.resultadosConcurso.next(rs)
+      //       s.unsubscribe()
+      //     })
+      //   } else setTimeout(load, 100)
+      // }
+      // setTimeout(load)
+    })
   }
 
   async inscribirConcursante(category_id: number = undefined) {
@@ -101,16 +205,17 @@ export class ConcursoDetailService implements OnInit {
     // console.log('inscribiendo concursante', data)
     // const { profileContest } = data ?? {}
     const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirConcursanteComponent, {
-      "concursantes": this.concursantesArray.filter(c => this.inscriptosArray.findIndex(i => i.profile_id == c.id) < 0),
+      "concursantes": this.concursantes.getValue(),
       // "modalController": this.modalController,
-      "contest": this.concursoObj,
-      "categorias": this.categoriasInscriptasArray.map(c => c.category),
+      "contest": this.concurso.getValue(),
+      "categorias": this.categoriasInscriptas.getValue().map(c => c.category),
       profileContest: pc
     })
 
     if (profileContest != undefined) {
-      this.inscriptosArray.push(profileContest)
-      this.inscriptos.emit(this.inscriptosArray)  
+      this.loadContest(this.concurso.getValue().id)
+      // this.inscriptosArray.push(profileContest)
+      // this.inscriptos.emit(this.inscriptosArray)  
     }
   }
 

@@ -160,7 +160,27 @@
                   <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
                 </ion-card-header>
                 <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
-                <ion-card-content>{{c.description}}</ion-card-content>
+                <ion-card-content>
+                  <ion-row class="ion-margin-bottom">
+                    <b>Categorias:</b>
+                    <ion-badge color="light" class="ion-margin-start"
+                      *ngFor="let c of c.categories"
+                    >
+                      {{c.name}}
+                    </ion-badge>
+                  </ion-row>
+                  <ion-row class="ion-margin-bottom">
+                    <b>Secciones:</b>
+                    <ion-badge color="light" class="ion-margin-start"
+                      *ngFor="let s of c.sections"
+                    >
+                      {{s.name}}
+                    </ion-badge>
+                  </ion-row>
+                  <ion-text>
+                    {{c.description}}
+                  </ion-text>
+                </ion-card-content>
                 <ion-row class="ion-float-right">
                   <ion-col>
                     <!-- <ion-toolbar> -->

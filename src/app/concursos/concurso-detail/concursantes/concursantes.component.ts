@@ -112,6 +112,9 @@ export class ConcursantesComponent implements OnInit {
       this.resultadosConcurso = rs 
     )
     this.auth.user.then(u => this.user = u)
+    
+    // this.concursoDetailService.loadConcursantes()
+    // this.concursoDetailService.loadProfileContests()
   }
 
   get inscriptosFiltrados() {
@@ -130,13 +133,13 @@ export class ConcursantesComponent implements OnInit {
   }
 
   getFotoclubName(profile_id: number): string {
-    const profile = this.concursantes.find(p => p.id == profile_id)
-    return profile != undefined ? profile.fotoclub.name : ''
+    const profile = this.inscriptos.find(p => p.profile_id == profile_id)
+    return profile != undefined ? profile.profile.fotoclub.name : ''
   }
 
   getFullName(profile_id: number) {
-    const p = this.concursantes.find(p => p.id == profile_id)
-    return p != undefined ? `${p.name} ${p.last_name}` : ''
+    const p = this.inscriptos.find(p => p.profile_id == profile_id)
+    return p != undefined ? `${p.profile.name} ${p.profile.last_name}` : ''
   }
 
 
@@ -245,18 +248,18 @@ postImage(profile_id: number) {
   }
 
   ionViewWillEnter() {
-    if (this.concurso.id == undefined) {
-      // console.log('hola')
-      if (this.concursoDetailService.concursoObj != undefined) {
-        this.concurso = this.concursoDetailService.concursoObj
-      } else {
-        setTimeout(() => {
-          this.concurso = this.concursoDetailService.concursoObj
-          // console.log('timeout concurso fetch', this.concurso)
-        }, 1000)
-      }
-    } else {
-      console.log(this.concurso, this.contestService.template)
-    }
+    // if (this.concurso.id == undefined) {
+    //   // console.log('hola')
+    //   if (this.concursoDetailService.concursoObj != undefined) {
+    //     this.concurso = this.concursoDetailService.concursoObj
+    //   } else {
+    //     setTimeout(() => {
+    //       this.concurso = this.concursoDetailService.concursoObj
+    //       // console.log('timeout concurso fetch', this.concurso)
+    //     }, 1000)
+    //   }
+    // } else {
+    //   console.log(this.concurso, this.contestService.template)
+    // }
   }
 }

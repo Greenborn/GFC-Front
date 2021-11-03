@@ -29,7 +29,7 @@ export class RolificadorService {
   }
 
   isAdmin(u: User): boolean {
-    return u.role_id == 1
+    return u.role_id === 1
   }
 
   // getUsers(u: UserLogged): Observable<User[]> {

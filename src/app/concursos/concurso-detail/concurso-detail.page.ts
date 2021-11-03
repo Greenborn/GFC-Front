@@ -164,68 +164,99 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     
       // loading.present();
       const id = parseInt(paramMap.get('id'))
+
+      // super.fetch<Contest>(() => this.concursoDetailService.concurso).subscribe({
+      //   next: c => this.concurso = c 
+      // })
+
+      this.concursoDetailService.concurso.subscribe({
+        next: c => this.concurso = c 
+      })
+      this.concursoDetailService.categoriasInscriptas.subscribe({
+        next: c => this.categoriasInscriptas = c 
+      })
+      this.concursoDetailService.seccionesInscriptas.subscribe({
+        next: c => this.seccionesInscriptas = c 
+      })
+      this.concursoDetailService.concursantes.subscribe({
+        next: c => this.concursantes = c 
+      })
+      this.concursoDetailService.inscriptos.subscribe({
+        next: c => this.inscriptos = c 
+      })
+      this.concursoDetailService.resultadosConcurso.subscribe({
+        next: c => this.resultadosConcurso = c 
+      })
+
+      await this.concursoDetailService.loadContest(id)
+      // this.concursoDetailService.loadConcursantes()
+      // this.concursoDetailService.loadProfileContests()
+      // this.concursoDetailService.loadContestResults()
+      
+
+
       // console.log('subs', this.subs)
       // console.log('subs destr', [...this.subs])
       // this.ionViewWillLeave()
       // this.loading = true
       // this.contestService.get(id).subscribe(c => this.concurso = c)
 
-      super.fetch<Contest>(() => 
-        this.contestService.get(id)
-      ).subscribe(async c => {
-        // console.log('recibi concurso', c)
-        this.concurso = c
-        this.concursoDetailService.concurso.emit(c)
-        // this.ionViewWillEnter()
-        // loading.dismiss()
-        // obtener todos los contest result de este concurso
-        const u = await this.auth.user
-        const inscriptos = new Promise<void>((resolve, reject) => {super.fetch<ProfileContestExpanded[]>(() => this.rolificador.getConcursantesInscriptos(u, id)).subscribe(is => {
-            this.inscriptos = is
-            console.log('inscriptos', is)
-            this.concursoDetailService.inscriptos.emit(is)
-            resolve()
-          })
-        })
-        super.fetch<ContestCategoryExpanded[]>(() => this.contestService.getCategoriasInscriptas(id)).subscribe(cs => {
-          this.categoriasInscriptas = cs
-          console.log('categorias inscriptas', cs)
-          this.concursoDetailService.categoriasInscriptas.emit(cs)
-        })
-        super.fetch<ContestSectionExpanded[]>(() => this.contestService.getSeccionesInscriptas(id)).subscribe(cs => {
-          this.seccionesInscriptas = cs
-          console.log('secciones inscriptas', cs)
-          this.concursoDetailService.seccionesInscriptas.emit(cs)
-        })
-        super.fetch<ProfileExpanded[]>(() => this.rolificador.getConcursantes(u)).subscribe(async cs => {
-          console.log('concursantes', cs)
-          this.concursantes = cs
-          await inscriptos
-          this.concursoDetailService.concursantes.emit(cs)
-          // this.resultadosConcurso = super.fetch<ContestResultExpanded[]>(() => 
-          super.fetch<ContestResultExpanded[]>(() => 
-            this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile&filter[contest_id]=${c.id}`)
-          ).pipe(
-            map(results => results.filter(r => cs.find(cc => cc.id == r.image.profile_id) != undefined && this.inscriptos.find(cc => cc.profile_id == r.image.profile_id) != undefined))
-          ).subscribe(rs => {
-            this.resultadosConcurso = rs
-            this.concursoDetailService.resultadosConcurso.emit(rs)
-            // this.subsc()
-            // if (loading)
-            //   loading.dismiss()
-            // this.loading = false
-            setTimeout(() => { // porque no muestra todo el contenido
-              // const c = this.pageTabs
-              // if (this.router.url.includes('fotografias')) {
-                // this.tabsContent.nativeElement.style.setProperty('height', '')
-                // const height = this.tabsContent.nativeElement.getBoundingClientRect().height
-                // // console.log('tabs content height', height)
-                // this.tabsContent.nativeElement.style.setProperty('height', `${height + 500}px`) 
-              // }
-            }, 100)
-          })
-        })
-      })
+      // super.fetch<Contest>(() => 
+      //   this.contestService.get(id)
+      // ).subscribe(async c => {
+      //   // console.log('recibi concurso', c)
+      //   this.concurso = c
+      //   this.concursoDetailService.concurso.emit(c)
+      //   // this.ionViewWillEnter()
+      //   // loading.dismiss()
+      //   // obtener todos los contest result de este concurso
+      //   const u = await this.auth.user
+      //   const inscriptos = new Promise<void>((resolve, reject) => {super.fetch<ProfileContestExpanded[]>(() => this.rolificador.getConcursantesInscriptos(u, id)).subscribe(is => {
+      //       this.inscriptos = is
+      //       console.log('inscriptos', is)
+      //       this.concursoDetailService.inscriptos.emit(is)
+      //       resolve()
+      //     })
+      //   })
+      //   super.fetch<ContestCategoryExpanded[]>(() => this.contestService.getCategoriasInscriptas(id)).subscribe(cs => {
+      //     this.categoriasInscriptas = cs
+      //     console.log('categorias inscriptas', cs)
+      //     this.concursoDetailService.categoriasInscriptas.emit(cs)
+      //   })
+      //   super.fetch<ContestSectionExpanded[]>(() => this.contestService.getSeccionesInscriptas(id)).subscribe(cs => {
+      //     this.seccionesInscriptas = cs
+      //     console.log('secciones inscriptas', cs)
+      //     this.concursoDetailService.seccionesInscriptas.emit(cs)
+      //   })
+      //   super.fetch<ProfileExpanded[]>(() => this.rolificador.getConcursantes(u)).subscribe(async cs => {
+      //     console.log('concursantes', cs)
+      //     this.concursantes = cs
+      //     await inscriptos
+      //     this.concursoDetailService.concursantes.emit(cs)
+      //     // this.resultadosConcurso = super.fetch<ContestResultExpanded[]>(() => 
+      //     super.fetch<ContestResultExpanded[]>(() => 
+      //       this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile&filter[contest_id]=${c.id}`)
+      //     ).pipe(
+      //       map(results => results.filter(r => cs.find(cc => cc.id == r.image.profile_id) != undefined && this.inscriptos.find(cc => cc.profile_id == r.image.profile_id) != undefined))
+      //     ).subscribe(rs => {
+      //       this.resultadosConcurso = rs
+      //       this.concursoDetailService.resultadosConcurso.emit(rs)
+      //       // this.subsc()
+      //       // if (loading)
+      //       //   loading.dismiss()
+      //       // this.loading = false
+      //       setTimeout(() => { // porque no muestra todo el contenido
+      //         // const c = this.pageTabs
+      //         // if (this.router.url.includes('fotografias')) {
+      //           // this.tabsContent.nativeElement.style.setProperty('height', '')
+      //           // const height = this.tabsContent.nativeElement.getBoundingClientRect().height
+      //           // // console.log('tabs content height', height)
+      //           // this.tabsContent.nativeElement.style.setProperty('height', `${height + 500}px`) 
+      //         // }
+      //       }, 100)
+      //     })
+      //   })
+      // })
     })
     
     // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
@@ -419,7 +450,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
               _ => {
                 console.log('deleted', _)
                 this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
-                this.concursoDetailService.inscriptos.emit(this.inscriptos)
+                // this.concursoDetailService.inscriptos.emit(this.inscriptos)
+                this.concursoDetailService.loadProfileContests()
                 // this.router.navigate(['/concursos']);
               }, 
               async err => {
@@ -473,7 +505,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
         console.log('udpating metric', r, metric)
         r.metric = metric
         console.log('udpated metric', r)
-        this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+        // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+        this.concursoDetailService.loadContestResults()
       } 
       // else {
       //   this.metrics.push(metric)
@@ -553,7 +586,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
                 image,
                 metric
               })
-              this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+              // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+              this.concursoDetailService.loadContestResults()
             },
             // cr => this.contestResults.push(cr),
             async err => super.displayAlert(err.error['error-info'][2])
@@ -577,16 +611,22 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
             cr => {
               console.log('updated result', cr)
               r_updated.section_id = section_id
-              this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+              // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+              
+              this.concursoDetailService.loadContestResults()
             },
             err => {
               this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
-              this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+              // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+              
+              this.concursoDetailService.loadContestResults()
             },
           )  
         } else {
           console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
-          this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+          // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+          
+              this.concursoDetailService.loadContestResults()
         }
         // console.log('replaced image', image, 'index', i)
       }
@@ -678,7 +718,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
                 // this.alertCtrl.dismiss()
                 // this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
                 this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-                this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+                // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+                this.concursoDetailService.loadContestResults()
                 super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
                   _ => {},
                   // _ => this.images.splice(this.images.findIndex(i => i.id == image_id), 1),

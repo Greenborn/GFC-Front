@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Contest } from 'src/app/models/contest.model';
-import { ContestService } from 'src/app/services/contest.service';
 
 @Component({
   selector: 'app-contest-status-chip',
@@ -11,13 +10,7 @@ export class ContestStatusChipComponent implements OnInit {
 
   @Input() contest: Contest;
 
-  constructor(
-    private contestService: ContestService
-  ) { }
+  constructor() { }
 
   ngOnInit() {}
-
-  isActive(c: Contest) {
-    return this.contestService.isActive(c)
-  }
 }
