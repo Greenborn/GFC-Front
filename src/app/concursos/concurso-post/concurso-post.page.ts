@@ -16,6 +16,7 @@ import { SectionService } from 'src/app/services/section.service';
 import { ContestSectionService } from 'src/app/services/contest-section.service';
 import { ContestSection } from 'src/app/models/contest_section.model';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-concurso-post',
@@ -38,6 +39,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public updatingSelect: boolean = false;
   public mostrarCategorias: boolean;
   public mostrarSecciones: boolean;
+  public file: File;
+  public img_url: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -49,7 +52,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     private router: Router,
     alertCtrl: AlertController,
     public UIUtilsService: UiUtilsService,
-    public responsiveService: ResponsiveService
+    public responsiveService: ResponsiveService,
+    public configService: ConfigService
   ) { 
     super(alertCtrl)
   }
@@ -84,6 +88,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
           // c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
           // c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
           this.concurso = c
+          this.img_url = this.configService.apiUrl(c.img_url)
           
           super.fetch<ContestCategory[]>(() => this.contestService.getCategoriasInscriptas(c.id)).subscribe(async c => {
             this.categoriasInscriptas = c
@@ -165,10 +170,13 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
         start_date: this.contestService.formatearFechaParaBD(f.value.start_date),
         end_date: this.contestService.formatearFechaParaBD(f.value.end_date)
       }
+      if (this.file != undefined) {
+        model.image_file = this.file
+      }
       console.log('posting concurso', model, this.concurso.id)
       this.posting = true
-      super.fetch<Contest>(() =>
-        this.contestService.post(model, this.concurso.id)
+      super.fetch<any>(() =>
+        this.contestService.postFormData<any>(model, this.concurso.id)
       ).subscribe(
         async contest => {
 
@@ -357,4 +365,45 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     })
   }
   
+      // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
+    // fileUpload(event: FileList) {
+      fileUpload(event: EventTarget) {
+      
+        const file = (event as HTMLInputElement).files.item(0)
+    
+        if (!file) return;
+    
+        if (file.type.split('/')[0] !== 'image') { 
+          console.log('File type is not supported!')
+          return;
+        }
+    
+        // this.isImgUploading = true;
+        // this.isImgUploaded = false;
+    
+        // this.FileName = file.name;
+        // console.log('uploaded', file)
+        this.file = file
+    
+        const fileReader = new FileReader();
+        const { type, name } = file;
+        // return new Observable((observer: Observer<IUploadedFile>) => {
+          // this.validateSize(file, observer);
+          fileReader.readAsDataURL(file);
+          fileReader.onload = event => {
+    
+            // if (this.isImage(type)) {
+              const image = new Image();
+              image.onload = (i) => {
+                const imageData = (i.target as HTMLImageElement).src
+                // this.imageData = imageData
+                this.img_url = imageData
+              };
+              image.onerror = () => {
+              };
+              image.src = fileReader.result as string;
+            }
+    
+      }
+
 }
