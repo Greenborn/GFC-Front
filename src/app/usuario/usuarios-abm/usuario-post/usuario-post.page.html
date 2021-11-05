@@ -74,7 +74,7 @@
               >
                 <ion-label
                   [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'"
-                  >Fotoclub</ion-label
+                  >Fotoclub/Agrupación</ion-label
                 >
                 <ion-select
                   #sFotoclub
@@ -89,7 +89,7 @@
                 </ion-select>
               </ion-item>
 
-              <ion-item class="expand-full" class="ion-hide-md-up">
+              <ion-item class="expand-full ion-hide-md-up ion-no-padding sinC">
                   <ion-col size="10" size-md="12" >
                     <input type="file" (change)="fileUpload($event.target.files)" />
                     <!-- <ion-item class="ion-no-padding">
@@ -106,7 +106,7 @@
                   class="ion-align-self-center ion-hide-sm-up ion-no-padding
                   "
                   >
-                  <ion-item>
+                  <ion-item class="ion-no-padding sinC">
                     <app-usuario-img [src]="img_url"></app-usuario-img>
                   </ion-item>
                  

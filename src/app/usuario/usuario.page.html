@@ -19,23 +19,29 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="altura-cien">
+  <!-- <ion-grid class="">
     <ion-row class="ion-justify-content-center altura-cien">
-      <ion-col size="12" size-md="10" class="altura-cien">
-        <ion-row class="ion-justify-content-center altura-treinta">
+      <ion-col size="12" class="altura-cien">
+        <ion-row size="12" class="ion-justify-content-center altura-cien"> -->
           <ion-item 
+          
+          lines="none"
             *ngIf="(authService.user | async) as u">
-            <ion-col>
+            <ion-col   >
               <ion-row
-                size="8"
                 class="ion-justify-content-center ion-align-items-center"
               >
-                <ion-col size="12" class="ion-align-items-center">
+                <ion-col  class="ion-align-items-center">
                   <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img> -->
-                  <app-usuario-img [src]="configService.apiUrl(u.profile.img_url)"></app-usuario-img>
+                  <!-- <ion-row> -->
+
+                    <!-- <ion-thumbnail> -->
+                      <app-usuario-img [src]="configService.apiUrl(u.profile.img_url)"></app-usuario-img>
+                    <!-- </ion-thumbnail> -->
+                  <!-- </ion-row> -->
                 </ion-col>
               </ion-row>
-              <ion-row size="4">
+              <ion-row>
                 <ion-col
                   class="ion-justify-content-center"
                 >
@@ -51,19 +57,24 @@
               </ion-row>
             </ion-col>
           </ion-item>
-        </ion-row>
+        <!-- </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
 
-        <ion-row class="altura-setenta">
-          <ion-header>
+        </ion-content>
+          <ion-footer>
             <ion-toolbar>
-              <ion-list>
-                <ion-item 
+                <ion-list>    
+  
+  
+                  <ion-item 
                   lines="none"
                 >
                   <ion-icon name="moon-outline" slot="start"></ion-icon>
                   <!-- <ion-label>Modo oscuro</ion-label> -->
                   <ion-toggle color="dark" [(ngModel)]="darkMode" style="padding-inline: 0" ></ion-toggle>
-
+  
                 </ion-item>
                 <ion-item
                   lines="none"
@@ -76,48 +87,23 @@
                   ></ion-icon>
                   <ion-label>Editar perfil</ion-label>
                 </ion-item>
-
-                <!-- <ion-item lines="none" [routerLink]="['/perfil']">
-                  <ion-icon
-                    slot="start"
-                    ios="lock-closed-outline"
-                    md="lock-closed-sharp"
-                  ></ion-icon>
-                  <ion-label>Terminos y Condiciones</ion-label>
-                </ion-item> -->
-
-                <!-- <ion-item lines="none" [routerLink]="['/perfil']">
-                  <ion-icon
-                    slot="start"
-                    ios="help-circle-outline"
-                    md="help-circle-sharp"
-                  ></ion-icon>
-                  <ion-label>Ayuda</ion-label>
-                </ion-item> -->
-              </ion-list>
-            </ion-toolbar>
-          </ion-header>
-
-          <ion-footer>
-            <ion-toolbar>
-              <ion-list>
-                <ion-item
-                  lines="none"
-                  (click)="authService.logout()"
-                  button="true"
-                >
-                  <ion-icon
-                    slot="start"
-                    ios="log-out-outline"
-                    md="log-out-sharp"
-                  ></ion-icon>
-                  <ion-label>Log Out</ion-label>
-                </ion-item>
-              </ion-list>
+  
+  
+                  <ion-item
+                    lines="none"
+                    (click)="authService.logout()"
+                    button="true"
+                  >
+                    <ion-icon
+                      slot="start"
+                      ios="log-out-outline"
+                      md="log-out-sharp"
+                    ></ion-icon>
+                    <ion-label>Log Out</ion-label>
+                  </ion-item>
+                </ion-list>
+                
+              
             </ion-toolbar>
           </ion-footer>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+        
