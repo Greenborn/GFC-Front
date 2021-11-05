@@ -15,6 +15,7 @@ import { ProfileService } from 'src/app/services/profile.service';
 import { Profile } from 'src/app/models/profile.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-usuario-post',
@@ -39,6 +40,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public posting: boolean = false;
   public userLogged: User;
   public updatingSelect: boolean = false
+  public file: File;
+  public img_url: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -51,7 +54,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     alertCtrl: AlertController,
     private location: Location,
     public loadingController: LoadingController,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public configService: ConfigService
   ) { 
     super(alertCtrl)
   }
@@ -106,6 +110,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
             this.usuario = u
             super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => {
               this.profile = p
+              this.img_url = this.configService.apiUrl(p.img_url)
               // loading.dismiss()
               resolve(true)
             })
@@ -156,16 +161,21 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     if (f.valid) {
       // console.log('posteando form', f.value, this.selectRol.value, this.selectFotoclub.value)
       
-      const pm: Profile = {
+      const pm: any = {
         name: f.value.name, 
         last_name: f.value.last_name, 
         // fotoclub_id: f.value.fotoclub_id
         fotoclub_id: this.selectFotoclub.value
       }
+
+      
+      if (this.file != undefined) {
+        pm.image_file = this.file
+      }
       
       this.posting = true
       
-      super.fetch<Profile>(() => this.profileService.post(pm, this.profile.id)).subscribe(
+      super.fetch<any>(() => this.profileService.postFormData<any>(pm, this.profile.id)).subscribe(
         p => {
           // console.log('posteado perfil', p)
           const um: User = {
@@ -229,4 +239,44 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     //   this.concursoDetailService.inscriptos.emit(this.inscriptos)  
     // }
   }
+
+    // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
+    fileUpload(event: FileList) {
+      
+      const file = event.item(0)
+  
+      if (!file) return;
+  
+      if (file.type.split('/')[0] !== 'image') { 
+        console.log('File type is not supported!')
+        return;
+      }
+  
+      // this.isImgUploading = true;
+      // this.isImgUploaded = false;
+  
+      // this.FileName = file.name;
+      // console.log('uploaded', file)
+      this.file = file
+  
+      const fileReader = new FileReader();
+      const { type, name } = file;
+      // return new Observable((observer: Observer<IUploadedFile>) => {
+        // this.validateSize(file, observer);
+        fileReader.readAsDataURL(file);
+        fileReader.onload = event => {
+  
+          // if (this.isImage(type)) {
+            const image = new Image();
+            image.onload = (i) => {
+              const imageData = (i.target as HTMLImageElement).src
+              // this.imageData = imageData
+              this.img_url = imageData
+            };
+            image.onerror = () => {
+            };
+            image.src = fileReader.result as string;
+          }
+  
+    }
 }

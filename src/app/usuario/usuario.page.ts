@@ -5,6 +5,7 @@ import { ApiConsumer } from '../models/ApiConsumer';
 import { Profile } from '../models/profile.model';
 import { User } from '../models/user.model';
 import { AuthService } from '../modules/auth/services/auth.service';
+import { ConfigService } from '../services/config/config.service';
 import { ProfileService } from '../services/profile.service';
 import { UserService } from '../services/user.service';
 // import { AuthService } from '../services/auth/auth.service';
@@ -27,7 +28,8 @@ export class UsuarioPage extends ApiConsumer implements OnInit {
     alertCtrl: AlertController,
     public authService: AuthService,
     private userService: UserService,
-    public profileService: ProfileService
+    public profileService: ProfileService,
+    public configService: ConfigService
   ) { 
     super(alertCtrl)
   }

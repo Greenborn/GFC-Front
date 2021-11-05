@@ -23,7 +23,8 @@
     <ion-row class="ion-justify-content-center altura-cien">
       <ion-col size="12" size-md="10" class="altura-cien">
         <ion-row class="ion-justify-content-center altura-treinta">
-          <ion-item>
+          <ion-item 
+            *ngIf="(authService.user | async) as u">
             <ion-col>
               <ion-row
                 size="8"
@@ -31,13 +32,12 @@
               >
                 <ion-col size="12" class="ion-align-items-center">
                   <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img> -->
-                  <app-usuario-img src="fafafa"></app-usuario-img>
+                  <app-usuario-img [src]="configService.apiUrl(u.profile.img_url)"></app-usuario-img>
                 </ion-col>
               </ion-row>
               <ion-row size="4">
                 <ion-col
                   class="ion-justify-content-center"
-                  *ngIf="(authService.user | async) as u"
                 >
                   <ion-card-title class="ion-text-center"
                     >{{ u.username }}</ion-card-title
