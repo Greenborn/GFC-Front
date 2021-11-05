@@ -19,6 +19,7 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-usuarios-abm',
@@ -82,6 +83,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     public rolificador: RolificadorService,
     public loadingController: LoadingController,
     private route: ActivatedRoute,
+    public configService: ConfigService
   ) { 
     super(alertCtrl)
     // this.funcionesOrdenamiento['fotoclub'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {

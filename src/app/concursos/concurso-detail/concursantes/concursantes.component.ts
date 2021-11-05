@@ -13,6 +13,7 @@ import { Section } from 'src/app/models/section.model';
 import { UserLogged } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestService } from 'src/app/services/contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { MenuAccionesComponent, MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
@@ -70,7 +71,8 @@ export class ConcursantesComponent implements OnInit {
     public contestService: ContestService,
     public UIUtilsService: UiUtilsService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public configService: ConfigService
   ) { }
 
   ionViewDidEnter() {

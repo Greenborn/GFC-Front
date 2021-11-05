@@ -6,6 +6,7 @@ export interface Profile {
     name: string;
     last_name: string;
     fotoclub_id: number;
+    img_url?: string;
 }
 
 export interface ProfileExpanded extends Profile {
