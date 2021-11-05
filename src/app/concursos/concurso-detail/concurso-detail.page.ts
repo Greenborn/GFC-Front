@@ -32,6 +32,7 @@ import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Section } from 'src/app/models/section.model';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-concurso-detail',
@@ -83,7 +84,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     private rolificador: RolificadorService,
     public concursoDetailService: ConcursoDetailService,
     private profileContestService: ProfileContestService,
-    public UIUtilsService: UiUtilsService
+    public UIUtilsService: UiUtilsService,
+    public configService: ConfigService
   ) {
     super(alertCtrl)
    }

@@ -13,6 +13,7 @@ import { ApiConsumer } from '../models/ApiConsumer';
 // import { ConfigService } from "../services/config/config.service";
 import { Contest } from '../models/contest.model';
 import { AuthService } from '../modules/auth/services/auth.service';
+import { ConfigService } from '../services/config/config.service';
 
 @Component({
   selector: 'app-concursos',
@@ -41,7 +42,8 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     private router: Router,
     private auth: AuthService,
     public contestService: ContestService,
-    alertController: AlertController
+    alertController: AlertController,
+    public configService: ConfigService
   ) { 
     // super('concursos page', alertController)
     super(alertController)

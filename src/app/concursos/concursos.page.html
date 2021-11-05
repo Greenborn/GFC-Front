@@ -148,6 +148,7 @@
               <!-- concurso card -->
               <!-- <ion-card *ngFor="let concurso of concursos"> -->
               <ion-card *ngFor="let c of concursos">
+                <ion-img [src]="configService.apiUrl(c.img_url)"></ion-img>
                 <ion-card-header>
                   <ion-row class="ion-align-items-center">
                     <ion-col class="ion-no-padding">
