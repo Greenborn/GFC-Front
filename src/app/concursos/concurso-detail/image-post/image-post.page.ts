@@ -145,9 +145,9 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
-  fileUpload(event: FileList) {
+  fileUpload(event: EventTarget) {
       
-    const file = event.item(0)
+    const file = (event as HTMLInputElement).files.item(0)
 
     if (!file) return;
 

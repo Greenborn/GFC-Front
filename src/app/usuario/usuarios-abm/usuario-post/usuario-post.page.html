@@ -20,7 +20,7 @@
     <ion-row class="ion-justify-content-center">
       <ion-col size="2" class="ion-hide-md-down">
         <app-usuario-img [src]="img_url"></app-usuario-img>
-        <input type="file" (change)="fileUpload($event.target.files)" />
+        <input type="file" (change)="fileUpload($event.target)" />
         <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img>        -->
       </ion-col>
       <ion-col size-sm="12" size-md="9" size-lg="7">
@@ -91,7 +91,7 @@
 
               <ion-item class="expand-full" class="ion-hide-md-up">
                   <ion-col size="10" size-md="12" >
-                    <input type="file" (change)="fileUpload($event.target.files)" />
+                    <input type="file" (change)="fileUpload($event.target)" />
                     <!-- <ion-item class="ion-no-padding">
                       <ion-label position="floating">Imagen (url)</ion-label>
                       <ion-input
