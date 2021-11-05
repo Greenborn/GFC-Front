@@ -69,6 +69,14 @@
                   <ion-label>{{c.category.name}}</ion-label>
                 </ion-chip> -->
               </ion-row>
+              <ion-row class="ion-margin-top ion-align-items-center">
+                <b>Reglamento</b>
+                <ion-button (click)="openRules()"
+                  size="small" 
+                >
+                  <ion-icon name="link-outline"></ion-icon>
+                </ion-button>
+              </ion-row>
             </ion-col>
             <ion-col *ngIf="isLogedIn()" class="ion-align-self-start">
               <ion-button class="ion-float-right" (click)="deleteConcurso()">

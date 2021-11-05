@@ -358,15 +358,36 @@
           <ion-row class="w-100">
             <ion-col class="ion-no-padding">
               <ion-item class="w-100 ion-no-padding ion-margin-bottom">
-                <!-- <ion-label position="floating">Imágen</ion-label> -->
+                <ion-label position="stacked">Imágen</ion-label>
                 <!-- [(ngModel)]="image.code" -->
-                <input type="file" (change)="fileUpload($event.target)" />
+                <input type="file" (change)="imageUpload($event.target)" />
               </ion-item>
               <div>
                 <!-- <ion-thumbnail> -->
                   <ion-row  class="ion-justify-content-center">
 
                     <ion-img  [src]="img_url" alt=""> </ion-img>
+                  </ion-row>
+                <!-- </ion-thumbnail> -->
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="w-100">
+            <ion-col class="ion-no-padding">
+              <ion-item class="w-100 ion-no-padding ion-margin-bottom">
+                <ion-label position="stacked">Reglamento</ion-label>
+                <!-- [(ngModel)]="image.code" -->
+                <input type="file" (change)="fileUpload($event.target)" />
+              </ion-item>
+              <div>
+                <!-- <ion-thumbnail> -->
+                  <ion-row  class="ion-justify-content-center">
+                    <!-- <object [data]="pdf_url" type="application/pdf">
+                      <div>No online PDF viewer installed</div>
+                    </object> -->
+                    
+                    <iframe *ngIf="rules_url" [src]="rules_url" frameborder="0"></iframe>
                   </ion-row>
                 <!-- </ion-thumbnail> -->
               </div>

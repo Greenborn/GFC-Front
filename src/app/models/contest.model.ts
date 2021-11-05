@@ -9,6 +9,7 @@ export interface Contest {
     start_date: string;
     end_date: string;
     img_url?: string;
+    rules_url?: string;
     active?: boolean;
     countProfileContests?: number;
     countContestResults?: number;

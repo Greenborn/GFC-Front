@@ -17,6 +17,7 @@ import { ContestSectionService } from 'src/app/services/contest-section.service'
 import { ContestSection } from 'src/app/models/contest_section.model';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-concurso-post',
@@ -39,8 +40,10 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public updatingSelect: boolean = false;
   public mostrarCategorias: boolean;
   public mostrarSecciones: boolean;
-  public file: File;
+  public image_file: File;
   public img_url: string;
+  public rules_file: File;
+  public rules_url: SafeResourceUrl;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -53,7 +56,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     alertCtrl: AlertController,
     public UIUtilsService: UiUtilsService,
     public responsiveService: ResponsiveService,
-    public configService: ConfigService
+    public configService: ConfigService,
+    private sanitizer: DomSanitizer
   ) { 
     super(alertCtrl)
   }
@@ -89,6 +93,9 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
           // c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
           this.concurso = c
           this.img_url = this.configService.apiUrl(c.img_url)
+          if (c.rules_url)
+            // this.rules_url = this.configService.apiUrl(c.rules_url)
+            this.rules_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.configService.apiUrl(c.rules_url))
           
           super.fetch<ContestCategory[]>(() => this.contestService.getCategoriasInscriptas(c.id)).subscribe(async c => {
             this.categoriasInscriptas = c
@@ -170,8 +177,11 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
         start_date: this.contestService.formatearFechaParaBD(f.value.start_date),
         end_date: this.contestService.formatearFechaParaBD(f.value.end_date)
       }
-      if (this.file != undefined) {
-        model.image_file = this.file
+      if (this.image_file != undefined) {
+        model.image_file = this.image_file
+      }
+      if (this.rules_file != undefined) {
+        model.rules_file = this.rules_file
       }
       console.log('posting concurso', model, this.concurso.id)
       this.posting = true
@@ -367,7 +377,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   
       // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
     // fileUpload(event: FileList) {
-      fileUpload(event: EventTarget) {
+      imageUpload(event: EventTarget) {
       
         const file = (event as HTMLInputElement).files.item(0)
     
@@ -383,7 +393,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     
         // this.FileName = file.name;
         // console.log('uploaded', file)
-        this.file = file
+        this.image_file = file
     
         const fileReader = new FileReader();
         const { type, name } = file;
@@ -402,6 +412,48 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
               image.onerror = () => {
               };
               image.src = fileReader.result as string;
+            }
+    
+      }
+      // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
+    // fileUpload(event: FileList) {
+      fileUpload(event: EventTarget) {
+      
+        const file = (event as HTMLInputElement).files.item(0)
+    
+        if (!file) return;
+    
+        if (file.type.split('/')[1] !== 'pdf') { 
+          console.log('File type is not supported!')
+          return;
+        }
+    
+        // this.isImgUploading = true;
+        // this.isImgUploaded = false;
+    
+        // this.FileName = file.name;
+        // console.log('uploaded', file)
+        this.rules_file = file
+    
+        const fileReader = new FileReader();
+        const { type, name } = file;
+        // console.log('file type', type)
+        // return new Observable((observer: Observer<IUploadedFile>) => {
+          // this.validateSize(file, observer);
+          fileReader.readAsDataURL(file);
+          fileReader.onload = event => {
+    
+            // if (this.isImage(type)) {
+              // const blob = new Blob();
+              // image.onload = (i) => {
+              //   const imageData = (i.target as HTMLImageElement).src
+              //   // this.imageData = imageData
+              //   this.img_url = imageData
+              // };
+              // image.onerror = () => {
+              // };
+              this.rules_url = this.sanitizer.bypassSecurityTrustResourceUrl(fileReader.result as string);
+              // console.log(this.rules_url)
             }
     
       }

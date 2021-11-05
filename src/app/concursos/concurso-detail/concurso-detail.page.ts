@@ -750,4 +750,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     await alert.present();
   } 
 
+  openRules() {
+    window.open(this.configService.apiUrl(this.concurso.rules_url), '_blank');
+  }
+
 }
