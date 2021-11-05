@@ -258,7 +258,7 @@
                             >
                               <ion-icon name="images-outline"></ion-icon>
                             </ion-button>
-                            <ion-button *ngIf="contestService.isActive(concurso)"
+                            <ion-button *ngIf="checkPermissions"
                               (click)="
                                 postImage(m.profile_id)
                               "
@@ -266,7 +266,7 @@
                             >
                               <ion-icon name="camera-outline"></ion-icon>
                             </ion-button>
-                            <ion-button *ngIf="contestService.isActive(concurso)"
+                            <ion-button *ngIf="checkPermissions"
                               (click)="
                                 concursoDetailService.desinscribirConcursante.emit(
                                   m

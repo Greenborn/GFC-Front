@@ -31,6 +31,10 @@ export class RolificadorService {
   isAdmin(u: User): boolean {
     return u.role_id === 1
   }
+  esDelegado(u: User): boolean {
+    // console.log(u.role_id )
+    return u.role_id < 3
+  }
 
   // getUsers(u: UserLogged): Observable<User[]> {
   //   return this.userService.getAll().pipe(

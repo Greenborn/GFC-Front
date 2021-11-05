@@ -246,7 +246,7 @@
                           class="ion-hide-sm-up ion-justify-content-center"
                         >
                           <ion-buttons>
-                            <ion-button
+                            <ion-button *ngIf="rolificador.esDelegado(userLogged)"
                               (click)="mostrarAcciones($event, m.user.id)"
                             >
                               <!-- <ion-thumbnail></ion-thumbnail> -->
@@ -283,7 +283,7 @@
                       size-md="1"
                       class="ion-align-self-center ion-hide-sm-down"
                     >
-                      <ion-buttons>
+                      <ion-buttons *ngIf="rolificador.esDelegado(userLogged)">
                         <ion-button [routerLink]="['editar/' + m.user.id]">
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
