@@ -39,15 +39,20 @@
                     ngDefaultControl
                   ></ion-input>
                 </ion-item>
-                <ion-row>
+                <ion-row class="w-100">
                   <ion-col class="ion-no-padding">
-                    <ion-item class="w-100 ion-margin-bottom">
+                    <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                       <!-- <ion-label position="floating">Imágen</ion-label> -->
                       <!-- [(ngModel)]="image.code" -->
                       <input type="file" (change)="fileUpload($event.target.files)" />
                     </ion-item>
                     <div>
-                      <img [src]="imgSource" alt="">
+                      <!-- <ion-thumbnail> -->
+                        <ion-row  class="ion-justify-content-center">
+
+                          <ion-img  [src]="imgSource" alt=""> </ion-img>
+                        </ion-row>
+                      <!-- </ion-thumbnail> -->
                     </div>
                   </ion-col>
                 </ion-row>

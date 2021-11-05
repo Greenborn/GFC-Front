@@ -20,6 +20,7 @@ import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-accione
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 import { ImagePostParams, ImagePostPage } from '../image-post/image-post.page';
+import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
 
 @Component({
   selector: 'app-fotografias',
@@ -206,8 +207,8 @@ export class FotografiasComponent implements OnInit {
     // const url = this.router.serializeUrl(
     //   this.router.createUrlTree([`${this.configService.apiUrl(image.url)}`])
     // );
-  
-    window.open(this.configService.apiUrl(image.url), '_blank');
+    this.UIUtilsService.mostrarModal(VerFotografiasComponent, {image});
+    // window.open(this.configService.apiUrl(image.url), '_blank');
   }
 
   async mostrarAcciones(ev: any, r: ContestResultExpanded) {

@@ -405,7 +405,7 @@
                             *ngIf="contestService.isActive(concurso)"
                             class="ion-hide-md-down ion-justify-content-center"
                           >
-                            <ion-button title="Ver imágen"
+                            <ion-button title="Ver fotografía"
                               (click)="openImage(r.image)"
                             >
                               <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
@@ -413,6 +413,7 @@
                             </ion-button>
                             <ion-button
                               (click)="concursoDetailService.reviewImage.emit(r)"
+                              title="Calificar"
                             >
                               <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
                               <ion-icon name="star-outline"></ion-icon>
@@ -421,12 +422,14 @@
                               (click)="
                                 postImage(r.image, r.section_id)
                               "
+                              title="Editar"
                             >
                               <!-- <ion-button (click)="postImage(getImage(r))"> -->
                               <ion-icon name="create"></ion-icon>
                             </ion-button>
                             <ion-button
                               (click)="concursoDetailService.deleteImage.emit(r)"
+                              title="Eliminar"
                             >
                               <ion-icon name="trash"></ion-icon>
                             </ion-button>

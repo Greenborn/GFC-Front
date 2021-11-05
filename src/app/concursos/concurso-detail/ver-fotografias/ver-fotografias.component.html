@@ -1,0 +1,44 @@
+<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
+  <ion-header>
+    <ion-toolbar>
+      <ion-row class="ion-align-items-center ion-margin-end ">
+        <!-- <ion-back-button [defaultHref]="'/concursos/' + id"></ion-back-button> -->
+        <!-- <ion-back-button (click)="dismiss()"></ion-back-button> -->
+        <ion-col size="2" class="ion-hide-md-up">
+          <!-- <ion-back-button (click)="modalController.dismiss()"></ion-back-button> -->
+          <ion-button (click)="modalController.dismiss()" color="dark" fill="clear" class="">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col [ngClass]="{'ion-margin-start': responsiveService.isDesktop}">
+          <h5 class="ion-text-wrap">{{image.title}}</h5>
+        </ion-col>
+        <ion-col size="1" class="ion-hide-md-down">
+          <ion-button (click)="modalController.dismiss()" fill="clear" class="">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ion-header>
+
+  <div slot="start" class="w-100 inner-content ion-float-md-start">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center ion-align-self-center">
+        <ion-col>
+          <ion-row>
+            <ion-col>
+              <ng-template #noImg> 
+                <ion-text color="dark">No se encuentra una fotografía cargada</ion-text>
+              </ng-template>
+              <ion-row class="ion-padding-top">
+                <ion-img (ionError)="yepImg = false"  *ngIf="yepImg==true; else noImg" [src]="configService.apiUrl(image.url)"></ion-img>
+               
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</div>
