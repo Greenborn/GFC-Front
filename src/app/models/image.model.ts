@@ -5,6 +5,7 @@ export interface Image {
     code: string;
     title: string;
     profile_id: number;
+    url?: string;
 }
 
 export interface ImageExpanded extends Image {

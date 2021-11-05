@@ -127,7 +127,7 @@
               </h1>
               <ion-fab-button
                 size="small"
-                *ngIf="contestService.isActive(concurso)"
+                *ngIf="contestService.isActive(concurso) && concursantes.length > 0"
                 (click)="postImage()"
               >
                 <!-- [routerLink]="['agregar-foto']"   -->
@@ -354,6 +354,9 @@
                               <ion-text title="Nombre de la obra"
                                 ><b>{{ r.image.title }}</b></ion-text
                               >
+                              <!-- <ion-card-subtitle >{{
+                                r.image.url
+                              }}</ion-card-subtitle> -->
                               <!-- ><b>{{ getImage(r).title }}</b></ion-text> -->
                             </ion-col>
                           </ion-item>
@@ -402,6 +405,12 @@
                             *ngIf="contestService.isActive(concurso)"
                             class="ion-hide-md-down ion-justify-content-center"
                           >
+                            <ion-button title="Ver imágen"
+                              (click)="openImage(r.image)"
+                            >
+                              <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
+                              <ion-icon name="image-outline"></ion-icon>
+                            </ion-button>
                             <ion-button
                               (click)="concursoDetailService.reviewImage.emit(r)"
                             >

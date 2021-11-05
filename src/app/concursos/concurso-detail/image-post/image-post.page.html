@@ -39,6 +39,18 @@
                     ngDefaultControl
                   ></ion-input>
                 </ion-item>
+                <ion-row>
+                  <ion-col class="ion-no-padding">
+                    <ion-item class="w-100 ion-margin-bottom">
+                      <!-- <ion-label position="floating">Imágen</ion-label> -->
+                      <!-- [(ngModel)]="image.code" -->
+                      <input type="file" (change)="fileUpload($event.target.files)" />
+                    </ion-item>
+                    <div>
+                      <img [src]="imgSource" alt="">
+                    </div>
+                  </ion-col>
+                </ion-row>
                 <ion-item class="w-100 ion-margin-bottom">
                   <ion-label
                     [position]="(image.profile_id != undefined) ? 'stacked' : 'floating'"

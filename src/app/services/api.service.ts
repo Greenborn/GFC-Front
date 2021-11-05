@@ -53,19 +53,42 @@ export abstract class ApiService<T> {
 
   }
 
-  post(model: T, id: number = undefined, getParams: string = ''): Observable<T> {
+  post<K = T>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
     console.log('posting', model, 'id: ', id)
     const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
     return id == undefined ? 
-      this.http.post<T>(
+      this.http.post<K>(
         this.config.apiUrl(`${this.recurso}?${getParams}`), 
         model,
         { headers }
       ) :
-      this.http.put<T>(
+      this.http.put<K>(
         `${this.config.apiUrl(this.recurso)}/${id}?${getParams}`, 
         model,
         { headers }
+      ) 
+  }
+  postFormData<K = T>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
+    // const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
+    
+    const f = new FormData()
+    for ( let key in model ) {
+      f.append(key, (model as any)[key])
+    }
+    // f.forEach(v => {
+    //   console.log(v)
+    // })
+    console.log('posting form data', f, 'id: ', id)
+    return id == undefined ? 
+      this.http.post<K>(
+        this.config.apiUrl(`${this.recurso}?${getParams}`), 
+        f,
+        // { headers }
+      ) :
+      this.http.put<K>(
+        `${this.config.apiUrl(this.recurso)}/${id}?${getParams}`, 
+        f,
+        // { headers }
       ) 
   }
 

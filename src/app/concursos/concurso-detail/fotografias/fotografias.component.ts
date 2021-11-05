@@ -1,5 +1,6 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Category } from 'src/app/models/category.model';
 import { Contest } from 'src/app/models/contest.model';
@@ -12,6 +13,7 @@ import { Metric } from 'src/app/models/metric.model';
 import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { Section } from 'src/app/models/section.model';
+import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestService } from 'src/app/services/contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
@@ -68,6 +70,8 @@ export class FotografiasComponent implements OnInit {
     public contestService: ContestService,
     public UIUtilsService: UiUtilsService,
     private route: ActivatedRoute,
+    private router: Router,
+    private configService: ConfigService
   ) { 
     this.filtrado['perfil'] = {
       options: {
@@ -197,12 +201,28 @@ export class FotografiasComponent implements OnInit {
     })
   }
 
+  openImage(image: Image) {
+
+    // const url = this.router.serializeUrl(
+    //   this.router.createUrlTree([`${this.configService.apiUrl(image.url)}`])
+    // );
+  
+    window.open(this.configService.apiUrl(image.url), '_blank');
+  }
+
   async mostrarAcciones(ev: any, r: ContestResultExpanded) {
     const image = r.image
     const options = {
       component: MenuAccionesComponent, //componente a mostrar
       componentProps: {
         acciones: [
+          {
+            accion: (params: []) => this.openImage(image),
+            // accion: (params: []) => this.reviewImage(r),
+            params: [],
+            icon: 'image-outline',
+            label: 'Ver'
+          },
           {
             accion: (params: []) => this.concursoDetailService.reviewImage.emit(r),
             // accion: (params: []) => this.reviewImage(r),
@@ -211,7 +231,7 @@ export class FotografiasComponent implements OnInit {
             label: 'Puntuar'
           },
           {
-            accion: (params: []) => this.postImage(image),
+            accion: (params: []) => this.postImage(image, r.section_id),
             // accion: (params: []) => this.postImage(i),
             params: [],
             icon: 'create',

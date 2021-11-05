@@ -9,6 +9,7 @@ import { Metric } from 'src/app/models/metric.model';
 import { MetricService } from 'src/app/services/metric.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-image-review',
@@ -36,9 +37,14 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
     // private contestSvc: ConcursoService,
     private metricService: MetricService,
     alertCtrl: AlertController,
-    public responsiveService: ResponsiveService
+    public responsiveService: ResponsiveService,
+    private configService: ConfigService
   ) { 
     super(alertCtrl)
+  }
+
+  get imgSource(): string {
+    return this.configService.apiUrl(this.image.url)
   }
 
   ngOnInit() {}

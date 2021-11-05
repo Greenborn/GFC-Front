@@ -27,9 +27,13 @@
                   <ion-card-subtitle title="Código de la obra"
                     >{{ image.code }}</ion-card-subtitle
                   >
-                  <ion-text title="Nombre de la obra"
-                    ><b>{{image.title}}</b></ion-text
+                  <ion-card-title title="Nombre de la obra"
+                    ><b>{{image.title}}</b></ion-card-title
                   >
+                  <div>
+                    <img [src]="imgSource" alt="">
+                  </div>
+
                 </ion-col>
               </ion-row>
               <ion-row>

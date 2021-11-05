@@ -444,27 +444,32 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
           // handler: async () => {
           handler: () => {
             // await this.contestSvc.deleteConcurso(this.concurso.id);
-            super.fetch<void>(() => 
-              this.profileContestService.delete(profileContest.id)
-            ).subscribe(
-              _ => {
-                console.log('deleted', _)
-                this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
-                // this.concursoDetailService.inscriptos.emit(this.inscriptos)
-                this.concursoDetailService.loadProfileContests()
-                // this.router.navigate(['/concursos']);
-              }, 
-              async err => {
-                (await this.alertCtrl.create({
-                  header: 'Error',
-                  message: err.error['error-info'][2],
-                  buttons: [{
-                    text: 'Ok',
-                    role: 'cancel'
-                  }]
-                })).present()
-              }
-            )
+            if (this.resultadosConcurso.find(r => r.image.profile_id == profileContest.profile_id) != undefined) {
+              this.UIUtilsService.mostrarError({ message: 'El concursante tiene imágenes cargadas.' })
+            } else {
+              super.fetch<void>(() => 
+                this.profileContestService.delete(profileContest.id)
+              ).subscribe(
+                _ => {
+                  console.log('deleted', _)
+                  this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
+                  // this.concursoDetailService.inscriptos.emit(this.inscriptos)
+                  this.concursoDetailService.loadProfileContests()
+                  // this.router.navigate(['/concursos']);
+                }, 
+                async err => {
+                  (await this.alertCtrl.create({
+                    header: 'Error',
+                    message: err.error['error-info'][2],
+                    buttons: [{
+                      text: 'Ok',
+                      role: 'cancel'
+                    }]
+                  })).present()
+                }
+              )
+
+            }
           }
         }
       ]
