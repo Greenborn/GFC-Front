@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild ,AfterViewInit} from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -25,6 +25,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   markChip: boolean = false;
   public loading: boolean = true;
   mostrarFiltro: boolean = false;
+  anchoImg: boolean = false;
   // public concursos: Concurso[] = [];
   public concursos: Contest[] = [];
   public searchParams: SearchBarComponentParams;
@@ -48,6 +49,24 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     // super('concursos page', alertController)
     super(alertController)
   }
+
+  // @ViewChild('imageContest')
+  // imageContest: ElementRef;
+
+  // ngAfterViewInit() {
+  //   console.log(this.imageContest.nativeElement.offsetWidth);
+  // }
+    
+  obtenerTamanio(event){
+    console.log(event.srcElement.offsetWidth)
+    if (event.srcElement.offsetWidth > event.srcElement.offsetEight){
+      this.anchoImg = true;
+    } else {
+      this.anchoImg = false;
+    }
+  }
+
+  ngOnInit() {}
 
   isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
     return this.auth.loggedIn;
@@ -79,8 +98,6 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   toggleFiltro() {
     this.mostrarFiltro = !this.mostrarFiltro;
   }
-  
-  ngOnInit() {}
 
   ionViewWillEnter() {
     // this.concursos = await this.db.getConcursos()

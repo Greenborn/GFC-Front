@@ -147,52 +147,91 @@
             >
               <!-- concurso card -->
               <!-- <ion-card *ngFor="let concurso of concursos"> -->
-              <ion-card *ngFor="let c of concursos">
-                <ion-img [src]="configService.apiUrl(c.img_url)"></ion-img>
-                <ion-card-header>
-                  <ion-row class="ion-align-items-center">
-                    <ion-col class="ion-no-padding">
-                      <app-contest-status-chip
-                        [contest]="c"
-                      ></app-contest-status-chip>
-                      <ion-card-title>{{c.name}}</ion-card-title>
+                <!-- TODO: img -->
+                <ion-card *ngFor="let c of concursos" class="maxHeight">
+                  <ion-row>
+                    <ion-col size="12" size-md="7">
+                      <!-- <img #imageContest id="imageContest" [src]="configService.apiUrl(c.img_url)"> -->
+                      
+                        <!-- [class.ancho]="anchoImg" [class.alto]="!anchoImg"  -->
+                        <ion-avatar>
+
+                          <ion-img (ionImgWillLoad)="obtenerTamanio($event)" [src]="configService.apiUrl(c.img_url)"></ion-img>
+                        </ion-avatar>
+                     
                     </ion-col>
+                    <ion-col size="12" size-md="5">
+
+                      <ion-row class="h-100">
+
+                        <ion-card-header>
+                          <ion-row class="ion-align-items-center">
+                            <ion-col class="ion-no-padding">
+                              <app-contest-status-chip
+                                [contest]="c"
+                              ></app-contest-status-chip>
+                              <ion-card-title>{{c.name}}</ion-card-title>
+                            </ion-col>
+                          </ion-row>
+                          <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+                        </ion-card-header>
+                        <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
+                       
+                        <ion-card-content class="w-100">
+                          <ion-row >
+                            <!-- TODO: 600 caracteres¿? -->
+                            <ion-text >
+                              {{c.description}}
+                            </ion-text>
+                          </ion-row>
+                          <ion-row class="ion-margin-top">
+                            <b>Categorias:</b>
+                            <ion-badge color="light" class="ion-margin-start"
+                              *ngFor="let c of c.categories"
+                            >
+                              {{c.name}}
+                            </ion-badge>
+                          </ion-row>
+                          <ion-row class="ion-margin-bottom">
+                            <b>Secciones:</b>
+                            <ion-badge color="light" class="ion-margin-start"
+                              *ngFor="let s of c.sections"
+                            >
+                              {{s.name}}
+                            </ion-badge>
+                          </ion-row>
+
+
+                        </ion-card-content>
+                        <ion-row class="w-100">
+                          <ion-col class="ion-float-right">
+                            <!-- <ion-toolbar> -->
+                            <!-- <ion-buttons slot="start"> -->
+                            <ion-button class="ion-float-right"  size="small" [routerLink]="[c.id]"
+                              >Ver concurso</ion-button
+                            >
+                            <!-- </ion-buttons> -->
+                            <!-- </ion-toolbar> -->
+                          </ion-col>
+                        </ion-row>
+                        
+                      </ion-row>
+
+                      
+                    </ion-col>
+                    <!-- <ion-footer>
+
+                      <ion-row class="ion-float-right ion-float-bottom" >
+                        <ion-col>
+                 
+                          <ion-button size="small" [routerLink]="[c.id]"
+                            >Ver concurso</ion-button
+                          >
+      
+                        </ion-col>
+                      </ion-row>
+                    </ion-footer> -->
                   </ion-row>
-                  <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
-                </ion-card-header>
-                <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
-                <ion-card-content>
-                  <ion-row class="ion-margin-bottom">
-                    <b>Categorias:</b>
-                    <ion-badge color="light" class="ion-margin-start"
-                      *ngFor="let c of c.categories"
-                    >
-                      {{c.name}}
-                    </ion-badge>
-                  </ion-row>
-                  <ion-row class="ion-margin-bottom">
-                    <b>Secciones:</b>
-                    <ion-badge color="light" class="ion-margin-start"
-                      *ngFor="let s of c.sections"
-                    >
-                      {{s.name}}
-                    </ion-badge>
-                  </ion-row>
-                  <ion-text>
-                    {{c.description}}
-                  </ion-text>
-                </ion-card-content>
-                <ion-row class="ion-float-right">
-                  <ion-col>
-                    <!-- <ion-toolbar> -->
-                    <!-- <ion-buttons slot="start"> -->
-                    <ion-button size="small" [routerLink]="[c.id]"
-                      >Ver concurso</ion-button
-                    >
-                    <!-- </ion-buttons> -->
-                    <!-- </ion-toolbar> -->
-                  </ion-col>
-                </ion-row>
                 <!-- <ion-label>{{item}}</ion-label> -->
               </ion-card>
             </ion-list>
