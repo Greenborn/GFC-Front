@@ -82,6 +82,10 @@ export class ConcursantesComponent implements OnInit {
   get isAdmin() {
     return (this.user != undefined ? this.rolificador.isAdmin(this.user) : false)
   }
+  get checkPermissions() {
+    return this.contestService.isActive(this.concurso) && 
+      (this.user != undefined ? this.rolificador.esDelegado(this.user) : false)
+  }
 
   async ngOnInit() {
     if (this.concurso.id == undefined) {

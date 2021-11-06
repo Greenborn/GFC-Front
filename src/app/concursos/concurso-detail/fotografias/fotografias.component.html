@@ -402,7 +402,6 @@
                           class="ion-align-self-center"
                         >
                           <ion-buttons
-                            *ngIf="contestService.isActive(concurso)"
                             class="ion-hide-md-down ion-justify-content-center"
                           >
                             <ion-button title="Ver fotografía"
@@ -412,6 +411,7 @@
                               <ion-icon name="image-outline"></ion-icon>
                             </ion-button>
                             <ion-button
+                              *ngIf="checkPermissions"
                               (click)="concursoDetailService.reviewImage.emit(r)"
                               title="Calificar"
                             >
@@ -419,6 +419,7 @@
                               <ion-icon name="star-outline"></ion-icon>
                             </ion-button>
                             <ion-button
+                             *ngIf="checkPermissions"
                               (click)="
                                 postImage(r.image, r.section_id)
                               "
@@ -428,6 +429,7 @@
                               <ion-icon name="create"></ion-icon>
                             </ion-button>
                             <ion-button
+                              *ngIf="checkPermissions"
                               (click)="concursoDetailService.deleteImage.emit(r)"
                               title="Eliminar"
                             >
@@ -435,7 +437,6 @@
                             </ion-button>
                           </ion-buttons>
                           <ion-buttons
-                            *ngIf="contestService.isActive(concurso)"
                             class="ion-hide-md-up"
                           >
                             <ion-button (click)="mostrarAcciones($event, r)">

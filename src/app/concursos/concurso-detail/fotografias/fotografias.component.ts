@@ -13,6 +13,9 @@ import { Metric } from 'src/app/models/metric.model';
 import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { Section } from 'src/app/models/section.model';
+import { UserLogged } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestService } from 'src/app/services/contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
@@ -39,6 +42,7 @@ export class FotografiasComponent implements OnInit {
   resultadosConcurso: ContestResultExpanded[] = [];
   resultadosConcursoOrig: ContestResultExpanded[] = [];
   fotoclubs: Fotoclub[] = [];
+  user: UserLogged
 
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
@@ -72,7 +76,9 @@ export class FotografiasComponent implements OnInit {
     public UIUtilsService: UiUtilsService,
     private route: ActivatedRoute,
     private router: Router,
-    private configService: ConfigService
+    private configService: ConfigService,
+    public rolificador: RolificadorService,
+    public auth: AuthService,
   ) { 
     this.filtrado['perfil'] = {
       options: {
@@ -85,8 +91,10 @@ export class FotografiasComponent implements OnInit {
       }
     }
   }
+  
 
   async ngOnInit() {
+    this.auth.user.then(u => this.user = u)
     // let loading: HTMLIonLoadingElement;
     if (this.concurso.id == undefined) {
       await this.UIUtilsService.presentLoading()
@@ -153,6 +161,11 @@ export class FotografiasComponent implements OnInit {
     
   }
 
+  get checkPermissions() {
+    return this.contestService.isActive(this.concurso) && 
+    (this.user != undefined ? this.rolificador.esDelegado(this.user) : false)
+  }
+
   get inscriptosProfiles(): Profile[] {
     const inscriptos = this.categoriaSeleccionada != null ? this.inscriptos.filter(i => i.category_id == this.categoriaSeleccionada.id) : this.inscriptos
     return inscriptos.map(i => i.profile)
@@ -213,39 +226,44 @@ export class FotografiasComponent implements OnInit {
 
   async mostrarAcciones(ev: any, r: ContestResultExpanded) {
     const image = r.image
+    const acciones = [
+      {
+        accion: (params: []) => this.openImage(image),
+        // accion: (params: []) => this.reviewImage(r),
+        params: [],
+        icon: 'image-outline',
+        label: 'Ver'
+      }
+    ]
+    if (this.checkPermissions) {
+      acciones.push(
+        {
+          accion: (params: []) => this.concursoDetailService.reviewImage.emit(r),
+          // accion: (params: []) => this.reviewImage(r),
+          params: [],
+          icon: 'star-outline',
+          label: 'Puntuar'
+        },
+        {
+          accion: (params: []) => this.postImage(image, r.section_id),
+          // accion: (params: []) => this.postImage(i),
+          params: [],
+          icon: 'create',
+          label: 'Editar'
+        },
+        {
+          accion: (params: number[]) => this.concursoDetailService.deleteImage.emit(r),
+          // accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
+          params: [],
+          icon: 'trash',
+          label: 'Borrar'
+        }
+      )
+    }
     const options = {
       component: MenuAccionesComponent, //componente a mostrar
       componentProps: {
-        acciones: [
-          {
-            accion: (params: []) => this.openImage(image),
-            // accion: (params: []) => this.reviewImage(r),
-            params: [],
-            icon: 'image-outline',
-            label: 'Ver'
-          },
-          {
-            accion: (params: []) => this.concursoDetailService.reviewImage.emit(r),
-            // accion: (params: []) => this.reviewImage(r),
-            params: [],
-            icon: 'star-outline',
-            label: 'Puntuar'
-          },
-          {
-            accion: (params: []) => this.postImage(image, r.section_id),
-            // accion: (params: []) => this.postImage(i),
-            params: [],
-            icon: 'create',
-            label: 'Editar'
-          },
-          {
-            accion: (params: number[]) => this.concursoDetailService.deleteImage.emit(r),
-            // accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
-            params: [],
-            icon: 'trash',
-            label: 'Borrar'
-          }
-        ]
+        acciones
       },
       cssClass: 'auto-width',
       event: ev,
