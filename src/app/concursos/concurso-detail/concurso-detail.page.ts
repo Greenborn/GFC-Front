@@ -321,6 +321,18 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
 //     console.log('suscribed')
 // } 
 
+obtenerPx() {
+  if (window.innerWidth > 767) {
+    // console.log(colCard.clientHeight)
+    // return window.innerWidth/6;
+    return 15;
+  } else {
+    // return colCard.el.clientWidth/2;
+    // return window.innerWidth/2
+    return 25;
+  }
+}
+
   isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
     return this.auth.loggedIn;
   }

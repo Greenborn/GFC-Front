@@ -25,7 +25,9 @@
     <ion-col>
       <!-- <ion-card *ngIf="!loading; else spinner" class="ion-no-margin"> -->
       <ion-card class="ion-no-margin">
-        <ion-img [src]="configService.apiUrl(concurso.img_url)"></ion-img>
+        <ion-avatar class="w-100" [style.height.vh]="obtenerPx()">
+          <ion-img [src]="configService.apiUrl(concurso.img_url)"></ion-img>
+        </ion-avatar>
         <ion-card-header>
           <ion-row>
             <ion-col >
