@@ -81,7 +81,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     private profileService: ProfileService,
     private metricService: MetricService,
     private imageService: ImageService,
-    private rolificador: RolificadorService,
+    public rolificador: RolificadorService,
     public concursoDetailService: ConcursoDetailService,
     private profileContestService: ProfileContestService,
     public UIUtilsService: UiUtilsService,
@@ -668,10 +668,12 @@ obtenerPx() {
   }
 
   get fechaInicio(): string {
-    return this.contestService.formatearFechaParaHTML(this.concurso.start_date ?? '');
+    // return this.contestService.formatearFechaParaHTML(this.concurso.start_date ?? '');
+    return this.concurso.start_date
   }
   get fechaFin(): string {
-    return this.contestService.formatearFechaParaHTML(this.concurso.end_date ?? '');
+    // return this.contestService.formatearFechaParaHTML(this.concurso.end_date ?? '');
+    return this.concurso.end_date
   }
 
   async deleteConcurso() {

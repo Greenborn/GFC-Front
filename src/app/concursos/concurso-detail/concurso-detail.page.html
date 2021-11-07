@@ -21,7 +21,7 @@
       name="arrow-up"
     ></ion-icon> 
   </ion-fab-button> -->
-  <ion-row size="12">
+  <ion-row size="12" *ngIf=" (auth.user | async) as userLogged">
     <ion-col>
       <!-- <ion-card *ngIf="!loading; else spinner" class="ion-no-margin"> -->
       <ion-card class="ion-no-margin">
@@ -40,53 +40,21 @@
                   >{{concurso.name}}</ion-card-title>
                 </ion-col>
               </ion-row>
-              <ion-row class="ion-margin-top">
-                <ion-card-subtitle
+              <ion-row class="">
+                <ion-card-subtitle>Desde {{fechaInicio | date:'dd-MM-yyyy' }} Hasta {{fechaFin | date:'dd-MM-yyyy' }}</ion-card-subtitle>
+                <!-- <ion-card-subtitle
                   >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
-                >
-              </ion-row>
-              <ion-row class="ion-margin-top">
-                <b>Categorias:</b>
-                <ion-badge color="light" class="ion-margin-start"
-                  *ngFor="let c of categoriasInscriptasAsc"
-                >
-                  {{c.category.name}}
-                </ion-badge>
-                <!-- <ion-chip outline color="dark"
-                  *ngFor="let c of categoriasInscriptas"
-                >
-                  <ion-label>{{c.category.name}}</ion-label>
-                </ion-chip> -->
-              </ion-row>
-              <ion-row class="ion-margin-top">
-                <b>Secciones:</b>
-                <ion-badge color="light" class="ion-margin-start"
-                  *ngFor="let s of seccionesInscriptasAsc"
-                >
-                  {{s.section.name}}
-                </ion-badge>
-                <!-- <ion-chip outline color="dark"
-                  *ngFor="let c of categoriasInscriptas"
-                >
-                  <ion-label>{{c.category.name}}</ion-label>
-                </ion-chip> -->
-              </ion-row>
-              <ion-row class="ion-margin-top ion-align-items-center">
-                <b>Reglamento</b>
-                <ion-button (click)="openRules()"
-                  size="small" 
-                >
-                  <ion-icon name="link-outline"></ion-icon>
-                </ion-button>
+                > -->
               </ion-row>
             </ion-col>
-            <ion-col *ngIf="isLogedIn()" class="ion-align-self-start">
+                <!-- TODO: hacer priv el rolific-->
+            <ion-col *ngIf="isLogedIn() && !rolificador.isNotPrivilegies(userLogged)" class="ion-align-self-start">
               <ion-button class="ion-float-right" (click)="deleteConcurso()">
                 <ion-icon name="trash"></ion-icon>
               </ion-button>
               <ion-button
                 class="ion-float-right"
-                *ngIf="isLogedIn()"
+                *ngIf="isLogedIn() && !rolificador.isNotPrivilegies(userLogged)"
                 [routerLink]="['/concursos/editar/'+concurso.id]"
               >
                 <ion-icon name="create"></ion-icon>
@@ -99,6 +67,41 @@
         <ion-card-content>
           <!-- <ion-card-title>Descripcion</ion-card-title> -->
           <ion-text>{{concurso.description}}</ion-text>
+          <ion-row class="ion-margin-top ion-align-items-center">
+            <b>Reglamento</b>
+            <ion-button (click)="openRules()"
+              size="small" 
+            >
+              <ion-icon name="link-outline"></ion-icon>
+            </ion-button>
+          </ion-row>
+          <ion-row class="ion-margin-top">
+            <b>Categorias:</b>
+            <ion-badge color="light" class="ion-margin-start"
+              *ngFor="let c of categoriasInscriptasAsc"
+            >
+              {{c.category.name}}
+            </ion-badge>
+            <!-- <ion-chip outline color="dark"
+              *ngFor="let c of categoriasInscriptas"
+            >
+              <ion-label>{{c.category.name}}</ion-label>
+            </ion-chip> -->
+          </ion-row>
+          <ion-row class="ion-margin-top">
+            <b>Secciones:</b>
+            <ion-badge color="light" class="ion-margin-start"
+              *ngFor="let s of seccionesInscriptasAsc"
+            >
+              {{s.section.name}}
+            </ion-badge>
+            <!-- <ion-chip outline color="dark"
+              *ngFor="let c of categoriasInscriptas"
+            >
+              <ion-label>{{c.category.name}}</ion-label>
+            </ion-chip> -->
+          </ion-row>
+         
         </ion-card-content>
         <!-- <ion-label>{{item}}</ion-label> -->
       </ion-card>

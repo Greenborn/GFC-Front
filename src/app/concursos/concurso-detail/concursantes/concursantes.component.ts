@@ -134,6 +134,10 @@ export class ConcursantesComponent implements OnInit {
     })
   }
 
+  isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
+    return this.auth.loggedIn;
+  }
+
   getFotosCargadas(profile_id: number) {
     return this.resultadosConcurso.filter(cr => cr.image.profile_id == profile_id).length
   }

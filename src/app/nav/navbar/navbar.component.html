@@ -19,7 +19,9 @@
     <!-- <ion-button> Reglamento </ion-button> -->
     <ion-button [routerLink]="['/concursos']"> Concursos </ion-button>
     <!-- <ion-button> Galería </ion-button> -->
-    <ion-button [routerLink]="['/usuarios']">
+    <ion-button [routerLink]="['/usuarios']"
+    *ngIf="!rolificador.isNotPrivilegies(u)"
+    >
       {{ rolificador.getNombreUsuarios(u.role_id) }}
     </ion-button>
   </ion-buttons>

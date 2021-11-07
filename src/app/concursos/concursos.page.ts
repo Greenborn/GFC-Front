@@ -15,7 +15,10 @@ import { Contest } from '../models/contest.model';
 import { AuthService } from '../modules/auth/services/auth.service';
 import { ConfigService } from '../services/config/config.service';
 import { ResponsiveService } from '../services/ui/responsive.service';
+import { RoleService } from '../services/role.service';
+import { RolificadorService } from '../modules/auth/services/rolificador.service';
 
+import { User, UserLogged } from '../../app/models/user.model';
 @Component({
   selector: 'app-concursos',
   templateUrl: './concursos.page.html',
@@ -42,8 +45,9 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   constructor(
     public popoverController: PopoverController,
     private router: Router,
-    private auth: AuthService,
+    public auth: AuthService,
     public contestService: ContestService,
+    public rolificador: RolificadorService,
     alertController: AlertController,
     public configService: ConfigService,
     public responsiveService: ResponsiveService

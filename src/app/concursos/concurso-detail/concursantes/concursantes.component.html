@@ -21,7 +21,7 @@
   
       <ion-col>
         <ion-row>
-          <ion-col size="11.5" push="0.25">
+          <ion-col size="11.5" push="0.25" *ngIf=" (auth.user | async) as userLogged">
             <ion-row
               class="
                 ion-justify-content-start
@@ -33,9 +33,10 @@
               <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
                 Inscriptos
               </h1>
+                <!-- TODO: hacer priv el rolific-->
               <ion-fab-button
                 size="small"
-                *ngIf="contestService.isActive(concurso) && concursantes.length > 0"
+                *ngIf="contestService.isActive(concurso) && concursantes.length > 0 && isLogedIn() && !rolificador.isNotPrivilegies(userLogged)"
                 (click)="inscribirConcursante()"
               >
                 <!-- [routerLink]="['agregar-foto']"   -->
@@ -266,7 +267,7 @@
                             >
                               <ion-icon name="camera-outline"></ion-icon>
                             </ion-button>
-                            <ion-button *ngIf="checkPermissions"
+                            <ion-button *ngIf="checkPermissions && isLogedIn() && !rolificador.isNotPrivilegies(userLogged)"
                               (click)="
                                 concursoDetailService.desinscribirConcursante.emit(
                                   m

@@ -22,7 +22,7 @@
     </ion-fab-button>
   </ion-fab> -->
 
-  <ion-grid>
+  <ion-grid *ngIf=" (auth.user | async) as userLogged">
     <ion-row>
       <ion-col size="12" size-md="3" *ngIf="mostrarFiltro">
         <ion-col>
@@ -93,14 +93,15 @@
               <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
                 Concursos
               </h1>
+              <!-- TODO: hacer priv el rolific -->
               <!-- <ion-fab *ngIf="isLogedIn()"> -->
-              <ion-fab-button
-                size="small"
-                *ngIf="isLogedIn()"
-                [routerLink]="['nuevo']"
-              >
-                <ion-icon name="add"></ion-icon>
-              </ion-fab-button>
+                  <ion-fab-button
+                    size="small"
+                    *ngIf="isLogedIn() && !rolificador.isNotPrivilegies(userLogged)"
+                    [routerLink]="['nuevo']"
+                  >
+                    <ion-icon name="add"></ion-icon>
+                  </ion-fab-button>
               <!-- </ion-fab> -->
             </ion-row>
             <!-- <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar> -->
@@ -109,9 +110,9 @@
             <ion-row class="ion-align-items-center ion-padding-bottom">
               <ion-col class="ion-no-padding" size="10" size-sm="11">
                 <ion-button
+                *ngIf="isLogedIn() && !rolificador.isNotPrivilegies(userLogged)"
                   [routerLink]="['secciones']"
-                >Administrar secciones</ion-button>
-
+                >Administrar secciones</ion-button>                    
                 <!-- <app-search-bar
                   [(data)]="concursos"
                   [atributosObj]="atributosBusqueda"
@@ -169,7 +170,7 @@
                               <ion-card-title>{{c.name}}</ion-card-title>
                             </ion-col>
                           </ion-row>
-                          <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+                          <ion-card-subtitle>Desde {{c.start_date | date:'dd-MM-yyyy' }} Hasta {{c.end_date | date:'dd-MM-yyyy' }}</ion-card-subtitle>
                         </ion-card-header>
                         <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
                        
