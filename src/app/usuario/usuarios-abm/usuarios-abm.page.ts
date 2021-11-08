@@ -54,12 +54,6 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       valorMostrado: 'Username', 
       // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
       callback: (c: ProfileExpanded, query: string) => c.user.username.match(new RegExp(`^${query}`, 'i'))
-    },
-    { 
-      valor: 'fotoclub_id', 
-      valorMostrado: 'Fotoclub / Agrupación', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
-      callback: (c: ProfileExpanded, query: string) => this.getFotoclubName(c.fotoclub_id).match(new RegExp(`^${query}`, 'i'))
     }
   ];
   
@@ -129,6 +123,17 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
         return p.user.role_id == parseInt(atributoValue)
       }
     }
+
+    this.auth.user.then(u => {
+      if (this.rolificador.isAdmin(u)) {
+        this.atributosBusqueda.push({ 
+          valor: 'fotoclub_id', 
+          valorMostrado: 'Fotoclub / Agrupación', 
+          // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+          callback: (c: ProfileExpanded, query: string) => this.getFotoclubName(c.fotoclub_id).match(new RegExp(`^${query}`, 'i'))
+        })
+      }
+    })
 
     // this.funcionesFiltrado['fotoclub'] = (p: ProfileExpanded, atributoValue: string) => {
 

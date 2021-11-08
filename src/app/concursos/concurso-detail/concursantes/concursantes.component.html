@@ -20,7 +20,7 @@
       </ion-col>
   
       <ion-col>
-        <ion-row>
+        <ion-row *ngIf="(auth.user | async) as u">
           <ion-col size="11.5" push="0.25">
             <ion-row
               class="
@@ -35,7 +35,7 @@
               </h1>
               <ion-fab-button
                 size="small"
-                *ngIf="contestService.isActive(concurso) && concursantes.length > 0"
+                *ngIf="contestService.isActive(concurso) && rolificador.esDelegado(u) && concursantes.length > 0"
                 (click)="inscribirConcursante()"
               >
                 <!-- [routerLink]="['agregar-foto']"   -->

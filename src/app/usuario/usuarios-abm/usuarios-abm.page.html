@@ -17,7 +17,7 @@
           </app-search-bar>
 
           <!-- [(data)]="miembros" -->
-          <app-search-select
+          <app-search-select *ngIf="rolificador.isAdmin(userLogged)"
             title="Fotoclub / Agrupación"
             [optionsProps]="filtrado['fotoclub'].options"
             [optionsData]="fotoclubs"
@@ -26,7 +26,7 @@
             <!-- [filterCallback]="funcionesFiltrado['fotoclub']" -->
           </app-search-select>
           <!-- [(data)]="miembros" -->
-          <app-search-select
+          <app-search-select *ngIf="rolificador.isAdmin(userLogged)"
             title="Rol"
             [optionsProps]="filtrado['rol'].options"
             [optionsData]="roles"
@@ -123,7 +123,9 @@
                 <h2 class="ion-margin-top ion-margin-bottom ion-margin-end">
                   {{getTitulo(userLogged)}}
                 </h2>
-                <ion-fab-button [routerLink]="['nuevo']" size="small">
+                <ion-fab-button *ngIf="rolificador.esDelegado(userLogged)"
+                  [routerLink]="['nuevo']" size="small"
+                >
                   <ion-icon name="add"></ion-icon>
                 </ion-fab-button>
               </ion-row>

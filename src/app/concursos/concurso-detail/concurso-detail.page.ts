@@ -81,7 +81,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     private profileService: ProfileService,
     private metricService: MetricService,
     private imageService: ImageService,
-    private rolificador: RolificadorService,
+    public rolificador: RolificadorService,
     public concursoDetailService: ConcursoDetailService,
     private profileContestService: ProfileContestService,
     public UIUtilsService: UiUtilsService,

@@ -13,7 +13,9 @@
       <ion-item [routerLink]="['/concursos']">Concursos</ion-item>
       <!-- <ion-item>Galería</ion-item> -->
       <!-- <ion-item [routerLink]="['/usuarios']" *ngIf="isLoggedIn()">Usuarios</ion-item> -->
-      <ion-item [routerLink]="['/usuarios']">
+      <ion-item *ngIf="rolificador.esDelegado(u)"
+        [routerLink]="['/usuarios']"
+      >
         {{ rolificador.getNombreUsuarios(u.role_id) }}
       </ion-item>
     </ion-list>

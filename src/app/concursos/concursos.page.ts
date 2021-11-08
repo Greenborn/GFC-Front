@@ -14,6 +14,7 @@ import { ApiConsumer } from '../models/ApiConsumer';
 import { Contest } from '../models/contest.model';
 import { AuthService } from '../modules/auth/services/auth.service';
 import { ConfigService } from '../services/config/config.service';
+import { RolificadorService } from '../modules/auth/services/rolificador.service';
 
 @Component({
   selector: 'app-concursos',
@@ -40,10 +41,11 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   constructor(
     public popoverController: PopoverController,
     private router: Router,
-    private auth: AuthService,
+    public auth: AuthService,
     public contestService: ContestService,
     alertController: AlertController,
-    public configService: ConfigService
+    public configService: ConfigService,
+    public rolificador: RolificadorService
   ) { 
     // super('concursos page', alertController)
     super(alertController)

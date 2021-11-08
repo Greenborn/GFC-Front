@@ -79,7 +79,7 @@
         </ion-col>
       </ion-col>
       <ion-col>
-        <ion-row>
+        <ion-row *ngIf="(auth.user | async) as u">
           <ion-col size-md="10" push-md="1">
             <ion-row
               class="
@@ -96,7 +96,7 @@
               <!-- <ion-fab *ngIf="isLogedIn()"> -->
               <ion-fab-button
                 size="small"
-                *ngIf="isLogedIn()"
+                *ngIf="rolificador.esDelegado(u)"
                 [routerLink]="['nuevo']"
               >
                 <ion-icon name="add"></ion-icon>
@@ -110,6 +110,7 @@
               <ion-col class="ion-no-padding" size="10" size-sm="11">
                 <ion-button
                   [routerLink]="['secciones']"
+                  *ngIf="rolificador.esDelegado(u)"
                 >Administrar secciones</ion-button>
 
                 <!-- <app-search-bar

@@ -113,7 +113,9 @@
   
       <ion-col>
         <ion-row>
-          <ion-col size="11.5" push="0.25">
+          <ion-col size="11.5" push="0.25"
+            *ngIf="(auth.user | async) as u"
+          >
             <ion-row
               class="
                 ion-justify-content-start
@@ -127,7 +129,9 @@
               </h1>
               <ion-fab-button
                 size="small"
-                *ngIf="contestService.isActive(concurso) && concursantes.length > 0"
+                *ngIf="contestService.isActive(concurso) && 
+                       rolificador.esDelegado(u) &&
+                       concursantes.length > 0"
                 (click)="postImage()"
               >
                 <!-- [routerLink]="['agregar-foto']"   -->
@@ -144,7 +148,7 @@
                 </app-search-bar> -->
                 <ion-row class="ion-justify-content-end ion-align-items-end">
   
-                  <app-search-select
+                  <app-search-select *ngIf="rolificador.esDelegado(u)"
                     title="Concursante"
                     [optionsProps]="filtrado['perfil'].options"
                     [optionsData]="inscriptosProfiles"

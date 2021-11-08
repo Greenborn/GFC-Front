@@ -15,13 +15,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content #pageContent id="concurso-content" >
+<ion-content #pageContent id="concurso-content">
   <!-- <ion-fab-button slot="fixed" style="bottom: 0; right: 0">
     <ion-icon
       name="arrow-up"
     ></ion-icon> 
   </ion-fab-button> -->
-  <ion-row size="12">
+  <ion-row size="12" *ngIf="(auth.user | async) as u">
     <ion-col>
       <!-- <ion-card *ngIf="!loading; else spinner" class="ion-no-margin"> -->
       <ion-card class="ion-no-margin">
@@ -78,7 +78,7 @@
                 </ion-button>
               </ion-row>
             </ion-col>
-            <ion-col *ngIf="isLogedIn()" class="ion-align-self-start">
+            <ion-col *ngIf="rolificador.esDelegado(u)" class="ion-align-self-start">
               <ion-button class="ion-float-right" (click)="deleteConcurso()">
                 <ion-icon name="trash"></ion-icon>
               </ion-button>
@@ -116,10 +116,12 @@
 
       <ion-row id="concurso-tabs" #tabsContent>
         <ion-col>
-          <ion-row>
+          <ion-row *ngIf="(auth.user | async) as u">
             <ion-tabs>
               <ion-tab-bar slot="top">
-                <ion-tab-button tab="concursantes">
+                <ion-tab-button tab="concursantes"
+                  *ngIf="!concurso.active || rolificador.esDelegado(u)"
+                >
                   <ion-icon name="people-outline"></ion-icon>
                   <ion-label>Concursantes</ion-label>
                   <!-- <ion-badge>{{ loading ? '' : inscriptos.length }}</ion-badge> -->
