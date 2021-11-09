@@ -92,7 +92,9 @@ export class FotografiasComponent implements OnInit {
     }
   }
   
-
+  isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
+    return this.auth.loggedIn;
+  }
   async ngOnInit() {
     this.auth.user.then(u => this.user = u)
     // let loading: HTMLIonLoadingElement;

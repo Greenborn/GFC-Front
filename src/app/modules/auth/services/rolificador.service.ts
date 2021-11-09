@@ -36,6 +36,10 @@ export class RolificadorService {
     return u.role_id < 3
   }
 
+  isNotPrivilegies(u: User): boolean {
+    return u.role_id >= 3
+  }
+
   // getUsers(u: UserLogged): Observable<User[]> {
   //   return this.userService.getAll().pipe(
   //     map(users => users.filter(user => {

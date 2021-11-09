@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild ,AfterViewInit} from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -16,6 +16,7 @@ import { AuthService } from '../modules/auth/services/auth.service';
 import { ConfigService } from '../services/config/config.service';
 import { RolificadorService } from '../modules/auth/services/rolificador.service';
 
+import { User, UserLogged } from '../../app/models/user.model';
 @Component({
   selector: 'app-concursos',
   templateUrl: './concursos.page.html',
@@ -26,6 +27,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   markChip: boolean = false;
   public loading: boolean = true;
   mostrarFiltro: boolean = false;
+  anchoImg: boolean = false;
   // public concursos: Concurso[] = [];
   public concursos: Contest[] = [];
   public searchParams: SearchBarComponentParams;
@@ -43,13 +45,51 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     private router: Router,
     public auth: AuthService,
     public contestService: ContestService,
+    public rolificador: RolificadorService,
     alertController: AlertController,
-    public configService: ConfigService,
-    public rolificador: RolificadorService
+    public configService: ConfigService
   ) { 
     // super('concursos page', alertController)
     super(alertController)
   }
+    
+  obtenerTamanio(event){
+    console.log(event.srcElement.offsetWidth)
+    if (event.srcElement.offsetWidth > event.srcElement.offsetEight){
+      this.anchoImg = true;
+    } else {
+      this.anchoImg = false;
+    }
+  }
+
+    // @ViewChild('imageContest')
+  // imageContest: ElementRef;
+
+  // ngAfterViewInit() {
+  //   console.log(this.imageContest.nativeElement.offsetWidth);
+  // }
+
+  // obtenerPx(){
+  //   let elem = document.querySelector('#colCard').getBoundingClientRect();
+  //   if (window.innerWidth > 767) {
+  //     return elem.height;
+  //   } else {
+  //     return elem.width/2;
+  //   }
+  // }
+
+  obtenerPx(colCard){
+    // console.log(colCard)
+    if (window.innerWidth > 767) {
+      // console.log(colCard.clientHeight)
+      return colCard.el.clientHeight;
+    } else {
+      // return colCard.el.clientWidth/2;
+      return window.innerWidth/2
+    }
+  }
+
+  ngOnInit() {}
 
   isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
     return this.auth.loggedIn;
@@ -81,8 +121,6 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   toggleFiltro() {
     this.mostrarFiltro = !this.mostrarFiltro;
   }
-  
-  ngOnInit() {}
 
   ionViewWillEnter() {
     // this.concursos = await this.db.getConcursos()

@@ -1,0 +1,30 @@
+ion-avatar img{ width: 100% !important; height: 100% !important; } 
+
+ion-avatar{--border-radius: 0px; } 
+
+// .truncate {
+//     // --max-lines: 3;
+//     // line-height: 1.2em !important;
+//     // height: 3.6em !important; //3 lineas
+//     white-space: nowrap !important;
+//     overflow: hidden !important;
+//     text-overflow: ellipsis !important;
+//   }
+  .line-clamp{
+    display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 6 !important;
+  overflow: hidden !important;
+  }
+
+//   .truncate::after {
+//     content: "";
+//     text-align: right;
+//     position: absolute;
+//     bottom: 0;
+//     right: 0;
+//     width: 70%;
+//     height: 1.2em;
+//     background:
+//       linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+//   }
