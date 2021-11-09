@@ -24,6 +24,11 @@
     >
       {{ rolificador.getNombreUsuarios(u.role_id) }}
     </ion-button>
+    <ion-button *ngIf="rolificador.isAdmin(u)"
+      [routerLink]="['/organizaciones']"
+    >
+      Organizaciones
+    </ion-button>
   </ion-buttons>
   <!-- <ion-buttons slot="secondary" *ngIf="auth.loggedIn; else login"> -->
   <ion-buttons slot="secondary" *ngIf="auth.loggedIn; else login">

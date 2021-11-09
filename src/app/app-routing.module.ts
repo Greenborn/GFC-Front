@@ -65,6 +65,11 @@ const routes: Routes = [
   canActivate: [AuthGuard],
   loadChildren: () => import('./notificaciones/notificaciones.module').then( m => m.NotificacionesPageModule)
 },
+  {
+    path: 'organizaciones',
+    loadChildren: () => import('./fotoclubs-abm/fotoclubs-abm.module').then( m => m.FotoclubsAbmPageModule)
+  },
+
   // {
   //   path: 'login',
   //   loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)

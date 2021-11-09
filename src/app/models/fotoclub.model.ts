@@ -1,4 +1,4 @@
 export interface Fotoclub {
-    id: number;
+    id?: number;
     name: string;
 }

@@ -18,6 +18,11 @@
       >
         {{ rolificador.getNombreUsuarios(u.role_id) }}
       </ion-item>
+      <ion-item *ngIf="rolificador.isAdmin(u)"
+        [routerLink]="['/organizaciones']"
+      >
+        Organizaciones
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-menu>

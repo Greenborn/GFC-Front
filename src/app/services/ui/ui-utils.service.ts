@@ -70,7 +70,8 @@ export class UiUtilsService {
 
   async mostrarModal(
     component: ComponentRef, 
-    componentProps: any = {}
+    componentProps: any = {},
+    fullscreenOnDesktop: boolean = false
   ): Promise<any> {
     if (this.popover != undefined) {
       this.popoverController.dismiss(this.popover)
@@ -79,11 +80,15 @@ export class UiUtilsService {
 
     componentProps.modalController = this.modalController
 
-    const modal = await this.modalController.create({
+    const props: any = {
       component,
-      cssClass: 'auto-width',
       componentProps
-    });
+    }
+    if (!fullscreenOnDesktop) {
+      props.cssClass = 'auto-width'
+    }
+
+    const modal = await this.modalController.create(props);
     await modal.present()
 
     const { data } = await modal.onWillDismiss();

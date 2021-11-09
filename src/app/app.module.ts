@@ -19,6 +19,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './modules/auth/services/auth-interceptor.service';
 import { ImageService } from './services/image.service';
 import { ConcursoDetailService } from './concursos/concurso-detail/concurso-detail.service';
+import { UiUtilsService } from './services/ui/ui-utils.service';
 
 //componente de ojo
 // import { InputOjoComponent } from '../app/shared/input-ojo/input-ojo.component'
@@ -45,6 +46,7 @@ import { ConcursoDetailService } from './concursos/concurso-detail/concurso-deta
     // GestionModule
   ],
   providers: [
+    // UiUtilsService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
     // LoggedInGuard,
     [
