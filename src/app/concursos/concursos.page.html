@@ -154,8 +154,16 @@
                   <!-- <ion-row *ngIf="i%2 == 0 || !responsiveService.isDesktop; else isSecondary"> -->
                   <ion-row>
                     <ion-col size="12" size-md="5">
-                          <ion-avatar [style.height.px]="obtenerPx(colCard)" class="w-100">
-                            <ion-img (ionImgWillLoad)="obtenerTamanio($event)" [src]="configService.apiUrl(c.img_url)"></ion-img>
+                          <!-- <ion-avatar [style.height.px]="obtenerPx(colCard)" class="w-100"> -->
+                          <!-- <ion-avatar [style.height]="obtenerPx(colCard)" class="h-100 w-100"> -->
+                          <ion-avatar
+                            [ngClass]="{
+                              'h-100': responsiveService.isDesktop, 
+                              'h-50vw': !responsiveService.isDesktop, 
+                              'w-100': true
+                            }"
+                          >
+                            <ion-img [src]="configService.apiUrl(c.img_url)"></ion-img>
                           </ion-avatar>
                     </ion-col>
                     <ion-col #colCard id="colCard" size="12" size-md="7">

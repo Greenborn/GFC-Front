@@ -28,3 +28,11 @@ ion-avatar{--border-radius: 0px; }
 //     background:
 //       linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
 //   }
+
+ion-item > div, .item-inner {
+  height: 100%;
+}
+
+.h-50vw {
+  height: 50vw;
+}

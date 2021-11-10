@@ -17,6 +17,7 @@ import { ConfigService } from '../services/config/config.service';
 import { RolificadorService } from '../modules/auth/services/rolificador.service';
 
 import { User, UserLogged } from '../../app/models/user.model';
+import { ResponsiveService } from '../services/ui/responsive.service';
 @Component({
   selector: 'app-concursos',
   templateUrl: './concursos.page.html',
@@ -47,14 +48,15 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     public contestService: ContestService,
     public rolificador: RolificadorService,
     alertController: AlertController,
-    public configService: ConfigService
+    public configService: ConfigService,
+    public responsiveService: ResponsiveService
   ) { 
     // super('concursos page', alertController)
     super(alertController)
   }
     
   obtenerTamanio(event){
-    console.log(event.srcElement.offsetWidth)
+    // console.log(event.srcElement.offsetWidth)
     if (event.srcElement.offsetWidth > event.srcElement.offsetEight){
       this.anchoImg = true;
     } else {
@@ -78,16 +80,21 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   //   }
   // }
 
-  obtenerPx(colCard){
-    // console.log(colCard)
-    if (window.innerWidth > 767) {
-      // console.log(colCard.clientHeight)
-      return colCard.el.clientHeight;
-    } else {
-      // return colCard.el.clientWidth/2;
-      return window.innerWidth/2
-    }
-  }
+  // obtenerPx(colCard){
+  //   // console.log(colCard)
+  //   if (window.innerWidth > 767) {
+  //     // console.log(colCard.clientHeight)
+  //     // console.log(colCard)
+  //     // return colCard.el.getBoundingClientRect().height;
+  //     return '100%';
+  //     // return colCard.el.clientHeight;
+  //   } else {
+  //     // console.log('mobile')
+  //     // return colCard.el.clientWidth/2;
+  //     return window.innerWidth/2 + ' px'
+  //     // return window.innerWidth/2
+  //   }
+  // }
 
   ngOnInit() {}
 
