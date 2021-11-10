@@ -4,11 +4,11 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './modules/auth/guards/auth.guard';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'concursos',
-    pathMatch: 'full'
-  },
+  // {
+  //   path: '',
+  //   redirectTo: 'concursos',
+  //   pathMatch: 'full'
+  // },
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
@@ -69,6 +69,12 @@ const routes: Routes = [
     path: 'organizaciones',
     loadChildren: () => import('./fotoclubs-abm/fotoclubs-abm.module').then( m => m.FotoclubsAbmPageModule)
   },
+  {
+    path: '',
+    loadChildren: () => import('./info-centro/info-centro.module').then( m => m.InfoCentroPageModule),
+    pathMatch: 'full'
+  },
+
 
   // {
   //   path: 'login',

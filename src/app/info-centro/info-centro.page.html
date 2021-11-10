@@ -1,0 +1,17 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>info-centro</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+  <ion-title> ¿Quiénes somos? </ion-title>
+ <ion-list>
+    <ion-item *ngFor="let parrafo of parrafos">
+        <ion-title *ngIf="parrafo.title">{{parrafo.title}}</ion-title>
+        <ion-text *ngIf="parrafo.content">{{parrafo.content}}</ion-text>
+        
+    </ion-item>
+ </ion-list>
+</ion-content>
+
