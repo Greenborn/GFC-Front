@@ -6,11 +6,36 @@
 
 <ion-content>
   <ion-title> ¿Quiénes somos? </ion-title>
+  <ion-fab-button (click)="postParrafo()"
+    size="small"
+  >
+  <!-- [routerLink]="['nuevo']"  -->
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
  <ion-list>
-    <ion-item *ngFor="let parrafo of parrafos">
-        <ion-title *ngIf="parrafo.title">{{parrafo.title}}</ion-title>
-        <ion-text *ngIf="parrafo.content">{{parrafo.content}}</ion-text>
-        
+    <ion-item *ngFor="let p of parrafos">
+        <ion-title *ngIf="p.title">{{p.title}}</ion-title>
+        <ion-buttons class="ion-hide-sm-down">
+          <!-- <ion-button [routerLink]="['editar/' + m.user.id]"> -->
+          <ion-button (click)="postParrafo(p)">
+            <ion-icon name="create"></ion-icon>
+          </ion-button>
+          <ion-button (click)="deleteParrafo(p)">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons class="ion-hide-sm-up">
+          <ion-button
+            (click)="mostrarAcciones($event, p)"
+          >
+            <ion-icon
+              slot="start"
+              ios="ellipsis-horizontal"
+              md="ellipsis-vertical"
+            ></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-text *ngIf="p.content">{{p.content}}</ion-text>
     </ion-item>
  </ion-list>
 </ion-content>

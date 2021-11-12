@@ -7,14 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { InfoCentroPageRoutingModule } from './info-centro-routing.module';
 
 import { InfoCentroPage } from './info-centro.page';
+import { InfoCentroPostComponent } from './info-centro-post/info-centro-post.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    InfoCentroPageRoutingModule
+    InfoCentroPageRoutingModule,
+    SharedModule
   ],
-  declarations: [InfoCentroPage]
+  declarations: [InfoCentroPage, InfoCentroPostComponent]
 })
 export class InfoCentroPageModule {}
