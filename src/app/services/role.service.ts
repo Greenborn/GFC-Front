@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Role } from '../models/Role.model';
+import { Role } from '../models/role.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
 
