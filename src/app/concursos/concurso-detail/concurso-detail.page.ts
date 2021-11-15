@@ -65,6 +65,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   popover: HTMLIonPopoverElement = undefined;
   // loading: boolean = true;
   subs: Subscription[] = [];
+  noImg: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,

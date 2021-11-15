@@ -163,7 +163,7 @@
                               'w-100': true
                             }"
                           >
-                            <ion-img [src]="configService.apiUrl(c.img_url)"></ion-img>
+                            <ion-img (ionError)="errorImg($event)" [src]="configService.apiUrl(c.img_url)"></ion-img>
                           </ion-avatar>
                     </ion-col>
                     <ion-col #colCard id="colCard" size="12" size-md="7">

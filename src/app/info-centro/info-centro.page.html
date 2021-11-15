@@ -12,31 +12,54 @@
   <!-- [routerLink]="['nuevo']"  -->
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
- <ion-list>
-    <ion-item *ngFor="let p of parrafos">
-        <ion-title *ngIf="p.title">{{p.title}}</ion-title>
-        <ion-buttons class="ion-hide-sm-down">
-          <!-- <ion-button [routerLink]="['editar/' + m.user.id]"> -->
-          <ion-button (click)="postParrafo(p)">
-            <ion-icon name="create"></ion-icon>
-          </ion-button>
-          <ion-button (click)="deleteParrafo(p)">
-            <ion-icon name="trash"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <ion-buttons class="ion-hide-sm-up">
-          <ion-button
-            (click)="mostrarAcciones($event, p)"
-          >
-            <ion-icon
-              slot="start"
-              ios="ellipsis-horizontal"
-              md="ellipsis-vertical"
-            ></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <ion-text *ngIf="p.content">{{p.content}}</ion-text>
-    </ion-item>
- </ion-list>
+ <!-- <ion-list> -->
+    <div *ngFor="let p of parrafos">
+      <ion-grid>
+        <ion-row class="ion-justify-content-between">
+          <ion-col>
+            <ion-title *ngIf="p.title">{{p.title}}</ion-title>
+
+          </ion-col>
+          <ion-col size="1.5">
+            <ion-buttons class="ion-hide-sm-down">
+              <!-- <ion-button [routerLink]="['editar/' + m.user.id]"> -->
+              <ion-button (click)="postParrafo(p)">
+                <ion-icon name="create"></ion-icon>
+              </ion-button>
+              <ion-button (click)="deleteParrafo(p)">
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            <ion-buttons class="ion-hide-sm-up">
+              <ion-button
+                (click)="mostrarAcciones($event, p)"
+              >
+                <ion-icon
+                  slot="start"
+                  ios="ellipsis-horizontal"
+                  md="ellipsis-vertical"
+                ></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-col>
+        </ion-row>
+        <ion-row >
+          <!-- <ion-col > -->
+            <ion-text *ngIf="p.content">{{p.content}}</ion-text>
+          <!-- </ion-col> -->
+          <!-- <ion-col>
+            <ion-avatar [ngClass]="{'w-100':true, 'h-100':true}">
+              <ion-img [src]="p.img_url"></ion-img>
+            </ion-avatar>
+          </ion-col> -->
+        </ion-row>
+        <ion-row class="ion-justify-content-center">
+          <!-- <ion-avatar [ngClass]="{'w-100':true, 'h-100':true}"> -->
+            <ion-img [src]="p.img_url"></ion-img>
+          <!-- </ion-avatar> -->
+        </ion-row>
+      </ion-grid>
+      </div>
+ <!-- </ion-list> -->
 </ion-content>
 

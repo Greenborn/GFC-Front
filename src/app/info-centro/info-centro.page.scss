@@ -1,0 +1,6 @@
+ion-avatar{
+    --border-radius: 0;
+    object-fit: contain;
+}
+ion-avatar img{ width: 100% !important; height: 50vh !important; } 
+ion-img{ max-width: 100% !important; max-height: 50vh !important;  object-fit: contain;} 

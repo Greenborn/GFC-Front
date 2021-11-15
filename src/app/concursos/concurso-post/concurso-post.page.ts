@@ -41,9 +41,11 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public mostrarCategorias: boolean;
   public mostrarSecciones: boolean;
   public image_file: File;
-  public img_url: string;
+  public img_url: string = '';
   public rules_file: File;
   public rules_url: SafeResourceUrl;
+  
+  noImg: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,

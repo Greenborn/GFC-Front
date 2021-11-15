@@ -364,9 +364,9 @@
               </ion-item>
               <div>
                 <!-- <ion-thumbnail> -->
-                  <ion-row  class="ion-justify-content-center">
+                  <ion-row *ngIf="img_url != ''" class="ion-justify-content-center">
 
-                    <ion-img  [src]="img_url" alt=""> </ion-img>
+                    <ion-img (ionError)="img_url=''" [src]="img_url" alt=""> </ion-img>
                   </ion-row>
                 <!-- </ion-thumbnail> -->
               </div>

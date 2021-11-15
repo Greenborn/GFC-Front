@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild ,AfterViewInit} from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Event, Router } from '@angular/router';
 
 // import { ConcursoService } from '../services/concurso.service';
 import { NotificacionesPage } from '../notificaciones/notificaciones.page';
@@ -145,7 +145,13 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   //   console.log(searchQuery)
   // }
 
+  errorImg(e){
+    e.currentTarget.src='../../../assets/no-pictures.png';
+    e.currentTarget.style='width: 25%; height: 25%; object-fit: contain;';
+    e.currentTarget.parentNode.style= 'display: flex; align-items: center; justify-content: center;';
+    
 
+  }
 
   // popover
   async openPopover( ev:any, ctrl: any, url: string ){
