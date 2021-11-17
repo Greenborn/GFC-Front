@@ -42,6 +42,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
 
   // public profiles: Profile[];
   public posting: boolean = false; 
+  public img_url = '';
 
   constructor(
     // private userSvc: UsuarioService,
@@ -73,6 +74,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   async ngOnInit() {
+    this.img_url = this.image.url
     // window.onresize = this.actualizarWidth;
   }
 

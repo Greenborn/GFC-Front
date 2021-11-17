@@ -17,7 +17,7 @@ export class SeccionPostComponent extends ApiConsumer implements OnInit {
   @Input() modalController: ModalController;
   @Input() parentSections: Section[]
   @Input() section: Section = this.sectionService.template
-  @Input() typeSubsection: boolean;
+  // @Input() typeSubsection: boolean;
 
   public posting: boolean = false;
 
@@ -31,12 +31,12 @@ export class SeccionPostComponent extends ApiConsumer implements OnInit {
   }
 
   get formTitle(): string {
-    return (this.section.id != undefined ? 'Editar' : 'Agregar') + 
-      ((this.typeSubsection) ? ' subsección' : ` seccion`)
+    return (this.section.id != undefined ? 'Editar' : 'Agregar') + ' sección'
+      // ((this.typeSubsection) ? ' subsección' : ` seccion`)
   }
 
   ngOnInit() {
-    this.typeSubsection = this.section.parent_id != null
+    // this.typeSubsection = this.section.parent_id != null
   }
 
   datosCargados(form: NgForm): boolean {
@@ -49,7 +49,7 @@ export class SeccionPostComponent extends ApiConsumer implements OnInit {
       // if (model.parent_id == undefined) {
       //   model.parent_id = null
       // }
-      model.parent_id = this.typeSubsection ? this.section.parent_id : null
+      // model.parent_id = this.typeSubsection ? this.section.parent_id : null
       console.log('posting', model)
       this.posting = true
       super.fetch<Section>(() => this.sectionService.post(model, this.section.id)).subscribe(

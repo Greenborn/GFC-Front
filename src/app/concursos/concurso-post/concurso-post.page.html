@@ -264,9 +264,17 @@
                                     [ngModelOptions]="{standalone: true}"></ion-checkbox>
                                 </ion-item> -->
     
-                  <ion-item-group
+                  <ion-item *ngFor="let s of secciones" lines="none">
+                    <ion-label>{{s.name}}</ion-label>
+                    <ion-checkbox
+                      slot="start"
+                      [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
+                      [ngModelOptions]="{standalone: true}"
+                    ></ion-checkbox>
+                  </ion-item>
+                  <!-- <ion-item-group
                     *ngFor="let s of getParentSections()" 
-                  >
+                    >
                     <ion-item-divider lines="full" mode="ios"
                       class="ion-padding-top ion-padding-bottom ion-padding-end" 
                       style="--ion-padding: 8px"
@@ -277,26 +285,6 @@
                         [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
                         [ngModelOptions]="{standalone: true}"
                       ></ion-checkbox>
-                      <!-- <ion-col slot="end" size="1" size-md="2" class="ion-align-self-start ion-align-self-center">
-                                      <ion-buttons class="
-                                                  ion-hide-md-down ion-justify-content-center
-                                                ">
-                                        <ion-button title="Agregar subsección" (click)="postSubSection(s)">
-                                          <ion-icon name="add-outline"></ion-icon>
-                                        </ion-button>
-                                        <ion-button title="Editar sección" (click)="postSection(s)">
-                                          <ion-icon name="create"></ion-icon>
-                                        </ion-button>
-                                        <ion-button title="Eliminar sección" (click)="deleteSection(s)">
-                                          <ion-icon name="trash"></ion-icon>
-                                        </ion-button>
-                                      </ion-buttons>
-                                      <ion-buttons class="ion-hide-md-up">
-                                        <ion-button (click)="mostrarAcciones($event, s)">
-                                          <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-                                        </ion-button>
-                                      </ion-buttons>
-                                    </ion-col> -->
                     </ion-item-divider>
     
                     <ng-template #textoSeccion>
@@ -308,7 +296,6 @@
                         </ion-label>
                       </ion-item>
                     </ng-template>
-                    <!-- TODO: refactorizar el ngIf -->
                     <div *ngIf="getSubSections(s.id).length > 0; else textoSeccion">
                       <ion-item lines="full"
                         *ngFor="let s1 of getSubSections(s.id) as subsections"
@@ -319,34 +306,9 @@
                           [(ngModel)]="getSeccionSeleccionada(s1.id).seleccionada"
                           [ngModelOptions]="{standalone: true}"
                         ></ion-checkbox>
-    
-                        <!-- <ion-row class="w-100 ion-align-items-center">
-                                        <ion-col>
-                                          <ion-row>
-                                            <ion-col size="10">
-                                              <ion-text>{{s1.name}} </ion-text>
-                                            </ion-col>
-                                            <ion-col size="2" size-md="2" class="ion-float-end">
-                                              <ion-buttons class="
-                                                          ion-justify-content-end
-                                                          ion-margin-start
-                                                        ">
-                                                <ion-button title="Editar subsección" size="small" (click)="
-                                                                        postSection(s1)
-                                                                      ">
-                                                  <ion-icon name="create"></ion-icon>
-                                                </ion-button>
-                                                <ion-button title="Eliminar subsección" size="small" (click)="deleteSection(s1)">
-                                                  <ion-icon name="trash"></ion-icon>
-                                                </ion-button>
-                                              </ion-buttons>
-                                            </ion-col>
-                                          </ion-row>
-                                        </ion-col>
-                                      </ion-row> -->
                       </ion-item>
                     </div>
-                  </ion-item-group>
+                  </ion-item-group> -->
                 </div>
               </ion-list>
 
@@ -382,7 +344,7 @@
               </ion-item>
               <div>
                 <!-- <ion-thumbnail> -->
-                  <ion-row  class="ion-justify-content-center">
+                  <ion-row class="ion-justify-content-center">
                     <!-- <object [data]="pdf_url" type="application/pdf">
                       <div>No online PDF viewer installed</div>
                     </object> -->

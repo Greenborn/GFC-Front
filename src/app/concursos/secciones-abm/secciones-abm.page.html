@@ -99,7 +99,8 @@
                   <ion-grid class="ion-no-padding">
                     <ion-row size="12">
                       <ion-col class="ion-align-self-start">
-                        <ion-item-group *ngFor="let s of getParentSections()">
+                        <!-- <ion-item-group *ngFor="let s of getParentSections()"> -->
+                        <ion-item-group *ngFor="let s of sections">
                           <ion-item-divider lines="full" mode="ios" style="--inner-padding-end: 16px">
                             <ion-row class="w-100">
                               <ion-col>
@@ -118,9 +119,9 @@
                                   "
                                 >
                                   <div class="ion-hide-md-down">
-                                    <ion-button title="Agregar subsección" (click)="postSubSection(s)" color="dark" >
+                                    <!-- <ion-button title="Agregar subsección" (click)="postSubSection(s)" color="dark" >
                                       <ion-icon name="add-outline"></ion-icon>
-                                    </ion-button>
+                                    </ion-button> -->
                                     <ion-button title="Editar sección" (click)="postSection(s)" color="dark" >
                                       <ion-icon name="create"></ion-icon>
                                     </ion-button>
@@ -144,7 +145,7 @@
                             </ion-row>
                           </ion-item-divider>
 
-                          <ng-template #textoSeccion>
+                          <!-- <ng-template #textoSeccion>
                             <ion-item>
                               <ion-label>
                                 <ion-card-subtitle
@@ -152,20 +153,19 @@
                                 </ion-card-subtitle>
                               </ion-label>
                             </ion-item>
-                          </ng-template>
+                          </ng-template> -->
                           <!-- TODO: refactorizar el ngIf -->
-                          <div  class="ion-padding-top" style="--ion-padding: 10px"
+                          <!-- <div  class="ion-padding-top" style="--ion-padding: 10px"
                             *ngIf="getSubSections(s.id).length > 0; else textoSeccion"
                           >
                             <ion-item 
                               *ngFor="let s1 of getSubSections(s.id) as subsections"
                             >
                               <ion-row class="w-100 ion-align-items-center">
-                                <!-- TODO: debería ser una tabla NxN para poder tene dos tablas por separado de carga!!!!  -->
-                                <!-- para achicar el tamaño del sector de la subseccion modificar el  size-md de la sig columna -->
-                                <!-- <ion-col size-md="11.57"> -->
+                                <!- - TODO: debería ser una tabla NxN para poder tene dos tablas por separado de carga!!!!  - ->
+                                <!- - para achicar el tamaño del sector de la subseccion modificar el  size-md de la sig columna - ->
+                                <!- - <ion-col size-md="11.57"> - ->
                                 <ion-col >
-                                  <!-- <ion-col> -->
                                   <ion-row >
                                     <ion-col size="10">
                                       <ion-text>{{s1.name}} </ion-text>
@@ -174,7 +174,6 @@
                                       size="2"
                                       size-md="2"
                                     >
-                                      <!-- ion-hide-md-down -->
                                       <ion-buttons
                                         class="
                                           ion-justify-content-end
@@ -197,23 +196,12 @@
                                           <ion-icon name="trash"></ion-icon>
                                         </ion-button>
                                       </ion-buttons>
-                                      <!-- <ion-buttons class="ion-hide-md-up">
-                                                <ion-button
-                                                  (click)="mostrarAcciones($event, s1)"
-                                                >
-                                                  <ion-icon
-                                                    slot="icon-only"
-                                                    ios="ellipsis-horizontal"
-                                                    md="ellipsis-vertical"
-                                                  ></ion-icon>
-                                                </ion-button>
-                                              </ion-buttons> -->
                                     </ion-col>
                                   </ion-row>
                                 </ion-col>
                               </ion-row>
                             </ion-item>
-                          </div>
+                          </div> -->
                         </ion-item-group>
                       </ion-col>
                     </ion-row>

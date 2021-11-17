@@ -98,7 +98,6 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
           if (c.rules_url)
             // this.rules_url = this.configService.apiUrl(c.rules_url)
             this.rules_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.configService.apiUrl(c.rules_url))
-          
           super.fetch<ContestCategory[]>(() => this.contestService.getCategoriasInscriptas(c.id)).subscribe(async c => {
             this.categoriasInscriptas = c
             await getCategorias
@@ -154,13 +153,13 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     return this.seccionesSeleccionadas.find(c => c.id == id)
   }
 
-  getParentSections() {
-    return this.secciones.filter(s => s.parent_id == null)
-  }
+  // getParentSections() {
+  //   return this.secciones.filter(s => s.parent_id == null)
+  // }
 
-  getSubSections(id: number) {
-    return this.secciones.filter(s => s.parent_id == id)
-  }
+  // getSubSections(id: number) {
+  //   return this.secciones.filter(s => s.parent_id == id)
+  // }
 
   get formTitle(): string {
     // if (this.loading) return ''

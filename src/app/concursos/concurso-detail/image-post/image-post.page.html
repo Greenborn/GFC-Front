@@ -48,7 +48,7 @@
                     </ion-item>
                     <div>
                       <!-- <ion-thumbnail> -->
-                        <ion-row  *ngIf="img_url != ''"  class="ion-justify-content-center">
+                        <ion-row  *ngIf="img_url != '' || imageData != ''"  class="ion-justify-content-center">
 
                           <ion-img (ionError)="img_url=''" [src]="imgSource" alt=""> </ion-img>
                         </ion-row>

@@ -75,16 +75,13 @@
                       </ion-list> - ->
                     </ion-row> -->
 
-                    <ion-row class="ion-padding-top" *ngIf="typeSubsection">
+                    <!-- <ion-row class="ion-padding-top" *ngIf="typeSubsection">
                       <ion-item class="w-100 ion-margin-bottom">
-                        <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
                         <ion-label position="floating">Sección padre</ion-label>
                         <ion-select disabled
                           [(ngModel)]="section.parent_id" 
                           name="parent_id" 
                           >
-                          <!-- required -->
-                          <!-- [(value)]="image.profile_id" -->
                           <ion-select-option
                             *ngFor="let s of parentSections"
                             [value]="s.id"
@@ -92,7 +89,7 @@
                           >
                         </ion-select>
                       </ion-item>
-                    </ion-row>
+                    </ion-row> -->
 
 
                     <!-- <ion-item class="w-100 ion-margin-bottom">
