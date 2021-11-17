@@ -244,14 +244,25 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
         },
         async err => {
           this.posting = false;
-          (await this.alertCtrl.create({
-            header: 'Error',
-            message: (err.error as []).map(e => (e as any).message).join('<br>'),
-            buttons: [{
-              text: 'Ok',
-              role: 'cancel'
-            }]
-          })).present()
+          try {
+            (await this.alertCtrl.create({
+              header: 'Error',
+              message: (err.error as []).map(e => (e as any).message).join('<br>'),
+              buttons: [{
+                text: 'Ok',
+                role: 'cancel'
+              }]
+            })).present()
+          } catch(e) {
+            (await this.alertCtrl.create({
+              header: 'Error',
+              message: err.error['error-info'][2],
+              buttons: [{
+                text: 'Ok',
+                role: 'cancel'
+              }]
+            })).present()
+          }
         },
       )
       // this.router.navigate(['/concursos/' + id]);
