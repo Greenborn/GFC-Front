@@ -7,9 +7,9 @@
 <ion-content class="ion-padding-start ion-padding-end">
   <div *ngIf="(auth.user | async) as u">
     
-  <ion-row class="ion-align-items-center">
-    <h1 class="ion-margin-end"> ¿Quiénes somos? </h1>
-    <ion-fab-button (click)="postParrafo()" *ngIf="rolificador.isAdmin(u)"
+  <ion-row class="ion-align-items-center" *ngIf="rolificador.isAdmin(u)">
+    <h1 class="ion-margin-end"> Agregar nuevo parrafo </h1>
+    <ion-fab-button (click)="postParrafo()"
       size="small"
     >
     <!-- [routerLink]="['nuevo']"  -->

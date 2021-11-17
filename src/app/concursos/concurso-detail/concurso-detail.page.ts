@@ -173,7 +173,10 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       // })
 
       this.concursoDetailService.concurso.subscribe({
-        next: c => this.concurso = c 
+        next: c => {
+          this.concurso = c
+          this.noImg = false
+        } 
       })
       this.concursoDetailService.categoriasInscriptas.subscribe({
         next: c => this.categoriasInscriptas = c 
