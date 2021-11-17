@@ -4,24 +4,28 @@
   </ion-toolbar>
 </ion-header> -->
 
-<ion-content>
-  <ion-title> ¿Quiénes somos? </ion-title>
-  <ion-fab-button (click)="postParrafo()"
-    size="small"
-  >
-  <!-- [routerLink]="['nuevo']"  -->
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>
+<ion-content class="ion-padding-start ion-padding-end">
+  <div *ngIf="(auth.user | async) as u">
+    
+  <ion-row class="ion-align-items-center">
+    <h1 class="ion-margin-end"> ¿Quiénes somos? </h1>
+    <ion-fab-button (click)="postParrafo()" *ngIf="rolificador.isAdmin(u)"
+      size="small"
+    >
+    <!-- [routerLink]="['nuevo']"  -->
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-row>
  <!-- <ion-list> -->
     <div *ngFor="let p of parrafos">
       <ion-grid>
-        <ion-row class="ion-justify-content-between">
-          <ion-col>
-            <ion-title *ngIf="p.title">{{p.title}}</ion-title>
+        <ion-row class="ion-align-items-center">
+          <!-- <ion-col> -->
+            <h3 *ngIf="p.title" class="ion-margin-end">{{p.title}}</h3>
 
-          </ion-col>
-          <ion-col size="1.5">
-            <ion-buttons class="ion-hide-sm-down">
+          <!-- </ion-col> -->
+          <!-- <ion-col size="1.5"> -->
+            <ion-buttons class="ion-hide-sm-down" *ngIf="rolificador.isAdmin(u)">
               <!-- <ion-button [routerLink]="['editar/' + m.user.id]"> -->
               <ion-button (click)="postParrafo(p)">
                 <ion-icon name="create"></ion-icon>
@@ -41,7 +45,7 @@
                 ></ion-icon>
               </ion-button>
             </ion-buttons>
-          </ion-col>
+          <!-- </ion-col> -->
         </ion-row>
         <ion-row >
           <!-- <ion-col > -->
@@ -53,13 +57,12 @@
             </ion-avatar>
           </ion-col> -->
         </ion-row>
-        <ion-row class="ion-justify-content-center">
-          <!-- <ion-avatar [ngClass]="{'w-100':true, 'h-100':true}"> -->
+        <!-- <ion-row class="ion-justify-content-center">
             <ion-img [src]="p.img_url"></ion-img>
-          <!-- </ion-avatar> -->
-        </ion-row>
+        </ion-row> -->
       </ion-grid>
       </div>
  <!-- </ion-list> -->
+  </div>
 </ion-content>
 

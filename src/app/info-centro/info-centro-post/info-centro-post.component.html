@@ -33,23 +33,20 @@
                 ></ion-input>
               </ion-item>
 
-              <ion-row class="w-100">
+              <!-- <ion-row class="w-100">
                 <ion-col class="ion-no-padding">
                   <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                     <ion-label position="stacked">Imágen</ion-label>
-                    <!-- [(ngModel)]="image.code" -->
                     <input type="file" (change)="imageUpload($event.target)" />
                   </ion-item>
                   <div>
-                    <!-- <ion-thumbnail> -->
                       <ion-row  class="ion-justify-content-center">
     
                         <ion-img  [src]="img_url" alt=""> </ion-img>
                       </ion-row>
-                    <!-- </ion-thumbnail> -->
                   </div>
                 </ion-col>
-              </ion-row>
+              </ion-row> -->
               
               <ion-item class="w-100 ion-margin-bottom" *ngIf="parrafo != undefined">
                 <ion-label position="floating">Contenido</ion-label>

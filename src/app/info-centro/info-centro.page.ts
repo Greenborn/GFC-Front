@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from '../models/ApiConsumer';
 import { InfoCentro } from '../models/info_centro.model';
+import { AuthService } from '../modules/auth/services/auth.service';
+import { RolificadorService } from '../modules/auth/services/rolificador.service';
 import { InfoCentroService } from '../services/info-centro.service';
 import { ResponsiveService } from '../services/ui/responsive.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
@@ -21,7 +23,9 @@ export class InfoCentroPage extends ApiConsumer implements OnInit {
     private infoCentroService: InfoCentroService,
     alertController: AlertController,
     public UIUtilsService: UiUtilsService,
-    public responsiveService: ResponsiveService
+    public responsiveService: ResponsiveService,
+    public rolificador: RolificadorService,
+    public auth: AuthService
   ) {
     super(alertController)
   }
