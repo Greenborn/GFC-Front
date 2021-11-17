@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 // import { LoggedInGuard } from './guards/logged-in.guard'
 import { NavbarComponent } from './nav/navbar/navbar.component';
+import { FooterComponent } from './nav/footer/footer.component';
 import { SidebarComponent } from './nav/sidebar/sidebar.component';
 import { ConcursosPageModule } from './concursos/concursos.module';
 import { SharedModule } from './shared/shared.module';
@@ -32,6 +33,7 @@ import { UiUtilsService } from './services/ui/ui-utils.service';
   declarations: [
     AppComponent,
     NavbarComponent,
+    FooterComponent,
     SidebarComponent
     // InputOjoComponent
   ],
