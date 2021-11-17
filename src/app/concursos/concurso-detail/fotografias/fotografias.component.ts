@@ -99,7 +99,7 @@ export class FotografiasComponent implements OnInit {
     this.auth.user.then(u => this.user = u)
     // let loading: HTMLIonLoadingElement;
     if (this.concurso.id == undefined) {
-      await this.UIUtilsService.presentLoading()
+      // await this.UIUtilsService.presentLoading()
     }
     
     this.concursoDetailService.concurso.subscribe(c => {
@@ -123,7 +123,7 @@ export class FotografiasComponent implements OnInit {
       next: rs => {
           this.resultadosConcurso = rs
           this.resultadosConcursoOrig = [...rs]
-          this.UIUtilsService.dismissLoading()
+          // this.UIUtilsService.dismissLoading()
           this.route.queryParams.subscribe(params => {
 
             // console.log('detecting query params change', params)

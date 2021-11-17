@@ -26,6 +26,7 @@ export interface ImagePostParams {
 export class ImagePostPage extends ApiConsumer implements OnInit {
 
   @Input() concurso: string;
+  @Input() concurso_id: number;
   @Input() modalController: ModalController;
   // @Input() contestResult: ContestResult;
   @Input() image: GFC_Image = this.imageService.template;
@@ -61,7 +62,8 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     return p != undefined ? p.category_id : undefined
   }
   get code(): string {
-    return `${(this.concurso ?? '').replace(/ /g, '_').toLowerCase().normalize()}-c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-`
+    // return `${(this.concurso ?? '').replace(/ /g, '_').toLowerCase().normalize()}-c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-`
+    return `${this.concurso_id}-c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-`
     // return `#c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-${(this.image.title ?? '').replace(/ /g, '_').toLowerCase().normalize()}`
   }
 

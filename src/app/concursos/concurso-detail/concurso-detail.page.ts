@@ -544,6 +544,7 @@ obtenerPx() {
 
     const componentProps : {
       concurso: string;
+      concurso_id: number;
       modalController: ModalController;
       profiles: ProfileContestExpanded[];
       secciones: Section[];
@@ -551,6 +552,7 @@ obtenerPx() {
       section_id?: number;
     } = {
       "concurso": this.concurso.name,
+      "concurso_id": this.concurso.id,
       "modalController": this.modalController,
       "profiles": this.inscriptos,
       // "profiles": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) > -1),

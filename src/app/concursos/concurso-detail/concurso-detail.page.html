@@ -66,7 +66,7 @@
           <!-- <ion-card-title>Descripcion</ion-card-title> -->
           <ion-text>{{concurso.description}}</ion-text>
           <ion-row class="ion-margin-top ion-align-items-center">
-            <b>Reglamento</b>
+            <b class="ion-margin-end">Reglamento</b>
             <ion-button (click)="openRules()"
               size="small" 
             >
@@ -86,7 +86,7 @@
               <ion-label>{{c.category.name}}</ion-label>
             </ion-chip> -->
           </ion-row>
-          <ion-row class="ion-margin-top">
+          <ion-row class="ion-margin-top ion-margin-bottom">
             <b>Secciones:</b>
             <ion-badge color="light" class="ion-margin-start"
               *ngFor="let s of seccionesInscriptasAsc"
@@ -99,6 +99,7 @@
               <ion-label>{{c.category.name}}</ion-label>
             </ion-chip> -->
           </ion-row>
+          <!-- <ion-text>Se puede cargar un máximo de {{ concurso.max_img_section }} imágenes por sección</ion-text> -->
          
         </ion-card-content>
         <!-- <ion-label>{{item}}</ion-label> -->

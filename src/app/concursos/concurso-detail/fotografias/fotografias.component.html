@@ -356,9 +356,16 @@
                               <!-- >{{ getImage(r).code }}</ion-card-subtitle> -->
                               <!-- <ion-card-title >Prueba de Riendas</ion-card-title> -->
   
-                              <ion-text title="Nombre de la obra"
-                                ><b>{{ r.image.title }}</b></ion-text
-                              >
+                              <ion-text title="Nombre de la obra">
+                                <b>{{ 
+                                  r.image.title 
+                                }}</b>
+                              </ion-text>
+                              <ion-card-subtitle title="Sección">
+                                <i>{{
+                                  r.section.name
+                                }}</i>
+                              </ion-card-subtitle>
                               <!-- <ion-card-subtitle >{{
                                 r.image.url
                               }}</ion-card-subtitle> -->

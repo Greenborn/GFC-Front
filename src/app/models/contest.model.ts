@@ -8,6 +8,7 @@ export interface Contest {
     description: string;
     start_date: string;
     end_date: string;
+    max_img_section: number;
     img_url?: string;
     rules_url?: string;
     active?: boolean;
