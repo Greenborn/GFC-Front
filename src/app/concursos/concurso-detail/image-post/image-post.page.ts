@@ -37,7 +37,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   
   // @ViewChild('s') selectConcursante: ElementRef;
   // @ViewChild('formImage') formImage: HTMLFormElement;
-  private cont: number = 0;
+  // private cont: number = 0;
   public file: File;
   public imageData: string = '';
 
@@ -82,9 +82,9 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
 
   async postImage() {
     if (this.datosCargados()) {
-      if (this.cont < 1) {
-        this.cont++
-        setTimeout(() => this.cont = 0, 500)
+      // if (this.cont < 1) {
+      //   this.cont++
+        // setTimeout(() => this.cont = 0, 500)
         // console.log({
         //   ...this.formImage.value,
         //   profile_id: this.selectConcursante.value
@@ -128,7 +128,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
         )
         // console.log('posted img con id', id)
         // this.dismiss(id)
-      }
+      // }
     }
   }
 

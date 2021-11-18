@@ -106,18 +106,18 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       // content.addEventListener('ionScroll', ev => console.log('scroll', (ev as any).detail))
       let tiempoScroll = new Date().getTime()
       let scrolling = false
-      content.addEventListener('wheel', ev => {
-      // this.pageContent.addEventListener('wheel', ev => {
-        // console.log('wheel', ev)
-        const scrollDown = ev.deltaY > 0
-        if (!scrolling) {
-          let scrolling = true
-          content.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
-          // this.pageContent.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
-        }
-      }, {
-        passive: true
-      })
+      // content.addEventListener('wheel', ev => {
+      // // this.pageContent.addEventListener('wheel', ev => {
+      //   // console.log('wheel', ev)
+      //   const scrollDown = ev.deltaY > 0
+      //   if (!scrolling) {
+      //     let scrolling = true
+      //     content.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
+      //     // this.pageContent.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
+      //   }
+      // }, {
+      //   passive: true
+      // })
     }
     const s1 = this.concursoDetailService.postImage.subscribe(
       params => {

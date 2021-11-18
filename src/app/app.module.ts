@@ -21,7 +21,8 @@ import { AuthInterceptorService } from './modules/auth/services/auth-interceptor
 import { ImageService } from './services/image.service';
 import { ConcursoDetailService } from './concursos/concurso-detail/concurso-detail.service';
 import { UiUtilsService } from './services/ui/ui-utils.service';
-
+import { FooterPostComponent } from './nav/footer/footer-post/footer-post.component';
+import { FormsModule } from '@angular/forms';
 //componente de ojo
 // import { InputOjoComponent } from '../app/shared/input-ojo/input-ojo.component'
 
@@ -34,11 +35,17 @@ import { UiUtilsService } from './services/ui/ui-utils.service';
     AppComponent,
     NavbarComponent,
     FooterComponent,
+    FooterPostComponent,
     SidebarComponent
     // InputOjoComponent
   ],
+  exports:[
+    FooterPostComponent,
+  ]
+  ,
   entryComponents: [],
   imports: [
+    FormsModule,
     BrowserModule,
     IonicModule.forRoot(), 
     AppRoutingModule,
@@ -49,6 +56,7 @@ import { UiUtilsService } from './services/ui/ui-utils.service';
   ],
   providers: [
     // UiUtilsService,
+    FooterPostComponent,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
     // LoggedInGuard,
     [

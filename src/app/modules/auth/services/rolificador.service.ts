@@ -24,6 +24,7 @@ export class RolificadorService {
     private profileContestService: ProfileContestService
   ) { }
 
+
   getNombreUsuarios(role_id: number): string {
     return role_id == 1 ? 'Usuarios' : 'Autores'
   }

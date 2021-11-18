@@ -9,7 +9,7 @@ export class BtnPostComponent implements OnInit {
 
   @Input() disabled: boolean;
   @Input() posting: boolean;
-  @Output() click = new EventEmitter<void>();
+  @Output() post = new EventEmitter<void>();
 
   constructor() { }
 

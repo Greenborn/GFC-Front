@@ -2,7 +2,7 @@
   expand="block"
   type="submit"
   [disabled]="disabled"
-  (click)="click.emit()"
+  (click)="post.emit()"
 >
   <ion-spinner 
     *ngIf="posting; else texto"
