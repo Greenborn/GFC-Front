@@ -51,11 +51,11 @@
           <!-- <ion-col > -->
             <ion-text *ngIf="p.content">{{p.content}}</ion-text>
           <!-- </ion-col> -->
-          <!-- <ion-col>
+          <ion-col>
             <ion-avatar [ngClass]="{'w-100':true, 'h-100':true}">
-              <ion-img [src]="p.img_url"></ion-img>
+              <ion-img [src]="configService.apiUrl(p.img_url)"></ion-img>
             </ion-avatar>
-          </ion-col> -->
+          </ion-col>
         </ion-row>
         <!-- <ion-row class="ion-justify-content-center">
             <ion-img [src]="p.img_url"></ion-img>

@@ -48,7 +48,8 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
 
   datosCargados() {
     return ![undefined, ''].includes(this.parrafo.title) ||
-           ![undefined, ''].includes(this.parrafo.content)
+           ![undefined, ''].includes(this.parrafo.content) || 
+           this.image_file != undefined
   }
 
   postParrafo() {
@@ -62,8 +63,8 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
         p.image_file = this.image_file
       }
       this.posting = true
-      super.fetch<InfoCentro>(
-        () => this.infoCentroService.post(p, this.parrafo.id)
+      super.fetch<any>(
+        () => this.infoCentroService.postFormData<any>(p, this.parrafo.id)
       ).subscribe(
         parrafo => {
           this.posting = false

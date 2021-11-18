@@ -4,6 +4,7 @@ import { ApiConsumer } from '../models/ApiConsumer';
 import { InfoCentro } from '../models/info_centro.model';
 import { AuthService } from '../modules/auth/services/auth.service';
 import { RolificadorService } from '../modules/auth/services/rolificador.service';
+import { ConfigService } from '../services/config/config.service';
 import { InfoCentroService } from '../services/info-centro.service';
 import { ResponsiveService } from '../services/ui/responsive.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
@@ -25,7 +26,8 @@ export class InfoCentroPage extends ApiConsumer implements OnInit {
     public UIUtilsService: UiUtilsService,
     public responsiveService: ResponsiveService,
     public rolificador: RolificadorService,
-    public auth: AuthService
+    public auth: AuthService,
+    public configService: ConfigService
   ) {
     super(alertController)
   }
@@ -43,7 +45,7 @@ export class InfoCentroPage extends ApiConsumer implements OnInit {
     })
   }
 
-  async postParrafo(p: InfoCentro = undefined) {
+  async postParrafo(p: InfoCentro = this.infoCentroService.template) {
     const { parrafo } = await this.UIUtilsService.mostrarModal(InfoCentroPostComponent, { parrafo: {...p} })
     // console.log('Dismissed modal post fotoclub. Recibido ', f)
     if (parrafo == undefined) return;

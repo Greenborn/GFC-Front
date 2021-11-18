@@ -19,8 +19,8 @@ export class InfoCentroService  extends ApiService<InfoCentro> {
    get template(): InfoCentro {
     return {
       id: undefined,
-      title: undefined,
-      content: undefined,
+      title: '',
+      content: '',
       img_url: undefined
     }
   }
