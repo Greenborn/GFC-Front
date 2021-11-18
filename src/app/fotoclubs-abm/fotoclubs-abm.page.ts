@@ -69,10 +69,13 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
       message: 'No se podrá eliminar si tiene usuarios asociados.'
       }, 
       async () => {
-        // super.fetch<void>(() => this.fotoclubService.delete(id)).subscribe(
-        //   _ => this.fotoclubs.splice(this.fotoclubs.findIndex(f => f.id == id), 1)
-        // )
-        this.UIUtilsService.mostrarError({ message: 'Falta implementar la restricción de borrado' })
+        super.fetch<void>(() => this.fotoclubService.delete(id)).subscribe(
+          _ => this.fotoclubs.splice(this.fotoclubs.findIndex(f => f.id == id), 1), 
+          async err => {
+            this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+          }
+        )
+        // this.UIUtilsService.mostrarError({ message: 'Falta implementar la restricción de borrado' })
       }
     )
   }
