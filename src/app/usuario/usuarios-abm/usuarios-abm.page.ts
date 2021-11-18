@@ -20,6 +20,7 @@ import { RolificadorService } from 'src/app/modules/auth/services/rolificador.se
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 
 @Component({
   selector: 'app-usuarios-abm',
@@ -77,7 +78,8 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     public rolificador: RolificadorService,
     public loadingController: LoadingController,
     private route: ActivatedRoute,
-    public configService: ConfigService
+    public configService: ConfigService,
+    public UIUtilsService: UiUtilsService
   ) { 
     super(alertCtrl)
     // this.funcionesOrdenamiento['fotoclub'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
@@ -213,7 +215,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
   //   // return this.usuarios.filter(u => u.username.substr(0, q.length) == q)
   // }
 
-  async deleteUsuario(id: number) {
+  async deleteUsuario(p: ProfileExpanded) {
 
     if (this.popover != undefined) {
       this.popoverCtrl.dismiss(this.popover);
@@ -231,9 +233,21 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
           text: 'Confirmar',
           handler: async () => {
             // super.fetch<void>(() => this.userService.delete(id)).subscribe(_ => this.ionViewWillEnter())
-            super.displayAlert('.')
-            console.log('delete usuario', id)
-
+            super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(
+              _ => {
+                super.fetch<void>(() => this.userService.delete(p.user.id)).subscribe(_ => {
+                  this.miembros.splice(
+                    this.miembros.findIndex(m => m.id == p.id),
+                    1
+                  )
+                })
+              }, 
+              async err => {
+                this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+              }
+            )
+            // super.displayAlert('.')
+            // console.log('delete usuario', id)
           }
         }
       ]
@@ -242,20 +256,20 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     await alert.present();
   }
 
-  async mostrarAcciones(ev: any, id: number) {
+  async mostrarAcciones(ev: any, p: ProfileExpanded) {
     this.popover = await this.popoverCtrl.create({
       component: MenuAccionesComponent, //componente a mostrar
       componentProps: {
         acciones: [
           {
             accion: (params: string[]) => this.router.navigate(params),
-            params: ['/usuarios', 'editar', id],
+            params: ['/usuarios', 'editar', p.user.id],
             icon: 'create',
             label: 'Editar'
           },
           {
-            accion: (params: number[]) => this.deleteUsuario(params[0]),
-            params: [id],
+            accion: (params: number[]) => this.deleteUsuario(p),
+            params: [],
             icon: 'trash',
             label: 'Borrar'
           }

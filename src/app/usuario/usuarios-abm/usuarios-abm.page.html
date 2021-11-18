@@ -249,7 +249,7 @@
                         >
                           <ion-buttons>
                             <ion-button *ngIf="rolificador.esDelegado(userLogged)"
-                              (click)="mostrarAcciones($event, m.user.id)"
+                              (click)="mostrarAcciones($event, m)"
                             >
                               <!-- <ion-thumbnail></ion-thumbnail> -->
                               <ion-icon
@@ -289,7 +289,7 @@
                         <ion-button [routerLink]="['editar/' + m.user.id]">
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
-                        <ion-button (click)="deleteUsuario(m.user.id)">
+                        <ion-button (click)="deleteUsuario(m)">
                           <ion-icon name="trash"></ion-icon>
                         </ion-button>
                       </ion-buttons>
