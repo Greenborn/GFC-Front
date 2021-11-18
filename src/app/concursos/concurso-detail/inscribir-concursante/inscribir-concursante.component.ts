@@ -25,7 +25,7 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
   // @Input() category_id: number = undefined;
   public posting: boolean = false;
 
-  private cont: number = 0;
+  // private cont: number = 0;
 
   constructor(
     alertCtrl: AlertController,
@@ -44,8 +44,8 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
 
   inscribirConcursante() {
     if (this.datosCargados()) {
-      if (this.cont < 1) {
-        this.cont++
+      // if (this.cont < 1) {
+      //   this.cont++
         console.log('inscribiendo', this.profileContest.profile_id, ' a ', this.contest.id)
         this.posting = true
         const s = this.profileContestService.post({
@@ -67,7 +67,7 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
             s.unsubscribe()
           }
         )
-      }
+      // }
       // super.fetch<ProfileContestExpanded>(() => this.profileContestService.post({
       //     profile_id: this.profileContest.profile_id,
       //     contest_id: this.contest.id,

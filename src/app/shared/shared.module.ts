@@ -35,7 +35,7 @@ import { SearchSelectComponent } from './search-select/search-select.component';
     BtnSortComponent,
     ThSortComponent,
     BtnPostComponent,
-    ContestStatusChipComponent
+    ContestStatusChipComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
