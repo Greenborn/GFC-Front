@@ -21,7 +21,7 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
   public img_url: string;
 
   public posting: boolean = false
-  public title: string;
+  public loadedImg: boolean = false
   // public cont: number = 0;
 
   constructor(
@@ -34,8 +34,10 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
     super(alertCtrl)
   }
 
+
+
   get formTitle() {
-    return (this.parrafo.id === undefined ? 'Agregar parrafo' : 'Editar parrafo ' + this.title)
+    return (this.parrafo.id === undefined ? 'Agregar parrafo' : 'Editar ' + (this.parrafo.id == 1 ? 'encabezado ' : 'parrafo'))
   }
 
   ngOnInit() {
@@ -47,9 +49,31 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
   }
 
   datosCargados() {
-    return ![undefined, ''].includes(this.parrafo.title) ||
-           ![undefined, ''].includes(this.parrafo.content) || 
-           this.image_file != undefined
+    return true
+    // return ![undefined, ''].includes(this.parrafo.title) ||
+    //        ![undefined, ''].includes(this.parrafo.content) || 
+    //        this.image_file != undefined
+  }
+
+  loadImg(ev) {
+    // console.log(ev.target.src)
+    this.loadedImg = true
+  }
+  deleteImg(inputFile) {
+    if (this.image_file != undefined) {
+      this.image_file = undefined
+      inputFile.el.value = undefined
+      if (this.parrafo === undefined) {
+        this.img_url = undefined
+        this.loadedImg = false
+      } else {
+        this.img_url = this.configService.apiUrl(this.parrafo.img_url)
+      }
+    } else {
+      this.parrafo.img_url = ''
+      this.img_url = ''
+      this.loadedImg = false
+    }
   }
 
   postParrafo() {
@@ -61,6 +85,8 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
       }
       if (this.image_file != undefined) {
         p.image_file = this.image_file
+      } else if (this.parrafo.img_url == '') {
+        p.delete_img = true
       }
       this.posting = true
       super.fetch<any>(
@@ -82,11 +108,14 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
     // }
   }
 
-  imageUpload(event: EventTarget) {
+  imageUpload(event) {
       
     const file = (event as HTMLInputElement).files.item(0)
 
-    if (!file) return;
+    if (!file) {
+      console.log(event.target.value)
+      return
+    };
 
     if (file.type.split('/')[0] !== 'image') { 
       console.log('File type is not supported!')

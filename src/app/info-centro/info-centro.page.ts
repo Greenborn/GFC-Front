@@ -36,6 +36,11 @@ export class InfoCentroPage extends ApiConsumer implements OnInit {
 
   }
 
+  noImg(avatarImg){
+    // console.log(rowImg)
+    avatarImg.el.classList.add('ion-hide')
+  }
+
   ionViewWillEnter() {
     super.fetch<InfoCentro[]>(
       () => this.infoCentroService.getAll()
@@ -45,11 +50,23 @@ export class InfoCentroPage extends ApiConsumer implements OnInit {
     })
   }
 
+  obtenerVh() {
+    if (this.responsiveService.isDesktop) {
+      // console.log(colCard.clientHeight)
+      // return window.innerWidth/6;
+      return 35;
+    } else {
+      // return colCard.el.clientWidth/2;
+      // return window.innerWidth/2
+      return 25;
+    }
+  }
+
   async postParrafo(p: InfoCentro = this.infoCentroService.template) {
     const { parrafo } = await this.UIUtilsService.mostrarModal(InfoCentroPostComponent, { parrafo: {...p} })
     // console.log('Dismissed modal post fotoclub. Recibido ', f)
     if (parrafo == undefined) return;
-    if (p != undefined) {
+    if (p.id != undefined) {
       this.parrafos.splice(this.parrafos.findIndex(p1 => p1.id == p.id), 1, parrafo)
     } else {
       this.parrafos.push(parrafo)
@@ -61,7 +78,7 @@ export class InfoCentroPage extends ApiConsumer implements OnInit {
 
     const alert = await this.UIUtilsService.mostrarAlert({
       header: `Confirmar borrado`,
-      message: 'No se podrá eliminar si tiene usuarios asociados.'
+      message: ''
       }, 
       async () => {
         super.fetch<void>(() => this.infoCentroService.delete(id)).subscribe(

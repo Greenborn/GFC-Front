@@ -29,6 +29,21 @@
   cursor: pointer;
 }
 
+@media (max-width: 768px) {
+  ion-modal.auto-width {
+    .ion-page {
+      position: relative;
+      display: block;
+      contain: content;
+
+      .inner-content {
+        max-height: 95vh;
+        overflow: auto;
+        padding: 10px;
+      }
+    }
+  }  
+}
 @media (min-width: 768px) {
   ion-modal.auto-width {
     &.bottom {

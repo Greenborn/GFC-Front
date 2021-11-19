@@ -19,6 +19,8 @@
   </ion-header>
 
   <div slot="start" class="w-100 inner-content ion-float-md-start">
+    <!-- <ion-scroll zooming="true" direction="xy" style="width:500px;height:500px">
+    </ion-scroll> -->
     <ion-grid>
       <ion-row class="ion-justify-content-center ion-align-self-center">
         <ion-col>
@@ -37,28 +39,41 @@
                 <ion-col class="ion-no-padding">
                   <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                     <ion-label position="stacked">Imágen</ion-label>
-                    <input type="file" (change)="imageUpload($event.target)" />
+                    <!-- <input type="file" (change)="imageUpload($event.target)" /> -->
+                    <ion-input #inputFile
+                      type="file"
+                      (change)="imageUpload($event.target)"
+                    ></ion-input>
+                    <ion-button *ngIf="loadedImg" (click)="deleteImg(inputFile)" fill="clear" class="">
+                      <ion-icon name="close-outline"></ion-icon>
+                    </ion-button>
+                    <div>
+                        <ion-row  class="ion-justify-content-center">
+      
+                          <ion-img  [src]="img_url" alt=""
+                            (ionImgDidLoad)="loadImg($event)"
+                            (ionError)="loadedImg = false"
+                          ></ion-img>
+                        </ion-row>
+                    </div>
                   </ion-item>
-                  <div>
-                      <ion-row  class="ion-justify-content-center">
-    
-                        <ion-img  [src]="img_url" alt=""> </ion-img>
-                      </ion-row>
-                  </div>
                 </ion-col>
               </ion-row>
               
-              <ion-item class="w-100 ion-margin-bottom" *ngIf="parrafo != undefined">
+              <ion-item class="w-100" *ngIf="parrafo != undefined && parrafo.id != 1">
                 <ion-label position="floating">Contenido</ion-label>
                 <ion-textarea
                   autocapitalize="sentences"
-                  auto-grow="true"
                   ngDefaultControl
                   [(ngModel)]="parrafo.content"
-                ></ion-textarea>
+                  [rows]="responsiveService.isDesktop ? 6 : 4"
+                  ></ion-textarea>
+                  <!-- auto-grow="true" -->
+                  <!-- [autoGrow]="responsiveService.isDesktop" -->
+                  <!-- [style]="responsiveService.isDesktop ? '' : 'max-height: 300px;'" -->
               </ion-item>
 
-              <ion-row class="ion-justify-content-end">
+              <ion-row class="ion-justify-content-end ion-margin-top">
                 <ion-col size="12">
                   <ion-row class="ion-justify-content-end">
                     <ion-col
