@@ -419,8 +419,7 @@
                             <ion-button title="Ver fotografía"
                               (click)="openImage(r.image)"
                             >
-                              <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
-                              <ion-icon name="image-outline"></ion-icon>
+                              <img class="img-button" [src]="configService.apiUrl(r.image.url)" />
                             </ion-button>
                             <ion-button
                               *ngIf="checkPermissions"
