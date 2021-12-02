@@ -175,6 +175,9 @@
               <!-- <ion-col> -->
               <ion-label position="floating">Descripción</ion-label>
               <ion-textarea
+                (ionFocus)="descrChangeFocus = true"
+                (ionBlur)="descrChangeFocus = false"
+                maxlength= "250"
                 autocapitalize="sentences"
                 auto-grow="true"
                 name="description"
@@ -183,6 +186,7 @@
               ></ion-textarea>
               <!-- </ion-col> -->
             </ion-item>
+            <ion-note *ngIf="descrChangeFocus">Máximo 250 caracteres</ion-note>
           </ion-list>
 
           <!-- <ion-item> -->
