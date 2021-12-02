@@ -163,6 +163,21 @@ export class FotografiasComponent implements OnInit {
     
   }
 
+  getThumbUrl(obj:any, thumb_id:number = 1){
+    //si llega un objeto no iterable
+    if (obj !== undefined && obj.length === undefined){
+      return this.configService.apiUrl(obj.url);
+    }
+    //si se trata de un arreglo
+    for(let c=0; c < obj.length; c++){
+      console.log(obj[c]);
+      if (obj[c].thumbnail_type == thumb_id){
+        return this.configService.apiUrl(obj[c].url);
+      }
+    }
+    return '';
+  }
+
   get checkPermissions() {
     return this.contestService.isActive(this.concurso) && 
     (this.user != undefined ? this.rolificador.esDelegado(this.user) : false)

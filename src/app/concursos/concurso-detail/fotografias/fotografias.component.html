@@ -419,7 +419,7 @@
                             <ion-button title="Ver fotografía"
                               (click)="openImage(r.image)"
                             >
-                              <img class="img-button" [src]="configService.apiUrl(r.image.url)" />
+                              <img class="img-button" [src]="getThumbUrl(r.image.thumbnail,1)" />
                             </ion-button>
                             <ion-button
                               *ngIf="checkPermissions"
