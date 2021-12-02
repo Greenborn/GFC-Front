@@ -164,7 +164,7 @@ export class ConcursoDetailService implements OnInit {
     this.concurso.pipe(
       filter(c => c.id != undefined)
     ).subscribe(c => {
-      const s = this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile&filter[contest_id]=${c.id}`).subscribe(rs => {
+      const s = this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile,image.thumbnail&filter[contest_id]=${c.id}`).subscribe(rs => {
         this.resultadosConcurso.next(rs)
         s.unsubscribe()
       })
