@@ -2,6 +2,11 @@ ion-avatar img{ width: 100% !important; height: 100% !important; }
 
 ion-avatar{--border-radius: 0px; } 
 
+.capa-opacidad {
+ background-color: #55555562;
+ color: white;
+}
+
 // .truncate {
 //     // --max-lines: 3;
 //     // line-height: 1.2em !important;
