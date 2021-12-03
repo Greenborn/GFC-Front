@@ -11,6 +11,7 @@ import { ConcursoDetailPage } from './concurso-detail.page';
 import { SharedModule } from '../../shared/shared.module';
 import { ConcursantesComponent } from './concursantes/concursantes.component';
 import { FotografiasComponent } from './fotografias/fotografias.component';
+import { InformacionComponent } from './informacion/informacion.component';
 import { ConcursoDetailService } from './concurso-detail.service';
 import { ImagePostPage } from './image-post/image-post.page';
 import { ImageReviewPage } from './image-review/image-review.page';
@@ -29,6 +30,7 @@ import { VerFotografiasComponent } from './ver-fotografias/ver-fotografias.compo
     ConcursoDetailPage, 
     ConcursantesComponent, 
     FotografiasComponent, 
+    InformacionComponent,
     ImagePostPage, 
     ImageReviewPage,
     InscribirConcursanteComponent,

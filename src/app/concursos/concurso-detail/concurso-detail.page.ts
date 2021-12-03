@@ -34,6 +34,7 @@ import { Section } from 'src/app/models/section.model';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 
+// TODO: sacar el contenido extra que se repite en informacion-component
 @Component({
   selector: 'app-concurso-detail',
   templateUrl: './concurso-detail.page.html',
@@ -48,9 +49,6 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
 
   mostrarFiltro: boolean = false;
   concurso: Contest = this.contestService.template;
-  contestResults: ContestResult[] = [];
-  images: Image[] = [];
-  // profiles: Profile[] = [];
   value = { lower: 1000, upper: 1500 };
   
   resultadosConcurso: ContestResultExpanded[] = [];
