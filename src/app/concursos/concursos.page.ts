@@ -63,7 +63,6 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
       this.anchoImg = false;
     }
   }
-
     // @ViewChild('imageContest')
   // imageContest: ElementRef;
 

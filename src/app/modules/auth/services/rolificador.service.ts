@@ -33,12 +33,17 @@ export class RolificadorService {
     return u.role_id === 1
   }
   esDelegado(u: User): boolean {
-    // console.log(u.role_id )
-    return u.role_id < 3
+    return u.role_id === 2
+  }
+  esConcursante(u: User): boolean {
+    return u.role_id === 3
+  }
+  esJuez(u: User): boolean {
+    return u.role_id === 4
   }
 
   isNotPrivilegies(u: User): boolean {
-    return u.role_id >= 3
+    return u.role_id === 3 || u.role_id > 4
   }
 
   // getUsers(u: UserLogged): Observable<User[]> {

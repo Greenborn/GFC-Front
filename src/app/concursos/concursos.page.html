@@ -95,11 +95,18 @@
               </h1>
               <!-- TODO: hacer priv el rolific -->
               <!-- <ion-fab *ngIf="isLogedIn()"> -->
-              <ion-fab-button
+              <!-- <ion-fab-button
                 size="small"
                 *ngIf="rolificador.esDelegado(u)"
                 [routerLink]="['nuevo']"
-              >
+              > -->
+              
+              <ion-fab-button
+              size="small"
+              *ngIf="
+                     (rolificador.esDelegado(u) || rolificador.isAdmin(u))"
+              [routerLink]="['nuevo']"
+            >
                 <ion-icon name="add"></ion-icon>
               </ion-fab-button>
               <!-- </ion-fab> -->

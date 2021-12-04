@@ -164,6 +164,11 @@ export class FotografiasComponent implements OnInit {
   }
 
   getThumbUrl(obj:any, thumb_id:number = 1){
+    console.log("n", obj)
+    //si no tiene miniatura porque no tiene imagen
+    if (obj == null) {
+      return '';
+    }
     //si llega un objeto no iterable
     if (obj !== undefined && obj.length === undefined){
       return this.configService.apiUrl(obj.url);
@@ -180,7 +185,7 @@ export class FotografiasComponent implements OnInit {
 
   get checkPermissions() {
     return this.contestService.isActive(this.concurso) && 
-    (this.user != undefined ? this.rolificador.esDelegado(this.user) : false)
+    (this.user != undefined ? (this.rolificador.esDelegado(this.user) || this.rolificador.isAdmin(this.user)  ) : false)
   }
 
   get inscriptosProfiles(): Profile[] {

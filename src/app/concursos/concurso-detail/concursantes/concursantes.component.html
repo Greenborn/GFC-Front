@@ -34,11 +34,16 @@
                 Inscriptos
               </h1>
                 <!-- TODO: hacer priv el rolific-->
-              <ion-fab-button
+              <!-- <ion-fab-button
                 size="small"
                 *ngIf="contestService.isActive(concurso) && rolificador.esDelegado(u) && concursantes.length > 0"
                 (click)="inscribirConcursante()"
-              >
+              > -->
+              <ion-fab-button
+              size="small"
+              *ngIf="contestService.isActive(concurso) && (rolificador.esDelegado(u) || rolificador.isAdmin(u)) "
+              (click)="inscribirConcursante()"
+            >
                 <!-- [routerLink]="['agregar-foto']"   -->
                 <ion-icon name="add"></ion-icon>
               </ion-fab-button>

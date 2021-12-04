@@ -22,7 +22,7 @@
     ></ion-icon> 
   </ion-fab-button> -->
 
-    <!-- contenido info -->
+ <!-- contenido -->
 
   <!-- <ion-content>
   <app-concurso-tabs [totConcursantes]="loading ? '' : inscriptos.length"></app-concurso-tabs>
@@ -39,8 +39,16 @@
                   <ion-icon name="information-circle-outline"></ion-icon>
                   <ion-label>Información</ion-label>
                 </ion-tab-button>
+                <!-- TODO: cambiar el icono por uno mas acorde -->
+                <ion-tab-button tab="jueces"
+                *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u) )"
+              >
+              <ion-icon name="ribbon-outline"></ion-icon>
+                <ion-label>Jueces</ion-label>
+              </ion-tab-button>
+
                 <ion-tab-button tab="concursantes"
-                  *ngIf="!concurso.active || rolificador.esDelegado(u)"
+                  *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u))"
                 >
                   <ion-icon name="people-outline"></ion-icon>
                   <ion-label>Concursantes</ion-label>
@@ -59,9 +67,9 @@
         
           </ion-row>
   
-          <ion-row>
+          <!-- <ion-row>
             <router-outlet></router-outlet>
-          </ion-row>
+          </ion-row> -->
         </ion-col>
       </ion-row>
     <!-- <router-outlet name="concurso"></router-outlet> -->

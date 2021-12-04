@@ -5,6 +5,7 @@ import { ConcursantesComponent } from './concursantes/concursantes.component';
 import { ConcursoDetailPage } from './concurso-detail.page';
 import { FotografiasComponent } from './fotografias/fotografias.component';
 import { InformacionComponent } from './informacion/informacion.component';
+import { JuecesComponent } from './jueces/jueces.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,13 @@ const routes: Routes = [
         // loadChildren: () => import('./contest-results/contest-results.module').then( m => m.ContestResultsPageModule)
 
         component: FotografiasComponent,
+        // outlet: 'concurso'
+      },
+      {
+        path: 'jueces',
+        // loadChildren: () => import('./contest-results/contest-results.module').then( m => m.ContestResultsPageModule)
+
+        component: JuecesComponent,
         // outlet: 'concurso'
       },
       {

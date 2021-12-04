@@ -153,6 +153,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   
     // loading.present();
     const id = parseInt(paramMap.get('id'))
+    console.log("id algo: ", id)
 
     // super.fetch<Contest>(() => this.concursoDetailService.concurso).subscribe({
     //   next: c => this.concurso = c 
@@ -180,7 +181,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       next: c => this.resultadosConcurso = c 
     })
 
-    await this.concursoDetailService.loadContest(id)
+    // await this.concursoDetailService.loadContest(id)
     // this.concursoDetailService.loadConcursantes()
     // this.concursoDetailService.loadProfileContests()
     // this.concursoDetailService.loadContestResults()

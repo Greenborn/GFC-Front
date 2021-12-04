@@ -128,13 +128,20 @@
                 Fotografías
               </h1>
                   <!-- TODO: hacer priv el rolific-->
-              <ion-fab-button
+              <!-- <ion-fab-button
                 size="small"
                 *ngIf="contestService.isActive(concurso) && 
-                       rolificador.esDelegado(u) &&
+                       (rolificador.esDelegado(u) || rolificador.isAdmin(u)) &&
                        concursantes.length > 0"
                 (click)="postImage()"
-              >
+              > -->
+
+              <ion-fab-button
+              size="small"
+              *ngIf="contestService.isActive(concurso) && 
+                     (rolificador.esDelegado(u) || rolificador.isAdmin(u))"
+              (click)="postImage()"
+            >
                 <!-- [routerLink]="['agregar-foto']"   -->
                 <ion-icon name="add"></ion-icon>
               </ion-fab-button>
