@@ -7,6 +7,7 @@ import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContest, ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { IonicSelectableComponent } from 'ionic-selectable';
 
 @Component({
   selector: 'app-inscribir-concursante',
@@ -35,7 +36,12 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
     super(alertCtrl)
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    //modificacion datos de concursantes para concatenar nombre y apellido
+    for (let c=0; c<this.concursantes.length; c++){
+      this.concursantes[c].name = this.concursantes[c].name + ' ' + this.concursantes[c].last_name;
+    }
+  }
 
   datosCargados() {
     return this.profileContest.profile_id != undefined && 
@@ -46,6 +52,8 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
     if (this.datosCargados()) {
       // if (this.cont < 1) {
       //   this.cont++
+        
+        this.profileContest.profile_id = Number(this.profileContest.profile_id['id']); // Agregado por cambio en select
         console.log('inscribiendo', this.profileContest.profile_id, ' a ', this.contest.id)
         this.posting = true
         const s = this.profileContestService.post({
