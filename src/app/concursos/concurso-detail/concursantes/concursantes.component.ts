@@ -246,7 +246,7 @@ postImage(profile_id: number) {
           label: 'Agregar fotografía'
         },
         {
-          accion: (params: number[]) => this.concursoDetailService.desinscribirConcursante.emit(p),
+          accion: (params: number[]) => this.concursoDetailService.desinscribir.emit(p),
           // accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
           params: [],
           icon: 'trash',

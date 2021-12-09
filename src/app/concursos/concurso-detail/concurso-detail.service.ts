@@ -40,8 +40,8 @@ export class ConcursoDetailService implements OnInit {
   public resultadosConcurso: BehaviorSubject<ContestResultExpanded[]>;
   // public resultadosConcurso: EventEmitter<ContestResultExpanded[]>;
   // public inscribirConcursante = new EventEmitter<number|undefined>();
-  public desinscribirConcursante: EventEmitter<ProfileContestExpanded>;
-  public desinscribirJuez: EventEmitter<ProfileContestExpanded>;
+  public desinscribir: EventEmitter<ProfileContestExpanded>;
+  // public desinscribirJuez: EventEmitter<ProfileContestExpanded>;
   // public desinscribirConcursante = new EventEmitter<ProfileContestExpanded>();
   public postImage: EventEmitter<ImagePostParams>;
   // public postImage = new EventEmitter<ImagePostParams>();
@@ -87,8 +87,8 @@ export class ConcursoDetailService implements OnInit {
     // this.seccionesInscriptas = new EventEmitter<ContestSectionExpanded[]>();
     this.resultadosConcurso = new BehaviorSubject<ContestResultExpanded[]>([]);
     // this.ic inscribirConcursante = new EventEmitter<number|undefined>();
-    this.desinscribirConcursante = new EventEmitter<ProfileContestExpanded>();
-    this.desinscribirJuez = new EventEmitter<ProfileContestExpanded>();
+    this.desinscribir = new EventEmitter<ProfileContestExpanded>();
+    // this.desinscribirJuez = new EventEmitter<ProfileContestExpanded>();
     this.postImage = new EventEmitter<ImagePostParams>();
     this.reviewImage = new EventEmitter<ContestResultExpanded>();
     this.deleteImage = new EventEmitter<ContestResultExpanded>();

@@ -130,7 +130,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     }
   )
   // const s5 = this.concursoDetailService.inscribirConcursante.subscribe(category_id => this.inscribirConcursante(category_id))
-  const s6 = this.concursoDetailService.desinscribirConcursante.subscribe(profileContest => this.desinscribirConcursante(profileContest))
+  const s6 = this.concursoDetailService.desinscribir.subscribe(profileContest => this.desinscribir(profileContest))
   // this.subs.push(s2, s3, s4, s6)
   // this.subs.push(s1, s2, s3, s4, s5, s6)
   this.subs.push(s1, s2, s3, s4, s6)
@@ -285,7 +285,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
         }
       )
       // const s5 = this.concursoDetailService.inscribirConcursante.subscribe(category_id => this.inscribirConcursante(category_id))
-      const s6 = this.concursoDetailService.desinscribirConcursante.subscribe(profileContest => this.desinscribirConcursante(profileContest))
+      const s6 = this.concursoDetailService.desinscribir.subscribe(profileContest => this.desinscribir(profileContest))
       this.subs.push(s2, s3, s4, s6)
       // this.subs.push(s1, s2, s3, s4, s5, s6)
     }
@@ -432,7 +432,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     //   }
     // }
   
-    async desinscribirConcursante(profileContest: ProfileContestExpanded) {
+    async desinscribir(profileContest: ProfileContestExpanded) {
       if (this.popover != undefined) {
         this.popoverCtrl.dismiss(this.popover)
         this.popover = undefined
