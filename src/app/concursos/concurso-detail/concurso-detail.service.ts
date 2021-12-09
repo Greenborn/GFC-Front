@@ -17,6 +17,7 @@ import { UserLogged } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { filter, map } from 'rxjs/operators';
 import { ContestResultService } from 'src/app/services/contest-result.service';
+import { InscribirJuecesComponent } from './inscribir-jueces/inscribir-jueces.component';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class ConcursoDetailService implements OnInit {
   public concurso: BehaviorSubject<Contest>;
   // public concurso: EventEmitter<Contest>;
   public concursantes: BehaviorSubject<ProfileExpanded[]>;
+  public jueces: BehaviorSubject<ProfileExpanded[]>;
   // public concursantes: EventEmitter<ProfileExpanded[]>;
   public inscriptos: BehaviorSubject<ProfileContestExpanded[]>;
   // public inscriptos: EventEmitter<ProfileContestExpanded[]>;
@@ -38,6 +40,7 @@ export class ConcursoDetailService implements OnInit {
   // public resultadosConcurso: EventEmitter<ContestResultExpanded[]>;
   // public inscribirConcursante = new EventEmitter<number|undefined>();
   public desinscribirConcursante: EventEmitter<ProfileContestExpanded>;
+  public desinscribirJuez: EventEmitter<ProfileContestExpanded>;
   // public desinscribirConcursante = new EventEmitter<ProfileContestExpanded>();
   public postImage: EventEmitter<ImagePostParams>;
   // public postImage = new EventEmitter<ImagePostParams>();
@@ -72,6 +75,7 @@ export class ConcursoDetailService implements OnInit {
     this.concurso = new BehaviorSubject<Contest>(this.contestService.template);
     // this.concurso = new EventEmitter<Contest>();
     this.concursantes = new BehaviorSubject<ProfileExpanded[]>([]);
+    this.jueces = new BehaviorSubject<ProfileExpanded[]>([]);
     // this.concursantes = new EventEmitter<ProfileExpanded[]>();
     this.inscriptos = new BehaviorSubject<ProfileContestExpanded[]>([]);
     // this.inscriptos = new EventEmitter<ProfileContestExpanded[]>();
@@ -82,6 +86,7 @@ export class ConcursoDetailService implements OnInit {
     this.resultadosConcurso = new BehaviorSubject<ContestResultExpanded[]>([]);
     // this.ic inscribirConcursante = new EventEmitter<number|undefined>();
     this.desinscribirConcursante = new EventEmitter<ProfileContestExpanded>();
+    this.desinscribirJuez = new EventEmitter<ProfileContestExpanded>();
     this.postImage = new EventEmitter<ImagePostParams>();
     this.reviewImage = new EventEmitter<ContestResultExpanded>();
     this.deleteImage = new EventEmitter<ContestResultExpanded>();
@@ -91,6 +96,7 @@ export class ConcursoDetailService implements OnInit {
     // this.categoriasInscriptas.subscribe(c => this.categoriasInscriptasArray = c)
     // this.inscriptos.subscribe(c => this.inscriptosArray = c)
       this.loadConcursantes()
+      this.loadJueces()
       this.loadProfileContests()
       this.loadContestResults()
   }
@@ -148,13 +154,32 @@ export class ConcursoDetailService implements OnInit {
     this.concurso.pipe(
       filter(c => c.id != undefined)
     ).subscribe(c => {
-      const s = this.profileContestService.getAll<ProfileExpanded>(`contest_id=${c.id}&expand=fotoclub`, 'profile-registrable').subscribe(cs => {
+      const s = this.profileContestService.getAll<ProfileExpanded>(`contest_id=${c.id}&expand=fotoclub&role=3`, 'profile-registrable').subscribe(cs => {
         // console.log('updated inscriptos', is)
         this.concursantes.next(cs)
         s.unsubscribe()
       })
     })
     // const s = this.rolificador.getConcursantes(u).subscribe(cs => {
+    //   // console.log('updated inscriptos', is)
+    //   this.concursantes.next(cs)
+    //   s.unsubscribe()
+    // })
+  }
+  //TODO: func
+  async loadJueces() {
+    // const u = await this.authService.user
+    
+    this.concurso.pipe(
+      filter(c => c.id != undefined)
+    ).subscribe(c => {
+      const s = this.profileContestService.getAll<ProfileExpanded>(`contest_id=${c.id}&role=4`, 'profile-registrable').subscribe(cs => {
+        // console.log('updated inscriptos', is)
+        this.jueces.next(cs)
+        s.unsubscribe()
+      })
+    })
+    // const s = this.rolificador.getJueces(u).subscribe(cs => {
     //   // console.log('updated inscriptos', is)
     //   this.concursantes.next(cs)
     //   s.unsubscribe()
@@ -211,6 +236,25 @@ export class ConcursoDetailService implements OnInit {
       "contest": this.concurso.getValue(),
       "categorias": this.categoriasInscriptas.getValue().map(c => c.category),
       profileContest: pc
+    })
+
+    if (profileContest != undefined) {
+      this.loadContest(this.concurso.getValue().id)
+      // this.inscriptosArray.push(profileContest)
+      // this.inscriptos.emit(this.inscriptosArray)  
+    }
+  }
+
+  //TODO: inc
+  async inscribirJuez() {
+
+    const pc = this.profileContestService.template
+    
+    const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirJuecesComponent, {
+      "jueces": this.jueces.getValue(),
+      // "modalController": this.modalController,
+      // "contest": this.concurso.getValue()
+      "contest": this.concurso.getValue()
     })
 
     if (profileContest != undefined) {

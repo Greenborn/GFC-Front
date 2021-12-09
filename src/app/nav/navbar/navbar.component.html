@@ -19,7 +19,7 @@
     <!-- <ion-button> Reglamento </ion-button> -->
     <ion-button [routerLink]="['/concursos']"> Concursos </ion-button>
     <!-- <ion-button> Galería </ion-button> -->
-    <ion-button *ngIf="rolificador.esDelegado(u)"
+    <ion-button *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)"
       [routerLink]="['/usuarios']"
     >
       {{ rolificador.getNombreUsuarios(u.role_id) }}

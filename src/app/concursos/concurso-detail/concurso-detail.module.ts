@@ -10,12 +10,14 @@ import { ConcursoDetailPage } from './concurso-detail.page';
 
 import { SharedModule } from '../../shared/shared.module';
 import { ConcursantesComponent } from './concursantes/concursantes.component';
+import { JuecesComponent } from './jueces/jueces.component';
 import { FotografiasComponent } from './fotografias/fotografias.component';
 import { InformacionComponent } from './informacion/informacion.component';
 import { ConcursoDetailService } from './concurso-detail.service';
 import { ImagePostPage } from './image-post/image-post.page';
 import { ImageReviewPage } from './image-review/image-review.page';
 import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir-concursante.component';
+import { InscribirJuecesComponent } from './inscribir-jueces/inscribir-jueces.component';
 import { VerFotografiasComponent } from './ver-fotografias/ver-fotografias.component';
 // import { ConcursoTabsComponent } from './concurso-tabs/concurso-tabs.component';
 @NgModule({
@@ -29,11 +31,13 @@ import { VerFotografiasComponent } from './ver-fotografias/ver-fotografias.compo
   declarations: [
     ConcursoDetailPage, 
     ConcursantesComponent, 
+    JuecesComponent,
     FotografiasComponent, 
     InformacionComponent,
     ImagePostPage, 
     ImageReviewPage,
     InscribirConcursanteComponent,
+    InscribirJuecesComponent,
     VerFotografiasComponent
     // ConcursoTabsComponent
   ],

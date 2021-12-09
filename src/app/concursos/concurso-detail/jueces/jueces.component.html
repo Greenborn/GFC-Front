@@ -1,3 +1,218 @@
-<p>
-  jueces works!
-</p>
+<ion-content 
+  >
+  <!-- *ngIf="auth.user | async as userLogged"> -->
+  <ion-grid #concursantesContent id="concursantesContent"
+    class="ion-no-padding ion-no-margin"
+  >
+    <ion-row class="ion-justify-content-center">
+      <!-- filtro -->
+      <ion-col size="12" size-md="3" *ngIf="mostrarFiltro">
+        <ion-col>
+          <ion-title class="ion-margin-top">Búsqueda</ion-title>
+  
+          <app-search-bar
+            [(data)]="inscriptos"
+            [atributosObj]="atributosBusqueda"
+          ></app-search-bar>
+  
+  
+        </ion-col>
+      </ion-col>
+  
+      <ion-col>
+        <ion-row *ngIf="(auth.user | async) as u">
+          <ion-col size="11.5" push="0.25">
+            <ion-row
+              class="
+                ion-justify-content-start
+                ion-align-items-center
+                ion-margin-top
+                ion-margin-bottom
+              "
+            >
+              <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
+                Inscriptos
+              </h1>
+                <!-- TODO: hacer priv el rolific-->
+              <!-- <ion-fab-button
+                size="small"
+                *ngIf="contestService.isActive(concurso) && rolificador.esDelegado(u) && concursantes.length > 0"
+                (click)="inscribirConcursante()"
+              > -->
+              <ion-fab-button
+              size="small"
+              *ngIf="contestService.isActive(concurso) && (rolificador.esDelegado(u) || rolificador.isAdmin(u)) "
+              (click)="inscribirJuez()"
+            >
+                <!-- [routerLink]="['agregar-foto']"   -->
+                <ion-icon name="add"></ion-icon>
+              </ion-fab-button>
+              <!-- <ion-fab-button
+                size="small"
+                *ngIf="contestService.isActive(concurso)"
+                (click)="inscribirConcursante()"
+              >
+                
+                <ion-icon name="add"></ion-icon>
+              </ion-fab-button> -->
+            </ion-row>
+  
+            <ion-row class="ion-align-items-center ion-padding-bottom">
+              <ion-col size="10" size-sm="11">
+                <!-- <app-search-bar
+                  [(data)]="inscriptos"
+                  [atributosObj]="atributosBusqueda"
+                >
+                </app-search-bar> -->
+                <!-- <app-search-bar [atributos]="['Titulo', 'Codigo']">
+                </app-search-bar> -->
+              </ion-col>
+              <ion-col size="2" size-sm="1">
+                <ion-row
+                  class="
+                    ion-justify-content-center
+                    ion-align-items-center
+                    ion-align-self-center
+                  "
+                >
+                  <ion-button
+                    (click)="mostrarFiltro = !mostrarFiltro"
+                    color="medium"
+                    expand="block"
+                    class="
+                      ion-justify-content-center
+                      ion-align-items-center
+                      ion-align-self-center
+                    "
+                  >
+                    <ion-icon name="funnel"></ion-icon>
+                    <!-- <ion-icon name="options"></ion-icon> -->
+                  </ion-button>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+            <ion-list>
+              <ion-item color="dark">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col>
+                      <ion-row>
+                        <app-th-sort
+                          [sortFn]="ordenarPorApellido"
+                          [(data)]="inscriptos"
+                          title="Jurado"
+                        ></app-th-sort>
+                        <!-- <div class="thead">
+                          <b>Concursante</b>
+                          <app-btn-sort style="margin-left: 8px"
+                            [sortFn]="ordenarPorApellido"
+                            [data]="inscriptos"
+                            (sorted)="inscriptos = $event"
+                          ></app-btn-sort>
+                        </div> -->
+                        <!-- <ion-button (click)="ordenarPorApellido()"
+                          size="small" [fill]="ordenamientoFill" color="light"
+                          [title]="ordenamientoTitle"
+                          class="ion-margin-start"
+                        >
+                          <ion-icon name="swap-vertical-outline"
+                            [style]="ordenamientoStyle"
+                          ></ion-icon>
+                        </ion-button> -->
+                      </ion-row>
+                    </ion-col>
+                    <!-- *ngIf="rolificador.isAdmin(userLogged)" -->
+                    <!-- <ion-col
+                      size="3.5"
+                      *ngIf="isAdmin"
+                      class="ion-hide-sm-down"
+                      >
+                    </ion-col> -->
+                    <ion-col size="2"><b></b></ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </ion-list>
+            <!-- <ion-list *ngIf="!loading; else spinner"> -->
+            <ion-list> 
+              <ion-item lines="none">
+                <!-- <ion-grid *ngIf="!loading"> -->
+                <!-- <ion-grid *ngIf="inscriptosFiltrados.length > 0; else texto"> -->
+                <ion-grid *ngIf="inscriptos.length > 0; else texto">
+                  <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
+                  <!-- class="ion-text-center" -->
+                  <ion-item
+                    class="ion-no-padding lista-elem"
+                    *ngFor="let m of inscriptos"
+                  >
+                    <ion-grid>
+                      <ion-row size="12">
+                        <ion-col>
+                          <ion-row
+                            class="
+                              ion-align-items-center
+                            "
+                            size-md="7"
+                            size-sm="5.5"
+                          >
+                            <!-- user card -->
+                            <ion-col size="3" size-sm="1.3">
+                              <app-usuario-img [src]="configService.apiUrl(m.profile.img_url)"></app-usuario-img>
+                            </ion-col>
+                            <ion-col size="8" size-sm="8.2">
+                              <ion-label class="ion-margin-start">
+                                <ion-card-subtitle title="Username"
+                                  ><i
+                                    >@{{ m.profile.user.username }}</i
+                                  ></ion-card-subtitle
+                                >
+                                <ion-text title="Nombre">
+                                  <b
+                                    >{{ m.profile.name }}
+                                    {{ m.profile.last_name }}</b
+                                  >
+                                </ion-text>
+                              </ion-label>
+                            </ion-col>
+                           
+                          </ion-row>
+                        </ion-col>
+                        <ion-col
+                        size="2"
+                        class="ion-align-self-center "
+                      >
+                      <ion-buttons class="ion-justify-content-end">
+                        <ion-button *ngIf="checkPermissions"
+                          (click)="
+                            concursoDetailService.desinscribirJuez.emit(
+                              m
+                            )
+                          "
+                          title="Desinscribir"
+                        >
+                          <ion-icon name="trash"></ion-icon>
+                        </ion-button>
+                      </ion-buttons>
+
+                      <!-- *ngIf="contestService.isActive(concurso)" -->
+                      </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-item>
+                </ion-grid>
+                <ng-template #texto>No hay inscriptos</ng-template>
+              </ion-item>
+            </ion-list>
+            <ng-template #spinner>
+              <ion-row class="ion-justify-content-center">
+                <ion-spinner></ion-spinner>
+              </ion-row>
+            </ng-template>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+

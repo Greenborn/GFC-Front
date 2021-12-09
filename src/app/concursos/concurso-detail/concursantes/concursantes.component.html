@@ -41,7 +41,7 @@
               > -->
               <ion-fab-button
               size="small"
-              *ngIf="contestService.isActive(concurso) && (rolificador.esDelegado(u) || rolificador.isAdmin(u)) "
+              *ngIf="contestService.isActive(concurso) && checkPermissions "
               (click)="inscribirConcursante()"
             >
                 <!-- [routerLink]="['agregar-foto']"   -->
@@ -148,7 +148,7 @@
                     <ion-col
                       size="3.5"
                       size-md="3.5"
-                      *ngIf="isAdmin"
+                      *ngIf="checkPermissions"
                       class="ion-hide-sm-down"
                       >
                       <!-- *ngIf="rolificador.isAdmin(userLogged)" -->
@@ -242,7 +242,7 @@
                           size="3.5"
                           size-md="3.5"
                           class="ion-hide-sm-down ion-align-self-center"
-                          *ngIf="isAdmin"
+                          *ngIf="checkPermissions"
                           >
                           <!-- *ngIf="rolificador.isAdmin(userLogged)" -->
                           <ion-text title="Fotoclub/Agrupación">{{

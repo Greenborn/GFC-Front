@@ -84,7 +84,7 @@ export class ConcursantesComponent implements OnInit {
   }
   get checkPermissions() {
     return this.contestService.isActive(this.concurso) && 
-      (this.user != undefined ? this.rolificador.esDelegado(this.user) : false)
+      (this.user != undefined ? (this.rolificador.esDelegado(this.user) || (this.rolificador.isAdmin(this.user)) ): false)
   }
 
   async ngOnInit() {
