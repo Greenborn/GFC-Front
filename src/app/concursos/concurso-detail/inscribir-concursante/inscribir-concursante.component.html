@@ -28,14 +28,14 @@
                 <ion-item class="w-100 ion-margin-bottom">
                   <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
                   <ion-label position="floating">Concursante</ion-label>
-                  <ion-select [(ngModel)]="profileContest.profile_id" ngDefaultControl>
-                    <!-- [(value)]="image.profile_id" -->
-                    <ion-select-option
-                      *ngFor="let p of concursantes"
-                      [value]="p.id"
-                      >{{ p.name + " " + p.last_name }}</ion-select-option
+                  <ionic-selectable  item-content
+                    [(ngModel)]="profileContest.profile_id"
+                    [items]="concursantes"
+                    itemValueField="id"
+                    itemTextField="name"
+                    [canSearch]="true"
                     >
-                  </ion-select>
+                  </ionic-selectable>
                 </ion-item>
               </ion-row>
               <ion-row class="ion-padding-top">

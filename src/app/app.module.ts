@@ -23,6 +23,8 @@ import { ConcursoDetailService } from './concursos/concurso-detail/concurso-deta
 import { UiUtilsService } from './services/ui/ui-utils.service';
 import { FooterPostComponent } from './nav/footer/footer-post/footer-post.component';
 import { FormsModule } from '@angular/forms';
+
+import { IonicSelectableModule } from 'ionic-selectable';
 //componente de ojo
 // import { InputOjoComponent } from '../app/shared/input-ojo/input-ojo.component'
 
@@ -51,6 +53,7 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     ConcursosPageModule,
     SharedModule,
+    IonicSelectableModule,
     AuthModule
     // GestionModule
   ],

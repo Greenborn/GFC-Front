@@ -20,12 +20,14 @@ import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir
 import { InscribirJuecesComponent } from './inscribir-jueces/inscribir-jueces.component';
 import { VerFotografiasComponent } from './ver-fotografias/ver-fotografias.component';
 // import { ConcursoTabsComponent } from './concurso-tabs/concurso-tabs.component';
+import { IonicSelectableModule } from 'ionic-selectable';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     ConcursoDetailPageRoutingModule,
+    IonicSelectableModule,
     SharedModule 
   ],
   declarations: [

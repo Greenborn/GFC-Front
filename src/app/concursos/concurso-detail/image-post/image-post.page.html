@@ -60,16 +60,14 @@
                     [position]="(image.profile_id != undefined) ? 'stacked' : 'floating'"
                     >Concursante</ion-label
                   >
-                  <ion-select
-                    #s
+                  <ionic-selectable  item-content #profileSelect
                     [(ngModel)]="image.profile_id"
-                    ngDefaultControl
-                  >
-                    <!-- [(value)]="image.profile_id" -->
-                    <ion-select-option *ngFor="let p of profiles" [value]="p.profile.id"
-                      >{{p.profile.name + ' ' + p.profile.last_name}}</ion-select-option
+                    [items]="profiles_list"
+                    itemValueField="id"
+                    itemTextField="name"
+                    [canSearch]="true"
                     >
-                  </ion-select>
+                  </ionic-selectable>
                 </ion-item>
               </ion-row>
               <ion-row>

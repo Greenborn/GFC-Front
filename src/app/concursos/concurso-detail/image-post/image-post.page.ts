@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
+import { IonicSelectableComponent } from 'ionic-selectable';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Image as GFC_Image } from 'src/app/models/image.model';
 import { Profile } from 'src/app/models/profile.model';
@@ -38,12 +39,14 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   // @ViewChild('s') selectConcursante: ElementRef;
   // @ViewChild('formImage') formImage: HTMLFormElement;
   // private cont: number = 0;
+  @ViewChild('profileSelect') profileSelect: IonicSelectableComponent;
   public file: File;
   public imageData: string = '';
 
   // public profiles: Profile[];
   public posting: boolean = false; 
   public img_url = '';
+  public profiles_list:any = {};
 
   constructor(
     // private userSvc: UsuarioService,
@@ -78,10 +81,16 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   async ngOnInit() {
     this.img_url = this.image.url
     // window.onresize = this.actualizarWidth;
+    //modificacion datos de concursantes para concatenar nombre y apellido
+    this.profiles_list = [];
+    for (let c=0; c<this.profiles.length; c++){
+      this.profiles_list.push({ name:this.profiles[c].profile.name + ' ' + this.profiles[c].profile.last_name, id:this.profiles[c].profile.id });
+    }
   }
 
   async postImage() {
     if (this.datosCargados()) {
+      this.image.profile_id = this.image.profile_id['id'];
       // if (this.cont < 1) {
       //   this.cont++
         // setTimeout(() => this.cont = 0, 500)
