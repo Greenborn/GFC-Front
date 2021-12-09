@@ -50,7 +50,7 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
         const s = this.profileContestService.post({
             profile_id: this.profileContest.profile_id,
             contest_id: this.contest.id,
-            category_id: this.profileContest.category_id
+            // category_id: null
           }, undefined, 'expand=profile,profile.user,profile.fotoclub,category'
         ).subscribe(
           profileContest => {

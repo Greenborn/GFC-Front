@@ -52,12 +52,13 @@ export class JuecesComponent implements OnInit {
       await this.UIUtilsService.presentLoading()
     }
     this.concursoDetailService.jueces.subscribe(cs => this.jueces = cs)
-    this.concursoDetailService.inscriptos.subscribe(is => {
+    this.concursoDetailService.inscriptosJueces.subscribe(is => {
       this.inscriptos = is
       this.UIUtilsService.dismissLoading()
       setTimeout(() => {
 
       }, 500)
+      console.log("jueces ionscriptos: ", this.inscriptos);
     })
     this.auth.user.then(u => this.user = u)
     this.concursoDetailService.concurso.subscribe({

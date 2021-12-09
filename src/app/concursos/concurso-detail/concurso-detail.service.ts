@@ -31,6 +31,7 @@ export class ConcursoDetailService implements OnInit {
   public jueces: BehaviorSubject<ProfileExpanded[]>;
   // public concursantes: EventEmitter<ProfileExpanded[]>;
   public inscriptos: BehaviorSubject<ProfileContestExpanded[]>;
+  public inscriptosJueces: BehaviorSubject<ProfileContestExpanded[]>;
   // public inscriptos: EventEmitter<ProfileContestExpanded[]>;
   public categoriasInscriptas: BehaviorSubject<ContestCategoryExpanded[]>;
   // public categoriasInscriptas: EventEmitter<ContestCategoryExpanded[]>;
@@ -78,6 +79,7 @@ export class ConcursoDetailService implements OnInit {
     this.jueces = new BehaviorSubject<ProfileExpanded[]>([]);
     // this.concursantes = new EventEmitter<ProfileExpanded[]>();
     this.inscriptos = new BehaviorSubject<ProfileContestExpanded[]>([]);
+    this.inscriptosJueces = new BehaviorSubject<ProfileContestExpanded[]>([]);
     // this.inscriptos = new EventEmitter<ProfileContestExpanded[]>();
     this.categoriasInscriptas = new BehaviorSubject<ContestCategoryExpanded[]>([]);
     // this.categoriasInscriptas = new EventEmitter<ContestCategoryExpanded[]>();
@@ -98,6 +100,7 @@ export class ConcursoDetailService implements OnInit {
       this.loadConcursantes()
       this.loadJueces()
       this.loadProfileContests()
+      this.loadProfileContestsJueces()
       this.loadContestResults()
   }
 
@@ -144,6 +147,19 @@ export class ConcursoDetailService implements OnInit {
       const s = this.profileContestService.getAll<ProfileContestExpanded>(`expand=profile,profile.user,profile.fotoclub&filter[contest_id]=${c.id}`).subscribe(is => {
         // console.log('updated inscriptos', is)
         this.inscriptos.next(is)
+        s.unsubscribe()
+      })
+    })
+  }
+  async loadProfileContestsJueces() {
+    const u = await this.authService.user
+    this.concurso.pipe(
+      filter(c => c.id != undefined)
+    ).subscribe(c => {
+      // const s = this.rolificador.getConcursantesInscriptos(u, c.id).subscribe(is => {
+      const s = this.profileContestService.getAll<ProfileContestExpanded>(`role=4&expand=profile,profile.user,profile.fotoclub&filter[contest_id]=${c.id}`).subscribe(is => {
+        // console.log('updated inscriptos', is)
+        this.inscriptosJueces.next(is)
         s.unsubscribe()
       })
     })
