@@ -54,6 +54,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   resultadosConcurso: ContestResultExpanded[] = [];
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
+  inscriptosJueces: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
   seccionesInscriptas: ContestSectionExpanded[] = [];
   // contest: Observable<ContestExpanded>;
@@ -187,6 +188,9 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       })
       this.concursoDetailService.inscriptos.subscribe({
         next: c => this.inscriptos = c 
+      })
+      this.concursoDetailService.inscriptosJueces.subscribe({
+        next: c => this.inscriptosJueces = c 
       })
       this.concursoDetailService.resultadosConcurso.subscribe({
         next: c => this.resultadosConcurso = c 
@@ -469,8 +473,10 @@ obtenerPx() {
                 _ => {
                   console.log('deleted', _)
                   this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
+                  this.inscriptosJueces.splice(this.inscriptosJueces.findIndex(i => i.id == profileContest.id), 1)
                   // this.concursoDetailService.inscriptos.emit(this.inscriptos)
                   this.concursoDetailService.loadProfileContests()
+                  this.concursoDetailService.loadProfileContestsJueces()
                   // this.router.navigate(['/concursos']);
                 }, 
                 async err => {
