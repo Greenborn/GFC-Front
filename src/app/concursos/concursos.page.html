@@ -100,13 +100,13 @@
                 *ngIf="rolificador.esDelegado(u)"
                 [routerLink]="['nuevo']"
               > -->
-              
+
               <ion-fab-button
-              size="small"
-              *ngIf="
+                size="small"
+                *ngIf="
                      (rolificador.esDelegado(u) || rolificador.isAdmin(u))"
-              [routerLink]="['nuevo']"
-            >
+                [routerLink]="['nuevo']"
+              >
                 <ion-icon name="add"></ion-icon>
               </ion-fab-button>
               <!-- </ion-fab> -->
@@ -118,8 +118,9 @@
               <ion-col class="ion-no-padding" size="10" size-sm="11">
                 <ion-button
                   [routerLink]="['secciones']"
-                  *ngIf="rolificador.esDelegado(u)"
-                >Administrar secciones</ion-button>
+                  *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)"
+                  >Administrar secciones</ion-button
+                >
 
                 <!-- <app-search-bar
                   [(data)]="concursos"
@@ -156,15 +157,15 @@
             >
               <!-- concurso card -->
               <!-- <ion-card *ngFor="let concurso of concursos"> -->
-                  <!-- [style.background-image]="url('configService.apiUrl(c.img_url)')" -->
-                <ion-card *ngFor="let c of concursos; index as i"
+              <!-- [style.background-image]="url('configService.apiUrl(c.img_url)')" -->
+              <ion-card
+                *ngFor="let c of concursos; index as i"
                 [ngStyle]="responsiveService.isDesktop ? {'background-image': 'url(' + configService.apiUrl(c.img_url) + ')', 'background-size' : '100% auto'} : {'background-image': 'url(' + configService.apiUrl(c.img_url) + ')', 'background-size' : 'auto 100%'}"
-                >
+              >
                 <div class="w-100 h-100 capa-opacidad">
-
                   <!-- <ion-row *ngIf="i%2 == 0 || !responsiveService.isDesktop; else isSecondary"> -->
-                    <!-- <ion-row> -->
-                      <!-- <ion-col size="12" size-md="5">
+                  <!-- <ion-row> -->
+                  <!-- <ion-col size="12" size-md="5">
                         <ion-avatar
                             [ngClass]="{
                               'h-100': responsiveService.isDesktop, 
@@ -175,73 +176,79 @@
                             <ion-img (ionError)="errorImg($event)" [src]="configService.apiUrl(c.img_url)"></ion-img>
                           </ion-avatar>
                         </ion-col> -->
-                        <!-- <ion-col #colCard id="colCard" size="12" size-md="7"> -->
-                          <ion-col #colCard id="colCard" size="12">
-                            <ion-row class="h-100">
-                              
-                              <ion-card-header>
-                                <ion-row class="ion-align-items-center">
-                                  <ion-col class="ion-no-padding">
-                                    <app-contest-status-chip
-                                    [contest]="c"
-                                    ></app-contest-status-chip>
-                                    <ion-card-title color="light">{{c.name}}</ion-card-title>
-                                  </ion-col>
-                                </ion-row>
-                                <ion-card-subtitle color="light">Desde {{c.start_date | date:'dd-MM-yyyy' }} Hasta {{c.end_date | date:'dd-MM-yyyy' }}</ion-card-subtitle>
-                              </ion-card-header>
-                              <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
-                       
-                              <ion-card-content style="padding-bottom: 0 !important;" class="w-100">
-                                <!-- <ion-row > -->
-                                  
-                                  <p class="line-clamp" >
-                                    {{c.description}}
-                                  </p>
-                                  <!-- </ion-row> -->
-                                  <ion-row class="ion-margin-top ">
-                                    <b>Categorias:</b>
-                                    <ion-badge color="dark" class="ion-margin-start"
-                              *ngFor="let c of c.categories"
+                  <!-- <ion-col #colCard id="colCard" size="12" size-md="7"> -->
+                  <ion-col #colCard id="colCard" size="12">
+                    <ion-row class="h-100">
+                      <ion-card-header>
+                        <ion-row class="ion-align-items-center">
+                          <ion-col class="ion-no-padding">
+                            <app-contest-status-chip
+                              [contest]="c"
+                            ></app-contest-status-chip>
+                            <ion-card-title color="light"
+                              >{{c.name}}</ion-card-title
                             >
+                          </ion-col>
+                        </ion-row>
+                        <ion-card-subtitle color="light"
+                          >Desde {{c.start_date | date:'dd-MM-yyyy' }} Hasta
+                          {{c.end_date | date:'dd-MM-yyyy' }}</ion-card-subtitle
+                        >
+                      </ion-card-header>
+                      <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
+
+                      <ion-card-content
+                        style="padding-bottom: 0 !important"
+                        class="w-100"
+                      >
+                        <!-- <ion-row > -->
+
+                        <p class="line-clamp">{{c.description}}</p>
+                        <!-- </ion-row> -->
+                        <ion-row class="ion-margin-top">
+                          <b>Categorias:</b>
+                          <ion-badge
+                            color="dark"
+                            class="ion-margin-start"
+                            *ngFor="let c of c.categories"
+                          >
                             {{c.name}}
                           </ion-badge>
                         </ion-row>
                         <ion-row class="ion-margin-bottom">
-                            <b>Secciones:</b>
-                            <ion-badge color="dark" class="ion-margin-start"
-                              *ngFor="let s of c.sections"
-                            >
+                          <b>Secciones:</b>
+                          <ion-badge
+                            color="dark"
+                            class="ion-margin-start"
+                            *ngFor="let s of c.sections"
+                          >
                             {{s.name}}
                           </ion-badge>
                         </ion-row>
                         <ion-row class="w-100">
                           <ion-col class="ion-float-right ion-align-self-end">
-                              <!-- <ion-toolbar> -->
-                                <!-- <ion-buttons slot="start"> -->
-                                  <ion-button class="ion-float-right"  size="small" [routerLink]="[c.id]"
-                                  >Ver concurso</ion-button
-                                  >
-                                  <!-- </ion-buttons> -->
-                                  <!-- </ion-toolbar> -->
-                                </ion-col>
-                              </ion-row>
-                            </ion-card-content>
-                            
-                            <!-- <ion-row class="ion-padding-start">
+                            <!-- <ion-toolbar> -->
+                            <!-- <ion-buttons slot="start"> -->
+                            <ion-button
+                              class="ion-float-right"
+                              size="small"
+                              [routerLink]="[c.id]"
+                              >Ver concurso</ion-button
+                            >
+                            <!-- </ion-buttons> -->
+                            <!-- </ion-toolbar> -->
+                          </ion-col>
+                        </ion-row>
+                      </ion-card-content>
+
+                      <!-- <ion-row class="ion-padding-start">
                               <ion-col class="ion-align-self-end ion-no-padding">
                               </ion-col>
                               
                             </ion-row> -->
-                            
-                            
-                            
-                            
-                          </ion-row>
-                          
-                          
-                        </ion-col>
-                        <!-- <ion-footer>
+                    </ion-row>
+                  </ion-col>
+                  <!-- <ion-footer>
                           
                       <ion-row class="ion-float-right ion-float-bottom" >
                         <ion-col>
@@ -253,8 +260,8 @@
                         </ion-col>
                       </ion-row>
                     </ion-footer> -->
-                    <!-- </ion-row> -->
-                    <!-- <ng-template #isSecondary>
+                  <!-- </ion-row> -->
+                  <!-- <ng-template #isSecondary>
                       <ion-row>
                         <ion-col #colCard id="colCard" size="12" size-md="7">
                           
@@ -327,13 +334,13 @@
 
                     </ion-row>
                   </ng-template> -->
-                  
+
                   <!-- <ion-label>{{item}}</ion-label> -->
                 </div>
-                </ion-card>
-              </ion-list>
-              <ng-template #texto>
-                <ion-item>No se encontraron concursos</ion-item>
+              </ion-card>
+            </ion-list>
+            <ng-template #texto>
+              <ion-item>No se encontraron concursos</ion-item>
             </ng-template>
             <ng-template #spinner>
               <ion-row class="ion-justify-content-center">

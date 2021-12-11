@@ -224,7 +224,7 @@ export class ConcursoDetailService implements OnInit {
     })
   }
 
-  async inscribirConcursante(category_id: number = undefined) {
+  async inscribirConcursante(category_id: number = undefined, ) {
 
     const pc = this.profileContestService.template
     pc.category_id = category_id
@@ -246,19 +246,39 @@ export class ConcursoDetailService implements OnInit {
 
     // console.log('inscribiendo concursante', data)
     // const { profileContest } = data ?? {}
-    const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirConcursanteComponent, {
-      "concursantes": this.concursantes.getValue(),
-      // "modalController": this.modalController,
-      "contest": this.concurso.getValue(),
-      "categorias": this.categoriasInscriptas.getValue().map(c => c.category),
-      profileContest: pc
-    })
 
-    if (profileContest != undefined) {
-      this.loadContest(this.concurso.getValue().id)
-      // this.inscriptosArray.push(profileContest)
-      // this.inscriptos.emit(this.inscriptosArray)  
+    if(this.rolificador.esConcursante(await this.authService.user) ){
+      
+      const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirConcursanteComponent, {
+        "concursantes": [ (await (await this.authService.user).profile)],
+        // "modalController": this.modalController,
+        "contest": this.concurso.getValue(),
+        "categorias": this.categoriasInscriptas.getValue().map(c => c.category),
+        profileContest: pc
+      })
+      
+      if (profileContest != undefined) {
+        this.loadContest(this.concurso.getValue().id)
+        // this.inscriptosArray.push(profileContest)
+        // this.inscriptos.emit(this.inscriptosArray)  
+      }
+    } else {
+
+      const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirConcursanteComponent, {
+        "concursantes": this.concursantes.getValue(),
+        // "modalController": this.modalController,
+        "contest": this.concurso.getValue(),
+        "categorias": this.categoriasInscriptas.getValue().map(c => c.category),
+        profileContest: pc
+      })
+      
+      if (profileContest != undefined) {
+        this.loadContest(this.concurso.getValue().id)
+        // this.inscriptosArray.push(profileContest)
+        // this.inscriptos.emit(this.inscriptosArray)  
+      }
     }
+    
   }
 
   //TODO: inc

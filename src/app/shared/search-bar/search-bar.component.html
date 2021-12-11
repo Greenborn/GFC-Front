@@ -50,7 +50,7 @@
             </ion-row>
           </ion-list-header>
 
-          <ion-item *ngFor="let a of atributosObj">
+          <ion-item *ngFor="let a of atributosObj" lines="none">
             <ion-label>{{ a.valorMostrado }}</ion-label>
             <ion-radio slot="start" [value]="a.valor"></ion-radio>
           </ion-item>

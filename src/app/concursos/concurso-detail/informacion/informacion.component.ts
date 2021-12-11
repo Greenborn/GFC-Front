@@ -27,6 +27,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { ImagePostPage, ImagePostParams } from '../image-post/image-post.page';
 import { ImageReviewPage } from '../image-review/image-review.page';
 import { Section } from 'src/app/models/section.model';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 @Component({
   selector: 'app-informacion',
   templateUrl: './informacion.component.html',
@@ -74,7 +75,8 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     public concursoDetailService: ConcursoDetailService,
     private profileContestService: ProfileContestService,
     public UIUtilsService: UiUtilsService,
-    public configService: ConfigService
+    public configService: ConfigService,
+    public responsiveService: ResponsiveService
   ) {
     super(alertCtrl)
    }
@@ -760,6 +762,10 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     openRules() {
       window.open(this.configService.apiUrl(this.concurso.rules_url), '_blank');
     }
-  
+
+  async inscribirConcursante(){
+    this.concursoDetailService.inscribirConcursante(undefined)
+  }
+
   }
 

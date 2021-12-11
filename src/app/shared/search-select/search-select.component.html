@@ -65,7 +65,7 @@
               </ion-button>
             </ion-row>
           </ion-list-header>
-          <ion-item *ngFor="let o of optionsData">
+          <ion-item *ngFor="let o of optionsData" lines="none">
             <!-- (click)="output(o[optionsProps.valueProp])" -->
             <ion-button
               (click)="changeQuery(o[optionsProps.valueProp])"
