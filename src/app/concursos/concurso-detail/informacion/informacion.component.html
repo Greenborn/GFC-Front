@@ -90,7 +90,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row class="w-100" *ngIf="! isInscripto ; else btnUnsuscribe">
+        <ion-row class="w-100" *ngIf="! isInscripto && rolificador.esConcursante(u); else btnUnsuscribe">
         <!-- <ion-row class="w-100" *ngIf="!  ; else btnUnsuscribe"> -->
         <!-- <ion-row class="w-100"> -->
           <ion-col class="ion-float-right ion-align-self-end">
@@ -101,7 +101,7 @@
         </ion-row>
       </ion-card-content>
 
-      <ng-template #btnUnsuscribe>
+      <ng-template #btnUnsuscribe *ngIf="rolificador.esConcursante(u)">
         <ion-row class="w-100">
           <ion-col class="ion-float-right ion-align-self-end">
             <ion-button color="danger" class="ion-float-right" size="small" 

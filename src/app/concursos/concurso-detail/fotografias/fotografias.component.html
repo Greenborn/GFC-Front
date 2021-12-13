@@ -429,7 +429,7 @@
                               <img class="img-button" [src]="getThumbUrl(r.image.thumbnail,1)" />
                             </ion-button>
                             <ion-button
-                              *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u)"
+                              *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u) || rolificador.esJuez(u)"
                               (click)="concursoDetailService.reviewImage.emit(r)"
                               title="Calificar"
                             >
