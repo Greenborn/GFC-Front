@@ -90,7 +90,9 @@
           </ion-col>
         </ion-row>
 
-        <ion-row class="w-100">
+        <ion-row class="w-100" *ngIf="! isInscripto ; else btnUnsuscribe">
+        <!-- <ion-row class="w-100" *ngIf="!  ; else btnUnsuscribe"> -->
+        <!-- <ion-row class="w-100"> -->
           <ion-col class="ion-float-right ion-align-self-end">
             <ion-button class="ion-float-right" size="small" (click)="inscribirConcursante()"
               >Inscribirme!</ion-button
@@ -98,6 +100,18 @@
           </ion-col>
         </ion-row>
       </ion-card-content>
+
+      <ng-template #btnUnsuscribe>
+        <ion-row class="w-100">
+          <ion-col class="ion-float-right ion-align-self-end">
+            <ion-button color="danger" class="ion-float-right" size="small" 
+            (click)="desinscribirme()"
+              >Desinscribirme</ion-button
+            >
+          </ion-col>
+        </ion-row>
+      </ng-template>
+      
 
       <!-- <ion-label>{{item}}</ion-label> -->
     </ion-card>

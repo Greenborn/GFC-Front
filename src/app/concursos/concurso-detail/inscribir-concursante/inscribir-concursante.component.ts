@@ -7,7 +7,7 @@ import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContest, ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
-import { IonicSelectableComponent } from 'ionic-selectable';
+// import { IonicSelectableComponent } from 'ionic-selectable';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 

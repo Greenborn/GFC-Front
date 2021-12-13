@@ -182,7 +182,6 @@ export class ConcursoDetailService implements OnInit {
     //   s.unsubscribe()
     // })
   }
-  //TODO: func
   async loadJueces() {
     // const u = await this.authService.user
     
@@ -249,8 +248,9 @@ export class ConcursoDetailService implements OnInit {
 
     if(this.rolificador.esConcursante(await this.authService.user) ){
       
+      // console.log("inscripcion yo", (await this.authService.user).profile)
       const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirConcursanteComponent, {
-        "concursantes": [ (await (await this.authService.user).profile)],
+        "concursantes": [ (await this.authService.user).profile],
         // "modalController": this.modalController,
         "contest": this.concurso.getValue(),
         "categorias": this.categoriasInscriptas.getValue().map(c => c.category),
@@ -281,7 +281,6 @@ export class ConcursoDetailService implements OnInit {
     
   }
 
-  //TODO: inc
   async inscribirJuez() {
 
     const pc = this.profileContestService.template

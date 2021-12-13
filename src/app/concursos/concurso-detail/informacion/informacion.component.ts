@@ -41,7 +41,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   images: Image[] = [];
   // profiles: Profile[] = [];
   value = { lower: 1000, upper: 1500 };
-  
+  isInscripto: boolean;
   resultadosConcurso: ContestResultExpanded[] = [];
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
@@ -88,7 +88,8 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     this.subs = []
     console.log('subscriptions deleted', [...this.subs])
   }
-  ngOnInit() { if (window.screen.width > 768) {
+  ngOnInit() { 
+    if (window.screen.width > 768) {
     const content: HTMLIonContentElement = document.querySelector('#concurso-content')
     // content.scrollEvents = true
     // content.addEventListener('ionScroll', ev => console.log('scroll', (ev as any).detail))
@@ -177,12 +178,14 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       next: c => this.concursantes = c 
     })
     this.concursoDetailService.inscriptos.subscribe({
-      next: c => this.inscriptos = c 
+      next: c => {
+        this.inscriptos = c
+        this.estaInscripto()
+      } 
     })
     this.concursoDetailService.resultadosConcurso.subscribe({
       next: c => this.resultadosConcurso = c 
     })
-
     // await this.concursoDetailService.loadContest(id)
     // this.concursoDetailService.loadConcursantes()
     // this.concursoDetailService.loadProfileContests()
@@ -764,8 +767,27 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     }
 
   async inscribirConcursante(){
+    // console.log("INSCRIPCION concursante yo")
     this.concursoDetailService.inscribirConcursante(undefined)
   }
+
+  async desinscribirme(){
+    let yo = ((await this.auth.user).profile)
+    const prl = this.inscriptos.find(p => p.profile_id == yo.id)
+    this.concursoDetailService.desinscribir.emit(
+      //m: profileContestExpanded
+      prl
+    )
+  }
+
+  async estaInscripto(){
+    let yo = ((await this.auth.user).profile)
+    const prl = this.inscriptos.find(p => p.profile_id == yo.id)
+    this.isInscripto =  prl != undefined ? true : false
+    // return p != undefined ? true : false
+    console.log("inscripto yo : ", this.isInscripto)
+  }
+
 
   }
 
