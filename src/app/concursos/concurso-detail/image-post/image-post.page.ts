@@ -47,6 +47,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   public posting: boolean = false; 
   public img_url = '';
   public profiles_list:any = {};
+  profile: ProfileContestExpanded[];
 
   constructor(
     // private userSvc: UsuarioService,
@@ -86,11 +87,20 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     for (let c=0; c<this.profiles.length; c++){
       this.profiles_list.push({ name:this.profiles[c].profile.name + ' ' + this.profiles[c].profile.last_name, id:this.profiles[c].profile.id });
     }
+
+    if(this.profiles_list.length == 1) {
+      this.profile = this.profiles_list[0].name
+      this.image.profile_id = this.profiles_list[0].id
+      // console.log ("hay uno", this.profiles_list[0].name)
+     }
   }
 
   async postImage() {
     if (this.datosCargados()) {
-      this.image.profile_id = this.image.profile_id['id'];
+      
+      if(this.profiles_list.length != 1) {
+        this.image.profile_id = this.image.profile_id['id'];
+       } 
       // if (this.cont < 1) {
       //   this.cont++
         // setTimeout(() => this.cont = 0, 500)

@@ -185,7 +185,7 @@ export class FotografiasComponent implements OnInit {
 
   get checkPermissions() {
     return this.contestService.isActive(this.concurso) && 
-    (this.user != undefined ? (this.rolificador.esDelegado(this.user) || this.rolificador.isAdmin(this.user)  ) : false)
+    (this.user != undefined ? (this.rolificador.esDelegado(this.user) || this.rolificador.isAdmin(this.user) || this.rolificador.esConcursante(this.user)  ) : false)
   }
 
   get inscriptosProfiles(): Profile[] {

@@ -139,7 +139,7 @@
               <ion-fab-button
               size="small"
               *ngIf="contestService.isActive(concurso) && 
-                     (rolificador.esDelegado(u) || rolificador.isAdmin(u))"
+                     (rolificador.esDelegado(u) || rolificador.isAdmin(u) || rolificador.esConcursante(u)) "
               (click)="postImage()"
             >
                 <!-- [routerLink]="['agregar-foto']"   -->
@@ -429,7 +429,7 @@
                               <img class="img-button" [src]="getThumbUrl(r.image.thumbnail,1)" />
                             </ion-button>
                             <ion-button
-                              *ngIf="checkPermissions"
+                              *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u)"
                               (click)="concursoDetailService.reviewImage.emit(r)"
                               title="Calificar"
                             >
