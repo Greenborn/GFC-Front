@@ -42,32 +42,32 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
   }
 
   ngOnInit() {
+    console.log("inicio modal", this.concursantes)
     //modificacion datos de concursantes para concatenar nombre y apellido
     for (let c=0; c<this.concursantes.length; c++){
       this.concursantes[c].name = this.concursantes[c].name + ' ' + this.concursantes[c].last_name;
     }
+   if(this.concursantes.length == 1) {
+    this.profileContest.profile_id = this.concursantes[0].id
+   }
   }
 
-  async datosCargados() {
-    
-    if(!this.rolificador.esConcursante(await this.authService.user) ){
-    return this.profileContest.category_id != undefined
-    } else {
-return this.profileContest.profile_id != undefined && 
-          this.profileContest.category_id != undefined
-    }
+  datosCargados() {
+    // console.log("completado form: ", this.profileContest.profile_id, this.profileContest.profile_id != undefined,  this.profileContest.category_id)
+    return this.profileContest.profile_id != undefined && 
+              this.profileContest.category_id != undefined
   }
 
   async inscribirConcursante() {
     if (this.datosCargados()) {
-      // if (this.cont < 1) {
+    // if (this.cont < 1) {
       //   this.cont++
-      console.log("concursantes: ", this.concursantes[0].id)
-    if(!this.rolificador.esConcursante(await this.authService.user) ){
-      this.profileContest.profile_id = Number(this.profileContest.profile_id['id']); // Agregado por cambio en select
-    } else {
-      this.profileContest.profile_id = this.concursantes[0].id
-    }
+      // console.log("concursantes: ", this.concursantes[0].id)
+      if(!this.rolificador.esConcursante(await this.authService.user) ){
+        this.profileContest.profile_id = Number(this.profileContest.profile_id['id']); // Agregado por cambio en select
+      } else {
+        this.profileContest.profile_id = this.concursantes[0].id
+      }
 
         console.log('inscribiendo', this.profileContest.profile_id, ' a ', this.contest.id)
         this.posting = true

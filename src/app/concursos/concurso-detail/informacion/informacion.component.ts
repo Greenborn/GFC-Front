@@ -766,8 +766,8 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       window.open(this.configService.apiUrl(this.concurso.rules_url), '_blank');
     }
 
-  async inscribirConcursante(){
-    // console.log("INSCRIPCION concursante yo")
+  inscribirConcursante(){
+    console.log("INSCRIPCION concursante yo")
     this.concursoDetailService.inscribirConcursante(undefined)
   }
 

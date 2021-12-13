@@ -246,11 +246,13 @@ export class ConcursoDetailService implements OnInit {
     // console.log('inscribiendo concursante', data)
     // const { profileContest } = data ?? {}
 
-    if(this.rolificador.esConcursante(await this.authService.user) ){
+    let user = await this.authService.user
+
+    if(this.rolificador.esConcursante(user) ){
       
-      // console.log("inscripcion yo", (await this.authService.user).profile)
+      console.log("inscripcion yo", this.rolificador.esConcursante(user) )
       const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirConcursanteComponent, {
-        "concursantes": [ (await this.authService.user).profile],
+        "concursantes": [ user.profile],
         // "modalController": this.modalController,
         "contest": this.concurso.getValue(),
         "categorias": this.categoriasInscriptas.getValue().map(c => c.category),
