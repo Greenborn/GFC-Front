@@ -101,8 +101,8 @@
         </ion-row>
       </ion-card-content>
 
-      <ng-template #btnUnsuscribe *ngIf="rolificador.esConcursante(u)">
-        <ion-row class="w-100">
+      <ng-template #btnUnsuscribe >
+        <ion-row *ngIf="rolificador.esConcursante(u)" class="w-100">
           <ion-col class="ion-float-right ion-align-self-end">
             <ion-button color="danger" class="ion-float-right" size="small" 
             (click)="desinscribirme()"
