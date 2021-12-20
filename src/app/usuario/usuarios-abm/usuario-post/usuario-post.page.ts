@@ -160,12 +160,15 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   async postUsuario(f: NgForm) {
     if (f.valid) {
       // console.log('posteando form', f.value, this.selectRol.value, this.selectFotoclub.value)
-      
+      let fotoclub = undefined;
+      if (this.selectRol.value == 2 || this.selectRol.value == 3){
+        fotoclub = this.selectFotoclub.value
+      }
       const pm: any = {
         name: f.value.name, 
         last_name: f.value.last_name, 
         // fotoclub_id: f.value.fotoclub_id
-        fotoclub_id: this.selectFotoclub.value
+        fotoclub_id: fotoclub
       }
 
       

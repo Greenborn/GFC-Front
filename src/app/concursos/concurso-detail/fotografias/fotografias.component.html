@@ -262,7 +262,7 @@
                       size="4"
                       size-md="3"
                     >
-                      <ion-row>
+                      <ion-row *ngIf="!rolificador.esJuez(u)"> 
                         <app-th-sort
                           [sortFn]="ordenarPorAutor"
                           [(data)]="resultadosConcurso"

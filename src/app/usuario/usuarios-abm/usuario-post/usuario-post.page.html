@@ -68,26 +68,30 @@
 
               <!-- </ion-col> -->
               <!-- <ion-col size-md="3" size="12"> -->
-              <ion-item
-                class="expand-full"
-                *ngIf="!updatingSelect; else spinner"
-              >
-                <ion-label
-                  [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'"
-                  >Fotoclub/Agrupación</ion-label
-                >
-                <ion-select
-                  #sFotoclub
-                  name="fotoclub_id"
-                  [(ngModel)]="profile.fotoclub_id"
-                  [disabled]="!isAdmin"
-                  required
-                >
-                  <ion-select-option *ngFor="let f of fotoclubes" [value]="f.id"
-                    >{{f.name}}</ion-select-option
+                <!-- *ngIf="!updatingSelect; else spinner" -->
+                <div *ngIf="usuario.role_id == 3 || usuario.role_id == 2;">
+
+                  <ion-item
+                    class="expand-full"
+                    *ngIf="!updatingSelect; else spinner"
                   >
-                </ion-select>
-              </ion-item>
+                    <ion-label
+                      [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'"
+                      >Fotoclub/Agrupación</ion-label
+                    >
+                    <ion-select
+                      #sFotoclub
+                      name="fotoclub_id"
+                      [(ngModel)]="profile.fotoclub_id"
+                      [disabled]="!isAdmin"
+                      required
+                    >
+                      <ion-select-option *ngFor="let f of fotoclubes" [value]="f.id"
+                        >{{f.name}}</ion-select-option
+                      >
+                    </ion-select>
+                  </ion-item>
+                </div>
 
               <ion-item class="expand-full ion-hide-md-up ion-no-padding sinC">
                   <ion-col size="10" size-md="12" >
