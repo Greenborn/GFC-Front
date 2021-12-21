@@ -117,7 +117,7 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
       (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
   }
 
-  ordenarPorPuntage(e1: Metric, e2: Metric, creciente: boolean) {
+  ordenarPorPuntaje(e1: Metric, e2: Metric, creciente: boolean) {
     const n1 = e1.score
     const n2 = e2.score
 

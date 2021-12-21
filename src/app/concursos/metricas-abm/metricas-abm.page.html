@@ -72,7 +72,7 @@
               <ion-item color="dark">
                 <ion-grid>
                   <ion-row class="ion-padding-end">
-                    <ion-col class="">
+                    <ion-col size="6" size-md="5" class="">
                       <ion-row>
                         <app-th-sort
                           [sortFn]="ordenarPorPremio"
@@ -83,12 +83,12 @@
                       </ion-row>
                     </ion-col>
 
-                    <ion-col class="">
+                    <ion-col size="5" class="">
                       <ion-row>
                         <app-th-sort
-                          [sortFn]="ordenarPorPuntage"
+                          [sortFn]="ordenarPorPuntaje"
                           [(data)]="metricas"
-                          title="Puntage"
+                          title="Puntaje"
                         ></app-th-sort>
                         
                       </ion-row>
@@ -114,10 +114,10 @@
                         <ion-item-group *ngFor="let s of metricas">
                           <ion-item-divider lines="full" mode="ios" style="--inner-padding-end: 16px">
                             <ion-row class="w-100">
-                              <ion-col>
+                              <ion-col size="6" size-md="5">
                                 <h4 class="ion-margin-top ion-margin-bottom"> <b>{{ s.prize }}</b></h4>
                               </ion-col>
-                              <ion-col>
+                              <ion-col size="5">
                                 <h4 class="ion-margin-top ion-margin-bottom"> <b>{{ s.score }}</b></h4>
                               </ion-col>
                               <!-- slot="end" -->
