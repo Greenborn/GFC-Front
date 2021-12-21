@@ -127,6 +127,11 @@
                   [atributosObj]="atributosBusqueda"
                 >
                 </app-search-bar> -->
+
+                <ion-button
+                  [routerLink]="['metricas']"
+                  *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)"
+                  >Administrar metricas</ion-button>
               </ion-col>
               <ion-col size="2" size-sm="1">
                 <ion-row

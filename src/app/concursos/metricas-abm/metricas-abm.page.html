@@ -1,0 +1,237 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row class="ion-justify-content-end">
+        <ion-col size="12">
+          <ion-row>
+            <ion-buttons>
+              <ion-back-button defaultHref="/concursos"></ion-back-button>
+            </ion-buttons>
+            <!-- <ion-title>Secciones</ion-title>
+            <ion-fab-button
+              size="small"
+              (click)="postSection()"
+            >
+              <ion-icon name="add"></ion-icon>
+            </ion-fab-button> -->
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-no-padding ion-no-margin">
+    <ion-row class="ion-justify-content-center">
+      <!-- filtro -->
+      <ion-col size="3" *ngIf="mostrarFiltro">
+        <ion-col>
+          <ion-title class="ion-margin-top">Búsqueda</ion-title>
+
+          <app-search-bar
+            [(data)]="metricas"
+            [atributosObj]="atributosBusqueda"
+          ></app-search-bar>
+        </ion-col>
+      </ion-col>
+
+      <ion-col>
+        <ion-row>
+          <ion-col size="11.5" push="0.25">
+            <ion-row
+              class="
+                ion-justify-content-start
+                ion-align-items-center
+                ion-margin-top
+                ion-margin-bottom
+              "
+            >
+              <!-- <ion-button
+                (click)="mostrarFiltro = !mostrarFiltro"
+                color="medium"
+                expand="block"
+                class="
+                  ion-justify-content-center
+                  ion-align-items-center
+                  ion-align-self-center
+                  ion-margin-end
+                "
+              >
+                <!- - <ion-icon name="funnel"></ion-icon> - ->
+                <ion-icon name="options"></ion-icon>
+              </ion-button> -->
+              <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
+                Premios
+              </h1>
+              <ion-fab-button size="small" (click)="post()">
+                <ion-icon name="add"></ion-icon>
+              </ion-fab-button>
+            </ion-row>
+            <ion-list class="ion-no-padding">
+              <ion-item color="dark">
+                <ion-grid>
+                  <ion-row class="ion-padding-end">
+                    <ion-col class="">
+                      <ion-row>
+                        <app-th-sort
+                          [sortFn]="ordenarPorPremio"
+                          [(data)]="metricas"
+                          title="Premio"
+                        ></app-th-sort>
+                        
+                      </ion-row>
+                    </ion-col>
+
+                    <ion-col class="">
+                      <ion-row>
+                        <app-th-sort
+                          [sortFn]="ordenarPorPuntage"
+                          [(data)]="metricas"
+                          title="Puntage"
+                        ></app-th-sort>
+                        
+                      </ion-row>
+                    </ion-col>
+
+                    <!-- <ion-col size="2"></ion-col> -->
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </ion-list>
+            <!-- <ion-list *ngIf="!loading; else spinner"> -->
+            <ion-list class="ion-no-padding">
+              <ion-item lines="none" class="ion-no-padding lista-elem">
+                <!-- <ion-grid *ngIf="!loading"> -->
+                <ion-grid
+                  class="ion-no-padding"
+                  *ngIf="metricas.length > 0; else texto"
+                >
+                  <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
+                  <ion-grid class="ion-no-padding">
+                    <ion-row size="12">
+                      <ion-col class="ion-align-self-start">
+                        <ion-item-group *ngFor="let s of metricas">
+                          <ion-item-divider lines="full" mode="ios" style="--inner-padding-end: 16px">
+                            <ion-row class="w-100">
+                              <ion-col>
+                                <h4 class="ion-margin-top ion-margin-bottom"> <b>{{ s.prize }}</b></h4>
+                              </ion-col>
+                              <ion-col>
+                                <h4 class="ion-margin-top ion-margin-bottom"> <b>{{ s.score }}</b></h4>
+                              </ion-col>
+                              <!-- slot="end" -->
+                              <!-- class="ion-align-self-start ion-align-self-center" -->
+                              <ion-col
+                                size="1"
+                                size-md="2"
+                                class="ion-align-self-center"
+                              >
+                                <ion-buttons
+                                  class="
+                                    ion-justify-content-end
+                                  "
+                                >
+                                  <div class="ion-hide-md-down">
+                                    <!-- <ion-button title="Agregar subsección" (click)="postSubSection(s)" color="dark" >
+                                      <ion-icon name="add-outline"></ion-icon>
+                                    </ion-button> -->
+                                    <ion-button title="Editar premio" (click)="post(s)" color="dark" >
+                                      <ion-icon name="create"></ion-icon>
+                                    </ion-button>
+                                    <ion-button title="Eliminar premio" (click)="delete(s)" color="dark" >
+                                      <ion-icon name="trash"></ion-icon>
+                                    </ion-button>
+                                  </div>
+                                  <div class="ion-hide-md-up">
+                                    <ion-button color="dark"
+                                      (click)="mostrarAcciones($event, s)"
+                                    >
+                                      <ion-icon 
+                                        slot="icon-only"
+                                        ios="ellipsis-horizontal"
+                                        md="ellipsis-vertical"
+                                      ></ion-icon>
+                                    </ion-button>
+                                  </div>
+                                </ion-buttons>
+                              </ion-col>
+                            </ion-row>
+                          </ion-item-divider>
+
+                          <!-- <ng-template #textoSeccion>
+                            <ion-item>
+                              <ion-label>
+                                <ion-card-subtitle
+                                  >No contiene subsecciones
+                                </ion-card-subtitle>
+                              </ion-label>
+                            </ion-item>
+                          </ng-template> -->
+                          <!-- TODO: refactorizar el ngIf -->
+                          <!-- <div  class="ion-padding-top" style="--ion-padding: 10px"
+                            *ngIf="getSubSections(s.id).length > 0; else textoSeccion"
+                          >
+                            <ion-item 
+                              *ngFor="let s1 of getSubSections(s.id) as subsections"
+                            >
+                              <ion-row class="w-100 ion-align-items-center">
+                                <!- - TODO: debería ser una tabla NxN para poder tene dos tablas por separado de carga!!!!  - ->
+                                <!- - para achicar el tamaño del sector de la subseccion modificar el  size-md de la sig columna - ->
+                                <!- - <ion-col size-md="11.57"> - ->
+                                <ion-col >
+                                  <ion-row >
+                                    <ion-col size="10">
+                                      <ion-text>{{s1.name}} </ion-text>
+                                    </ion-col>
+                                    <ion-col
+                                      size="2"
+                                      size-md="2"
+                                    >
+                                      <ion-buttons
+                                        class="
+                                          ion-justify-content-end
+                                        "
+                                      >
+                                        <ion-button
+                                        title="Editar subsección"
+                                          size="small"
+                                          (click)="
+                                                        postSection(s1)
+                                                      "
+                                        >
+                                          <ion-icon name="create"></ion-icon>
+                                        </ion-button>
+                                        <ion-button
+                                        title="Eliminar subsección"
+                                          size="small"
+                                          (click)="deleteSection(s1)"
+                                        >
+                                          <ion-icon name="trash"></ion-icon>
+                                        </ion-button>
+                                      </ion-buttons>
+                                    </ion-col>
+                                  </ion-row>
+                                </ion-col>
+                              </ion-row>
+                            </ion-item>
+                          </div> -->
+                        </ion-item-group>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-grid>
+                <ng-template #texto>No hay premios</ng-template>
+              </ion-item>
+            </ion-list>
+            <!-- <ng-template #spinner>
+              <ion-row class="ion-justify-content-center">
+                <ion-spinner></ion-spinner>
+              </ion-row>
+            </ng-template> -->
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
