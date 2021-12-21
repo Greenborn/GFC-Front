@@ -1,0 +1,204 @@
+<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
+  <ion-header>
+    <ion-toolbar>
+      <ion-row class="ion-align-items-center ion-margin-end">
+        <!-- <ion-back-button [defaultHref]="'/concursos/' + id"></ion-back-button> -->
+        <!-- <ion-back-button (click)="dismiss()"></ion-back-button> -->
+        <ion-col size="2" class="ion-hide-md-up">
+          <!-- <ion-back-button (click)="modalController.dismiss()"></ion-back-button> -->
+          <ion-button (click)="modalController.dismiss()" color="dark" fill="clear" class="">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col [ngClass]="{'ion-margin-start': responsiveService.isDesktop}">
+          <h5 class="ion-text-wrap">
+            {{ formTitle }}
+          </h5>
+        </ion-col>
+        <ion-col size="1" class="ion-hide-md-down">
+          <ion-button (click)="modalController.dismiss()" fill="clear" class="">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ion-header>
+
+  <div slot="start" class="w-100 inner-content ion-float-md-start">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center ion-align-self-center">
+        <ion-col>
+          <ion-row>
+            <ion-col>
+              <ion-row>
+                <ion-col>
+                  <ion-chip color="danger">
+                    <ion-icon name="alert-outline"></ion-icon>
+                    <ion-label>CUIDADO: la modificación de este elemento repercutirá en concursos que lo utilicen, se recomienda la edición para correcciones ortográficas</ion-label>
+                  </ion-chip>
+                  <form
+                    #metricForm="ngForm"
+                    (ngSubmit)="post(metricForm)"
+                  >
+                    <ion-item class="w-100">
+                      <ion-label position="floating">Premio</ion-label>
+                      <ion-input
+                        [ngModel]="metric.prize"
+                        name="prize"
+                        required
+                      ></ion-input>
+                    </ion-item>
+
+                    <ion-item class="w-100">
+                      <ion-label position="floating">Puntage</ion-label>
+                      <ion-input
+                        [ngModel]="metric.score"
+                        name="score"
+                        required
+                      ></ion-input>
+                    </ion-item>
+                    <!-- <ion-row >
+                      <ion-item>
+                        <ion-label>Subsección</ion-label>
+                        <ion-toggle slot="end" 
+                          [(ngModel)]="typeSubsection"
+                          [ngModelOptions]="{standalone: true}"  
+                        ></ion-toggle>
+                      </ion-item>
+                      <!- - <ion-list>
+                        <ion-radio-group
+                          [(ngModel)]="typeSubsection"
+                          [ngModelOptions]="{standalone: true}"
+                        >
+                          <ion-list-header>
+                            <ion-row class="ion-align-items-center">
+                              <ion-label>Tipo de sección</ion-label>
+                            </ion-row>
+                          </ion-list-header>
+                
+                          <ion-item>
+                            <ion-label>Sección general</ion-label>
+                            <ion-radio slot="start" [value]="false"></ion-radio>
+                          </ion-item>
+                          <ion-item>
+                            <ion-label>Subsección</ion-label>
+                            <ion-radio slot="start" [value]="true"></ion-radio>
+                          </ion-item>
+                        </ion-radio-group>
+                      </ion-list> - ->
+                    </ion-row> -->
+
+                    <!-- <ion-row class="ion-padding-top" *ngIf="typeSubsection">
+                      <ion-item class="w-100 ion-margin-bottom">
+                        <ion-label position="floating">Sección padre</ion-label>
+                        <ion-select disabled
+                          [(ngModel)]="section.parent_id" 
+                          name="parent_id" 
+                          >
+                          <ion-select-option
+                            *ngFor="let s of parentSections"
+                            [value]="s.id"
+                            >{{ s.name }}</ion-select-option
+                          >
+                        </ion-select>
+                      </ion-item>
+                    </ion-row> -->
+
+
+                    <!-- <ion-item class="w-100 ion-margin-bottom">
+                      <ion-label position="floating">Puntaje</ion-label>
+                      <ion-input
+                        [ngModel]="review.score"
+                        name="score"
+                        required
+                      ></ion-input>
+                    </ion-item> -->
+
+                    <ion-row class="ion-justify-content-end">
+                      <ion-col size="12">
+                        <ion-row class="ion-justify-content-end">
+                          <ion-col
+                            push-sm="3"
+                            size="12"
+                            size-sm="3"
+                            class="ion-align-self-center"
+                          >
+                            <app-btn-post
+                              [posting]="posting"
+                              [disabled]="!datosCargados(metricForm)"
+                            ></app-btn-post>
+                          </ion-col>
+
+                          <ion-col
+                            class="ion-align-self-center"
+                            pull-sm="3"
+                            size="12"
+                            size-sm="3"
+                          >
+                            <ion-button
+                              expand="block"
+                              (click)="modalController.dismiss()"
+                              fill="clear"
+                            >Cancelar</ion-button>
+                          </ion-col>
+                        </ion-row>
+                      </ion-col>
+                    </ion-row>
+                  </form>
+                </ion-col>
+              </ion-row>
+              <!-- <ion-row class="ion-padding-top">
+                <ion-item class="w-100 ion-margin-bottom">
+                  <!- - [position]="(profile_id != undefined) ? 'stacked' : 'floating'" - ->
+                  <ion-label position="floating">Concursante</ion-label>
+                  <ion-select [(ngModel)]="profile_id" ngDefaultControl>
+                    <!- - [(value)]="image.profile_id" - ->
+                    <ion-select-option
+                      *ngFor="let p of concursantes"
+                      [value]="p.id"
+                      >{{ p.name + " " + p.last_name }}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+              </ion-row>
+
+              <ion-row class="ion-justify-content-end">
+                <ion-col size="12">
+                  <ion-row class="ion-justify-content-end">
+                    <ion-col
+                      push-sm="3"
+                      size="12"
+                      size-sm="3"
+                      class="ion-align-self-center"
+                    >
+                      <app-btn-post
+                        [posting]="posting"
+                        [disabled]="!datosCargados()"
+                        (click)="inscribirConcursante()"
+                      ></app-btn-post>
+                    </ion-col>
+
+                    <ion-col
+                      class="ion-align-self-center"
+                      pull-sm="3"
+                      size="12"
+                      size-sm="3"
+                    >
+                      <ion-button
+                        expand="block"
+                        (click)="modalController.dismiss()"
+                        fill="clear"
+                      >
+                        Cancelar</ion-button
+                      >
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row> -->
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</div>

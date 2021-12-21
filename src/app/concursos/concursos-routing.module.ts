@@ -23,8 +23,11 @@ const routes: Routes = [
   {
     path: 'secciones',
     loadChildren: () => import('./secciones-abm/secciones-abm.module').then( m => m.SeccionesAbmPageModule)
+  },
+  {
+    path: 'metricas',
+    loadChildren: () => import('./metricas-abm/metricas-abm.module').then( m => m.MetricasAbmPageModule)
   }
-
 
 ];
 
