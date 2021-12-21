@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, PopoverController, ToastButton, ToastController, ToastOptions } from '@ionic/angular';
 import { AlertOptions, ComponentRef, LoadingOptions } from '@ionic/core';
 import { MenuAccionesComponent, MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { Component } from '@angular/core';
-import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +15,7 @@ export class UiUtilsService {
   constructor(
     public popoverController: PopoverController,
     public modalController: ModalController,
+    public toastController: ToastController,
     public alertController: AlertController,
     public loadingController: LoadingController,
     ) { }
@@ -70,7 +70,23 @@ export class UiUtilsService {
       this.popover.onDidDismiss().then(_ => this.popover = undefined)
   }
 
-  mostrarToast() {
+  async mostrarToast(buttons: ToastButton, options: ToastOptions) {
+    if (this.popover != undefined) {
+      this.popoverController.dismiss(this.popover)
+      this.popover = undefined
+      }
+      
+      const opt:any = options
+      if(buttons != undefined){
+        opt.buttons = buttons
+      }
+      
+      console.log("opt: " ,opt)
+    const toast = await this.toastController.create(opt);
+    await toast.present()
+
+    const { data } = await toast.onWillDismiss();
+    return data ?? {}
     
   }
 

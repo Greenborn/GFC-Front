@@ -793,8 +793,16 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     // console.log("link del sitio: ", link )
   
     if(navigator.clipboard) {
-        navigator.clipboard.writeText(link).then(() => {
+        navigator.clipboard.writeText(link).then(async () => {
             //TODO: mensaje de texto copiado!
+          const { toast } = await this.UIUtilsService.mostrarToast(undefined,
+              {
+                "message": "El link ah sido copiado al portapepeles",
+                "duration": 100000,
+                "position": 'bottom',
+                "color": "dark"
+              }
+            )
         })
     } else {
         console.log('Browser Not compatible')
