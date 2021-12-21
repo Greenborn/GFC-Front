@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 import { AlertOptions, ComponentRef, LoadingOptions } from '@ionic/core';
 import { MenuAccionesComponent, MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
+import { Component } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -66,6 +68,10 @@ export class UiUtilsService {
     this.popover = popover
     if (this.popover != undefined)
       this.popover.onDidDismiss().then(_ => this.popover = undefined)
+  }
+
+  mostrarToast() {
+    
   }
 
   async mostrarModal(

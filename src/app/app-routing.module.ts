@@ -75,7 +75,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'registrarse',
+    path: 'registro',
     loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule),
     pathMatch: 'full'
   },

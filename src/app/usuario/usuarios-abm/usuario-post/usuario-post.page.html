@@ -1,4 +1,4 @@
-<ion-header *ngIf="isLogged()">
+<ion-header>
   <ion-toolbar>
     <ion-grid>
       <ion-row class="ion-justify-content-end">
@@ -7,7 +7,11 @@
             <ion-buttons>
               <ion-back-button defaultHref="/usuarios"></ion-back-button>
             </ion-buttons>
-            <ion-title>{{formTitle}}</ion-title>
+
+            <ion-title  *ngIf="isLogged(); else registroFuera">{{formTitle}}</ion-title>
+            <ng-template #registroFuera>
+              <ion-title>Registrarme</ion-title>
+            </ng-template>
           </ion-row>
         </ion-col>
       </ion-row>
@@ -20,7 +24,7 @@
     <ion-row class="ion-justify-content-center">
       <ion-col size="2" class="ion-hide-md-down">
         <app-usuario-img [src]="img_url"></app-usuario-img>
-        <input type="file" (change)="fileUpload($event.target)" />
+        <ion-input type="file" (change)="fileUpload($event.target)" ></ion-input>
         <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img>        -->
       </ion-col>
       <ion-col size-sm="12" size-md="9" size-lg="7">
@@ -95,7 +99,7 @@
 
               <ion-item class="expand-full ion-hide-md-up ion-no-padding sinC">
                   <ion-col size="10" size-md="12" >
-                    <input type="file" (change)="fileUpload($event.target)" />
+                    <ion-input type="file" (change)="fileUpload($event.target)"></ion-input>
                     <!-- <ion-item class="ion-no-padding">
                       <ion-label position="floating">Imagen (url)</ion-label>
                       <ion-input
@@ -253,6 +257,7 @@
                     size-sm="3"
                     class="ion-align-self-center"
                   >
+                  <!-- TODO: sin usuario cambiar el texto mostrado -->
                     <app-btn-post
                       [posting]="posting"
                       [disabled]="!f.valid"

@@ -34,7 +34,7 @@
           </ion-list>
 
           <ion-row>
-            <ion-list-header>
+            <!-- <ion-list-header>
               <ion-label>Puntaje:</ion-label>
             </ion-list-header>
             <ion-col>
@@ -48,7 +48,7 @@
                 <ion-label position="stacked">Hasta</ion-label>
                 <ion-input type="number" min="1" max="13" name="hasta_puntaje">
                 </ion-input> </ion-item
-            ></ion-col>
+            ></ion-col> -->
             <ion-col
               ><ion-fab-button size="small">
                 <ion-icon
@@ -153,12 +153,12 @@
                 <ion-col class="ion-text-center" size="3" size-md="2"
                   >Premio</ion-col
                 >
-                <ion-col class="ion-hide-md-down ion-text-center" size="2"
+                <!-- <ion-col class="ion-hide-md-down ion-text-center" size="2"
                   >Puntaje</ion-col
-                >
-                <ion-col class="ion-hide-md-up ion-text-center" size="2"
+                > -->
+                <!-- <ion-col class="ion-hide-md-up ion-text-center" size="2"
                   >Ptje</ion-col
-                >
+                > -->
 
                 <ion-col size="2"></ion-col>
               </ion-row>
@@ -208,13 +208,12 @@
                       <ion-text>{{ r.metric.prize }}</ion-text>
                       <!-- <ion-text>{{ getMetric(r).prize }}</ion-text> -->
                     </ion-col>
-                    <ion-col
+                    <!-- <ion-col
                       class="ion-text-center ion-align-self-center"
                       size="2"
                     >
                       <ion-text>{{ r.metric.score }}</ion-text>
-                      <!-- <ion-text>{{ getMetric(r).score }}</ion-text> -->
-                    </ion-col>
+                    </ion-col> -->
 
                     <ion-col size="1" size-md="2" class="ion-align-self-center">
                       <ion-buttons

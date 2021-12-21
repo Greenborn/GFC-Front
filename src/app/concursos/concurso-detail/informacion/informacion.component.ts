@@ -788,6 +788,21 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     console.log("inscripto yo : ", this.isInscripto)
   }
 
+  compartir() {
+    const link = window.location.href.replace("informacion", "")
+    // console.log("link del sitio: ", link )
+  
+    if(navigator.clipboard) {
+        navigator.clipboard.writeText(link).then(() => {
+            //TODO: mensaje de texto copiado!
+        })
+    } else {
+        console.log('Browser Not compatible')
+    }
+
+    }
+    // document.execCommand('copy', true)
+  
 
   }
 

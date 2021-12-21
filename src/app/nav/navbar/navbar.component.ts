@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
   constructor(    
     private menu: MenuController,
     public popoverController: PopoverController,
-    private router: Router,
+    public router: Router,
     public auth: AuthService, //lo puse público!
     public rolificador: RolificadorService
     ) { }
