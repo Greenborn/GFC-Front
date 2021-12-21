@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="isLogged()">
   <ion-toolbar>
     <ion-grid>
       <ion-row class="ion-justify-content-end">
@@ -83,7 +83,7 @@
                       #sFotoclub
                       name="fotoclub_id"
                       [(ngModel)]="profile.fotoclub_id"
-                      [disabled]="!isAdmin"
+                      [disabled]="!isAdmin && usuarioLogueado"
                       required
                     >
                       <ion-select-option *ngFor="let f of fotoclubes" [value]="f.id"
@@ -195,27 +195,30 @@
                 >
               </ion-item>
 
-              <ion-item
-                class="expand-full"
-                *ngIf="!updatingSelect; else spinner"
-              >
-                <!-- <ion-label [position]="(usuario.rol_id != undefined) ? 'stacked' : 'floating'">Rol</ion-label> -->
-                <ion-label [position]="'stacked'">Rol</ion-label>
-                <!-- [value]="(usuario.role_id == undefined) ? 2 : usuario.role_id" -->
-                <!-- (value)="usuario.role_id" -->
-                <ion-select
-                  #sRol
-                  name="role_id"
-                  [(ngModel)]="usuario.role_id"
-                  required
-                  [disabled]="!isAdmin"
+              <div *ngIf="isLogged()">
+
+                <ion-item
+                  class="expand-full"
+                  *ngIf="!updatingSelect; else spinner"
                 >
-                  <!-- interface="popover" -->
-                  <ion-select-option *ngFor="let r of roles" [value]="r.id"
-                    >{{r.type}}</ion-select-option
+                  <!-- <ion-label [position]="(usuario.rol_id != undefined) ? 'stacked' : 'floating'">Rol</ion-label> -->
+                  <ion-label [position]="'stacked'">Rol</ion-label>
+                  <!-- [value]="(usuario.role_id == undefined) ? 2 : usuario.role_id" -->
+                  <!-- (value)="usuario.role_id" -->
+                  <ion-select
+                    #sRol
+                    name="role_id"
+                    [(ngModel)]="usuario.role_id"
+                    required
+                    [disabled]="!isAdmin"
                   >
-                </ion-select>
-              </ion-item>
+                    <!-- interface="popover" -->
+                    <ion-select-option *ngFor="let r of roles" [value]="r.id"
+                      >{{r.type}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+              </div>
               <!-- </ion-col> -->
               <!-- <ion-item class="expand-full">
                   <ion-col size="10" size-md="12" >

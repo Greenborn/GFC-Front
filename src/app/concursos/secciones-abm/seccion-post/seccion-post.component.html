@@ -32,6 +32,10 @@
             <ion-col>
               <ion-row>
                 <ion-col>
+                  <ion-chip color="danger">
+                    <ion-icon name="alert-outline"></ion-icon>
+                    <ion-label>CUIDADO: la modificación de este elemento repercutirá en concursos que lo utilicen, se recomienda la edición para correcciones ortográficas</ion-label>
+                  </ion-chip>
                   <form
                     #sectionForm="ngForm"
                     (ngSubmit)="postSection(sectionForm)"

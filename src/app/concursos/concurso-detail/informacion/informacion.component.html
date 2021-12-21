@@ -28,7 +28,7 @@
             </ion-row>
           </ion-col>
           <ion-col
-            *ngIf="rolificador.esDelegado(u)"
+            *ngIf="(rolificador.esDelegado(u) || rolificador.isAdmin(u))"
             class="ion-align-self-start"
           >
             <ion-button class="ion-float-right" (click)="deleteConcurso()">

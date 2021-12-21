@@ -74,7 +74,11 @@ const routes: Routes = [
     loadChildren: () => import('./info-centro/info-centro.module').then( m => m.InfoCentroPageModule),
     pathMatch: 'full'
   },
-
+  {
+    path: 'registrarse',
+    loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule),
+    pathMatch: 'full'
+  },
 
   // {
   //   path: 'login',

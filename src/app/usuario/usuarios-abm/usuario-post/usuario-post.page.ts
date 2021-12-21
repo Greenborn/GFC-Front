@@ -65,6 +65,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   //   return this.user == undefined ? false : this.user.role_id == 1;
   // }
 
+  isLogged():boolean{
+    return this.auth.loggedIn
+  }
+
   get formTitle(): string {
     if (this.userLogged == undefined) return ''
     const c = this.usuario;
@@ -75,6 +79,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
   get isAdmin(): boolean {
     return this.userLogged == undefined ? false : this.userLogged.role_id == 1
+  }
+
+  get usuarioLogueado(): boolean {
+    return this.userLogged == undefined ? false : true
   }
   get isUserProfile(): boolean {
     if (this.userLogged == undefined) return false
@@ -89,12 +97,16 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     })
     await loading.present();
 
-    dataPromises.push(
-      new Promise(resolve => super.fetch<Role[]>(() => this.roleService.getAll()).subscribe(r => {
-        this.roles = r
-        resolve(true)
-      }))
-    )
+    if(this.isLogged()){
+      dataPromises.push(
+        new Promise(resolve => super.fetch<Role[]>(() => this.roleService.getAll()).subscribe(r => {
+          this.roles = r
+          resolve(true)
+        }))
+      )
+    } else {
+      this.usuario.role_id = 3
+    }
     dataPromises.push(
       new Promise(resolve => super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => {
         this.fotoclubes = r
@@ -136,17 +148,20 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
   
   ionViewWillEnter() {
-    // super.fetch<User[]>(() => this.userService.getAll()).subscribe(r => this.users = r)
-    this.auth.user.then(u => {
-      this.userLogged = u
-      if (this.isPost) {
-        // this.updatingSelect = true
-        // console.log('si')
-        this.usuario.role_id = 3 // los no admin cargan delegados (select rol desactivado)
-        this.profile.fotoclub_id = u.profile.fotoclub_id
-        // setTimeout(() => this.updatingSelect = false, 420)
-      }
-    })
+    if(this.isLogged()){
+
+      // super.fetch<User[]>(() => this.userService.getAll()).subscribe(r => this.users = r)
+      this.auth.user.then(u => {
+        this.userLogged = u
+        if (this.isPost) {
+          // this.updatingSelect = true
+          // console.log('si')
+          this.usuario.role_id = 3 // los no admin cargan delegados (select rol desactivado)
+          this.profile.fotoclub_id = u.profile.fotoclub_id
+          // setTimeout(() => this.updatingSelect = false, 420)
+        }
+      })
+    }
   }
 
   datosCargados() {
@@ -160,15 +175,20 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   async postUsuario(f: NgForm) {
     if (f.valid) {
       // console.log('posteando form', f.value, this.selectRol.value, this.selectFotoclub.value)
-      let fotoclub = undefined;
-      if (this.selectRol.value == 2 || this.selectRol.value == 3){
-        fotoclub = this.selectFotoclub.value
-      }
-      const pm: any = {
+      let pm: any = {
         name: f.value.name, 
         last_name: f.value.last_name, 
         // fotoclub_id: f.value.fotoclub_id
-        fotoclub_id: fotoclub
+        // fotoclub_id: fotoclub
+      }
+      
+      if (this.usuario.role_id == 3 || this.usuario.role_id == 2 ){
+        pm = {
+          name: f.value.name, 
+          last_name: f.value.last_name, 
+          // fotoclub_id: f.value.fotoclub_id
+          fotoclub_id: this.selectFotoclub.value
+        }
       }
 
       
@@ -181,9 +201,18 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       super.fetch<any>(() => this.profileService.postFormData<any>(pm, this.profile.id)).subscribe(
         p => {
           // console.log('posteado perfil', p)
+          let rol;
+          if (this.isAdmin) {
+            rol = this.selectRol.value
+          } else if (! this.isLogged){
+            rol = 3
+          } else {
+            rol = this.usuario.role_id
+          }
           const um: User = {
             username: f.value.username,
-            role_id: this.isAdmin ? this.selectRol.value : this.usuario.role_id,
+            // role_id: this.isAdmin ? this.selectRol.value : this.usuario.role_id,
+            role_id: rol,
             password: f.value.password,
             // role_id: f.value.role_id,
             profile_id: p.id

@@ -191,6 +191,19 @@
 
           <!-- <ion-item> -->
           <ion-row>
+
+            <ion-item>
+              <!-- <ion-col> -->
+              <ion-label position="stacked">Total de imágenes por sección</ion-label>
+              <ion-input
+                name="max_img_section"
+                [ngModel]="concurso.max_img_section"
+                type="number"
+                required
+              ></ion-input>
+              <!-- </ion-col> -->
+            </ion-item>
+
             <!-- <ion-col size="12" size-lg="6"> -->
             <ion-col size="12" >
               <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
@@ -233,18 +246,6 @@
 
             </ion-col>
             
-            <ion-item>
-              <!-- <ion-col> -->
-              <ion-label position="stacked">Total de imágenes por sección</ion-label>
-              <ion-input
-                name="max_img_section"
-                [ngModel]="concurso.max_img_section"
-                type="number"
-                required
-              ></ion-input>
-              <!-- </ion-col> -->
-            </ion-item>
-
             <!-- <ion-col size="12" size-lg="6"> -->
             <ion-col size="12">
               <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
@@ -357,8 +358,10 @@
               <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                 <ion-label position="stacked">Reglamento</ion-label>
                 <!-- [(ngModel)]="image.code" -->
-                <input type="file" (change)="fileUpload($event.target)" />
+                <input type="file"  accept=".pdf" (change)="fileUpload($event.target)" />
               </ion-item>
+              <ion-note>
+                La extención de archivo aceptada es PDF</ion-note>
               <div>
                 <!-- <ion-thumbnail> -->
                   <ion-row class="ion-justify-content-center">
