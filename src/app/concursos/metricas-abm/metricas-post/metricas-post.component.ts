@@ -3,7 +3,8 @@ import { NgForm } from '@angular/forms';
 import { ModalController, AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Metric } from 'src/app/models/metric.model';
-import { MetricService } from 'src/app/services/metric.service';
+import { MetricAbmService } from 'src/app/services/metric-abm.service';
+// import { MetricService } from 'src/app/services/metric.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 
@@ -16,7 +17,7 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
 
   @Input() modalController: ModalController;
   @Input() parentSections: Metric[]
-  @Input() metric: Metric = this.metricService.template
+  @Input() metric: Metric = this.metricAbmService.template
   // @Input() typeSubsection: boolean;
 
   public posting: boolean = false;
@@ -24,7 +25,7 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
   constructor(
     alertCtrl: AlertController,
     public responsiveService: ResponsiveService,
-    private metricService: MetricService,
+    private metricAbmService: MetricAbmService,
     private UIUtilsService: UiUtilsService
   ) { 
     super(alertCtrl)
@@ -52,7 +53,7 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
       // model.parent_id = this.typeSubsection ? this.section.parent_id : null
       console.log('posting', model)
       this.posting = true
-      super.fetch<Metric>(() => this.metricService.post(model, this.metric.id)).subscribe(
+      super.fetch<Metric>(() => this. metricAbmService.post(model, this.metric.id)).subscribe(
         metric => {
           this.posting = false
           this.modalController.dismiss({ metric })

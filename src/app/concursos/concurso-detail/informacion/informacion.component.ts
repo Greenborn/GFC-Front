@@ -798,7 +798,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
           const { toast } = await this.UIUtilsService.mostrarToast(undefined,
               {
                 "message": "El link ah sido copiado al portapepeles",
-                "duration": 100000,
+                "duration": 1000,
                 "position": 'bottom',
                 "color": "dark"
               }

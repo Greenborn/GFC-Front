@@ -44,11 +44,19 @@
                   >
                     <ion-item class="w-100 ion-margin-bottom">
                       <ion-label position="floating">Premio</ion-label>
-                      <ion-input
+                      <!-- <ion-input
                         [ngModel]="review.prize"
                         name="prize"
                         required
-                      ></ion-input>
+                      ></ion-input> -->
+                      <!-- [(value)]="image.profile_id" -->
+                      <ion-select name="elegida" [(ngModel)]="elegida" ngDefaultControl>
+                        <ion-select-option
+                          *ngFor="let met of metricas"
+                          [value]="met"
+                          >{{ met.prize }}</ion-select-option
+                        >
+                      </ion-select>
                     </ion-item>
                     <!-- <ion-item class="w-100 ion-margin-bottom">
                       <ion-label position="floating">Puntaje</ion-label>

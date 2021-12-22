@@ -239,7 +239,7 @@
                 <ion-grid>
                   <ion-row class="ion-padding-end">
                     <!-- class="ion-text-center" -->
-                    <ion-col size="6" size-md="3" class="">
+                    <ion-col size="7" size-md="4" class="">
                       <!-- <b>Obra</b> -->
                       <ion-row>
                         <app-th-sort
@@ -259,8 +259,8 @@
                     </ion-col>
                     <ion-col
                       class="ion-hide-md-down ion-padding-start"
-                      size="4"
-                      size-md="3"
+                      size="5"
+                      size-md="4"
                     >
                       <ion-row *ngIf="!rolificador.esJuez(u)"> 
                         <app-th-sort
@@ -319,10 +319,10 @@
                     <ion-col class="ion-hide-md-up" size="2">
                       <!-- <b>Ptje</b> -->
                       <ion-row>
-                        <app-th-sort
+                        <!-- <app-th-sort
                           [(data)]="resultadosConcurso"
                           title="Ptje"
-                        ></app-th-sort>
+                        ></app-th-sort> -->
                         <!-- <div class="thead">
                           <b>Ptje</b>
                           <app-btn-sort 
@@ -351,8 +351,8 @@
                     <ion-grid class="ion-no-padding">
                       <ion-row size="12">
                         <ion-col
-                          size="6"
-                          size-md="3"
+                          size="7"
+                          size-md="4"
                           class="ion-align-self-center"
                         >
                           <ion-item lines="none">
@@ -382,8 +382,8 @@
                         </ion-col>
                         <ion-col
                           class="ion-hide-md-down ion-align-self-center"
-                          size="4"
-                          size-md="3"
+                          size="5"
+                          size-md="4"
                         >
                           <ion-item lines="none">
                             <ion-label>
@@ -410,10 +410,9 @@
                           <ion-text>{{ r.metric.prize }}</ion-text>
                           <!-- <ion-text>{{ getMetric(r).prize }}</ion-text> -->
                         </ion-col>
-                        <ion-col class="ion-align-self-center" size="2">
+                        <!-- <ion-col class="ion-align-self-center" size="2">
                           <ion-text>{{ r.metric.score }}</ion-text>
-                          <!-- <ion-text>{{ getMetric(r).score }}</ion-text> -->
-                        </ion-col>
+                        </ion-col> -->
   
                         <ion-col
                           size="1"
@@ -429,7 +428,7 @@
                               <img class="img-button" [src]="getThumbUrl(r.image.thumbnail,1)" />
                             </ion-button>
                             <ion-button
-                              *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u) || rolificador.esJuez(u)"
+                              *ngIf="rolificador.esJuez(u)"
                               (click)="concursoDetailService.reviewImage.emit(r)"
                               title="Calificar"
                             >

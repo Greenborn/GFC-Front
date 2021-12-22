@@ -10,6 +10,7 @@ import { MetricService } from 'src/app/services/metric.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { MetricAbmService } from 'src/app/services/metric-abm.service';
 
 @Component({
   selector: 'app-image-review',
@@ -32,10 +33,13 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   
   // @ViewChild('formReview') formReview: HTMLFormElement;
   public posting: boolean = false;
+  public metricas: Metric[] = [];
+  public elegida: Metric;
   
   constructor(
     // private contestSvc: ConcursoService,
     private metricService: MetricService,
+    private metricAbmService: MetricAbmService,
     alertCtrl: AlertController,
     public responsiveService: ResponsiveService,
     private configService: ConfigService
@@ -47,15 +51,30 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
     return this.configService.apiUrl(this.image.url)
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    super.fetch<Metric[]>(() => this.metricAbmService.getAll()).subscribe(s => {
+      this.metricas = s
+    })
+  }
 
   async postReview(f: NgForm) {
     if (f.valid) {
+// this.review.prize = this.elegida.prize
+// this.review.score = this.elegida.score
+      
       this.posting = true
+      // const metric: Metric = {
+      //   // id: this.review.id,
+      //   ...f.value
+      // }
       const metric: Metric = {
-        // id: this.review.id,
-        ...f.value
+        id: this.review.id,
+        prize: f.value.elegida.prize,
+        score: f.value.elegida.score
       }
+      metric.id = this.review.id
+      
+      console.log("metric n:",metric, f.value )
       super.fetch<Metric>(() => this.metricService.post(metric, this.review.id)).subscribe(
         m => this.dismiss(m),
         async err => {

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Metric } from 'src/app/models/metric.model';
-import { MetricService } from 'src/app/services/metric.service';
+import { MetricAbmService } from 'src/app/services/metric-abm.service';
+// import { MetricService } from 'src/app/services/metric.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { MetricasPostComponent } from './metricas-post/metricas-post.component';
@@ -29,7 +30,7 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
 
   constructor(
     alertCtrl: AlertController,
-    public metricService: MetricService,
+    public metricAbmService: MetricAbmService,
     private UIUtilsService: UiUtilsService
   ) { 
     super(alertCtrl)
@@ -37,7 +38,7 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
 
   async ngOnInit() {
     await this.UIUtilsService.presentLoading()
-    super.fetch<Metric[]>(() => this.metricService.getAll()).subscribe(s => {
+    super.fetch<Metric[]>(() => this.metricAbmService.getAll()).subscribe(s => {
       this.metricas = s
       this.UIUtilsService.dismissLoading()
     })
@@ -52,10 +53,10 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
     // const data = await this.UIUtilsService.mostrarModal(SeccionPostComponent, componentProps)
     // if (data != undefined) {
       // const { s } = data
-    const { section: s } = await this.UIUtilsService.mostrarModal(MetricasPostComponent, componentProps)
-    console.log('received', metric)
+    const { s} = await this.UIUtilsService.mostrarModal(MetricasPostComponent, componentProps)
+    console.log('received', s)
     if (s) {
-      const i = this.metricas.findIndex(s1 => s1.id == s.id)
+      const i = this.metricas.findIndex(s)
       if (i > -1) {
         this.metricas[i] = s
       } else {
@@ -72,7 +73,7 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
       }, async () => {
       
           this.fetch<void>(() => 
-            this.metricService.delete(metric.id)
+            this.metricAbmService.delete(metric.id)
           ).subscribe(
             _ => {
               console.log('deleted section', metric.id, _)
