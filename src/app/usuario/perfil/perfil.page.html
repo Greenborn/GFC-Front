@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row class="ion-justify-content-end">
+        <ion-col size="12" size-md="11">
+          <ion-row>
+            <ion-buttons>
+              <ion-back-button
+                defaultHref="/"
+                ></ion-back-button>
+                <!-- class="ion-hide-md-up" -->
+            </ion-buttons>
+            <ion-title>Perfil</ion-title>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card
+    color="white"
+    class="restrict-height"
+    *ngIf="(authService.user | async) as u"
+  >
+    <ion-col>
+      <ion-row>
+        <ion-col size="4">
+          <ion-row class="ion-justify-content-center">
+            <ion-col size="5">
+              <app-usuario-img
+                [src]="configService.apiUrl(u.profile.img_url)"
+              ></app-usuario-img>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <!-- <ion-col class="h-100 ion-align-self-center"> -->
+        <ion-col>
+          <ion-row>
+            <ion-text>
+              <h2>{{u.profile.name}} {{u.profile.last_name}}</h2></ion-text>
+            <ion-text class="ion-no-padding" color="medium">
+              <p class="text-username">@{{ u.username }}</p></ion-text>
+          </ion-row>
+          <ion-row>
+            <ion-text>Rol: {{u.role.type}}</ion-text>
+          </ion-row>
+          <ion-row>
+            <ion-text *ngIf="u.role_id == 3 || u.role_id == 2; else notEntidad"
+              >Fotoclub/Entidad: {{u.profile.fotoclub.name}}</ion-text
+            >
+          </ion-row>
+          <ng-template #notEntidad>
+            <ion-text>Fotoclub/Entidad: Ninguna</ion-text>
+          </ng-template>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4">
+          <ion-row class="ion-justify-content-center">
+            <!--TODO: si el usuario soy yo mismo -->
+            <ion-button
+              [routerLink]="['/usuarios', 'editar', authService.userId]"
+            >
+              Editar perfil
+            </ion-button>
+          </ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row>
+            <ion-item class="ion-margin ion-text-center sombra" lines="none">
+              <ion-col>
+                <ion-text>Concursos</ion-text>
+                <ion-title>1</ion-title>
+              </ion-col>
+            </ion-item>
+            <ion-item class=" ion-margin ion-text-center sombra" lines="none">
+              <ion-col>
+                <ion-text>Fotografías</ion-text>
+                <ion-title>1</ion-title>
+              </ion-col>
+            </ion-item>
+            <ion-item class=" ion-margin ion-text-center sombra" lines="none">
+              <ion-col>
+                <ion-text>1° Puesto</ion-text>
+                <ion-title>1</ion-title>
+              </ion-col>
+            </ion-item>
+            <ion-item class=" ion-margin ion-text-center sombra" lines="none">
+              <ion-col>
+                <ion-text>Mención</ion-text>
+                <ion-title>1</ion-title>
+              </ion-col>
+            </ion-item>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-card>
+</ion-content>

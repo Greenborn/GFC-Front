@@ -56,7 +56,7 @@ export class NavbarComponent implements OnInit {
     }
   }
   async mostrarPerfil( ev:any ){
-    this.openPopover(ev, UsuarioPage, '/perfil');
+    this.openPopover(ev, UsuarioPage, '/perfil/editar');
   }
   async mostrarNotificaciones( ev:any ) {
     this.openPopover(ev, NotificacionesPage, '/notificaciones');

@@ -40,7 +40,17 @@ const routes: Routes = [
   {
     path: 'perfil',
     canActivate: [AuthGuard],
-    loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./usuario/perfil/perfil.module').then( m => m.PerfilPageModule)
+      },
+      {
+        path: 'editar',
+        loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
+      }
+    ]
+    // loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
   },
   {
     path: 'usuarios',
