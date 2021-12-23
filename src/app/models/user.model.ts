@@ -8,6 +8,8 @@ export interface User {
     password?: string;
     role_id: number;
     profile_id: number;
+    email?: string;
+    passwordRepeat?: string;
 }
 export interface UserLogged extends User {
     profile: ProfileExpanded,

@@ -73,11 +73,9 @@
               <!-- </ion-col> -->
               <!-- <ion-col size-md="3" size="12"> -->
                 <!-- *ngIf="!updatingSelect; else spinner" -->
-                <div *ngIf="usuario.role_id == 3 || usuario.role_id == 2;">
-
-                  <ion-item
+              <ion-item
+                   *ngIf="(usuario.role_id == 3 || usuario.role_id == 2) && !updatingSelect; else spinner"
                     class="expand-full"
-                    *ngIf="!updatingSelect; else spinner"
                   >
                     <ion-label
                       [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'"
@@ -94,9 +92,8 @@
                         >{{f.name}}</ion-select-option
                       >
                     </ion-select>
-                  </ion-item>
-                </div>
-
+              </ion-item>
+              
               <ion-item class="expand-full ion-hide-md-up ion-no-padding sinC">
                   <ion-col size="10" size-md="12" >
                     <ion-input type="file" (change)="fileUpload($event.target)"></ion-input>
@@ -129,7 +126,7 @@
             <ion-row>
               <!-- <ion-col size-md="3" size="12"> -->
               <ion-item class="expand-full">
-                <ion-label position="floating">Username</ion-label>
+                <ion-label position="floating">Nombre de Usuario</ion-label>
                 <!-- TODO: revisar pattern -->
                 <ion-input
                   (ionFocus)="usernameFocus=true"
@@ -147,6 +144,20 @@
                   ></ion-icon>
                 </ion-input>
               </ion-item>
+
+              <ion-item class="expand-full">
+                <ion-label position="floating">E-Mail</ion-label>
+                <!-- TODO: revisar pattern -->
+                <ion-input
+                  autocapitalize="off"
+                  pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                  name="email"
+                  [(ngModel)]="usuario.email"
+                  required
+                >
+                </ion-input>
+              </ion-item>
+
               <ion-note *ngIf="usernameFocus">
                 Máximo 20 caracteres alfanuméricos sin símbolos ni
                 espacios</ion-note
@@ -172,8 +183,6 @@
                       <ion-label position="floating">Contraseña</ion-label>
                       <ion-input
                         tabindex="0"
-                        (ionFocus)="passFocus=true"
-                        (ionBlur)="passFocus=false"
                         id="ctr-1"
                         pattern=".{8,}"
                         type="password"
@@ -192,6 +201,30 @@
                 </ion-col>
               </ion-item>
               <ion-note *ngIf="passFocus">Mínimo 8 caracteres</ion-note>
+
+              <ion-item class="expand-full" *ngIf="!isUserProfile && isUserSignUp">
+                <ion-col class="ion-no-padding">
+                  <ion-row>
+                    <ion-col class="ion-no-padding" size="10">
+                      <ion-label position="floating">Repetir Contraseña</ion-label>
+                      <ion-input
+                        tabindex="0"
+                        id="ctr-1"
+                        pattern=".{8,}"
+                        type="password"
+                        class="text-right"
+                        name="passwordRepeat"
+                        [(ngModel)]="usuario.passwordRepeat"
+                      ></ion-input>
+                    </ion-col>
+                    <ion-col
+                      class="ion-no-padding ion-align-self-center"
+                      size="2"
+                    >
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-item>
 
               <ion-item class="expand-full" *ngIf="isUserProfile">
                 <ion-button (click)="changePassword()"
@@ -261,6 +294,7 @@
                     <app-btn-post
                       [posting]="posting"
                       [disabled]="!f.valid"
+                      [text] = "submitBtnText"
                     ></app-btn-post>
                     <!-- <ion-button
                       expand="block"

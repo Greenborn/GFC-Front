@@ -16,6 +16,8 @@ import { Profile } from 'src/app/models/profile.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { CreateUserService } from 'src/app/services/create-user.service';
 
 @Component({
   selector: 'app-usuario-post',
@@ -37,6 +39,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public passFocus = false
 
   public isPost: boolean = true;
+  
+  public isUserSignUp:boolean = false;
+  public submitBtnText:string = "Guardar";
+
   public posting: boolean = false;
   public userLogged: User;
   public updatingSelect: boolean = false
@@ -55,7 +61,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     private location: Location,
     public loadingController: LoadingController,
     public modalController: ModalController,
-    public configService: ConfigService
+    public configService: ConfigService,
+    private UIUtilsService: UiUtilsService,
+    private createUserService: CreateUserService,
   ) { 
     super(alertCtrl)
   }
@@ -96,6 +104,12 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       message: 'Cargando...'
     })
     await loading.present();
+
+    //si se está en pagina de registro, se mopdifica el texto del botòn
+    this.isUserSignUp = this.router.url == '/registro';
+    if (this.isUserSignUp){
+      this.submitBtnText = "Siguiente";
+    }
 
     if(this.isLogged()){
       dataPromises.push(
@@ -174,7 +188,33 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
   async postUsuario(f: NgForm) {
     if (f.valid) {
-      // console.log('posteando form', f.value, this.selectRol.value, this.selectFotoclub.value)
+      //En caso de que se trate de un formulario de registro de usuario
+      if (this.isUserSignUp){
+        //se comprueba que la contraseña corresponda con su repeticion
+        if (this.usuario.passwordRepeat !== this.usuario.password){
+          super.displayAlert("Las contraseñas no coinciden.");
+          return;
+        }
+
+        //hacer peticiòn para registrar usuario
+        await this.UIUtilsService.presentLoading();
+        this.createUserService.post({userData:this.usuario, profileData:this.profile}).subscribe(
+          ok => {
+            this.UIUtilsService.dismissLoading();
+            
+          },
+          err => {
+            this.UIUtilsService.dismissLoading();
+            super.displayAlert("Ocurrió un error al intentar realizar la petición de registro de usuario.");
+          }
+        );
+
+        //redirigir a siguiente pàgina
+        console.log("hacer peticion de registro");
+        return;
+      }
+
+      //En caso de que se trate de un formulario de ediciòn de usuarios
       let pm: any = {
         name: f.value.name, 
         last_name: f.value.last_name, 
