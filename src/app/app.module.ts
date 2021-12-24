@@ -38,7 +38,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     NavbarComponent,
     FooterComponent,
     FooterPostComponent,
-    SidebarComponent
+    SidebarComponent,
     // InputOjoComponent
   ],
   exports:[
