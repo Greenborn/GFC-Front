@@ -201,10 +201,12 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         this.createUserService.post({userData:this.usuario, profileData:this.profile}).subscribe(
           ok => {
             this.UIUtilsService.dismissLoading();
-            
+            if (ok['success'] == false){
+              super.displayAlert(ok['error']);
+            }
           },
           err => {
-            this.UIUtilsService.dismissLoading();
+            this.UIUtilsService.dismissLoading();       
             super.displayAlert("Ocurrió un error al intentar realizar la petición de registro de usuario.");
           }
         );
