@@ -1,0 +1,9 @@
+<div class="thead">
+  <b>{{ title }}</b>
+  <app-btn-sort 
+    [sortFn]="sortFn"
+    [data]="data"
+    (sorted)="dataChange.emit($event)"
+    [disabled]="sortFn == undefined"
+  ></app-btn-sort>
+</div>

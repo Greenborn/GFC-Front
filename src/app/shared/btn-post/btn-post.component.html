@@ -1,0 +1,14 @@
+<ion-button
+  expand="block"
+  type="submit"
+  [disabled]="disabled"
+  (click)="post.emit()"
+>
+  <ion-spinner 
+    *ngIf="posting; else texto"
+    size="small"
+  ></ion-spinner>
+  <ng-template #texto>
+    <ion-text>{{text}}</ion-text>
+  </ng-template>
+</ion-button>

@@ -1,0 +1,29 @@
+ion-icon{
+    width: auto !important;  
+    height : 100% !important;  
+    min-width: 18px !important;
+    min-height: 18px !important;
+    max-width: auto !important;  //any size
+    max-height: 100% !important; //any size 
+    aspect-ratio: 1/1 !important;
+   
+}
+
+ion-button{
+    width: 100% !important;  
+    height: 100% !important;  
+}
+
+@supports not (aspect-ratio: 1 / 1) {
+    .element::before {
+      float: left;
+      padding-top: 100%;
+      content: "";
+    }
+  
+    .element::after {
+      display: block;
+      content: "";
+      clear: both;
+    }
+  }

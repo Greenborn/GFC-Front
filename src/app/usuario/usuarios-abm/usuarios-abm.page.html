@@ -1,0 +1,332 @@
+<ion-content>
+  <ion-grid class="ion-no-padding" *ngIf="(auth.user | async) as userLogged">
+    <ion-row>
+      <ion-col size="3" *ngIf="mostrarFiltro">
+        <ion-col>
+          <ion-title class="ion-margin-top">Búsqueda</ion-title>
+
+          <!-- TODO: crear modal para mobile del filtro de búsqueda y desaparecer la columna en PC y biceversa -->
+          <!-- <app-search-bar
+            (buscar)="filtrarUsuarios($event)"
+            [atributos]="['username', 'email']"
+          ></app-search-bar> -->
+          <app-search-bar
+            [(data)]="miembros"
+            [atributosObj]="atributosBusqueda"
+          >
+          </app-search-bar>
+
+          <!-- [(data)]="miembros" -->
+          <app-search-select *ngIf="rolificador.isAdmin(userLogged)"
+            title="Fotoclub / Agrupación"
+            [optionsProps]="filtrado['fotoclub'].options"
+            [optionsData]="fotoclubs"
+            interface="popover"
+          >
+            <!-- [filterCallback]="funcionesFiltrado['fotoclub']" -->
+          </app-search-select>
+          <!-- [(data)]="miembros" -->
+          <app-search-select *ngIf="rolificador.isAdmin(userLogged)"
+            title="Rol"
+            [optionsProps]="filtrado['rol'].options"
+            [optionsData]="roles"
+          >
+            <!-- [filterCallback]="funcionesFiltrado['role']" -->
+          </app-search-select>
+
+          <!-- <ion-list>
+            <ion-radio-group value="biff">
+              <ion-list-header>
+                <ion-label>Filtrar por:</ion-label>
+              </ion-list-header>
+
+              <ion-item>
+                <ion-label>Nombre</ion-label>
+                <ion-radio slot="start" value="nombre"></ion-radio>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>Username</ion-label>
+                <ion-radio slot="start" value="codigo"></ion-radio>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>DNI</ion-label>
+                <ion-radio slot="start" value="concursante"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>email</ion-label>
+                <ion-radio slot="start" value="concursante"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>Fotoclub/Agrupación</ion-label>
+                <ion-radio slot="start" value="fotoclub"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list> -->
+
+          <ion-col>
+            <!-- opcion 1 -->
+            <!--   <ion-list>
+            <ion-list-header>
+              <ion-label>Premio:</ion-label>
+            </ion-list-header>
+            <ion-button fill="clear" href="#">Reprobado</ion-button>
+            <ion-button fill="clear" href="#">Aprobado</ion-button>
+            <ion-button fill="clear" href="#">Mención</ion-button>
+            <ion-button fill="clear" href="#">Medalla</ion-button>
+            <ion-button fill="clear" href="#">1° Premio</ion-button>
+          </ion-list> -->
+
+            <!-- opcion 2 -->
+            <!-- <ion-list>
+              <ion-list-header>
+                <ion-label>Rol:</ion-label>
+              </ion-list-header>
+              <ion-item
+                ><ion-button fill="clear" href="#"
+                  >Administrador</ion-button
+                ></ion-item
+              >
+              <ion-item
+                ><ion-button fill="clear" href="#"
+                  >Concursante</ion-button
+                ></ion-item
+              >
+              <ion-item>
+                <ion-button fill="clear" href="#">Jurado</ion-button></ion-item
+              >
+              <ion-item>
+                <ion-button fill="clear" href="#"
+                  >Delegado</ion-button
+                ></ion-item
+              >
+            </ion-list> -->
+          </ion-col>
+        </ion-col>
+      </ion-col>
+      <!-- </ion-col> -->
+
+      <ion-col>
+        <ion-row>
+          <ion-col size="11.5" push="0.25">
+            <!-- usuario, email, Fotoclub/Agrupación -->
+            <ion-grid class="ion-no-padding ion-padding-bottom">
+              <ion-row
+                class="
+                  ion-justify-content-start
+                  ion-align-items-center
+                  ion-margin-top
+                  ion-margin-bottom
+                "
+              >
+                <h2 class="ion-margin-top ion-margin-bottom ion-margin-end">
+                  {{getTitulo(userLogged)}}
+                </h2>
+                <ion-fab-button *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
+                  [routerLink]="['nuevo']" size="small"
+                >
+                  <ion-icon name="add"></ion-icon>
+                </ion-fab-button>
+              </ion-row>
+
+              <ion-row class="ion-align-items-center">
+                <ion-col>
+                  <!-- <app-search-bar
+                    (buscar)="filtrarUsuarios($event)"
+                    [atributos]="['username', 'email']"
+                  ></app-search-bar> -->
+
+                  <!-- <app-search-bar 
+                  [(data)]="miembros"
+                  [atributosObj]="atributosBusqueda"
+                  ></app-search-bar> -->
+                </ion-col>
+                <ion-col size="2" size-sm="1">
+                  <ion-row
+                    class="
+                      ion-justify-content-center
+                      ion-align-items-center
+                      ion-align-self-center
+                    "
+                  >
+                    <ion-button
+                      (click)="toggleFiltro()"
+                      color="medium"
+                      expand="block"
+                      class="
+                        ion-justify-content-center
+                        ion-align-items-center
+                        ion-align-self-center
+                      "
+                    >
+                      <ion-icon name="funnel"></ion-icon>
+                      <!-- <ion-icon name="options"></ion-icon> -->
+                    </ion-button>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <ion-list class="ion-hide-sm-down cabecera">
+              <ion-item color="dark">
+                <ion-grid>
+                  <ion-col>
+                    <ion-row>
+                      <ion-col size="5.5" size-md="7">
+                        <ion-row>
+                          <app-th-sort
+                            [sortFn]="funcionesOrdenamiento['usuario']"
+                            [(data)]="miembros"
+                            [title]="rolificador.getNombreUsuarios(userLogged.role_id)"
+                          ></app-th-sort>
+                        </ion-row>
+                        <!-- <b>{{rolificador.getNombreUsuarios(userLogged.role_id)}}</b> -->
+                      </ion-col>
+                      <!-- <ion-col size="2">Email</ion-col> -->
+                      <ion-col size="2.5" size-md="2">
+                        <app-th-sort
+                          *ngIf="rolificador.isAdmin(userLogged)"
+                          [sortFn]="funcionesOrdenamiento['rol']"
+                          [(data)]="miembros"
+                          title="Rol"
+                        ></app-th-sort>
+                        <!-- <ion-text *ngIf="rolificador.isAdmin(userLogged)">
+                          <b>Rol</b>
+                        </ion-text> -->
+                      </ion-col>
+                      <ion-col size="2.5" size-md="2">
+                        <ion-row>
+                          <app-th-sort
+                            *ngIf="rolificador.isAdmin(userLogged)"
+                            [sortFn]="funcionesOrdenamiento['fotoclub']"
+                            [(data)]="miembros"
+                            title="Fotoclub / Agrupación"
+                          ></app-th-sort>
+                        </ion-row>
+                        <!-- <ion-text *ngIf="rolificador.isAdmin(userLogged)"
+                          ><b>Fotoclub / Agrupación</b>
+                        </ion-text> -->
+                      </ion-col>
+                      <ion-col size="1.5" size-md="1">
+                        <!-- <b>Acciones</b> -->
+                      </ion-col>
+                    </ion-row>
+                  </ion-col>
+                </ion-grid>
+              </ion-item>
+            </ion-list>
+
+            <!-- <div *ngIf="(users | async) as usuarios"> -->
+            <!-- <div *ngIf="(miembros | async) as miembros; else spinner"> -->
+            <ion-list *ngIf="miembros.length > 0; else texto">
+              <ion-item *ngFor="let m of miembros">
+                <ion-grid>
+                  <ion-row size="12">
+                    <ion-col size="12" size-md="7" size-sm="5.5">
+                      <ion-row
+                        class="
+                          ion-align-items-center ion-justify-content-between
+                        "
+                      >
+                        <!-- user card -->
+                        <ion-col size="3" size-sm="1.3">
+                          <app-usuario-img [src]="configService.apiUrl(m.img_url)"></app-usuario-img>
+                        </ion-col>
+                        <ion-col size="8" size-sm="10.7">
+                          <ion-label class="ion-margin-start">
+                            <ion-card-subtitle title="Username"
+                              ><i>@{{m.user.username}}</i></ion-card-subtitle
+                            >
+                            <ion-text title="Nombre">
+                              <b>{{m.name}} {{m.last_name}}</b>
+                            </ion-text>
+                          </ion-label>
+                        </ion-col>
+                        <ion-col
+                          size="1"
+                          class="ion-hide-sm-up ion-justify-content-center"
+                        >
+                          <ion-buttons>
+                            <ion-button *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
+                              (click)="mostrarAcciones($event, m)"
+                            >
+                              <!-- <ion-thumbnail></ion-thumbnail> -->
+                              <ion-icon
+                                slot="start"
+                                ios="ellipsis-horizontal"
+                                md="ellipsis-vertical"
+                              ></ion-icon>
+                            </ion-button>
+                          </ion-buttons>
+                        </ion-col>
+                      </ion-row>
+                    </ion-col>
+                    <ion-col
+                      size="2.5"
+                      size-md="2"
+                      class="ion-hide-sm-down ion-align-self-center"
+                    >
+                      <ion-text *ngIf="rolificador.isAdmin(userLogged)"
+                        >{{ getRoleType(m.user.role_id) }}</ion-text
+                      >
+                    </ion-col>
+                    <ion-col
+                      size="2.5"
+                      size-md="2"
+                      class="ion-hide-sm-down ion-align-self-center"
+                    >
+                      <ion-text *ngIf="rolificador.isAdmin(userLogged)"
+                        >{{ getFotoclubName(m.fotoclub_id) }}</ion-text
+                      >
+                    </ion-col>
+                    <ion-col
+                      size="1.5"
+                      size-md="1"
+                      class="ion-align-self-center ion-hide-sm-down"
+                    >
+                      <ion-buttons *ngIf="rolificador.esDelegado(userLogged)  || rolificador.isAdmin(userLogged)">
+                        <ion-button [routerLink]="['editar/' + m.user.id]">
+                          <ion-icon name="create"></ion-icon>
+                        </ion-button>
+                        <ion-button (click)="deleteUsuario(m)">
+                          <ion-icon name="trash"></ion-icon>
+                        </ion-button>
+                      </ion-buttons>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </ion-list>
+            <ng-template #texto>
+              <ion-item>
+                <ion-item *ngIf="!loading">No hay usuarios</ion-item>
+                <ion-item *ngIf="searchParams != undefined">
+                  con {{searchParams.atributo}} que empiece con '{{
+                  searchParams.query }}'</ion-item
+                >
+              </ion-item>
+            </ng-template>
+            <!-- </div>
+            <ng-template #spinner>
+              <ion-row class="ion-justify-content-center">
+                <ion-spinner ></ion-spinner>
+              </ion-row>
+            </ng-template> -->
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    class="ion-hide-sm-up"
+  >
+    <ion-fab-button [routerLink]="['nuevo']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+</ion-content>

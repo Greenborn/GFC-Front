@@ -1,0 +1,61 @@
+<ion-item class="search-bar">
+  <ion-col>
+    <ion-row>
+      <ion-searchbar
+        #queryInput
+        (ionInput)="output()"
+        show-clear-button="never"
+        [showCancelButton]="getCancelbuttonStatus(queryInput)"
+        cancel-button-icon="close-outline"
+        ></ion-searchbar>
+        <!-- [showCancelButton]="cancelbuttonStatus" -->
+      <!-- #atributoSelect -->
+      <ion-select
+        *ngIf="innerSelect"
+        (ionChange)="output()"
+        interface="popover"
+        class="ion-margin-end"
+        >
+        <!-- [(ngModel)]="atributoSelected" -->
+        <!-- no funciona ngModel -->
+        <!-- [value]="getAtributoValor(atributosPasados[0])" -->
+        <ion-select-option
+          *ngFor="let a of atributosPasados"
+          [value]="getAtributoValor(a)"
+          >{{ getAtributoValorMostrado(a) }}</ion-select-option
+        >
+
+        <!-- <ion-select-option value="username">Username</ion-select-option>
+        <ion-select-option value="email">Email</ion-select-option> -->
+      </ion-select>
+    </ion-row>
+    <ion-row *ngIf="!innerSelect">
+      <ion-list>
+        <ion-radio-group
+          (ionChange)="changeRadio($event.target)"
+          [value]="atributoSelected"
+          [allowEmptySelection]="true"
+        >
+          <ion-list-header>
+            <ion-row class="ion-align-items-center">
+              <ion-label>Filtrar por:</ion-label>
+              <ion-button
+                *ngIf="atributoSelected != ''"
+                (click)="changeRadio()"
+                fill="clear"
+                class=""
+              >
+                <ion-icon name="close-outline"></ion-icon>
+              </ion-button>
+            </ion-row>
+          </ion-list-header>
+
+          <ion-item *ngFor="let a of atributosObj" lines="none">
+            <ion-label>{{ a.valorMostrado }}</ion-label>
+            <ion-radio slot="start" [value]="a.valor"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+    </ion-row>
+  </ion-col>
+</ion-item>

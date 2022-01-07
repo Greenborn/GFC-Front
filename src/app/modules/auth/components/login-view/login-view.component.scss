@@ -1,0 +1,36 @@
+.logoEntrada{
+    // filter: contrast(200%);
+    filter: invert(100%);
+}
+
+.margin-top{
+    margin-top: 5%;
+}
+
+.expand-full{
+    width: 100%;
+}
+
+ion-card{
+    border: solid 1px #cecece;
+}
+
+ion-item {
+    --inner-padding-end: 0px;
+}
+
+// @media (prefers-color-scheme: dark) {
+// body.dark {
+ion-content.dark {
+    /*
+     * Dark Colors
+     * -------------------------------------------
+     */
+     .logoEntrada{
+        // filter: contrast(200%);
+        filter: invert(0);
+    }
+    ion-card{
+        border: solid 1px rgb(41, 41, 41);
+    }
+}

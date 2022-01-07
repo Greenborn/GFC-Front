@@ -1,0 +1,17 @@
+<!-- <ion-col size="2"> -->
+<ion-button
+  *ngIf="passwordInput.value != ''"
+  (click)="toggleVisibility()"
+  fill="clear"
+  [disabled]="passwordInput.value == ''"
+>
+  <ion-icon
+    *ngIf="visibility == true; else noVisible"
+    size="large"
+    name="eye-off-outline"
+  ></ion-icon>
+  <ng-template #noVisible>
+    <ion-icon size="large" name="eye-outline"></ion-icon>
+  </ng-template>
+</ion-button>
+<!-- </ion-col> -->

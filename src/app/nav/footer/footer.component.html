@@ -1,0 +1,24 @@
+<!-- <ion-toolbar> -->
+
+  <ion-grid>
+    <ion-row  >
+      <ion-col size="2"  *ngIf="auth.user | async as u" class="ion-align-self-center"
+      >
+      <!-- <ion-button  style="margin-bottom: 0;" *ngIf="usrr" (click)="editar($event)">Editar</ion-button> -->
+      <ion-button  *ngIf="rolificador.isAdmin(u)" style="margin-bottom: 0;" (click)="editar($event)">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-col>
+      <ion-col >
+        <ion-row class="ion-justify-content-end ion-align-items-center h-100">
+          <ion-text class="ion-margin-end">Tel: {{footer.phone}}</ion-text>
+          <ion-text class="ion-margin-end">Dirección: {{footer.address}}</ion-text>
+          <ion-text class="ion-margin-end">E-mail: {{footer.email}}</ion-text>
+        </ion-row>
+       
+      </ion-col>
+      
+     
+    </ion-row>
+  </ion-grid>
+<!-- </ion-toolbar> -->
