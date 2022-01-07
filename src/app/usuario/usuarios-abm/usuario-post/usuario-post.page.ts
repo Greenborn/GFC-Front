@@ -50,6 +50,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public file: File;
   public img_url: string;
 
+  private cont: number = 0;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -188,6 +190,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   async postUsuario(f: NgForm) {
+    if (this.cont < 1) {
+      this.cont++
     if (f.valid) {
       //En caso de que se trate de un formulario de registro de usuario
       if (this.isUserSignUp){
@@ -294,6 +298,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     else {
       console.log('Form usuario no valido:', f.value);
     }
+  }
   }
 
   async changePassword() {

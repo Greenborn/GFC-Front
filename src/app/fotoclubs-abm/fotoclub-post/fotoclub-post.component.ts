@@ -17,7 +17,7 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
 
   public posting: boolean = false
   public name: string;
-  // public cont: number = 0;
+  public cont: number = 0;
 
   constructor(
     alertCtrl: AlertController,
@@ -45,8 +45,8 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
   }
 
   postFotoclub() {
-    // if (this.cont < 1) {
-    //   this.cont++
+    if (this.cont < 1) {
+      this.cont++
       const f: Fotoclub = {
         name: this.fotoclub.name
       }
@@ -66,6 +66,6 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
           this.UIUtilsService.mostrarError({ message: err.error })
         }
       )
-    // }
+    }
   }
 }

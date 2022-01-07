@@ -22,7 +22,7 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
 
   public posting: boolean = false
   public loadedImg: boolean = false
-  // public cont: number = 0;
+  public cont: number = 0;
 
   constructor(
     alertCtrl: AlertController,
@@ -77,8 +77,8 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
   }
 
   postParrafo() {
-    // if (this.cont < 1) {
-    //   this.cont++
+    if (this.cont < 1) {
+      this.cont++
       const p: any = {
         title: this.parrafo.title,
         content: this.parrafo.content
@@ -105,7 +105,7 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
           this.UIUtilsService.mostrarError({ message: err.error })
         }
       )
-    // }
+    }
   }
 
   imageUpload(event) {
