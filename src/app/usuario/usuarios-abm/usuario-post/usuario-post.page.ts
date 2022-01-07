@@ -18,6 +18,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { CreateUserService } from 'src/app/services/create-user.service';
+import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
 
 @Component({
   selector: 'app-usuario-post',
@@ -201,10 +202,16 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         this.createUserService.post({userData:this.usuario, profileData:this.profile}).subscribe(
           ok => {
             this.UIUtilsService.dismissLoading();
-            
+            if (ok['success'] == false){
+              super.displayAlert(ok['error']);
+            } else {
+              let profileConfirm  = this.UIUtilsService.mostrarModal(ConfirmUserComponent, { 
+                "signUpVerifToken": ok['sign_up_verif_token']
+               });
+            }
           },
           err => {
-            this.UIUtilsService.dismissLoading();
+            this.UIUtilsService.dismissLoading();       
             super.displayAlert("Ocurrió un error al intentar realizar la petición de registro de usuario.");
           }
         );
