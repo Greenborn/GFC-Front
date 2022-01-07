@@ -173,7 +173,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   }
 
   async postConcurso(f: NgForm) {
-    if (f.valid) {
+    if (f.valid && (this.categoriasSeleccionadas.length > 0) && (this.seccionesSeleccionadas.length > 0) ) {
       const model = {
         ...f.value,
         start_date: this.contestService.formatearFechaParaBD(f.value.start_date),
