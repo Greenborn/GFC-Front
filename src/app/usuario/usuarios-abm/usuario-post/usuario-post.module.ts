@@ -9,6 +9,7 @@ import { UsuarioPostPageRoutingModule } from './usuario-post-routing.module';
 import { UsuarioPostPage } from './usuario-post.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
   ],
   declarations: [
     UsuarioPostPage, 
+    ConfirmUserComponent,
     ChangePasswordComponent
   ]
 })
