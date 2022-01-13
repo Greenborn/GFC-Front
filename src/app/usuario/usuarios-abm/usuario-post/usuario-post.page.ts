@@ -200,9 +200,12 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     if (this.cont < 1) {
       this.cont++
       if (f.valid) {
-    if (this.selectFotoclub.value == 0) {
-        this.selectFotoclub.value = undefined
-      }
+        if((this.usuario.role_id == 3 || this.usuario.role_id == 2 )) {
+
+          if (this.selectFotoclub.value == 0) {
+              this.selectFotoclub.value = undefined
+            }
+        }
         //En caso de que se trate de un formulario de registro de usuario
       if (this.isUserSignUp){
         //se comprueba que la contraseña corresponda con su repeticion
