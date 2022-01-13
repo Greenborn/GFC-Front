@@ -127,6 +127,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     dataPromises.push(
       new Promise(resolve => super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => {
         this.fotoclubes = r
+        this.fotoclubes.unshift({id: 0, name: "Ninguno"})
         resolve(true)
       }))
     )
@@ -174,7 +175,12 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           // this.updatingSelect = true
           // console.log('si')
           this.usuario.role_id = 3 // los no admin cargan delegados (select rol desactivado)
-          this.profile.fotoclub_id = u.profile.fotoclub_id
+          if (u.role_id != 1) {
+            this.profile.fotoclub_id = u.profile.fotoclub_id
+            
+          } else {
+            this.profile.fotoclub_id = 0;
+          }
           // setTimeout(() => this.updatingSelect = false, 420)
         }
       })
@@ -190,10 +196,14 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   async postUsuario(f: NgForm) {
+    console.log("datos", this.usuario, this.profile);
     if (this.cont < 1) {
       this.cont++
-    if (f.valid) {
-      //En caso de que se trate de un formulario de registro de usuario
+      if (f.valid) {
+    // if (this.selectFotoclub.value == 0) {
+    //     this.selectFotoclub.value = undefined
+    //   }
+        //En caso de que se trate de un formulario de registro de usuario
       if (this.isUserSignUp){
         //se comprueba que la contraseña corresponda con su repeticion
         if (this.usuario.passwordRepeat !== this.usuario.password){
@@ -233,7 +243,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         // fotoclub_id: fotoclub
       }
       
-      if (this.usuario.role_id == 3 || this.usuario.role_id == 2 ){
+      if (this.usuario.role_id == 3 || this.usuario.role_id == 2 || this.selectFotoclub.value == 0){
         pm = {
           name: f.value.name, 
           last_name: f.value.last_name, 

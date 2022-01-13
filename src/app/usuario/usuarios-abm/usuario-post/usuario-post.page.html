@@ -332,7 +332,7 @@
   </ion-grid>
   
   <ng-template #spinner>
-    <ion-row class="ion-justify-content-center">
+    <ion-row class="ion-justify-content-center" *ngIf="(usuario.role_id == 3 || usuario.role_id == 2)">
       <ion-spinner></ion-spinner>
     </ion-row>
   </ng-template>
