@@ -39,25 +39,30 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
   roles: Role[] = [];
   fotoclubs: Fotoclub[] = [];
-  
+
   // usuariosFiltrados: Usuario[] = [];
   searchParams: SearchBarComponentParams;
 
+  public getUserId(e:any){
+    if (e == null){ return ''; }
+    return e.id;
+  }
+
   public atributosBusqueda: SearchBarComponentAtributo[] = [
-    { 
-      valor: 'name', 
-      valorMostrado: 'Nombre y apellido', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())      
-      callback: (c: ProfileExpanded, query: string) => `${c.name} ${c.last_name}`.match(new RegExp(`${query}`, 'i')) 
+    {
+      valor: 'name',
+      valorMostrado: 'Nombre y apellido',
+      // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())
+      callback: (c: ProfileExpanded, query: string) => `${c.name} ${c.last_name}`.match(new RegExp(`${query}`, 'i'))
     },
-    { 
-      valor: 'username', 
-      valorMostrado: 'Username', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+    {
+      valor: 'username',
+      valorMostrado: 'Username',
+      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase())
       callback: (c: ProfileExpanded, query: string) => c.user.username.match(new RegExp(`^${query}`, 'i'))
     }
   ];
-  
+
   public funcionesOrdenamiento: Function[] = [];
   // public funcionesFiltrado: Function[] = [];
   public filtrado: any[] = [];
@@ -80,34 +85,34 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     private route: ActivatedRoute,
     public configService: ConfigService,
     public UIUtilsService: UiUtilsService
-  ) { 
+  ) {
     super(alertCtrl)
     // this.funcionesOrdenamiento['fotoclub'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
     this.funcionesOrdenamiento['usuario'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
       const n1 = e1.last_name
       const n2 = e2.last_name
-      
-      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
+
+      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
         (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
     }
     this.funcionesOrdenamiento['fotoclub'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
       const n1 = this.getFotoclubName(e1.fotoclub_id)
       const n2 = this.getFotoclubName(e2.fotoclub_id)
-      
-      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
+
+      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
         (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
     }
     this.funcionesOrdenamiento['rol'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
       const n1 = this.getRoleType(e1.user.role_id)
       const n2 = this.getRoleType(e2.user.role_id)
-      
-      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
+
+      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
         (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
     }
 
     this.filtrado['fotoclub'] = {
       options: {
-        valueProp: 'id', 
+        valueProp: 'id',
         titleProp: 'name',
         queryParam: 'asociacion_id'
       },
@@ -117,7 +122,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     }
     this.filtrado['rol'] = {
       options: {
-        valueProp: 'id', 
+        valueProp: 'id',
         titleProp: 'type',
         queryParam: 'rol_id'
       },
@@ -128,10 +133,10 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
     this.auth.user.then(u => {
       if (this.rolificador.isAdmin(u)) {
-        this.atributosBusqueda.push({ 
-          valor: 'fotoclub_id', 
-          valorMostrado: 'Fotoclub / Agrupación', 
-          // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+        this.atributosBusqueda.push({
+          valor: 'fotoclub_id',
+          valorMostrado: 'Fotoclub / Agrupación',
+          // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase())
           callback: (c: ProfileExpanded, query: string) => this.getFotoclubName(c.fotoclub_id).match(new RegExp(`^${query}`, 'i'))
         })
       }
@@ -153,7 +158,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
   getTitulo(u: UserLogged) {
     const nombreUsuarios = this.rolificador.getNombreUsuarios(u.role_id)
-    if (!this.rolificador.isAdmin(u)) {        
+    if (!this.rolificador.isAdmin(u)) {
       // const p = this.profiles.find(p => p.id == u.profile_id)
       // if (p != undefined && this.fotoclubs.length > 0) {
       if (this.fotoclubs.length > 0) {
@@ -161,7 +166,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       } else return ''
     } else return nombreUsuarios
   }
-  
+
   // get titulo() {
   //   if (this.user != undefined) {
   //     if (this.user.role_id != 1) {
@@ -241,7 +246,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
                     1
                   )
                 })
-              }, 
+              },
               async err => {
                 this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
               }
@@ -282,7 +287,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     });
     await this.popover.present();
 
-    
+
     this.popover.onDidDismiss().then(_ => this.popover = undefined)
     // const t = this;
     // this.router.events.subscribe() // dismiss popover cuando cambie de ruta
@@ -327,7 +332,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     //     this.miembros = this.miembros.filter(p => f.callback(p, f.queryValue))
     //   }
     // });
-    
+
     super.fetch<Role[]>( () => this.roleService.getAll()).subscribe(r => this.roles = r)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => this.fotoclubs = r)
   }
@@ -345,7 +350,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       this.user = u
       // this.users = super.fetch<User[]>(() => this.userService.getAll('expand=profile'))
       // this.miembros = super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u))
-      
+
       super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u)).subscribe(m => {
         this.miembros = m
         this.miembrosOrig = [...m]
@@ -353,14 +358,14 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
         this.route.queryParams.subscribe(params => {
 
           // console.log('detecting query params change', params)
-    
+
           this.miembros = [...this.miembrosOrig]
-    
+
           const filterCallbacks: {
             queryValue: string;
             callback: Function;
           }[] = [];
-    
+
           for (const f of [this.filtrado['rol'], this.filtrado['fotoclub']]) {
             // console.log('analizando filter callback', f)
             if (params[f.options.queryParam] != undefined) {
@@ -371,7 +376,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
               })
             }
           }
-    
+
           for (const f of filterCallbacks) {
             this.miembros = this.miembros.filter(p => f.callback(p, f.queryValue))
           }

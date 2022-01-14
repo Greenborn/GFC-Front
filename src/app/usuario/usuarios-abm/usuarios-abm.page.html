@@ -69,7 +69,7 @@
                     [atributos]="['username', 'email']"
                   ></app-search-bar> -->
 
-                  <!-- <app-search-bar 
+                  <!-- <app-search-bar
                   [(data)]="miembros"
                   [atributosObj]="atributosBusqueda"
                   ></app-search-bar> -->
@@ -153,7 +153,7 @@
             <!-- <div *ngIf="(miembros | async) as miembros; else spinner"> -->
             <ion-list *ngIf="miembros.length > 0; else texto">
               <ion-item *ngFor="let m of miembros">
-                <ion-grid>
+                <ion-grid *ngIf="m != undefined || m != null">
                   <ion-row size="12">
                     <ion-col size="12" size-md="7" size-sm="5.5">
                       <ion-row
@@ -167,7 +167,7 @@
                         </ion-col>
                         <ion-col size="8" size-sm="10.7">
                           <ion-label class="ion-margin-start">
-                            <ion-card-subtitle title="Username"
+                            <ion-card-subtitle title="Username" *ngIf="m.user != null"
                               ><i>@{{m.user.username}}</i></ion-card-subtitle
                             >
                             <ion-text title="Nombre">
@@ -199,7 +199,7 @@
                       size-md="2"
                       class="ion-hide-sm-down ion-align-self-center"
                     >
-                      <ion-text *ngIf="rolificador.isAdmin(userLogged)"
+                      <ion-text *ngIf="m.user != null && rolificador.isAdmin(userLogged)"
                         >{{ getRoleType(m.user.role_id) }}</ion-text
                       >
                     </ion-col>
@@ -218,7 +218,7 @@
                       class="ion-align-self-center ion-hide-sm-down"
                     >
                       <ion-buttons *ngIf="rolificador.esDelegado(userLogged)  || rolificador.isAdmin(userLogged)">
-                        <ion-button [routerLink]="['editar/' + m.user.id]">
+                        <ion-button [routerLink]="['editar/' + getUserId(m.user)]">
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
                         <ion-button (click)="deleteUsuario(m)">
