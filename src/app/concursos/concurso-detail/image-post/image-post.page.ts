@@ -67,7 +67,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
   get code(): string {
     // return `${(this.concurso ?? '').replace(/ /g, '_').toLowerCase().normalize()}-c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-`
-    return `${this.concurso_id}-c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-`
+    return `Co${this.concurso_id}Ca${this.categoryId ?? ''}S${this.section_id ?? ''}-`
     // return `#c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-${(this.image.title ?? '').replace(/ /g, '_').toLowerCase().normalize()}`
   }
 

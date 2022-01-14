@@ -33,75 +33,7 @@
           >
             <!-- [filterCallback]="funcionesFiltrado['role']" -->
           </app-search-select>
-
-          <!-- <ion-list>
-            <ion-radio-group value="biff">
-              <ion-list-header>
-                <ion-label>Filtrar por:</ion-label>
-              </ion-list-header>
-
-              <ion-item>
-                <ion-label>Nombre</ion-label>
-                <ion-radio slot="start" value="nombre"></ion-radio>
-              </ion-item>
-
-              <ion-item>
-                <ion-label>Username</ion-label>
-                <ion-radio slot="start" value="codigo"></ion-radio>
-              </ion-item>
-
-              <ion-item>
-                <ion-label>DNI</ion-label>
-                <ion-radio slot="start" value="concursante"></ion-radio>
-              </ion-item>
-              <ion-item>
-                <ion-label>email</ion-label>
-                <ion-radio slot="start" value="concursante"></ion-radio>
-              </ion-item>
-              <ion-item>
-                <ion-label>Fotoclub/Agrupación</ion-label>
-                <ion-radio slot="start" value="fotoclub"></ion-radio>
-              </ion-item>
-            </ion-radio-group>
-          </ion-list> -->
-
           <ion-col>
-            <!-- opcion 1 -->
-            <!--   <ion-list>
-            <ion-list-header>
-              <ion-label>Premio:</ion-label>
-            </ion-list-header>
-            <ion-button fill="clear" href="#">Reprobado</ion-button>
-            <ion-button fill="clear" href="#">Aprobado</ion-button>
-            <ion-button fill="clear" href="#">Mención</ion-button>
-            <ion-button fill="clear" href="#">Medalla</ion-button>
-            <ion-button fill="clear" href="#">1° Premio</ion-button>
-          </ion-list> -->
-
-            <!-- opcion 2 -->
-            <!-- <ion-list>
-              <ion-list-header>
-                <ion-label>Rol:</ion-label>
-              </ion-list-header>
-              <ion-item
-                ><ion-button fill="clear" href="#"
-                  >Administrador</ion-button
-                ></ion-item
-              >
-              <ion-item
-                ><ion-button fill="clear" href="#"
-                  >Concursante</ion-button
-                ></ion-item
-              >
-              <ion-item>
-                <ion-button fill="clear" href="#">Jurado</ion-button></ion-item
-              >
-              <ion-item>
-                <ion-button fill="clear" href="#"
-                  >Delegado</ion-button
-                ></ion-item
-              >
-            </ion-list> -->
           </ion-col>
         </ion-col>
       </ion-col>
@@ -137,7 +69,7 @@
                     [atributos]="['username', 'email']"
                   ></app-search-bar> -->
 
-                  <!-- <app-search-bar 
+                  <!-- <app-search-bar
                   [(data)]="miembros"
                   [atributosObj]="atributosBusqueda"
                   ></app-search-bar> -->
@@ -221,7 +153,7 @@
             <!-- <div *ngIf="(miembros | async) as miembros; else spinner"> -->
             <ion-list *ngIf="miembros.length > 0; else texto">
               <ion-item *ngFor="let m of miembros">
-                <ion-grid>
+                <ion-grid *ngIf="m != undefined || m != null">
                   <ion-row size="12">
                     <ion-col size="12" size-md="7" size-sm="5.5">
                       <ion-row
@@ -235,7 +167,7 @@
                         </ion-col>
                         <ion-col size="8" size-sm="10.7">
                           <ion-label class="ion-margin-start">
-                            <ion-card-subtitle title="Username"
+                            <ion-card-subtitle title="Username" *ngIf="m.user != null"
                               ><i>@{{m.user.username}}</i></ion-card-subtitle
                             >
                             <ion-text title="Nombre">
@@ -267,7 +199,7 @@
                       size-md="2"
                       class="ion-hide-sm-down ion-align-self-center"
                     >
-                      <ion-text *ngIf="rolificador.isAdmin(userLogged)"
+                      <ion-text *ngIf="m.user != null && rolificador.isAdmin(userLogged)"
                         >{{ getRoleType(m.user.role_id) }}</ion-text
                       >
                     </ion-col>
@@ -286,7 +218,7 @@
                       class="ion-align-self-center ion-hide-sm-down"
                     >
                       <ion-buttons *ngIf="rolificador.esDelegado(userLogged)  || rolificador.isAdmin(userLogged)">
-                        <ion-button [routerLink]="['editar/' + m.user.id]">
+                        <ion-button [routerLink]="['editar/' + getUserId(m.user)]">
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
                         <ion-button (click)="deleteUsuario(m)">

@@ -45,6 +45,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public img_url: string = '';
   public rules_file: File;
   public rules_url: SafeResourceUrl;
+  public cont: number = 0;
   
   noImg: boolean = false;
 
@@ -172,7 +173,19 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     return '/concursos' + (c.id != null ? `/${c.id}` : '')
   }
 
+  get catI(): boolean {
+    return this.categoriasInscriptas.length > 0
+  }
+
+  get secI(): boolean {
+    return this.seccionesInscriptas.length > 0
+  }
+
   async postConcurso(f: NgForm) {
+    if (this.cont < 1) {
+      this.cont++
+    console.log("categories and section:" , (this.catI) ,(this.secI ))
+    // if (f.valid && (this.catI) && (this.secI) ) {
     if (f.valid) {
       const model = {
         ...f.value,
@@ -194,7 +207,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
 
           // check y post categorias inscriptas
 
-          console.log(this.categoriasSeleccionadas, this.categoriasInscriptas)
+          console.log("categorias seleccionadas/ inscriptas: ", this.categoriasSeleccionadas, this.categoriasInscriptas)
 
           const inscripcionesCategorias: Promise<ContestCategory>[] = []
           const desinscripcionesCategorias: Promise<boolean>[] = []
@@ -271,6 +284,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     else {
       console.log('Form concurso no valido:', f.value);
     }
+  }
   }
 
   get categoriasNoInscriptas(): Category[] {
