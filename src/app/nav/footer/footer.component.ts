@@ -28,17 +28,9 @@ export class FooterComponent extends ApiConsumer implements OnInit {
       super(alertCtrl)
     }
   async ngOnInit() {
-    
-//auth.user | async as u
-//rolificador.isAdmin(u)
-
-//la buena manera :'(
-    // this.usrr = this.rolificador.isAdmin(await this.auth.user);
-    // console.log("is admin: ", this.usrr);
-
-    super.fetch<Footer>(() => this.footerService.get(1)).subscribe(f => {
+      super.fetch<Footer>(() => this.footerService.get(1)).subscribe(f => {
       this.footer = f
-      console.log('foot', f);
+      // console.log('foot', f);
     })
   }
 

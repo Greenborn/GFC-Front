@@ -5,6 +5,7 @@ import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { User, UserLogged } from 'src/app/models/user.model';
+import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestResultService } from 'src/app/services/contest-result.service';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { ProfileService } from 'src/app/services/profile.service';
@@ -21,7 +22,8 @@ export class RolificadorService {
     private userService: UserService,
     private profileService: ProfileService,
     private contestResultService: ContestResultService,
-    private profileContestService: ProfileContestService
+    private profileContestService: ProfileContestService,
+    private  config: ConfigService,
   ) { }
 
 
@@ -65,6 +67,10 @@ export class RolificadorService {
         return profiles.filter(p => p.id == u.profile_id ? false : (this.isAdmin(u) ? true : p.user.role_id == 3))
       })
     )
+  }
+  getMiembro(u: UserLogged, n: number): Observable<ProfileExpanded> {
+    return this.profileService.get<ProfileExpanded>(n, `expand=user,fotoclub,user.role`)
+    // return this.profileService.getAll<ProfileExpanded>(`${this.config.apiUrl('profile')}/${n}/expand=user` + (!this.isAdmin(u) ? `&filter[fotoclub_id]=${u.profile.fotoclub_id}` : '')).pipe(
   }
 
   getConcursantes(u: UserLogged): Observable<ProfileExpanded[]> {
