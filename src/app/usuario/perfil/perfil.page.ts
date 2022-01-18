@@ -58,13 +58,13 @@ export class PerfilPage extends ApiConsumer implements OnInit {
   }
 
   get fotoclub() {
-    if (this.isActive) {
+    if (this.isActive && this.miembro.fotoclub != null) {
       return this.miembro.fotoclub.name != undefined &&
         (this.miembro.user.role_id == 3 || this.miembro.user.role_id == 2)
         ? this.miembro.fotoclub.name
         : "Ninguna";
     }
-    return null;
+    return "Ninguna";
   }
 
   get username() {
