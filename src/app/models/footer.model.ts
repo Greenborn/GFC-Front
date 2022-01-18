@@ -1,6 +1,7 @@
 export interface Footer {
     id?: number;
-    address: string;
-    phone: string;
+    facebook: string;
+    instagram: string;
+    youtube: string;
     email: string;
 }

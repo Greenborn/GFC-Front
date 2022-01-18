@@ -22,9 +22,9 @@
             <ion-col>
               <ion-row class="ion-padding-top">
                 <ion-item class="w-100 ion-margin-bottom">
-                  <ion-label position="floating">Dirección</ion-label>
+                  <ion-label position="floating"><ion-icon name="logo-facebook"></ion-icon> Facebook</ion-label>
                   <ion-input
-                  [(ngModel)]="footer.address"
+                  [(ngModel)]="footer.facebook"
                     autocapitalize="sentences"
                     ngDefaultControl
                   ></ion-input>
@@ -33,7 +33,7 @@
               </ion-row>
               <ion-row class="ion-padding-top">
                 <ion-item class="w-100 ion-margin-bottom">
-                  <ion-label position="floating">E-mail</ion-label>
+                  <ion-label position="floating"><ion-icon name="mail"></ion-icon> E-mail</ion-label>
                   <ion-input
                   [(ngModel)]="footer.email"
                   type="email"
@@ -44,9 +44,20 @@
               </ion-row>
               <ion-row class="ion-padding-top">
                 <ion-item class="w-100 ion-margin-bottom">
-                  <ion-label position="floating">Teléfono</ion-label>
+                  <ion-label position="floating"><ion-icon name="logo-instagram"></ion-icon> Instagram</ion-label>
                   <ion-input
-                  [(ngModel)]="footer.phone"
+                  [(ngModel)]="footer.instagram"
+                    type="tel"
+                    ngDefaultControl
+                  ></ion-input>
+                </ion-item>
+                
+              </ion-row>
+              <ion-row class="ion-padding-top">
+                <ion-item class="w-100 ion-margin-bottom">
+                  <ion-label position="floating"><ion-icon name="logo-youtube"></ion-icon> Youtube</ion-label>
+                  <ion-input
+                  [(ngModel)]="footer.youtube"
                     type="tel"
                     ngDefaultControl
                   ></ion-input>
