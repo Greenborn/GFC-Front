@@ -118,6 +118,12 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       dataPromises.push(
         new Promise(resolve => super.fetch<Role[]>(() => this.roleService.getAll()).subscribe(r => {
           this.roles = r
+          this.roles = this.roles.filter(function(rol) {
+            return rol.type !== 'Administrador'; 
+        });
+        this.roles = this.roles.filter(function(rol) {
+          return rol.id !== 1; 
+      });
           resolve(true)
         }))
       )
