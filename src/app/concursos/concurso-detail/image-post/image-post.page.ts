@@ -42,6 +42,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   @ViewChild('profileSelect') profileSelect: IonicSelectableComponent;
   public file: File;
   public imageData: string = '';
+  public cont: number = 0;
 
   // public profiles: Profile[];
   public posting: boolean = false; 
@@ -96,6 +97,8 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   async postImage() {
+    if (this.cont < 1) {
+      this.cont++
     if (this.datosCargados()) {
       
       if(this.profiles_list.length != 1) {
@@ -149,6 +152,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
         // this.dismiss(id)
       // }
     }
+  }
   }
 
   datosCargados() {
