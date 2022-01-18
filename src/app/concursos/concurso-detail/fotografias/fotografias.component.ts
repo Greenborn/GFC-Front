@@ -42,7 +42,8 @@ export class FotografiasComponent implements OnInit {
   resultadosConcurso: ContestResultExpanded[] = [];
   resultadosConcursoOrig: ContestResultExpanded[] = [];
   fotoclubs: Fotoclub[] = [];
-  user: UserLogged
+  user: UserLogged;
+  public cont: number = 0;
 
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
@@ -238,12 +239,14 @@ export class FotografiasComponent implements OnInit {
   }
 
   openImage(image: Image) {
-
+    if (this.cont < 1) {
+      this.cont++
     // const url = this.router.serializeUrl(
     //   this.router.createUrlTree([`${this.configService.apiUrl(image.url)}`])
     // );
     this.UIUtilsService.mostrarModal(VerFotografiasComponent, {image});
     // window.open(this.configService.apiUrl(image.url), '_blank');
+    }
   }
 
   async mostrarAcciones(ev: any, r: ContestResultExpanded) {
