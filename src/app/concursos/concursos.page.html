@@ -165,7 +165,7 @@
               <!-- [style.background-image]="url('configService.apiUrl(c.img_url)')" -->
               <ion-card
                 *ngFor="let c of concursos; index as i"
-                [ngStyle]="responsiveService.isDesktop ? {'background-image': 'url(' + configService.apiUrl(c.img_url) + ')', 'background-size' : '100% auto'} : {'background-image': 'url(' + configService.apiUrl(c.img_url) + ')', 'background-size' : 'auto 100%'}"
+                [ngStyle]="responsiveService.isDesktop ? {'background-image': 'url(' + getImg(c.img_url) + ')', 'background-size' : '100% auto'} : {'background-image': 'url(' + getImg(c.img_url) + ')', 'background-size' : 'auto 100%'}"
               >
                 <div class="w-100 h-100 capa-opacidad">
                   <!-- <ion-row *ngIf="i%2 == 0 || !responsiveService.isDesktop; else isSecondary"> -->

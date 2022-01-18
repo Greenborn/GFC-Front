@@ -37,7 +37,7 @@
                   <!-- <ion-row> -->
 
                     <!-- <ion-thumbnail> -->
-                      <app-usuario-img [src]="configService.apiUrl(u.profile.img_url)"></app-usuario-img>
+                      <app-usuario-img [src]="u.profile.img_url != null ? configService.apiUrl(u.profile.img_url) : ''"></app-usuario-img>
                     <!-- </ion-thumbnail> -->
                   <!-- </ion-row> -->
                 </ion-col>

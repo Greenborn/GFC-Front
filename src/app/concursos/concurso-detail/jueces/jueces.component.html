@@ -157,7 +157,7 @@
                           >
                             <!-- user card -->
                             <ion-col size="3" size-sm="1.3">
-                              <app-usuario-img [src]="configService.apiUrl(m.profile.img_url)"></app-usuario-img>
+                              <app-usuario-img [src]="m.profile.img_url != null ? configService.apiUrl(m.profile.img_url) : ''"></app-usuario-img>
                             </ion-col>
                             <ion-col size="8" size-sm="8.2">
                               <ion-label class="ion-margin-start">

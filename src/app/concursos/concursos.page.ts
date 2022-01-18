@@ -54,6 +54,17 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     // super('concursos page', alertController)
     super(alertController)
   }
+
+  getImg(imgUrl) {
+    if (imgUrl == null){
+      return ''
+    }
+   let result = this.configService.apiUrl(imgUrl)
+   if (result == null){
+     return ''
+   }
+   return result
+  }
     
   obtenerTamanio(event){
     // console.log(event.srcElement.offsetWidth)

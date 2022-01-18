@@ -117,9 +117,14 @@ export class PerfilPage extends ApiConsumer implements OnInit {
   async privilegies() {
     let usuario = this.authService.user;
     let myFotoclub = (await usuario).profile.fotoclub_id;
-    if (this.rolificador.esDelegado(await usuario)) {
-      return myFotoclub == this.miembro.fotoclub_id
+    if ((await usuario).id == this.miembro.user.id) {
+        return true
+    } else {
+
+      if (this.rolificador.esDelegado(await usuario)) {
+        return myFotoclub == this.miembro.fotoclub_id
+      }
+      return ( this.rolificador.isAdmin(await usuario) )
     }
-    return ( this.rolificador.isAdmin(await usuario) )
   }
 }
