@@ -53,10 +53,10 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
     // const data = await this.UIUtilsService.mostrarModal(SeccionPostComponent, componentProps)
     // if (data != undefined) {
       // const { s } = data
-    const { s} = await this.UIUtilsService.mostrarModal(MetricasPostComponent, componentProps)
+    const { metric: s} = await this.UIUtilsService.mostrarModal(MetricasPostComponent, componentProps)
     console.log('received', s)
     if (s) {
-      const i = this.metricas.findIndex(s)
+      const i = this.metricas.findIndex(s1 => s1.id == s.id)
       if (i > -1) {
         this.metricas[i] = s
       } else {
