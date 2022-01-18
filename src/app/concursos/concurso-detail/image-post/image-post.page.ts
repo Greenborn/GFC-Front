@@ -160,6 +160,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     return this.image.title !=  undefined 
         && this.image.profile_id != undefined
         && this.section_id != undefined
+        && this.imgSource.split('/').pop() != 'undefined'
   }
   
   dismiss(image: GFC_Image = undefined, section_id: number) {
