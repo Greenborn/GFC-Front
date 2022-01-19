@@ -238,19 +238,25 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
           text: 'Confirmar',
           handler: async () => {
             // super.fetch<void>(() => this.userService.delete(id)).subscribe(_ => this.ionViewWillEnter())
-            super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(
-              _ => {
+            //ya que por DB se borra en cascada, no necesita borrar el perfil
+            // super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(
+            //   _ => {
                 super.fetch<void>(() => this.userService.delete(p.user.id)).subscribe(_ => {
                   this.miembros.splice(
                     this.miembros.findIndex(m => m.id == p.id),
                     1
                   )
-                })
-              },
-              async err => {
-                this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
-              }
-            )
+                },
+                async err => {
+                  this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+                }
+                
+                )
+            //   },
+            //   async err => {
+            //     this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+            //   }
+            // )
             // super.displayAlert('.')
             // console.log('delete usuario', id)
           }
