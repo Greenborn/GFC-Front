@@ -10,6 +10,7 @@ export interface User {
     profile_id: number;
     email?: string;
     passwordRepeat?: string;
+    role?: Role;
 }
 export interface UserLogged extends User {
     profile: ProfileExpanded,

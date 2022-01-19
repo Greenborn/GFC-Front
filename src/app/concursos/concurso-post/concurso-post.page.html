@@ -388,7 +388,7 @@
                 <!-- [disabled]="!f.valid && ( (this.catI) == false  || (this.secI) == false )" -->
                   <app-btn-post
                     [posting]="posting"
-                    [disabled]="!f.valid"
+                    [disabled]="!f.valid || secycat"
                   ></app-btn-post>
                   <!-- <ion-button
                     expand="block"

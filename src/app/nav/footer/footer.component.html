@@ -10,10 +10,11 @@
       </ion-button>
     </ion-col>
       <ion-col >
-        <ion-row class="ion-justify-content-end ion-align-items-center h-100">
-          <ion-text class="ion-margin-end">Tel: {{footer.phone}}</ion-text>
-          <ion-text class="ion-margin-end">Dirección: {{footer.address}}</ion-text>
-          <ion-text class="ion-margin-end">E-mail: {{footer.email}}</ion-text>
+        <ion-row class="ion-justify-content-center ion-align-items-center h-100">
+          <a [href]="youUrl" target="_blank" class="ion-margin-end"><ion-icon color="light" name="logo-youtube"> youtube</ion-icon></a>
+          <a [href]="instagramUrl" target="_blank" class="ion-margin-end"><ion-icon color="light" name="logo-instagram">Instagram </ion-icon> </a>
+          <a [href]="faceUrl" target="_blank" class="ion-margin-end"><ion-icon color="light" name="logo-facebook">Facebook </ion-icon></a>
+          <a href="mailto:{{mailUrl}}" target="_blank" class="ion-margin-end"><ion-icon color="light" name="mail"> E-mail</ion-icon></a>
         </ion-row>
        
       </ion-col>

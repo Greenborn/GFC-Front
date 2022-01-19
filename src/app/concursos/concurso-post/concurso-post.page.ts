@@ -66,6 +66,15 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     super(alertCtrl)
   }
 
+get secycat(){
+  let cat = this.categoriasSeleccionadas.filter(function(c) {
+    return c.seleccionada !== false}).length; 
+  let sec = this.seccionesSeleccionadas.filter(function(c) {
+    return c.seleccionada !== false}).length; 
+    console.log("cantidades actuales: ", cat, sec)
+  return cat == 0 || sec == 0
+}
+
   async ngOnInit() {
     await this.UIUtilsService.presentLoading();
     this.mostrarCategorias = false
@@ -173,20 +182,11 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     return '/concursos' + (c.id != null ? `/${c.id}` : '')
   }
 
-  get catI(): boolean {
-    return this.categoriasInscriptas.length > 0
-  }
-
-  get secI(): boolean {
-    return this.seccionesInscriptas.length > 0
-  }
-
   async postConcurso(f: NgForm) {
     if (this.cont < 1) {
       this.cont++
-    console.log("categories and section:" , (this.catI) ,(this.secI ))
-    // if (f.valid && (this.catI) && (this.secI) ) {
-    if (f.valid) {
+    if (f.valid && !this.secycat) {
+      console.log("secycat: ", this.secycat)
       const model = {
         ...f.value,
         start_date: this.contestService.formatearFechaParaBD(f.value.start_date),
@@ -232,7 +232,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
 
           const inscripcionesSecciones: Promise<ContestCategory>[] = []
           const desinscripcionesSecciones: Promise<boolean>[] = []
-
+          console.log("secciones seleccionadas/ inscriptas: ", this.seccionesSeleccionadas, this.seccionesInscriptas)
           for (let c of this.seccionesSeleccionadas) {
             let cc = this.seccionesInscriptas.find(c1 => c1.section_id == c.id)
             if (c.seleccionada) {

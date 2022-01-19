@@ -17,8 +17,9 @@ export class FooterService extends ApiService<Footer>{
      get template(): Footer {
       return {
         id: undefined,
-        address: undefined,
-        phone: undefined,
+        facebook: undefined,
+        instagram: undefined,
+        youtube: undefined,
         email: undefined
       }
     }

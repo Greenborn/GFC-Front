@@ -14,8 +14,9 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
   
   @Input() modalController: ModalController;
   @Input() footer: Footer = this.footerService.template;
-  public address: string;
-  public phone: string;
+  public facebook: string;
+  public instagram: string;
+  public youtube: string;
   public email:string;
   private cont: number = 0;
   public posting: boolean = false; 
@@ -32,8 +33,9 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
     if (this.footer === undefined) {
       // this.footer = this.footerService.template
     } else {
-      this.address = this.footer.address
-      this.phone = this.footer.phone
+      this.facebook = this.footer.facebook
+      this.instagram = this.footer.instagram
+      this.youtube = this.footer.youtube
       this.email = this.footer.email
     }
   }
@@ -46,8 +48,9 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
         this.posting = true
        // let i: Footer;//footer
         const model: Footer = {
-          address: this.footer.address,
-          phone: this.footer.phone,
+          facebook: this.footer.facebook,
+          instagram: this.footer.instagram,
+          youtube: this.footer.youtube,
           email: this.footer.email
         }
         console.log('posting', model)
@@ -81,8 +84,9 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
   }
   datosCargados() {
     //return this.image.code !=  undefined 
-    return this.footer.address !=  undefined 
-        && this.footer.phone != undefined
+    return this.footer.facebook !=  undefined 
+        && this.footer.instagram != undefined
+        && this.footer.youtube != undefined
         && this.footer.email != undefined
   }
 

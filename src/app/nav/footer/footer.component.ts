@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Footer } from 'src/app/models/footer.model';
@@ -16,7 +17,7 @@ import { FooterPostComponent } from './footer-post/footer-post.component';
 })
 export class FooterComponent extends ApiConsumer implements OnInit {
  usrr:boolean =false;
- footer: Footer =  this.footerService.template;;
+ footer: Footer =  this.footerService.template;
 
   constructor( 
     public rolificador: RolificadorService,  
@@ -24,22 +25,31 @@ export class FooterComponent extends ApiConsumer implements OnInit {
     private UIUtilsService: UiUtilsService,
     alertCtrl: AlertController,
     private footerService: FooterService,
+    private sanitizer: DomSanitizer
     ) { 
       super(alertCtrl)
     }
   async ngOnInit() {
-    
-//auth.user | async as u
-//rolificador.isAdmin(u)
-
-//la buena manera :'(
-    // this.usrr = this.rolificador.isAdmin(await this.auth.user);
-    // console.log("is admin: ", this.usrr);
-
-    super.fetch<Footer>(() => this.footerService.get(1)).subscribe(f => {
+      super.fetch<Footer>(() => this.footerService.get(1)).subscribe(f => {
       this.footer = f
-      console.log('foot', f);
+      // console.log('foot', f);
     })
+  }
+
+  get faceUrl(){
+    return this.sanitizer.bypassSecurityTrustUrl(this.footer.facebook);
+  }
+
+  get instagramUrl(){
+    return this.sanitizer.bypassSecurityTrustUrl(this.footer.instagram);
+  }
+
+  get youUrl(){
+    return this.sanitizer.bypassSecurityTrustUrl(this.footer.youtube);
+  }
+
+  get mailUrl(){
+    return this.sanitizer.bypassSecurityTrustUrl(this.footer.email);
   }
 
  async editar(e){
