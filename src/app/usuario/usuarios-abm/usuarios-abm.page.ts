@@ -245,7 +245,8 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
                   this.miembros.splice(
                     this.miembros.findIndex(m => m.id == p.id),
                     1
-                  )
+                    )
+                    super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(r => {})
                 },
                 async err => {
                   this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
