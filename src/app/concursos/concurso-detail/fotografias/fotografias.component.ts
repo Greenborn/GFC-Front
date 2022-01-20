@@ -44,6 +44,7 @@ export class FotografiasComponent implements OnInit {
   fotoclubs: Fotoclub[] = [];
   user: UserLogged;
   public cont: number = 0;
+  public cont2: number = 0;
 
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
@@ -229,6 +230,8 @@ export class FotografiasComponent implements OnInit {
 
   postImage(image: Image = undefined, section_id: number = undefined) {
     console.log('posting new img')
+    if (this.cont2 < 1) {
+      this.cont2++
     if (section_id == undefined) {
       section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
     }
@@ -236,6 +239,7 @@ export class FotografiasComponent implements OnInit {
       image,
       section_id
     })
+  }
   }
 
   openImage(image: Image) {

@@ -20,7 +20,12 @@ export class FotoclubService extends ApiService<Fotoclub> {
    get template(): Fotoclub {
     return {
       id: undefined,
-      name: undefined
+      name: undefined,
+      description: undefined,
+      facebook: undefined,
+      instagram: undefined,
+      email: undefined,
+      photo_url: undefined,
     }
   }
 }

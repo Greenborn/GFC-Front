@@ -198,17 +198,12 @@ get secycat(){
       if (this.rules_file != undefined) {
         model.rules_file = this.rules_file
       }
-      console.log('posting concurso', model, this.concurso.id)
       this.posting = true
       super.fetch<any>(() =>
         this.contestService.postFormData<any>(model, this.concurso.id)
       ).subscribe(
         async contest => {
-
           // check y post categorias inscriptas
-
-          console.log("categorias seleccionadas/ inscriptas: ", this.categoriasSeleccionadas, this.categoriasInscriptas)
-
           const inscripcionesCategorias: Promise<ContestCategory>[] = []
           const desinscripcionesCategorias: Promise<boolean>[] = []
 
@@ -232,7 +227,6 @@ get secycat(){
 
           const inscripcionesSecciones: Promise<ContestCategory>[] = []
           const desinscripcionesSecciones: Promise<boolean>[] = []
-          console.log("secciones seleccionadas/ inscriptas: ", this.seccionesSeleccionadas, this.seccionesInscriptas)
           for (let c of this.seccionesSeleccionadas) {
             let cc = this.seccionesInscriptas.find(c1 => c1.section_id == c.id)
             if (c.seleccionada) {

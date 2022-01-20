@@ -19,19 +19,94 @@
   </ion-header>
 
   <div slot="start" class="w-100 inner-content ion-float-md-start">
+    <form
+    #f="ngForm"
+    (ngSubmit)="postFotoclub(f)"
+    >
     <ion-grid>
       <ion-row class="ion-justify-content-center ion-align-self-center">
         <ion-col>
           <ion-row>
             <ion-col>
 
-              <ion-item class="w-100 ion-margin-bottom" *ngIf="fotoclub != undefined">
-                <ion-label position="floating">Nombre</ion-label>
-                <ion-input
-                  ngDefaultControl
-                  [(ngModel)]="fotoclub.name"
-                ></ion-input>
-              </ion-item>
+              <ion-row>
+                <ion-item class="w-100 ion-margin-bottom" *ngIf="fotoclub != undefined">
+                  <ion-label position="floating">Nombre</ion-label>
+                  <ion-input
+                    name="name"
+                    ngDefaultControl
+                    [(ngModel)]="fotoclub.name"
+                    autocapitalize="sentences"
+                    required
+                  ></ion-input>
+                </ion-item>
+              </ion-row>
+              <ion-row class="ion-padding-top">
+                <ion-item  class="w-100 ">
+                  <!-- <ion-col> -->
+                  <ion-label position="floating">Descripción</ion-label>
+                  <ion-textarea
+                    (ionFocus)="descrChangeFocus = true"
+                    (ionBlur)="descrChangeFocus = false"
+                    maxlength= "250"
+                    autocapitalize="sentences"
+                    auto-grow="true"
+                    name="description"
+                    [ngModel]="fotoclub.description"
+                  ></ion-textarea>
+                  <!-- </ion-col> -->
+                </ion-item>
+                <ion-note *ngIf="descrChangeFocus">Máximo 250 caracteres</ion-note>
+              </ion-row>
+              <ion-row class="w-100">
+                <ion-col class="ion-no-padding">
+                  <ion-item class="w-100 ion-no-padding ion-margin-bottom">
+                    <ion-label position="stacked">Imágen</ion-label>
+                    <input type="file" (change)="imageUpload($event.target)" />
+                  </ion-item>
+                  <div>
+                      <ion-row *ngIf="img_url != ''" class="ion-justify-content-center">
+    
+                        <ion-img (ionError)="img_url=''" [src]="img_url" alt=""> </ion-img>
+                      </ion-row>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row class="ion-padding-top">
+                <ion-item class="w-100 ion-margin-bottom">
+                  <ion-label position="floating"><ion-icon name="logo-facebook"></ion-icon> Facebook</ion-label>
+                  <ion-input
+                  name="facebook"
+                  [(ngModel)]="fotoclub.facebook"
+                    autocapitalize="sentences"
+                    ngDefaultControl
+                  ></ion-input>
+                </ion-item>
+                
+              </ion-row>
+              <ion-row class="ion-padding-top">
+                <ion-item class="w-100 ion-margin-bottom">
+                  <ion-label position="floating"><ion-icon name="mail"></ion-icon> E-mail</ion-label>
+                  <ion-input
+                  name="email"
+                  [(ngModel)]="fotoclub.email"
+                  type="email"
+                    ngDefaultControl
+                  ></ion-input>
+                </ion-item>
+                
+              </ion-row>
+              <ion-row class="ion-padding-top">
+                <ion-item class="w-100 ion-margin-bottom">
+                  <ion-label position="floating"><ion-icon name="logo-instagram"></ion-icon> Instagram</ion-label>
+                  <ion-input
+                  name="instagram"
+                  [(ngModel)]="fotoclub.instagram"
+                    type="text"
+                    ngDefaultControl
+                  ></ion-input>
+                </ion-item>
+              </ion-row>
 
               <ion-row class="ion-justify-content-end">
                 <ion-col size="12">
@@ -44,8 +119,7 @@
                     >
                       <app-btn-post
                         [posting]="posting"
-                        (post)="postFotoclub()"
-                        [disabled]="!datosCargados()"
+                        [disabled]="!f.valid"
                       ></app-btn-post>
                     </ion-col>
 
@@ -71,5 +145,6 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+  </form>
   </div>
 </div>
