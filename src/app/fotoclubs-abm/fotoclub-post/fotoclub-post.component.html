@@ -62,7 +62,7 @@
                 <ion-col class="ion-no-padding">
                   <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                     <ion-label position="stacked">Imágen</ion-label>
-                    <input type="file" (change)="handleFileInput($event.target.files)" />
+                    <input type="file" (change)="handleFileInput($event.target['files'])" />
                   </ion-item>
                   <div>
                       <ion-row *ngIf="img_url != ''" class="ion-justify-content-center">
