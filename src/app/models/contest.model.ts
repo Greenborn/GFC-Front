@@ -16,6 +16,7 @@ export interface Contest {
     countContestResults?: number;
     sections?: Section[];
     categories?: Category[];
+    sub_title?: string;
 }
 
 export interface ContestExpanded extends Contest {

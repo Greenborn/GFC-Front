@@ -15,6 +15,8 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
     super(alertController);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    
+  }
 
 }

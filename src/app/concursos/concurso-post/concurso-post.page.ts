@@ -198,7 +198,8 @@ get secycat(){
       if (this.rules_file != undefined) {
         model.rules_file = this.rules_file
       }
-      this.posting = true
+      this.posting = true;
+      
       super.fetch<any>(() =>
         this.contestService.postFormData<any>(model, this.concurso.id)
       ).subscribe(
