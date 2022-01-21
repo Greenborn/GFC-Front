@@ -39,6 +39,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
   roles: Role[] = [];
   fotoclubs: Fotoclub[] = [];
+  comisiones: String[] = [];
 
   // usuariosFiltrados: Usuario[] = [];
   searchParams: SearchBarComponentParams;
@@ -92,6 +93,12 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       const n1 = e1.last_name
       const n2 = e2.last_name
 
+      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
+        (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+    }
+    this.funcionesOrdenamiento['executive_rol'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
+      const n1 = e1.executive_rol == null ? '' : e1.executive_rol
+      const n2 = e2.executive_rol == null ? '' : e2.executive_rol
       return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
         (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
     }
