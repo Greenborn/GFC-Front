@@ -41,7 +41,6 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
 
   ngOnInit() {
     this.img_url = this.configService.data.apiBaseUrl + this.fotoclub.photo_url;
-    console.log(this.img_url);
     if (this.fotoclub === undefined) {
       this.fotoclub = this.fotoclubService.template
     } else {
