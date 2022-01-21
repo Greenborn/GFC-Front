@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ModalController, AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
+import { ConfigService } from 'src/app/services/config/config.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
@@ -28,7 +29,8 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
     alertCtrl: AlertController,
     private fotoclubService: FotoclubService,
     public responsiveService: ResponsiveService,
-    public UIUtilsService: UiUtilsService
+    public UIUtilsService: UiUtilsService,
+    private configService: ConfigService
   ) { 
     super(alertCtrl)
   }
@@ -38,10 +40,12 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
   }
 
   ngOnInit() {
+    this.img_url = this.configService.data.apiBaseUrl + this.fotoclub.photo_url;
+    console.log(this.img_url);
     if (this.fotoclub === undefined) {
       this.fotoclub = this.fotoclubService.template
     } else {
-      this.name = this.fotoclub.name
+      this.name = this.fotoclub.name;
     }
   }
 

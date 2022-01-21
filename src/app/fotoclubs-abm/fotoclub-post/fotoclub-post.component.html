@@ -65,7 +65,7 @@
                     <input type="file" (change)="handleFileInput($event.target['files'])" />
                   </ion-item>
                   <div>
-                      <ion-row *ngIf="img_url != ''" class="ion-justify-content-center">
+                      <ion-row class="ion-justify-content-center">
     
                         <ion-img (ionError)="img_url=''" [src]="img_url" alt=""> </ion-img>
                       </ion-row>
