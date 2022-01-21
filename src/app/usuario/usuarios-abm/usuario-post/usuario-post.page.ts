@@ -202,7 +202,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   async postUsuario(f: NgForm) {
-    console.log("datos", this.usuario, this.profile);
     if (this.cont < 1) {
       this.cont++
       if (f.valid) {
@@ -211,6 +210,12 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           if (this.selectFotoclub.value == 0) {
               this.selectFotoclub.value = undefined
             }
+
+          // if (f.value.excecutive == false) {
+          //   this.profile.executive = 0
+          // } else {
+          //   this.profile.executive = 1
+          // }
         }
         //En caso de que se trate de un formulario de registro de usuario
       if (this.isUserSignUp){
@@ -248,6 +253,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       let pm: any = {
         name: f.value.name, 
         last_name: f.value.last_name, 
+        executive: f.value.executive,
+        executive_rol: f.value.executive_rol == undefined ? '' : f.value.executive_rol
         // fotoclub_id: f.value.fotoclub_id
         // fotoclub_id: fotoclub
       }
@@ -256,6 +263,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         pm = {
           name: f.value.name, 
           last_name: f.value.last_name, 
+          executive: f.value.executive,
+          executive_rol: f.value.executive_rol == undefined ? '' : f.value.executive_rol,
           // fotoclub_id: f.value.fotoclub_id
           fotoclub_id: this.selectFotoclub.value
         }

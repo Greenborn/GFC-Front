@@ -21,7 +21,9 @@ export class ProfileService extends ApiService<Profile> {
       id: undefined,
       name: undefined,
       last_name: undefined,
-      fotoclub_id: undefined
+      fotoclub_id: undefined,
+      executive: undefined,
+      executive_rol: undefined
     }
   }
 }

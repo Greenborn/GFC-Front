@@ -15,7 +15,7 @@
             [atributosObj]="atributosBusqueda"
           >
           </app-search-bar>
-
+       
           <!-- [(data)]="miembros" -->
           <app-search-select *ngIf="rolificador.isAdmin(userLogged)"
             title="Fotoclub / Agrupación"
@@ -105,7 +105,7 @@
                 <ion-grid>
                   <ion-col>
                     <ion-row>
-                      <ion-col size="5.5" size-md="7">
+                      <ion-col size="3" size-md="5">
                         <ion-row>
                           <app-th-sort
                             [sortFn]="funcionesOrdenamiento['usuario']"
@@ -116,6 +116,17 @@
                         <!-- <b>{{rolificador.getNombreUsuarios(userLogged.role_id)}}</b> -->
                       </ion-col>
                       <!-- <ion-col size="2">Email</ion-col> -->
+                      <ion-col size="2.5" size-md="2">
+                        <app-th-sort
+                          *ngIf="rolificador.isAdmin(userLogged)"
+                          [sortFn]="funcionesOrdenamiento['executive_rol']"
+                          [(data)]="miembros"
+                          title="Comisión directiva"
+                        ></app-th-sort>
+                        <!-- <ion-text *ngIf="rolificador.isAdmin(userLogged)">
+                          <b>Rol</b>
+                        </ion-text> -->
+                      </ion-col>
                       <ion-col size="2.5" size-md="2">
                         <app-th-sort
                           *ngIf="rolificador.isAdmin(userLogged)"
@@ -155,7 +166,7 @@
               <ion-item *ngFor="let m of miembros">
                 <ion-grid *ngIf="m != undefined || m != null">
                   <ion-row size="12">
-                    <ion-col size="12" size-md="7" size-sm="5.5">
+                    <ion-col size="12" size-md="5" size-sm="3">
                       <ion-row
                         class="
                           ion-align-items-center ion-justify-content-between
@@ -194,6 +205,16 @@
                         </ion-col>
                       </ion-row>
                     </ion-col>
+
+                    <ion-col
+                    size="2.5"
+                    size-md="2"
+                    class="ion-hide-sm-down ion-align-self-center"
+                  >
+                    <ion-text *ngIf="m.user != null && rolificador.isAdmin(userLogged)"
+                      >{{ m.executive_rol != null ? m.executive_rol : 'No' }}</ion-text
+                    >
+                  </ion-col>
                     <ion-col
                       size="2.5"
                       size-md="2"
@@ -209,7 +230,7 @@
                       class="ion-hide-sm-down ion-align-self-center"
                     >
                       <ion-text *ngIf="rolificador.isAdmin(userLogged)"
-                        >{{ getFotoclubName(m.fotoclub_id) }}</ion-text
+                        >{{ m.fotoclub_id != null ?  getFotoclubName(m.fotoclub_id) : 'Ninguno'}}</ion-text
                       >
                     </ion-col>
                     <ion-col
