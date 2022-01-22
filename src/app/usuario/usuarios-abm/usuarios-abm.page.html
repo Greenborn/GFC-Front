@@ -212,7 +212,7 @@
                     class="ion-hide-sm-down ion-align-self-center"
                   >
                     <ion-text *ngIf="m.user != null && rolificador.isAdmin(userLogged)"
-                      >{{ m.executive_rol != null ? m.executive_rol : 'No' }}</ion-text
+                      >{{ m.executive_rol != null && m.executive_rol != '' ? m.executive_rol : 'No' }}</ion-text
                     >
                   </ion-col>
                     <ion-col

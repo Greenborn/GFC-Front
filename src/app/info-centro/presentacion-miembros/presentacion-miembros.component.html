@@ -3,7 +3,7 @@
     <ion-row class="ion-justify-content-center" >
       <ion-col size="10">
         <ion-row>
-          <ion-col><h2>Miembros</h2></ion-col>
+          <ion-col><h2 class="colorTarget">Miembros</h2></ion-col>
         </ion-row>
 
         <ion-row >
@@ -19,17 +19,17 @@
 
                   <ion-col>
                     <ion-row>
-                        <h3>
+                        <h3 class="colorTarget">
                           {{s.name}}
                         </h3>
                       </ion-row>
                       <ion-row>
-                        <ion-text class="ion-text-justify">{{s.description}}</ion-text>
+                        <ion-text [color]="aspecto == false ? 'dark' : 'light'"  class="ion-text-justify">{{s.description}}</ion-text>
                     </ion-row>
                     <ion-row class="ion-justify-content-start ion-align-items-start ion-margin-top">
-                      <a *ngIf="instagramUrl(s.instagram) != null" [href]="instagramUrl(s.instagram)" target="_blank" class="ion-margin-end"><ion-icon color="dark" name="logo-instagram">Instagram </ion-icon> </a>
-                      <a *ngIf="faceUrl(s.facebook) != null" [href]="faceUrl(s.facebook)" target="_blank" class="ion-margin-end"><ion-icon color="dark" name="logo-facebook">Facebook </ion-icon></a>
-                      <a *ngIf="mailUrl(s.email) != null" href="mailto:{{mailUrl(s.email)}}" target="_blank" class="ion-margin-end"><ion-icon color="dark" name="mail"> E-mail</ion-icon></a>
+                      <a *ngIf="instagramUrl(s.instagram) != null" [href]="instagramUrl(s.instagram)" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'dark' : 'light'"  name="logo-instagram">Instagram </ion-icon> </a>
+                      <a *ngIf="faceUrl(s.facebook) != null" [href]="faceUrl(s.facebook)" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'dark' : 'light'"  name="logo-facebook">Facebook </ion-icon></a>
+                      <a *ngIf="mailUrl(s.email) != null" href="mailto:{{mailUrl(s.email)}}" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'dark' : 'light'"  name="mail"> E-mail</ion-icon></a>
                     </ion-row>
                   </ion-col>
 

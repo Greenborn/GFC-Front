@@ -94,28 +94,30 @@
                     </ion-select>
               </ion-item>
 
-              <ion-item class="expand-full">
-                <ion-label> Es miembro de la comisión directiva</ion-label>
-                <ion-checkbox 
-                slot="start"
-                color="primary"
-                name="executive"
-                [ngModel]="profile.executive"
-                >
-                </ion-checkbox>
-              </ion-item>
-
-              <ion-item
-              *ngIf="f.value.executive == true "
-              class="expand-full">
-                <ion-label position="floating">Rol en la comisión</ion-label>
-                <ion-input
-                  name="executive_rol"
-                  [(ngModel)]="profile.executive_rol"
-                  autocapitalize="words"
-                  required
-                ></ion-input>
-              </ion-item>
+              <div *ngIf="isAdmin">
+                <ion-item class="expand-full">
+                  <ion-label> Es miembro de la comisión directiva</ion-label>
+                  <ion-checkbox 
+                  slot="start"
+                  color="primary"
+                  name="executive"
+                  [ngModel]="profile.executive"
+                  >
+                  </ion-checkbox>
+                </ion-item>
+  
+                <ion-item
+                *ngIf="f.value.executive == true "
+                class="expand-full">
+                  <ion-label position="floating">Rol en la comisión</ion-label>
+                  <ion-input
+                    name="executive_rol"
+                    [(ngModel)]="profile.executive_rol"
+                    autocapitalize="words"
+                    required
+                  ></ion-input>
+                </ion-item>
+              </div>
               
               <ion-item class="expand-full ion-hide-md-up ion-no-padding sinC">
                   <ion-col size="10" size-md="12" >

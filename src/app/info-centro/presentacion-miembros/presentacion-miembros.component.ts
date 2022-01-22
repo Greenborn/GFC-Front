@@ -46,6 +46,10 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
   };
   // perfiles: Profile[] = [];
 
+  get aspecto() {
+    return document.body.classList.contains("dark")
+   }
+   
   faceUrl(f){
     if (f != null && f != '' && f != undefined){
         return this.sanitizer.bypassSecurityTrustUrl(f);

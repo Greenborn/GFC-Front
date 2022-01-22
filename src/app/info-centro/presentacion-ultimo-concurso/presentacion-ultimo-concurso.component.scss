@@ -20,14 +20,3 @@
 .uc-col h2{
     font-weight: bolder;
 }
-
-ion-content.dark {
-    & ion-button#btnInic.btnI {
-    --ion-color-base: var(--ion-color-dark,  #f4f5f8) !important;
-    --ion-color-base-rgb: var(--ion-color-dark-rgb, 244, 245, 248) !important;
-    --ion-color-contrast: var(--ion-color-dark-contrast,#000) !important;
-    --ion-color-contrast-rgb: var(--ion-color-dark-contrast-rgb,  0, 0, 0) !important;
-    --ion-color-shade: var(--ion-color-dark-shade, #d7d8da ) !important;
-    --ion-color-tint: var(--ion-color-dark-tint,  #f5f6f9) !important;
-    }
-}

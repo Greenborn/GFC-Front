@@ -52,6 +52,9 @@ export class FooterComponent extends ApiConsumer implements OnInit {
   get youUrl(){
     return this.sanitizer.bypassSecurityTrustUrl(this.footer.youtube);
   }
+  get aspecto() {
+    return document.body.classList.contains("dark")
+   }
  async editar(e){
    e.preventDefault();
     const { footer } = await this.UIUtilsService.mostrarModal(FooterPostComponent, {footer: {...this.footer}})

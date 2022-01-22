@@ -44,6 +44,10 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
     }
    }
 
+   get aspecto() {
+    return document.body.classList.contains("dark")
+   }
+
   async ngOnInit() {
     await this.UIUtilsService.presentLoading()
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(fs => {

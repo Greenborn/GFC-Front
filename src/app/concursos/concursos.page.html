@@ -190,12 +190,12 @@
                             <app-contest-status-chip
                               [contest]="c"
                             ></app-contest-status-chip>
-                            <ion-card-title class="txtL" color="light"
+                            <ion-card-title [color]="aspecto == false ? 'light' : 'dark'"
                               >{{c.name}}</ion-card-title
                             >
                           </ion-col>
                         </ion-row>
-                        <ion-card-subtitle class="txtL" color="light"
+                        <ion-card-subtitle [color]="aspecto == false ? 'light' : 'dark'" 
                           >Desde {{c.start_date | date:'dd-MM-yyyy' }} Hasta
                           {{c.end_date | date:'dd-MM-yyyy' }}</ion-card-subtitle
                         >
@@ -213,7 +213,7 @@
                         <ion-row class="ion-margin-top">
                           <b>Categorias:</b>
                           <ion-badge
-                            color="dark"
+                          [color]="aspecto == false ? 'dark' : 'light'"
                             class="ion-margin-start"
                             *ngFor="let c of c.categories"
                           >
@@ -223,7 +223,7 @@
                         <ion-row class="ion-margin-bottom">
                           <b>Secciones:</b>
                           <ion-badge
-                            color="dark"
+                          [color]="aspecto == false ? 'dark' : 'light'"
                             class="ion-margin-start"
                             *ngFor="let s of c.sections"
                           >
