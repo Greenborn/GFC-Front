@@ -16,9 +16,10 @@
 
       <ion-row>
         <ion-col>
-          <ion-button color="light" [routerLink]="['/concursos/' + concurso.id]">Ver información</ion-button>
+          <ion-button [color]="aspecto == false ? 'light' : 'dark'" [routerLink]="['/concursos/' + concurso.id]">Ver información</ion-button>
         </ion-col>
       </ion-row>
+      <!-- document.body.classList.remove('dark') -->
 
     </ion-col>
   </ion-row>

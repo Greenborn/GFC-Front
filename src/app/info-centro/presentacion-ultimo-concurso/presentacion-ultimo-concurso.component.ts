@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
@@ -24,6 +24,7 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
 
   public concurso:any;
   public bg_image:string;
+  @ViewChild('btnInic') content: HTMLElement
 
   async ngOnInit() {
     const loading = await this.loadingController.create({ message: '' });
@@ -39,6 +40,10 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
           loading.dismiss();
       }
     );
+  }
+
+  get aspecto() {
+   return document.body.classList.contains("dark")
   }
 
 }

@@ -12,7 +12,7 @@
   <ion-buttons
     slot="secondary"
     class="ion-hide-md-down ion-padding-start"
-    *ngIf="auth.user | async as u"
+    *ngIf="auth.loggedIn && auth.user | async as u"
   >
     <!-- up para PC -->
     <!-- <ion-button [routerLink]="['/']"> Home </ion-button> -->
@@ -31,7 +31,7 @@
     </ion-button>
   </ion-buttons>
   <!-- <ion-buttons slot="secondary" *ngIf="auth.loggedIn; else login"> -->
-  <ion-buttons slot="secondary" *ngIf="auth.loggedIn; else login">
+  <ion-buttons slot="end" *ngIf="auth.loggedIn; else login">
     <!-- <ion-button (click)="mostrarNotificaciones($event)">
       <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
     </ion-button> -->
@@ -39,15 +39,16 @@
       <!-- [routerLink]="['/perfil']"> -->
       <ion-icon slot="icon-only" name="person-circle"></ion-icon>
     </ion-button>
+    
+    <ion-buttons slot="end" class="ion-hide-md-up">
+      <ion-menu-button (click)="openMenu()" autoHide="false"></ion-menu-button>
+    </ion-buttons>
   </ion-buttons>
-
+  
   <ng-template #login>
     <ion-button slot="end" *ngIf="router.url != '/login'" [routerLink]="['/login']"> Ingresar </ion-button>
     <ion-button slot="end" *ngIf="router.url != '/registro'" [routerLink]="['/registro']"> Registrarme </ion-button>
   </ng-template>
 
-  <ion-buttons slot="end" class="ion-hide-md-up">
-    <ion-menu-button (click)="openMenu()" autoHide="false"></ion-menu-button>
-  </ion-buttons>
 </ion-toolbar>
 <!-- </ion-header> -->
