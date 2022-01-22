@@ -9,3 +9,28 @@ ion-img{ max-width: 100% !important; max-height: 50vh !important;  object-fit: c
     background-color: #262626;
     color: #fff;
 }
+
+.alnTxt{
+  text-align: center;
+}
+ion-icon {
+    width: 30% !important;  
+    height : auto !important;  
+    max-width: 30% !important;  //any size
+    max-height: auto !important; //any size 
+    aspect-ratio: 1/1 !important;
+  }
+
+  @supports not (aspect-ratio: 1 / 1) {
+    .element::before {
+      float: left;
+      padding-top: 100%;
+      content: "";
+    }
+  
+    .element::after {
+      display: block;
+      content: "";
+      clear: both;
+    }
+  }

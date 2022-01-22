@@ -1,6 +1,6 @@
 <ion-grid class="uc-grid ion-no-padding" style="background-image: url({{bg_image}});">
   <ion-row class="ultimo-concurso-content ion-align-items-center" >
-    <ion-col class="uc-col" *ngIf="concurso != undefined" size="12" size-sm="6" size-md="3" offset-sm="1">
+    <ion-col class="uc-col ion-padding" *ngIf="concurso != undefined" size="12" size-sm="6" size-md="3" offset-sm="1">
 
       <ion-row>
         <ion-col>{{concurso.sub_title}} | GFC</ion-col>
@@ -16,7 +16,7 @@
 
       <ion-row>
         <ion-col>
-          <ion-button (click)="goToConcurso()">Ver información</ion-button>
+          <ion-button color="light" [routerLink]="['/concursos/' + concurso.id]">Ver información</ion-button>
         </ion-col>
       </ion-row>
 

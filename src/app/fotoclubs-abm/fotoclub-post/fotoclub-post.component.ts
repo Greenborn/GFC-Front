@@ -57,7 +57,7 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
       this.cont++
       if (form.valid) {
         this.posting = true
-        this.fotoclubService.post(this.fotoclub, this.fotoclub.id).subscribe(
+        this.fotoclubService.post(form.value, this.fotoclub.id).subscribe(
          async  fotoclub => {
             this.posting = false
             // this.cont--

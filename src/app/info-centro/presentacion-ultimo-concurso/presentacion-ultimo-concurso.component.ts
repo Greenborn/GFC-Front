@@ -41,8 +41,4 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
     );
   }
 
-  goToConcurso(){
-    this.router.navigate([ '/concursos/{{concurso.id}}/informacion' ]);
-  }
-
 }
