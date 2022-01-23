@@ -58,9 +58,10 @@ export class FotografiasComponent implements OnInit {
       valorMostrado: 'Código', 
       // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
       callback: (c: ContestResultExpanded, query: string) => c.image.code.match(new RegExp(`${query}`, 'i'))
-    }
+    },
   ];
   public filtrado: any[] = [];
+  puntajes: Metric[]= [];
 
   // @Output() openPopup = new EventEmitter<any>();
   // @Output() postImage = new EventEmitter<Image|undefined>();
@@ -82,6 +83,17 @@ export class FotografiasComponent implements OnInit {
     public rolificador: RolificadorService,
     public auth: AuthService,
   ) { 
+    this.filtrado['metric'] = {
+      options: {
+        valueProp: 'score',
+        titleProp: 'prize',
+        queryParam: 'score'
+      },
+      filterCallback: (c: ContestResultExpanded, atributoValue: string) => {
+        return c.metric.score == parseInt(atributoValue)
+      }
+    }
+  
     this.filtrado['perfil'] = {
       options: {
         valueProp: 'id', 
@@ -93,11 +105,24 @@ export class FotografiasComponent implements OnInit {
       }
     }
   }
+  get isContestNotFin() {
+    return this.concurso.active
+  }
   
   isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
     return this.auth.loggedIn;
   }
+
   async ngOnInit() {
+    if (this.rolificador.isAdmin(await this.auth.user) || this.isContestNotFin ) {
+      this.atributosBusqueda.push({ 
+      valor: 'username', 
+      valorMostrado: 'Autor', 
+      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+      callback: (c: ContestResultExpanded, query: string) => `${c.image.profile.name} ${c.image.profile.last_name}`.match(new RegExp(`${query}`, 'i'))
+    })
+  }
+
     this.auth.user.then(u => this.user = u)
     // let loading: HTMLIonLoadingElement;
     if (this.concurso.id == undefined) {
@@ -105,7 +130,6 @@ export class FotografiasComponent implements OnInit {
     }
     
     this.concursoDetailService.concurso.subscribe(c => {
-      console.log('got contest', c)
       this.concurso = c
     })
     this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
@@ -127,17 +151,23 @@ export class FotografiasComponent implements OnInit {
           this.resultadosConcursoOrig = [...rs]
           // this.UIUtilsService.dismissLoading()
           this.route.queryParams.subscribe(params => {
-
-            // console.log('detecting query params change', params)
       
             this.resultadosConcurso = [...this.resultadosConcursoOrig]
       
+            this.resultadosConcurso.forEach( e => {
+              if (e.metric.prize != '0' && e.metric.prize != null && e.metric.prize != undefined && e.metric.prize != '') {
+                if(this.puntajes.find(element => element.score == e.metric.score ) == undefined){
+                  this.puntajes.push(e.metric)
+                }
+              }
+            })
+
             const filterCallbacks: {
               queryValue: string;
               callback: Function;
             }[] = [];
       
-            for (const f of [this.filtrado['perfil']]) {
+            for (const f of [this.filtrado['metric'], this.filtrado['perfil']]) {
               // console.log('analizando filter callback', f)
               if (params[f.options.queryParam] != undefined) {
                 // console.log('agregando filter callback', f.options.queryParam)
@@ -166,7 +196,6 @@ export class FotografiasComponent implements OnInit {
   }
 
   getThumbUrl(obj:any, thumb_id:number = 1){
-    console.log("n", obj)
     //si no tiene miniatura porque no tiene imagen
     if (obj == null) {
       return '';
@@ -177,7 +206,6 @@ export class FotografiasComponent implements OnInit {
     }
     //si se trata de un arreglo
     for(let c=0; c < obj.length; c++){
-      console.log(obj[c]);
       if (obj[c].thumbnail_type == thumb_id){
         return this.configService.apiUrl(obj[c].url);
       }
@@ -229,7 +257,6 @@ export class FotografiasComponent implements OnInit {
   }
 
   postImage(image: Image = undefined, section_id: number = undefined) {
-    console.log('posting new img')
     if (this.cont2 < 1) {
       this.cont2++
     if (section_id == undefined) {
@@ -323,7 +350,17 @@ export class FotografiasComponent implements OnInit {
       (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
   }
 
+  ordenarPorPremio(e1: ContestResultExpanded, e2: ContestResultExpanded, creciente: boolean) {
+    const n1 = e1.metric.score
+    const n2 = e2.metric.score
+    // const n1 = this.inscriptos.find(i => e1.image.profile_id == i.profile_id).profile.last_name ?? ''
+    // const n2 = this.inscriptos.find(i => e2.image.profile_id == i.profile_id).profile.last_name ?? ''
+    
+    return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
+      (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+  }
 
+  
   ionViewWillEnter() {
     // if (this.concurso.id == undefined) {
     //   // console.log('hola')
