@@ -113,6 +113,10 @@ export class FotografiasComponent implements OnInit {
     return this.auth.loggedIn;
   }
 
+   
+  ionViewWillEnter() {
+  }
+
   async ngOnInit() {
     if (this.rolificador.isAdmin(await this.auth.user) || this.isContestNotFin ) {
       this.atributosBusqueda.push({ 
@@ -259,26 +263,26 @@ export class FotografiasComponent implements OnInit {
   postImage(image: Image = undefined, section_id: number = undefined) {
     if (this.cont2 < 1) {
       this.cont2++
-    if (section_id == undefined) {
-      section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
-    }
-    this.concursoDetailService.postImage.emit({
-      image,
-      section_id
-    })
+      if (section_id == undefined) {
+        section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
+      }
+      this.concursoDetailService.postImage.emit({
+        image,
+        section_id
+      })
+      this.cont2 --
   }
   }
 
   openImage(image: Image) {
     if (this.cont < 1) {
       this.cont++
-    // const url = this.router.serializeUrl(
-    //   this.router.createUrlTree([`${this.configService.apiUrl(image.url)}`])
-    // );
     this.UIUtilsService.mostrarModal(VerFotografiasComponent, {image});
-    // window.open(this.configService.apiUrl(image.url), '_blank');
+    this.cont --
     }
   }
+
+  //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
 
   async mostrarAcciones(ev: any, r: ContestResultExpanded) {
     const image = r.image
@@ -331,21 +335,18 @@ export class FotografiasComponent implements OnInit {
     this.concursoDetailService.mostrarAcciones.emit(options)
   }
 
+  //Funciones de ordenamiento para los app-th-sort
+
   ordenarPorAutor(e1: ContestResultExpanded, e2: ContestResultExpanded, creciente: boolean) {
     const n1 = e1.image.profile.last_name
     const n2 = e2.image.profile.last_name
-    // const n1 = this.inscriptos.find(i => e1.image.profile_id == i.profile_id).profile.last_name ?? ''
-    // const n2 = this.inscriptos.find(i => e2.image.profile_id == i.profile_id).profile.last_name ?? ''
-    
     return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
       (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
   }
+
   ordenarPorObra(e1: ContestResultExpanded, e2: ContestResultExpanded, creciente: boolean) {
     const n1 = e1.image.title
     const n2 = e2.image.title
-    // const n1 = this.inscriptos.find(i => e1.image.profile_id == i.profile_id).profile.last_name ?? ''
-    // const n2 = this.inscriptos.find(i => e2.image.profile_id == i.profile_id).profile.last_name ?? ''
-    
     return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
       (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
   }
@@ -353,27 +354,7 @@ export class FotografiasComponent implements OnInit {
   ordenarPorPremio(e1: ContestResultExpanded, e2: ContestResultExpanded, creciente: boolean) {
     const n1 = e1.metric.score
     const n2 = e2.metric.score
-    // const n1 = this.inscriptos.find(i => e1.image.profile_id == i.profile_id).profile.last_name ?? ''
-    // const n2 = this.inscriptos.find(i => e2.image.profile_id == i.profile_id).profile.last_name ?? ''
-    
     return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
       (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
-  }
-
-  
-  ionViewWillEnter() {
-    // if (this.concurso.id == undefined) {
-    //   // console.log('hola')
-    //   if (this.concursoDetailService.concursoObj != undefined) {
-    //     this.concurso = this.concursoDetailService.concursoObj
-    //   } else {
-    //     setTimeout(() => {
-    //       this.concurso = this.concursoDetailService.concursoObj
-    //       // console.log('timeout concurso fetch', this.concurso)
-    //     }, 1000)
-    //   }
-    // } else {
-    //   console.log(this.concurso, this.contestService.template)
-    // }
   }
 }
