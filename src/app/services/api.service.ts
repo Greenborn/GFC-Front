@@ -46,7 +46,9 @@ export abstract class ApiService<T> {
           if (this.fetchAllOnce) {
             this.all = data.items
           }
-          return data.items
+          if (data != null)
+            return data.items;
+          return null;
         })
       )
     }
