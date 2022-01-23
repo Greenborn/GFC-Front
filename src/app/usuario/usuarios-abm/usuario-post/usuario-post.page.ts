@@ -253,8 +253,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       let pm: any = {
         name: f.value.name, 
         last_name: f.value.last_name, 
-        executive: f.value.executive,
-        executive_rol: f.value.executive_rol == undefined ? '' : f.value.executive_rol
+        executive: f.value.executive == undefined || f.value.executive == null ? false : f.value.executive,
+        executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol
         // fotoclub_id: f.value.fotoclub_id
         // fotoclub_id: fotoclub
       }
@@ -263,8 +263,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         pm = {
           name: f.value.name, 
           last_name: f.value.last_name, 
-          executive: f.value.executive,
-          executive_rol: f.value.executive_rol == undefined ? '' : f.value.executive_rol,
+          executive: f.value.executive == undefined || f.value.executive == null ? false : f.value.executive,
+          executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
           // fotoclub_id: f.value.fotoclub_id
           fotoclub_id: this.selectFotoclub.value
         }
