@@ -25,14 +25,11 @@
       <ion-col size="2" class="ion-hide-md-down">
         <app-usuario-img [src]="img_url"></app-usuario-img>
         <ion-input type="file" (change)="fileUpload($event.target)" ></ion-input>
-        <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img>        -->
       </ion-col>
       <ion-col size-sm="12" size-md="9" size-lg="7">
         <ion-row>
           <form class="w-100" #f="ngForm" (ngSubmit)="postUsuario(f)">
-            <!-- <ion-row class="ion-justify-content-center">
-                <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
-              </ion-row> -->
+                       
             <ion-row>
               <h6>Datos del perfil</h6>
             </ion-row>

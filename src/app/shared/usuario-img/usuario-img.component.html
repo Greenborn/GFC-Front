@@ -1,25 +1,9 @@
-<!-- <ion-thumbnail> -->
-<ion-avatar>
 
-    <ion-img
-      #img
-      [src]="src"
-      (ionError)="yepImg = false"
-        *ngIf="src != undefined && yepImg==true; else noImg"
-      [style]="getSize()"
-      ></ion-img>
-      
-      <!-- (ionError)="src = '../../../assets/person-circle-outline.svg'" -->
+<ion-avatar class="img-thumb">
 
-     
-        
-        
-        <!-- (ionImgWillLoad)="yepImg = true" -->
-        <!-- (ionError)="mostrarIcono($event, true)" -->
-        
-        
-        <ng-template #noImg>
-          <ion-icon size="large" name="person-circle-outline"></ion-icon>
-        </ng-template>
-      </ion-avatar>
-    <!-- </ion-thumbnail> -->
+  <div class="cont">
+    <ion-icon *ngIf="src == '' || src == undefined" size="large" name="person-circle-outline"></ion-icon>
+    <span     *ngIf="!(src == '' || src == undefined)"><img src="{{src}}" /></span>
+  </div>
+  
+</ion-avatar>
