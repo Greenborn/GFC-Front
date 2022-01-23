@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import {Location} from '@angular/common';
@@ -19,6 +19,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { CreateUserService } from 'src/app/services/create-user.service';
 import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-usuario-post',
@@ -29,6 +30,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
 
   @ViewChild('sFotoclub') selectFotoclub: HTMLIonSelectElement;
+  @ViewChild('ProfileImageUpload', { read: ElementRef, static:false }) profileImageUpload: ElementRef;
   @ViewChild('sRol') selectRol: HTMLIonSelectElement;
   @ViewChild('f') formUsuario: HTMLFormElement;
 
@@ -51,6 +53,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public img_url: string;
 
   private cont: number = 0;
+  public ImageChangeClick:Subject<any> = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -101,6 +104,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   async ngOnInit() {
+    this.ImageChangeClick.subscribe({  next: ( response: any ) => {
+      this.profileImageUpload.nativeElement.querySelector('input').click();
+    }});
+    
     const dataPromises: Promise<boolean>[] = [];
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
