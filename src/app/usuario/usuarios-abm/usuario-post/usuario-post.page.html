@@ -23,8 +23,8 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="2" class="ion-hide-md-down">
-        <app-usuario-img [src]="img_url"></app-usuario-img>
-        <ion-input type="file" (change)="fileUpload($event.target)" ></ion-input>
+        <app-usuario-img [src]="img_url" [imageChangeEnabled]="true" [imageChangeClick]="ImageChangeClick"></app-usuario-img>
+        <ion-input  style="visibility:hidden;position: fixed;" #ProfileImageUpload type="file" (change)="fileUpload($event.target)" ></ion-input>
       </ion-col>
       <ion-col size-sm="12" size-md="9" size-lg="7">
         <ion-row>

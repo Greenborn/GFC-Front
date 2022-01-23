@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-usuario-img',
@@ -7,16 +8,19 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@
   inputs: ['src']
 })
 export class UsuarioImgComponent implements OnInit {
-// export class UsuarioImgComponent implements OnInit {
 
   @Input() src: string;
-  @ViewChild('img') img: HTMLIonImgElement;
-  public yepImg: boolean = true;
+  @Input() imageChangeClick:Subject<any> = new Subject();
+  @Input() imageChangeEnabled:Boolean = false;
 
   constructor() { }
 
   ngOnInit() {
     
+  }
+
+  imageClick(){
+    this.imageChangeClick.next();
   }
 
  

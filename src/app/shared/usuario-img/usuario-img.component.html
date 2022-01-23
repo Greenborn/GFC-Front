@@ -6,4 +6,7 @@
     <span     *ngIf="!(src == '' || src == undefined)"><img src="{{src}}" /></span>
   </div>
   
+  <label *ngIf="imageChangeEnabled" class="camera-cont">
+    <ion-icon   size="medium" name="camera" (click)="imageClick()"></ion-icon>
+  </label>
 </ion-avatar>
