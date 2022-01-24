@@ -178,12 +178,20 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     this.sectionPos = true;
     this.texto_sec = null;
     let cantSec = 0;
+    let secOrigin = null;
+
     let profile = this.profiles_list.length != 1 ? this.perfil_elegido['id'] : this.image.profile_id
     this.resultados.forEach(e => {
       if (e.image.profile_id == profile && e.section_id == this.section_id){
         cantSec++
       }
+      if(e.image.id == this.image.id ){
+        secOrigin = e.section_id
+      }
     })
+    if (this.formTitle.includes('Editar') == true && secOrigin == this.section_id){
+      cantSec-- //porque siendo edición puede dejar la imagen en la misma sección o en otra
+    }
     //  cantidad actual de fotos en esa seccion + cantidad máx por seccion de concurso 
     if (cantSec >= this.section_max){
       // this.section_id = undefined;
