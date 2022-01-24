@@ -3,6 +3,8 @@ import { NgForm } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { ContestResultExpanded } from 'src/app/models/contest_result.model';
+import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Image as GFC_Image } from 'src/app/models/image.model';
 import { Profile } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
@@ -12,11 +14,14 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { ImageService } from 'src/app/services/image.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { ConcursoDetailService } from '../concurso-detail.service';
 
 export interface ImagePostParams {
   image?: GFC_Image;
   section_id?: number;
   category_id?: number;
+  section_max?: number;
+  resultados?: ContestResultExpanded[];
 }
 
 @Component({
@@ -27,6 +32,8 @@ export interface ImagePostParams {
 export class ImagePostPage extends ApiConsumer implements OnInit {
 
   @Input() concurso: string;
+  @Input() section_max: number;
+  @Input() resultados: ContestResultExpanded[];
   @Input() concurso_id: number;
   @Input() modalController: ModalController;
   // @Input() contestResult: ContestResult;
@@ -45,6 +52,10 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   public cont: number = 0;
   perfil_elegido: Profile = this.ProfileService.template;
   texto_img: string = null;
+  texto_sec: string = null;
+  sectionPos = false;
+  
+  seccionesInscriptas: ContestSectionExpanded[] = [];
 
   // public profiles: Profile[];
   public posting: boolean = false; 
@@ -59,6 +70,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     // private profileService: ProfileService,
     alertCtrl: AlertController,
     public responsiveService: ResponsiveService,
+    public concursoDetailService: ConcursoDetailService,
     public ProfileService: ProfileService,
     private configService: ConfigService
   ) { 
@@ -84,6 +96,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   async ngOnInit() {
+    this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs)
     this.img_url = this.image.url
     // window.onresize = this.actualizarWidth;
     //modificacion datos de concursantes para concatenar nombre y apellido
@@ -148,7 +161,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     //return this.image.code !=  undefined 
     return this.image.title !=  undefined 
         && (this.image.profile_id != undefined || this.perfil_elegido != undefined )
-        && this.section_id != undefined
+        && (this.section_id != undefined && this.sectionPos != false) 
         && this.imgSource.split('/').pop() != 'undefined'
   }
   
@@ -159,6 +172,24 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
       image,
       section_id
     });
+  }
+
+  sectionSelect(){
+    this.sectionPos = true;
+    this.texto_sec = null;
+    let cantSec = 0;
+    let profile = this.profiles_list.length != 1 ? this.perfil_elegido['id'] : this.image.profile_id
+    this.resultados.forEach(e => {
+      if (e.image.profile_id == profile && e.section_id == this.section_id){
+        cantSec++
+      }
+    })
+    //  cantidad actual de fotos en esa seccion + cantidad máx por seccion de concurso 
+    if (cantSec >= this.section_max){
+      // this.section_id = undefined;
+      this.sectionPos = false;
+      this.texto_sec = "Ya ha subido el máximo de Fotografías para esta sección"
+    }
   }
 
   // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee

@@ -268,12 +268,17 @@ export class FotografiasComponent implements OnInit {
     //if (this.cont2 < 1) {
     //  this.cont2++
     if (section_id == undefined) {
-        section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
-    }
-    this.concursoDetailService.postImage.emit({
-        image,
-        section_id
-    });
+      section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
+  }
+  let section_max = this.concurso.max_img_section
+  let resultados = this.resultadosConcurso
+
+  this.concursoDetailService.postImage.emit({
+      image,
+      section_id, 
+      section_max,
+      resultados
+  });
    //   this.cont2 --
   //}
   }

@@ -529,13 +529,17 @@ obtenerPx() {
       secciones: Section[];
       image?: Image;
       section_id?: number;
+      section_max?: number;
+        resultados?: ContestResultExpanded[];
     } = {
       "concurso": this.concurso.name,
       "concurso_id": this.concurso.id,
       "modalController": this.modalController,
       "profiles": this.inscriptos,
       // "profiles": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) > -1),
-      "secciones": this.seccionesInscriptas.map(s => s.section)
+      "secciones": this.seccionesInscriptas.map(s => s.section),
+      "section_max": this.concurso.max_img_section,
+      "resultados": this.resultadosConcurso
     }
 
     if (i != undefined) {

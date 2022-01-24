@@ -90,7 +90,7 @@
                 <ion-item class="w-100 ion-margin-bottom">
                   <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
                   <ion-label position="floating">Sección</ion-label>
-                  <ion-select [(ngModel)]="section_id" ngDefaultControl>
+                  <ion-select (ionChange)=" sectionSelect()" [(ngModel)]="section_id" ngDefaultControl>
                     <!-- [(value)]="image.profile_id" -->
                     <ion-select-option
                       *ngFor="let s of secciones"
@@ -99,6 +99,10 @@
                     >
                   </ion-select>
                 </ion-item>
+                <ion-chip color="danger" *ngIf="texto_sec != null">
+                  <ion-icon name="alert-outline"></ion-icon>
+                  <ion-label>{{texto_sec}}</ion-label>
+                </ion-chip>
               </ion-row>
 
               <ion-row class="ion-justify-content-end">
