@@ -22,7 +22,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
-import { ImagePostParams, ImagePostPage } from '../image-post/image-post.page';
+
 import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
 
 @Component({
@@ -261,17 +261,17 @@ export class FotografiasComponent implements OnInit {
   }
 
   postImage(image: Image = undefined, section_id: number = undefined) {
-    if (this.cont2 < 1) {
-      this.cont2++
-      if (section_id == undefined) {
+    //if (this.cont2 < 1) {
+    //  this.cont2++
+    if (section_id == undefined) {
         section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
-      }
-      this.concursoDetailService.postImage.emit({
+    }
+    this.concursoDetailService.postImage.emit({
         image,
         section_id
-      })
-      this.cont2 --
-  }
+    });
+   //   this.cont2 --
+  //}
   }
 
   openImage(image: Image) {

@@ -108,12 +108,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     //   passive: true
     // })
   }
-  const s1 = this.concursoDetailService.postImage.subscribe(
-    params => {
-      this.postImage(params)
-      // s1.unsubscribe()
-    }
-  )
+  
   const s2 = this.concursoDetailService.reviewImage.subscribe(
     r => {
       this.reviewImage(r)
@@ -136,7 +131,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   const s6 = this.concursoDetailService.desinscribir.subscribe(profileContest => this.desinscribir(profileContest))
   // this.subs.push(s2, s3, s4, s6)
   // this.subs.push(s1, s2, s3, s4, s5, s6)
-  this.subs.push(s1, s2, s3, s4, s6)
+  this.subs.push(s2, s3, s4, s6)
   // content.addEventListener('ionScrollStart', () => console.log('scroll start'))
   // content.addEventListener('ionScrollEnd', () => console.log('scroll end'))
 
