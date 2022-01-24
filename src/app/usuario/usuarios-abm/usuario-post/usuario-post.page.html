@@ -23,16 +23,13 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="2" class="ion-hide-md-down">
-        <app-usuario-img [src]="img_url"></app-usuario-img>
-        <ion-input type="file" (change)="fileUpload($event.target)" ></ion-input>
-        <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img>        -->
+        <app-usuario-img [src]="img_url" [imageChangeEnabled]="true" [imageChangeClick]="ImageChangeClick"></app-usuario-img>
+        <ion-input  style="visibility:hidden;position: fixed;" #ProfileImageUpload type="file" (change)="fileUpload($event.target)" ></ion-input>
       </ion-col>
       <ion-col size-sm="12" size-md="9" size-lg="7">
         <ion-row>
           <form class="w-100" #f="ngForm" (ngSubmit)="postUsuario(f)">
-            <!-- <ion-row class="ion-justify-content-center">
-                <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
-              </ion-row> -->
+                       
             <ion-row>
               <h6>Datos del perfil</h6>
             </ion-row>
@@ -93,6 +90,31 @@
                       >
                     </ion-select>
               </ion-item>
+
+              <div *ngIf="isAdmin">
+                <ion-item class="expand-full">
+                  <ion-label> Es miembro de la comisión directiva</ion-label>
+                  <ion-checkbox 
+                  slot="start"
+                  color="primary"
+                  name="executive"
+                  [ngModel]="profile.executive"
+                  >
+                  </ion-checkbox>
+                </ion-item>
+  
+                <ion-item
+                *ngIf="f.value.executive == true "
+                class="expand-full">
+                  <ion-label position="floating">Rol en la comisión</ion-label>
+                  <ion-input
+                    name="executive_rol"
+                    [(ngModel)]="profile.executive_rol"
+                    autocapitalize="words"
+                    required
+                  ></ion-input>
+                </ion-item>
+              </div>
               
               <ion-item class="expand-full ion-hide-md-up ion-no-padding sinC">
                   <ion-col size="10" size-md="12" >

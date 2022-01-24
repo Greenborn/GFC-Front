@@ -39,6 +39,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
   roles: Role[] = [];
   fotoclubs: Fotoclub[] = [];
+  comisiones: String[] = [];
 
   // usuariosFiltrados: Usuario[] = [];
   searchParams: SearchBarComponentParams;
@@ -92,6 +93,12 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       const n1 = e1.last_name
       const n2 = e2.last_name
 
+      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
+        (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+    }
+    this.funcionesOrdenamiento['executive_rol'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
+      const n1 = e1.executive_rol == null ? '' : e1.executive_rol
+      const n2 = e2.executive_rol == null ? '' : e2.executive_rol
       return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
         (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
     }
@@ -238,19 +245,26 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
           text: 'Confirmar',
           handler: async () => {
             // super.fetch<void>(() => this.userService.delete(id)).subscribe(_ => this.ionViewWillEnter())
-            super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(
-              _ => {
+            //ya que por DB se borra en cascada, no necesita borrar el perfil
+            // super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(
+            //   _ => {
                 super.fetch<void>(() => this.userService.delete(p.user.id)).subscribe(_ => {
                   this.miembros.splice(
                     this.miembros.findIndex(m => m.id == p.id),
                     1
-                  )
-                })
-              },
-              async err => {
-                this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
-              }
-            )
+                    )
+                    super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(r => {})
+                },
+                async err => {
+                  this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+                }
+                
+                )
+            //   },
+            //   async err => {
+            //     this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+            //   }
+            // )
             // super.displayAlert('.')
             // console.log('delete usuario', id)
           }

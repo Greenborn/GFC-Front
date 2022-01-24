@@ -6,6 +6,7 @@ import { AuthService } from '../modules/auth/services/auth.service';
 import { RolificadorService } from '../modules/auth/services/rolificador.service';
 import { ConfigService } from '../services/config/config.service';
 import { InfoCentroService } from '../services/info-centro.service';
+import { PublicInfoCentroService } from '../services/public.info.centro.service';
 import { ResponsiveService } from '../services/ui/responsive.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
 import { MenuAccionesComponentAccion } from '../shared/menu-acciones/menu-acciones.component';
@@ -22,6 +23,7 @@ export class InfoCentroPage extends ApiConsumer implements OnInit {
 
   constructor(
     private infoCentroService: InfoCentroService,
+    private publicInfoCentroService: PublicInfoCentroService,
     alertController: AlertController,
     public UIUtilsService: UiUtilsService,
     public responsiveService: ResponsiveService,
@@ -43,7 +45,7 @@ export class InfoCentroPage extends ApiConsumer implements OnInit {
 
   ionViewWillEnter() {
     super.fetch<InfoCentro[]>(
-      () => this.infoCentroService.getAll()
+      () => this.publicInfoCentroService.getAll()
     )
     .subscribe(info => {
       this.parrafos = info

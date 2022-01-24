@@ -1,0 +1,21 @@
+.bg-gray1{
+    background-color: #dadada;
+    margin-bottom: 0;
+}
+
+ion-img {
+    width: auto !important;  
+    height : 100% !important;  
+    max-width: auto !important;  //any size
+    max-height: 100% !important; //any size 
+    aspect-ratio: 16/9 !important;
+}
+
+.spc{
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+}
+
+.colorTarget{
+    color: black;
+}

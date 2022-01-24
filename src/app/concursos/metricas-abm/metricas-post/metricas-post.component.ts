@@ -64,7 +64,7 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
         err => {
           console.log('error post metric', err)
           this.posting = false
-          this.UIUtilsService.mostrarError({ message: err.statusText })
+          this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
         }
       )
       // console.log('posting', model, this.section.id)

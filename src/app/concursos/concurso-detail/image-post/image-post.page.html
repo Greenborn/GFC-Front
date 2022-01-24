@@ -43,8 +43,12 @@
                     <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                       <!-- <ion-label position="floating">Imágen</ion-label> -->
                       <!-- [(ngModel)]="image.code" -->
-                      <input type="file" (change)="fileUpload($event.target)" />
+                      <input type="file" accept=".jpeg,.jpg" (change)="fileUpload($event.target)" />
                     </ion-item>
+                    <ion-chip color="danger" *ngIf="texto_img != null">
+                      <ion-icon name="alert-outline"></ion-icon>
+                      <ion-label>{{texto_img}}</ion-label>
+                    </ion-chip>
                     <div>
                       <!-- <ion-thumbnail> -->
                         <ion-row  *ngIf="img_url != '' || imageData != ''"  class="ion-justify-content-center">
@@ -61,7 +65,7 @@
                     >Concursante</ion-label
                   >
                   <ionic-selectable  item-content #profileSelect
-                    [(ngModel)]="image.profile_id"
+                    [(ngModel)]="perfil_elegido"
                     [items]="profiles_list"
                     itemValueField="id"
                     itemTextField="name"
@@ -71,22 +75,15 @@
 
                   
                 </ion-item>
-                <ng-template #unicoElemento 
-              
-                >
-                <!-- <div class="ion-hide"> -->
-                <!-- </div> -->
-                <!-- <ion-text color="dark">
-                  {{concursantes[0].name}} {{concursantes[0].last_name}}
-                </ion-text> -->
-                <ion-item class="w-100 ion-margin-bottom">
-                <ion-label position="floating">Concursante</ion-label>
-                <ion-input color="dark"
-                [(ngModel)]="profile"
-                disabled>
-                  
-                </ion-input>
-              </ion-item>
+                <ng-template #unicoElemento >
+                    <ion-item class="w-100 ion-margin-bottom">
+                    <ion-label position="floating">Concursante</ion-label>
+                    <ion-input color="dark"
+                    name="profile"
+                    [(ngModel)]="profile"
+                    disabled>
+                    </ion-input>
+                  </ion-item>
                 </ng-template>
               </ion-row>
               <ion-row>
@@ -113,12 +110,12 @@
                       size-sm="3"
                       class="ion-align-self-center"
                     >
-                      <app-btn-post
+                      <!-- <app-btn-post
                         [posting]="posting"
                         [disabled]="!datosCargados()"
                         (post)="postImage()"
-                      ></app-btn-post>
-                      <!-- <ion-button
+                      ></app-btn-post> -->
+                      <ion-button
                         expand="block"
                         type="submit"
                         (click)="postImage()"
@@ -130,7 +127,7 @@
                           size="small"
                         ></ion-spinner>
                         Guardar
-                      </ion-button> -->
+                      </ion-button>
                     </ion-col>
 
                     <ion-col

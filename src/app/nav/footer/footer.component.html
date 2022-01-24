@@ -1,20 +1,17 @@
-<!-- <ion-toolbar> -->
-
   <ion-grid>
     <ion-row  >
       <ion-col size="2"  *ngIf="auth.user | async as u" class="ion-align-self-center"
       >
-      <!-- <ion-button  style="margin-bottom: 0;" *ngIf="usrr" (click)="editar($event)">Editar</ion-button> -->
       <ion-button  *ngIf="rolificador.isAdmin(u)" style="margin-bottom: 0;" (click)="editar($event)">
         <ion-icon name="create"></ion-icon>
       </ion-button>
     </ion-col>
       <ion-col >
         <ion-row class="ion-justify-content-center ion-align-items-center h-100">
-          <a [href]="youUrl" target="_blank" class="ion-margin-end"><ion-icon color="light" name="logo-youtube"> youtube</ion-icon></a>
-          <a [href]="instagramUrl" target="_blank" class="ion-margin-end"><ion-icon color="light" name="logo-instagram">Instagram </ion-icon> </a>
-          <a [href]="faceUrl" target="_blank" class="ion-margin-end"><ion-icon color="light" name="logo-facebook">Facebook </ion-icon></a>
-          <a href="mailto:{{mailUrl}}" target="_blank" class="ion-margin-end"><ion-icon color="light" name="mail"> E-mail</ion-icon></a>
+          <a [href]="youUrl" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="logo-youtube"> youtube</ion-icon></a>
+          <a [href]="instagramUrl" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="logo-instagram">Instagram </ion-icon> </a>
+          <a [href]="faceUrl" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="logo-facebook">Facebook </ion-icon></a>
+          <a href="mailto:{{mailUrl}}" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="mail"> E-mail</ion-icon></a>
         </ion-row>
        
       </ion-col>
@@ -22,4 +19,3 @@
      
     </ion-row>
   </ion-grid>
-<!-- </ion-toolbar> -->

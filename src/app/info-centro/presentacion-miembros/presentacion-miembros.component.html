@@ -1,0 +1,52 @@
+<ion-row class="ion-margin-top bg-gray1 ion-text-center">
+  <ion-col>
+    <ion-row class="ion-justify-content-center" >
+      <ion-col size="10">
+        <ion-row>
+          <ion-col><h2 class="colorTarget">Miembros</h2></ion-col>
+        </ion-row>
+
+        <ion-row >
+          <ion-col size="12">
+            <ion-slides [options]="slideOptions" #slideWithNav>
+              <ion-slide *ngFor="let s of sliderOne.slidesItems">
+                <ion-row class="w-100 spc h-100">
+
+                  <ion-col size-md="6" size="12" class="div ion-padding">
+                      
+                      <ion-img [src]="s.photo_url != null && s.photo_url != ''  ? configService.apiUrl(s.photo_url) : './assets/no-pictures.png' "></ion-img>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-row>
+                        <h3 class="colorTarget">
+                          {{s.name}}
+                        </h3>
+                      </ion-row>
+                      <ion-row>
+                        <ion-text [color]="aspecto == false ? 'dark' : 'light'"  class="ion-text-justify">{{s.description}}</ion-text>
+                    </ion-row>
+                    <ion-row class="ion-justify-content-start ion-align-items-start ion-margin-top">
+                      <a *ngIf="instagramUrl(s.instagram) != null" [href]="instagramUrl(s.instagram)" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'dark' : 'light'"  name="logo-instagram">Instagram </ion-icon> </a>
+                      <a *ngIf="faceUrl(s.facebook) != null" [href]="faceUrl(s.facebook)" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'dark' : 'light'"  name="logo-facebook">Facebook </ion-icon></a>
+                      <a *ngIf="mailUrl(s.email) != null" href="mailto:{{mailUrl(s.email)}}" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'dark' : 'light'"  name="mail"> E-mail</ion-icon></a>
+                    </ion-row>
+                  </ion-col>
+
+                </ion-row>
+               
+               </ion-slide>
+           </ion-slides>
+            </ion-col
+          >
+
+            <!-- If we need navigation buttons -->
+          <a *ngIf="cantF > 1" (click)="swipePrev()"> <div class="swiper-button-prev" ></div> </a>
+          <a *ngIf="cantF > 1" (click)="swipeNext()"><div class="swiper-button-next" ></div></a>
+          
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-col>
+  
+</ion-row>
