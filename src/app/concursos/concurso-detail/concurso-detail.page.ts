@@ -56,12 +56,10 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   inscriptosJueces: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
   seccionesInscriptas: ContestSectionExpanded[] = [];
-  // contest: Observable<ContestExpanded>;
 
   fotoclubs: Fotoclub[] = [];
   metrics: Metric[] = [];
   popover: HTMLIonPopoverElement = undefined;
-  // loading: boolean = true;
   subs: Subscription[] = [];
   noImg: boolean = false;
 

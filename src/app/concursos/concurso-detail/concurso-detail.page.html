@@ -16,40 +16,24 @@
 </ion-header>
 
 <ion-content #pageContent id="concurso-content">
-  <!-- <ion-fab-button slot="fixed" style="bottom: 0; right: 0">
-    <ion-icon
-      name="arrow-up"
-    ></ion-icon> 
-  </ion-fab-button> -->
-
- <!-- contenido -->
-
-  <!-- <ion-content>
-  <app-concurso-tabs [totConcursantes]="loading ? '' : inscriptos.length"></app-concurso-tabs>
-</ion-content> -->
-
-  <!-- <ion-content #ConcursoTabs id="concurso-tabs"> -->
-
-      <ion-row id="concurso-tabs" #tabsContent>
-        <ion-col>
+  
+  <ion-row id="concurso-tabs" #tabsContent>
+      <ion-col>
           <ion-row *ngIf="(auth.user | async) as u">
-            <ion-tabs>
+              <ion-tabs>
               <ion-tab-bar slot="top">
                 <ion-tab-button tab="informacion">
                   <ion-icon name="information-circle-outline"></ion-icon>
                   <ion-label>Información</ion-label>
                 </ion-tab-button>
+                
                 <!-- TODO: cambiar el icono por uno mas acorde -->
-                <ion-tab-button tab="jueces"
-                *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u) )"
-              >
-              <ion-icon name="ribbon-outline"></ion-icon>
-                <ion-label>Jueces</ion-label>
-              </ion-tab-button>
+                <ion-tab-button tab="jueces" *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u) )">
+                    <ion-icon name="ribbon-outline"></ion-icon>
+                    <ion-label>Jueces</ion-label>
+                </ion-tab-button>
 
-                <ion-tab-button tab="concursantes"
-                  *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u))"
-                >
+                <ion-tab-button tab="concursantes" *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u))">
                   <ion-icon name="people-outline"></ion-icon>
                   <ion-label>Concursantes</ion-label>
                   <!-- <ion-badge>{{ loading ? '' : inscriptos.length }}</ion-badge> -->
@@ -66,12 +50,6 @@
             </ion-tabs>
         
           </ion-row>
-  
-          <!-- <ion-row>
-            <router-outlet></router-outlet>
-          </ion-row> -->
         </ion-col>
       </ion-row>
-    <!-- <router-outlet name="concurso"></router-outlet> -->
-  <!-- </ion-content> -->
 </ion-content>
