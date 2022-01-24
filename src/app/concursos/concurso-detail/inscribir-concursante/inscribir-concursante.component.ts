@@ -24,8 +24,7 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
   @Input() categorias: Category[];
 
   @Input() profileContest: ProfileContest = this.profileContestService.template;
-  // @Input() profile_id: number = undefined;
-  // @Input() category_id: number = undefined;
+
   public posting: boolean = false;
   // pfCts: number = null;
 

@@ -25,7 +25,6 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   @Input() review: Metric;
   @Input() contestResult: ContestResult;
   
-  // @ViewChild('formReview') formReview: HTMLFormElement;
   public posting: boolean = false;
   public metricas: Metric[] = [];
   public elegida: Metric;

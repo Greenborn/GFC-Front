@@ -15,12 +15,9 @@ import { ConcursosPageModule } from './concursos/concursos.module';
 import { SharedModule } from './shared/shared.module';
 // nuevo
 import { AuthModule } from './modules/auth/auth.module';
-import { GestionModule } from './modules/gestion/gestion.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './modules/auth/services/auth-interceptor.service';
-import { ImageService } from './services/image.service';
-import { ConcursoDetailService } from './concursos/concurso-detail/concurso-detail.service';
-import { UiUtilsService } from './services/ui/ui-utils.service';
+
 import { FooterPostComponent } from './nav/footer/footer-post/footer-post.component';
 import { FormsModule } from '@angular/forms';
 
@@ -55,7 +52,6 @@ import { IonicSelectableModule } from 'ionic-selectable';
     SharedModule,
     IonicSelectableModule,
     AuthModule
-    // GestionModule
   ],
   providers: [
     // UiUtilsService,

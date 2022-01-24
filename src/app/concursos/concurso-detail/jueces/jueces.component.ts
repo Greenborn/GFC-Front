@@ -30,14 +30,12 @@ export class JuecesComponent implements OnInit {
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
       valor: 'nombre', 
-      valorMostrado: 'Nombre', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())      
+      valorMostrado: 'Nombre',  
       callback: (p: ProfileContestExpanded, query: string) => p.profile.name.match(new RegExp(`^${query}`, 'i'))
     },
     { 
       valor: 'apellido', 
       valorMostrado: 'Apellido', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
       callback: (p: ProfileContestExpanded, query: string) => p.profile.last_name.match(new RegExp(`^${query}`, 'i'))
     }
   ];

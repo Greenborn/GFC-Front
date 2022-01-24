@@ -24,10 +24,9 @@ import { ConcursoDetailService } from '../concurso-detail.service';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { ImagePostPage, ImagePostParams } from '../image-post/image-post.page';
 import { ImageReviewPage } from '../image-review/image-review.page';
-import { Section } from 'src/app/models/section.model';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+
 @Component({
   selector: 'app-informacion',
   templateUrl: './informacion.component.html',
@@ -86,24 +85,12 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   }
 
   ngOnInit() { 
-    if (window.screen.width > 768) {
-    const content: HTMLIonContentElement = document.querySelector('#concurso-content')
-    // content.scrollEvents = true
-    // content.addEventListener('ionScroll', ev => console.log('scroll', (ev as any).detail))
-    let tiempoScroll = new Date().getTime()
-    let scrolling = false
-    
-    }
-  
+      
     this.subsc();
     this.activatedRoute.paramMap.subscribe(async paramMap => {
       
       const id = parseInt(paramMap.get('id'))
       console.log("id algo: ", id)
-
-      // super.fetch<Contest>(() => this.concursoDetailService.concurso).subscribe({
-      //   next: c => this.concurso = c 
-      // })
 
       this.concursoDetailService.concurso.subscribe({
         next: c => {
@@ -132,26 +119,11 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       
     })
     
-    // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
 }
 
 
-  subsc(){
-    this.subs.push(this.concursoDetailService.reviewImage.subscribe(
-      r => {
-        this.reviewImage(r)
-      }     
-    ) );
-    
-    this.subs.push(this.concursoDetailService.mostrarAcciones.subscribe(
-      o => {
-        this.mostrarAcciones(o)
-      }
-    ) );
-  
-    this.subs.push(this.concursoDetailService.desinscribir.subscribe(profileContest => this.desinscribir(profileContest)) );
-  }
+  subsc(){ }
 
   desubsc() {
       for (const s of this.subs) {
@@ -162,29 +134,17 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       console.log('subscriptions deleted', [...this.subs])
   }
   
-  obtenerPx() {
-    if (window.innerWidth > 767) {
-      // console.log(colCard.clientHeight)
-      // return window.innerWidth/6;
-      return 15;
-    } else {
-      // return colCard.el.clientWidth/2;
-      // return window.innerWidth/2
-      return 25;
-    }
-  }
-  
     isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
-      return this.auth.loggedIn;
+        return this.auth.loggedIn;
     }
-  
+    
     toggleFiltro() {
-      this.mostrarFiltro = !this.mostrarFiltro;
+        this.mostrarFiltro = !this.mostrarFiltro;
     }
-  
+    
     getProfile(r: ContestResultExpanded): Profile {
-        const p = this.concursantes.find(p => p.id == r.image.profile_id)
-        return p != undefined ? p : this.profileService.template
+          const p = this.concursantes.find(p => p.id == r.image.profile_id)
+          return p != undefined ? p : this.profileService.template
     }
     
     getFotoclubName(fotoclub_id: number): string {
