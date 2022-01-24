@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import {Location} from '@angular/common';
@@ -19,6 +19,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { CreateUserService } from 'src/app/services/create-user.service';
 import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-usuario-post',
@@ -29,6 +30,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
 
   @ViewChild('sFotoclub') selectFotoclub: HTMLIonSelectElement;
+  @ViewChild('ProfileImageUpload', { read: ElementRef, static:false }) profileImageUpload: ElementRef;
   @ViewChild('sRol') selectRol: HTMLIonSelectElement;
   @ViewChild('f') formUsuario: HTMLFormElement;
 
@@ -51,6 +53,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public img_url: string;
 
   private cont: number = 0;
+  public ImageChangeClick:Subject<any> = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -101,6 +104,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   async ngOnInit() {
+    this.ImageChangeClick.subscribe({  next: ( response: any ) => {
+      this.profileImageUpload.nativeElement.querySelector('input').click();
+    }});
+    
     const dataPromises: Promise<boolean>[] = [];
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
@@ -202,7 +209,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   async postUsuario(f: NgForm) {
-    console.log("datos", this.usuario, this.profile);
     if (this.cont < 1) {
       this.cont++
       if (f.valid) {
@@ -211,6 +217,12 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           if (this.selectFotoclub.value == 0) {
               this.selectFotoclub.value = undefined
             }
+
+          // if (f.value.excecutive == false) {
+          //   this.profile.executive = 0
+          // } else {
+          //   this.profile.executive = 1
+          // }
         }
         //En caso de que se trate de un formulario de registro de usuario
       if (this.isUserSignUp){
@@ -248,6 +260,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       let pm: any = {
         name: f.value.name, 
         last_name: f.value.last_name, 
+        executive: f.value.executive == undefined || f.value.executive == null ? false : f.value.executive,
+        executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol
         // fotoclub_id: f.value.fotoclub_id
         // fotoclub_id: fotoclub
       }
@@ -256,6 +270,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         pm = {
           name: f.value.name, 
           last_name: f.value.last_name, 
+          executive: f.value.executive == undefined || f.value.executive == null ? false : f.value.executive,
+          executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
           // fotoclub_id: f.value.fotoclub_id
           fotoclub_id: this.selectFotoclub.value
         }

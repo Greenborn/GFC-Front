@@ -1,17 +1,27 @@
 <ion-content>
 
-  <ion-grid class="ion-no-padding ion-no-margin" #content>
+  <ion-grid *ngIf="(auth.user | async) as u" class="ion-no-padding ion-no-margin" #content>
     <ion-row class="ion-justify-content-center">
       <!-- filtro -->
       <ion-col size="12" size-md="3" *ngIf="mostrarFiltro">
-        <ion-col>
+        <ion-col >
           <ion-title class="ion-margin-top">Búsqueda</ion-title>
   
           <app-search-bar
             [(data)]="resultadosConcurso"
             [atributosObj]="atributosBusqueda"
           ></app-search-bar>
-  
+
+          <app-search-select *ngIf="!rolificador.esConcursante(u) || !isContestNotFin"
+            title="Premios"
+            [optionsData]="puntajes"
+            [optionsProps]="filtrado['metric'].options"
+            >
+          </app-search-select>
+       
+        <!-- [filterCallback]="funcionesFiltrado['role']" -->
+
+
           <!-- <app-search-select
           title="Concursante"
           [optionsProps]="filtrado['perfil'].options"
@@ -114,7 +124,6 @@
       <ion-col>
         <ion-row>
           <ion-col size="11.5" push="0.25"
-            *ngIf="(auth.user | async) as u"
           >
             <ion-row
               class="
@@ -156,7 +165,7 @@
                 </app-search-bar> -->
                 <ion-row class="ion-justify-content-end ion-align-items-end">
   
-                  <app-search-select *ngIf="rolificador.esDelegado(u)"
+                  <app-search-select *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || !isContestNotFin"
                     title="Concursante"
                     [optionsProps]="filtrado['perfil'].options"
                     [optionsData]="inscriptosProfiles"
@@ -284,6 +293,8 @@
                       <!-- <b>Premio</b> -->
                       <ion-row>
                         <app-th-sort
+                        *ngIf="!isContestNotFin || !rolificador.esConcursante(u)"
+                        [sortFn]="ordenarPorPremio"
                           [(data)]="resultadosConcurso"
                           title="Premio"
                         ></app-th-sort>
@@ -407,7 +418,7 @@
                           size="3"
                           size-md="2"
                         >
-                          <ion-text>{{ r.metric.prize }}</ion-text>
+                          <ion-text *ngIf="!isContestNotFin || !rolificador.esConcursante(u)" >{{ r.metric.prize != '0' && r.metric.prize != null && r.metric.prize != undefined ? r.metric.prize : '-' }}</ion-text>
                           <!-- <ion-text>{{ getMetric(r).prize }}</ion-text> -->
                         </ion-col>
                         <!-- <ion-col class="ion-align-self-center" size="2">
@@ -425,7 +436,11 @@
                             <ion-button title="Ver fotografía"
                               (click)="openImage(r.image)"
                             >
-                              <img class="img-button" [src]="getThumbUrl(r.image.thumbnail,1)" />
+                            <ion-thumbnail>
+                              <ion-img 
+                              [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
+                              [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"></ion-img>
+                            </ion-thumbnail>
                             </ion-button>
                             <ion-button
                               *ngIf="rolificador.esJuez(u)"

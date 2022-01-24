@@ -1,24 +1,130 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>info-centro</ion-title>
-  </ion-toolbar>
-</ion-header> -->
+<ion-content>
+  <ion-grid class="ion-no-padding">
+    <!-- PRESENTACION ULTIMO CONCURSO-->
+    <ion-row>
+      <app-presentacion-ultimo-concurso
+        class="w-100"
+      ></app-presentacion-ultimo-concurso>
+    </ion-row>
 
+    <!-- CONTENERDEOR ICONOS/ACCESO DIRECTOS -->
+    <ion-row class="ion-margin-top ion-margin-bottom">
+      <ion-col>
+        <ion-row class="ion-justify-content-around ion-text-center">
+          <ion-col size="3">
+            <ion-row class="ion-align-items-center">
+              <ion-col>
+              <ion-icon name="aperture-outline"></ion-icon>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-justify-content-center">
+              <h3>Fotografía</h3>
+            </ion-row>
+            <ion-row>
+              <ion-text
+              >Lorem ipsum dolor sit amet,consectetur adipiscing elit</ion-text>
+            </ion-row>
+            </ion-col
+          >
+          <ion-col  size="3" >
+            <ion-row class="ion-align-items-center">
+              <ion-col>
+                <ion-icon name="trophy-outline"
+                ></ion-icon
+                >
+
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-justify-content-center">
+              <h3>Concursos</h3>
+            </ion-row>
+            <ion-row>
+              <ion-text>Concursos internos con jurados representantes F.A.F</ion-text>
+    
+            </ion-row>
+          
+          </ion-col>
+          <ion-col  size="3.5">
+            <ion-row class="ion-align-items-center">
+              <ion-col>
+              <ion-icon name="people-outline"></ion-icon>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-justify-content-center">
+              <h3>Camaradería</h3>
+            </ion-row>
+            <ion-row>
+              <ion-text
+              >Un espacio para compartir el interés por la fotografía
+              artística</ion-text>
+            </ion-row>
+           </ion-col
+          >
+        </ion-row>
+      </ion-col>
+    </ion-row>
+   
+   
+
+    <!-- SOBRE GRUPO FOTOGRAFICO CENTRO -->
+    <ion-row class="ion-margin-top ion-margin-bottom bg-gray1 ion-text-center">
+      <ion-col>
+        <ion-row class="ion-justify-content-center" >
+          <ion-col size="10">
+            <ion-row>
+              <ion-col><h2>Sobre GFC</h2></ion-col>
+            </ion-row>
+    
+            <ion-row  class="ion-padding-bottom">
+              <ion-col class="ion-padding-bottom"
+                ><ion-text class="ion-text-justify">
+                  El GFC (Grupo Fotográfico Centro) agrupa desde el año 1967 a
+                  fotoclubes del centro este de la provincia de Buenos Aires
+                  pertenecientes a la F.A.F (Federación Argentina de Fotografía).
+                  Las ciudades que se encuentran representadas actualmente son:
+                  Balcarce, Benito Juarez, Necochea, Olavarria y Tandil. Cuenta como
+                  objetivo la promoción de la actividad fotográfica en el ámbito
+                  fotoclubista y el aprendizaje continuo.
+                </ion-text></ion-col
+              >
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      
+    </ion-row>
+
+    <!-- COMISIÒN DIRECTIVA -->
+    <ion-row>
+      <app-presentacion-comision-directiva
+        class="w-100"
+      ></app-presentacion-comision-directiva>
+    </ion-row>
+
+    <!-- MIEMBROS -->
+    <ion-row>
+      <app-presentacion-miembros class="w-100"></app-presentacion-miembros>
+    </ion-row>
+
+    <!-- SUBSCRIBITE, igual ahora no se agrega -->
+    <ion-row> </ion-row>
+  </ion-grid>
+</ion-content>
+
+<!--
 <ion-content>
   <div *ngIf="(auth.user | async) as u">
- <!-- <ion-list> -->
+ 
 
     <div *ngFor="let p of parrafos; index as i; first as isFirst">
       
       <ion-col #rowHeader class="ion-no-padding ion-justify-content-center" *ngIf="isFirst; else parrafo">
-        <!-- <ion-avatar [style.width]="p.id == 0 ? '100%' : '80%'" class="w-100"  [style.height.vh]="obtenerPx()"> -->
           
 
         <ion-avatar #avatarImg
           [style.width]="'100%'" 
           [style.height.vh]="15"
         >
-        <!-- <ion-avatar [ngClass]="{'w-100':true, 'h-100':true}"> -->
           <ion-img 
             (ionError)="noImg(avatarImg)"
          
@@ -27,16 +133,14 @@
         </ion-avatar>
         <ion-row  class="ion-no-padding ion-justify-content-center ion-align-items-center">
           <h1 *ngIf="p.title">{{p.title}}</h1>          
-          <!-- <ion-buttons class="ion-margin-start" *ngIf="rolificador.isAdmin(u)"> -->
-            <!-- <ion-button [routerLink]="['editar/' + m.user.id]"> -->
+          
             <ion-button (click)="postParrafo(p)" *ngIf="rolificador.isAdmin(u)" 
               size="small"  class="ion-margin-start"
             >
               <ion-icon name="create"></ion-icon>
             </ion-button>
-          <!-- </ion-buttons> -->
         </ion-row>
-        <!-- <hr *ngIf="rolificador.isAdmin(u)" color="dark"> -->
+        
         <ion-row *ngIf="rolificador.isAdmin(u)"
           class="ion-justify-content-center ion-padding-top ion-padding-bottom" 
           style="background: var(--ion-color-light); --ion-padding: 8px"
@@ -56,13 +160,9 @@
       <ng-template #parrafo>
         <ion-grid  class="ion-no-padding ion-margin-bottom">
           <ion-row class="ion-align-items-center ion-justify-content-center">
-            <!-- <ion-col> -->
             <h3 *ngIf="p.title">{{p.title}}</h3>
 
-            <!-- </ion-col> -->
-            <!-- <ion-col size="1.5"> -->
               <ion-buttons class="ion-hide-sm-down ion-margin-start" *ngIf="rolificador.isAdmin(u)">
-                <!-- <ion-button [routerLink]="['editar/' + m.user.id]"> -->
                 <ion-button (click)="postParrafo(p)">
                   <ion-icon name="create"></ion-icon>
                 </ion-button>
@@ -81,7 +181,6 @@
                   ></ion-icon>
                 </ion-button>
               </ion-buttons>
-            <!-- </ion-col> -->
           </ion-row>
           <ion-col class="ion-no-padding">
             <ion-row>
@@ -91,12 +190,10 @@
                 >{{p.content}}</ion-text>
             </ion-row>
             <ion-row #rowImg class="ion-no-padding ion-justify-content-center">
-                <!-- <ion-avatar [style.width]="p.id == 0 ? '100%' : '80%'" class="w-100"  [style.height.vh]="obtenerPx()"> -->
                 <ion-avatar 
                   [style.width]="p.id == 1 ? '100%' : (responsiveService.isDesktop ? '85%' : '95%')" 
                   [style.height.vh]="p.id == 1 ? 15 : obtenerVh()"
                 >
-                <!-- <ion-avatar [ngClass]="{'w-100':true, 'h-100':true}"> -->
                   <ion-img 
                     (ionError)="noImg(rowImg)"
                 
@@ -105,13 +202,9 @@
                 </ion-avatar>
             </ion-row>
           </ion-col>
-          <!-- <ion-row class="ion-justify-content-center">
-              <ion-img [src]="p.img_url"></ion-img>
-          </ion-row> -->
         </ion-grid>
       </ng-template>
       </div>
- <!-- </ion-list> -->
   </div>
 </ion-content>
-
+-->

@@ -1,0 +1,22 @@
+.ultimo-concurso-content{
+    height:              90vh;
+    background:          linear-gradient(90deg, rgb(0, 0, 0) 0%, rgba(0,0,0,0) 100%);
+    color:             #fff;
+}
+
+.uc-grid{
+    background-size:         cover;
+    -moz-background-size:    cover;
+    -webkit-background-size: cover;
+    -o-background-size:      cover;
+    background-repeat:       no-repeat;
+    background-position:     center center;
+}
+
+.uc-col{
+    margin-bottom: 10rem;
+}
+
+.uc-col h2{
+    font-weight: bolder;
+}

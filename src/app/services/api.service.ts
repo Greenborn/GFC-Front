@@ -46,7 +46,9 @@ export abstract class ApiService<T> {
           if (this.fetchAllOnce) {
             this.all = data.items
           }
-          return data.items
+          if (data != null)
+            return data.items;
+          return null;
         })
       )
     }
@@ -70,7 +72,7 @@ export abstract class ApiService<T> {
   }
   postFormData<K = T>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
     // const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
-    
+    console.log(model);
     const f = new FormData()
     for ( let key in model ) {
       f.append(key, (model as any)[key])

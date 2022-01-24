@@ -26,7 +26,8 @@ export class ContestService extends ApiService<Contest> {
       description: undefined,
       start_date: undefined,
       end_date: undefined,
-      max_img_section: 3
+      max_img_section: 3,
+      sub_title: ''
     }
   }
 

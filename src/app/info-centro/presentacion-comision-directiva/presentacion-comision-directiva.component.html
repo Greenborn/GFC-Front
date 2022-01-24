@@ -1,0 +1,52 @@
+<ion-row class="ion-margin-top ion-margin-bottom ion-text-center">
+  <ion-col>
+    <ion-row class="ion-justify-content-center" >
+      <ion-col size="10">
+        <ion-row>
+          <ion-col><h2>Comisión Directiva</h2></ion-col>
+        </ion-row>
+
+        <ion-row >
+          <ion-col size="12">
+            <ion-slides [options]="slideOptions" #slideWithNav>
+              <ion-slide *ngFor="let s of sliderOne.slidesItems">
+                <!-- <ion-item lines="none"> -->
+                  <ion-col size-md="4" size="11" class="w-100">
+                    
+                      <ion-row class="w-100">
+                        <ion-col>
+                            <app-usuario-img [src]="s.img_url != null ? configService.apiUrl(s.img_url) : '' "></app-usuario-img>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row class="ion-text-center" >
+                        <ion-col>
+
+                          <ion-label>
+                            <ion-text title="Nombre">
+                              <b>{{s.name}} {{s.last_name}}</b>
+                            </ion-text>
+                          </ion-label>
+                          <ion-card-subtitle title="Rol"
+                            >{{s.executive_rol}}</ion-card-subtitle
+                          >
+                        </ion-col>
+                      </ion-row>
+                      
+                    
+                  </ion-col>
+                <!-- </ion-item> -->
+               </ion-slide>
+           </ion-slides>
+            </ion-col
+          >
+
+            <!-- If we need navigation buttons -->
+          <a *ngIf="slideOptions.slidesPerView >= 3" (click)="swipePrev()"> <div class="swiper-button-prev" ></div> </a>
+          <a *ngIf="slideOptions.slidesPerView >= 3" (click)="swipeNext()"><div class="swiper-button-next" ></div></a>
+          
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-col>
+  
+</ion-row>

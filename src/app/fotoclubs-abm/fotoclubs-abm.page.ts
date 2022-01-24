@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from '../models/ApiConsumer';
 import { Fotoclub } from '../models/fotoclub.model';
+import { ConfigService } from '../services/config/config.service';
 import { FotoclubService } from '../services/fotoclub.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
 import { MenuAccionesComponentAccion } from '../shared/menu-acciones/menu-acciones.component';
@@ -30,7 +31,8 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
   constructor(
     alertCtrl: AlertController,
     public UIUtilsService: UiUtilsService,
-    private fotoclubService: FotoclubService
+    private fotoclubService: FotoclubService,
+    public configService: ConfigService,
   ) {
     super(alertCtrl)
     this.funcionesOrdenamiento['fotoclub'] = (e1: Fotoclub, e2: Fotoclub, creciente: boolean) => {
@@ -40,6 +42,10 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
       return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
         (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
     }
+   }
+
+   get aspecto() {
+    return document.body.classList.contains("dark")
    }
 
   async ngOnInit() {

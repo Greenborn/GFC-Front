@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 
 import { ImagePostPage, ImagePostParams } from './image-post/image-post.page';
-import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
+
 import { Image } from 'src/app/models/image.model';
 import { ContestResult, ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
@@ -22,11 +22,10 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { Observable, Subscription } from 'rxjs';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { map } from 'rxjs/operators';
-import { FotografiasComponent } from './fotografias/fotografias.component';
-import { ConcursantesComponent } from './concursantes/concursantes.component';
+
 import { ConcursoDetailService } from './concurso-detail.service';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
-import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir-concursante.component';
+
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
@@ -118,6 +117,17 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       //   passive: true
       // })
     }
+    
+    this.subsc();
+
+    // content.addEventListener('ionScrollStart', () => console.log('scroll start'))
+    // content.addEventListener('ionScrollEnd', () => console.log('scroll end'))
+
+    
+    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f);
+  }
+
+  subsc(){
     const s1 = this.concursoDetailService.postImage.subscribe(
       params => {
         this.postImage(params)
@@ -146,9 +156,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     const s6 = this.concursoDetailService.desinscribir.subscribe(profileContest => this.desinscribir(profileContest))
     // this.subs.push(s2, s3, s4, s6)
     // this.subs.push(s1, s2, s3, s4, s5, s6)
-    this.subs.push(s1, s2, s3, s4, s6)
-    // content.addEventListener('ionScrollStart', () => console.log('scroll start'))
-    // content.addEventListener('ionScrollEnd', () => console.log('scroll end'))
+    this.subs.push(s1, s2, s3, s4, s6);
 
     this.activatedRoute.paramMap.subscribe(async paramMap => {
       // let loading = await this.loadingCtrl.create({
@@ -265,45 +273,9 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       //     })
       //   })
       // })
-    })
-    
-    // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
-    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
+    });
   }
-
-
-  // ionViewWillEnter() {
-  subsc() {
-    console.log('subscriptions', this.subs)
-    // const s1 = this.concursoDetailService.postImage.subscribe(
-    //   params => {
-    //     this.postImage(params)
-    //     // s1.unsubscribe()
-    //   }
-    // )
-    const s2 = this.concursoDetailService.reviewImage.subscribe(
-      r => {
-        this.reviewImage(r)
-        // s2.unsubscribe()
-      }     
-    )
-    const s3 = this.concursoDetailService.deleteImage.subscribe(
-      r => {
-        this.deleteImage(r)
-        // s3.unsubscribe()
-      }
-    )
-    const s4 = this.concursoDetailService.mostrarAcciones.subscribe(
-      o => {
-        this.mostrarAcciones(o)
-        // s4.unsubscribe()
-      }
-    )
-    // const s5 = this.concursoDetailService.inscribirConcursante.subscribe(category_id => this.inscribirConcursante(category_id))
-    const s6 = this.concursoDetailService.desinscribir.subscribe(profileContest => this.desinscribir(profileContest))
-    this.subs.push(s2, s3, s4, s6)
-    // this.subs.push(s1, s2, s3, s4, s5, s6)
-  }
+  
   // ionViewWillLeave() {
   desubsc() {
     // this.subs.forEach(s => {

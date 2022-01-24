@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-usuario-img',
@@ -6,50 +7,21 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@
   styleUrls: ['./usuario-img.component.scss'],
   inputs: ['src']
 })
-export class UsuarioImgComponent implements OnInit, OnChanges {
-// export class UsuarioImgComponent implements OnInit {
+export class UsuarioImgComponent implements OnInit {
 
-  @Input() tam: number = -1;
   @Input() src: string;
-  @ViewChild('img') img: HTMLIonImgElement;
-  public yepImg: boolean = true;
+  @Input() imageChangeClick:Subject<any> = new Subject();
+  @Input() imageChangeEnabled:Boolean = false;
 
   constructor() { }
 
-  ngOnInit() {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.yepImg = true;
-    // console.log('cambiando img component', this.img, changes);
-    if (this.img && changes.src) {
-      // console.log('cambiando src')
-      this.img.src = changes.src.currentValue;
-    }
-  }
-  
-  // falsear(ev: any){
-  //   if(ev) {
-  //     this.yepImg = false;
-  //   }
-  // }
-
-  getSize() {
-    return this.tam == -1 ? '' : 
-      `height: ${this.tam}px; width: ${this.tam}px`
+  ngOnInit() {
+    
   }
 
-  mostrarIcono(e: any, mostrar: boolean) {
-    // console.log('toggle icono', e.target.src)
-    if (mostrar) {
-      // console.log('mostrando icono y reseteando src')
-      e.target.src = ''
-    } else {
-      // console.log('mostrando imagen')
-    }
-    this.yepImg = !mostrar;
+  imageClick(){
+    this.imageChangeClick.next();
   }
 
-  change() {
-    // console.log('cambiando src')
-  }
+ 
 }

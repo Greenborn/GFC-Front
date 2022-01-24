@@ -54,7 +54,10 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     // super('concursos page', alertController)
     super(alertController)
   }
-
+  get aspecto() {
+    return document.body.classList.contains("dark")
+   }
+   
   getImg(imgUrl) {
     if (imgUrl == null){
       return ''

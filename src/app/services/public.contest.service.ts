@@ -1,31 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Fotoclub } from '../models/fotoclub.model';
+import { Contest } from '../models/contest.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FotoclubService extends ApiService<Fotoclub> {
+export class PublicContestService  extends ApiService<Contest> {
 
   constructor(
     http: HttpClient,
     config: ConfigService
   ) {
-    super('fotoclub', http, config)
-    // this.fetchAllOnce = true
+    super('public-contest', http, config)
    }
 
-   get template(): Fotoclub {
+   get template(): Contest {
     return {
       id: undefined,
       name: undefined,
       description: undefined,
-      facebook: undefined,
-      instagram: undefined,
-      email: undefined,
-      photo_url: undefined,
+      start_date: undefined,
+      end_date: undefined,
+      max_img_section: 3
     }
   }
 }
