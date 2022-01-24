@@ -161,7 +161,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     //return this.image.code !=  undefined 
     return this.image.title !=  undefined 
         && (this.image.profile_id != undefined || this.perfil_elegido != undefined )
-        && (this.section_id != undefined && this.sectionPos != false) 
+        && (this.section_id != undefined && this.sectionSelect != false) 
         && this.imgSource.split('/').pop() != 'undefined'
   }
   
@@ -174,7 +174,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     });
   }
 
-  sectionSelect(){
+  get sectionSelect(){
     this.sectionPos = true;
     this.texto_sec = null;
     let cantSec = 0;
@@ -197,7 +197,9 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
       // this.section_id = undefined;
       this.sectionPos = false;
       this.texto_sec = "Ya ha subido el máximo de Fotografías para esta sección"
+      return false
     }
+    return true
   }
 
   // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
