@@ -108,6 +108,10 @@ export class FotografiasComponent implements OnInit {
   get isContestNotFin() {
     return this.concurso.active
   }
+
+  get aspecto() {
+    return document.body.classList.contains("dark")
+   }
   
   isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
     return this.auth.loggedIn;
@@ -200,12 +204,12 @@ export class FotografiasComponent implements OnInit {
   }
 
   getThumbUrl(obj:any, thumb_id:number = 1){
-    //si no tiene miniatura porque no tiene imagen
+        //si no tiene miniatura porque no tiene imagen
     if (obj == null) {
       return '';
     }
     //si llega un objeto no iterable
-    if (obj !== undefined && obj.length === undefined){
+    if (obj !== undefined && (obj.length === undefined || obj.length == 0)){
       return this.configService.apiUrl(obj.url);
     }
     //si se trata de un arreglo
