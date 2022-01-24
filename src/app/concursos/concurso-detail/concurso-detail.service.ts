@@ -13,7 +13,7 @@ import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir
 import { BehaviorSubject } from 'rxjs';
 import { ContestService } from 'src/app/services/contest.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
-import { UserLogged } from 'src/app/models/user.model';
+
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { filter, map } from 'rxjs/operators';
 import { ContestResultService } from 'src/app/services/contest-result.service';
@@ -26,37 +26,18 @@ export class ConcursoDetailService implements OnInit {
 
   
   public concurso: BehaviorSubject<Contest>;
-  // public concurso: EventEmitter<Contest>;
   public concursantes: BehaviorSubject<ProfileExpanded[]>;
   public jueces: BehaviorSubject<ProfileExpanded[]>;
-  // public concursantes: EventEmitter<ProfileExpanded[]>;
   public inscriptos: BehaviorSubject<ProfileContestExpanded[]>;
   public inscriptosJueces: BehaviorSubject<ProfileContestExpanded[]>;
-  // public inscriptos: EventEmitter<ProfileContestExpanded[]>;
   public categoriasInscriptas: BehaviorSubject<ContestCategoryExpanded[]>;
-  // public categoriasInscriptas: EventEmitter<ContestCategoryExpanded[]>;
   public seccionesInscriptas: BehaviorSubject<ContestSectionExpanded[]>;
-  // public seccionesInscriptas: EventEmitter<ContestSectionExpanded[]>;
   public resultadosConcurso: BehaviorSubject<ContestResultExpanded[]>;
-  // public resultadosConcurso: EventEmitter<ContestResultExpanded[]>;
-  // public inscribirConcursante = new EventEmitter<number|undefined>();
   public desinscribir: EventEmitter<ProfileContestExpanded>;
-  // public desinscribirJuez: EventEmitter<ProfileContestExpanded>;
-  // public desinscribirConcursante = new EventEmitter<ProfileContestExpanded>();
   public postImage: EventEmitter<ImagePostParams>;
-  // public postImage = new EventEmitter<ImagePostParams>();
   public reviewImage: EventEmitter<ContestResultExpanded>;
-  // public reviewImage = new EventEmitter<ContestResultExpanded>();
   public deleteImage: EventEmitter<ContestResultExpanded>;
-  // public deleteImage = new EventEmitter<ContestResultExpanded>();
   public mostrarAcciones: EventEmitter<any>;
-  // public mostrarAcciones = new EventEmitter<any>();
-
-
-  // public concursoObj: Contest = undefined
-  // private concursantesArray: ProfileExpanded[] = [];
-  // private categoriasInscriptasArray: ContestCategoryExpanded[] = [];
-  // private inscriptosArray: ProfileContestExpanded[] = [];
   
   constructor(
     public UIUtilsService: UiUtilsService,
@@ -66,29 +47,16 @@ export class ConcursoDetailService implements OnInit {
     private rolificador: RolificadorService,
     private authService: AuthService
   ) { 
-    // const s1 = this.concursoDetailService.postImage.subscribe(
-    //   params => {
-    //     this.postImage(params)
-    //     // s1.unsubscribe()
-    //   }
-    // )
-    // const s5 = this.inscribirConcursante.subscribe(category_id => this.inscribirConcursante(category_id))
+
     this.concurso = new BehaviorSubject<Contest>(this.contestService.template);
-    // this.concurso = new EventEmitter<Contest>();
     this.concursantes = new BehaviorSubject<ProfileExpanded[]>([]);
     this.jueces = new BehaviorSubject<ProfileExpanded[]>([]);
-    // this.concursantes = new EventEmitter<ProfileExpanded[]>();
     this.inscriptos = new BehaviorSubject<ProfileContestExpanded[]>([]);
     this.inscriptosJueces = new BehaviorSubject<ProfileContestExpanded[]>([]);
-    // this.inscriptos = new EventEmitter<ProfileContestExpanded[]>();
     this.categoriasInscriptas = new BehaviorSubject<ContestCategoryExpanded[]>([]);
-    // this.categoriasInscriptas = new EventEmitter<ContestCategoryExpanded[]>();
     this.seccionesInscriptas = new BehaviorSubject<ContestSectionExpanded[]>([]);
-    // this.seccionesInscriptas = new EventEmitter<ContestSectionExpanded[]>();
     this.resultadosConcurso = new BehaviorSubject<ContestResultExpanded[]>([]);
-    // this.ic inscribirConcursante = new EventEmitter<number|undefined>();
     this.desinscribir = new EventEmitter<ProfileContestExpanded>();
-    // this.desinscribirJuez = new EventEmitter<ProfileContestExpanded>();
     this.postImage = new EventEmitter<ImagePostParams>();
     this.reviewImage = new EventEmitter<ContestResultExpanded>();
     this.deleteImage = new EventEmitter<ContestResultExpanded>();

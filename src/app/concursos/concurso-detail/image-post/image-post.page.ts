@@ -72,27 +72,25 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   get categoryId(): number {
-    const p = this.profiles.find(p => p.profile_id == this.image.profile_id)
-    return p != undefined ? p.category_id : undefined
+    const p = this.profiles.find(p => p.profile_id == this.image.profile_id);
+    return p != undefined ? p.category_id : undefined;
   }
   get code(): string {
-    // return `${(this.concurso ?? '').replace(/ /g, '_').toLowerCase().normalize()}-c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-`
-    return `Co${this.concurso_id}Ca${this.categoryId ?? ''}S${this.section_id ?? ''}-`
-    // return `#c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-${(this.image.title ?? '').replace(/ /g, '_').toLowerCase().normalize()}`
+    return `Co${this.concurso_id}Ca${this.categoryId ?? ''}S${this.section_id ?? ''}-`;
   }
 
   get formTitle(): string {
-    return (this.image.id != undefined ? 'Editar' : 'Agregar') + ` imagen a ${this.concurso}`
+    return (this.image.id != undefined ? 'Editar' : 'Agregar') + ` imagen a ${this.concurso}`;
   }
 
   get imgSource(): string {
-    return this.imageData != '' ? this.imageData : this.configService.apiUrl(this.image.url)
+    return this.imageData != '' ? this.imageData : this.configService.apiUrl(this.image.url);
   }
 
   async ngOnInit() {
-    this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs)
-    this.img_url = this.image.url
-    // window.onresize = this.actualizarWidth;
+    this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs);
+    this.img_url = this.image.url;
+    
     //modificacion datos de concursantes para concatenar nombre y apellido
     this.profiles_list = [];
     for (let c=0; c<this.profiles.length; c++){
@@ -108,10 +106,8 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   async postImage() {
-    if (this.cont < 1) {
-      this.cont++
-
-       if (this.datosCargados()) {
+    
+    if (this.datosCargados()) {
    
            this.posting = true
            let i: GFC_Image;
@@ -124,7 +120,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
              model.image_file = this.file
            }
           //hacer que agarre bien al usuario TODO:
-           this.imageService.postFormData<any>(model, this.image.id).subscribe(
+          this.imageService.postFormData<any>(model, this.image.id).subscribe(
              // image => this.dismiss(image),
              image => {
                this.posting = false
@@ -135,20 +131,9 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
                super.displayAlert(err.error['message'])
                this.posting = false
              },
-             // () => { // on complete.. pero no cacha el error
-             //   console.log(i)
-             //   this.posting = false
-               
-             // })
-           )
-           // console.log('posted img con id', id)
-           // this.dismiss(id)
-         // }
-   
-   
-       }
-    this.cont --
-  }
+            
+           );
+    }
   }
 
   datosCargados() {
@@ -220,38 +205,25 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
       return;
     }
 
-    // this.isImgUploading = true;
-    // this.isImgUploaded = false;
-
-    // this.FileName = file.name;
-    // console.log('uploaded', file)
     this.file = file
 
     const fileReader = new FileReader();
     const { type, name } = file;
-    // return new Observable((observer: Observer<IUploadedFile>) => {
-      // this.validateSize(file, observer);
-      fileReader.readAsDataURL(file);
-      fileReader.onload = event => {
 
-        // if (this.isImage(type)) {
-          const image = new Image();
-          image.onload = (i) => {
-            const imageData = (i.target as HTMLImageElement).src
-            this.imageData = imageData
-            // console.log('loaded image', imageData)
-            // observer.next({ file });
-            // observer.complete();
-          };
-          image.onerror = () => {
-            // observer.error({ error: { name, errorMessage: INVALID_IMAGE } });
-          };
-          image.src = fileReader.result as string;
-        // } else {
-          // observer.next({ file });
-          // observer.complete();
-        }
-      // };
+    fileReader.readAsDataURL(file);
+    fileReader.onload = event => {
+
+        const image = new Image();
+        image.onload = (i) => {
+              const imageData = (i.target as HTMLImageElement).src
+              this.imageData = imageData;
+        };
+        image.onerror = () => {
+              // observer.error({ error: { name, errorMessage: INVALID_IMAGE } });
+        };
+        image.src = fileReader.result as string;
+
+    }
 
     const fileStoragePath = `uploads/images/${new Date().getTime()}_${file.name}`;
 

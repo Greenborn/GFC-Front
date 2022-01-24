@@ -119,8 +119,7 @@ export class FotografiasComponent implements OnInit {
     if (this.rolificador.isAdmin(await this.auth.user) || this.isContestNotFin ) {
         this.atributosBusqueda.push({ 
         valor: 'username', 
-        valorMostrado: 'Autor', 
-        // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+        valorMostrado: 'Autor',  
         callback: (c: ContestResultExpanded, query: string) => `${c.image.profile.name} ${c.image.profile.last_name}`.match(new RegExp(`${query}`, 'i'))
       })
     }
@@ -296,21 +295,18 @@ export class FotografiasComponent implements OnInit {
       acciones.push(
         {
           accion: (params: []) => this.concursoDetailService.reviewImage.emit(r),
-          // accion: (params: []) => this.reviewImage(r),
           params: [],
           icon: 'star-outline',
           label: 'Puntuar'
         },
         {
           accion: (params: []) => this.postImage(image, r.section_id),
-          // accion: (params: []) => this.postImage(i),
           params: [],
           icon: 'create',
           label: 'Editar'
         },
         {
           accion: (params: number[]) => this.concursoDetailService.deleteImage.emit(r),
-          // accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
           params: [],
           icon: 'trash',
           label: 'Borrar'

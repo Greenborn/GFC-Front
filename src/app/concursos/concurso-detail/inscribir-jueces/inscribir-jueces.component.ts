@@ -39,8 +39,7 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
 
   inscribirJuez() {
     if (this.datosCargados()) {
-      // if (this.cont < 1) {
-      //   this.cont++
+      
         console.log('inscribiendo', this.profileContest.profile_id, ' a ', this.contest.id)
         this.posting = true
         const s = this.profileContestService.post({
@@ -61,7 +60,7 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
             // console.log('unsubsssss')
             s.unsubscribe()
           }
-        )
+        );
       
     }
     

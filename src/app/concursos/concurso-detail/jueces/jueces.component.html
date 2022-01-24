@@ -34,38 +34,20 @@
                 Inscriptos
               </h1>
                 <!-- TODO: hacer priv el rolific-->
-              <!-- <ion-fab-button
-                size="small"
-                *ngIf="contestService.isActive(concurso) && rolificador.esDelegado(u) && concursantes.length > 0"
-                (click)="inscribirConcursante()"
-              > -->
+              
               <ion-fab-button
-              size="small"
-              *ngIf="contestService.isActive(concurso) && (rolificador.esDelegado(u) || rolificador.isAdmin(u)) "
-              (click)="inscribirJuez()"
-            >
-                <!-- [routerLink]="['agregar-foto']"   -->
-                <ion-icon name="add"></ion-icon>
-              </ion-fab-button>
-              <!-- <ion-fab-button
                 size="small"
-                *ngIf="contestService.isActive(concurso)"
-                (click)="inscribirConcursante()"
-              >
+                *ngIf="contestService.isActive(concurso) && (rolificador.esDelegado(u) || rolificador.isAdmin(u)) "
+                (click)="inscribirJuez()">
                 
                 <ion-icon name="add"></ion-icon>
-              </ion-fab-button> -->
+              </ion-fab-button>
+              
             </ion-row>
   
             <ion-row class="ion-align-items-center ion-padding-bottom">
               <ion-col size="10" size-sm="11">
-                <!-- <app-search-bar
-                  [(data)]="inscriptos"
-                  [atributosObj]="atributosBusqueda"
-                >
-                </app-search-bar> -->
-                <!-- <app-search-bar [atributos]="['Titulo', 'Codigo']">
-                </app-search-bar> -->
+                
               </ion-col>
               <ion-col size="2" size-sm="1">
                 <ion-row
@@ -102,45 +84,21 @@
                           [(data)]="inscriptos"
                           title="Jurado"
                         ></app-th-sort>
-                        <!-- <div class="thead">
-                          <b>Concursante</b>
-                          <app-btn-sort style="margin-left: 8px"
-                            [sortFn]="ordenarPorApellido"
-                            [data]="inscriptos"
-                            (sorted)="inscriptos = $event"
-                          ></app-btn-sort>
-                        </div> -->
-                        <!-- <ion-button (click)="ordenarPorApellido()"
-                          size="small" [fill]="ordenamientoFill" color="light"
-                          [title]="ordenamientoTitle"
-                          class="ion-margin-start"
-                        >
-                          <ion-icon name="swap-vertical-outline"
-                            [style]="ordenamientoStyle"
-                          ></ion-icon>
-                        </ion-button> -->
+                        
                       </ion-row>
                     </ion-col>
-                    <!-- *ngIf="rolificador.isAdmin(userLogged)" -->
-                    <!-- <ion-col
-                      size="3.5"
-                      *ngIf="isAdmin"
-                      class="ion-hide-sm-down"
-                      >
-                    </ion-col> -->
+                    
                     <ion-col size="2"><b></b></ion-col>
                   </ion-row>
                 </ion-grid>
               </ion-item>
             </ion-list>
-            <!-- <ion-list *ngIf="!loading; else spinner"> -->
+            
             <ion-list> 
               <ion-item lines="none">
-                <!-- <ion-grid *ngIf="!loading"> -->
-                <!-- <ion-grid *ngIf="inscriptosFiltrados.length > 0; else texto"> -->
+                
                 <ion-grid *ngIf="inscriptos.length > 0; else texto">
-                  <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
-                  <!-- class="ion-text-center" -->
+                  
                   <ion-item
                     class="ion-no-padding lista-elem"
                     *ngFor="let m of inscriptos"
@@ -181,20 +139,15 @@
                         size="2"
                         class="ion-align-self-center "
                       >
+
                       <ion-buttons class="ion-justify-content-end">
                         <ion-button *ngIf="checkPermissions"
-                          (click)="
-                            concursoDetailService.desinscribir.emit(
-                              m
-                            )
-                          "
-                          title="Desinscribir"
-                        >
+                          (click)="concursoDetailService.desinscribir.emit( m )"
+                          title="Desinscribir">
                           <ion-icon name="trash"></ion-icon>
                         </ion-button>
                       </ion-buttons>
 
-                      <!-- *ngIf="contestService.isActive(concurso)" -->
                       </ion-col>
                       </ion-row>
                     </ion-grid>

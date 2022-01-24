@@ -198,9 +198,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                   _ => {
                     console.log('deleted', _)
                     this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
-                    // this.concursoDetailService.inscriptos.emit(this.inscriptos)
-                    this.concursoDetailService.loadProfileContests()
-                    // this.router.navigate(['/concursos']);
+                    this.concursoDetailService.loadProfileContests();
                   }, 
                   async err => {
                     (await this.alertCtrl.create({
@@ -247,20 +245,14 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       console.log('punteado imagen', data)
       const { metric } = data ?? {}
       if (metric != undefined) {
-        // const i = this.metrics.findIndex(m => m.id == metric.id)
         const r = this.resultadosConcurso.find(e => e.metric_id == metric.id)
-        // if (i != -1) {
-          // this.metrics[i] = metric
+
         if (r != undefined) {
           console.log('udpating metric', r, metric)
           r.metric = metric
-          console.log('udpated metric', r)
-          // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+          console.log('udpated metric', r);
           this.concursoDetailService.loadContestResults()
         } 
-        // else {
-        //   this.metrics.push(metric)
-        // }
       }
     }
     
@@ -348,19 +340,14 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
             handler: () => {
               super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe(
                 _ => {
-                  // this.alertCtrl.dismiss()
-                  // this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
                   this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-                  // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
                   this.concursoDetailService.loadContestResults()
                   super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
                     _ => {},
-                    // _ => this.images.splice(this.images.findIndex(i => i.id == image_id), 1),
                     async err => super.displayAlert(err.error['error-info'][2])
                   )
                   super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe(
                     _ => {},
-                    // _ => this.metrics.splice(this.metrics.findIndex(i => i.id == metric_id), 1),
                     async err => super.displayAlert(err.error['error-info'][2])
                   )
   
@@ -393,7 +380,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     let yo = ((await this.auth.user).profile)
     const prl = this.inscriptos.find(p => p.profile_id == yo.id)
     this.concursoDetailService.desinscribir.emit(
-      //m: profileContestExpanded
       prl
     )
   }
