@@ -43,8 +43,12 @@
                     <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                       <!-- <ion-label position="floating">Imágen</ion-label> -->
                       <!-- [(ngModel)]="image.code" -->
-                      <input type="file" (change)="fileUpload($event.target)" />
+                      <input type="file" accept=".jpeg,.jpg" (change)="fileUpload($event.target)" />
                     </ion-item>
+                    <ion-chip color="danger" *ngIf="texto_img != null">
+                      <ion-icon name="alert-outline"></ion-icon>
+                      <ion-label>{{texto_img}}</ion-label>
+                    </ion-chip>
                     <div>
                       <!-- <ion-thumbnail> -->
                         <ion-row  *ngIf="img_url != '' || imageData != ''"  class="ion-justify-content-center">

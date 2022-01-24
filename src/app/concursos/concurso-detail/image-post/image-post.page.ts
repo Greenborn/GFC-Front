@@ -44,7 +44,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   public imageData: string = '';
   public cont: number = 0;
   perfil_elegido: Profile = this.ProfileService.template;
-
+  texto_img: string = null;
 
   // public profiles: Profile[];
   public posting: boolean = false; 
@@ -101,46 +101,47 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   async postImage() {
-    // if (this.cont < 1) {
-    //   this.cont++
-    if (this.datosCargados()) {
+    if (this.cont < 1) {
+      this.cont++
 
-        this.posting = true
-        let i: GFC_Image;
-        const model: any = {
-          title: this.image.title,
-          code: this.code,
-          profile_id:  this.profiles_list.length != 1 ? this.perfil_elegido['id'] : this.image.profile_id
-        }
-        if (this.file != undefined) {
-          model.image_file = this.file
-        }
-       //hacer que agarre bien al usuario TODO:
-        this.imageService.postFormData<any>(model, this.image.id).subscribe(
-          // image => this.dismiss(image),
-          image => {
-            this.posting = false
-            i = image
-            this.dismiss(i, this.section_id)
-          },
-          async err => {
-            super.displayAlert(err.error['message'])
-            this.posting = false
-          },
-          // () => { // on complete.. pero no cacha el error
-          //   console.log(i)
-          //   this.posting = false
-            
-          // })
-        )
-        // console.log('posted img con id', id)
-        // this.dismiss(id)
-      // }
-
-
-      // this.cont --
-    }
-  // }
+       if (this.datosCargados()) {
+   
+           this.posting = true
+           let i: GFC_Image;
+           const model: any = {
+             title: this.image.title,
+             code: this.code,
+             profile_id:  this.profiles_list.length != 1 ? this.perfil_elegido['id'] : this.image.profile_id
+           }
+           if (this.file != undefined) {
+             model.image_file = this.file
+           }
+          //hacer que agarre bien al usuario TODO:
+           this.imageService.postFormData<any>(model, this.image.id).subscribe(
+             // image => this.dismiss(image),
+             image => {
+               this.posting = false
+               i = image
+               this.dismiss(i, this.section_id)
+             },
+             async err => {
+               super.displayAlert(err.error['message'])
+               this.posting = false
+             },
+             // () => { // on complete.. pero no cacha el error
+             //   console.log(i)
+             //   this.posting = false
+               
+             // })
+           )
+           // console.log('posted img con id', id)
+           // this.dismiss(id)
+         // }
+   
+   
+       }
+    this.cont --
+  }
   }
 
   datosCargados() {
@@ -162,13 +163,25 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
 
   // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
   fileUpload(event: EventTarget) {
+    this.texto_img = null;
       
     const file = (event as HTMLInputElement).files.item(0)
 
     if (!file) return;
-
-    if (file.type.split('/')[0] !== 'image') { 
+    
+    if (file.type.split('/')[0] !== 'image' || (file.name.split('.').pop().toLowerCase() != 'jpg' && file.name.split('.').pop().toLowerCase() != 'jpeg')) { 
       console.log('File type is not supported!')
+      // this.img_acept = false
+      this.texto_img = "Extención no admitida, suba .JPEG ó .JPG"
+      this.file = undefined;
+      this.imageData = '';
+      return;
+    }
+
+    if(file.size > 2e+6) {
+      this.texto_img = "El peso máximo admitido para la fotografía es de 2MB"
+      this.file = undefined;
+      this.imageData = '';
       return;
     }
 
