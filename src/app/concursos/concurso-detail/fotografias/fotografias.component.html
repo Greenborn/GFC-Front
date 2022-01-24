@@ -436,7 +436,11 @@
                             <ion-button title="Ver fotografía"
                               (click)="openImage(r.image)"
                             >
-                              <img class="img-button" [src]="getThumbUrl(r.image.thumbnail,1)" />
+                            <ion-thumbnail>
+                              <ion-img 
+                              [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
+                              [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"></ion-img>
+                            </ion-thumbnail>
                             </ion-button>
                             <ion-button
                               *ngIf="rolificador.esJuez(u)"
