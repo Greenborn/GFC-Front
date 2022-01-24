@@ -1,15 +1,14 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonGrid } from '@ionic/angular';
+
 import { Category } from 'src/app/models/category.model';
 import { Contest } from 'src/app/models/contest.model';
 import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
-import { Fotoclub } from 'src/app/models/fotoclub.model';
-import { Image } from 'src/app/models/image.model';
+
 import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
-import { Section } from 'src/app/models/section.model';
+
 import { UserLogged } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
@@ -24,14 +23,11 @@ import { ConcursoDetailService } from '../concurso-detail.service';
   selector: 'app-concursantes',
   templateUrl: './concursantes.component.html',
   styleUrls: ['./concursantes.component.scss'],
-  // providers: [ ConcursoDetailService ]
 })
 export class ConcursantesComponent implements OnInit {
 
-  @ViewChild('concursantesContent') content: HTMLElement
-  // @Input() concursantes: ProfileExpanded[];
-  // @Input() resultadosConcurso: ContestResultExpanded[];
-  // @Input() fotoclubs: Fotoclub[];
+  @ViewChild('concursantesContent') content: HTMLElement;
+
   concurso: Contest = this.contestService.template;
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
@@ -57,11 +53,6 @@ export class ConcursantesComponent implements OnInit {
       callback: (p: ProfileContestExpanded, query: string) => p.profile.last_name.match(new RegExp(`^${query}`, 'i'))
     }
   ];
-
-  // @Output() openPopup = new EventEmitter<any>();
-  // @Output() postImage = new EventEmitter<Image|undefined>();
-  // @Output() reviewImage = new EventEmitter<ContestResultExpanded>();
-  // @Output() deleteImage = new EventEmitter<ContestResultExpanded>();
 
 
   constructor(

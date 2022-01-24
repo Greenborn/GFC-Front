@@ -93,15 +93,13 @@ export class ConcursoDetailService implements OnInit {
     this.reviewImage = new EventEmitter<ContestResultExpanded>();
     this.deleteImage = new EventEmitter<ContestResultExpanded>();
     this.mostrarAcciones = new EventEmitter<any>();
-    // this.concurso.subscribe(c => this.concursoObj = c)
-    // this.concursantes.subscribe(c => this.concursantesArray = c)
-    // this.categoriasInscriptas.subscribe(c => this.categoriasInscriptasArray = c)
-    // this.inscriptos.subscribe(c => this.inscriptosArray = c)
-      this.loadConcursantes()
-      this.loadJueces()
-      this.loadProfileContests()
-      this.loadProfileContestsJueces()
-      this.loadContestResults()
+    
+    
+    this.loadConcursantes()
+    this.loadJueces()
+    this.loadProfileContests()
+    this.loadProfileContestsJueces()
+    this.loadContestResults()
   }
 
   ngOnInit() {

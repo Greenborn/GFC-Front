@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 
 import { ImagePostPage, ImagePostParams } from './image-post/image-post.page';
@@ -21,7 +21,7 @@ import { ImageService } from 'src/app/services/image.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { Observable, Subscription } from 'rxjs';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 import { ConcursoDetailService } from './concurso-detail.service';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
@@ -65,6 +65,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   subs: Subscription[] = [];
   noImg: boolean = false;
 
+  private routerEventSubscription:any;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -88,96 +90,58 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   ) {
     super(alertCtrl)
    }
-  async ngOnDestroy() {
-    for (const s of this.subs) {
-      s.unsubscribe()
-    }
-    this.subs = undefined
-    this.subs = []
-    console.log('subscriptions deleted', [...this.subs])
+  
+   async ngOnDestroy() {
+    this.desubsc();
+
+    this.routerEventSubscription.unsubscribe();
   }
+
   async ngOnInit() {
     const tabsContent: HTMLElement = document.querySelector('#concurso-tabs')
     if (window.screen.width > 768) {
       const content: HTMLIonContentElement = document.querySelector('#concurso-content')
-      // content.scrollEvents = true
-      // content.addEventListener('ionScroll', ev => console.log('scroll', (ev as any).detail))
+      
       let tiempoScroll = new Date().getTime()
       let scrolling = false
-      // content.addEventListener('wheel', ev => {
-      // // this.pageContent.addEventListener('wheel', ev => {
-      //   // console.log('wheel', ev)
-      //   const scrollDown = ev.deltaY > 0
-      //   if (!scrolling) {
-      //     let scrolling = true
-      //     content.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
-      //     // this.pageContent.scrollByPoint(0, ev.deltaY, 100).then(()  => scrolling = false)
-      //   }
-      // }, {
-      //   passive: true
-      // })
     }
-    
+
+    this.desubsc();
     this.subsc();
-
-    // content.addEventListener('ionScrollStart', () => console.log('scroll start'))
-    // content.addEventListener('ionScrollEnd', () => console.log('scroll end'))
-
     
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f);
   }
 
   subsc(){
-    const s1 = this.concursoDetailService.postImage.subscribe(
+    this.subs.push(this.concursoDetailService.postImage.subscribe(
       params => {
         this.postImage(params)
-        // s1.unsubscribe()
       }
-    )
-    const s2 = this.concursoDetailService.reviewImage.subscribe(
+    ));
+
+    this.subs.push(this.concursoDetailService.reviewImage.subscribe(
       r => {
         this.reviewImage(r)
-        // s2.unsubscribe()
       }     
-    )
-    const s3 = this.concursoDetailService.deleteImage.subscribe(
+    ));
+
+    this.subs.push(this.concursoDetailService.deleteImage.subscribe(
       r => {
         this.deleteImage(r)
-        // s3.unsubscribe()
       }
-    )
-    const s4 = this.concursoDetailService.mostrarAcciones.subscribe(
+    ));
+
+    this.subs.push(this.concursoDetailService.mostrarAcciones.subscribe(
       o => {
         this.mostrarAcciones(o)
-        // s4.unsubscribe()
       }
-    )
-    // const s5 = this.concursoDetailService.inscribirConcursante.subscribe(category_id => this.inscribirConcursante(category_id))
-    const s6 = this.concursoDetailService.desinscribir.subscribe(profileContest => this.desinscribir(profileContest))
-    // this.subs.push(s2, s3, s4, s6)
-    // this.subs.push(s1, s2, s3, s4, s5, s6)
-    this.subs.push(s1, s2, s3, s4, s6);
-
-    this.activatedRoute.paramMap.subscribe(async paramMap => {
-      // let loading = await this.loadingCtrl.create({
-      //   message: 'Please wait...'
-      // });
-      // let loading: HTMLIonLoadingElement;
-      // if (this.concurso.id == undefined) {
-      //   loading = await this.loadingController.create({
-      //     cssClass: 'my-custom-class',
-      //     message: 'Cargando...'
-      //   })
-      //   await loading.present()
-      // }
-      // this.desubsc()
+    ));
     
-      // loading.present();
+    this.subs.push(this.concursoDetailService.desinscribir.subscribe(profileContest => this.desinscribir(profileContest)) );
+    
+    this.activatedRoute.paramMap.subscribe(async paramMap => {
+            
       const id = parseInt(paramMap.get('id'))
-
-      // super.fetch<Contest>(() => this.concursoDetailService.concurso).subscribe({
-      //   next: c => this.concurso = c 
-      // })
 
       this.concursoDetailService.concurso.subscribe({
         next: c => {
@@ -205,99 +169,19 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       })
 
       await this.concursoDetailService.loadContest(id)
-      // this.concursoDetailService.loadConcursantes()
-      // this.concursoDetailService.loadProfileContests()
-      // this.concursoDetailService.loadContestResults()
       
-
-
-      // console.log('subs', this.subs)
-      // console.log('subs destr', [...this.subs])
-      // this.ionViewWillLeave()
-      // this.loading = true
-      // this.contestService.get(id).subscribe(c => this.concurso = c)
-
-      // super.fetch<Contest>(() => 
-      //   this.contestService.get(id)
-      // ).subscribe(async c => {
-      //   // console.log('recibi concurso', c)
-      //   this.concurso = c
-      //   this.concursoDetailService.concurso.emit(c)
-      //   // this.ionViewWillEnter()
-      //   // loading.dismiss()
-      //   // obtener todos los contest result de este concurso
-      //   const u = await this.auth.user
-      //   const inscriptos = new Promise<void>((resolve, reject) => {super.fetch<ProfileContestExpanded[]>(() => this.rolificador.getConcursantesInscriptos(u, id)).subscribe(is => {
-      //       this.inscriptos = is
-      //       console.log('inscriptos', is)
-      //       this.concursoDetailService.inscriptos.emit(is)
-      //       resolve()
-      //     })
-      //   })
-      //   super.fetch<ContestCategoryExpanded[]>(() => this.contestService.getCategoriasInscriptas(id)).subscribe(cs => {
-      //     this.categoriasInscriptas = cs
-      //     console.log('categorias inscriptas', cs)
-      //     this.concursoDetailService.categoriasInscriptas.emit(cs)
-      //   })
-      //   super.fetch<ContestSectionExpanded[]>(() => this.contestService.getSeccionesInscriptas(id)).subscribe(cs => {
-      //     this.seccionesInscriptas = cs
-      //     console.log('secciones inscriptas', cs)
-      //     this.concursoDetailService.seccionesInscriptas.emit(cs)
-      //   })
-      //   super.fetch<ProfileExpanded[]>(() => this.rolificador.getConcursantes(u)).subscribe(async cs => {
-      //     console.log('concursantes', cs)
-      //     this.concursantes = cs
-      //     await inscriptos
-      //     this.concursoDetailService.concursantes.emit(cs)
-      //     // this.resultadosConcurso = super.fetch<ContestResultExpanded[]>(() => 
-      //     super.fetch<ContestResultExpanded[]>(() => 
-      //       this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile&filter[contest_id]=${c.id}`)
-      //     ).pipe(
-      //       map(results => results.filter(r => cs.find(cc => cc.id == r.image.profile_id) != undefined && this.inscriptos.find(cc => cc.profile_id == r.image.profile_id) != undefined))
-      //     ).subscribe(rs => {
-      //       this.resultadosConcurso = rs
-      //       this.concursoDetailService.resultadosConcurso.emit(rs)
-      //       // this.subsc()
-      //       // if (loading)
-      //       //   loading.dismiss()
-      //       // this.loading = false
-      //       setTimeout(() => { // porque no muestra todo el contenido
-      //         // const c = this.pageTabs
-      //         // if (this.router.url.includes('fotografias')) {
-      //           // this.tabsContent.nativeElement.style.setProperty('height', '')
-      //           // const height = this.tabsContent.nativeElement.getBoundingClientRect().height
-      //           // // console.log('tabs content height', height)
-      //           // this.tabsContent.nativeElement.style.setProperty('height', `${height + 500}px`) 
-      //         // }
-      //       }, 100)
-      //     })
-      //   })
-      // })
     });
   }
   
-  // ionViewWillLeave() {
-  desubsc() {
-    // this.subs.forEach(s => {
-    //   s.unsubscribe()
-    // })
+
+desubsc() {
     for (const s of this.subs) {
       s.unsubscribe()
     }
     this.subs = undefined
-    this.subs = []
-    console.log('subscriptions deleted', [...this.subs])
-  }
+    this.subs = [];
+}
 
-  // https://stackoverflow.com/questions/41451375/passing-data-into-router-outlet-child-components
-//   onOutletLoaded(component: FotografiasComponent | ConcursantesComponent) {
-//     component.fotoclubs = this.fotoclubs;
-//     component.concursantes = this.concursantes;
-//     component.resultadosConcurso = this.resultadosConcurso;
-//     // component.openPopup.subscribe((options: any) => this.openPopup(options))
-//     component.postImage.subscribe((i: Image) => this.postImage(i))
-//     console.log('suscribed')
-// } 
 
 obtenerPx() {
   if (window.innerWidth > 767) {
@@ -378,46 +262,6 @@ obtenerPx() {
     if (this.popover != undefined)
       this.popover.onDidDismiss().then(_ => this.popover = undefined)
   }
-
-  // async inscribirConcursante(category_id: number = undefined) {
-  //   if (this.popover != undefined) {
-  //     this.popoverCtrl.dismiss(this.popover)
-  //     this.popover = undefined
-  //   }
-
-  //   const pc = this.profileContestService.template
-  //   pc.category_id = category_id
-
-  //   // const modal = await this.modalController.create({
-  //   //   component: InscribirConcursanteComponent,
-  //   //   cssClass: 'auto-width',
-  //   //   componentProps: {
-  //   //     "concursantes": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) < 0),
-  //   //     "modalController": this.modalController,
-  //   //     "contest": this.concurso,
-  //   //     "categorias": this.categoriasInscriptas.map(c => c.category),
-  //   //     profileContest: pc
-  //   //   }
-  //   // });
-  //   // await modal.present()
-
-  //   // const { data } = await modal.onWillDismiss();
-
-  //   // console.log('inscribiendo concursante', data)
-  //   // const { profileContest } = data ?? {}
-  //   const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirConcursanteComponent, {
-  //     "concursantes": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) < 0),
-  //     "modalController": this.modalController,
-  //     "contest": this.concurso,
-  //     "categorias": this.categoriasInscriptas.map(c => c.category),
-  //     profileContest: pc
-  //   })
-
-  //   if (profileContest != undefined) {
-  //     this.inscriptos.push(profileContest)
-  //     this.concursoDetailService.inscriptos.emit(this.inscriptos)  
-  //   }
-  // }
 
   async desinscribir(profileContest: ProfileContestExpanded) {
     if (this.popover != undefined) {

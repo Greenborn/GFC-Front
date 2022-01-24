@@ -29,16 +29,13 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   @Input() concurso: string;
   @Input() concurso_id: number;
   @Input() modalController: ModalController;
-  // @Input() contestResult: ContestResult;
   @Input() image: GFC_Image = this.imageService.template;
   @Input() profiles: ProfileContestExpanded[];
   @Input() secciones: Section[];
 
   @Input() section_id: number = undefined;
   
-  // @ViewChild('s') selectConcursante: ElementRef;
-  // @ViewChild('formImage') formImage: HTMLFormElement;
-  // private cont: number = 0;
+
   @ViewChild('profileSelect') profileSelect: IonicSelectableComponent;
   public file: File;
   public imageData: string = '';
@@ -53,10 +50,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   profile: ProfileContestExpanded[];
 
   constructor(
-    // private userSvc: UsuarioService,
-    // private contestSvc: ConcursoService,
     private imageService: ImageService,
-    // private profileService: ProfileService,
     alertCtrl: AlertController,
     public responsiveService: ResponsiveService,
     public ProfileService: ProfileService,
@@ -220,31 +214,5 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
 
     const fileStoragePath = `uploads/images/${new Date().getTime()}_${file.name}`;
 
-    // const imageRef = this.angularFireStorage.ref(fileStoragePath);
-
-    // this.ngFireUploadTask = this.angularFireStorage.upload(fileStoragePath, file);
-
-    // this.progressNum = this.ngFireUploadTask.percentageChanges();
-    // this.progressSnapshot = this.ngFireUploadTask.snapshotChanges().pipe(
-      
-      // finalize(() => {
-      //   this.fileUploadedPath = imageRef.getDownloadURL();
-        
-      //   this.fileUploadedPath.subscribe(resp=>{
-      //     this.fileStorage({
-      //       name: file.name,
-      //       filepath: resp,
-      //       size: this.FileSize
-      //     });
-      //     this.isImgUploading = false;
-      //     this.isImgUploaded = true;
-      //   },error => {
-      //     console.log(error);
-      //   })
-      // }),
-      // tap(snap => {
-      //     this.FileSize = snap.totalBytes;
-      // })
-    // )
   }
 }

@@ -29,7 +29,6 @@ import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.comp
   selector: 'app-fotografias',
   templateUrl: './fotografias.component.html',
   styleUrls: ['./fotografias.component.scss'],
-  // providers: [ConcursoDetailService]
 })
 export class FotografiasComponent implements OnInit {
 
@@ -63,16 +62,11 @@ export class FotografiasComponent implements OnInit {
   public filtrado: any[] = [];
   puntajes: Metric[]= [];
 
-  // @Output() openPopup = new EventEmitter<any>();
-  // @Output() postImage = new EventEmitter<Image|undefined>();
-  // @Output() reviewImage = new EventEmitter<ContestResultExpanded>();
-  // @Output() deleteImage = new EventEmitter<ContestResultExpanded>();
-
   public seccionSeleccionada: Section = null;
   public categoriaSeleccionada: Category = null;
-  // public loading: boolean = true;
   public updatingInscriptos: boolean = false;
   mostrarFiltro: boolean = false;
+
   constructor(
     public concursoDetailService: ConcursoDetailService,
     public contestService: ContestService,
@@ -123,13 +117,13 @@ export class FotografiasComponent implements OnInit {
 
   async ngOnInit() {
     if (this.rolificador.isAdmin(await this.auth.user) || this.isContestNotFin ) {
-      this.atributosBusqueda.push({ 
-      valor: 'username', 
-      valorMostrado: 'Autor', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
-      callback: (c: ContestResultExpanded, query: string) => `${c.image.profile.name} ${c.image.profile.last_name}`.match(new RegExp(`${query}`, 'i'))
-    })
-  }
+        this.atributosBusqueda.push({ 
+        valor: 'username', 
+        valorMostrado: 'Autor', 
+        // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+        callback: (c: ContestResultExpanded, query: string) => `${c.image.profile.name} ${c.image.profile.last_name}`.match(new RegExp(`${query}`, 'i'))
+      })
+    }
 
     this.auth.user.then(u => this.user = u)
     // let loading: HTMLIonLoadingElement;
@@ -194,13 +188,7 @@ export class FotografiasComponent implements OnInit {
         }
       }
     )
-
-    
-    // this.concursoDetailService.loadConcursantes()
-    // this.concursoDetailService.loadProfileContests()
-    // this.concursoDetailService.loadContestResults()
-
-    
+   
   }
 
   getThumbUrl(obj:any, thumb_id:number = 1){

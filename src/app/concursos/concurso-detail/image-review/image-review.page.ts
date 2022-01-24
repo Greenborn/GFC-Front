@@ -23,12 +23,6 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   @Input() modalController: ModalController;
   @Input() image: Image;
   @Input() review: Metric;
-  // = {
-  //   id: null,
-  //   title: undefined,
-  //   code: undefined,
-  //   profile_id: undefined
-  // };
   @Input() contestResult: ContestResult;
   
   // @ViewChild('formReview') formReview: HTMLFormElement;
@@ -37,7 +31,6 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   public elegida: Metric;
   
   constructor(
-    // private contestSvc: ConcursoService,
     private metricService: MetricService,
     private metricAbmService: MetricAbmService,
     alertCtrl: AlertController,
@@ -59,14 +52,9 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
 
   async postReview(f: NgForm) {
     if (f.valid) {
-// this.review.prize = this.elegida.prize
-// this.review.score = this.elegida.score
-      
+
       this.posting = true
-      // const metric: Metric = {
-      //   // id: this.review.id,
-      //   ...f.value
-      // }
+
       const metric: Metric = {
         id: this.review.id,
         prize: f.value.elegida.prize,
@@ -89,10 +77,7 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
         },
         () => this.posting = false
       )
-      
-      // console.log('posting review', metric, 'de', this.contestResult.contest_id)
-      // await this.contestSvc.postMetric(metric)
-      // this.dismiss(metric)
+
     }
   }
 

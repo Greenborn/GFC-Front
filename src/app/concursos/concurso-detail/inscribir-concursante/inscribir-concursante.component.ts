@@ -91,22 +91,7 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
             s.unsubscribe()
           }
         )
-      // }
-      // super.fetch<ProfileContestExpanded>(() => this.profileContestService.post({
-      //     profile_id: this.profileContest.profile_id,
-      //     contest_id: this.contest.id,
-      //     category_id: this.profileContest.category_id
-      //   }, undefined, 'expand=profile,profile.user,profile.fotoclub,category'
-      // )).subscribe(
-      //   profileContest => {
-      //     this.posting = false
-      //     this.modalController.dismiss({ profileContest })
-      //   },
-      //   err => {
-      //     console.log('error inscripcion concursante', err)
-      //     super.displayAlert(err.error['error-info'][2])
-      //   }
-      // )
+  
     }
     
   }
