@@ -42,7 +42,7 @@ export class ChangePasswordComponent extends ApiConsumer implements OnInit {
         err => {
           this.posting = false
           console.log('error change password', err)
-          super.displayAlert(err.error['message'])  
+          super.displayAlert(this.errorFilter(err.error['message']))  
         }
       )
     }

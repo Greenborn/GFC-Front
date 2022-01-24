@@ -22,8 +22,7 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
       valor: 'name', 
-      valorMostrado: 'Nombre', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())      
+      valorMostrado: 'Nombre',    
       callback: (f: Fotoclub, query: string) => `${f.name}`.match(new RegExp(`${query}`, 'i')) 
     }
   ];
@@ -78,10 +77,9 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
         super.fetch<void>(() => this.fotoclubService.delete(id)).subscribe(
           _ => this.fotoclubs.splice(this.fotoclubs.findIndex(f => f.id == id), 1), 
           async err => {
-            this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+            this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
           }
         )
-        // this.UIUtilsService.mostrarError({ message: 'Falta implementar la restricción de borrado' })
       }
     )
   }

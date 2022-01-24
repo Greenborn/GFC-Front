@@ -86,7 +86,6 @@ export class InfoCentroPage extends ApiConsumer implements OnInit {
         super.fetch<void>(() => this.infoCentroService.delete(id)).subscribe(
           _ => this.parrafos.splice(this.parrafos.findIndex(p => p.id == id), 1)
         )
-        // this.UIUtilsService.mostrarError({ message: 'Falta implementar la restricción de borrado' })
       }
     )
   }

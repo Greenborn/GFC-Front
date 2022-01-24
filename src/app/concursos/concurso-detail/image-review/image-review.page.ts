@@ -67,7 +67,7 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
         async err => {
           (await this.alertCtrl.create({
             header: 'Error',
-            message: err.error['error-info'][2],
+            message: this.errorFilter(err.error['error-info'][2]),
             buttons: [{
               text: 'Ok',
               role: 'cancel'

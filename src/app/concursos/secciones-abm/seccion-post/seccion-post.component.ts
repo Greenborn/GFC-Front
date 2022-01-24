@@ -63,7 +63,7 @@ export class SeccionPostComponent extends ApiConsumer implements OnInit {
         err => {
           console.log('error post seccion', err)
           this.posting = false
-          this.UIUtilsService.mostrarError({ message: err.statusText })
+          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.statusText) })
         }
       )
       // console.log('posting', model, this.section.id)

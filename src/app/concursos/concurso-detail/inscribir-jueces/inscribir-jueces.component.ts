@@ -54,7 +54,7 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
           },
           err => {
             console.log('error inscripcion juez', err)
-            super.displayAlert(err.error['error-info'])
+            super.displayAlert(this.errorFilter(err.error['error-info']))
           },
           () => {
             // console.log('unsubsssss')

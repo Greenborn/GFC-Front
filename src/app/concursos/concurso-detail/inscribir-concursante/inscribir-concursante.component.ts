@@ -82,8 +82,7 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
           },
           err => {
             console.log('error inscripcion concursante', err)
-            // super.displayAlert(err.error['error-info'][2])
-            super.displayAlert(err.error.message)
+            super.displayAlert(this.errorFilter(err.error.message))
           },
           () => {
             // console.log('unsubsssss')

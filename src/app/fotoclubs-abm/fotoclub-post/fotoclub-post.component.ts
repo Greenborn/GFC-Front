@@ -67,7 +67,7 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
             this.posting = false
             // this.cont--
             console.log('Error post fotoclub', err)
-            this.UIUtilsService.mostrarError({ message: err.error })
+            this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error) })
           });
       }
     }

@@ -203,7 +203,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                   async err => {
                     (await this.alertCtrl.create({
                       header: 'Error',
-                      message: err.error['error-info'][2],
+                      message: this.errorFilter(err.error['error-info'][2]),
                       buttons: [{
                         text: 'Ok',
                         role: 'cancel'
@@ -304,7 +304,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                 async err => {
                   (await this.alertCtrl.create({
                     header: 'Error',
-                    message: err.error['error-info'][2],
+                    message: this.errorFilter(err.error['error-info'][2]),
                     buttons: [{
                       text: 'Ok',
                       role: 'cancel'
@@ -344,15 +344,15 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                   this.concursoDetailService.loadContestResults()
                   super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
                     _ => {},
-                    async err => super.displayAlert(err.error['error-info'][2])
+                    async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
                   )
                   super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe(
                     _ => {},
-                    async err => super.displayAlert(err.error['error-info'][2])
+                    async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
                   )
   
                 },
-                async err => super.displayAlert(err)
+                async err => super.displayAlert(this.errorFilter(err))
               )
               // return false
             }

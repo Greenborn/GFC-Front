@@ -67,7 +67,7 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
             this.modalController.dismiss({ footer })
           },
           async err => {
-            super.displayAlert(err.error['message'])
+            super.displayAlert(this.errorFilter(err.error['message']))
             this.posting = false
           },
         )

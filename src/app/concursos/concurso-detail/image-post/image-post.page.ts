@@ -128,7 +128,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
                this.dismiss(i, this.section_id)
              },
              async err => {
-               super.displayAlert(err.error['message'])
+               super.displayAlert(this.errorFilter(err.error['message']))
                this.posting = false
              },
             

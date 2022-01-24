@@ -256,17 +256,11 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
                     super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(r => {})
                 },
                 async err => {
-                  this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+                  this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
                 }
                 
                 )
-            //   },
-            //   async err => {
-            //     this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
-            //   }
-            // )
-            // super.displayAlert('.')
-            // console.log('delete usuario', id)
+            
           }
         }
       ]

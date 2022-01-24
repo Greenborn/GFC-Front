@@ -265,7 +265,7 @@ get secycat(){
           } catch(e) {
             (await this.alertCtrl.create({
               header: 'Error',
-              message: err.error['error-info'][2],
+              message: this.errorFilter(err.error['error-info'][2]),
               buttons: [{
                 text: 'Ok',
                 role: 'cancel'
@@ -307,7 +307,7 @@ get secycat(){
         err => {
           reject(err)
           console.log('Error post contest category', err)
-          this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
         }
       )
     })
@@ -334,7 +334,7 @@ get secycat(){
               // this.router.navigate(['/concursos']);
             }, 
             async err => {
-              this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
               resolve(false)
             }
           )
@@ -359,7 +359,7 @@ get secycat(){
         err => {
           reject(err)
           console.log('Error post contest section', err)
-          this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
         }
       )
     })
@@ -386,7 +386,7 @@ get secycat(){
               // this.router.navigate(['/concursos']);
             }, 
             async err => {
-              this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
               resolve(false)
             }
           )
