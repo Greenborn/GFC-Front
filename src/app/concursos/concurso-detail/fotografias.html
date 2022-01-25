@@ -123,7 +123,6 @@
                 Fotografías
               </h1>
               <ion-fab-button size="small" (click)="postImage()">
-                <!-- [routerLink]="['agregar-foto']"   -->
                 <ion-icon name="add"></ion-icon>
               </ion-fab-button>
             </ion-row>
@@ -220,11 +219,9 @@
                         class="ion-hide-lg-down ion-justify-content-end"
                       >
                         <ion-button (click)="reviewImage(r)">
-                        <!-- <ion-button (click)="reviewImage(getImage(r), r)"> -->
                           <ion-icon name="star-outline"></ion-icon>
                         </ion-button>
                         <ion-button (click)="postImage(r.image)">
-                        <!-- <ion-button (click)="postImage(getImage(r))"> -->
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
                         <ion-button (click)="deleteImage(r.image_id, r.id, r.metric_id)">

@@ -45,8 +45,6 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public img_url: string = '';
   public rules_file: File;
   public rules_url: SafeResourceUrl;
-  public cont: number = 0;
-  
   noImg: boolean = false;
 
   constructor(
@@ -183,8 +181,6 @@ get secycat(){
   }
 
   async postConcurso(f: NgForm) {
-    if (this.cont < 1) {
-      this.cont++
     if (f.valid && !this.secycat) {
       console.log("secycat: ", this.secycat)
       const model = {
@@ -279,7 +275,6 @@ get secycat(){
     else {
       console.log('Form concurso no valido:', f.value);
     }
-  }
   }
 
   get categoriasNoInscriptas(): Category[] {

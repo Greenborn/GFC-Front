@@ -4,6 +4,7 @@ import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Profile } from 'src/app/models/profile.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ProfileService } from 'src/app/services/profile.service';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 
 @Component({
   selector: 'app-presentacion-comision-directiva',
@@ -44,12 +45,12 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
     slidesItems: []
   };
   slideOptions: any = {};
-  // perfiles: Profile[] = [];
 
   constructor(
     public  alertController:      AlertController,
     public configService: ConfigService,
     public profileService: ProfileService,
+    public responsiveService: ResponsiveService
   ) {
     
     super(alertController);

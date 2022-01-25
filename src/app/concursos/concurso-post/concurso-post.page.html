@@ -26,9 +26,7 @@
           <!-- *ngIf="!loading; else spinner" -->
           <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
           <ion-list class="ion-align-items-end">
-            <!-- <ion-col size="12" size-md="4" > -->
             <ion-item>
-              <!-- <ion-col> -->
               <ion-label position="floating">Nombre</ion-label>
               <ion-input
                 name="name"
@@ -36,91 +34,12 @@
                 autocapitalize="sentences"
                 required
               ></ion-input>
-              <!-- </ion-col> -->
             </ion-item>
 
             <ion-item>
               <ion-label position="floating">Sub-título</ion-label>
               <ion-input name="sub_title" [ngModel]="concurso.sub_title"></ion-input>
             </ion-item>
-
-            <!-- <ion-list>
-              <ion-radio-group
-                [(ngModel)]="typeSubsection"
-                [ngModelOptions]="{standalone: true}"
-              >
-                <ion-list-header>
-                  <ion-row class="ion-align-items-center">
-                    <ion-label>Tipo de sección</ion-label>
-                  </ion-row>
-                </ion-list-header>
-      
-                <ion-item>
-                  <ion-label>Sección general</ion-label>
-                  <ion-radio slot="start" [value]="false"></ion-radio>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Subsección</ion-label>
-                  <ion-radio slot="start" [value]="true"></ion-radio>
-                </ion-item>
-              </ion-radio-group>
-            </ion-list> -->
-
-            <!-- <ion-row>
-
-                <ion-item>
-                  <ion-label>Categorías</ion-label>
-                  <ion-select  *ngIf="!updatingSelect"
-                    (ionChange)="agregarCategoria($event)" 
-                    interface="popover"
-                    ngDefaultControl
-                    [disabled]="categoriasNoInscriptas.length == 0"
-                  >
-                    <ion-select-option
-                      *ngFor="let c of categoriasNoInscriptas"
-                      [value]="c.id"
-                      >{{ c.name }}</ion-select-option
-                    >
-                  </ion-select>
-                </ion-item>
-                
-                <ion-list>
-                  <ion-card-title>Categorias inscriptas</ion-card-title>
-                  <ul>
-                    <li *ngFor="let c1 of categoriasInscriptas">
-                      <ion-row class="w-100 ion-align-items-center">
-                        <ion-label>
-                          <ion-card-subtitle>{{getCategoryName(c1.category_id)}}</ion-card-subtitle>
-                        </ion-label>
-                        <ion-buttons
-                          class="ion-justify-content-center ion-margin-start"
-                        >
-                          <ion-button size="small"
-                          (click)="desinscribirCategoria(c1.id)"
-                          >
-                            <ion-icon name="trash"></ion-icon>
-                          </ion-button>
-                        </ion-buttons>
-                        <!- - <ion-buttons
-                          class="ion-hide-md-up"
-                        >
-                          <ion-button (click)="mostrarAcciones($event, s1)">
-                            <ion-icon
-                              slot="icon-only"
-                              ios="ellipsis-horizontal"
-                              md="ellipsis-vertical"
-                            ></ion-icon>
-                          </ion-button>
-                        </ion-buttons> - ->
-                      </ion-row>
-                    </li>
-            
-                  </ul>
-                
-                </ion-list>
-            </ion-row> -->
-            <!-- </ion-col> -->
-            <!-- <ion-col size="12" size-md="8"> -->
             <ion-item>
               <ion-col size="6" class="ion-no-padding">
                 <ion-item class="ion-no-padding">
@@ -174,10 +93,8 @@
                 </ion-item>
               </ion-col>
             </ion-item>
-            <!-- </ion-col> -->
 
             <ion-item>
-              <!-- <ion-col> -->
               <ion-label position="floating">Descripción</ion-label>
               <ion-textarea
                 (ionFocus)="descrChangeFocus = true"
@@ -189,16 +106,12 @@
                 [ngModel]="concurso.description"
                 required
               ></ion-textarea>
-              <!-- </ion-col> -->
             </ion-item>
             <ion-note *ngIf="descrChangeFocus">Máximo 250 caracteres</ion-note>
           </ion-list>
-
-          <!-- <ion-item> -->
           <ion-row>
 
             <ion-item>
-              <!-- <ion-col> -->
               <ion-label position="stacked">Total de imágenes por sección</ion-label>
               <ion-input
                 name="max_img_section"
@@ -206,10 +119,8 @@
                 type="number"
                 required
               ></ion-input>
-              <!-- </ion-col> -->
             </ion-item>
 
-            <!-- <ion-col size="12" size-lg="6"> -->
             <ion-col size="12" >
               <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
               <ion-list >
@@ -218,11 +129,7 @@
                     [disabled]="loadingCategorias"
                   >
                     <ion-row class="ion-align-items-center ion-justify-content-between w-100">
-                    <!-- <ion-col size="10" size-md="2"> -->
                       <ion-list-header style="width: initial">Categorias</ion-list-header>
-                    <!-- </ion-col> -->
-                    <!-- <ion-col> -->
-                      <!-- class="ion-hide-lg-up" -->
                       <ion-button 
                         class="ion-margin-start"
                         size="small"
@@ -234,8 +141,6 @@
                       </ion-button>
                     </ion-row>
                   </ion-item>
-                    <!-- </ion-col> -->
-                  <!-- <ion-label>Categorias</ion-label> -->
                   <div *ngIf="mostrarCategorias">
                     <ion-item *ngFor="let c of categorias" lines="none">
                       <ion-label>{{c.name}}</ion-label>
@@ -247,11 +152,8 @@
                     </ion-item>
                   </div>
               </ion-list>
-              <!-- </ion-item> -->
 
             </ion-col>
-            
-            <!-- <ion-col size="12" size-lg="6"> -->
             <ion-col size="12">
               <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
               <ion-list>
@@ -260,12 +162,7 @@
                   [disabled]="loadingSecciones"
                 >
                 <ion-row class="ion-align-items-center ion-justify-content-between w-100">
-                    <!-- <ion-col size="10" size-md="2"> -->
                       <ion-list-header style="width: initial">Secciones</ion-list-header>
-
-                    <!-- </ion-col> -->
-                    <!-- <ion-col> -->
-                      <!-- class="ion-hide-lg-up" -->
                       <ion-button 
                         class="ion-margin-start"
                         
@@ -276,17 +173,9 @@
                           name="chevron-{{mostrarSecciones ? 'up' : 'down'}}-outline"
                         ></ion-icon>
                       </ion-button>
-                    <!-- </ion-col> -->
                   </ion-row>
                 </ion-item>
-                <!-- <ion-label>Categorias</ion-label> -->
                 <div *ngIf="mostrarSecciones">
-                  <!-- <ion-item *ngFor="let s of getParentSections()" lines="none">
-                                  <ion-label>{{s.name}}</ion-label>
-                                  <ion-checkbox slot="end" [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
-                                    [ngModelOptions]="{standalone: true}"></ion-checkbox>
-                                </ion-item> -->
-    
                   <ion-item *ngFor="let s of secciones" lines="none">
                     <ion-label>{{s.name}}</ion-label>
                     <ion-checkbox
@@ -295,48 +184,9 @@
                       [ngModelOptions]="{standalone: true}"
                     ></ion-checkbox>
                   </ion-item>
-                  <!-- <ion-item-group
-                    *ngFor="let s of getParentSections()" 
-                    >
-                    <ion-item-divider lines="full" mode="ios"
-                      class="ion-padding-top ion-padding-bottom ion-padding-end" 
-                      style="--ion-padding: 8px"
-                    >
-                      <ion-label> <b>{{ s.name }}</b></ion-label>
-                      <ion-checkbox
-                        slot="end"
-                        [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
-                        [ngModelOptions]="{standalone: true}"
-                      ></ion-checkbox>
-                    </ion-item-divider>
-    
-                    <ng-template #textoSeccion>
-                      <ion-item lines="full">
-                        <ion-label>
-                          <ion-card-subtitle
-                            >No contiene subsecciones
-                          </ion-card-subtitle>
-                        </ion-label>
-                      </ion-item>
-                    </ng-template>
-                    <div *ngIf="getSubSections(s.id).length > 0; else textoSeccion">
-                      <ion-item lines="full"
-                        *ngFor="let s1 of getSubSections(s.id) as subsections"
-                      >
-                        <ion-label>{{s1.name}}</ion-label>
-                        <ion-checkbox
-                          slot="start"
-                          [(ngModel)]="getSeccionSeleccionada(s1.id).seleccionada"
-                          [ngModelOptions]="{standalone: true}"
-                        ></ion-checkbox>
-                      </ion-item>
-                    </div>
-                  </ion-item-group> -->
                 </div>
               </ion-list>
-
             </ion-col>
-
           </ion-row>
 
           
@@ -344,16 +194,12 @@
             <ion-col class="ion-no-padding">
               <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                 <ion-label position="stacked">Imágen</ion-label>
-                <!-- [(ngModel)]="image.code" -->
                 <input type="file" (change)="imageUpload($event.target)" />
               </ion-item>
               <div>
-                <!-- <ion-thumbnail> -->
                   <ion-row *ngIf="img_url != ''" class="ion-justify-content-center">
-
                     <ion-img (ionError)="img_url=''" [src]="img_url" alt=""> </ion-img>
                   </ion-row>
-                <!-- </ion-thumbnail> -->
               </div>
             </ion-col>
           </ion-row>
@@ -362,21 +208,14 @@
             <ion-col class="ion-no-padding">
               <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                 <ion-label position="stacked">Reglamento</ion-label>
-                <!-- [(ngModel)]="image.code" -->
                 <input type="file"  accept=".pdf" (change)="fileUpload($event.target)" />
               </ion-item>
               <ion-note>
                 La extención de archivo aceptada es PDF</ion-note>
               <div>
-                <!-- <ion-thumbnail> -->
                   <ion-row class="ion-justify-content-center">
-                    <!-- <object [data]="pdf_url" type="application/pdf">
-                      <div>No online PDF viewer installed</div>
-                    </object> -->
-                    
                     <iframe *ngIf="rules_url" [src]="rules_url" frameborder="0"></iframe>
                   </ion-row>
-                <!-- </ion-thumbnail> -->
               </div>
             </ion-col>
           </ion-row>
@@ -390,23 +229,10 @@
                   size-sm="3"
                   class="ion-align-self-center"
                 >
-                <!-- [disabled]="!f.valid && ( (this.catI) == false  || (this.secI) == false )" -->
                   <app-btn-post
                     [posting]="posting"
                     [disabled]="!f.valid || secycat"
                   ></app-btn-post>
-                  <!-- <ion-button
-                    expand="block"
-                    type="submit"
-                    [disabled]="!f.valid"
-                    >
-                    <ion-spinner
-                      *ngIf="posting"
-                      class="ion-margin-end"
-                      size="small"
-                    ></ion-spinner>
-                    Guardar
-                  </ion-button> -->
                 </ion-col>
 
                 <ion-col
