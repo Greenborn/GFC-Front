@@ -21,7 +21,8 @@ export class ImageService extends ApiService<Image> {
       id: undefined,
       code: undefined,
       title: undefined,
-      profile_id: undefined
+      profile_id: undefined,
+      photo_base64: undefined
     }
   }
 }

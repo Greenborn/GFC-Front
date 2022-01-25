@@ -22,6 +22,7 @@ export interface ImagePostParams {
   category_id?: number;
   section_max?: number;
   resultados?: ContestResultExpanded[];
+  photo_base64?: any;
 }
 
 @Component({
@@ -47,6 +48,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   public file: File;
   public imageData: string = '';
   public cont: number = 0;
+  public photo_base64:any;
   perfil_elegido: Profile = this.ProfileService.template;
   texto_img: string = null;
   texto_sec: string = null;
@@ -114,13 +116,14 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
            const model: any = {
              title: this.image.title,
              code: this.code,
+             photo_base64:this.photo_base64,
              profile_id:  this.profiles_list.length != 1 ? this.perfil_elegido['id'] : this.image.profile_id
            }
            if (this.file != undefined) {
              model.image_file = this.file
            }
           //hacer que agarre bien al usuario TODO:
-          this.imageService.postFormData<any>(model, this.image.id).subscribe(
+          this.imageService.post<any>(model, this.image.id).subscribe(
              // image => this.dismiss(image),
              image => {
                this.posting = false
@@ -181,14 +184,15 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     return true
   }
 
-  // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
-  fileUpload(event: EventTarget) {
-    this.texto_img = null;
-      
-    const file = (event as HTMLInputElement).files.item(0)
+  handleFileInput(files: FileList) {
+    let me     = this;
+    let file   = files[0];
+    let reader = new FileReader();
 
+    this.texto_img = null;
+   
     if (!file) return;
-    
+
     if (file.type.split('/')[0] !== 'image' || (file.name.split('.').pop().toLowerCase() != 'jpg' && file.name.split('.').pop().toLowerCase() != 'jpeg')) { 
       console.log('File type is not supported!')
       // this.img_acept = false
@@ -205,27 +209,18 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
       return;
     }
 
-    this.file = file
+    this.file = file;
 
-    const fileReader = new FileReader();
-    const { type, name } = file;
-
-    fileReader.readAsDataURL(file);
-    fileReader.onload = event => {
-
-        const image = new Image();
-        image.onload = (i) => {
-              const imageData = (i.target as HTMLImageElement).src
-              this.imageData = imageData;
-        };
-        image.onerror = () => {
-              // observer.error({ error: { name, errorMessage: INVALID_IMAGE } });
-        };
-        image.src = fileReader.result as string;
-
-    }
-
-    const fileStoragePath = `uploads/images/${new Date().getTime()}_${file.name}`;
-
+    reader.readAsDataURL(file);
+    reader.onload = function (i) {
+        me.photo_base64 = { file: reader.result, name:file.name};
+        me.img_url = me.photo_base64.file;
+        me.imageData =  me.img_url;
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+      return false;
+    };
   }
+
 }

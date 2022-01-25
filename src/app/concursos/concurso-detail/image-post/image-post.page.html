@@ -35,7 +35,7 @@
                 <ion-row class="w-100">
                   <ion-col class="ion-no-padding">
                     <ion-item class="w-100 ion-no-padding ion-margin-bottom">
-                      <input type="file" accept=".jpeg,.jpg" (change)="fileUpload($event.target)" />
+                      <input type="file" accept=".jpeg,.jpg" (change)="handleFileInput($event.target['files'])" />
                     </ion-item>
                     
                     <ion-chip color="danger" *ngIf="texto_img != null">
