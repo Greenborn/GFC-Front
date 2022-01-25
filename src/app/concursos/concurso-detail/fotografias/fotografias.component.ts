@@ -42,8 +42,6 @@ export class FotografiasComponent implements OnInit {
   resultadosConcursoOrig: ContestResultExpanded[] = [];
   fotoclubs: Fotoclub[] = [];
   user: UserLogged;
-  public cont: number = 0;
-  public cont2: number = 0;
 
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
@@ -252,8 +250,6 @@ export class FotografiasComponent implements OnInit {
   }
 
   postImage(image: Image = undefined, section_id: number = undefined) {
-    //if (this.cont2 < 1) {
-    //  this.cont2++
     if (section_id == undefined) {
       section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
   }
@@ -266,16 +262,10 @@ export class FotografiasComponent implements OnInit {
       section_max,
       resultados
   });
-   //   this.cont2 --
-  //}
   }
 
   openImage(image: Image) {
-    if (this.cont < 1) {
-      this.cont++
     this.UIUtilsService.mostrarModal(VerFotografiasComponent, {image});
-    this.cont --
-    }
   }
 
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)

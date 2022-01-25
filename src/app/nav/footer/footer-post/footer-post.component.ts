@@ -14,6 +14,7 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
   
   @Input() modalController: ModalController;
   @Input() footer: Footer = this.footerService.template;
+  
   public facebook: string;
   public instagram: string;
   public youtube: string;
@@ -41,8 +42,6 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
   }
 
   async postFooter() {
-    if (this.cont < 1) {
-      this.cont++
     if (this.datosCargados()) {
         // setTimeout(() => this.cont = 0, 500)
         this.posting = true
@@ -72,7 +71,6 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
           },
         )
       }
-    }
   }
     
   dismiss() {

@@ -19,9 +19,7 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
 
   public posting: boolean = false
   public name: string;
-  public cont: number = 0;
   descrChangeFocus: boolean = false;
-  
   public image_file: File;
   public img_url: string = '';
 
@@ -53,24 +51,19 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
   }
 
   async postFotoclub(form: NgForm) {
-    if (this.cont < 1) {
-      this.cont++
       if (form.valid) {
         this.posting = true
         this.fotoclubService.post(form.value, this.fotoclub.id).subscribe(
          async  fotoclub => {
             this.posting = false
-            // this.cont--
             this.modalController.dismiss({ fotoclub })
           },
           err => {
             this.posting = false
-            // this.cont--
             console.log('Error post fotoclub', err)
             this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error) })
           });
       }
-    }
   }
 
   handleFileInput(files: FileList) {

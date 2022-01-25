@@ -22,13 +22,9 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
   @Input() contest: Contest;
   @Input() concursantes: ProfileExpanded[];
   @Input() categorias: Category[];
-
   @Input() profileContest: ProfileContest = this.profileContestService.template;
 
   public posting: boolean = false;
-  // pfCts: number = null;
-
-  // private cont: number = 0;
 
   constructor(
     alertCtrl: AlertController,
@@ -59,8 +55,6 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
 
   async inscribirConcursante() {
     if (this.datosCargados()) {
-    // if (this.cont < 1) {
-      //   this.cont++
       // console.log("concursantes: ", this.concursantes[0].id)
       if(!this.rolificador.esConcursante(await this.authService.user) ){
         this.profileContest.profile_id = Number(this.profileContest.profile_id['id']); // Agregado por cambio en select

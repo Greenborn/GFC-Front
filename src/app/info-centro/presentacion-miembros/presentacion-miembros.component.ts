@@ -6,6 +6,7 @@ import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 
 @Component({
   selector: 'app-presentacion-miembros',
@@ -44,7 +45,6 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
       prevEl: '.swiper-button-prev',
     },
   };
-  // perfiles: Profile[] = [];
 
   get aspecto() {
     return document.body.classList.contains("dark")
@@ -81,7 +81,8 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
     public  alertController:      AlertController,
     public configService: ConfigService,
     public fotoclubService: FotoclubService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public responsiveService: ResponsiveService
   ) {
     
     super(alertController);

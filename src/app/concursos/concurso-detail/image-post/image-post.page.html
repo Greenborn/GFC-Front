@@ -91,10 +91,11 @@
                   <ion-row class="ion-justify-content-end">
 
                     <ion-col push-sm="3" size="12" size-sm="3" class="ion-align-self-center">
-                      <ion-button  expand="block" type="submit" (click)="postImage()" [disabled]="!datosCargados()">
-                        <ion-spinner *ngIf="posting" class="ion-margin-end" size="small"></ion-spinner>
-                        Guardar
-                      </ion-button>
+                       <app-btn-post
+                        [posting]="posting"
+                        [disabled]="!datosCargados()"
+                        (post)="postImage()"
+                      ></app-btn-post>
                     </ion-col>
 
                     <ion-col class="ion-align-self-center" pull-sm="3" size="12" size-sm="3">
