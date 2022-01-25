@@ -23,10 +23,10 @@ export abstract class ApiConsumer implements OnDestroy {
     )
   }
 
-async displayAlert(message: string) {
+async displayAlert(message: string, header:string = 'Error') {
   // this.alertCtrl.dismiss();
   (await this.alertCtrl.create({
-    header: 'Error',
+    header: header,
     message,
     buttons: [{
       text: 'Ok',
