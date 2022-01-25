@@ -13,69 +13,22 @@ const routes: Routes = [
     component: ConcursoDetailPage,
     children: [
       {
-        path: 'concursantes',
-        component: ConcursantesComponent,
-        // outlet: 'concurso'
+        path: 'concursantes', component: ConcursantesComponent,      
       },
       {
-        path: 'fotografias',
-        // loadChildren: () => import('./contest-results/contest-results.module').then( m => m.ContestResultsPageModule)
-
-        component: FotografiasComponent,
-        // outlet: 'concurso'
+        path: 'fotografias',  component: FotografiasComponent,
       },
       {
-        path: 'jueces',
-        // loadChildren: () => import('./contest-results/contest-results.module').then( m => m.ContestResultsPageModule)
-
-        component: JuecesComponent,
-        // outlet: 'concurso'
+        path: 'jueces',       component: JuecesComponent,
       },
       {
-        path: 'informacion',
-        // loadChildren: () => import('./contest-results/contest-results.module').then( m => m.ContestResultsPageModule)
-
-        component: InformacionComponent,
-        // outlet: 'concurso'
+        path: 'informacion',  component: InformacionComponent,
       },
       {
-        path: '',
-        redirectTo: 'informacion',
-        pathMatch: 'full'
+        path: '',   redirectTo: 'informacion',  pathMatch: 'full'
       }
     ]
   }
-
-  // {
-  //   path: 'profile-contests',
-  //   loadChildren: () => import('./profile-contests/profile-contests.module').then( m => m.ProfileContestsPageModule)
-  // },
-
-  // {
-  //   path: 'concursantes',
-  //   component: ConcursantesComponent,
-  //   outlet: 'concurso'
-  // },
-  // {
-  //   path: 'fotografias',
-  //   component: FotografiasComponent,
-  //   outlet: 'concurso'
-  // },
-  // {
-  //   path: 'agregar-foto',
-  //   loadChildren: () => import('./image-post/image-post.module').then( m => m.ImagePostPageModule),
-  //   pathMatch: 'full'
-  // },
-  // {
-  //   path: 'image-review',
-  //   loadChildren: () => import('./image-review/image-review.module').then( m => m.ImageReviewPageModule)
-  // },
-  // {
-  //   path: 'concursantes',
-  //   component: ConcursantesComponent
-  // }
-
-
 
 ];
 

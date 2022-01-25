@@ -45,8 +45,6 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public img_url: string = '';
   public rules_file: File;
   public rules_url: SafeResourceUrl;
-  public cont: number = 0;
-  
   noImg: boolean = false;
 
   constructor(
@@ -183,8 +181,6 @@ get secycat(){
   }
 
   async postConcurso(f: NgForm) {
-    if (this.cont < 1) {
-      this.cont++
     if (f.valid && !this.secycat) {
       console.log("secycat: ", this.secycat)
       const model = {
@@ -265,7 +261,7 @@ get secycat(){
           } catch(e) {
             (await this.alertCtrl.create({
               header: 'Error',
-              message: err.error['error-info'][2],
+              message: this.errorFilter(err.error['error-info'][2]),
               buttons: [{
                 text: 'Ok',
                 role: 'cancel'
@@ -279,7 +275,6 @@ get secycat(){
     else {
       console.log('Form concurso no valido:', f.value);
     }
-  }
   }
 
   get categoriasNoInscriptas(): Category[] {
@@ -307,7 +302,7 @@ get secycat(){
         err => {
           reject(err)
           console.log('Error post contest category', err)
-          this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
         }
       )
     })
@@ -334,7 +329,7 @@ get secycat(){
               // this.router.navigate(['/concursos']);
             }, 
             async err => {
-              this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
               resolve(false)
             }
           )
@@ -359,7 +354,7 @@ get secycat(){
         err => {
           reject(err)
           console.log('Error post contest section', err)
-          this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
         }
       )
     })
@@ -386,7 +381,7 @@ get secycat(){
               // this.router.navigate(['/concursos']);
             }, 
             async err => {
-              this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
               resolve(false)
             }
           )

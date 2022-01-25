@@ -42,8 +42,6 @@ export class FotografiasComponent implements OnInit {
   resultadosConcursoOrig: ContestResultExpanded[] = [];
   fotoclubs: Fotoclub[] = [];
   user: UserLogged;
-  public cont: number = 0;
-  public cont2: number = 0;
 
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
@@ -119,8 +117,7 @@ export class FotografiasComponent implements OnInit {
     if (this.rolificador.isAdmin(await this.auth.user) || this.isContestNotFin ) {
         this.atributosBusqueda.push({ 
         valor: 'username', 
-        valorMostrado: 'Autor', 
-        // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
+        valorMostrado: 'Autor',  
         callback: (c: ContestResultExpanded, query: string) => `${c.image.profile.name} ${c.image.profile.last_name}`.match(new RegExp(`${query}`, 'i'))
       })
     }
@@ -253,25 +250,22 @@ export class FotografiasComponent implements OnInit {
   }
 
   postImage(image: Image = undefined, section_id: number = undefined) {
-    //if (this.cont2 < 1) {
-    //  this.cont2++
     if (section_id == undefined) {
-        section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
-    }
-    this.concursoDetailService.postImage.emit({
-        image,
-        section_id
-    });
-   //   this.cont2 --
-  //}
+      section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
+  }
+  let section_max = this.concurso.max_img_section
+  let resultados = this.resultadosConcurso
+
+  this.concursoDetailService.postImage.emit({
+      image,
+      section_id, 
+      section_max,
+      resultados
+  });
   }
 
   openImage(image: Image) {
-    if (this.cont < 1) {
-      this.cont++
     this.UIUtilsService.mostrarModal(VerFotografiasComponent, {image});
-    this.cont --
-    }
   }
 
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
@@ -291,21 +285,18 @@ export class FotografiasComponent implements OnInit {
       acciones.push(
         {
           accion: (params: []) => this.concursoDetailService.reviewImage.emit(r),
-          // accion: (params: []) => this.reviewImage(r),
           params: [],
           icon: 'star-outline',
           label: 'Puntuar'
         },
         {
           accion: (params: []) => this.postImage(image, r.section_id),
-          // accion: (params: []) => this.postImage(i),
           params: [],
           icon: 'create',
           label: 'Editar'
         },
         {
           accion: (params: number[]) => this.concursoDetailService.deleteImage.emit(r),
-          // accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
           params: [],
           icon: 'trash',
           label: 'Borrar'

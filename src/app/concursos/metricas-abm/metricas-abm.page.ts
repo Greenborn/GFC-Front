@@ -80,7 +80,7 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
               this.metricas.splice(this.metricas.findIndex(s => s.id == metric.id), 1)
               // this.router.navigate(['/concursos']);
             }, 
-            async err => this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+            async err => this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
           )
         // }
     })

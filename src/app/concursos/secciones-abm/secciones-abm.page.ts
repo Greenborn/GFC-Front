@@ -82,12 +82,8 @@ export class SeccionesAbmPage extends ApiConsumer implements OnInit {
     this.UIUtilsService.mostrarAlert({
       header: 'Confirmar borrado',
       message: 'No se podrá eliminar si tiene concursos o imagenes asociadas.'
-      // message: 'No se podrá eliminar si tiene imagenes, concursos o subsecciones asociadas.'
       }, async () => {
-        // const tieneSubsecciones = this.sections.find(s => s.parent_id == section.id) != undefined
-        // if (tieneSubsecciones) {
-          // this.UIUtilsService.mostrarError({ message: 'La sección tiene subsecciones asociadas.' })
-        // } else {
+        
           this.fetch<void>(() => 
             this.sectionService.delete(section.id)
           ).subscribe(
@@ -96,7 +92,7 @@ export class SeccionesAbmPage extends ApiConsumer implements OnInit {
               this.sections.splice(this.sections.findIndex(s => s.id == section.id), 1)
               // this.router.navigate(['/concursos']);
             }, 
-            async err => this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+            async err => this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
           )
         // }
     })

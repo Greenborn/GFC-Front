@@ -38,7 +38,7 @@ export class ConfirmUserComponent  extends ApiConsumer  implements OnInit {
             this.UIUtilsService.dismissLoading();
             console.log(ok);
             if (ok['success']) {
-              super.displayAlert("Usuario Habilitado! Ya puede ingresar al sistema.");
+              super.displayAlert("¡Usuario Habilitado! Ya puede ingresar al sistema.", "¡Felicidades!");
               this.modalController.dismiss();
               this.router.navigateByUrl('/login');
             } else {

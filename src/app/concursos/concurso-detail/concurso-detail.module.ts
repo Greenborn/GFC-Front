@@ -19,7 +19,7 @@ import { ImageReviewPage } from './image-review/image-review.page';
 import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir-concursante.component';
 import { InscribirJuecesComponent } from './inscribir-jueces/inscribir-jueces.component';
 import { VerFotografiasComponent } from './ver-fotografias/ver-fotografias.component';
-// import { ConcursoTabsComponent } from './concurso-tabs/concurso-tabs.component';
+
 import { IonicSelectableModule } from 'ionic-selectable';
 @NgModule({
   imports: [
@@ -41,7 +41,6 @@ import { IonicSelectableModule } from 'ionic-selectable';
     InscribirConcursanteComponent,
     InscribirJuecesComponent,
     VerFotografiasComponent
-    // ConcursoTabsComponent
   ],
   providers: [ConcursoDetailService]
 })

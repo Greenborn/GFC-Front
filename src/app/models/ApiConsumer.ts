@@ -23,10 +23,10 @@ export abstract class ApiConsumer implements OnDestroy {
     )
   }
 
-async displayAlert(message: string) {
+async displayAlert(message: string, header:string = 'Error') {
   // this.alertCtrl.dismiss();
   (await this.alertCtrl.create({
-    header: 'Error',
+    header: header,
     message,
     buttons: [{
       text: 'Ok',
@@ -41,5 +41,17 @@ async displayAlert(message: string) {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-}
 
+  //Esta función será usada para filtrar todos los errores, quitando campos escupidos por la base de datos
+  errorFilter( e:string ){
+    e = e.replace('ERROR:','');
+    let i:number   = e.indexOf('CONTEXT') -1;
+    let aux:string = '';
+    for (let c=0; c < i; c++){
+      aux += e[c];
+    }
+    aux += '.';
+    return aux;
+  }
+
+}

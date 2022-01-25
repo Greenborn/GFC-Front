@@ -33,23 +33,20 @@ export class ConcursantesComponent implements OnInit {
   inscriptos: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
   resultadosConcurso: ContestResultExpanded[] = [];
-  // fotoclubs: Fotoclub[];
-  mostrarFiltro: boolean = false
-  // public loading: boolean = true
+  
+  mostrarFiltro: boolean = false;
   public categoriaSeleccionada: Category = null;
   user: UserLogged
 
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
       valor: 'nombre', 
-      valorMostrado: 'Nombre', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())      
+      valorMostrado: 'Nombre',     
       callback: (p: ProfileContestExpanded, query: string) => p.profile.name.match(new RegExp(`^${query}`, 'i'))
     },
     { 
       valor: 'apellido', 
       valorMostrado: 'Apellido', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
       callback: (p: ProfileContestExpanded, query: string) => p.profile.last_name.match(new RegExp(`^${query}`, 'i'))
     }
   ];
@@ -87,20 +84,7 @@ export class ConcursantesComponent implements OnInit {
       this.inscriptos = is
       this.UIUtilsService.dismissLoading()
       setTimeout(() => {
-        // console.log(this.content)
-        
-        // let concursantesContent = document.querySelector('#concursantesContent') as HTMLElement
-        // let content = document.querySelector('#concurso-content') as HTMLElement
-        // // let content = this.content
-        // console.log(content)
-        // content.style.setProperty('height', '')
-        // // content.style.height = ''
-        // const height = content.getBoundingClientRect().height
-        // const height2 = concursantesContent.getBoundingClientRect().height
-        // // console.log('tabs content height', height)
-        // content.style.setProperty('height', `${height + height2 + 500}px`) 
-        // // content.style.height = `${height + 500}px`
-  
+          
       }, 500)
     })
     this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
@@ -110,15 +94,12 @@ export class ConcursantesComponent implements OnInit {
     )
     this.auth.user.then(u => this.user = u)
     
-    // this.concursoDetailService.loadConcursantes()
-    // this.concursoDetailService.loadProfileContests()
   }
 
   get inscriptosFiltrados() {
     return this.inscriptos.filter(i => {
       let cond1: boolean = true;
       if (this.categoriaSeleccionada != undefined) {
-        // console.log(this.categoriaSeleccionada, 'categoria')
         cond1 = this.categoriaSeleccionada.id == i.category_id
       }
       return cond1
@@ -160,7 +141,6 @@ export class ConcursantesComponent implements OnInit {
   }
 
 inscribirConcursante() {
-  // this.concursoDetailService.inscribirConcursante.emit(this.categoriaSeleccionada ? this.categoriaSeleccionada.id : undefined)
   this.concursoDetailService.inscribirConcursante(this.categoriaSeleccionada ? this.categoriaSeleccionada.id : undefined)
 }
 
@@ -176,52 +156,10 @@ postImage(profile_id: number) {
 }
 
   async mostrarAcciones(ev: any, p: ProfileContestExpanded) {
-    // const options = {
-    //   component: MenuAccionesComponent, //componente a mostrar
-    //   componentProps: {
-    //     acciones: [
-    //       // {
-    //       //   accion: (params: []) => this.concursoDetailService.reviewImage.emit(r),
-    //       //   // accion: (params: []) => this.reviewImage(r),
-    //       //   params: [],
-    //       //   icon: 'star-outline',
-    //       //   label: 'Puntuar'
-    //       // },
-    //       {
-    //         accion: (params: []) => this.router.navigate(['../fotografias'], { queryParams: {concursante_id: p.profile_id}, relativeTo: this.activatedRoute}),
-    //         // accion: (params: []) => this.postImage(i),
-    //         params: [],
-    //         icon: 'images-outline',
-    //         label: 'Ver fotografías'
-    //       },
-    //       {
-    //         accion: (params: []) => this.postImage(p.profile_id),
-    //         // accion: (params: []) => this.postImage(i),
-    //         params: [],
-    //         icon: 'camera-outline',
-    //         label: 'Agregar fotografía'
-    //       },
-    //       {
-    //         accion: (params: number[]) => this.concursoDetailService.desinscribirConcursante.emit(p),
-    //         // accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
-    //         params: [],
-    //         icon: 'trash',
-    //         label: 'Desinscribir'
-    //       }
-    //     ]
-    //   },
-    //   cssClass: 'auto-width',
-    //   event: ev,
-    //   translucent: true,
-    //   // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
-    // }
-
-    // this.openPopup.emit(options)
-    // this.concursoDetailService.mostrarAcciones.emit(options)
+    
     const acciones: MenuAccionesComponentAccion[] = [
       {
         accion: (params: []) => this.router.navigate(['../fotografias'], { queryParams: {concursante_id: p.profile_id}, relativeTo: this.activatedRoute}),
-        // accion: (params: []) => this.postImage(i),
         params: [],
         icon: 'images-outline',
         label: 'Ver fotografías'
@@ -231,14 +169,12 @@ postImage(profile_id: number) {
       acciones.push(
         {
           accion: (params: []) => this.postImage(p.profile_id),
-          // accion: (params: []) => this.postImage(i),
           params: [],
           icon: 'camera-outline',
           label: 'Agregar fotografía'
         },
         {
           accion: (params: number[]) => this.concursoDetailService.desinscribir.emit(p),
-          // accion: (params: number[]) => this.deleteImage(r.image_id, r.id, r.metric_id),
           params: [],
           icon: 'trash',
           label: 'Desinscribir'
@@ -249,18 +185,6 @@ postImage(profile_id: number) {
   }
 
   ionViewWillEnter() {
-    // if (this.concurso.id == undefined) {
-    //   // console.log('hola')
-    //   if (this.concursoDetailService.concursoObj != undefined) {
-    //     this.concurso = this.concursoDetailService.concursoObj
-    //   } else {
-    //     setTimeout(() => {
-    //       this.concurso = this.concursoDetailService.concursoObj
-    //       // console.log('timeout concurso fetch', this.concurso)
-    //     }, 1000)
-    //   }
-    // } else {
-    //   console.log(this.concurso, this.contestService.template)
-    // }
+   
   }
 }

@@ -7,6 +7,7 @@ export interface Image {
     profile_id: number;
     url?: string;
     thumbnail?: string;
+    photo_base64?: any;
 }
 
 export interface ImageExpanded extends Image {

@@ -6,7 +6,7 @@ import { IonicModule, IonNav } from '@ionic/angular';
 
 import { ImagePostPageRoutingModule } from './image-post-routing.module';
 
-import { ImagePostPage } from './image-post.page';
+// import { ImagePostPage } from './image-post.page';
 
 @NgModule({
   imports: [
@@ -16,6 +16,6 @@ import { ImagePostPage } from './image-post.page';
     IonNav,
     ImagePostPageRoutingModule
   ],
-  declarations: [ImagePostPage]
+  // declarations: [ImagePostPage]
 })
 export class ImagePostPageModule {}

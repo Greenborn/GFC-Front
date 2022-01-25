@@ -21,11 +21,7 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
   @Input() categorias: Category[];
 
   @Input() profileContest: ProfileContest = this.profileContestService.template;
-  // @Input() profile_id: number = undefined;
-  // @Input() category_id: number = undefined;
   public posting: boolean = false;
-
-  // private cont: number = 0;
 
   constructor(
     alertCtrl: AlertController,
@@ -43,8 +39,7 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
 
   inscribirJuez() {
     if (this.datosCargados()) {
-      // if (this.cont < 1) {
-      //   this.cont++
+      
         console.log('inscribiendo', this.profileContest.profile_id, ' a ', this.contest.id)
         this.posting = true
         const s = this.profileContestService.post({
@@ -59,13 +54,13 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
           },
           err => {
             console.log('error inscripcion juez', err)
-            super.displayAlert(err.error['error-info'])
+            super.displayAlert(this.errorFilter(err.error['error-info']))
           },
           () => {
             // console.log('unsubsssss')
             s.unsubscribe()
           }
-        )
+        );
       
     }
     

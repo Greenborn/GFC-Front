@@ -40,19 +40,14 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public roles: Role[] = []
   public usernameFocus = false
   public passFocus = false
-
   public isPost: boolean = true;
-  
   public isUserSignUp:boolean = false;
   public submitBtnText:string = "Guardar";
-
   public posting: boolean = false;
   public userLogged: User;
   public updatingSelect: boolean = false
   public file: File;
   public img_url: string;
-
-  private cont: number = 0;
   public ImageChangeClick:Subject<any> = new Subject();
 
   constructor(
@@ -209,8 +204,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   async postUsuario(f: NgForm) {
-    if (this.cont < 1) {
-      this.cont++
       if (f.valid) {
         if((this.usuario.role_id == 3 || this.usuario.role_id == 2 )) {
 
@@ -238,7 +231,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           ok => {
             this.UIUtilsService.dismissLoading();
             if (ok['success'] == false){
-              super.displayAlert(ok['error']);
+              super.displayAlert(this.errorFilter(ok['error']));
             } else {
               let profileConfirm  = this.UIUtilsService.mostrarModal(ConfirmUserComponent, { 
                 "signUpVerifToken": ok['sign_up_verif_token']
@@ -316,7 +309,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
             err => {
               this.posting = false
           //     console.log('posteado perfil', p)
-            super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${err.statusText}`)
+            super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${this.errorFilter(err.statusText)}`)
             super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(_ => {
               console.log(`Perfil ${p.id} eliminado`)
             })
@@ -326,14 +319,13 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         err => {
           this.posting = false
           console.log('error post profile', err)
-          super.displayAlert(err.error[0].message)
+          super.displayAlert(this.errorFilter(err.error[0].message))
         }
       )
     }
     else {
       console.log('Form usuario no valido:', f.value);
     }
-  }
   }
 
   async changePassword() {

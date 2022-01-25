@@ -24,10 +24,9 @@ import { ConcursoDetailService } from '../concurso-detail.service';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { ImagePostPage, ImagePostParams } from '../image-post/image-post.page';
 import { ImageReviewPage } from '../image-review/image-review.page';
-import { Section } from 'src/app/models/section.model';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+
 @Component({
   selector: 'app-informacion',
   templateUrl: './informacion.component.html',
@@ -86,24 +85,12 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   }
 
   ngOnInit() { 
-    if (window.screen.width > 768) {
-    const content: HTMLIonContentElement = document.querySelector('#concurso-content')
-    // content.scrollEvents = true
-    // content.addEventListener('ionScroll', ev => console.log('scroll', (ev as any).detail))
-    let tiempoScroll = new Date().getTime()
-    let scrolling = false
-    
-    }
-  
+      
     this.subsc();
     this.activatedRoute.paramMap.subscribe(async paramMap => {
       
       const id = parseInt(paramMap.get('id'))
       console.log("id algo: ", id)
-
-      // super.fetch<Contest>(() => this.concursoDetailService.concurso).subscribe({
-      //   next: c => this.concurso = c 
-      // })
 
       this.concursoDetailService.concurso.subscribe({
         next: c => {
@@ -132,26 +119,11 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       
     })
     
-    // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(p => this.profiles = p)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
 }
 
 
-  subsc(){
-    this.subs.push(this.concursoDetailService.reviewImage.subscribe(
-      r => {
-        this.reviewImage(r)
-      }     
-    ) );
-    
-    this.subs.push(this.concursoDetailService.mostrarAcciones.subscribe(
-      o => {
-        this.mostrarAcciones(o)
-      }
-    ) );
-  
-    this.subs.push(this.concursoDetailService.desinscribir.subscribe(profileContest => this.desinscribir(profileContest)) );
-  }
+  subsc(){ }
 
   desubsc() {
       for (const s of this.subs) {
@@ -162,29 +134,17 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       console.log('subscriptions deleted', [...this.subs])
   }
   
-  obtenerPx() {
-    if (window.innerWidth > 767) {
-      // console.log(colCard.clientHeight)
-      // return window.innerWidth/6;
-      return 15;
-    } else {
-      // return colCard.el.clientWidth/2;
-      // return window.innerWidth/2
-      return 25;
-    }
-  }
-  
     isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
-      return this.auth.loggedIn;
+        return this.auth.loggedIn;
     }
-  
+    
     toggleFiltro() {
-      this.mostrarFiltro = !this.mostrarFiltro;
+        this.mostrarFiltro = !this.mostrarFiltro;
     }
-  
+    
     getProfile(r: ContestResultExpanded): Profile {
-        const p = this.concursantes.find(p => p.id == r.image.profile_id)
-        return p != undefined ? p : this.profileService.template
+          const p = this.concursantes.find(p => p.id == r.image.profile_id)
+          return p != undefined ? p : this.profileService.template
     }
     
     getFotoclubName(fotoclub_id: number): string {
@@ -238,14 +198,12 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                   _ => {
                     console.log('deleted', _)
                     this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
-                    // this.concursoDetailService.inscriptos.emit(this.inscriptos)
-                    this.concursoDetailService.loadProfileContests()
-                    // this.router.navigate(['/concursos']);
+                    this.concursoDetailService.loadProfileContests();
                   }, 
                   async err => {
                     (await this.alertCtrl.create({
                       header: 'Error',
-                      message: err.error['error-info'][2],
+                      message: this.errorFilter(err.error['error-info'][2]),
                       buttons: [{
                         text: 'Ok',
                         role: 'cancel'
@@ -287,141 +245,14 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       console.log('punteado imagen', data)
       const { metric } = data ?? {}
       if (metric != undefined) {
-        // const i = this.metrics.findIndex(m => m.id == metric.id)
         const r = this.resultadosConcurso.find(e => e.metric_id == metric.id)
-        // if (i != -1) {
-          // this.metrics[i] = metric
+
         if (r != undefined) {
           console.log('udpating metric', r, metric)
           r.metric = metric
-          console.log('udpated metric', r)
-          // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
+          console.log('udpated metric', r);
           this.concursoDetailService.loadContestResults()
         } 
-        // else {
-        //   this.metrics.push(metric)
-        // }
-      }
-    }
-  
-    async postImage(params: ImagePostParams) {
-      const i = params.image
-      const s = params.section_id
-      if (this.popover != undefined) {
-        this.popoverCtrl.dismiss(this.popover)
-        this.popover = undefined
-      }
-  
-      const componentProps : {
-        concurso: string;
-        concurso_id: number;
-        modalController: ModalController;
-        profiles: ProfileContestExpanded[];
-        secciones: Section[];
-        image?: Image;
-        section_id?: number;
-      } = {
-        "concurso": this.concurso.name,
-        "concurso_id": this.concurso.id,
-        "modalController": this.modalController,
-        "profiles": this.inscriptos,
-        // "profiles": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) > -1),
-        "secciones": this.seccionesInscriptas.map(s => s.section)
-      }
-  
-      if (i != undefined) {
-        componentProps.image = {...i}
-      }
-      if (s != undefined) {
-        componentProps.section_id = s
-      }
-  
-      console.log('props post image', componentProps)
-  
-      const modal = await this.modalController.create({
-        component: ImagePostPage,
-        cssClass: 'auto-width',
-        componentProps
-      });
-      await modal.present()
-  
-      const { data } = await modal.onWillDismiss();
-      console.log('dismiss image post popup con data', data);
-      const { image, section_id } = data ?? {}
-      if (image != undefined && section_id != undefined) {
-        // this.loading = true
-        // const i_index = this.images.findIndex(e => e.id == image.id)
-        const r_updated = this.resultadosConcurso.find(e => e.image_id == image.id)
-        if (r_updated == undefined) {
-          console.log('posted new image ', image, 'posting metric')
-          // this.images.push(image)
-          super.fetch<Metric>(() =>
-            this.metricService.post({
-              prize: '0',
-              score: 0
-            })
-          ).subscribe(metric => {
-            // this.metrics.push(m)
-  
-            super.fetch<ContestResult>(() =>
-              this.contestResultService.post({
-                contest_id: this.concurso.id,
-                image_id: image.id,
-                metric_id: metric.id,
-                section_id
-              })
-            ).subscribe(
-              // console.log('posted new result', cr)
-              cr => {
-                this.resultadosConcurso.push({
-                  ...cr,
-                  image,
-                  metric
-                })
-                // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
-                this.concursoDetailService.loadContestResults()
-              },
-              // cr => this.contestResults.push(cr),
-              async err => super.displayAlert(err.error['error-info'][2])
-            )
-          })
-          // console.log('posted image', image, 'index', i)
-        } else {
-          // this.images.splice(i_index, 1, image)
-          console.log('updated image. updating result', r_updated)
-          r_updated.image = image
-          if (section_id != r_updated.section_id) {
-            console.log('updated section. updating result', r_updated)
-            const model = {
-              ...r_updated,
-              section_id
-            }
-            delete model.id
-            super.fetch<ContestResult>(() =>
-              this.contestResultService.post(model, r_updated.id)
-            ).subscribe(
-              cr => {
-                console.log('updated result', cr)
-                r_updated.section_id = section_id
-                // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
-                
-                this.concursoDetailService.loadContestResults()
-              },
-              err => {
-                this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
-                // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
-                
-                this.concursoDetailService.loadContestResults()
-              },
-            )  
-          } else {
-            console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
-            // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
-            
-                this.concursoDetailService.loadContestResults()
-          }
-          // console.log('replaced image', image, 'index', i)
-        }
       }
     }
     
@@ -473,7 +304,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                 async err => {
                   (await this.alertCtrl.create({
                     header: 'Error',
-                    message: err.error['error-info'][2],
+                    message: this.errorFilter(err.error['error-info'][2]),
                     buttons: [{
                       text: 'Ok',
                       role: 'cancel'
@@ -509,24 +340,19 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
             handler: () => {
               super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe(
                 _ => {
-                  // this.alertCtrl.dismiss()
-                  // this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
                   this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-                  // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
                   this.concursoDetailService.loadContestResults()
                   super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
                     _ => {},
-                    // _ => this.images.splice(this.images.findIndex(i => i.id == image_id), 1),
-                    async err => super.displayAlert(err.error['error-info'][2])
+                    async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
                   )
                   super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe(
                     _ => {},
-                    // _ => this.metrics.splice(this.metrics.findIndex(i => i.id == metric_id), 1),
-                    async err => super.displayAlert(err.error['error-info'][2])
+                    async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
                   )
   
                 },
-                async err => super.displayAlert(err)
+                async err => super.displayAlert(this.errorFilter(err))
               )
               // return false
             }
@@ -554,7 +380,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     let yo = ((await this.auth.user).profile)
     const prl = this.inscriptos.find(p => p.profile_id == yo.id)
     this.concursoDetailService.desinscribir.emit(
-      //m: profileContestExpanded
       prl
     )
   }

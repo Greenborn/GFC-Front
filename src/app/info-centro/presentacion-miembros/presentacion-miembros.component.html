@@ -41,8 +41,8 @@
           >
 
             <!-- If we need navigation buttons -->
-          <a *ngIf="cantF > 1" (click)="swipePrev()"> <div class="swiper-button-prev" ></div> </a>
-          <a *ngIf="cantF > 1" (click)="swipeNext()"><div class="swiper-button-next" ></div></a>
+          <a *ngIf="cantF > 1 && responsiveService.isDesktop" (click)="swipePrev()"> <div class="swiper-button-prev" ></div> </a>
+          <a *ngIf="cantF > 1 && responsiveService.isDesktop" (click)="swipeNext()"><div class="swiper-button-next" ></div></a>
           
         </ion-row>
       </ion-col>

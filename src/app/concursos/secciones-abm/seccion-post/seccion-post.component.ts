@@ -20,7 +20,6 @@ export class SeccionPostComponent extends ApiConsumer implements OnInit {
   // @Input() typeSubsection: boolean;
 
   public posting: boolean = false;
-  public cont: number = 0;
 
   constructor(
     alertCtrl: AlertController,
@@ -45,8 +44,6 @@ export class SeccionPostComponent extends ApiConsumer implements OnInit {
   }
 
   postSection(f: NgForm) {
-    if (this.cont < 1) {
-      this.cont++
     if (f.valid) {
       let model = f.value;
       // if (model.parent_id == undefined) {
@@ -63,13 +60,12 @@ export class SeccionPostComponent extends ApiConsumer implements OnInit {
         err => {
           console.log('error post seccion', err)
           this.posting = false
-          this.UIUtilsService.mostrarError({ message: err.statusText })
+          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.statusText) })
         }
       )
       // console.log('posting', model, this.section.id)
 
     }
-  }
   }
 
 }

@@ -3,6 +3,8 @@ import { NgForm } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { ContestResultExpanded } from 'src/app/models/contest_result.model';
+import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Image as GFC_Image } from 'src/app/models/image.model';
 import { Profile } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
@@ -12,11 +14,15 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { ImageService } from 'src/app/services/image.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { ConcursoDetailService } from '../concurso-detail.service';
 
 export interface ImagePostParams {
   image?: GFC_Image;
   section_id?: number;
   category_id?: number;
+  section_max?: number;
+  resultados?: ContestResultExpanded[];
+  photo_base64?: any;
 }
 
 @Component({
@@ -27,6 +33,8 @@ export interface ImagePostParams {
 export class ImagePostPage extends ApiConsumer implements OnInit {
 
   @Input() concurso: string;
+  @Input() section_max: number;
+  @Input() resultados: ContestResultExpanded[];
   @Input() concurso_id: number;
   @Input() modalController: ModalController;
   @Input() image: GFC_Image = this.imageService.template;
@@ -40,8 +48,13 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   public file: File;
   public imageData: string = '';
   public cont: number = 0;
+  public photo_base64:any;
   perfil_elegido: Profile = this.ProfileService.template;
   texto_img: string = null;
+  texto_sec: string = null;
+  sectionPos = false;
+  
+  seccionesInscriptas: ContestSectionExpanded[] = [];
 
   // public profiles: Profile[];
   public posting: boolean = false; 
@@ -53,6 +66,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     private imageService: ImageService,
     alertCtrl: AlertController,
     public responsiveService: ResponsiveService,
+    public concursoDetailService: ConcursoDetailService,
     public ProfileService: ProfileService,
     private configService: ConfigService
   ) { 
@@ -60,26 +74,25 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   get categoryId(): number {
-    const p = this.profiles.find(p => p.profile_id == this.image.profile_id)
-    return p != undefined ? p.category_id : undefined
+    const p = this.profiles.find(p => p.profile_id == this.image.profile_id);
+    return p != undefined ? p.category_id : undefined;
   }
   get code(): string {
-    // return `${(this.concurso ?? '').replace(/ /g, '_').toLowerCase().normalize()}-c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-`
-    return `Co${this.concurso_id}Ca${this.categoryId ?? ''}S${this.section_id ?? ''}-`
-    // return `#c${this.categoryId ?? ''}s${this.section_id ?? ''}p${this.image.profile_id ?? ''}-${(this.image.title ?? '').replace(/ /g, '_').toLowerCase().normalize()}`
+    return `Co${this.concurso_id}Ca${this.categoryId ?? ''}S${this.section_id ?? ''}-`;
   }
 
   get formTitle(): string {
-    return (this.image.id != undefined ? 'Editar' : 'Agregar') + ` imagen a ${this.concurso}`
+    return (this.image.id != undefined ? 'Editar' : 'Agregar') + ` imagen a ${this.concurso}`;
   }
 
   get imgSource(): string {
-    return this.imageData != '' ? this.imageData : this.configService.apiUrl(this.image.url)
+    return this.imageData != '' ? this.imageData : this.configService.apiUrl(this.image.url);
   }
 
   async ngOnInit() {
-    this.img_url = this.image.url
-    // window.onresize = this.actualizarWidth;
+    this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs);
+    this.img_url = this.image.url;
+    
     //modificacion datos de concursantes para concatenar nombre y apellido
     this.profiles_list = [];
     for (let c=0; c<this.profiles.length; c++){
@@ -95,23 +108,22 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   async postImage() {
-    if (this.cont < 1) {
-      this.cont++
-
-       if (this.datosCargados()) {
+    
+    if (this.datosCargados()) {
    
            this.posting = true
            let i: GFC_Image;
            const model: any = {
              title: this.image.title,
              code: this.code,
+             photo_base64:this.photo_base64,
              profile_id:  this.profiles_list.length != 1 ? this.perfil_elegido['id'] : this.image.profile_id
            }
            if (this.file != undefined) {
              model.image_file = this.file
            }
           //hacer que agarre bien al usuario TODO:
-           this.imageService.postFormData<any>(model, this.image.id).subscribe(
+          this.imageService.post<any>(model, this.image.id).subscribe(
              // image => this.dismiss(image),
              image => {
                this.posting = false
@@ -119,30 +131,19 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
                this.dismiss(i, this.section_id)
              },
              async err => {
-               super.displayAlert(err.error['message'])
+               super.displayAlert(this.errorFilter(err.error['message']))
                this.posting = false
              },
-             // () => { // on complete.. pero no cacha el error
-             //   console.log(i)
-             //   this.posting = false
-               
-             // })
-           )
-           // console.log('posted img con id', id)
-           // this.dismiss(id)
-         // }
-   
-   
-       }
-    this.cont --
-  }
+            
+           );
+    }
   }
 
   datosCargados() {
     //return this.image.code !=  undefined 
     return this.image.title !=  undefined 
         && (this.image.profile_id != undefined || this.perfil_elegido != undefined )
-        && this.section_id != undefined
+        && (this.section_id != undefined && this.sectionSelect != false) 
         && this.imgSource.split('/').pop() != 'undefined'
   }
   
@@ -155,14 +156,43 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     });
   }
 
-  // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
-  fileUpload(event: EventTarget) {
-    this.texto_img = null;
-      
-    const file = (event as HTMLInputElement).files.item(0)
+  get sectionSelect(){
+    this.sectionPos = true;
+    this.texto_sec = null;
+    let cantSec = 0;
+    let secOrigin = null;
 
+    let profile = this.profiles_list.length != 1 ? this.perfil_elegido['id'] : this.image.profile_id
+    this.resultados.forEach(e => {
+      if (e.image.profile_id == profile && e.section_id == this.section_id){
+        cantSec++
+      }
+      if(e.image.id == this.image.id ){
+        secOrigin = e.section_id
+      }
+    })
+    if (this.formTitle.includes('Editar') == true && secOrigin == this.section_id){
+      cantSec-- //porque siendo edición puede dejar la imagen en la misma sección o en otra
+    }
+    //  cantidad actual de fotos en esa seccion + cantidad máx por seccion de concurso 
+    if (cantSec >= this.section_max){
+      // this.section_id = undefined;
+      this.sectionPos = false;
+      this.texto_sec = "Ya ha subido el máximo de Fotografías para esta sección"
+      return false
+    }
+    return true
+  }
+
+  handleFileInput(files: FileList) {
+    let me     = this;
+    let file   = files[0];
+    let reader = new FileReader();
+
+    this.texto_img = null;
+   
     if (!file) return;
-    
+
     if (file.type.split('/')[0] !== 'image' || (file.name.split('.').pop().toLowerCase() != 'jpg' && file.name.split('.').pop().toLowerCase() != 'jpeg')) { 
       console.log('File type is not supported!')
       // this.img_acept = false
@@ -179,40 +209,18 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
       return;
     }
 
-    // this.isImgUploading = true;
-    // this.isImgUploaded = false;
+    this.file = file;
 
-    // this.FileName = file.name;
-    // console.log('uploaded', file)
-    this.file = file
-
-    const fileReader = new FileReader();
-    const { type, name } = file;
-    // return new Observable((observer: Observer<IUploadedFile>) => {
-      // this.validateSize(file, observer);
-      fileReader.readAsDataURL(file);
-      fileReader.onload = event => {
-
-        // if (this.isImage(type)) {
-          const image = new Image();
-          image.onload = (i) => {
-            const imageData = (i.target as HTMLImageElement).src
-            this.imageData = imageData
-            // console.log('loaded image', imageData)
-            // observer.next({ file });
-            // observer.complete();
-          };
-          image.onerror = () => {
-            // observer.error({ error: { name, errorMessage: INVALID_IMAGE } });
-          };
-          image.src = fileReader.result as string;
-        // } else {
-          // observer.next({ file });
-          // observer.complete();
-        }
-      // };
-
-    const fileStoragePath = `uploads/images/${new Date().getTime()}_${file.name}`;
-
+    reader.readAsDataURL(file);
+    reader.onload = function (i) {
+        me.photo_base64 = { file: reader.result, name:file.name};
+        me.img_url = me.photo_base64.file;
+        me.imageData =  me.img_url;
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+      return false;
+    };
   }
+
 }

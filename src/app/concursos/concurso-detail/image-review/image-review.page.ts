@@ -25,7 +25,6 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   @Input() review: Metric;
   @Input() contestResult: ContestResult;
   
-  // @ViewChild('formReview') formReview: HTMLFormElement;
   public posting: boolean = false;
   public metricas: Metric[] = [];
   public elegida: Metric;
@@ -68,7 +67,7 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
         async err => {
           (await this.alertCtrl.create({
             header: 'Error',
-            message: err.error['error-info'][2],
+            message: this.errorFilter(err.error['error-info'][2]),
             buttons: [{
               text: 'Ok',
               role: 'cancel'

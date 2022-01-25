@@ -2,16 +2,17 @@
   <ion-header>
     <ion-toolbar>
       <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
-        <!-- <ion-back-button [defaultHref]="'/concursos/' + id"></ion-back-button> -->
-        <!-- <ion-back-button (click)="dismiss()"></ion-back-button> -->
+      
         <ion-col>
           <h5 class="ion-text-wrap">{{ formTitle }}</h5>
         </ion-col>
+        
         <ion-col size="1" class="ion-hide-md-down">
           <ion-button (click)="modalController.dismiss()" fill="clear" class="">
             <ion-icon name="close-outline"></ion-icon>
           </ion-button>
         </ion-col>
+      
       </ion-row>
     </ion-toolbar>
   </ion-header>
@@ -23,134 +24,85 @@
           <ion-row>
             <ion-col>
               <ion-row class="ion-padding-top">
+                
                 <ion-item class="w-100 ion-margin-bottom">
                   <ion-label position="floating">Titulo</ion-label>
                   <ion-input
-                    autocapitalize="sentences"
-                    [(ngModel)]="image.title"
-                    ngDefaultControl
-                  ></ion-input>
+                    autocapitalize="sentences" [(ngModel)]="image.title"
+                    ngDefaultControl></ion-input>
                 </ion-item>
-                <!-- <ion-item class="w-100 ion-margin-bottom">
-                  <ion-label position="floating">Código</ion-label>
-                  <ion-input readonly
-                    [value]="code"
-                    ngDefaultControl
-                  ></ion-input>
-                </ion-item> -->
+
                 <ion-row class="w-100">
                   <ion-col class="ion-no-padding">
                     <ion-item class="w-100 ion-no-padding ion-margin-bottom">
-                      <!-- <ion-label position="floating">Imágen</ion-label> -->
-                      <!-- [(ngModel)]="image.code" -->
-                      <input type="file" accept=".jpeg,.jpg" (change)="fileUpload($event.target)" />
+                      <input type="file" accept=".jpeg,.jpg" (change)="handleFileInput($event.target['files'])" />
                     </ion-item>
+                    
                     <ion-chip color="danger" *ngIf="texto_img != null">
                       <ion-icon name="alert-outline"></ion-icon>
                       <ion-label>{{texto_img}}</ion-label>
                     </ion-chip>
+                    
                     <div>
-                      <!-- <ion-thumbnail> -->
                         <ion-row  *ngIf="img_url != '' || imageData != ''"  class="ion-justify-content-center">
-
                           <ion-img (ionError)="img_url=''" [src]="imgSource" alt=""> </ion-img>
                         </ion-row>
-                      <!-- </ion-thumbnail> -->
                     </div>
                   </ion-col>
                 </ion-row>
+
                 <ion-item *ngIf="profiles_list.length > 1; else unicoElemento" class="w-100 ion-margin-bottom">
-                  <ion-label
-                    [position]="(image.profile_id != undefined) ? 'stacked' : 'floating'"
-                    >Concursante</ion-label
-                  >
+                  <ion-label [position]="(image.profile_id != undefined) ? 'stacked' : 'floating'">Concursante</ion-label>
                   <ionic-selectable  item-content #profileSelect
-                    [(ngModel)]="perfil_elegido"
-                    [items]="profiles_list"
-                    itemValueField="id"
-                    itemTextField="name"
+                    [(ngModel)]="perfil_elegido" [items]="profiles_list"
+                    itemValueField="id"          itemTextField="name"
                     [canSearch]="true"
                     >
                   </ionic-selectable>
-
                   
                 </ion-item>
+
                 <ng-template #unicoElemento >
                     <ion-item class="w-100 ion-margin-bottom">
                     <ion-label position="floating">Concursante</ion-label>
-                    <ion-input color="dark"
-                    name="profile"
-                    [(ngModel)]="profile"
-                    disabled>
-                    </ion-input>
+                    <ion-input color="dark" name="profile" [(ngModel)]="profile" disabled></ion-input>
                   </ion-item>
                 </ng-template>
               </ion-row>
+
               <ion-row>
+
                 <ion-item class="w-100 ion-margin-bottom">
-                  <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
                   <ion-label position="floating">Sección</ion-label>
-                  <ion-select [(ngModel)]="section_id" ngDefaultControl>
-                    <!-- [(value)]="image.profile_id" -->
-                    <ion-select-option
-                      *ngFor="let s of secciones"
-                      [value]="s.id"
-                      >{{ s.name }}</ion-select-option
-                    >
+                  <ion-select (ionChange)=" sectionSelect" [(ngModel)]="section_id" ngDefaultControl>
+                    <ion-select-option *ngFor="let s of secciones" [value]="s.id">{{ s.name }}</ion-select-option>
                   </ion-select>
                 </ion-item>
+
+                <ion-chip color="danger" *ngIf="texto_sec != null">
+                  <ion-icon name="alert-outline"></ion-icon>
+                  <ion-label>{{texto_sec}}</ion-label>
+                </ion-chip>
+
               </ion-row>
 
               <ion-row class="ion-justify-content-end">
                 <ion-col size="12">
                   <ion-row class="ion-justify-content-end">
-                    <ion-col
-                      push-sm="3"
-                      size="12"
-                      size-sm="3"
-                      class="ion-align-self-center"
-                    >
-                      <!-- <app-btn-post
+
+                    <ion-col push-sm="3" size="12" size-sm="3" class="ion-align-self-center">
+                       <app-btn-post
                         [posting]="posting"
                         [disabled]="!datosCargados()"
                         (post)="postImage()"
-                      ></app-btn-post> -->
-                      <ion-button
-                        expand="block"
-                        type="submit"
-                        (click)="postImage()"
-                        [disabled]="!datosCargados()"
-                      >
-                        <ion-spinner
-                          *ngIf="posting"
-                          class="ion-margin-end"
-                          size="small"
-                        ></ion-spinner>
-                        Guardar
-                      </ion-button>
+                      ></app-btn-post>
                     </ion-col>
 
-                    <ion-col
-                      class="ion-align-self-center"
-                      pull-sm="3"
-                      size="12"
-                      size-sm="3"
-                    >
-                      <!-- <ion-back-button
-                    text="Cancelar"
-                    icon=""
-                    (click)="dismiss()"
-                    [defaultHref]="backUrl"
-                  ></ion-back-button
-                > -->
-                      <ion-button
-                        expand="block"
-                        (click)="modalController.dismiss()"
-                        fill="clear"
-                      >
-                        Cancelar</ion-button
-                      >
+                    <ion-col class="ion-align-self-center" pull-sm="3" size="12" size-sm="3">
+                      <ion-button expand="block" (click)="modalController.dismiss()" fill="clear">
+                        Cancelar</ion-button>
                     </ion-col>
+
                   </ion-row>
                 </ion-col>
               </ion-row>

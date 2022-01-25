@@ -21,7 +21,6 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
   // @Input() typeSubsection: boolean;
 
   public posting: boolean = false;
-  public cont: number = 0;
 
   constructor(
     alertCtrl: AlertController,
@@ -46,8 +45,6 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
   }
 
   post(f: NgForm) {
-    if (this.cont < 1) {
-      this.cont++
     if (f.valid) {
       let model = f.value;
       // if (model.parent_id == undefined) {
@@ -64,13 +61,12 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
         err => {
           console.log('error post metric', err)
           this.posting = false
-          this.UIUtilsService.mostrarError({ message: err.error['error-info'][2] })
+          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
         }
       )
       // console.log('posting', model, this.section.id)
 
     }
-  }
   }
 
 }

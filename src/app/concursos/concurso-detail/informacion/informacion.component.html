@@ -1,54 +1,45 @@
 <ion-row size="12" *ngIf="auth.user | async as u">
   <ion-col>
-    <!-- <ion-card *ngIf="!loading; else spinner" class="ion-no-margin"> -->
-    <!-- [ngStyle]="responsiveService.isDesktop ? {'background-image': 'url(' + configService.apiUrl(concurso.img_url) + ')', 'background-size' : '100% auto'} : {'background-image': 'url(' + configService.apiUrl(concurso.img_url)+ ')', 'background-size' : 'auto 100%'}" -->
+    
     <ion-card class="ion-no-margin">
-      <!-- <ion-avatar *ngIf="!noImg" class="w-100" [style.height.vh]="obtenerPx()">
-        <ion-img (ionError)="noImg = true" [src]="configService.apiUrl(concurso.img_url)"></ion-img>
-      </ion-avatar> -->
+      
       <ion-card-header>
         <ion-row>
           <ion-col>
             <ion-row class="ion-align-items-center">
               <ion-col class="ion-no-padding">
-                <!-- <app-contest-status-chip
-                  [contest]="concurso"
-                ></app-contest-status-chip> -->
-                <ion-card-title>{{ concurso.name }}</ion-card-title>
+                    <ion-card-title>{{ concurso.name }}</ion-card-title>
               </ion-col>
             </ion-row>
             <ion-row class="">
-              <ion-card-subtitle
-                >Desde {{ fechaInicio | date: "dd-MM-yyyy" }} Hasta
-                {{ fechaFin | date: "dd-MM-yyyy" }}</ion-card-subtitle
-              >
-              <!-- <ion-card-subtitle
-                >Desde {{fechaInicio}} hasta {{fechaFin}}</ion-card-subtitle
-              > -->
+              <ion-card-subtitle>
+                Desde {{ fechaInicio | date: "dd-MM-yyyy" }} Hasta
+                {{ fechaFin | date: "dd-MM-yyyy" }}
+              </ion-card-subtitle>
             </ion-row>
           </ion-col>
-          <ion-col
-            *ngIf="(rolificador.esDelegado(u) || rolificador.isAdmin(u))"
-            class="ion-align-self-start"
-          >
+
+          <ion-col *ngIf="(rolificador.esDelegado(u) || rolificador.isAdmin(u))"
+                    class="ion-align-self-start">
+
             <ion-button class="ion-float-right" (click)="deleteConcurso()">
               <ion-icon name="trash"></ion-icon>
             </ion-button>
-            <ion-button
-              class="ion-float-right"
-              [routerLink]="['/concursos/editar/' + concurso.id]"
-            >
+
+            <ion-button class="ion-float-right"
+                        [routerLink]="['/concursos/editar/' + concurso.id]">
               <ion-icon name="create"></ion-icon>
             </ion-button>
-            <!-- </ion-buttons> -->
+            
           </ion-col>
+        
         </ion-row>
       </ion-card-header>
-      <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
+      
       <ion-card-content>
         <ion-row class="w-100">
           <ion-col>
-            <!-- <ion-card-title>Descripcion</ion-card-title> -->
+
             <ion-text>{{ concurso.description }}</ion-text>
             <ion-row class="ion-margin-top ion-align-items-center">
               <b class="ion-margin-end">Reglamento</b>
@@ -56,51 +47,33 @@
                 <ion-icon name="link-outline"></ion-icon>
               </ion-button>
             </ion-row>
+            
             <ion-row class="ion-margin-top">
               <b>Categorias:</b>
-              <ion-badge
-                color="light"
-                class="ion-margin-start"
-                *ngFor="let c of categoriasInscriptasAsc"
-              >
+              <ion-badge color="light"  class="ion-margin-start" *ngFor="let c of categoriasInscriptasAsc">
                 {{ c.category.name }}
               </ion-badge>
-              <!-- <ion-chip outline color="dark"
-              *ngFor="let c of categoriasInscriptas"
-            >
-              <ion-label>{{c.category.name}}</ion-label>
-            </ion-chip> -->
             </ion-row>
+
             <ion-row class="ion-margin-top ion-margin-bottom">
               <b>Secciones:</b>
-              <ion-badge
-                color="light"
-                class="ion-margin-start"
-                *ngFor="let s of seccionesInscriptasAsc"
-              >
+              <ion-badge color="light" class="ion-margin-start"  *ngFor="let s of seccionesInscriptasAsc">
                 {{ s.section.name }}
               </ion-badge>
-              <!-- <ion-chip outline color="dark"
-              *ngFor="let c of categoriasInscriptas"
-            >
-              <ion-label>{{c.category.name}}</ion-label>
-            </ion-chip> -->
             </ion-row>
-            <!-- <ion-text>Se puede cargar un máximo de {{ concurso.max_img_section }} imágenes por sección</ion-text> -->
+
           </ion-col>
         </ion-row>
 
         <ion-row class="w-100 ion-justify-content-end">
-          <div >
+          <div>
             <ion-button  *ngIf="! isInscripto && rolificador.esConcursante(u); else btnUnsuscribe" size="small" (click)="inscribirConcursante()"
-              >Inscribirme!</ion-button
-            >
+              >Inscribirme!</ion-button>
+
             <ion-button  size="small" 
-            (click)="compartir()"
-              >
+              (click)="compartir()">
               <ion-icon name="share-social-outline"></ion-icon>
-              </ion-button
-            >
+            </ion-button>
 
           </div>
           
@@ -110,16 +83,10 @@
       <ng-template #btnUnsuscribe >
           <ion-button *ngIf="rolificador.esConcursante(u)" color="danger" size="small" 
           (click)="desinscribirme()"
-            >Desinscribirme</ion-button
-          >
+            >Desinscribirme</ion-button>
       </ng-template> 
 
-      <!-- <ion-label>{{item}}</ion-label> -->
     </ion-card>
-    <!-- <ng-template #spinner>
-      <ion-row class="ion-justify-content-center">
-        <ion-spinner></ion-spinner>
-      </ion-row>
-    </ng-template> -->
+    
   </ion-col>
 </ion-row>
