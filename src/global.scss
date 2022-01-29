@@ -29,6 +29,11 @@
   cursor: pointer;
 }
 
+.no-border{
+  border:none !important;
+  box-shadow: none;
+}
+
 @media (max-width: 768px) {
   ion-modal.auto-width {
     .ion-page {
