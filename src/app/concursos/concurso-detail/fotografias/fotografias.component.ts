@@ -203,14 +203,14 @@ export class FotografiasComponent implements OnInit {
 
   goToPage(page_number){
     if (page_number == '<') {
-      if (page_number > 1){
-        page_number = page_number - 1;
+      if (this.concursoDetailService.imagenes_page_number > 1){
+        this.concursoDetailService.imagenes_page_number = this.concursoDetailService.imagenes_page_number - 1;
       } else { return false; }
     }
 
     if (page_number == '>') {
-      if ((this.actual_page + 1) <= this.page_count){
-        page_number = page_number + 1;
+      if ((this.concursoDetailService.imagenes_page_number + 1) <= this.page_count){
+        this.concursoDetailService.imagenes_page_number = this.concursoDetailService.imagenes_page_number + 1;
       } else { return false; }
     }
     this.concursoDetailService.imagenes_page_number = Number(page_number);
