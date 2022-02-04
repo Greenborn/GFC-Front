@@ -213,8 +213,8 @@ export class FotografiasComponent implements OnInit {
         this.concursoDetailService.imagenes_page_number = this.concursoDetailService.imagenes_page_number + 1;
       } else { return false; }
     }
-    this.concursoDetailService.imagenes_page_number = Number(page_number);
-    this.loadPage(page_number);
+    
+    this.loadPage(this.concursoDetailService.imagenes_page_number);
   }
 
   loadPage(page:number){
