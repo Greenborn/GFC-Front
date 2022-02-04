@@ -142,11 +142,6 @@ export class ConcursoDetailService implements OnInit {
         s.unsubscribe()
       })
     })
-    // const s = this.rolificador.getConcursantes(u).subscribe(cs => {
-    //   // console.log('updated inscriptos', is)
-    //   this.concursantes.next(cs)
-    //   s.unsubscribe()
-    // })
   }
   async loadJueces() {
     // const u = await this.authService.user
@@ -160,32 +155,20 @@ export class ConcursoDetailService implements OnInit {
         s.unsubscribe()
       })
     })
-    // const s = this.rolificador.getJueces(u).subscribe(cs => {
-    //   // console.log('updated inscriptos', is)
-    //   this.concursantes.next(cs)
-    //   s.unsubscribe()
-    // })
   }
-  async loadContestResults() {
+  async loadContestResults(attr:any = {}) {
+    let params:string = '';
+    if (attr.hasOwnProperty('page')){
+      params += '&page='+attr.page;
+    }
     this.concurso.pipe(
       filter(c => c.id != undefined)
     ).subscribe(c => {
-      const s = this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile,image.thumbnail&filter[contest_id]=${c.id}`).subscribe(rs => {
+      const s = this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile,image.thumbnail&filter[contest_id]=${c.id}`+params).subscribe(rs => {
         this.resultadosConcurso.next(rs)
         s.unsubscribe()
       })
 
-      // const load = () => {
-      //   if (this.concursantes.getValue().length > 0 && this.inscriptos.getValue().length > 0) {
-      //     const s = this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile&filter[contest_id]=${this.concurso.getValue().id}`).pipe(
-      //       map(results => results.filter(r => this.concursantes.getValue().find(cc => cc.id == r.image.profile_id) != undefined && this.inscriptos.getValue().find(cc => cc.profile_id == r.image.profile_id) != undefined))
-      //     ).subscribe(rs => {
-      //       this.resultadosConcurso.next(rs)
-      //       s.unsubscribe()
-      //     })
-      //   } else setTimeout(load, 100)
-      // }
-      // setTimeout(load)
     })
   }
 
@@ -194,24 +177,6 @@ export class ConcursoDetailService implements OnInit {
     const pc = this.profileContestService.template
     pc.category_id = category_id
 
-    // const modal = await this.modalController.create({
-    //   component: InscribirConcursanteComponent,
-    //   cssClass: 'auto-width',
-    //   componentProps: {
-    //     "concursantes": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) < 0),
-    //     "modalController": this.modalController,
-    //     "contest": this.concurso,
-    //     "categorias": this.categoriasInscriptas.map(c => c.category),
-    //     profileContest: pc
-    //   }
-    // });
-    // await modal.present()
-
-    // const { data } = await modal.onWillDismiss();
-
-    // console.log('inscribiendo concursante', data)
-    // const { profileContest } = data ?? {}
-
     let user = await this.authService.user
 
     if(this.rolificador.esConcursante(user) ){
@@ -219,7 +184,6 @@ export class ConcursoDetailService implements OnInit {
       console.log("inscripcion yo", this.rolificador.esConcursante(user) )
       const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirConcursanteComponent, {
         "concursantes": [ user.profile],
-        // "modalController": this.modalController,
         "contest": this.concurso.getValue(),
         "categorias": this.categoriasInscriptas.getValue().map(c => c.category),
         profileContest: pc
@@ -227,8 +191,6 @@ export class ConcursoDetailService implements OnInit {
       
       if (profileContest != undefined) {
         this.loadContest(this.concurso.getValue().id)
-        // this.inscriptosArray.push(profileContest)
-        // this.inscriptos.emit(this.inscriptosArray)  
       }
     } else {
 
@@ -242,8 +204,6 @@ export class ConcursoDetailService implements OnInit {
       
       if (profileContest != undefined) {
         this.loadContest(this.concurso.getValue().id)
-        // this.inscriptosArray.push(profileContest)
-        // this.inscriptos.emit(this.inscriptosArray)  
       }
     }
     
@@ -255,15 +215,11 @@ export class ConcursoDetailService implements OnInit {
     
     const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirJuecesComponent, {
       "jueces": this.jueces.getValue(),
-      // "modalController": this.modalController,
-      // "contest": this.concurso.getValue()
       "contest": this.concurso.getValue()
     })
 
     if (profileContest != undefined) {
       this.loadContest(this.concurso.getValue().id)
-      // this.inscriptosArray.push(profileContest)
-      // this.inscriptos.emit(this.inscriptosArray)  
     }
   }
 

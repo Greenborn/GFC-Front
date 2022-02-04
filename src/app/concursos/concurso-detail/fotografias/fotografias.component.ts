@@ -1,11 +1,10 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+
 import { Category } from 'src/app/models/category.model';
 import { Contest } from 'src/app/models/contest.model';
 import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
-import { ContestResult, ContestResultExpanded } from 'src/app/models/contest_result.model';
+import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { Image } from 'src/app/models/image.model';
@@ -17,6 +16,7 @@ import { UserLogged } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { ContestResultService } from 'src/app/services/contest-result.service';
 import { ContestService } from 'src/app/services/contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
@@ -65,11 +65,16 @@ export class FotografiasComponent implements OnInit {
   public updatingInscriptos: boolean = false;
   mostrarFiltro: boolean = false;
 
+  public pages:any                = [];
+  public actual_page:number       = 1;
+  public page_count:number        = 0;
+
   constructor(
     public concursoDetailService: ConcursoDetailService,
     public contestService: ContestService,
     public UIUtilsService: UiUtilsService,
     private route: ActivatedRoute,
+    private contestResultService: ContestResultService,
     private router: Router,
     private configService: ConfigService,
     public rolificador: RolificadorService,
@@ -122,8 +127,7 @@ export class FotografiasComponent implements OnInit {
       })
     }
 
-    this.auth.user.then(u => this.user = u)
-    // let loading: HTMLIonLoadingElement;
+    this.auth.user.then(u => this.user = u);
     if (this.concurso.id == undefined) {
       // await this.UIUtilsService.presentLoading()
     }
@@ -135,8 +139,7 @@ export class FotografiasComponent implements OnInit {
     this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs)
     const s1 = this.concursoDetailService.concursantes.subscribe(
       cs => {
-        this.concursantes = cs
-        // s1.unsubscribe()
+        this.concursantes = cs;
       }
     )
     const s2 = this.concursoDetailService.inscriptos.subscribe(cs =>{
@@ -146,9 +149,19 @@ export class FotografiasComponent implements OnInit {
     })
     const s3 = this.concursoDetailService.resultadosConcurso.subscribe({
       next: rs => {
-          this.resultadosConcurso = rs
-          this.resultadosConcursoOrig = [...rs]
-          // this.UIUtilsService.dismissLoading()
+          this.resultadosConcurso = rs;
+          let meta = this.contestResultService.getAllMeta();
+          this.pages = [{number:'<'}];
+          if (meta != undefined){
+            this.page_count = meta.pageCount;
+            for (let c=0; c < meta.pageCount; c++){
+              this.pages.push({number: (c+1)});
+            }
+          }
+          this.pages.push({number: '>'});
+          this.actual_page = 1;
+          
+          this.resultadosConcursoOrig = [...rs];
           this.route.queryParams.subscribe(params => {
       
             this.resultadosConcurso = [...this.resultadosConcursoOrig]
@@ -186,6 +199,26 @@ export class FotografiasComponent implements OnInit {
       }
     )
    
+  }
+
+  goToPage(page_number){
+    if (page_number == '<') {
+      if (page_number > 1){
+        page_number = page_number - 1;
+      } else { return false; }
+    }
+
+    if (page_number == '>') {
+      if ((this.actual_page + 1) <= this.page_count){
+        page_number = page_number + 1;
+      } else { return false; }
+    }
+
+    this.loadPage(Number(page_number));
+  }
+
+  loadPage(page:number){
+    this.concursoDetailService.loadContestResults({page:page});
   }
 
   getThumbUrl(obj:any, thumb_id:number = 1){
@@ -314,7 +347,6 @@ export class FotografiasComponent implements OnInit {
       // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
     }
 
-    // this.openPopup.emit(options)
     this.concursoDetailService.mostrarAcciones.emit(options)
   }
 
