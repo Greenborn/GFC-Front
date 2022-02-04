@@ -171,6 +171,7 @@ export class ConcursoDetailService implements OnInit {
 
     })
   }
+  imagenes_page_number:number = 1;
 
   async inscribirConcursante(category_id: number = undefined, ) {
 
