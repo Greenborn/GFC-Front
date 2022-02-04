@@ -213,8 +213,8 @@ export class FotografiasComponent implements OnInit {
         page_number = page_number + 1;
       } else { return false; }
     }
-
-    this.loadPage(Number(page_number));
+    this.actual_page = Number(page_number);
+    this.loadPage(this.actual_page);
   }
 
   loadPage(page:number){
