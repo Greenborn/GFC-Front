@@ -140,7 +140,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     this.activatedRoute.paramMap.subscribe(async paramMap => {
             
       const id = parseInt(paramMap.get('id'))
-
+      this.concursoDetailService.imagenes_page_number = 1;
       this.concursoDetailService.concurso.subscribe({
         next: c => {
           this.concurso = c

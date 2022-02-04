@@ -220,7 +220,7 @@
             <ion-row>
               <ion-col>
                 <ion-row class="ion-justify-content-center">
-                  <ion-col *ngFor="let page of pages" size="auto" class="pagination-element" [ngClass]="{'pagination-element-active':(actual_page==page.number)}">
+                  <ion-col *ngFor="let page of pages" size="auto" class="pagination-element" [ngClass]="{'pagination-element-active':(concursoDetailService.imagenes_page_number==page.number)}">
                     <span (click)="goToPage(page.number)">{{page.number}}</span>
                   </ion-col>
                 </ion-row>
