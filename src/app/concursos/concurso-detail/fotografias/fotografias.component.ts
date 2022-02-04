@@ -206,14 +206,13 @@ export class FotografiasComponent implements OnInit {
       if (this.concursoDetailService.imagenes_page_number > 1){
         this.concursoDetailService.imagenes_page_number = this.concursoDetailService.imagenes_page_number - 1;
       } else { return false; }
-    }
-
-    if (page_number == '>') {
+    } else if (page_number == '>') {
       if ((this.concursoDetailService.imagenes_page_number + 1) <= this.page_count){
         this.concursoDetailService.imagenes_page_number = this.concursoDetailService.imagenes_page_number + 1;
       } else { return false; }
+    } else {
+      this.concursoDetailService.imagenes_page_number = page_number;
     }
-    
     this.loadPage(this.concursoDetailService.imagenes_page_number);
   }
 
