@@ -183,12 +183,8 @@ desubsc() {
 
 obtenerPx() {
   if (window.innerWidth > 767) {
-    // console.log(colCard.clientHeight)
-    // return window.innerWidth/6;
     return 15;
   } else {
-    // return colCard.el.clientWidth/2;
-    // return window.innerWidth/2
     return 25;
   }
 }
@@ -222,39 +218,7 @@ obtenerPx() {
     this.popover.onDidDismiss().then(_ => this.popover = undefined)
   }
 
-  // async mostrarAcciones(ev: any, r: ContestResultExpanded) {
   async mostrarAcciones(options: any) {
-    // const i = r.image
-    // this.popover = await this.popoverCtrl.create({
-    //   component: MenuAccionesComponent, //componente a mostrar
-    //   componentProps: {
-    //     acciones: [
-    //       {
-    //         accion: (params: []) => this.reviewImage(r),
-    //         params: [],
-    //         icon: 'star-outline',
-    //         label: 'Puntuar'
-    //       },
-    //       {
-    //         accion: (params: []) => this.postImage(i),
-    //         params: [],
-    //         icon: 'create',
-    //         label: 'Editar'
-    //       },
-    //       {
-    //         accion: (params: number[]) => this.deleteImage(r),
-    //         params: [],
-    //         icon: 'trash',
-    //         label: 'Borrar'
-    //       }
-    //     ]
-    //   },
-    //   cssClass: 'auto-width',
-    //   event: ev,
-    //   translucent: true,
-    //   // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
-    // });
-
     this.popover = await this.popoverCtrl.create(options)
     await this.popover.present();
     if (this.popover != undefined)
@@ -433,7 +397,6 @@ obtenerPx() {
                 image,
                 metric
               })
-              // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
               this.concursoDetailService.loadContestResults()
             },
             // cr => this.contestResults.push(cr),
@@ -464,16 +427,13 @@ obtenerPx() {
             },
             err => {
               this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
-              // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
               
               this.concursoDetailService.loadContestResults()
             },
           )  
         } else {
           console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
-          // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
-          
-              this.concursoDetailService.loadContestResults()
+          this.concursoDetailService.loadContestResults()
         }
         // console.log('replaced image', image, 'index', i)
       }
@@ -564,19 +524,14 @@ obtenerPx() {
           handler: () => {
             super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe(
               _ => {
-                // this.alertCtrl.dismiss()
-                // this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
                 this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-                // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
                 this.concursoDetailService.loadContestResults()
                 super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
                   _ => {},
-                  // _ => this.images.splice(this.images.findIndex(i => i.id == image_id), 1),
                   async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
                 )
                 super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe(
                   _ => {},
-                  // _ => this.metrics.splice(this.metrics.findIndex(i => i.id == metric_id), 1),
                   async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
                 )
 

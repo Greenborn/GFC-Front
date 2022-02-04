@@ -29,6 +29,26 @@
   cursor: pointer;
 }
 
+.pagination-element{
+  border:              1px solid #888;
+  padding:             0.5rem;
+  cursor:              pointer;
+  text-align:          center;
+  min-width:           3rem;
+  transition-duration: 0.25s;
+  user-select:         none;
+}
+
+.pagination-element:hover{
+    color:            #FFF;
+    background-color: #888;
+}
+
+.pagination-element-active{
+    color:            #FFF;
+    background-color: #888;
+}
+
 .no-border{
   border:none !important;
   box-shadow: none;

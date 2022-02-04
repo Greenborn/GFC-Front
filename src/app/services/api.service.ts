@@ -12,11 +12,12 @@ export abstract class ApiService<T> {
 
   protected fetchAllOnce: boolean = false;
   protected all: any[];
+  all_meta:any;
   
   constructor(
-    @Inject(String) private recurso: string,
-    private  http: HttpClient,
-    private config: ConfigService,
+    @Inject(String) protected recurso: string,
+    protected  http: HttpClient,
+    protected config: ConfigService,
     // private _template: T
   ) { }
 
@@ -27,6 +28,10 @@ export abstract class ApiService<T> {
     return this.http.get<K>(
       this.config.apiUrl(`${this.recurso}/${id}?${getParams}`)
     )
+  }
+
+  public getAllMeta(){
+    return this.all_meta;
   }
 
   // https://www.yiiframework.com/doc/guide/2.0/en/rest-response-formatting
@@ -44,10 +49,12 @@ export abstract class ApiService<T> {
         map((data) => {
           console.log('get all', url, data)
           if (this.fetchAllOnce) {
-            this.all = data.items
+            this.all = data.items;
           }
-          if (data != null)
+          if (data != null){
+            this.all_meta = data._meta;
             return data.items;
+          }
           return null;
         })
       )
