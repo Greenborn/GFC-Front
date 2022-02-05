@@ -149,6 +149,7 @@ postImage(profile_id: number) {
     image: {
       id: undefined,
       profile_id,
+      url:'',
       code: undefined,
       title: undefined
     }
