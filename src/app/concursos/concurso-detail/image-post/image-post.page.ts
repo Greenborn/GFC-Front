@@ -117,6 +117,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
              title: this.image.title,
              code: this.code,
              photo_base64:this.photo_base64,
+             url:'_',
              profile_id:  this.profiles_list.length != 1 ? this.perfil_elegido['id'] : this.image.profile_id
            }
            if (this.file != undefined) {
@@ -140,7 +141,6 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   datosCargados() {
-    //return this.image.code !=  undefined 
     return this.image.title !=  undefined 
         && (this.image.profile_id != undefined || this.perfil_elegido != undefined )
         && (this.section_id != undefined && this.sectionSelect != false) 

@@ -5,7 +5,7 @@ export interface Image {
     code: string;
     title: string;
     profile_id: number;
-    url?: string;
+    url: string;
     thumbnail?: string;
     photo_base64?: any;
 }
