@@ -69,6 +69,7 @@ export class FotografiasComponent implements OnInit {
   public actual_page:number       = 1;
   public page_count:number        = 0;
 
+
   constructor(
     public concursoDetailService: ConcursoDetailService,
     public contestService: ContestService,
