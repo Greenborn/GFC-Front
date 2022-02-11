@@ -273,8 +273,15 @@ export class FotografiasComponent implements OnInit {
   }
 
   getFotoclubName(profile_id: number): string {
-    const profile = this.inscriptos.find(p => p.profile_id == profile_id)
-    return profile != undefined ? profile.profile.fotoclub.name : ''
+    const profile = this.inscriptos.find(p => p.profile_id == profile_id);
+    if (profile != undefined){
+      if (profile.profile.fotoclub == null){
+        return '';
+      } else {
+        return profile.profile.fotoclub.name;
+      }
+    }
+    return '';
   }
 
   getFullName(profile_id: number) {
