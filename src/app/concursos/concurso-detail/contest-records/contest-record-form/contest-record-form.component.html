@@ -1,0 +1,49 @@
+<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
+  <ion-header>
+    <ion-toolbar>
+      <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
+        <ion-col>
+          <h5 class="ion-text-wrap">
+            {{ formTitle }}
+          </h5>
+        </ion-col>
+        <ion-col size="1" class="ion-hide-md-down">
+          <ion-button (click)="modalController.dismiss()" fill="clear" class="">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ion-header>
+
+  <div slot="start" class="w-100 inner-content ion-float-md-start">
+    <ion-grid>
+
+      <ion-row>
+        <ion-item class="w-100 ion-margin-bottom">
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input name="name"  ngDefaultControl  [(ngModel)]="grabacion.object"  autocapitalize="sentences"   required></ion-input>
+        </ion-item>
+      </ion-row>
+
+      <ion-row>
+        <ion-item class="w-100 ion-margin-bottom">
+          <ion-label position="floating">URL</ion-label>
+          <ion-input name="name"  ngDefaultControl  [(ngModel)]="grabacion.url"  autocapitalize="sentences"   required></ion-input>
+        </ion-item>
+      </ion-row>
+
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col size="auto">
+          <ion-button expand="block" (click)="modalController.dismiss()" fill="clear">Cancelar</ion-button>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button (click)="guardar()" >Guardar</ion-button>
+        </ion-col>
+        <ion-col></ion-col>
+      </ion-row>
+      
+    </ion-grid>
+  </div>
+</div>

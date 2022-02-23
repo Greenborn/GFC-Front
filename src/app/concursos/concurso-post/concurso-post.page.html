@@ -28,67 +28,51 @@
           <ion-list class="ion-align-items-end">
             <ion-item>
               <ion-label position="floating">Nombre</ion-label>
-              <ion-input
-                name="name"
-                [ngModel]="concurso.name"
-                autocapitalize="sentences"
-                required
-              ></ion-input>
+              <ion-input name="name" [ngModel]="concurso.name"  autocapitalize="sentences" required></ion-input>
             </ion-item>
 
             <ion-item>
               <ion-label position="floating">Sub-título</ion-label>
               <ion-input name="sub_title" [ngModel]="concurso.sub_title"></ion-input>
             </ion-item>
+
             <ion-item>
               <ion-col size="6" class="ion-no-padding">
                 <ion-item class="ion-no-padding">
                   <ion-label position="stacked">Inicio</ion-label>
-                  <!-- <ion-input
-                    type="date"
-                    name="start_date"
-                    [ngModel]="concurso.start_date"
-                    required
-                  ></ion-input> -->
+                  
                   <!-- TODO: revisar scroll en PC, ver css global -->
                   <!-- TODO: modificar el max de fecha como la fecha actual + 10 años -->
                   <ion-datetime
-                    displayFormat="DD/MMM/YYYY"
-                    monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
-                    monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
-                    min="1967"
-                    max="2050"
-                    name="start_date"
-                    [ngModel]="concurso.start_date"
-                    required
-                    doneText="Elegir"
-                    cancelText="Cancelar"
-                  >
+                      displayFormat="DD/MMM/YYYY"
+                      monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
+                      monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
+                      min="1967"
+                      max="2050"
+                      name="start_date"
+                      [ngModel]="concurso.start_date"
+                      required
+                      doneText="Elegir"
+                      cancelText="Cancelar">
                   </ion-datetime>
                 </ion-item>
               </ion-col>
+
               <ion-col size="6" class="ion-no-padding">
                 <ion-item class="ion-no-padding">
                   <ion-label position="stacked">Finalización</ion-label>
-                  <!-- <ion-input
-                    type="date"
-                    name="end_date"
-                    [ngModel]="concurso.end_date"
-                    required
-                  ></ion-input> -->
                   <!-- TODO: modificar el max de fecha como la fecha actual + 10 años -->
                   <ion-datetime
-                    displayFormat="DD/MMM/YYYY"
-                    monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
-                    monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
-                    min="1967"
-                    max="2050"
-                    name="end_date"
-                    [ngModel]="concurso.end_date"
-                    required
-                    doneText="Elegir"
-                    cancelText="Cancelar"
-                  >
+                      displayFormat="DD/MMM/YYYY"
+                      monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
+                      monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
+                      min="1967"
+                      max="2050"
+                      name="end_date"
+                      [ngModel]="concurso.end_date"
+                      required
+                      doneText="Elegir"
+                      cancelText="Cancelar">
                   </ion-datetime>
                 </ion-item>
               </ion-col>
@@ -189,11 +173,14 @@
             </ion-col>
           </ion-row>
 
+          <ion-row class="w-100">
+            <ion-col><h3>Imagen</h3></ion-col>
+          </ion-row>
           
           <ion-row class="w-100">
             <ion-col class="ion-no-padding">
               <ion-item class="w-100 ion-no-padding ion-margin-bottom">
-                <ion-label position="stacked">Imágen</ion-label>
+                <ion-label position="stacked">Archivo</ion-label>
                 <input type="file" (change)="imageUpload($event.target)" />
               </ion-item>
               <div>
@@ -205,9 +192,13 @@
           </ion-row>
 
           <ion-row class="w-100">
+              <ion-col><h3>Reglamento</h3></ion-col>
+          </ion-row>
+
+          <ion-row class="w-100">
             <ion-col class="ion-no-padding">
               <ion-item class="w-100 ion-no-padding ion-margin-bottom">
-                <ion-label position="stacked">Reglamento</ion-label>
+                <ion-label position="stacked">Documento</ion-label>
                 <input type="file"  accept=".pdf" (change)="fileUpload($event.target)" />
               </ion-item>
               <ion-note>
@@ -220,36 +211,26 @@
             </ion-col>
           </ion-row>
 
+          <ion-row class="w-100">
+              <app-contest-records class="w-100" [concurso]="concurso"></app-contest-records>
+          </ion-row>
+
           <ion-row class="ion-margin-top ion-justify-content-end">
             <ion-col size="12">
               <ion-row class="ion-justify-content-end">
-                <ion-col
-                  push-sm="3"
-                  size="12"
-                  size-sm="3"
-                  class="ion-align-self-center"
-                >
-                  <app-btn-post
-                    [posting]="posting"
-                    [disabled]="!f.valid || secycat"
-                  ></app-btn-post>
+
+                <ion-col push-sm="3" size="12" size-sm="3"  class="ion-align-self-center">
+                    <app-btn-post [posting]="posting" [disabled]="!f.valid || secycat"></app-btn-post>
                 </ion-col>
 
-                <ion-col
-                  class="ion-align-self-center"
-                  pull-sm="3"
-                  size="12"
-                  size-sm="3"
-                >
-                  <ion-back-button
-                    text="Cancelar"
-                    icon=""
-                    [defaultHref]="backUrl"
-                  ></ion-back-button>
+                <ion-col class="ion-align-self-center" pull-sm="3" size="12" size-sm="3">
+                  <ion-back-button text="Cancelar" icon="" [defaultHref]="backUrl"></ion-back-button>
                 </ion-col>
+
               </ion-row>
             </ion-col>
           </ion-row>
+
         </form>
         <ng-template #spinner>
           <ion-row class="ion-justify-content-center">

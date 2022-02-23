@@ -16,6 +16,7 @@ export interface Contest {
     countContestResults?: number;
     sections?: Section[];
     categories?: Category[];
+    contestRecords?: any[];
     sub_title?: string;
 }
 
