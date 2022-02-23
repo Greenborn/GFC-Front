@@ -98,7 +98,7 @@ get secycat(){
       if (id != null) {
         // this.loading = true
         super.fetch<Contest>(() => 
-          this.contestService.get(parseInt(id))
+          this.contestService.get(parseInt(id),'expand=contestRecords')
         ).subscribe(c => {
           // c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
           // c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);

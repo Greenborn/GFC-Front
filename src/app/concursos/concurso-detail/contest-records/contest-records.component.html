@@ -1,0 +1,35 @@
+<ion-col>
+  <ion-row>
+    <h2 class="ion-margin-top ion-margin-bottom ion-margin-end">
+        Grabaciones
+    </h2>
+    <ion-fab-button (click)="addGrabacion()" size="small">
+        <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-row>
+
+  <ion-row>
+      <ion-list class="w-100">
+
+        <ion-item *ngFor="let grabacion of concurso.contestRecords">
+            <ion-grid>
+              <ion-row>
+                <ion-col><a href="{{grabacion.url}}" target="_blank">{{grabacion.object}}</a></ion-col>
+                <ion-col size="auto">
+                  <ion-buttons>
+                    <ion-button (click)="editarGrabacion(grabacion)">
+                      <ion-icon name="create"></ion-icon>
+                    </ion-button>
+                    <ion-button (click)="eliminarGrabacion(grabacion)">
+                      <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+        </ion-item>
+
+        
+      </ion-list>
+  </ion-row>
+</ion-col>

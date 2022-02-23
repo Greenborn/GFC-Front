@@ -16,41 +16,30 @@
         <ion-row>
           <ion-col size="11.5" push="0.25">
             <ion-grid class="ion-no-padding ion-padding-bottom">
-              <ion-row
-                class="ion-justify-content-start ion-align-items-center ion-margin-top ion-margin-bottom"
-              >
+
+              <ion-row class="ion-justify-content-start ion-align-items-center ion-margin-top ion-margin-bottom">
                 <h2 class="ion-margin-top ion-margin-bottom ion-margin-end">
                   Organizaciones
                 </h2>
+
                 <ion-fab-button (click)="postFotoclub()" size="small">
                   <ion-icon name="add"></ion-icon>
                 </ion-fab-button>
+
               </ion-row>
 
               <ion-row class="ion-align-items-center">
-                <ion-col>
-                  <!-- <app-search-bar
-                    (buscar)="filtrarUsuarios($event)"
-                    [atributos]="['username', 'email']"
-                  ></app-search-bar> -->
+                <ion-col></ion-col>
 
-                  <!-- <app-search-bar 
-                  [(data)]="miembros"
-                  [atributosObj]="atributosBusqueda"
-                  ></app-search-bar> -->
-                </ion-col>
                 <ion-col size="2" size-sm="1">
-                  <ion-row
-                    class="ion-justify-content-center ion-align-items-center ion-align-self-center"
-                  >
+
+                  <ion-row  class="ion-justify-content-center ion-align-items-center ion-align-self-center">
                     <ion-button
                       (click)="mostrarFiltro = !mostrarFiltro"
-                      color="medium"
-                      expand="block"
-                      class="ion-justify-content-center ion-align-items-center ion-align-self-center"
-                    >
+                      color="medium" expand="block"
+                      class="ion-justify-content-center ion-align-items-center ion-align-self-center">
+
                       <ion-icon name="funnel"></ion-icon>
-                      <!-- <ion-icon name="options"></ion-icon> -->
                     </ion-button>
                   </ion-row>
                 </ion-col>
@@ -79,7 +68,7 @@
                 </ion-grid>
               </ion-item>
             </ion-list>
-            <!-- <div *ngIf="(miembros | async) as miembros; else spinner"> -->
+            
             <ion-list *ngIf="fotoclubs.length > 0; else texto">
               <ion-item *ngFor="let f of fotoclubs">
                 <ion-grid>
@@ -145,36 +134,15 @@
                 </ion-grid>
               </ion-item>
             </ion-list>
+
             <ng-template #texto>
-              <!-- <ion-item> -->
-              <ion-item>No hay fotoclubs</ion-item>
-              <!-- <ion-item *ngIf="!loading">No hay fotoclubs</ion-item> -->
-              <!-- <ion-item *ngIf="searchParams != undefined">
-                  con {{searchParams.atributo}} que empiece con '{{
-                  searchParams.query }}'</ion-item
-                >
-              </ion-item> -->
+                <ion-item>No hay fotoclubs</ion-item>
             </ng-template>
-            <!-- </div>
-            <ng-template #spinner>
-              <ion-row class="ion-justify-content-center">
-                <ion-spinner ></ion-spinner>
-              </ion-row>
-            </ng-template> -->
+
           </ion-col>
         </ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <!-- <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-    class="ion-hide-sm-up"
-  >
-    <ion-fab-button [routerLink]="['nuevo']">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab> -->
 </ion-content>
