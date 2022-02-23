@@ -62,6 +62,14 @@
               </ion-badge>
             </ion-row>
 
+            <ion-row class="ion-margin-top ion-margin-bottom">
+              <b>Grabaciones:</b>
+              <ion-badge color="light" class="ion-margin-start"  *ngFor="let s of concurso.contestRecords">
+                <a href="{{s.url}}" target="_blank">{{ s.object }}</a>
+              </ion-badge>
+            </ion-row>
+            
+
           </ion-col>
         </ion-row>
 

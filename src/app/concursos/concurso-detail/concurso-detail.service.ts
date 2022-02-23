@@ -77,7 +77,7 @@ export class ConcursoDetailService implements OnInit {
     const all: Promise<void>[] = []
 
     all.push(new Promise(resolve => {
-      const s = this.contestService.get(id, 'expand=countContestResults,countProfileContests').subscribe(c => {
+      const s = this.contestService.get(id, 'expand=countContestResults,countProfileContests,contestRecords').subscribe(c => {
         console.log('got', c, id)
         this.concurso.next(c)
         s.unsubscribe()
