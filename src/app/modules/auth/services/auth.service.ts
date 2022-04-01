@@ -7,7 +7,6 @@ import { Router }                  from '@angular/router';
 import { Login } from '../models/login.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { User, UserLogged } from 'src/app/models/user.model';
-import { UserService } from 'src/app/services/user.service';
 import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 
 @Injectable({
@@ -22,7 +21,6 @@ export class AuthService {
     private  router: Router,
     private  http: HttpClient,
     private  config: ConfigService,
-    private userService: UserService
     // private  gral:        AppUIUtilsService
   ) { 
     // this.updateUser()
@@ -64,35 +62,7 @@ export class AuthService {
           },
           () => s.unsubscribe()
         )
-        // const s = this.http.get<User>(`${this.config.apiUrl('user')}/${this.userId}`).subscribe(
-        //   u => {
-        //     console.log('fetching user data', u)
-        //     const s1 = this.http.get<Profile>(`${this.config.apiUrl('profile')}/${u.profile_id}`).subscribe(
-        //       p => {
-        //         console.log('fetching profile data', p)
-        //         resolve({
-        //           user: u,
-        //           profile: p
-        //         })
-        //       },
-        //       err => {
-        //         console.log('error fetching profile data', err, 'Logging out')
-        //         resolve(null)
-        //       },
-        //       () => s1.unsubscribe()
-        //     )
-        //     // this._user = u
-        //     // resolve(this._user)
-        //     // resolve(u)
-        //   },
-        //   err => {
-        //     console.log('error fetchingu ser data', err, 'Logging out')
-        //     resolve(null)
-        //     // this.logout()
-        //     // resolve(this.userService.template)
-        //   },
-        //   () => s.unsubscribe()
-        // )
+        
         
       })
     } else {
@@ -163,8 +133,9 @@ export class AuthService {
   }
 
   async logout() { // cerrar sesion en api
-    this.token = this.userId = null
-    this._user = undefined 
+    this.token  = this.userId = null
+    this.userId = undefined;
+    this._user  = undefined 
     this.router.navigateByUrl('/login')
   }
 

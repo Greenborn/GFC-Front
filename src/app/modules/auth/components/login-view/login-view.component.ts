@@ -27,17 +27,7 @@ export class LoginViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {}
-  // toggleVisibility(){
-  //   let elem = document.querySelector(`#ctr-1`);
-  //   let tipo = elem.getAttribute('type');
-  //   if (tipo == "password"){
-  //     elem.setAttribute('type','text');
-  //     this.visibility = true;
-  //   } else {
-  //     elem.setAttribute('type','password');
-  //     this.visibility = false;
-  //   }
-  // }
+ 
   keyPress(e, input = ''){
     if (e.key == "Enter"){
       
