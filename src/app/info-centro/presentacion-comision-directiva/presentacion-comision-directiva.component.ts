@@ -3,7 +3,7 @@ import { AlertController, IonSlides } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Profile } from 'src/app/models/profile.model';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { ProfileService } from 'src/app/services/profile.service';
+import { PublicProfileService } from 'src/app/services/public-profile.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 export class PresentacionComisionDirectivaComponent extends ApiConsumer implements OnInit {
   
   async ngOnInit() {
-    this.profileService.getAll<Profile>(
+    this.publicProfileService.getAll<Profile>(
       'filter[executive]=true'
     ).subscribe(
         async  p => {
@@ -49,7 +49,7 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
   constructor(
     public  alertController:      AlertController,
     public configService: ConfigService,
-    public profileService: ProfileService,
+    public publicProfileService: PublicProfileService,
     public responsiveService: ResponsiveService
   ) {
     
