@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
 import {Location} from '@angular/common';
 
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
@@ -50,6 +50,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public img_url: string;
   public ImageChangeClick:Subject<any> = new Subject();
 
+  public pass_desigual:boolean = true;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -64,6 +66,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     public modalController: ModalController,
     public configService: ConfigService,
     private UIUtilsService: UiUtilsService,
+    private formBuilder: FormBuilder,
     private createUserService: CreateUserService,
   ) { 
     super(alertCtrl)
@@ -98,10 +101,26 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     return this.usuario.id == this.userLogged.id
   }
 
+  form: FormGroup;
   async ngOnInit() {
     this.ImageChangeClick.subscribe({  next: ( response: any ) => {
       this.profileImageUpload.nativeElement.querySelector('input').click();
     }});
+
+    let formControls = {
+        name:           new FormControl(''),
+        last_name:      new FormControl(''),
+        fotoclub_id:    new FormControl(''),
+        //executive:  new FormControl('')
+        //executive_rol: new FormControl(''),
+        username:       new FormControl(''),
+        email:          new FormControl(''),
+        password:       new FormControl(''),
+        passwordRepeat: new FormControl(''),
+       // role_id:        new FormControl(''),
+    };
+
+    this.form = this.formBuilder.group( formControls );
     
     const dataPromises: Promise<boolean>[] = [];
     const loading = await this.loadingController.create({
@@ -154,13 +173,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
             })
           }))
         )
-        // super.fetch<User>(() => this.userService.get(parseInt(id))).subscribe(u => {
-        //   this.usuario = u
-        //   super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => {
-        //     this.profile = p
-        //     loading.dismiss()
-        //   })
-        // })
+        
         
       } else {
         this.isPost = true
@@ -341,14 +354,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     });
     await modal.present()
 
-    // const { data } = await modal.onWillDismiss();
-
-    // console.log('inscribiendo concursante', data)
-    // const { profileContest } = data ?? {}
-    // if (profileContest != undefined) {
-    //   this.inscriptos.push(profileContest)
-    //   this.concursoDetailService.inscriptos.emit(this.inscriptos)  
-    // }
   }
 
     // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee

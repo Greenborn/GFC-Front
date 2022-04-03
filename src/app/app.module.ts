@@ -19,7 +19,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './modules/auth/services/auth-interceptor.service';
 
 import { FooterPostComponent } from './nav/footer/footer-post/footer-post.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicSelectableModule } from 'ionic-selectable';
 
@@ -39,6 +39,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
   entryComponents: [],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     IonicModule.forRoot(), 
     AppRoutingModule,
