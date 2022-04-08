@@ -219,7 +219,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     return res
   }
 
-  async postUsuario(f: NgForm) {
+  async postUsuario() {
+      let f = this.form;
       if (f.valid) {
         if((this.usuario.role_id == 3 || this.usuario.role_id == 2 )) {
 

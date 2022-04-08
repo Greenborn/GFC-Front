@@ -29,7 +29,7 @@
       <ion-col size-sm="12" size-md="9" size-lg="7">
         <ion-row>
 
-            <form class="w-100" [formGroup]="form" (ngSubmit)="postUsuario(f)">
+            <form class="w-100" [formGroup]="form" (ngSubmit)="postUsuario()">
                        
                 <ion-row>
                     <h6>Datos del perfil</h6>
@@ -72,7 +72,7 @@
                         </ion-item>
 
                         <ion-item
-                            *ngIf="f.value.executive == true" 
+                            *ngIf="form.value.executive == true" 
                             class="expand-full">
                                 <ion-label position="floating">Rol en la comisión</ion-label>
                                 <ion-input
