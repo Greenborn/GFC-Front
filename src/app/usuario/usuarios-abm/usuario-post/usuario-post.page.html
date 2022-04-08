@@ -137,7 +137,7 @@
                         <ion-col class="ion-no-padding">
                             <ion-row>
                                 <ion-col class="ion-no-padding" size="10">
-                                    <ion-label position="floating" [ngStyle]="{ color: pass_desigual ? 'red': '#000' }">Contraseña <span *ngIf="!isUserProfile">Atención: ¡las contraseñas no coinciden!</span></ion-label>
+                                    <ion-label position="floating" [ngStyle]="{ color: form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">Contraseña <span *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null">Atención: ¡las contraseñas no coinciden!</span></ion-label>
                                     <ion-input
                                         tabindex="0"
                                         id="ctr-1" class="text-right"
@@ -160,11 +160,10 @@
                         <ion-col class="ion-no-padding">
                             <ion-row>
                                 <ion-col class="ion-no-padding" size="10">
-                                    <ion-label position="floating" [ngStyle]="{ color: pass_desigual ? 'red': '#000' }">Repetir Contraseña  <span *ngIf="!isUserProfile">Atención: ¡las contraseñas no coinciden!</span></ion-label>
+                                    <ion-label position="floating" [ngStyle]="{ color: form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null ? 'red': '#000' }" >Repetir Contraseña  <span *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null">Atención: ¡las contraseñas no coinciden!</span></ion-label>
                                     <ion-input
                                     tabindex="0"
                                     id="ctr-1"
-                                    pattern=".{8,}"
                                     type="password"
                                     class="text-right"
                                     name="passwordRepeat" formControlName="passwordRepeat" [(ngModel)]="usuario.passwordRepeat"></ion-input>

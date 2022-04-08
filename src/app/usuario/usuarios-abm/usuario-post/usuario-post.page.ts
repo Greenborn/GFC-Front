@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import {Location} from '@angular/common';
 
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
@@ -20,6 +20,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { CreateUserService } from 'src/app/services/create-user.service';
 import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
 import { Subject } from 'rxjs';
+import { ComparePassword } from 'src/app/modules/auth/validators/password.validator';
 
 @Component({
   selector: 'app-usuario-post',
@@ -49,8 +50,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public file: File;
   public img_url: string;
   public ImageChangeClick:Subject<any> = new Subject();
-
-  public pass_desigual:boolean = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -108,19 +107,23 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     }});
 
     let formControls = {
-        name:           new FormControl(''),
-        last_name:      new FormControl(''),
-        fotoclub_id:    new FormControl(''),
+        name:           new FormControl({ value: '', disabled: false }),
+        last_name:      new FormControl({ value: '', disabled: false }),
+        fotoclub_id:    new FormControl({ value: '', disabled: false }),
         //executive:  new FormControl('')
         //executive_rol: new FormControl(''),
-        username:       new FormControl(''),
-        email:          new FormControl(''),
-        password:       new FormControl(''),
-        passwordRepeat: new FormControl(''),
+        username:       new FormControl({ value: '', disabled: false }),
+        email:          new FormControl({ value: '', disabled: false }),
+        password:       new FormControl({ value: '', disabled: false }, Validators.compose([
+            Validators.required,
+          ])),
+        passwordRepeat: new FormControl({ value: '', disabled: false } ),
        // role_id:        new FormControl(''),
     };
 
-    this.form = this.formBuilder.group( formControls );
+    this.form = this.formBuilder.group( formControls, {
+        validator: ComparePassword("password", "passwordRepeat")
+    } );
     
     const dataPromises: Promise<boolean>[] = [];
     const loading = await this.loadingController.create({
