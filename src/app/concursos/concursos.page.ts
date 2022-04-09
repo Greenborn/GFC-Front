@@ -145,7 +145,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   ionViewWillEnter() {
     // this.concursos = await this.db.getConcursos()
     super.fetch<Contest[]>(() => 
-      this.contestService.getAll('expand=categories,sections')
+      this.contestService.getAll('expand=categories,sections&sort=-id')
     ).subscribe(r => {
       // console.log('concursos recibidos', r)
       this.concursos = r

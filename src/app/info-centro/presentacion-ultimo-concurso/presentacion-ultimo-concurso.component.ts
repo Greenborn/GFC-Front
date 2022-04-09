@@ -29,7 +29,7 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
   async ngOnInit() {
     const loading = await this.loadingController.create({ message: '' });
     await loading.present();
-    this.publicContestService.getAll().subscribe(
+    this.publicContestService.getAll('sort=-id').subscribe(
       ok => {
           this.concurso = ok[0];
           this.bg_image = this.configService.data.apiBaseUrl + this.concurso.img_url;

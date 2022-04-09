@@ -9,7 +9,6 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestResultService } from 'src/app/services/contest-result.service';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { ProfileService } from 'src/app/services/profile.service';
-import { UserService } from 'src/app/services/user.service';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -19,7 +18,6 @@ export class RolificadorService {
 
   constructor(
     private auth: AuthService,
-    private userService: UserService,
     private profileService: ProfileService,
     private contestResultService: ContestResultService,
     private profileContestService: ProfileContestService,
@@ -48,18 +46,7 @@ export class RolificadorService {
     return u.role_id === 3 || u.role_id > 4
   }
 
-  // getUsers(u: UserLogged): Observable<User[]> {
-  //   return this.userService.getAll().pipe(
-  //     map(users => users.filter(user => {
-  //       let r = true
-  //       if (user.id == u.id) r = false
-  //       else if (u.role_id != 1) {
-  //         r = user.role_id == 3
-  //       }
-  //       return r
-  //     }))
-  //   )
-  // }
+
   getMiembros(u: UserLogged): Observable<ProfileExpanded[]> {
     return this.profileService.getAll<ProfileExpanded>("expand=user" + (!this.isAdmin(u) ? `&filter[fotoclub_id]=${u.profile.fotoclub_id}` : '')).pipe(
       map(profiles => {

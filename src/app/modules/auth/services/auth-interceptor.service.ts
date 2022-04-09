@@ -39,8 +39,8 @@ export class AuthInterceptorService implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
 
         if (err.status === 401 || err.statusText == 'Unknown Error') {
-          console.log('catch error request sin autorizacion, redirect a login', err)
-          this.router.navigateByUrl('/login');
+          console.log('catch error request sin autorizacion, redirect a login', err);
+          this.authService.logout();
         } else {
           console.log(`catch error request con status ${err.status}`, err)
         }

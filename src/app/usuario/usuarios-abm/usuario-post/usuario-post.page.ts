@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import {Location} from '@angular/common';
 
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
@@ -20,6 +20,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { CreateUserService } from 'src/app/services/create-user.service';
 import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
 import { Subject } from 'rxjs';
+import { ComparePassword } from 'src/app/modules/auth/validators/password.validator';
 
 @Component({
   selector: 'app-usuario-post',
@@ -64,6 +65,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     public modalController: ModalController,
     public configService: ConfigService,
     private UIUtilsService: UiUtilsService,
+    private formBuilder: FormBuilder,
     private createUserService: CreateUserService,
   ) { 
     super(alertCtrl)
@@ -98,10 +100,30 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     return this.usuario.id == this.userLogged.id
   }
 
+  form: FormGroup;
   async ngOnInit() {
     this.ImageChangeClick.subscribe({  next: ( response: any ) => {
       this.profileImageUpload.nativeElement.querySelector('input').click();
     }});
+
+    let formControls = {
+        name:           new FormControl({ value: '', disabled: false }),
+        last_name:      new FormControl({ value: '', disabled: false }),
+        fotoclub_id:    new FormControl({ value: '', disabled: false }),
+        //executive:  new FormControl('')
+        //executive_rol: new FormControl(''),
+        username:       new FormControl({ value: '', disabled: false }),
+        email:          new FormControl({ value: '', disabled: false }),
+        password:       new FormControl({ value: '', disabled: false }, Validators.compose([
+            Validators.required,
+          ])),
+        passwordRepeat: new FormControl({ value: '', disabled: false } ),
+       // role_id:        new FormControl(''),
+    };
+
+    this.form = this.formBuilder.group( formControls, {
+        validator: ComparePassword("password", "passwordRepeat")
+    } );
     
     const dataPromises: Promise<boolean>[] = [];
     const loading = await this.loadingController.create({
@@ -154,13 +176,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
             })
           }))
         )
-        // super.fetch<User>(() => this.userService.get(parseInt(id))).subscribe(u => {
-        //   this.usuario = u
-        //   super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => {
-        //     this.profile = p
-        //     loading.dismiss()
-        //   })
-        // })
+        
         
       } else {
         this.isPost = true
@@ -203,7 +219,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     return res
   }
 
-  async postUsuario(f: NgForm) {
+  async postUsuario() {
+      let f = this.form;
       if (f.valid) {
         if((this.usuario.role_id == 3 || this.usuario.role_id == 2 )) {
 
@@ -341,14 +358,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     });
     await modal.present()
 
-    // const { data } = await modal.onWillDismiss();
-
-    // console.log('inscribiendo concursante', data)
-    // const { profileContest } = data ?? {}
-    // if (profileContest != undefined) {
-    //   this.inscriptos.push(profileContest)
-    //   this.concursoDetailService.inscriptos.emit(this.inscriptos)  
-    // }
   }
 
     // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
