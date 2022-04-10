@@ -14,25 +14,30 @@
             <ion-card class="ion-margin-top expand-full no-border">
               <div class="expand-full ion-padding-start ion-padding-end" class="ion-margin">
                 <ion-item class="expand-full">
-                  <ion-col class="ion-no-padding">
-                    <ion-label position="stacked">Usuario</ion-label>
-                    <ion-input
-                      class="text-right"
-                      (keypress)="keyPress($event)"
-                      [(ngModel)]="login.username"
-                      ngDefaultControl
-                    ></ion-input>
-                  </ion-col>
+                    <ion-row>
+                        <ion-col class="ion-no-padding ion-margin-top" size="12">
+                            <ion-label>Usuario</ion-label> 
+                        </ion-col>
+                        <ion-col class="ion-no-padding" size="12">
+                            <ion-input
+                                class="text-right"
+                                (keypress)="keyPress($event)"
+                                [(ngModel)]="login.username"
+                                ngDefaultControl></ion-input>
+                        </ion-col>
+                    </ion-row>
                 </ion-item>
+
                 <ion-item class="expand-full">
                   <ion-col class="ion-no-padding">
                     <ion-row>
-                      <ion-col class="ion-no-padding" size="9">
-                        <ion-label class="w-100" position="stacked" class="ion-text-wrap">
-                                Contraseña
-                                <!-- TODO: no ocupa el 100% de ancho el label -->
-                                <!-- <a class="ion-float-right">Olvidé mi contraseña</a> -->
+                        <ion-col class="ion-no-padding ion-margin-top" size="12">
+                            <ion-label class="w-100">
+                                Contraseña <a href="#/login" (click)="recordarPass()" class="ion-float-right">Olvidé mi contraseña</a>
                             </ion-label> 
+                        </ion-col>
+                      <ion-col class="ion-no-padding" size="12">
+                            
                         <ion-input
                           #passInput
                           tabindex="0"

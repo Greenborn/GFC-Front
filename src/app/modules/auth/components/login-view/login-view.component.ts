@@ -54,4 +54,8 @@ export class LoginViewComponent implements OnInit {
       this.loading = false
     })
   }
+
+  recordarPass(){
+      alert();
+  }
 }
