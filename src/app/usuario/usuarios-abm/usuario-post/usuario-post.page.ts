@@ -80,6 +80,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     return this.auth.loggedIn
   }
 
+  json_errors(){
+      return JSON.stringify(this.form.get('password').errors);
+  }
+
   get formTitle(): string {
     if (this.userLogged == undefined) return ''
     const c = this.usuario;

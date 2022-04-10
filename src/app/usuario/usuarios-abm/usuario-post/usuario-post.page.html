@@ -103,7 +103,7 @@
                 <ion-row>
                     <ion-item class="expand-full">
                         <ion-label position="floating">Nombre de Usuario</ion-label>
-                        <!-- TODO: revisar pattern -->
+<!-- TODO: revisar pattern -->
                         <ion-input
                             (ionFocus)="usernameFocus=true" (ionBlur)="usernameFocus=false"
                             autocapitalize="off"
@@ -116,10 +116,13 @@
                             item-left></ion-icon>
                         </ion-input>
                     </ion-item>
+                    <ion-note *ngIf="usernameFocus">
+                        Máximo 20 caracteres alfanuméricos sin símbolos ni espacios
+                    </ion-note>
 
                     <ion-item class="expand-full">
                         <ion-label position="floating">E-Mail</ion-label>
-                        <!-- TODO: revisar pattern -->
+<!-- TODO: revisar pattern -->
                         <ion-input
                             autocapitalize="off"
                             pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
@@ -128,16 +131,12 @@
                         </ion-input>
                     </ion-item>
 
-                    <ion-note *ngIf="usernameFocus">
-                        Máximo 20 caracteres alfanuméricos sin símbolos ni
-                        espacios
-                    </ion-note>
-              
+<!--- CONTRASEÑA -->             
                     <ion-item class="expand-full">
                         <ion-col class="ion-no-padding">
                             <ion-row>
                                 <ion-col class="ion-no-padding" size="10">
-                                    <ion-label position="floating" [ngStyle]="{ color: form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">Contraseña <span *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null">Atención: ¡las contraseñas no coinciden!</span></ion-label>
+                                    <ion-label position="floating">Contraseña </ion-label>
                                     <ion-input
                                         tabindex="0"
                                         id="ctr-1" class="text-right"
@@ -154,19 +153,23 @@
                         
                     </ion-item>
 
-                    <ion-note *ngIf="passFocus">Mínimo 8 caracteres</ion-note>
+                    <ion-note [ngStyle]="{ color: (form.get('passwordRepeat').dirty || form.get('password').dirty) && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">
+                        <p *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null && form.get('passwordRepeat').errors.hasOwnProperty('mustMatch')"> - Atención: Las contraseñas no coinciden</p>
+                        <p *ngIf="form.get('password').dirty && form.get('password').errors !== null       && form.get('password').errors.hasOwnProperty('pattern')"> - Atención: Longitud mínima 8 cáracteres</p>
+                    </ion-note>
 
+<!-- REPETIR CONTRASEÑA -->
                     <ion-item class="expand-full" *ngIf="!isUserProfile && isUserSignUp">
                         <ion-col class="ion-no-padding">
                             <ion-row>
                                 <ion-col class="ion-no-padding" size="10">
-                                    <ion-label position="floating" [ngStyle]="{ color: form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null ? 'red': '#000' }" >Repetir Contraseña  <span *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null">Atención: ¡las contraseñas no coinciden!</span></ion-label>
+                                    <ion-label position="floating">Repetir Contraseña</ion-label>
                                     <ion-input
-                                    tabindex="0"
-                                    id="ctr-1"
-                                    type="password"
-                                    class="text-right"
-                                    name="passwordRepeat" formControlName="passwordRepeat" [(ngModel)]="usuario.passwordRepeat"></ion-input>
+                                        tabindex="0"
+                                        id="ctr-1"
+                                        type="password"
+                                        class="text-right"
+                                        name="passwordRepeat" formControlName="passwordRepeat" [(ngModel)]="usuario.passwordRepeat"></ion-input>
                                 </ion-col>
                                 <ion-col
                                     class="ion-no-padding ion-align-self-center"
@@ -175,6 +178,10 @@
                             </ion-row>
                         </ion-col>
                     </ion-item>
+
+                    <ion-note [ngStyle]="{ color: form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">
+                        <p *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null"> - Atención: Las contraseñas no coinciden</p>
+                    </ion-note>
 
                     <ion-item class="expand-full" *ngIf="isUserProfile">
                         <ion-button (click)="changePassword()">Cambiar contraseña</ion-button>
