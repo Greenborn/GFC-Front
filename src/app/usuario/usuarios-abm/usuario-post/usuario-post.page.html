@@ -116,7 +116,7 @@
                             item-left></ion-icon>
                         </ion-input>
                     </ion-item>
-                    <ion-note *ngIf="usernameFocus">
+                    <ion-note *ngIf="usernameFocus" [ngStyle]="{ color: form.get('username').dirty && form.get('username').errors !== null ? 'red': '#000' }">
                         Máximo 20 caracteres alfanuméricos sin símbolos ni espacios
                     </ion-note>
 
