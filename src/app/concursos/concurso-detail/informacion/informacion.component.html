@@ -75,7 +75,7 @@
 
         <ion-row class="w-100 ion-justify-content-end">
           <div>
-            <ion-button  *ngIf="! isInscripto && rolificador.esConcursante(u); else btnUnsuscribe" size="small" (click)="inscribirConcursante()"
+            <ion-button  *ngIf="! isInscripto && (rolificador.esConcursante(u) || rolificador.esDelegado(u)); else btnUnsuscribe" size="small" (click)="inscribirConcursante()"
               >Inscribirme!</ion-button>
 
             <ion-button  size="small" 
@@ -89,7 +89,7 @@
       </ion-card-content>
 
       <ng-template #btnUnsuscribe >
-          <ion-button *ngIf="rolificador.esConcursante(u)" color="danger" size="small" 
+          <ion-button *ngIf="rolificador.esConcursante(u) || rolificador.esDelegado(u)" color="danger" size="small" 
           (click)="desinscribirme()"
             >Desinscribirme</ion-button>
       </ng-template> 

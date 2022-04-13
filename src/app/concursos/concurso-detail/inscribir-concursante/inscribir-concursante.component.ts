@@ -59,7 +59,12 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
       if(!this.rolificador.esConcursante(await this.authService.user) ){
         this.profileContest.profile_id = Number(this.profileContest.profile_id['id']); // Agregado por cambio en select
       } else {
-        this.profileContest.profile_id = this.concursantes[0].id
+        this.profileContest.profile_id = this.concursantes[0].id;
+      }
+
+      //[PARCHE] para delegados, si es null, se asigna a si mismo 
+      if (this.rolificador.esDelegado(await this.authService.user) && (this.profileContest.profile_id == null || isNaN(this.profileContest.profile_id)) ){
+        this.profileContest.profile_id = this.concursantes[0].id;
       }
 
         console.log('inscribiendo', this.profileContest.profile_id, ' a ', this.contest.id)

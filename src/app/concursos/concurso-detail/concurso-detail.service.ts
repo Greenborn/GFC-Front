@@ -173,14 +173,14 @@ export class ConcursoDetailService implements OnInit {
   }
   imagenes_page_number:number = 1;
 
-  async inscribirConcursante(category_id: number = undefined, ) {
+  async inscribirConcursante(category_id: number = undefined, extraParams:any = {}) {
 
     const pc = this.profileContestService.template
     pc.category_id = category_id
 
     let user = await this.authService.user
 
-    if(this.rolificador.esConcursante(user) ){
+    if(this.rolificador.esConcursante(user) || extraParams.hasOwnProperty('yo') ){
       
       console.log("inscripcion yo", this.rolificador.esConcursante(user) )
       const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirConcursanteComponent, {

@@ -109,7 +109,8 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       })
       this.concursoDetailService.inscriptos.subscribe({
         next: c => {
-          this.inscriptos = c
+          this.inscriptos = c;
+          console.log(this.inscriptos);
           this.estaInscripto()
         } 
       })
@@ -373,7 +374,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
 
   inscribirConcursante(){
     console.log("INSCRIPCION concursante yo")
-    this.concursoDetailService.inscribirConcursante(undefined)
+    this.concursoDetailService.inscribirConcursante(undefined, { yo:true })
   }
 
   async desinscribirme(){
