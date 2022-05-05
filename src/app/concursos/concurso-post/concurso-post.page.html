@@ -96,11 +96,12 @@
           <ion-row>
 
             <ion-item>
-              <ion-label position="stacked">Total de imágenes por sección</ion-label>
+              <ion-label position="stacked">Máximo de imágenes por sección</ion-label>
               <ion-input
                 name="max_img_section"
                 [ngModel]="concurso.max_img_section"
                 type="number"
+                min="1"
                 required
               ></ion-input>
             </ion-item>
@@ -220,7 +221,7 @@
               <ion-row class="ion-justify-content-end">
 
                 <ion-col push-sm="3" size="12" size-sm="3"  class="ion-align-self-center">
-                    <app-btn-post [posting]="posting" [disabled]="!f.valid || secycat"></app-btn-post>
+                    <app-btn-post [posting]="posting"></app-btn-post>
                 </ion-col>
 
                 <ion-col class="ion-align-self-center" pull-sm="3" size="12" size-sm="3">
