@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
+import * as moment from 'moment';
+
 import { ContestService } from 'src/app/services/contest.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Contest } from 'src/app/models/contest.model';
@@ -99,8 +101,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
         super.fetch<Contest>(() => 
           this.contestService.get(parseInt(id),'expand=contestRecords')
         ).subscribe(c => {
-          c.start_date = new Date(c.start_date).toISOString();
-          c.end_date = new Date(c.end_date).toISOString();
+          c.start_date = moment(c.start_date).subtract(3, 'hours').format('YYYY-MM-DDTHH:mm')
+          c.end_date = moment(c.end_date).subtract(3, 'hours').format('YYYY-MM-DDTHH:mm')
           this.concurso = c
           this.img_url = this.configService.apiUrl(c.img_url)
           if (c.rules_url)
@@ -137,7 +139,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
           })
         })
       } else {
-        let fechaHora = new Date().toISOString()
+        let fechaHora = moment().format('YYYY-MM-DDTHH:mm')
         this.concurso.start_date = fechaHora;
         this.concurso.end_date = fechaHora;
         getCategorias.then(() => {
