@@ -34,3 +34,12 @@ ion-content.dark {
         border: solid 1px rgb(41, 41, 41);
     }
 }
+
+//Para que se pueda hacer click en el enlace de recuperar contraseña
+.item-cover{
+    display:none;
+}
+
+ion-label{
+    pointer-events:all!important;
+}

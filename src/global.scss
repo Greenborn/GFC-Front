@@ -29,11 +29,6 @@
   cursor: pointer;
 }
 
-.date-select{
-  background:#FFF;
-  border: 1px solid #aaa;
-}
-
 .pagination-element{
   border:              1px solid #888;
   padding:             0.5rem;
@@ -120,6 +115,7 @@
 }
 .w-100 {
   width: 100% !important;
+  max-width: 100% !important;
 }
 
 .h-100{

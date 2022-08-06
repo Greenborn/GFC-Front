@@ -43,7 +43,7 @@
                   
                   <!-- TODO: revisar scroll en PC, ver css global -->
                   <!-- TODO: modificar el max de fecha como la fecha actual + 10 años -->
-                  <!--<ion-date
+                  <ion-datetime
                       displayFormat="DD/MMM/YYYY"
                       monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
                       monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
@@ -54,10 +54,7 @@
                       required
                       doneText="Elegir"
                       cancelText="Cancelar">
-                  </ion-date>-->
-                  <input class="date-select" type="datetime-local" 
-                  min="2022-05-06Z00:00:00"
-                  [ngModel]="concurso.start_date" id="start_date" name="start_date">
+                  </ion-datetime>
                 </ion-item>
               </ion-col>
 
@@ -65,7 +62,7 @@
                 <ion-item class="ion-no-padding">
                   <ion-label position="stacked">Finalización</ion-label>
                   <!-- TODO: modificar el max de fecha como la fecha actual + 10 años -->
-                  <!--<ion-date
+                  <ion-datetime
                       displayFormat="DD/MMM/YYYY"
                       monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
                       monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
@@ -76,9 +73,7 @@
                       required
                       doneText="Elegir"
                       cancelText="Cancelar">
-                  </ion-date>-->
-                  <input class="date-select" type="datetime-local" min="2022-05-06Z00:00:00"
-                  [ngModel]="concurso.end_date" id="end_date" name="end_date">
+                  </ion-datetime>
                 </ion-item>
               </ion-col>
             </ion-item>
@@ -101,12 +96,11 @@
           <ion-row>
 
             <ion-item>
-              <ion-label position="stacked">Máximo de imágenes por sección</ion-label>
+              <ion-label position="stacked">Total de imágenes por sección</ion-label>
               <ion-input
                 name="max_img_section"
                 [ngModel]="concurso.max_img_section"
                 type="number"
-                min="1"
                 required
               ></ion-input>
             </ion-item>
@@ -226,7 +220,7 @@
               <ion-row class="ion-justify-content-end">
 
                 <ion-col push-sm="3" size="12" size-sm="3"  class="ion-align-self-center">
-                    <app-btn-post [posting]="posting"></app-btn-post>
+                    <app-btn-post [posting]="posting" [disabled]="!f.valid || secycat"></app-btn-post>
                 </ion-col>
 
                 <ion-col class="ion-align-self-center" pull-sm="3" size="12" size-sm="3">

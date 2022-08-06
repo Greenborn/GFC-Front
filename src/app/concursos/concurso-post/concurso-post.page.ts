@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-import * as moment from 'moment';
-
 import { ContestService } from 'src/app/services/contest.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Contest } from 'src/app/models/contest.model';
@@ -66,13 +64,14 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     super(alertCtrl)
   }
 
-  secycat(){
-    let cat = this.categoriasSeleccionadas.filter(function(c) {
-      return c.seleccionada !== false}).length; 
-    let sec = this.seccionesSeleccionadas.filter(function(c) {
-      return c.seleccionada !== false}).length; 
-    return { cat: cat, sec: sec}
-  }
+get secycat(){
+  let cat = this.categoriasSeleccionadas.filter(function(c) {
+    return c.seleccionada !== false}).length; 
+  let sec = this.seccionesSeleccionadas.filter(function(c) {
+    return c.seleccionada !== false}).length; 
+    console.log("cantidades actuales: ", cat, sec)
+  return cat == 0 || sec == 0
+}
 
   async ngOnInit() {
     await this.UIUtilsService.presentLoading();
@@ -101,8 +100,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
         super.fetch<Contest>(() => 
           this.contestService.get(parseInt(id),'expand=contestRecords')
         ).subscribe(c => {
-          c.start_date = moment(c.start_date).subtract(3, 'hours').format('YYYY-MM-DDTHH:mm')
-          c.end_date = moment(c.end_date).subtract(3, 'hours').format('YYYY-MM-DDTHH:mm')
+          // c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
+          // c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
           this.concurso = c
           this.img_url = this.configService.apiUrl(c.img_url)
           if (c.rules_url)
@@ -139,9 +138,6 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
           })
         })
       } else {
-        let fechaHora = moment().format('YYYY-MM-DDTHH:mm')
-        this.concurso.start_date = fechaHora;
-        this.concurso.end_date = fechaHora;
         getCategorias.then(() => {
           this.categoriasSeleccionadas = this.categorias.map(c => ({
             id: c.id,
@@ -166,6 +162,14 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     return this.seccionesSeleccionadas.find(c => c.id == id)
   }
 
+  // getParentSections() {
+  //   return this.secciones.filter(s => s.parent_id == null)
+  // }
+
+  // getSubSections(id: number) {
+  //   return this.secciones.filter(s => s.parent_id == id)
+  // }
+
   get formTitle(): string {
     // if (this.loading) return ''
     const c = this.concurso;
@@ -176,68 +180,21 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     return '/concursos' + (c.id != null ? `/${c.id}` : '')
   }
 
-  async showAlert(h, t){
-    (await this.alertCtrl.create({
-      header: h,
-      message: t,
-      buttons: [{ text: 'Ok', role: 'cancel' }]
-    })).present()
-  }
-
   async postConcurso(f: NgForm) {
-    let secycat = this.secycat()
-    if (secycat.cat == 0){
-      this.showAlert('Atención', 'Es necesario elegir al menos una Categoría'); return false;
-    }
-
-    if (secycat.sec == 0){
-      this.showAlert('Atención', 'Es necesario elegir al menos una Sección'); return false;
-    }
-
-    if (f.value.start_date === undefined){
-      this.showAlert('Atención', 'Es necesario definir una fecha de Inicio'); return false;
-    }
-
-    if (f.value.end_date === undefined ){
-      this.showAlert('Atención', 'Es necesario definir una fecha de Finalización'); return false;
-    }
-
-    if (f.value.end_date == f.value.start_date ){
-      this.showAlert('Atención', 'La fecha de inicio y de finalización no pueden ser iguales'); return false;
-    }
-
-    if (f.value.name == '' || f.value.name == undefined ){
-      this.showAlert('Atención', 'Es necesario definir un Nombre'); return false;
-    }
-
-    if (f.value.description == '' || f.value.description == undefined ){
-      this.showAlert('Atención', 'Es necesario definir una Descripción'); return false;
-    }
-
-    if (f.value.max_img_section == '' || f.value.max_img_section == undefined ){
-      this.showAlert('Atención', 'Es necesario definir el Máximo de imágenes por sección'); return false;
-    }
-
-    if (Number(f.value.max_img_section) < 1){
-      this.showAlert('Atención', 'El Máximo de imágenes por sección debe ser mayor a cero'); return false;
-    }
-
-    if ( isNaN(f.value.max_img_section)){
-      this.showAlert('Atención', 'El Máximo de imágenes por sección debe ser un número!'); return false;
-    }
-
-    const model = {
-      ...f.value,
-      start_date: this.contestService.formatearFechaParaBD(f.value.start_date),
-      end_date: this.contestService.formatearFechaParaBD(f.value.end_date)
-    }
-    if (this.image_file != undefined) {
-      model.image_file = this.image_file
-    }
-    if (this.rules_file != undefined) {
-      model.rules_file = this.rules_file
-    }
-    this.posting = true;
+    if (f.valid && !this.secycat) {
+      console.log("secycat: ", this.secycat)
+      const model = {
+        ...f.value,
+        start_date: this.contestService.formatearFechaParaBD(f.value.start_date),
+        end_date: this.contestService.formatearFechaParaBD(f.value.end_date)
+      }
+      if (this.image_file != undefined) {
+        model.image_file = this.image_file
+      }
+      if (this.rules_file != undefined) {
+        model.rules_file = this.rules_file
+      }
+      this.posting = true;
       
       super.fetch<any>(() =>
         this.contestService.postFormData<any>(model, this.concurso.id)
@@ -314,7 +271,10 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
         },
       )
       // this.router.navigate(['/concursos/' + id]);
-    
+    }
+    else {
+      console.log('Form concurso no valido:', f.value);
+    }
   }
 
   get categoriasNoInscriptas(): Category[] {
