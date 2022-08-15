@@ -73,8 +73,10 @@ export class RankingPage implements OnInit {
             //si existe el perfil se suman los puntos, caso contrario se inserta registro nuevo
             let encontrado = false
             for (let j=0; j < ranks.profiles[i].profiles.length; j++){
-              if (ranks.profiles[i].profiles[j].id == perfil.id ){
+              if (ranks.profiles[i].profiles[j].profile_id == perfil.profile_id ){
                 ranks.profiles[i].profiles[j].puntaje_temporada += perfil.puntaje_temporada
+                ranks.profiles[i].profiles[j].score_total       += perfil.score_total
+                ranks.profiles[i].profiles[j].premios_temporada = this.sumar_premios( ranks.profiles[i].profiles[j].premios_temporada, perfil.premios_temporada )
                 encontrado = true
                 break;
               }
@@ -174,7 +176,19 @@ export class RankingPage implements OnInit {
     if (typeof obj1 == 'string'){
       obj1 = JSON.parse( obj1 )
     }
+    if (typeof obj2 == 'string'){
+      obj2 = JSON.parse( obj2 )
+    }
     let salida = {...obj1}
+
+    let ks = Object.keys(obj2)
+    for (let c=0; c < ks.length; c++){
+      if (obj1.hasOwnProperty( ks[c] )){
+        obj1[ks[c]] += obj2[ks[c]]
+      } else {
+        obj1[ks[c]] = obj2[ks[c]]
+      }
+    }
     
     console.log(salida)
     return obj1;

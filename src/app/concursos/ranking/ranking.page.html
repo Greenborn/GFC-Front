@@ -53,8 +53,8 @@
                           <ion-row class="ion-padding-end">
 
                             <ion-col size="2">Posición</ion-col>
-                            <ion-col size="5">Participante</ion-col>
-                            <ion-col size="2">Puntaje</ion-col>
+                            <ion-col size="4">Participante</ion-col>
+                            <ion-col size="3">Puntaje</ion-col>
                             <ion-col size="3">Premios</ion-col>
 
                           </ion-row>
@@ -77,8 +77,13 @@
                           <ion-row>
 
                             <ion-col size="2"># {{rg.posicion_temporada}}</ion-col>
-                            <ion-col size="5" class="cap">{{rg.name}}</ion-col>
-                            <ion-col size="2">{{rg.puntaje_temporada}}</ion-col>
+                            <ion-col size="4" class="cap">{{rg.name}}</ion-col>
+                            <ion-col size="3">
+                              {{rg.puntaje_temporada}}
+                              <ion-badge 
+                                *ngIf="rg.score_total >= 200 && r.nombre_categoria == 'Estímulo'"
+                                color="warning">Habilitado a participar en primera</ion-badge>
+                            </ion-col>
                             <ion-col size="3">
                               <span *ngFor="let premio of rg.premios_temporada">
                                 <ion-badge>{{premio.cantidad}} - {{premio.nombre}}</ion-badge> &nbsp;
