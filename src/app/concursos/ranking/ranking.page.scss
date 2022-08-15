@@ -1,3 +1,25 @@
 .cap {
   text-transform: capitalize !important;
 }
+
+.rank-btn-seccion{
+  text-align:  center;
+  color:     #FFF;
+  background:#222428;
+  padding:     1rem;
+  cursor:      pointer;
+}
+
+.rank-btn-seccion:hover{
+  background: #888;
+}
+
+.active{
+  background: #777;
+}
+
+.ranks-participantes{
+  overflow-x: hidden;
+  overflow-y: scroll;
+  max-height: 40rem;
+}

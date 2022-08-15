@@ -131,3 +131,9 @@ ion-note{
   padding-left: 16px;
   padding-bottom: 8px !important;
 }
+
+.fila-tabla{
+  ion-col, ion-list {
+    padding: 0;
+  }
+}

@@ -24,52 +24,77 @@
               <ion-col><h2>{{r.nombre_categoria}}</h2></ion-col>
             </ion-row>
 
-            <!-- ENCABEZADO TABLA -->
+            <!-- SELECTOR DE SECCION-->
             <ion-row>
               <ion-col>
-
-                  <ion-list>
-                    <ion-item color="dark">
-
-                      <ion-grid>
-                        <ion-row class="ion-padding-end">
-
-                          <ion-col size="2">Posición</ion-col>
-                          <ion-col size="5">Participante</ion-col>
-                          <ion-col size="5">Puntaje</ion-col>
-
-                        </ion-row>
-                      </ion-grid>
-
-                    </ion-item>
-                  </ion-list>
-
+                <div class="rank-btn-seccion" 
+                      [ngClass]="{ active: (r.pestania_seccion == -1)}"
+                      (click)="r.pestania_seccion = -1">General (Total de secciones)</div>
+              </ion-col>
+              <ion-col
+                *ngFor="let btnSec of r.ranks_seccion; let iSec = index">
+                <div class="rank-btn-seccion"
+                     [ngClass]="{ active: (r.pestania_seccion == iSec)}"
+                     (click)="r.pestania_seccion = iSec">
+                     {{btnSec.nombre_seccion}}</div>
               </ion-col>
             </ion-row>
 
-      <!-- FILAS TABLA-->
-            <ion-row *ngFor="let rg of r.profiles; let i1 = index">
+            <ion-row class="ranks-participantes">
               <ion-col>
+              <!-- ENCABEZADO TABLA -->
+              <ion-row class="encabezado-tabla">
+                <ion-col>
 
-                  <ion-list>
-                    <ion-item >
+                    <ion-list>
+                      <ion-item color="dark">
 
-                      <ion-grid>
-                        <ion-row class="ion-padding-end">
+                        <ion-grid>
+                          <ion-row class="ion-padding-end">
 
-                          <ion-col size="2"># {{rg.posicion_temporada}}</ion-col>
-                          <ion-col size="5" class="cap">{{rg.name}}</ion-col>
-                          <ion-col size="5">{{rg.puntaje_temporada}}</ion-col>
+                            <ion-col size="2">Posición</ion-col>
+                            <ion-col size="5">Participante</ion-col>
+                            <ion-col size="2">Puntaje</ion-col>
+                            <ion-col size="3">Premios</ion-col>
 
-                        </ion-row>
-                      </ion-grid>
+                          </ion-row>
+                        </ion-grid>
 
-                    </ion-item>
-                  </ion-list>
+                      </ion-item>
+                    </ion-list>
 
+                </ion-col>
+              </ion-row>
+
+        <!-- FILAS TABLA-->
+              <ion-row *ngFor="let rg of obtener_filas(r)" class="fila-tabla">
+                <ion-col>
+
+                    <ion-list>
+                      <ion-item >
+
+                        <ion-grid>
+                          <ion-row>
+
+                            <ion-col size="2"># {{rg.posicion_temporada}}</ion-col>
+                            <ion-col size="5" class="cap">{{rg.name}}</ion-col>
+                            <ion-col size="2">{{rg.puntaje_temporada}}</ion-col>
+                            <ion-col size="3">
+                              <span *ngFor="let premio of rg.premios_temporada">
+                                <ion-badge>{{premio.cantidad}} - {{premio.nombre}}</ion-badge> &nbsp;
+                              </span>
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+
+                      </ion-item>
+                    </ion-list>
+
+                </ion-col>
+              </ion-row>
               </ion-col>
             </ion-row>
-
+            
           </ion-col>
         </ion-row>
 
@@ -81,7 +106,7 @@
         </ion-row>
 
         <!-- ENCABEZADO TABLA -->
-        <ion-row>
+        <ion-row class="encabezado-tabla">
           <ion-col>
 
               <ion-list>
@@ -90,9 +115,11 @@
                   <ion-grid>
                     <ion-row class="ion-padding-end">
 
-                      <ion-col size="2">Posición</ion-col>
-                      <ion-col size="5">Fotoclub</ion-col>
-                      <ion-col size="5">Puntaje</ion-col>
+                      <ion-col size="1">Posición</ion-col>
+                      <ion-col size="3">Fotoclub</ion-col>
+                      <ion-col size="3">Puntaje</ion-col>
+                      <ion-col size="2">Porcentaje Efectividad</ion-col>
+                      <ion-col size="3">Premios</ion-col>
 
                     </ion-row>
                   </ion-grid>
@@ -104,7 +131,7 @@
         </ion-row>
 
 <!-- FILAS TABLA-->
-        <ion-row *ngFor="let r of ranking.fotoclubs; let i = index">
+        <ion-row *ngFor="let r of ranking.fotoclubs" class="fila-tabla">
           <ion-col>
 
               <ion-list>
@@ -113,10 +140,15 @@
                   <ion-grid>
                     <ion-row class="ion-padding-end">
 
-                      <ion-col size="2"># {{i+1}}</ion-col>
-                      <ion-col class="cap" size="5">{{r.name}}</ion-col>
-                      <ion-col size="5">{{r.score}}</ion-col>
-
+                      <ion-col size="1"># {{r.posicion_temporada}}</ion-col>
+                      <ion-col class="cap" size="3">{{r.name}}</ion-col>
+                      <ion-col size="3">{{r.puntaje_temporada}}</ion-col>
+                      <ion-col size="2">{{r.porc_efectividad_anual.porcentaje | number: '1.1'}} %</ion-col>
+                      <ion-col size="3">
+                        <span *ngFor="let premio of r.premios_temporada">
+                          <ion-badge>{{premio.cantidad}} - {{premio.nombre}}</ion-badge> &nbsp;
+                        </span>
+                      </ion-col>
                     </ion-row>
                   </ion-grid>
 
