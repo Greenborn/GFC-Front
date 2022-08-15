@@ -132,8 +132,8 @@ export class RankingPage implements OnInit {
         }
       }
 
-      let pos_seccion = 1;
       for (let i=0; i < ranks.profiles[c].ranks_seccion.length; i++){
+        let pos_seccion = 1;
         for(let j=0; j< ranks.profiles[c].ranks_seccion[i].profiles.length; j++ ){
           ranks.profiles[c].ranks_seccion[i].profiles[j].posicion_temporada = pos_seccion
           ranks.profiles[c].ranks_seccion[i].profiles[j].premios_temporada = this.arreglo_premios( ranks.profiles[c].ranks_seccion[i].profiles[j].premios_temporada )
