@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ConcursosPage } from './concursos.page';
+import { RankingPage } from './ranking/ranking.page';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'secciones',
     loadChildren: () => import('./secciones-abm/secciones-abm.module').then( m => m.SeccionesAbmPageModule)
+  },
+  {
+    path: 'ranking',
+    component: RankingPage
   },
   {
     path: 'metricas',

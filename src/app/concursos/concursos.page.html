@@ -1,27 +1,5 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-grid>
-      <ion-row class="ion-justify-content-end">
-        <ion-col size="12" size-md="11">
-          <ion-row>
-            <ion-buttons>
-              <ion-back-button defaultHref="/concursos"></ion-back-button>
-            </ion-buttons>
-            <ion-title>Concursos</ion-title>
-          </ion-row>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content>
-  <!-- <ion-fab *ngIf="isLogedIn()" vertical="bottom" horizontal="end" slot="fixed" class="ion-hide-md-up">
-    <ion-fab-button [routerLink]="['nuevo']">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab> -->
-
+  
   <ion-grid *ngIf=" (auth.user | async) as userLogged">
     <ion-row>
       <ion-col size="12" size-md="3" *ngIf="mostrarFiltro">
