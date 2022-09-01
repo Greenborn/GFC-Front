@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { RankingService } from '../../services/ranking.service';
+import {  LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-ranking',
@@ -10,7 +11,8 @@ import { RankingService } from '../../services/ranking.service';
 export class RankingPage implements OnInit {
 
   constructor(
-   private rankingService: RankingService
+   private rankingService: RankingService,
+   public loadingController: LoadingController,
   ) { 
     this.cargarRanking()
   }
@@ -215,8 +217,14 @@ export class RankingPage implements OnInit {
     return arr;
   }
  
-  cargarRanking() {
+  async cargarRanking() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Cargando...'
+    })
+    await loading.present()
     this.rankingService.getAll().subscribe(r => {
+      loading.dismiss()
       this.ranking = this.procesar_ranking( r )
     })
   }
