@@ -190,7 +190,6 @@ export class RankingPage implements OnInit {
       }
     }
     
-    console.log(salida)
     return obj1;
   }
 

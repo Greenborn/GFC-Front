@@ -40,31 +40,32 @@
               </ion-col>
             </ion-row>
 
+            <ion-row class="encabezado-tabla">
+              <ion-col>
+
+                  <ion-list>
+                    <ion-item color="dark">
+
+                      <ion-grid>
+                        <ion-row class="ion-padding-end">
+
+                          <ion-col size="2">Posición</ion-col>
+                          <ion-col size="4">Participante</ion-col>
+                          <ion-col size="3">Puntaje</ion-col>
+                          <ion-col size="3">Premios</ion-col>
+
+                        </ion-row>
+                      </ion-grid>
+
+                    </ion-item>
+                  </ion-list>
+
+              </ion-col>
+            </ion-row>
+
             <ion-row class="ranks-participantes">
               <ion-col>
               <!-- ENCABEZADO TABLA -->
-              <ion-row class="encabezado-tabla">
-                <ion-col>
-
-                    <ion-list>
-                      <ion-item color="dark">
-
-                        <ion-grid>
-                          <ion-row class="ion-padding-end">
-
-                            <ion-col size="2">Posición</ion-col>
-                            <ion-col size="4">Participante</ion-col>
-                            <ion-col size="3">Puntaje</ion-col>
-                            <ion-col size="3">Premios</ion-col>
-
-                          </ion-row>
-                        </ion-grid>
-
-                      </ion-item>
-                    </ion-list>
-
-                </ion-col>
-              </ion-row>
 
         <!-- FILAS TABLA-->
               <ion-row *ngFor="let rg of obtener_filas(r)" class="fila-tabla">
@@ -76,12 +77,12 @@
                         <ion-grid>
                           <ion-row>
 
-                            <ion-col size="2"># {{rg.posicion_temporada}}</ion-col>
-                            <ion-col size="4" class="cap">{{rg.name}}</ion-col>
-                            <ion-col size="3">
+                            <ion-col size="2" class="vertical-align-center"># {{rg.posicion_temporada}}</ion-col>
+                            <ion-col size="4" class="vertical-align-center cap">{{rg.name}}</ion-col>
+                            <ion-col size="3" class="vertical-align-center">
                               {{rg.puntaje_temporada}}
                               <ion-badge 
-                                *ngIf="rg.score_total >= 200 && r.nombre_categoria == 'Estímulo'"
+                                *ngIf="rg.score_total >= 200 && r.nombre_categoria == 'Estímulo' && r.pestania_seccion != -1"
                                 color="warning">Habilitado a participar en primera</ion-badge>
                             </ion-col>
                             <ion-col size="3">
