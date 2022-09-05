@@ -57,7 +57,8 @@ export class ContestService extends ApiService<Contest> {
   }
 
   formatearFechaParaBD(fecha: string): string {
-    const d = new Date(fecha);
-    return d.toISOString();
+    let d = new Date(fecha);
+    let s = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString();
+    return s;
   }
 }
