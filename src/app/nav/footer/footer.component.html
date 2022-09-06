@@ -1,6 +1,6 @@
   <ion-grid>
     <ion-row  >
-      <ion-col size="2"  *ngIf="auth.user | async as u" class="ion-align-self-center"
+      <ion-col size="auto"  *ngIf="auth.user | async as u" class="ion-align-self-center"
       >
       <ion-button  *ngIf="rolificador.isAdmin(u)" style="margin-bottom: 0;" (click)="editar($event)">
         <ion-icon name="create"></ion-icon>
