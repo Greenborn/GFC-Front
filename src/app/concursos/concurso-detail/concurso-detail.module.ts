@@ -11,6 +11,7 @@ import { ConcursoDetailPage } from './concurso-detail.page';
 import { SharedModule } from '../../shared/shared.module';
 import { ConcursantesComponent } from './concursantes/concursantes.component';
 import { JuecesComponent } from './jueces/jueces.component';
+import { JuzgamientoComponent } from './juzgamiento/juzgamiento.component';
 import { FotografiasComponent } from './fotografias/fotografias.component';
 import { InformacionComponent } from './informacion/informacion.component';
 import { ConcursoDetailService } from './concurso-detail.service';
@@ -34,6 +35,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     ConcursoDetailPage, 
     ConcursantesComponent, 
     JuecesComponent,
+    JuzgamientoComponent,
     FotografiasComponent, 
     InformacionComponent,
     ImagePostPage, 

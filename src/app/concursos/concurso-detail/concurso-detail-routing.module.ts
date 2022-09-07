@@ -6,6 +6,7 @@ import { ConcursoDetailPage } from './concurso-detail.page';
 import { FotografiasComponent } from './fotografias/fotografias.component';
 import { InformacionComponent } from './informacion/informacion.component';
 import { JuecesComponent } from './jueces/jueces.component';
+import { JuzgamientoComponent } from './juzgamiento/juzgamiento.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,9 @@ const routes: Routes = [
       },
       {
         path: 'jueces',       component: JuecesComponent,
+      },
+      {
+        path: 'juzgamiento',  component: JuzgamientoComponent,
       },
       {
         path: 'informacion',  component: InformacionComponent,
