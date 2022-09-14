@@ -20,7 +20,7 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
 
   @Input() modalController: ModalController;
   @Input() contest: Contest;
-  @Input() concursantes: ProfileExpanded[];
+  @Input() concursantes: any[];
   @Input() categorias: Category[];
   @Input() profileContest: ProfileContest = this.profileContestService.template;
 
@@ -42,6 +42,7 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
     for (let c=0; c<this.concursantes.length; c++){
       this.concursantes[c].name = this.concursantes[c].name + ' ' + this.concursantes[c].last_name;
     }
+    
    if(this.concursantes.length == 1) {
     this.profileContest.profile_id = this.concursantes[0].id
    }
