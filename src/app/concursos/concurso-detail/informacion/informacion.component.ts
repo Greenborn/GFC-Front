@@ -26,6 +26,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ImageReviewPage } from '../image-review/image-review.page';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { CompressedPhotosService } from 'src/app/services/compressed-photos.service'
 
 @Component({
   selector: 'app-informacion',
@@ -75,7 +76,8 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     private profileContestService: ProfileContestService,
     public UIUtilsService: UiUtilsService,
     public configService: ConfigService,
-    public responsiveService: ResponsiveService
+    public responsiveService: ResponsiveService,
+    private compressedPhotosService: CompressedPhotosService
   ) {
     super(alertCtrl)
    }
@@ -124,6 +126,12 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
 
 
   subsc(){ }
+
+  descargarFotografias(){
+    this.compressedPhotosService.get(this.concurso.id).subscribe(data => {
+      window.open( 'https://gfc.prod-api.greenborn.com.ar/' + data.download_url, '_blank')
+    })
+  }
 
   desubsc() {
       for (const s of this.subs) {
