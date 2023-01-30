@@ -78,6 +78,9 @@
             <ion-button  *ngIf="!isInscripto; else btnUnsuscribe" size="small" (click)="inscribirConcursante()"
               >Inscribirme!</ion-button>
 
+            <ion-button  *ngIf="(rolificador.esDelegado(u) || rolificador.isAdmin(u))" size="small" (click)="descargarFotografias()"
+              >Descargar Fotografías</ion-button>
+
             <ion-button  size="small" 
               (click)="compartir()">
               <ion-icon name="share-social-outline"></ion-icon>
