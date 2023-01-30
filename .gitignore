@@ -1,2 +1,3 @@
 node_modules
 build/public_html
+package-lock.json
