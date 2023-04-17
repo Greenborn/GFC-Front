@@ -47,6 +47,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public rules_url: SafeResourceUrl;
   noImg: boolean = false;
 
+  public day_selects = [{days:[], months:[], years:[], day:-1, month: -1, year: -1, selected_str: "" }, {days:[], months:[], years:[], day:-1, month: -1, year: -1, selected_str: "" }]
+
   constructor(
     private activatedRoute: ActivatedRoute,
     public contestService: ContestService,
@@ -73,6 +75,9 @@ get secycat(){
   return cat == 0 || sec == 0
 }
 
+  daysInMonth (month, year) { return new Date(year, month, 0).getDate(); }
+
+
   async ngOnInit() {
     await this.UIUtilsService.presentLoading();
     this.mostrarCategorias = false
@@ -94,6 +99,26 @@ get secycat(){
           resolve()
         })
       )
+
+      this.calendarDefineDays(0)
+      this.calendarDefineDays(1)
+      this.calendarDefineYears(0)
+      this.calendarDefineYears(1)
+      
+      this.day_selects[0].months = [
+        {v:0, t:'Enero'}, 
+        {v:1, t:'Febrero'}, 
+        {v:2, t:'Marzo'}, 
+        {v:3, t:'Abril'}, 
+        {v:4, t:'Mayo'}, 
+        {v:5, t:'Junio'}, 
+        {v:6, t:'Julio'},
+        {v:7, t:'Agosto'}, 
+        {v:8, t:'Septiembre'}, 
+        {v:9, t:'Octubre'}, 
+        {v:10, t:'Noviembre'}, 
+        {v:11, t:'Diciembre'}]
+      this.day_selects[1].months = this.day_selects[0].months
       
       if (id != null) {
         // this.loading = true
@@ -103,6 +128,12 @@ get secycat(){
           // c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
           // c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
           this.concurso = c
+          this.day_selects[0].day = new Date(this.concurso.start_date).getDate()
+          this.day_selects[0].month = new Date(this.concurso.start_date).getMonth()
+          this.day_selects[0].year = new Date(this.concurso.start_date).getFullYear()
+          this.day_selects[1].day = new Date(this.concurso.end_date).getDate()
+          this.day_selects[1].month = new Date(this.concurso.end_date).getMonth()
+          this.day_selects[1].year = new Date(this.concurso.end_date).getFullYear()
           this.img_url = this.configService.apiUrl(c.img_url)
           if (c.rules_url)
             // this.rules_url = this.configService.apiUrl(c.rules_url)
@@ -138,6 +169,11 @@ get secycat(){
           })
         })
       } else {
+        let fecha =  new Date()
+        this.concurso.start_date = fecha.toISOString()
+        this.day_selects[0].selected_str = this.concurso.start_date
+        
+        
         getCategorias.then(() => {
           this.categoriasSeleccionadas = this.categorias.map(c => ({
             id: c.id,
@@ -153,6 +189,44 @@ get secycat(){
         })
       }
     })
+  }
+
+  calendarDefineYears(id){
+    let anio = new Date().getFullYear()
+    this.day_selects[id].years = []
+    for (let c=0; c < 10; c++)
+      this.day_selects[id].years.push({v:anio + c, t: anio + c})
+  }
+
+  calendarDefineDays(id){
+    this.day_selects[id].days = []
+    let days = 31//this.daysInMonth(fecha.getMonth(), fecha.getFullYear())
+    let d_aux = this.day_selects[id].day
+    for (let c=1; c <= days; c ++)
+      this.day_selects[id].days.push({v:c,t:c})
+    if (d_aux <= days){
+      this.day_selects[id].day = d_aux
+    }
+  }
+
+  monthChange(id){
+    if (this.day_selects[id] == undefined && this.day_selects[id].selected_str == undefined)
+      return 
+    let fecha = new Date(this.day_selects[id].selected_str)
+    this.calendarDefineDays(id)
+  }
+
+  dateUpdate(){
+    if (Number(this.day_selects[0].day) != -1 && Number(this.day_selects[0].month) != -1 && Number(this.day_selects[0].year) != -1){
+      this.day_selects[0].selected_str = new Date(Number(this.day_selects[0].year), Number(this.day_selects[0].month), Number(this.day_selects[0].day)).toISOString()
+      this.concurso.start_date =  this.day_selects[0].selected_str
+    }
+    if (Number(this.day_selects[1].day) != -1 && Number(this.day_selects[1].month) != -1 && Number(this.day_selects[1].year) != -1){
+      this.day_selects[1].selected_str = new Date(Number(this.day_selects[1].year), Number(this.day_selects[1].month), Number(this.day_selects[1].day)).toISOString()
+      this.concurso.end_date =  this.day_selects[1].selected_str
+    }
+    
+    console.log('date slect', this.concurso, this.day_selects)
   }
   
   getCategoriaSeleccionada(id: number) {
@@ -185,8 +259,8 @@ get secycat(){
       console.log("secycat: ", this.secycat)
       const model = {
         ...f.value,
-        start_date: this.contestService.formatearFechaParaBD(f.value.start_date),
-        end_date: this.contestService.formatearFechaParaBD(f.value.end_date)
+        start_date: this.concurso.start_date,
+        end_date: this.concurso.end_date
       }
       if (this.image_file != undefined) {
         model.image_file = this.image_file
