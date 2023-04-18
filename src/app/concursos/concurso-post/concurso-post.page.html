@@ -37,44 +37,94 @@
             </ion-item>
 
             <ion-item>
-              <ion-col size="6" class="ion-no-padding">
-                <ion-item class="ion-no-padding">
-                  <ion-label position="stacked">Inicio</ion-label>
-                  
-                  <!-- TODO: revisar scroll en PC, ver css global -->
-                  <!-- TODO: modificar el max de fecha como la fecha actual + 10 años -->
-                  <ion-datetime
-                      displayFormat="DD/MMM/YYYY"
-                      monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
-                      monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
-                      min="1967"
-                      max="2050"
-                      name="start_date"
-                      [ngModel]="concurso.start_date"
-                      required
-                      doneText="Elegir"
-                      cancelText="Cancelar">
-                  </ion-datetime>
-                </ion-item>
+              <ion-col size="6" class="ion-padding-end">
+                <ion-label>Inicio</ion-label>
+                <ion-row>
+                  <ion-col>
+                    <ion-label>Día</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[0].day" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione día</option>
+                      <option *ngFor="let d of day_selects[0].days;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Mes</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[0].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Mes</option>
+                      <option *ngFor="let d of day_selects[0].months;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Año</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[0].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Año</option>
+                      <option *ngFor="let d of day_selects[0].years;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Hora</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[0].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Hora</option>
+                      <option *ngFor="let d of day_selects[0].hours;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Minutos</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[0].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Minutos</option>
+                      <option *ngFor="let d of day_selects[0].minutes;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+                </ion-row>
               </ion-col>
 
-              <ion-col size="6" class="ion-no-padding">
-                <ion-item class="ion-no-padding">
-                  <ion-label position="stacked">Finalización</ion-label>
-                  <!-- TODO: modificar el max de fecha como la fecha actual + 10 años -->
-                  <ion-datetime
-                      displayFormat="DD/MMM/YYYY"
-                      monthValues="01,02,03,04,05,06,07,08,09,10,11,12"
-                      monthShortNames="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
-                      min="1967"
-                      max="2050"
-                      name="end_date"
-                      [ngModel]="concurso.end_date"
-                      required
-                      doneText="Elegir"
-                      cancelText="Cancelar">
-                  </ion-datetime>
-                </ion-item>
+              <ion-col size="6" class="ion-padding-start">
+                <ion-label>Finalización</ion-label>
+                <ion-row>
+                  <ion-col>
+                    <ion-label>Día</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[1].day" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione día</option>
+                      <option *ngFor="let d of day_selects[1].days;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Mes</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[1].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Mes</option>
+                      <option *ngFor="let d of day_selects[1].months;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Año</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[1].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Año</option>
+                      <option *ngFor="let d of day_selects[1].years;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Hora</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[1].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Hora</option>
+                      <option *ngFor="let d of day_selects[1].hours;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Minutos</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[1].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Minuntos</option>
+                      <option *ngFor="let d of day_selects[1].minutes;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+                </ion-row>
               </ion-col>
             </ion-item>
 

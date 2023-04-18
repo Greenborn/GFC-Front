@@ -1,12 +1,12 @@
 {
   "name": "grupo_fotografico_centro",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

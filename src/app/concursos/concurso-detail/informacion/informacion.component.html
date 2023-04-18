@@ -13,8 +13,8 @@
             </ion-row>
             <ion-row class="">
               <ion-card-subtitle>
-                Desde {{ fechaInicio | date: "dd-MM-yyyy" }} Hasta
-                {{ fechaFin | date: "dd-MM-yyyy" }}
+                Desde: {{ fechaInicio | date: "dd/MM/yyyy hh:mm" }} - Hasta:
+                {{ fechaFin | date: "dd/MM/yyyy hh:mm" }}
               </ion-card-subtitle>
             </ion-row>
           </ion-col>
@@ -78,7 +78,7 @@
             <ion-button  *ngIf="!isInscripto; else btnUnsuscribe" size="small" (click)="inscribirConcursante()"
               >Inscribirme!</ion-button>
 
-            <ion-button  *ngIf="(rolificador.esDelegado(u) || rolificador.isAdmin(u))" size="small" (click)="descargarFotografias()"
+            <ion-button  *ngIf="rolificador.isAdmin(u)" size="small" (click)="descargarFotografias()"
               >Descargar Fotografías</ion-button>
 
             <ion-button  size="small" 
