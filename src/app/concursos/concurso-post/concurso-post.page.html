@@ -37,7 +37,7 @@
             </ion-item>
 
             <ion-item>
-              <ion-col size="6" class="ion-no-padding">
+              <ion-col size="6" class="ion-padding-end">
                 <ion-label>Inicio</ion-label>
                 <ion-row>
                   <ion-col>
@@ -63,10 +63,26 @@
                       <option *ngFor="let d of day_selects[0].years;" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
+
+                  <ion-col>
+                    <ion-label>Hora</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[0].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Hora</option>
+                      <option *ngFor="let d of day_selects[0].hours;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Minutos</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[0].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Minutos</option>
+                      <option *ngFor="let d of day_selects[0].minutes;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
                 </ion-row>
               </ion-col>
 
-              <ion-col size="6" class="ion-no-padding">
+              <ion-col size="6" class="ion-padding-start">
                 <ion-label>Finalización</ion-label>
                 <ion-row>
                   <ion-col>
@@ -90,6 +106,22 @@
                     <select class="w-100" [(ngModel)]="day_selects[1].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione Año</option>
                       <option *ngFor="let d of day_selects[1].years;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Hora</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[1].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Hora</option>
+                      <option *ngFor="let d of day_selects[1].hours;" value="{{d.v}}">{{d.t}}</option>
+                    </select>
+                  </ion-col>
+
+                  <ion-col>
+                    <ion-label>Minutos</ion-label>
+                    <select class="w-100" [(ngModel)]="day_selects[1].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                      <option value="-1">Seleccione Minuntos</option>
+                      <option *ngFor="let d of day_selects[1].minutes;" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
                 </ion-row>

@@ -47,7 +47,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public rules_url: SafeResourceUrl;
   noImg: boolean = false;
 
-  public day_selects = [{days:[], months:[], years:[], day:-1, month: -1, year: -1, selected_str: "" }, {days:[], months:[], years:[], day:-1, month: -1, year: -1, selected_str: "" }]
+  public day_selects = [{days:[], months:[], years:[], day:-1, month: -1, year: -1, hours:[], minutes:[], hour:0, minute:0, selected_str: "" }, {days:[], months:[], years:[], day:-1, month: -1, year: -1, hours:[], minutes:[], hour:0, minute:0, selected_str: "" }]
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -101,6 +101,8 @@ get secycat(){
       )
 
       this.calendarDefineDays(0)
+      this.calendarDefineTime(0)
+      this.calendarDefineTime(1)
       this.calendarDefineDays(1)
       this.calendarDefineYears(0)
       this.calendarDefineYears(1)
@@ -131,9 +133,13 @@ get secycat(){
           this.day_selects[0].day = new Date(this.concurso.start_date).getDate()
           this.day_selects[0].month = new Date(this.concurso.start_date).getMonth()
           this.day_selects[0].year = new Date(this.concurso.start_date).getFullYear()
+          this.day_selects[0].hour = new Date(this.concurso.start_date).getHours()
+          this.day_selects[0].minute = new Date(this.concurso.start_date).getMinutes()
           this.day_selects[1].day = new Date(this.concurso.end_date).getDate()
           this.day_selects[1].month = new Date(this.concurso.end_date).getMonth()
           this.day_selects[1].year = new Date(this.concurso.end_date).getFullYear()
+          this.day_selects[1].hour = new Date(this.concurso.end_date).getHours()
+          this.day_selects[1].minute = new Date(this.concurso.end_date).getMinutes()
           this.img_url = this.configService.apiUrl(c.img_url)
           if (c.rules_url)
             // this.rules_url = this.configService.apiUrl(c.rules_url)
@@ -191,6 +197,16 @@ get secycat(){
     })
   }
 
+  calendarDefineTime(id){
+    this.day_selects[id].minutes = []
+    for (let c=0; c < 60; c++)
+      this.day_selects[id].minutes.push({v:c, t:c})
+
+    this.day_selects[id].hours = []
+    for (let c=0; c < 24; c++)
+      this.day_selects[id].hours.push({v:c, t:c})
+  }
+
   calendarDefineYears(id){
     let anio = new Date().getFullYear()
     this.day_selects[id].years = []
@@ -216,14 +232,18 @@ get secycat(){
     this.calendarDefineDays(id)
   }
 
-  dateUpdate(){
-    if (Number(this.day_selects[0].day) != -1 && Number(this.day_selects[0].month) != -1 && Number(this.day_selects[0].year) != -1){
-      this.day_selects[0].selected_str = new Date(Number(this.day_selects[0].year), Number(this.day_selects[0].month), Number(this.day_selects[0].day)).toISOString()
+  dateUpdate(){ //Este codigo no me gusta del todo, luego lo mejorare
+    if (Number(this.day_selects[0].day) != -1 && Number(this.day_selects[0].month) != -1 && Number(this.day_selects[0].year) != -1 && Number(this.day_selects[0].hour) != -1 && Number(this.day_selects[0].minute) != -1){
+      this.day_selects[0].selected_str = new Date(Number(this.day_selects[0].year), Number(this.day_selects[0].month), Number(this.day_selects[0].day),Number(this.day_selects[0].hour),Number(this.day_selects[0].minute)).toISOString()
       this.concurso.start_date =  this.day_selects[0].selected_str
+    } else {
+      this.day_selects[0].selected_str = "-1"
     }
-    if (Number(this.day_selects[1].day) != -1 && Number(this.day_selects[1].month) != -1 && Number(this.day_selects[1].year) != -1){
-      this.day_selects[1].selected_str = new Date(Number(this.day_selects[1].year), Number(this.day_selects[1].month), Number(this.day_selects[1].day)).toISOString()
+    if (Number(this.day_selects[1].day) != -1 && Number(this.day_selects[1].month) != -1 && Number(this.day_selects[1].year) != -1 && Number(this.day_selects[1].hour) != -1 && Number(this.day_selects[1].minute) != -1){
+      this.day_selects[1].selected_str = new Date(Number(this.day_selects[1].year), Number(this.day_selects[1].month), Number(this.day_selects[1].day),Number(this.day_selects[1].hour),Number(this.day_selects[1].minute)).toISOString()
       this.concurso.end_date =  this.day_selects[1].selected_str
+    } else {
+      this.day_selects[1].selected_str = "-1"
     }
     
     console.log('date slect', this.concurso, this.day_selects)
@@ -255,6 +275,32 @@ get secycat(){
   }
 
   async postConcurso(f: NgForm) {
+    if (this.day_selects[0].selected_str == '-1'){
+      this.posting = false;
+      (await this.alertCtrl.create({
+        header: 'Error',
+        message: "Fecha de Inicio inválida.",
+        buttons: [{
+          text: 'Ok',
+          role: 'cancel'
+        }]
+      })).present()
+      return
+    }
+
+    if (this.day_selects[1].selected_str == '-1'){
+      this.posting = false;
+      (await this.alertCtrl.create({
+        header: 'Error',
+        message: "Fecha de Finalización inválida.",
+        buttons: [{
+          text: 'Ok',
+          role: 'cancel'
+        }]
+      })).present()
+      return
+    }
+
     if (f.valid && !this.secycat) {
       console.log("secycat: ", this.secycat)
       const model = {
