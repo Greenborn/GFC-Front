@@ -56,7 +56,7 @@
                             <ion-select
                             #sFotoclub
                             formControlName="fotoclub_id" name="fotoclub_id" [(ngModel)]="profile.fotoclub_id"
-                            [disabled]="!isAdmin && usuarioLogueado" required>
+                            required>
                             <ion-select-option *ngFor="let f of fotoclubes" [value]="f.id">{{f.name}}</ion-select-option>
                             </ion-select>
                     </ion-item>
@@ -216,7 +216,6 @@
                                 <!-- TODO: sin usuario cambiar el texto mostrado -->
                                 <app-btn-post
                                 [posting]="posting"
-                                [disabled]="!form.valid"
                                 [text] = "submitBtnText"
                                 ></app-btn-post>
                             </ion-col>
