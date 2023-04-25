@@ -111,18 +111,16 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     }});
 
     let formControls = {
-        name:           new FormControl({ value: '', disabled: false }),
-        last_name:      new FormControl({ value: '', disabled: false }),
-        fotoclub_id:    new FormControl({ value: '', disabled: false }),
+        name:           new FormControl(),
+        last_name:      new FormControl(),
+        fotoclub_id:    new FormControl(),
         //executive:  new FormControl('')
         //executive_rol: new FormControl(''),
-        username:       new FormControl({ value: '', disabled: false }),
-        email:          new FormControl({ value: '', disabled: false }),
-        password:       new FormControl({ value: '', disabled: false }, Validators.compose([
-            Validators.required,
-          ])),
-        passwordRepeat: new FormControl({ value: '', disabled: false } ),
-       // role_id:        new FormControl(''),
+        username:       new FormControl(),
+        email:          new FormControl(),
+        password:       new FormControl(),
+        passwordRepeat: new FormControl(),
+        role_id:        new FormControl(),
     };
 
     this.form = this.formBuilder.group( formControls, {
@@ -225,7 +223,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
   async postUsuario() {
       let f = this.form;
-      if (f.valid) {
+    //if (f.valid) {
         if((this.usuario.role_id == 3 || this.usuario.role_id == 2 )) {
 
           if (this.selectFotoclub.value == 0) {
@@ -239,7 +237,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           // }
         }
         //En caso de que se trate de un formulario de registro de usuario
-      if (this.isUserSignUp){
+        if (this.isUserSignUp){
         //se comprueba que la contraseña corresponda con su repeticion
         if (this.usuario.passwordRepeat !== this.usuario.password){
           super.displayAlert("Las contraseñas no coinciden.");
@@ -275,9 +273,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         name: f.value.name, 
         last_name: f.value.last_name, 
         executive: f.value.executive == undefined || f.value.executive == null ? false : f.value.executive,
-        executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol
-        // fotoclub_id: f.value.fotoclub_id
-        // fotoclub_id: fotoclub
+        executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
+        fotoclub_id: f.value.fotoclub_id 
       }
       
       if ((this.usuario.role_id == 3 || this.usuario.role_id == 2 ) && !this.selectFotoclub.value == undefined){
@@ -286,7 +283,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           last_name: f.value.last_name, 
           executive: f.value.executive == undefined || f.value.executive == null ? false : f.value.executive,
           executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
-          // fotoclub_id: f.value.fotoclub_id
+          //fotoclub_id: f.value.fotoclub_id
           fotoclub_id: this.selectFotoclub.value
         }
       }
@@ -343,10 +340,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           super.displayAlert(this.errorFilter(err.error[0].message))
         }
       )
-    }
-    else {
-      console.log('Form usuario no valido:', f.value);
-    }
+    //}
+    //else {
+    //  console.log('Form usuario no valido:', f);
+    //}
   }
 
   async changePassword() {
