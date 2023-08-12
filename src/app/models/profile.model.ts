@@ -9,6 +9,7 @@ export interface Profile {
     img_url?: string;
     executive?: number;
     executive_rol?: string;
+    dni?: string;
 }
 
 export interface ProfileExpanded extends Profile {
