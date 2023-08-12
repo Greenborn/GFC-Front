@@ -1,8 +1,8 @@
 {
   "name": "grupo_fotografico_centro",
   "version": "1.0.9",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Greenborn",
+  "homepage": "https://greenborn.com.ar",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

@@ -173,6 +173,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
             this.usuario = u
             super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => {
               this.profile = p
+              this.profile.dni = this.usuario.dni
               this.img_url = p.img_url != null ? this.configService.apiUrl(p.img_url) : ''
               // loading.dismiss()
               resolve(true)
