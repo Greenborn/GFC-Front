@@ -239,9 +239,9 @@ export class FotografiasComponent implements OnInit {
     return '';
   }
 
-  get checkPermissions() {
+  checkPermissions(reg:any) {
     return this.contestService.isActive(this.concurso) && 
-    (this.user != undefined ? (this.rolificador.esDelegado(this.user) || this.rolificador.isAdmin(this.user) || this.rolificador.esConcursante(this.user)  ) : false)
+    (this.user != undefined ? (this.rolificador.esDelegado(this.user) || this.rolificador.isAdmin(this.user) || (this.rolificador.esConcursante(this.user) && reg?.image?.profile_id == this.user.profile_id) ) : false)
   }
 
   get inscriptosProfiles(): Profile[] {

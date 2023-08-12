@@ -186,11 +186,11 @@
                                       <ion-icon name="star-outline"></ion-icon>
                                     </ion-button>
         
-                                    <ion-button *ngIf="checkPermissions" (click)="postImage(r.image, r.section_id)" title="Editar">
+                                    <ion-button *ngIf="checkPermissions(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
                                       <ion-icon name="create"></ion-icon>
                                     </ion-button>
         
-                                    <ion-button *ngIf="checkPermissions" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
+                                    <ion-button *ngIf="checkPermissions(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
                                       <ion-icon name="trash"></ion-icon>
                                     </ion-button>
                                   </ion-buttons>
