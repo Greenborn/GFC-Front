@@ -51,6 +51,12 @@
                             autocapitalize="words" required></ion-input>
                     </ion-item>
 
+                    <ion-item class="expand-full">
+                        <ion-label position="floating">DNI</ion-label>
+                        <ion-input
+                            formControlName="dni" name="dni" [(ngModel)]="profile.dni" required></ion-input>
+                    </ion-item>
+
                     <ion-item *ngIf="(usuario.role_id == 3 || usuario.role_id == 2) && !updatingSelect; else spinner" class="expand-full">
                         <ion-label [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación</ion-label>
                             <ion-select

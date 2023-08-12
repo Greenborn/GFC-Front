@@ -121,6 +121,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         password:       new FormControl(),
         passwordRepeat: new FormControl(),
         role_id:        new FormControl(),
+        dni:            new FormControl(),
     };
 
     this.form = this.formBuilder.group( formControls, {
@@ -274,7 +275,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         last_name: f.value.last_name, 
         executive: f.value.executive == undefined || f.value.executive == null ? false : f.value.executive,
         executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
-        fotoclub_id: f.value.fotoclub_id 
+        fotoclub_id: f.value.fotoclub_id
       }
       
       if ((this.usuario.role_id == 3 || this.usuario.role_id == 2 ) && !this.selectFotoclub.value == undefined){
@@ -284,7 +285,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           executive: f.value.executive == undefined || f.value.executive == null ? false : f.value.executive,
           executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
           //fotoclub_id: f.value.fotoclub_id
-          fotoclub_id: this.selectFotoclub.value
+          fotoclub_id: this.selectFotoclub.value,
         }
       }
 
@@ -310,6 +311,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
             username: f.value.username,
             // role_id: this.isAdmin ? this.selectRol.value : this.usuario.role_id,
             role_id: rol,
+            dni: f.value.dni,
             password: f.value.password,
             // role_id: f.value.role_id,
             profile_id: p.id

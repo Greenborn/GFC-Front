@@ -11,6 +11,7 @@ export interface User {
     email?: string;
     passwordRepeat?: string;
     role?: Role;
+    dni?: string;
 }
 export interface UserLogged extends User {
     profile: ProfileExpanded,
