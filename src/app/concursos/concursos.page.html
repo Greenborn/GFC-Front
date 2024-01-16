@@ -174,8 +174,8 @@
                           </ion-col>
                         </ion-row>
                         <ion-card-subtitle [color]="aspecto == false ? 'light' : 'dark'" 
-                          >Desde: {{c.start_date | date:'dd/MM/yyyy hh:mm' }} - Hasta:
-                          {{c.end_date | date:'dd/MM/yyyy hh:mm' }}</ion-card-subtitle
+                          >Desde: {{get_fecha_formateada(c.start_date) }} - Hasta:
+                          {{get_fecha_formateada(c.end_date)  }}</ion-card-subtitle
                         >
                       </ion-card-header>
                       <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->

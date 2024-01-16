@@ -77,6 +77,25 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
       this.anchoImg = false;
     }
   }
+
+  get_fecha_formateada(fecha){
+    let date = new Date(fecha)
+    let aux = date.getFullYear() + '/' + Number(date.getMonth() + 1).toLocaleString(undefined, {
+      minimumIntegerDigits: 2,
+      minimumFractionDigits: 0
+    }) + '/' + Number(date.getDate()).toLocaleString(undefined, {
+      minimumIntegerDigits: 2,
+      minimumFractionDigits: 0
+    })
+    aux += ' ' + Number(date.getHours()).toLocaleString(undefined, {
+      minimumIntegerDigits: 2,
+      minimumFractionDigits: 0
+    }) + ':' + Number(date.getMinutes()).toLocaleString(undefined, {
+      minimumIntegerDigits: 2,
+      minimumFractionDigits: 0
+    })
+    return aux
+  }
     // @ViewChild('imageContest')
   // imageContest: ElementRef;
 
