@@ -80,13 +80,14 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
 
   get_fecha_formateada(fecha){
     let date = new Date(fecha)
-    let aux = date.getFullYear() + '/' + Number(date.getMonth() + 1).toLocaleString(undefined, {
+    let aux = date.getDate().toLocaleString(undefined, {
       minimumIntegerDigits: 2,
       minimumFractionDigits: 0
-    }) + '/' + Number(date.getDate()).toLocaleString(undefined, {
+    }) + '/' + Number(date.getMonth() + 1).toLocaleString(undefined, {
       minimumIntegerDigits: 2,
       minimumFractionDigits: 0
-    })
+    }) + '/' + Number(date.getFullYear())
+
     aux += ' ' + Number(date.getHours()).toLocaleString(undefined, {
       minimumIntegerDigits: 2,
       minimumFractionDigits: 0
