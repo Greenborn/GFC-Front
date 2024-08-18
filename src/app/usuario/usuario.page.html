@@ -19,10 +19,7 @@
 </ion-header>
 
 <ion-content>
-  <!-- <ion-grid class="">
-    <ion-row class="ion-justify-content-center altura-cien">
-      <ion-col size="12" class="altura-cien">
-        <ion-row size="12" class="ion-justify-content-center altura-cien"> -->
+  
           <ion-item 
           
           lines="none"
@@ -33,13 +30,10 @@
               >
               <!--TODO: revisar size por aspect -->
                 <ion-col size="11" class="ion-align-items-center"> 
-                  <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img> -->
-                  <!-- <ion-row> -->
-
-                    <!-- <ion-thumbnail> -->
+                  
+                      <!--upd
                       <app-usuario-img [src]="u.profile.img_url != null ? configService.apiUrl(u.profile.img_url) : ''"></app-usuario-img>
-                    <!-- </ion-thumbnail> -->
-                  <!-- </ion-row> -->
+                -->
                 </ion-col>
               </ion-row>
               <ion-row>
@@ -58,10 +52,7 @@
               </ion-row>
             </ion-col>
           </ion-item>
-        <!-- </ion-row>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
+        
 
         </ion-content>
           <ion-footer>
@@ -73,7 +64,6 @@
                   lines="none"
                 >
                   <ion-icon name="moon-outline" slot="start"></ion-icon>
-                  <!-- <ion-label>Modo oscuro</ion-label> -->
                   <ion-toggle color="dark" [(ngModel)]="darkMode" style="padding-inline: 0" ></ion-toggle>
   
                 </ion-item>

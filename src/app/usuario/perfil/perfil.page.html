@@ -8,7 +8,7 @@
               <ion-back-button
                 defaultHref="/"
                 ></ion-back-button>
-                <!-- class="ion-hide-md-up" -->
+                
             </ion-buttons>
             <ion-title>Perfil</ion-title>
           </ion-row>
@@ -29,19 +29,19 @@
         <ion-col size="4">
           <ion-row class="ion-justify-content-center">
             <ion-col size="5">
-              <app-usuario-img
+              <!--upd <app-usuario-img
                 [src]="this.imgUrl != null ? configService.apiUrl( this.imgUrl ) : ''"
-              ></app-usuario-img>
+              ></app-usuario-img>-->
             </ion-col>
           </ion-row>
         </ion-col>
-        <!-- <ion-col class="h-100 ion-align-self-center"> -->
+        
         <ion-col>
           <ion-row>
             <ion-text>
               <h2>{{ this.name }}</h2></ion-text>
             <ion-text class="ion-no-padding" color="medium">
-              <p class="text-username">@{{ this.username }}</p></ion-text>
+              <p class="text-username">#{{ this.username }}</p></ion-text>
           </ion-row>
           <ion-row>
             <ion-text>Rol: {{ this.role }}</ion-text>

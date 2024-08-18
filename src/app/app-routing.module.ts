@@ -34,6 +34,20 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'perfil',
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: ':id',
+        loadChildren: () => import('./usuario/perfil/perfil.module').then( m => m.PerfilPageModule)
+      },
+      {
+        path: 'editar',
+        loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
+      }
+    ]
+  },
+  {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   }
@@ -54,21 +68,7 @@ export class AppRoutingModule {}
 
 const routes: Routes = [
   
-  {
-    path: 'perfil',
-    canActivate: [AuthGuard],
-    children: [
-      {
-        path: ':id',
-        loadChildren: () => import('./usuario/perfil/perfil.module').then( m => m.PerfilPageModule)
-      },
-      {
-        path: 'editar',
-        loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
-      }
-    ]
-    // loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
-  },
+  
   {
     path: 'usuarios',
     canActivate: [AuthGuard],
