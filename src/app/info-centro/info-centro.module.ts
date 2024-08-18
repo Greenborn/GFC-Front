@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -23,6 +23,8 @@ import { PresentacionMiembrosComponent } from './presentacion-miembros/presentac
   ],
   declarations: [
     InfoCentroPage, InfoCentroPostComponent, PresentacionUltimoConcursoComponent, 
-    PresentacionComisionDirectivaComponent, PresentacionMiembrosComponent]
+    PresentacionComisionDirectivaComponent, PresentacionMiembrosComponent],
+  
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class InfoCentroPageModule {}

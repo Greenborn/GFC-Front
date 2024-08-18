@@ -37,7 +37,6 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
           
         })
   }
-
   //upd@ViewChild('slideWithNav', { static: false }) slideWithNav: IonicSlides;
 
   sliderOne: any = {
@@ -45,7 +44,6 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
     isEndSlide: false,
     slidesItems: []
   };
-  slideOptions: any = {};
 
   constructor(
     public  alertController:      AlertController,
