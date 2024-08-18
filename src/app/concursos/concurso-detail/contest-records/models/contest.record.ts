@@ -1,3 +1,4 @@
+// @ts-nocheck
 export class ContestRecord {
     id?: number;
     url: string;

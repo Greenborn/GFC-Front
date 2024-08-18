@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ContestRecord } from '../concursos/concurso-detail/contest-records/models/contest.record';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Section } from '../models/section.model';

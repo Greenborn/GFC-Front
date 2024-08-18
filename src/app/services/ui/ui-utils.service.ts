@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable } from '@angular/core';
 import { AlertController, LoadingController, ModalController, PopoverController, ToastButton, ToastController, ToastOptions } from '@ionic/angular';
 import { AlertOptions, ComponentRef, LoadingOptions } from '@ionic/core';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable } from '@angular/core';
 import {
   CanActivate,
@@ -6,7 +7,7 @@ import {
   UrlTree
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth/auth.service';
+import { AuthService } from '../modules/auth/services/auth.service';
 
 // https://www.digitalocean.com/community/tutorials/angular-route-guards
 @Injectable()

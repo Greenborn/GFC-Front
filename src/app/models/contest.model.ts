@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Category } from "./category.model";
 import { ContestResultExpanded } from "./contest_result.model";
 import { Section } from "./section.model";

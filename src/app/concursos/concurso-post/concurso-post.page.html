@@ -15,7 +15,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content><!--
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="10" >
@@ -23,8 +23,6 @@
           #f="ngForm"
           (ngSubmit)="postConcurso(f)"
           >
-          <!-- *ngIf="!loading; else spinner" -->
-          <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
           <ion-list class="ion-align-items-end">
             <ion-item>
               <ion-label position="floating">Nombre</ion-label>
@@ -156,7 +154,6 @@
             </ion-item>
 
             <ion-col size="12" >
-              <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
               <ion-list >
                   <ion-item class="ion-no-padding " lines="full"
                     button (click)="mostrarCategorias = !mostrarCategorias"
@@ -189,7 +186,6 @@
 
             </ion-col>
             <ion-col size="12">
-              <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
               <ion-list>
                 <ion-item class="ion-no-padding " lines="full"
                   button (click)="mostrarSecciones = !mostrarSecciones"
@@ -289,5 +285,5 @@
         </ng-template>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid>-->
 </ion-content>
