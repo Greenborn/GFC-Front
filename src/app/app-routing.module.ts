@@ -74,11 +74,11 @@ const routes: Routes = [
     path: 'organizaciones',
     loadChildren: () => import('./fotoclubs-abm/fotoclubs-abm.module').then( m => m.FotoclubsAbmPageModule)
   },
-  /*{
+  {
     path: 'registro',
     loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule),
     pathMatch: 'full'
-  },*/
+  },
   {
     path: '',
     loadChildren: () => import('./info-centro/info-centro.module').then( m => m.InfoCentroPageModule),
