@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-//import { ConcursosPageRoutingModule } from './concursos-routing.module';
+import { ConcursosPageRoutingModule } from './concursos-routing.module';
 
 import { ConcursosPage } from './concursos.page';
 //import { RankingPage } from './ranking/ranking.page';
@@ -17,7 +17,7 @@ import { ConcursosPage } from './concursos.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    //ConcursosPageRoutingModule,
+    ConcursosPageRoutingModule,
     //SharedModule
   ],
   declarations: [

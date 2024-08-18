@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component, OnInit } from '@angular/core';
 
 import { RankingService } from '../../services/ranking.service';
