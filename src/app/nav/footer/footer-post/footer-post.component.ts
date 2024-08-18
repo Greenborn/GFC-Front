@@ -12,13 +12,13 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 })
 export class FooterPostComponent extends ApiConsumer implements OnInit {
   
-  @Input() modalController: ModalController;
-  @Input() footer: Footer = this.footerService.template;
+  //@Input() modalController: ModalController;
+  //@Input() footer: Footer = this.footerService.template;
   
-  public facebook: string;
-  public instagram: string;
-  public youtube: string;
-  public email:string;
+  //public facebook: string;
+  //public instagram: string;
+  //public youtube: string;
+  //public email:string;
   private cont: number = 0;
   public posting: boolean = false; 
 
@@ -31,21 +31,20 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
   }
 
   ngOnInit() {
-    if (this.footer === undefined) {
+    /*if (this.footer === undefined) {
       // this.footer = this.footerService.template
     } else {
       this.facebook = this.footer.facebook
       this.instagram = this.footer.instagram
       this.youtube = this.footer.youtube
       this.email = this.footer.email
-    }
+    }*/
   }
 
   async postFooter() {
-    if (this.datosCargados()) {
-        // setTimeout(() => this.cont = 0, 500)
+    /*if (this.datosCargados()) {
         this.posting = true
-       // let i: Footer;//footer
+        
         const model: Footer = {
           facebook: this.footer.facebook,
           instagram: this.footer.instagram,
@@ -53,16 +52,14 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
           email: this.footer.email
         }
         console.log('posting', model)
-        // super.fetch<any>(() =>
-          // this.footerService.postFormData<any>(model)
-        // ).subscribe(
+        
           super.fetch<Footer>(
             () => this.footerService.post(model, this.footer.id)
           ).subscribe(
          footer => {
             console.log('posted ', footer)
             this.posting = false
-            // i = footer
+            
             this.modalController.dismiss({ footer })
           },
           async err => {
@@ -70,22 +67,22 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
             this.posting = false
           },
         )
-      }
+      }*/
   }
     
   dismiss() {
     // using the injected ModalController this page
     // can "dismiss" itself and optionally pass back data
-    this.modalController.dismiss({
+    /*this.modalController.dismiss({
      
-    });
+    });*/
   }
   datosCargados() {
     //return this.image.code !=  undefined 
-    return this.footer.facebook !=  undefined 
+    /*return this.footer.facebook !=  undefined 
         && this.footer.instagram != undefined
         && this.footer.youtube != undefined
-        && this.footer.email != undefined
+        && this.footer.email != undefined*/
   }
 
 }

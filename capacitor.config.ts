@@ -1,10 +1,9 @@
-import { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'GrupoFotografico',
-  webDir: 'www',
-  bundledWebRuntime: false
+  appName: 'GFC_V2',
+  webDir: 'www'
 };
 
 export default config;
