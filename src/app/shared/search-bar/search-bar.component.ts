@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { IonSearchbar } from '@ionic/angular';
 

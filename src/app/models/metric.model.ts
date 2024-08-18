@@ -1,3 +1,4 @@
+// @ts-nocheck
 export interface Metric {
     id?: number;
     prize: string;

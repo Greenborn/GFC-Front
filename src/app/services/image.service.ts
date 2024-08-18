@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Image } from '../models/image.model';

@@ -22,6 +22,15 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: () => import('./concursos/concurso-post/concurso-post.module').then( m => m.ConcursoPostPageModule)
       },
+      /*{
+        path: 'editar/:id',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./concursos/concurso-post/concurso-post.module').then( m => m.ConcursoPostPageModule)
+      },
+      {
+        path: ':id',
+        loadChildren: () => import('./concursos/concurso-detail/concurso-detail.module').then( m => m.ConcursoDetailPageModule)
+      }*/
     ]
   },
   {
@@ -45,23 +54,6 @@ export class AppRoutingModule {}
 
 const routes: Routes = [
   
-  {
-    path: 'concursos',
-    canActivate: [AuthGuard],
-    children: [
-      
-      
-      {
-        path: 'editar/:id',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('./concursos/concurso-post/concurso-post.module').then( m => m.ConcursoPostPageModule)
-      },
-      {
-        path: ':id',
-        loadChildren: () => import('./concursos/concurso-detail/concurso-detail.module').then( m => m.ConcursoDetailPageModule)
-      }
-    ]
-  },
   {
     path: 'perfil',
     canActivate: [AuthGuard],
