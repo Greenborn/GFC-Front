@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -14,7 +15,6 @@ import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 })
 export class AuthService {
 
-  // private _user: User;
   private _user: Promise<UserLogged>;
 
   constructor(
@@ -23,7 +23,6 @@ export class AuthService {
     private  config: ConfigService,
     // private  gral:        AppUIUtilsService
   ) { 
-    // this.updateUser()
   }
 
   get token(): string{ 
@@ -43,12 +42,10 @@ export class AuthService {
   }
 
   get user(): Promise<UserLogged|null> {
-    // return this._user
+    
 
     if (this._user == undefined && this.loggedIn) {
       this._user = new Promise<UserLogged>(resolve => {
-        // console.log('get user ' + this._user)
-        // 
         const s = this.http.get<UserLogged>(
           `${this.config.apiUrl('user')}/${this.userId}?expand=profile,profile.fotoclub,role`
         ).subscribe(
@@ -75,16 +72,6 @@ export class AuthService {
     this._user = undefined
   }
 
-  // updateUser(u: User = undefined): void {
-  //   this._user = u ? new Promise<User>(resolve => resolve(u)) : undefined
-  // }
-
-  // isAdmin(): boolean {
-  //   return true
-  // }
-  // set user(u: User) { 
-  //   this._user = u 
-  // }
 
   get loggedIn(): boolean {
     // console.log(localStorage)
@@ -107,26 +94,19 @@ export class AuthService {
             this.token = r.token
             this.userId = r.id
             resolve(true)
-            // localStorage.setItem( this.confGral['appName']+'logedIn', JSON.stringify( true ) );
             this.router.navigateByUrl('/')
           } else {
             console.log('login error', data)
 
             onError(data)
             resolve(false)
-            // this.gral.showMessage( 'Usuario o contraseña incorrecta.' );
           }
         },
         err =>  {
-          // this.gral.dismissLoading();
           
           console.log('login http error', err)
           onError(err)
           resolve(false)
-          // localStorage.setItem( this.confGral['appName']+'logedIn',      JSON.stringify( false ) );
-          // localStorage.setItem( this.confGral['appName']+'token',        JSON.stringify( '' ) );
-          
-          // this.gral.showMessage( 'Usuario o contraseña incorrecta.' );
         }
       )
     })

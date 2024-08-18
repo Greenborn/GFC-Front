@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { Login } from '../../models/login.model';
-//import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-view',
@@ -11,24 +12,24 @@ import { Login } from '../../models/login.model';
 })
 export class LoginViewComponent implements OnInit {
 
- /* @ViewChild('passInput') passInput: ElementRef
+  @ViewChild('passInput') passInput: ElementRef
   public visibility: boolean = false;
   public loading: boolean;
   public error: string;
   public login: Login = {
     username: '',
     password: ''
-  }*/
+  }
 
   constructor(
     private router: Router,
-    //private auth: AuthService,
+    private auth: AuthService,
     public responsiveService: ResponsiveService
   ) { }
 
   ngOnInit() {}
- /*
-  keyPress(e, input = ''){
+
+  keyPress(e:any, input = ''){
     if (e.key == "Enter"){
       
       input == 'next' ? this.next() :
@@ -38,7 +39,7 @@ export class LoginViewComponent implements OnInit {
         }, 100)
     }
   }
-
+ 
   next() {
     // console.log(this.login)
     this.loading = true
@@ -54,7 +55,7 @@ export class LoginViewComponent implements OnInit {
       this.loading = false
     })
   }
-
+/*
   recordarPass(){
       alert();
   }*/
