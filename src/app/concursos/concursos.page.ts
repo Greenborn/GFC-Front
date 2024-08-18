@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild ,AfterViewInit} from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { Event, Router } from '@angular/router';

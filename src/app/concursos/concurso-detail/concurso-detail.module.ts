@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {  CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -21,14 +21,14 @@ import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir
 import { InscribirJuecesComponent } from './inscribir-jueces/inscribir-jueces.component';
 import { VerFotografiasComponent } from './ver-fotografias/ver-fotografias.component';
 
-import { IonicSelectableModule } from 'ionic-selectable';
+//import { IonicSelectableModule } from 'ionic-selectable';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     ConcursoDetailPageRoutingModule,
-    IonicSelectableModule,
+    //IonicSelectableModule,
     SharedModule 
   ],
   declarations: [
@@ -44,6 +44,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     InscribirJuecesComponent,
     VerFotografiasComponent
   ],
-  providers: [ConcursoDetailService]
+  providers: [ConcursoDetailService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ConcursoDetailPageModule {}

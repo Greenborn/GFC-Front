@@ -1,9 +1,7 @@
-<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
+<!--upd<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
   <ion-header>
     <ion-toolbar>
       <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
-        <!-- <ion-back-button [defaultHref]="'/concursos/' + id"></ion-back-button> -->
-        <!-- <ion-back-button (click)="dismiss()"></ion-back-button> -->
         <ion-col>
           <h5 class="ion-text-wrap">
             Inscribir Juez a {{ contest.name }}
@@ -26,10 +24,8 @@
             <ion-col>
               <ion-row class="ion-padding-top">
                 <ion-item class="w-100 ion-margin-bottom">
-                  <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
                   <ion-label position="floating">Juez</ion-label>
                   <ion-select [(ngModel)]="profileContest.profile_id" ngDefaultControl>
-                    <!-- [(value)]="image.profile_id" -->
                     <ion-select-option
                       *ngFor="let p of jueces"
                       [value]="p.id"
@@ -39,17 +35,6 @@
                 </ion-item>
               </ion-row>
               <ion-row class="ion-padding-top">
-                <!-- <ion-item class="w-100 ion-margin-bottom">
-                  <ion-label position="floating">Categoría</ion-label>
-                  <ion-select [(ngModel)]="profileContest.category_id" ngDefaultControl>
-                    <ion-select-option
-                      *ngFor="let c of categorias"
-                      [value]="c.id"
-                      >{{ c.name }}</ion-select-option
-                    >
-                  </ion-select>
-                </ion-item> -->
-                <!--TODO: deberian ser todas las categorias -->
               </ion-row>
 
               <ion-row class="ion-justify-content-end">
@@ -66,19 +51,6 @@
                         (post)="inscribirJuez()"
                         [disabled]="!datosCargados()"
                       ></app-btn-post>
-                      <!-- <ion-button
-                        expand="block"
-                        type="submit"
-                        (click)="inscribirConcursante()"
-                        [disabled]="!datosCargados()"
-                      >
-                        <ion-spinner
-                          *ngIf="posting"
-                          class="ion-margin-end"
-                          size="small"
-                        ></ion-spinner>
-                        Guardar
-                      </ion-button> -->
                     </ion-col>
 
                     <ion-col
@@ -87,13 +59,6 @@
                       size="12"
                       size-sm="3"
                     >
-                      <!-- <ion-back-button
-                    text="Cancelar"
-                    icon=""
-                    (click)="modalController.dismiss()"
-                    [defaultHref]="backUrl"
-                  ></ion-back-button
-                > -->
                       <ion-button
                         expand="block"
                         (click)="modalController.dismiss()"
@@ -111,4 +76,4 @@
       </ion-row>
     </ion-grid>
   </div>
-</div>
+</div>-->

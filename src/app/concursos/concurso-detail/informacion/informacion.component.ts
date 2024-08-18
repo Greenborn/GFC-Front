@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';

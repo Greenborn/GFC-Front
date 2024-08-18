@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';

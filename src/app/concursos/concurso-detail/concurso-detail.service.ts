@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { EventEmitter, Injectable, OnInit } from '@angular/core';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';

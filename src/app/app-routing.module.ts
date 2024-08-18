@@ -22,7 +22,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: () => import('./concursos/concurso-post/concurso-post.module').then( m => m.ConcursoPostPageModule)
       },
-      /*{
+      {
         path: 'editar/:id',
         canActivate: [AuthGuard],
         loadChildren: () => import('./concursos/concurso-post/concurso-post.module').then( m => m.ConcursoPostPageModule)
@@ -30,7 +30,7 @@ const routes: Routes = [
       {
         path: ':id',
         loadChildren: () => import('./concursos/concurso-detail/concurso-detail.module').then( m => m.ConcursoDetailPageModule)
-      }*/
+      }
     ]
   },
   {
