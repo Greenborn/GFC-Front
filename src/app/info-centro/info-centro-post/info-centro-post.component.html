@@ -2,8 +2,6 @@
   <ion-header>
     <ion-toolbar>
       <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
-        <!-- <ion-back-button [defaultHref]="'/concursos/' + id"></ion-back-button> -->
-        <!-- <ion-back-button (click)="dismiss()"></ion-back-button> -->
         <ion-col>
           <h5 class="ion-text-wrap">
             {{ formTitle }}
@@ -19,8 +17,6 @@
   </ion-header>
 
   <div slot="start" class="w-100 inner-content ion-float-md-start">
-    <!-- <ion-scroll zooming="true" direction="xy" style="width:500px;height:500px">
-    </ion-scroll> -->
     <ion-grid>
       <ion-row class="ion-justify-content-center ion-align-self-center">
         <ion-col>
@@ -39,7 +35,6 @@
                 <ion-col class="ion-no-padding">
                   <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                     <ion-label position="stacked">Imágen</ion-label>
-                    <!-- <input type="file" (change)="imageUpload($event.target)" /> -->
                     <ion-input #inputFile
                       type="file"
                       (change)="imageUpload($event.target)"
@@ -68,9 +63,6 @@
                   [(ngModel)]="parrafo.content"
                   [rows]="responsiveService.isDesktop ? 6 : 4"
                   ></ion-textarea>
-                  <!-- auto-grow="true" -->
-                  <!-- [autoGrow]="responsiveService.isDesktop" -->
-                  <!-- [style]="responsiveService.isDesktop ? '' : 'max-height: 300px;'" -->
               </ion-item>
 
               <ion-row class="ion-justify-content-end ion-margin-top">
@@ -82,11 +74,11 @@
                       size-sm="3"
                       class="ion-align-self-center"
                     >
-                      <app-btn-post
+                      <!--upd<app-btn-post
                         [posting]="posting"
                         (post)="postParrafo()"
                         [disabled]="!datosCargados()"
-                      ></app-btn-post>
+                      ></app-btn-post>-->
                     </ion-col>
 
                     <ion-col

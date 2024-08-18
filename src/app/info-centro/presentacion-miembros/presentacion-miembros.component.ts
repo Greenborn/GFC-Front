@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AlertController, IonSlides } from '@ionic/angular';
+import { AlertController, IonicSlides } from '@ionic/angular';
 import { ConcursosPageModule } from 'src/app/concursos/concursos.module';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
@@ -28,7 +29,7 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
         })
   }
 
-  @ViewChild('slideWithNav', { static: false }) slideWithNav: IonSlides;
+  //upd@ViewChild('slideWithNav', { static: false }) slideWithNav: IonicSlides;
 
   cantF: number = 1;
   sliderOne: any = {

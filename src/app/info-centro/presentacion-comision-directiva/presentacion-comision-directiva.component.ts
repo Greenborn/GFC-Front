@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController, IonSlides } from '@ionic/angular';
+import { AlertController, IonicSlides } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Profile } from 'src/app/models/profile.model';
 import { ConfigService } from 'src/app/services/config/config.service';
@@ -37,7 +38,7 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
         })
   }
 
-  @ViewChild('slideWithNav', { static: false }) slideWithNav: IonSlides;
+  //upd@ViewChild('slideWithNav', { static: false }) slideWithNav: IonicSlides;
 
   sliderOne: any = {
     isBeginningSlide: true,

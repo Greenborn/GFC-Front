@@ -48,81 +48,47 @@ const routes: Routes = [
     ]
   },
   {
-    path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  }
-];
-@NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
-  ],
-  exports: [RouterModule]
-})
-export class AppRoutingModule {}
-
-
-/*
-
-// 
-
-
-const routes: Routes = [
-  
-  
-  {
     path: 'usuarios',
     canActivate: [AuthGuard],
     children: [
-      {
-        path: '',
-        loadChildren: () => import('./usuario/usuarios-abm/usuarios-abm.module').then( m => m.UsuariosAbmPageModule)
-      },
-      {
-        path: 'nuevo',
-        loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
-      },
-      {
-        path: 'editar/:id',
-        loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
-      }
-  ]
-},
-{
-  path: 'notificaciones',
-  canActivate: [AuthGuard],
-  loadChildren: () => import('./notificaciones/notificaciones.module').then( m => m.NotificacionesPageModule)
-},
+      /*  {
+          path: '',
+          loadChildren: () => import('./usuario/usuarios-abm/usuarios-abm.module').then( m => m.UsuariosAbmPageModule)
+        },
+        {
+          path: 'nuevo',
+          loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
+        },
+        {
+          path: 'editar/:id',
+          loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
+        }*/
+    ]
+  },
   {
+    path: 'notificaciones',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./notificaciones/notificaciones.module').then( m => m.NotificacionesPageModule)
+  },
+  /*{
     path: 'organizaciones',
     loadChildren: () => import('./fotoclubs-abm/fotoclubs-abm.module').then( m => m.FotoclubsAbmPageModule)
-  },
+  },*/
+  /*{
+    path: 'registro',
+    loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule),
+    pathMatch: 'full'
+  },*/
   {
     path: '',
     loadChildren: () => import('./info-centro/info-centro.module').then( m => m.InfoCentroPageModule),
     pathMatch: 'full'
-  },
-  {
-    path: 'registro',
-    loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule),
-    pathMatch: 'full'
-  },
-
-  // {
-  //   path: 'login',
-  //   loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  // }
-
-
+  }
 ];
-
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { 
-      preloadingStrategy: PreloadAllModules, 
-      useHash: true
-    })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, useHash: true })
   ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
-*/

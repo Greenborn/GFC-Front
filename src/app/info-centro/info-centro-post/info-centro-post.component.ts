@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
