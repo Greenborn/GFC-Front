@@ -1,9 +1,7 @@
-<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
+<!--<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
   <ion-header>
     <ion-toolbar>
       <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
-        <!-- <ion-back-button [defaultHref]="'/concursos/' + id"></ion-back-button> -->
-        <!-- <ion-back-button (click)="dismiss()"></ion-back-button> -->
         <ion-col>
           <h5 class="ion-text-wrap">
             {{ formTitle }}
@@ -43,7 +41,6 @@
               </ion-row>
               <ion-row class="ion-padding-top">
                 <ion-item  class="w-100 ">
-                  <!-- <ion-col> -->
                   <ion-label position="floating">Descripción</ion-label>
                   <ion-textarea
                     (ionFocus)="descrChangeFocus = true"
@@ -54,7 +51,6 @@
                     name="description"
                     [ngModel]="fotoclub.description"
                   ></ion-textarea>
-                  <!-- </ion-col> -->
                 </ion-item>
                 <ion-note *ngIf="descrChangeFocus">Máximo 250 caracteres</ion-note>
               </ion-row>
@@ -148,4 +144,4 @@
     </ion-grid>
   </form>
   </div>
-</div>
+</div>-->

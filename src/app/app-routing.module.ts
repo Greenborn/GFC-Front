@@ -70,10 +70,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('./notificaciones/notificaciones.module').then( m => m.NotificacionesPageModule)
   },
-  /*{
+  {
     path: 'organizaciones',
     loadChildren: () => import('./fotoclubs-abm/fotoclubs-abm.module').then( m => m.FotoclubsAbmPageModule)
-  },*/
+  },
   /*{
     path: 'registro',
     loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule),
