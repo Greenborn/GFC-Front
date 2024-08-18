@@ -7,10 +7,10 @@ import { IonicModule } from '@ionic/angular';
 import { ConcursosPageRoutingModule } from './concursos-routing.module';
 
 import { ConcursosPage } from './concursos.page';
-//import { RankingPage } from './ranking/ranking.page';
-//import { SharedModule } from '../shared/shared.module';
-//import { SeccionPostComponent } from './secciones-abm/seccion-post/seccion-post.component';
-//import { MetricasPostComponent } from './metricas-abm/metricas-post/metricas-post.component';
+import { RankingPage } from './ranking/ranking.page';
+import { SharedModule } from '../shared/shared.module';
+import { SeccionPostComponent } from './secciones-abm/seccion-post/seccion-post.component';
+import { MetricasPostComponent } from './metricas-abm/metricas-post/metricas-post.component';
 
 @NgModule({
   imports: [
@@ -18,13 +18,13 @@ import { ConcursosPage } from './concursos.page';
     FormsModule,
     IonicModule,
     ConcursosPageRoutingModule,
-    //SharedModule
+    SharedModule
   ],
   declarations: [
     ConcursosPage, 
-   // RankingPage, 
-   // SeccionPostComponent, 
-  //  MetricasPostComponent
+    RankingPage, 
+    SeccionPostComponent, 
+    MetricasPostComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
