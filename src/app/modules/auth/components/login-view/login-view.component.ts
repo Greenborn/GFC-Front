@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { Login } from '../../models/login.model';
-import { AuthService } from '../../services/auth.service';
+//import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-view',
@@ -11,23 +11,23 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginViewComponent implements OnInit {
 
-  @ViewChild('passInput') passInput: ElementRef
+ /* @ViewChild('passInput') passInput: ElementRef
   public visibility: boolean = false;
   public loading: boolean;
   public error: string;
   public login: Login = {
     username: '',
     password: ''
-  }
+  }*/
 
   constructor(
     private router: Router,
-    private auth: AuthService,
+    //private auth: AuthService,
     public responsiveService: ResponsiveService
   ) { }
 
   ngOnInit() {}
- 
+ /*
   keyPress(e, input = ''){
     if (e.key == "Enter"){
       
@@ -57,5 +57,5 @@ export class LoginViewComponent implements OnInit {
 
   recordarPass(){
       alert();
-  }
+  }*/
 }

@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Routes, RouterModule } from '@angular/router';
-//import { LoginViewComponent } from './components/login-view/login-view.component';
+import { LoginViewComponent } from './components/login-view/login-view.component';
 
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule }   from '@angular/common/http';
@@ -12,7 +12,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 const routes: Routes = [
   {
     path: 'login',
-//    component: LoginViewComponent,
+    component: LoginViewComponent,
   }
 ];
 
