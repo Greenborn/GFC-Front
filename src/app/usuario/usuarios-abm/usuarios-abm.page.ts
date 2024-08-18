@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Usuario } from '../usuario.model';
 

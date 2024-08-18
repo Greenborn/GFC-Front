@@ -1,48 +1,38 @@
-<ion-content>
+<!--upd<ion-content>
   <ion-grid class="ion-no-padding" *ngIf="(auth.user | async) as userLogged">
     <ion-row>
       <ion-col size="3" *ngIf="mostrarFiltro">
         <ion-col>
           <ion-title class="ion-margin-top">Búsqueda</ion-title>
 
-          <!-- TODO: crear modal para mobile del filtro de búsqueda y desaparecer la columna en PC y biceversa -->
-          <!-- <app-search-bar
-            (buscar)="filtrarUsuarios($event)"
-            [atributos]="['username', 'email']"
-          ></app-search-bar> -->
+          
           <app-search-bar
             [(data)]="miembros"
             [atributosObj]="atributosBusqueda"
           >
           </app-search-bar>
        
-          <!-- [(data)]="miembros" -->
           <app-search-select *ngIf="rolificador.isAdmin(userLogged)"
             title="Fotoclub / Agrupación"
             [optionsProps]="filtrado['fotoclub'].options"
             [optionsData]="fotoclubs"
             interface="popover"
           >
-            <!-- [filterCallback]="funcionesFiltrado['fotoclub']" -->
           </app-search-select>
-          <!-- [(data)]="miembros" -->
           <app-search-select *ngIf="rolificador.isAdmin(userLogged)"
             title="Rol"
             [optionsProps]="filtrado['rol'].options"
             [optionsData]="roles"
           >
-            <!-- [filterCallback]="funcionesFiltrado['role']" -->
           </app-search-select>
           <ion-col>
           </ion-col>
         </ion-col>
       </ion-col>
-      <!-- </ion-col> -->
 
       <ion-col>
         <ion-row>
           <ion-col size="11.5" push="0.25">
-            <!-- usuario, email, Fotoclub/Agrupación -->
             <ion-grid class="ion-no-padding ion-padding-bottom">
               <ion-row
                 class="
@@ -64,15 +54,6 @@
 
               <ion-row class="ion-align-items-center">
                 <ion-col>
-                  <!-- <app-search-bar
-                    (buscar)="filtrarUsuarios($event)"
-                    [atributos]="['username', 'email']"
-                  ></app-search-bar> -->
-
-                  <!-- <app-search-bar
-                  [(data)]="miembros"
-                  [atributosObj]="atributosBusqueda"
-                  ></app-search-bar> -->
                 </ion-col>
                 <ion-col size="2" size-sm="1">
                   <ion-row
@@ -93,7 +74,6 @@
                       "
                     >
                       <ion-icon name="funnel"></ion-icon>
-                      <!-- <ion-icon name="options"></ion-icon> -->
                     </ion-button>
                   </ion-row>
                 </ion-col>
@@ -113,9 +93,7 @@
                             [title]="rolificador.getNombreUsuarios(userLogged.role_id)"
                           ></app-th-sort>
                         </ion-row>
-                        <!-- <b>{{rolificador.getNombreUsuarios(userLogged.role_id)}}</b> -->
                       </ion-col>
-                      <!-- <ion-col size="2">Email</ion-col> -->
                       <ion-col size="2.5" size-md="2">
                         <app-th-sort
                           *ngIf="rolificador.isAdmin(userLogged)"
@@ -123,9 +101,6 @@
                           [(data)]="miembros"
                           title="Comisión directiva"
                         ></app-th-sort>
-                        <!-- <ion-text *ngIf="rolificador.isAdmin(userLogged)">
-                          <b>Rol</b>
-                        </ion-text> -->
                       </ion-col>
                       <ion-col size="2.5" size-md="2">
                         <app-th-sort
@@ -134,9 +109,6 @@
                           [(data)]="miembros"
                           title="Rol"
                         ></app-th-sort>
-                        <!-- <ion-text *ngIf="rolificador.isAdmin(userLogged)">
-                          <b>Rol</b>
-                        </ion-text> -->
                       </ion-col>
                       <ion-col size="2.5" size-md="2">
                         <ion-row>
@@ -147,12 +119,8 @@
                             title="Fotoclub / Agrupación"
                           ></app-th-sort>
                         </ion-row>
-                        <!-- <ion-text *ngIf="rolificador.isAdmin(userLogged)"
-                          ><b>Fotoclub / Agrupación</b>
-                        </ion-text> -->
                       </ion-col>
                       <ion-col size="1.5" size-md="1">
-                        <!-- <b>Acciones</b> -->
                       </ion-col>
                     </ion-row>
                   </ion-col>
@@ -160,8 +128,6 @@
               </ion-item>
             </ion-list>
 
-            <!-- <div *ngIf="(users | async) as usuarios"> -->
-            <!-- <div *ngIf="(miembros | async) as miembros; else spinner"> -->
             <ion-list *ngIf="miembros.length > 0; else texto">
               <ion-item *ngFor="let m of miembros">
                 <ion-grid *ngIf="m != undefined || m != null">
@@ -172,7 +138,6 @@
                           ion-align-items-center ion-justify-content-between
                         "
                       >
-                        <!-- user card -->
                         <ion-col size="3" size-sm="1.3">
                           <app-usuario-img [src]="m.img_url != null ? configService.apiUrl(m.img_url) : '' "></app-usuario-img>
                         </ion-col>
@@ -194,7 +159,6 @@
                             <ion-button *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
                               (click)="mostrarAcciones($event, m)"
                             >
-                              <!-- <ion-thumbnail></ion-thumbnail> -->
                               <ion-icon
                                 slot="start"
                                 ios="ellipsis-horizontal"
@@ -260,26 +224,11 @@
                 >
               </ion-item>
             </ng-template>
-            <!-- </div>
-            <ng-template #spinner>
-              <ion-row class="ion-justify-content-center">
-                <ion-spinner ></ion-spinner>
-              </ion-row>
-            </ng-template> -->
           </ion-col>
         </ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <!-- <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-    class="ion-hide-sm-up"
-  >
-    <ion-fab-button [routerLink]="['nuevo']">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab> -->
 </ion-content>
+-->

@@ -51,7 +51,7 @@ const routes: Routes = [
     path: 'usuarios',
     canActivate: [AuthGuard],
     children: [
-      /*  {
+        {
           path: '',
           loadChildren: () => import('./usuario/usuarios-abm/usuarios-abm.module').then( m => m.UsuariosAbmPageModule)
         },
@@ -62,7 +62,7 @@ const routes: Routes = [
         {
           path: 'editar/:id',
           loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
-        }*/
+        }
     ]
   },
   {

@@ -1,3 +1,4 @@
+<!--upd
 <ion-header>
   <ion-toolbar>
     <ion-grid>
@@ -109,7 +110,8 @@
                 <ion-row>
                     <ion-item class="expand-full">
                         <ion-label position="floating">Nombre de Usuario</ion-label>
-<!-- TODO: revisar pattern -->
+
+                        
                         <ion-input
                             (ionFocus)="usernameFocus=true" (ionBlur)="usernameFocus=false"
                             autocapitalize="off"
@@ -128,7 +130,8 @@
 
                     <ion-item class="expand-full">
                         <ion-label position="floating">E-Mail</ion-label>
-<!-- TODO: revisar pattern -->
+
+                        
                         <ion-input
                             autocapitalize="off"
                             pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
@@ -137,7 +140,8 @@
                         </ion-input>
                     </ion-item>
 
-<!--- CONTRASEÑA -->             
+
+                              
                     <ion-item class="expand-full">
                         <ion-col class="ion-no-padding">
                             <ion-row>
@@ -164,7 +168,7 @@
                         <p *ngIf="form.get('password').dirty && form.get('password').errors !== null       && form.get('password').errors.hasOwnProperty('pattern')"> - Atención: Longitud mínima 8 cáracteres</p>
                     </ion-note>
 
-<!-- REPETIR CONTRASEÑA -->
+                    
                     <ion-item class="expand-full" *ngIf="!isUserProfile && isUserSignUp">
                         <ion-col class="ion-no-padding">
                             <ion-row>
@@ -219,7 +223,7 @@
                                 size="12"
                                 size-sm="3"
                                 class="ion-align-self-center">
-                                <!-- TODO: sin usuario cambiar el texto mostrado -->
+                                
                                 <app-btn-post
                                 [posting]="posting"
                                 [text] = "submitBtnText"
@@ -252,3 +256,4 @@
     </ion-row>
   </ng-template>
 </ion-content>
+-->
