@@ -44,6 +44,10 @@ export class FotografiasComponent implements OnInit {
   fotoclubs: Fotoclub[] = [];
   user: UserLogged;
 
+  public set_categoria_null(){
+    categoriaSeleccionada = null
+  }
+
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
       valor: 'title', 
@@ -58,7 +62,7 @@ export class FotografiasComponent implements OnInit {
       callback: (c: ContestResultExpanded, query: string) => c.image.code.match(new RegExp(`${query}`, 'i'))
     },
   ];
-  public filtrado: any[] = [];
+  public filtrado: any = {};
   puntajes: Metric[]= [];
 
   public seccionSeleccionada: Section = null;

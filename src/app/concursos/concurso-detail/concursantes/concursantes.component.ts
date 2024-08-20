@@ -39,6 +39,10 @@ export class ConcursantesComponent implements OnInit {
   public categoriaSeleccionada: Category = null;
   user: UserLogged
 
+  public set_categoria_null(){
+    categoriaSeleccionada = null
+  }
+
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
       valor: 'nombre', 

@@ -1,9 +1,9 @@
-<!--
+
 <ion-menu type="reveal" side="end" menuId="first" content-id="main-content" #menu>
   
   <ion-content>
     
-    <ion-list *ngIf="(auth.user | async) as u">
+    <ion-list *ngIf="auth.user">
       
       <ion-item [routerLink]="['/concursos']">Concursos</ion-item>
       
@@ -20,4 +20,3 @@
     </ion-list>
   </ion-content>
 </ion-menu>
--->

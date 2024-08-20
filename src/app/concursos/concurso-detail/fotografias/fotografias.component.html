@@ -1,4 +1,4 @@
-<!--upd<ion-content>
+<ion-content>
 
   <ion-grid *ngIf="(auth.user | async) as u" class="ion-no-padding ion-no-margin" #content>
     <ion-row class="ion-justify-content-center">
@@ -12,7 +12,7 @@
           <app-search-select *ngIf="!rolificador.esConcursante(u) || !isContestNotFin"
             title="Premios"
             [optionsData]="puntajes"
-            [optionsProps]="filtrado['metric'].options">
+            [optionsProps]="filtrado.metric?.options">
           </app-search-select>
 
         </ion-col>
@@ -41,14 +41,14 @@
   
                   <app-search-select *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || !isContestNotFin"
                     title="Concursante"
-                    [optionsProps]="filtrado['perfil'].options"
+                    [optionsProps]="filtrado.perfil.options"
                     [optionsData]="inscriptosProfiles"
                     [updating]="updatingInscriptos"
                     [emptyMessage]="inscriptosEmptyMessage"
                     interface="popover">
                   </app-search-select>
                   
-                  <ion-button *ngIf="categoriaSeleccionada != null" (click)="categoriaSeleccionada = null" fill="clear" class="">
+                  <ion-button *ngIf="categoriaSeleccionada != null" (click)="set_categoria_null()" fill="clear" class="">
                     <ion-icon name="close-outline"></ion-icon>
                   </ion-button>
 
@@ -59,7 +59,7 @@
                     </ion-select>
                   </ion-item>
 
-                  <ion-button *ngIf="seccionSeleccionada != null" (click)="seccionSeleccionada = null" fill="clear" class="">
+                  <ion-button *ngIf="seccionSeleccionada != null" (click)="set_categoria_null()" fill="clear" class="">
                     <ion-icon name="close-outline"></ion-icon>
                   </ion-button>
 
@@ -149,7 +149,7 @@
                                       
                                       <ion-text title="Nombre de la obra"> <b>{{r.image.title}}</b> </ion-text>
         
-                                      <ion-card-subtitle title="Sección"><i>{{r.section.name}}</i> </ion-card-subtitle>
+                                      <ion-card-subtitle title="Sección"><i>{{r.section?.name}}</i> </ion-card-subtitle>
                                       
                                     </ion-col>
                                   </ion-item>
@@ -234,4 +234,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-</ion-content>-->
+</ion-content>
