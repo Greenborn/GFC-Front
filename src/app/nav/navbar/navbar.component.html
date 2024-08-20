@@ -1,6 +1,5 @@
-
-<!--<ion-toolbar color="light">-->
-  <!--
+<ion-toolbar color="light">
+  
   <ion-buttons class="clickeable" [routerLink]="['/']" slot="start">
     <ion-thumbnail>
       <ion-img src="../../../assets/GFC logo.png"></ion-img>
@@ -12,7 +11,7 @@
   <ion-buttons
     slot="secondary"
     class="ion-hide-md-down ion-padding-start"
-    *ngIf="auth.loggedIn && auth.user | async as u"
+    *ngIf="auth.loggedIn && auth.user"
   >
     
     <ion-button [routerLink]="['/concursos/ranking']"> Ranking </ion-button>
@@ -45,5 +44,5 @@
     <ion-button slot="end" *ngIf="router.url != '/login'" [routerLink]="['/login']"> Ingresar </ion-button>
     <ion-button slot="end" *ngIf="router.url != '/registro'" [routerLink]="['/registro']"> Registrarme </ion-button>
   </ng-template>
--->
-<!--</ion-toolbar>-->
+
+</ion-toolbar>

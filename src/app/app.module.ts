@@ -16,9 +16,9 @@ import { SharedModule } from './shared/shared.module';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-//import { AuthInterceptorService } from './modules/auth/services/auth-interceptor.service';
+import { AuthInterceptorService } from './modules/auth/services/auth-interceptor.service';
 
-//import { FooterPostComponent } from './nav/footer/footer-post/footer-post.component';
+import { FooterPostComponent } from './nav/footer/footer-post/footer-post.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //import { IonicSelectableModule } from 'ionic-selectable';
@@ -29,7 +29,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NavbarComponent,
     FooterComponent,
     SidebarComponent,
-    //FooterPostComponent
+    FooterPostComponent
   ],
   imports: [
     BrowserModule, IonicModule.forRoot(), AppRoutingModule,
@@ -42,17 +42,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     //IonicSelectableModule
   ],
   exports: [
-    //FooterPostComponent
+    FooterPostComponent
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-  /*  [
+    [
       {
         provide: HTTP_INTERCEPTORS,
         useClass: AuthInterceptorService,
         multi: true
       }
-    ]*/
+    ]
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
