@@ -1,4 +1,4 @@
-<div >
+<div style="height: 1000px">
   <ion-header>
     <ion-toolbar>
       <ion-row class="ion-align-items-center ion-margin-end ">
@@ -29,7 +29,7 @@
                 <ion-text color="dark">No se encuentra una fotografía cargada</ion-text>
               </ng-template>
               <ion-row class="ion-padding-top">
-                <ion-img (ionError)="yepImg = false"  *ngIf="yepImg==true; else noImg" [src]="image.url != null ? configService.apiUrl(image.url) : ''"></ion-img>
+                <ion-img (ionError)="yepImg = false" *ngIf="yepImg==true; else noImg" [src]="image.url != null ? configService.apiUrl(image.url) : ''"></ion-img>
                
               </ion-row>
             </ion-col>

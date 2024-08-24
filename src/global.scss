@@ -54,8 +54,13 @@
   box-shadow: none;
 }
 
+.modal-default{
+  --height: 80vh !important;
+  --width: 80vw !important;
+}
+
 @media (max-width: 768px) {
-  ion-modal.auto-width {
+  /*ion-modal.auto-width {
     .ion-page {
       position: relative;
       display: block;
@@ -67,14 +72,14 @@
         padding: 10px;
       }
     }
-  }  
+  }  */
 }
 
 @media (min-width: 768px) {
   ion-toast div.toast-wrapper.toast-bottom{
     margin-right: 0 !important;
   }
-
+/*
   ion-modal.auto-width {
     &.bottom {
       align-items: flex-end;
@@ -93,7 +98,7 @@
         padding: 10px;
       }
     }
-  }
+  }*/
 
   .picker-wrapper.sc-ion-picker-md {
     bottom: auto;
