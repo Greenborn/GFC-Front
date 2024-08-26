@@ -105,10 +105,8 @@ export class UiUtilsService {
 
     const props: any = {
       component,
-      componentProps
-    }
-    if (!fullscreenOnDesktop) {
-      props.cssClass = 'auto-width'
+      componentProps,
+      cssClass: fullscreenOnDesktop ? 'modal-fullscreen' : ''
     }
 
     const modal = await this.modalController.create(props);

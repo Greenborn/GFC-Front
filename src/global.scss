@@ -54,9 +54,9 @@
   box-shadow: none;
 }
 
-.modal-default{
-  --height: 80vh !important;
-  --width: 80vw !important;
+.modal-fullscreen{
+  --height: 100vh !important;
+  --width: 100vw !important;
 }
 
 @media (max-width: 768px) {
