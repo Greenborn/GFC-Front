@@ -309,7 +309,7 @@ export class FotografiasComponent implements OnInit {
   });
   }
 
-  openImage(image: Image) {
+  openImage(image:any) {
     this.UIUtilsService.mostrarModal(VerFotografiasComponent, {image}, true);
   }
 
