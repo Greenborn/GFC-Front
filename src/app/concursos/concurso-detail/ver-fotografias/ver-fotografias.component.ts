@@ -14,7 +14,8 @@ import { ConcursoDetailService } from '../concurso-detail.service';
 export class VerFotografiasComponent implements OnInit {
   
   @Input() modalController: ModalController;
-  @Input() image: any;
+  @Input() index: any;
+  @Input() all_data: any;
   public yepImg: boolean = true;
   public inscriptos: any[] = [];
 
@@ -33,6 +34,16 @@ export class VerFotografiasComponent implements OnInit {
   
   getImage() {
 
+  }
+
+  anterior(){
+    this.index --;
+    if (this.index < 0) this.index = this.all_data.length - 1
+  }
+
+  siguiente(){
+    this.index ++;
+    if (this.index >= his.all_data.length) this.index = 0
   }
 
   getFullName(profile_id: number) {
