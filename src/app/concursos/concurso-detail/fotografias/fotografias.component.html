@@ -141,26 +141,23 @@
                         <ion-grid class="ion-no-padding" *ngIf="resultadosConcursoFiltrados.length > 0">
                           <ion-row>
 
-                            <ion-col *ngFor="let r of resultadosConcursoFiltrados" size="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
-                              <ion-row>
-                                <ion-col>
-
-                                  <ion-img  title="Ver fotografía" (click)="openImage(r.image)" 
+                            <ion-col *ngFor="let r of resultadosConcursoFiltrados" class="ion-padding" size="12" size-sm="6" size-md="auto">
+                              <ion-row class="ion-justify-content-center">
+                                <ion-col size="auto">
+                                  <img class="img-galeria"  title="Ver fotografía" (click)="openImage(r.image)" 
                                     [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
-                                    [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'">
-                                  </ion-img>
-              
+                                    [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
+                                  />              
                                 </ion-col>
                               </ion-row>
 
-                              <ion-row>
-                                <ion-col class="ion-align-self-center">
-                                  <ion-card-subtitle title="Código de la obra">{{r.image.code}}</ion-card-subtitle>
-                                  <ion-text title="Nombre de la obra"> <b>{{r.image.title}}</b> </ion-text>
-                                  <ion-card-subtitle title="Sección"><i>{{r.section?.name}}</i> </ion-card-subtitle>
+                              <ion-row class="ion-justify-content-center">
+                                <ion-col size="auto">
+                                  <!--<ion-text title="Código de la obra">{{r.image.code}}</ion-text>-->
+                                  <ion-text title="Nombre de la obra"> <b>{{r.image.title}}</b> - <i>{{r.section?.name}}</i> </ion-text>
                                 </ion-col>
                               </ion-row>
-                              
+                              <!--
                               <ion-row>
                                 <ion-col>
 
@@ -174,11 +171,10 @@
                                   </ion-item>
 
                                 </ion-col>
-                              </ion-row>
+                              </ion-row>-->
 
-                              <ion-row>
-                                <ion-col
-                                  class="ion-align-self-center">
+                              <ion-row class="ion-justify-content-center">
+                                <ion-col size="auto">
                                   <ion-text *ngIf="!isContestNotFin || !rolificador.esConcursante(u)" >
                                     {{ r.metric.prize != '0' && r.metric.prize != null && r.metric.prize != undefined ? r.metric.prize : '-' }}
                                   </ion-text>
