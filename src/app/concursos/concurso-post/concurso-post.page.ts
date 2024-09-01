@@ -48,7 +48,15 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public rules_url: SafeResourceUrl;
   noImg: boolean = false;
 
-  public day_selects = [{days:[], months:[], years:[], day:-1, month: -1, year: -1, hours:[], minutes:[], hour:0, minute:0, selected_str: "" }, {days:[], months:[], years:[], day:-1, month: -1, year: -1, hours:[], minutes:[], hour:0, minute:0, selected_str: "" }]
+  public day_selects = [
+    {days:[], months:[], years:[], day:-1, month: -1, year: -1, hours:[], minutes:[], hour:0, minute:0, selected_str: "" }, 
+    {days:[], months:[], years:[], day:-1, month: -1, year: -1, hours:[], minutes:[], hour:0, minute:0, selected_str: "" }
+  ]
+
+  public get_days_selects(i, key){
+    let date_e:any = this.day_selects[i][key]
+    return date_e
+  }
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -251,10 +259,12 @@ get secycat(){
   }
   
   getCategoriaSeleccionada(id: number) {
-    return this.categoriasSeleccionadas.find(c => c.id == id)
+    let selected = this.categoriasSeleccionadas.find(c => c.id == id)
+    return selected ? selected : { seleccionada: '' } //se hace asi para que no se queje ts
   }
   getSeccionSeleccionada(id: number) {
-    return this.seccionesSeleccionadas.find(c => c.id == id)
+    let selected = this.seccionesSeleccionadas.find(c => c.id == id)
+    return selected ? selected : { seleccionada: '' } //se hace asi para que no se queje ts
   }
 
   // getParentSections() {
@@ -515,8 +525,8 @@ get secycat(){
   
       // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
     // fileUpload(event: FileList) {
-      imageUpload(event: EventTarget) {
-      
+      imageUpload(event: any) {
+        event = event?.target
         const file = (event as HTMLInputElement).files.item(0)
     
         if (!file) return;
@@ -555,8 +565,8 @@ get secycat(){
       }
       // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
     // fileUpload(event: FileList) {
-      fileUpload(event: EventTarget) {
-      
+      fileUpload(event: any) {
+        event = event?.target
         const file = (event as HTMLInputElement).files.item(0)
     
         if (!file) return;

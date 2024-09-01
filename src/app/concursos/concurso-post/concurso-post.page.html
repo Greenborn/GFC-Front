@@ -15,7 +15,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content><!--
+<ion-content>
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="12" size-md="10" >
@@ -42,7 +42,7 @@
                     <ion-label>Día</ion-label>
                     <select class="w-100" [(ngModel)]="day_selects[0].day" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione día</option>
-                      <option *ngFor="let d of day_selects[0].days;" value="{{d.v}}">{{d.t}}</option>
+                      <option *ngFor="let d of get_days_selects(0, 'day');" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
 
@@ -50,7 +50,7 @@
                     <ion-label>Mes</ion-label>
                     <select class="w-100" [(ngModel)]="day_selects[0].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione Mes</option>
-                      <option *ngFor="let d of day_selects[0].months;" value="{{d.v}}">{{d.t}}</option>
+                      <option *ngFor="let d of get_days_selects(0, 'months');" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
 
@@ -58,7 +58,7 @@
                     <ion-label>Año</ion-label>
                     <select class="w-100" [(ngModel)]="day_selects[0].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione Año</option>
-                      <option *ngFor="let d of day_selects[0].years;" value="{{d.v}}">{{d.t}}</option>
+                      <option *ngFor="let d of get_days_selects(0, 'years');" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
 
@@ -66,7 +66,7 @@
                     <ion-label>Hora</ion-label>
                     <select class="w-100" [(ngModel)]="day_selects[0].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione Hora</option>
-                      <option *ngFor="let d of day_selects[0].hours;" value="{{d.v}}">{{d.t}}</option>
+                      <option *ngFor="let d of get_days_selects(0, 'hours');" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
 
@@ -74,7 +74,7 @@
                     <ion-label>Minutos</ion-label>
                     <select class="w-100" [(ngModel)]="day_selects[0].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione Minutos</option>
-                      <option *ngFor="let d of day_selects[0].minutes;" value="{{d.v}}">{{d.t}}</option>
+                      <option *ngFor="let d of get_days_selects(0, 'minutes');" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
                 </ion-row>
@@ -87,7 +87,7 @@
                     <ion-label>Día</ion-label>
                     <select class="w-100" [(ngModel)]="day_selects[1].day" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione día</option>
-                      <option *ngFor="let d of day_selects[1].days;" value="{{d.v}}">{{d.t}}</option>
+                      <option *ngFor="let d of get_days_selects(1, 'days');" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
 
@@ -95,7 +95,7 @@
                     <ion-label>Mes</ion-label>
                     <select class="w-100" [(ngModel)]="day_selects[1].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione Mes</option>
-                      <option *ngFor="let d of day_selects[1].months;" value="{{d.v}}">{{d.t}}</option>
+                      <option *ngFor="let d of get_days_selects(1, 'months');" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
 
@@ -103,7 +103,7 @@
                     <ion-label>Año</ion-label>
                     <select class="w-100" [(ngModel)]="day_selects[1].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione Año</option>
-                      <option *ngFor="let d of day_selects[1].years;" value="{{d.v}}">{{d.t}}</option>
+                      <option *ngFor="let d of get_days_selects(1, 'years');" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
 
@@ -111,7 +111,7 @@
                     <ion-label>Hora</ion-label>
                     <select class="w-100" [(ngModel)]="day_selects[1].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione Hora</option>
-                      <option *ngFor="let d of day_selects[1].hours;" value="{{d.v}}">{{d.t}}</option>
+                      <option *ngFor="let d of get_days_selects(1, 'hours');" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
 
@@ -119,7 +119,7 @@
                     <ion-label>Minutos</ion-label>
                     <select class="w-100" [(ngModel)]="day_selects[1].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                       <option value="-1">Seleccione Minuntos</option>
-                      <option *ngFor="let d of day_selects[1].minutes;" value="{{d.v}}">{{d.t}}</option>
+                      <option *ngFor="let d of get_days_selects(1, 'minutes');" value="{{d.v}}">{{d.t}}</option>
                     </select>
                   </ion-col>
                 </ion-row>
@@ -227,7 +227,7 @@
             <ion-col class="ion-no-padding">
               <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                 <ion-label position="stacked">Archivo</ion-label>
-                <input type="file" (change)="imageUpload($event.target)" />
+                <input type="file" (change)="imageUpload($event)" />
               </ion-item>
               <div>
                   <ion-row *ngIf="img_url != ''" class="ion-justify-content-center">
@@ -245,7 +245,7 @@
             <ion-col class="ion-no-padding">
               <ion-item class="w-100 ion-no-padding ion-margin-bottom">
                 <ion-label position="stacked">Documento</ion-label>
-                <input type="file"  accept=".pdf" (change)="fileUpload($event.target)" />
+                <input type="file"  accept=".pdf" (change)="fileUpload($event)" />
               </ion-item>
               <ion-note>
                 La extención de archivo aceptada es PDF</ion-note>
@@ -285,5 +285,5 @@
         </ng-template>
       </ion-col>
     </ion-row>
-  </ion-grid>-->
+  </ion-grid>
 </ion-content>
