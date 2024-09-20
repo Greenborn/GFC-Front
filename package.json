@@ -4,8 +4,8 @@
   "author": "Greenborn",
   "homepage": "https://greenborn.com.ar",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
+    "ng": "set NODE_OPTIONS=--openssl-legacy-provider && ng",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
