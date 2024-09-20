@@ -11,7 +11,8 @@
           </ion-button>
         </ion-col>
         <ion-col [ngClass]="{'ion-margin-start': responsiveService.isDesktop}">
-          <h5 class="ion-text-wrap">{{image.title}}</h5>
+          <h5 class="ion-text-wrap">{{image.image.title}} - {{image?.image.code}} - {{image?.section?.name}} - 
+          {{getFullName(image?.image.profile_id)}} - {{ image.metric.prize != '0' && image.metric.prize != null && image.metric.prize != undefined ? image.metric.prize : '-' }}</h5>
         </ion-col>
         <ion-col size="1" class="ion-hide-md-down">
           <ion-button (click)="modalController.dismiss()" fill="clear" class="">
@@ -22,7 +23,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <div slot="start" class="w-100 inner-content ion-float-md-start">
+  <div slot="start" class="w-100 cont-ver-foto inner-content ion-float-md-start">
     <ion-grid>
       <ion-row class="ion-justify-content-center ion-align-self-center">
         <ion-col>
@@ -32,8 +33,13 @@
                 <ion-text color="dark">No se encuentra una fotografía cargada</ion-text>
               </ng-template>
               <ion-row class="ion-padding-top">
-                <ion-img (ionError)="yepImg = false"  *ngIf="yepImg==true; else noImg" [src]="image.url != null ? configService.apiUrl(image.url) : ''"></ion-img>
-               
+                
+                <img 
+                  (ionError)="yepImg = false"
+                  *ngIf="yepImg==true; else noImg" 
+                  [src]="image.image.url != null ? configService.apiUrl(image.image.url) : ''"
+                  class="img-det-modal"
+                />
               </ion-row>
             </ion-col>
           </ion-row>
