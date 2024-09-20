@@ -9,11 +9,11 @@
   
           <app-search-bar [(data)]="resultadosConcurso" [atributosObj]="atributosBusqueda"></app-search-bar>
 
-          <app-search-select *ngIf="!rolificador.esConcursante(u) || !isContestNotFin"
+          <!--<app-search-select *ngIf="!rolificador.esConcursante(u) || !isContestNotFin"
             title="Premios"
             [optionsData]="puntajes"
-            [optionsProps]="filtrado.metric?.options">
-          </app-search-select>
+            [optionsProps]="filtrado?.metric?.options">
+          </app-search-select>-->
 
         </ion-col>
       </ion-col>
@@ -39,14 +39,14 @@
                 
                 <ion-row class="ion-justify-content-end ion-align-items-end">
   
-                  <app-search-select *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || !isContestNotFin"
+                  <!--<app-search-select *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || !isContestNotFin"
                     title="Concursante"
                     [optionsProps]="filtrado.perfil.options"
                     [optionsData]="inscriptosProfiles"
                     [updating]="updatingInscriptos"
                     [emptyMessage]="inscriptosEmptyMessage"
                     interface="popover">
-                  </app-search-select>
+                  </app-search-select>-->
                   
                   <ion-button *ngIf="categoriaSeleccionada != null" (click)="set_categoria_null()" fill="clear" class="">
                     <ion-icon name="close-outline"></ion-icon>

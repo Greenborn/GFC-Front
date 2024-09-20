@@ -308,6 +308,9 @@ export class FotografiasComponent implements OnInit {
     this.UIUtilsService.mostrarModal(VerFotografiasComponent, {index, all_data: this.resultadosConcursoFiltrados }, true);
   }
 
+  async set_categoria_null(){
+    return;
+  }
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
 
   async mostrarAcciones(ev: any, r: ContestResultExpanded) {
