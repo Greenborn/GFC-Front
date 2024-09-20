@@ -11,10 +11,10 @@ export class ConfigService {
 
   get data() {
     return {
-      apiBaseUrl: "https://gfc.prod-api.greenborn.com.ar/",//this.local ? "http://localhost:8888/" : "https://gfc.api.greenborn.com.ar/",
+      apiBaseUrl: "https://gfc.api.greenborn.com.ar/",//this.local ? "http://localhost:8888/" : "https://gfc.api.greenborn.com.ar/",
       loginAction:"login",
       appName: "app_gfc_prod-",
-      version: "1.0.12"
+      version: "1.0.13"
     };
   }
 
