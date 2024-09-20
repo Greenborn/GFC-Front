@@ -10,6 +10,7 @@
 }
 
 .img-det-modal{
-    width: 100%;
-    height: auto;
+    height: calc(100lvh - 58px - 58px);
+    width: auto;
 }
+    

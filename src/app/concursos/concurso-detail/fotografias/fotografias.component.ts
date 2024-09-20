@@ -304,8 +304,8 @@ export class FotografiasComponent implements OnInit {
   });
   }
 
-  openImage(image: any) {
-    this.UIUtilsService.mostrarModal(VerFotografiasComponent, {image}, true);
+  openImage(index: any) {
+    this.UIUtilsService.mostrarModal(VerFotografiasComponent, {index, all_data: this.resultadosConcursoFiltrados }, true);
   }
 
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
