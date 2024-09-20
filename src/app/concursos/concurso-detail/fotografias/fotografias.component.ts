@@ -305,7 +305,7 @@ export class FotografiasComponent implements OnInit {
   }
 
   openImage(image: Image) {
-    this.UIUtilsService.mostrarModal(VerFotografiasComponent, {image, cssClass: 'create-expense-template-modal'}, true);
+    this.UIUtilsService.mostrarModal(VerFotografiasComponent, {image}, true);
   }
 
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
