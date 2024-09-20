@@ -202,12 +202,12 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
       return;
     }
 
-    if(file.size > 2e+6) {
+    /*if(file.size > 2e+6) {
       this.texto_img = "El peso máximo admitido para la fotografía es de 2MB"
       this.file = undefined;
       this.imageData = '';
       return;
-    }
+    }*/
 
     this.file = file;
 
