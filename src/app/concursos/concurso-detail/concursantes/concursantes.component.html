@@ -44,7 +44,7 @@
                   </ion-button>
                   <ion-item >
                     <ion-label position="stacked">Categoría</ion-label>
-                    <ion-select
+                    <ion-select okText="Aceptar" cancelText="Cancelar"
                       [(ngModel)]="categoriaSeleccionada"
                       interface="popover">
                       <ion-select-option
@@ -82,7 +82,7 @@
   
                       <ion-row>
                         <app-th-sort
-                          [sortFn]="ordenarPorFotoclub" [(data)]="inscriptos" title="Fotoclub/Agrupación"
+                          [sortFn]="ordenarPorFotoclub" [(data)]="inscriptos" title="Fotoclub/Agrupación/Institución"
                         ></app-th-sort>
                       </ion-row>
                     </ion-col>
