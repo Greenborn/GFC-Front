@@ -160,7 +160,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     dataPromises.push(
       new Promise(resolve => super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => {
         this.fotoclubes = r
-        this.fotoclubes.unshift({id: 0, name: "Ninguno"})
+        this.fotoclubes.sort((a, b) => a.name.localeCompare(b.name));
+        //this.fotoclubes.unshift({id: 0, name: "Ninguno"})
         resolve(true)
       }))
     )
