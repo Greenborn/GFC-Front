@@ -51,6 +51,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public img_url: string;
   public ImageChangeClick:Subject<any> = new Subject();
 
+  public contest_type_selected:Boolean = false
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,

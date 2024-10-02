@@ -58,7 +58,7 @@
                     </ion-item>
 
                     <ion-item *ngIf="(usuario.role_id == 3 || usuario.role_id == 2) && !updatingSelect; else spinner" class="expand-full">
-                        <ion-label [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación</ion-label>
+                        <ion-label [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación/Institución</ion-label>
                             <ion-select
                             #sFotoclub
                             formControlName="fotoclub_id" name="fotoclub_id" [(ngModel)]="profile.fotoclub_id"
