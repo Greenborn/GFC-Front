@@ -3,14 +3,14 @@
 }
 
 .cont-ver-foto{
-    height: calc(100lvh - 58px);
+    height: calc(100lvh - 56px);
     width: 100%;
     /* border: 1px solid #000; */
     overflow: scroll;
 }
 
 .img-det-modal{
-    height: calc(100lvh - 58px - 58px);
+    max-height: calc(100lvh - 58px - 58px);
     width: auto;
 }
     

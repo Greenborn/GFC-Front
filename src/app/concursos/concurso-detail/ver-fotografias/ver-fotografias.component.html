@@ -33,30 +33,20 @@
     </ion-toolbar>
   </ion-header>
 
-  <div slot="start" class="w-100 cont-ver-foto inner-content ion-float-md-start">
-    <ion-grid>
-      <ion-row class="ion-justify-content-center ion-align-self-center">
-        <ion-col>
-          <ion-row>
-            <ion-col>
-              <ng-template #noImg> 
-                <ion-text color="dark">No se encuentra una fotografía cargada</ion-text>
-              </ng-template>
-              <ion-row class="ion-padding-top ion-justify-content-center ion-align-self-center">
-                <ion-col size="auto">
-                    <img 
-                    (ionError)="yepImg = false"
-                    *ngIf="yepImg==true; else noImg" 
-                    [src]="all_data[index].image.url != null ? configService.apiUrl(all_data[index].image.url) : ''"
-                    class="img-det-modal"
-                  />
-                </ion-col>
-                
-              </ion-row>
-            </ion-col>
-          </ion-row>
+  
+  <ion-grid>
+    <ion-row class="ion-padding-top cont-ver-foto ion-justify-content-center ion-align-self-center">
+      
+        <ion-col size="auto">
+            <img 
+            (ionError)="yepImg = false"
+            *ngIf="yepImg==true; else noImg" 
+            [src]="all_data[index].image.url != null ? configService.apiUrl(all_data[index].image.url) : ''"
+            class="img-det-modal"
+          />
         </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+          
+    </ion-row>
+  </ion-grid>
+  
 </div>
