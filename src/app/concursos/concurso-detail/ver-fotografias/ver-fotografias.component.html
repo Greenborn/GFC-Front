@@ -12,9 +12,7 @@
         </ion-col>
         <ion-col [ngClass]="{'ion-margin-start': responsiveService.isDesktop}">
           <h5 class="ion-text-wrap">
-            {{all_data[index].image.title}} - {{all_data[index]?.image.code}} - {{all_data[index]?.section?.name}} - 
-            {{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}} - {{ all_data[index].metric.prize != '0' 
-            && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}</h5>
+            {{all_data[index].image.title}} - {{all_data[index]?.image.code}} </h5>
         </ion-col>
         <ion-col size="auto">
           <ion-button (click)="anterior()" fill="clear" class="">
@@ -33,17 +31,33 @@
     </ion-toolbar>
   </ion-header>
 
-  
   <ion-grid>
+
     <ion-row class="ion-padding-top cont-ver-foto ion-justify-content-center ion-align-self-center">
       
         <ion-col size="auto">
             <img 
             (ionError)="yepImg = false"
-            *ngIf="yepImg==true; else noImg" 
+            *ngIf="yepImg==true;" 
             [src]="all_data[index].image.url != null ? configService.apiUrl(all_data[index].image.url) : ''"
             class="img-det-modal"
           />
+        </ion-col>
+
+        <ion-col size="auto">
+          <p>
+            <b>Título: </b>{{all_data[index].image.title}} 
+          </p>
+          <p>
+            <b>Sección:</b> {{all_data[index]?.section?.name}} </p>
+          <p>
+            <b>Premio: </b>
+              {{ all_data[index].metric.prize != '0' 
+            && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}
+          </p>
+          <p>
+            <b>Autor/a: </b>{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}} 
+          </p>
         </ion-col>
           
     </ion-row>
