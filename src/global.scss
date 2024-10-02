@@ -143,3 +143,8 @@ ion-note{
      align-content: center!important;
      align-items: center!important;
 }
+
+.modal-fullscreen{
+  --height: 100vh !important;
+  --width: 100vw !important;
+}

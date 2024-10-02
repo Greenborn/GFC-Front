@@ -304,13 +304,16 @@ export class FotografiasComponent implements OnInit {
   });
   }
 
-  openImage(image: Image) {
-    this.UIUtilsService.mostrarModal(VerFotografiasComponent, {image});
+  openImage(index: any) {
+    this.UIUtilsService.mostrarModal(VerFotografiasComponent, {index, all_data: this.resultadosConcursoFiltrados }, true);
   }
 
+  async set_categoria_null(){
+    return;
+  }
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
 
-  can_delete(r:any){
+  can_delete(r:any){console.log(r)
     const ES_MIA = r['image'].profile_id == this.user?.profile_id
     return ES_MIA && this.concurso.active
   }
