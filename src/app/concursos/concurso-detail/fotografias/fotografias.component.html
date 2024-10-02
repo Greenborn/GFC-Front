@@ -139,7 +139,7 @@
                       <ion-item lines="none" class="ion-no-padding lista-elem">
                       <!-- Si hay resultados-->   
                         <ion-grid class="ion-no-padding" *ngIf="resultadosConcursoFiltrados.length > 0">
-                          <ion-row>
+                          <ion-row class="ion-justify-content-center">
 
                             <ion-col *ngFor="let r of resultadosConcursoFiltrados; index as i" class="ion-padding" size="12" size-sm="6" size-md="auto">
                               <ion-row class="ion-justify-content-center">
@@ -215,6 +215,7 @@
                               </ion-row>
 
                             </ion-col>
+
                           </ion-row>
                         </ion-grid> 
 
