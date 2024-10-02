@@ -58,7 +58,7 @@
                 <ion-item class="w-100 ion-margin-bottom">
                   <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
                   <ion-label position="floating">Categoría</ion-label>
-                  <ion-select [(ngModel)]="profileContest.category_id" ngDefaultControl>
+                  <ion-select [(ngModel)]="profileContest.category_id"  okText="Aceptar" cancelText="Cancelar" ngDefaultControl>
                     <!-- [(value)]="image.profile_id" -->
                     <ion-select-option
                       *ngFor="let c of categorias"
