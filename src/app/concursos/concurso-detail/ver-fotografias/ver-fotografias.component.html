@@ -13,7 +13,7 @@
         <ion-col [ngClass]="{'ion-margin-start': responsiveService.isDesktop}">
           <h5 class="ion-text-wrap">
             {{all_data[index].image.title}} - {{all_data[index]?.image.code}} - {{all_data[index]?.section?.name}} - 
-            {{getFullName(all_data[index]?.image.profile_id)}} - {{ all_data[index].metric.prize != '0' 
+            {{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}} - {{ all_data[index].metric.prize != '0' 
             && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}</h5>
         </ion-col>
         <ion-col size="auto">

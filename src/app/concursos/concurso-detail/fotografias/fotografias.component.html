@@ -154,7 +154,14 @@
                               <ion-row class="ion-justify-content-center">
                                 <ion-col size="auto">
                                   <!--<ion-text title="Código de la obra">{{r.image.code}}</ion-text>-->
-                                  <ion-text title="Nombre de la obra"> <b>{{r.image.title}}</b> - <i>{{r.section?.name}}</i> </ion-text>
+                                  <ion-text title="Nombre de la obra"> <b>{{r.image.title}}</b> - <i>{{r.section?.name}}</i>  </ion-text>
+                                </ion-col>
+                              </ion-row>
+
+                              <ion-row class="ion-justify-content-center">
+                                <ion-col size="auto">
+                                  <!--<ion-text title="Código de la obra">{{r.image.code}}</ion-text>-->
+                                  <ion-text > {{ getFullName(r.image.profile_id) }} </ion-text>
                                 </ion-col>
                               </ion-row>
                               <!--
@@ -165,7 +172,7 @@
                                     <ion-label>
                                       <ion-card-subtitle title="Fotoclub/Agrupación/Institución del autor">{{getFotoclubName(r.image.profile_id)}}</ion-card-subtitle>
                                       <ion-text title="Autor de la obra">
-                                        <b>{{ getFullName(r.image.profile_id) }}</b>
+                                        <b></b>
                                       </ion-text>
                                     </ion-label>
                                   </ion-item>
@@ -176,7 +183,7 @@
                               <ion-row class="ion-justify-content-center">
                                 <ion-col size="auto">
                                   <ion-text *ngIf="!isContestNotFin || !rolificador.esConcursante(u)" >
-                                    {{ r.metric.prize != '0' && r.metric.prize != null && r.metric.prize != undefined ? r.metric.prize : '-' }}
+                                    {{ r.metric.prize != '0' && r.metric.prize != null && r.metric.prize != undefined ? r.metric.prize : '-' }} 
                                   </ion-text>
                                 </ion-col>
                               </ion-row>

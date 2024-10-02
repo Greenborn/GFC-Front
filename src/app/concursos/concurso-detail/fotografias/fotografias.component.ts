@@ -313,7 +313,7 @@ export class FotografiasComponent implements OnInit {
   }
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
 
-  can_delete(r:any){
+  can_delete(r:any){console.log(r)
     const ES_MIA = r['image'].profile_id == this.user?.profile_id
     return ES_MIA && this.concurso.active
   }

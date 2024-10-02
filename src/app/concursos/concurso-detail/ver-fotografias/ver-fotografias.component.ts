@@ -44,9 +44,4 @@ export class VerFotografiasComponent implements OnInit {
     if (this.index >= this.all_data.length) this.index = 0
   }
 
-
-  getFullName(profile_id: number) {
-    const p = this.inscriptos.find(p => p.profile_id == profile_id)
-    return p != undefined ? `${p.profile.name} ${p.profile.last_name}` : ''
-  }
 }
