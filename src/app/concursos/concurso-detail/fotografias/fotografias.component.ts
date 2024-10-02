@@ -324,11 +324,11 @@ export class FotografiasComponent implements OnInit {
   }
 
 
-  async mostrarAcciones(ev: any, r: ContestResultExpanded) {
+  async mostrarAcciones(ev: any, r: ContestResultExpanded, index:any) {
     const image = r.image
     const acciones = [
       {
-        accion: (params: []) => this.openImage(image),
+        accion: (params: []) => this.openImage(index),
         // accion: (params: []) => this.reviewImage(r),
         params: [],
         icon: 'image-outline',
