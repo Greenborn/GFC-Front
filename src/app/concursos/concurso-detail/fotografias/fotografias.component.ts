@@ -313,6 +313,17 @@ export class FotografiasComponent implements OnInit {
   }
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
 
+  can_delete(r:any){
+    const ES_MIA = r['image'].profile_id == this.user?.profile_id
+    return ES_MIA && this.concurso.active
+  }
+
+  can_edit(r:any){
+    const ES_MIA = r['image'].profile_id == this.user?.profile_id
+    return ES_MIA && this.concurso.active
+  }
+
+
   async mostrarAcciones(ev: any, r: ContestResultExpanded) {
     const image = r.image
     const acciones = [
@@ -325,26 +336,35 @@ export class FotografiasComponent implements OnInit {
       }
     ]
     if (this.checkPermissions) {
-      acciones.push(
-        {
-          accion: (params: []) => this.concursoDetailService.reviewImage.emit(r),
-          params: [],
-          icon: 'star-outline',
-          label: 'Puntuar'
-        },
-        {
+      if (this.rolificador.esJuez(this.user)){
+        acciones.push(
+          {
+            accion: (params: []) => this.concursoDetailService.reviewImage.emit(r),
+            params: [],
+            icon: 'star-outline',
+            label: 'Puntuar'
+          }
+        )
+      }
+
+      if (this.can_edit(r)){
+        acciones.push({
           accion: (params: []) => this.postImage(image, r.section_id),
           params: [],
           icon: 'create',
           label: 'Editar'
-        },
-        {
+        })
+      }
+
+      if (this.can_delete(r)){
+        acciones.push({
           accion: (params: number[]) => this.concursoDetailService.deleteImage.emit(r),
           params: [],
           icon: 'trash',
           label: 'Borrar'
-        }
-      )
+        })
+      }
+
     }
     const options = {
       component: MenuAccionesComponent, //componente a mostrar

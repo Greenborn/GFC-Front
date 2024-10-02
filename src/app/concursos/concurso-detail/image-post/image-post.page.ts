@@ -193,6 +193,14 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
    
     if (!file) return;
 
+    if(file.size > (1024 * 1024 * 200)) {
+      //console.log(file.size)
+      this.texto_img = "El peso máximo admitido para la fotografía es de 200MB"
+      this.file = undefined;
+      this.imageData = '';
+      return;
+    }
+
     if (file.type.split('/')[0] !== 'image' || (file.name.split('.').pop().toLowerCase() != 'jpg' && file.name.split('.').pop().toLowerCase() != 'jpeg')) { 
       console.log('File type is not supported!')
       // this.img_acept = false
@@ -201,13 +209,6 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
       this.imageData = '';
       return;
     }
-
-    /*if(file.size > 2e+6) {
-      this.texto_img = "El peso máximo admitido para la fotografía es de 2MB"
-      this.file = undefined;
-      this.imageData = '';
-      return;
-    }*/
 
     this.file = file;
 

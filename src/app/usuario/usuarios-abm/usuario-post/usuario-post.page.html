@@ -5,7 +5,7 @@
         <ion-col size="12" size-md="11">
           <ion-row>
             <ion-buttons>
-              <ion-back-button defaultHref="/usuarios"></ion-back-button>
+              <ion-back-button text="Volver" defaultHref="/usuarios"></ion-back-button>
             </ion-buttons>
 
             <ion-title  *ngIf="isLogged(); else registroFuera">{{formTitle}}</ion-title>
@@ -58,9 +58,9 @@
                     </ion-item>
 
                     <ion-item *ngIf="(usuario.role_id == 3 || usuario.role_id == 2) && !updatingSelect; else spinner" class="expand-full">
-                        <ion-label [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación</ion-label>
+                        <ion-label [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación/Institución</ion-label>
                             <ion-select
-                            #sFotoclub
+                            #sFotoclub  okText="Aceptar" cancelText="Cancelar"
                             formControlName="fotoclub_id" name="fotoclub_id" [(ngModel)]="profile.fotoclub_id"
                             required>
                             <ion-select-option *ngFor="let f of fotoclubes" [value]="f.id">{{f.name}}</ion-select-option>
@@ -200,7 +200,7 @@
                                 <ion-label [position]="'stacked'">Rol</ion-label>
                             
                                 <ion-select
-                                    #sRol
+                                    #sRol  okText="Aceptar" cancelText="Cancelar"
                                     name="role_id" formControlName="role_id"  [(ngModel)]="usuario.role_id"
                                     required
                                     [disabled]="!isAdmin">

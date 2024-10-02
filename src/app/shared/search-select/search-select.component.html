@@ -27,7 +27,7 @@
             >{{ title }}</ion-label
           >
           <ion-select #atributoSelect
-            *ngIf="!updatingSelect"
+            *ngIf="!updatingSelect"  okText="Aceptar" cancelText="Cancelar"
             (ionChange)="changeQuery($event.target)"
             interface="popover"
             [value]="atributoSelectedAsInt"

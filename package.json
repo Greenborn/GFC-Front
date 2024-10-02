@@ -1,12 +1,12 @@
 {
   "name": "grupo_fotografico_centro",
-  "version": "1.1.12",
+  "version": "1.1.15",
   "author": "Greenborn",
   "homepage": "https://greenborn.com.ar",
   "scripts": {
-    "ng": "set NODE_OPTIONS=--openssl-legacy-provider && ng",
-    "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve",
-    "build": "ng build --prod",
+    "ng": "ng",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider && ng serve",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && ng build --configuration production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

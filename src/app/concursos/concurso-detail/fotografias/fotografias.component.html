@@ -54,7 +54,7 @@
 
                   <ion-item class="ion-margin-end">
                     <ion-label position="stacked">Categoría</ion-label>
-                    <ion-select [(ngModel)]="categoriaSeleccionada" interface="popover">
+                    <ion-select okText="Aceptar" cancelText="Cancelar" [(ngModel)]="categoriaSeleccionada" interface="popover">
                        <ion-select-option *ngFor="let c of categoriasInscriptas" [value]="c.category">{{ c.category.name }}</ion-select-option>
                     </ion-select>
                   </ion-item>
@@ -65,7 +65,7 @@
 
                   <ion-item >
                     <ion-label position="stacked">Sección</ion-label>
-                    <ion-select [(ngModel)]="seccionSeleccionada" interface="popover">
+                    <ion-select [(ngModel)]="seccionSeleccionada" okText="Aceptar" cancelText="Cancelar"  interface="popover">
                       <ion-select-option *ngFor="let s of seccionesInscriptas" [value]="s.section">{{ s.section.name }}</ion-select-option>
                     </ion-select>
                   </ion-item>
@@ -163,7 +163,7 @@
 
                                   <ion-item lines="none">
                                     <ion-label>
-                                      <ion-card-subtitle title="Fotoclub/Agrupación del autor">{{getFotoclubName(r.image.profile_id)}}</ion-card-subtitle>
+                                      <ion-card-subtitle title="Fotoclub/Agrupación/Institución del autor">{{getFotoclubName(r.image.profile_id)}}</ion-card-subtitle>
                                       <ion-text title="Autor de la obra">
                                         <b>{{ getFullName(r.image.profile_id) }}</b>
                                       </ion-text>
@@ -189,11 +189,11 @@
                                       <ion-icon name="star-outline"></ion-icon>
                                     </ion-button>
         
-                                    <ion-button *ngIf="checkPermissions(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
+                                    <ion-button *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
                                       <ion-icon name="create"></ion-icon>
                                     </ion-button>
         
-                                    <ion-button *ngIf="checkPermissions(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
+                                    <ion-button *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
                                       <ion-icon name="trash"></ion-icon>
                                     </ion-button>
                                   </ion-buttons>

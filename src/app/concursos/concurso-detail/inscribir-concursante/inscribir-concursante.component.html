@@ -2,8 +2,8 @@
   <ion-header>
     <ion-toolbar>
       <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
-        <!-- <ion-back-button [defaultHref]="'/concursos/' + id"></ion-back-button> -->
-        <!-- <ion-back-button (click)="dismiss()"></ion-back-button> -->
+        <!-- <ion-back-button  text="Volver" [defaultHref]="'/concursos/' + id"></ion-back-button> -->
+        <!-- <ion-back-button text="Volver"  (click)="dismiss()"></ion-back-button> -->
         <ion-col>
           <h5 class="ion-text-wrap">
             Inscribir concursante a {{ contest.name }}
@@ -58,7 +58,7 @@
                 <ion-item class="w-100 ion-margin-bottom">
                   <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
                   <ion-label position="floating">Categoría</ion-label>
-                  <ion-select [(ngModel)]="profileContest.category_id" ngDefaultControl>
+                  <ion-select [(ngModel)]="profileContest.category_id"  okText="Aceptar" cancelText="Cancelar" ngDefaultControl>
                     <!-- [(value)]="image.profile_id" -->
                     <ion-select-option
                       *ngFor="let c of categorias"

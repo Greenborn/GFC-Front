@@ -74,7 +74,7 @@
 
                 <ion-item class="w-100 ion-margin-bottom">
                   <ion-label position="floating">Sección</ion-label>
-                  <ion-select (ionChange)=" sectionSelect" [(ngModel)]="section_id" ngDefaultControl>
+                  <ion-select (ionChange)=" sectionSelect" [(ngModel)]="section_id"  okText="Aceptar" cancelText="Cancelar" ngDefaultControl>
                     <ion-select-option *ngFor="let s of secciones" [value]="s.id">{{ s.name }}</ion-select-option>
                   </ion-select>
                 </ion-item>
