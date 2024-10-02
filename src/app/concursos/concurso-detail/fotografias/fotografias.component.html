@@ -144,10 +144,12 @@
                             <ion-col *ngFor="let r of resultadosConcursoFiltrados; index as i" class="ion-padding" size="12" size-sm="6" size-md="auto">
                               <ion-row class="ion-justify-content-center">
                                 <ion-col size="auto">
-                                  <img class="img-galeria"  title="Ver fotografía" (click)="openImage(i)" 
-                                    [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
-                                    [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
-                                  />              
+                                  <ion-thumbnail class="img-galeria">
+                                    <img   title="Ver fotografía" (click)="openImage(i)" 
+                                      [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
+                                      [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
+                                    />
+                                  </ion-thumbnail>      
                                 </ion-col>
                               </ion-row>
 

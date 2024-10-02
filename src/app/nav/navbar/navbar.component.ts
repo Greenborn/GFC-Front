@@ -31,7 +31,7 @@ export class NavbarComponent implements OnInit {
   // }
 
   async openPopover( ev:any, ctrl: any, url: string ){
-    if (window.innerWidth > 767) {
+    //if (window.innerWidth > 767) {
       const popover = await this.popoverController.create({
         component: ctrl, //componente a mostrar
         cssClass: 'my-custom-class',
@@ -50,10 +50,10 @@ export class NavbarComponent implements OnInit {
       });
       const { role } = await popover.onDidDismiss();
       // console.log('onDidDismiss resolved with role', role);
-    }
+    /*}
     else {
       this.router.navigate([url]);
-    }
+    }*/
   }
   async mostrarPerfil( ev:any ){
     this.openPopover(ev, UsuarioPage, '/perfil/editar');
