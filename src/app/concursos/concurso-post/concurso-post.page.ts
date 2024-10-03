@@ -130,6 +130,11 @@ get secycat(){
           // c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
           // c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
           this.concurso = c
+          this.concurso.start_date = new Date(this.concurso.start_date)
+          //this.concurso.start_date.setUTCHours( this.concurso.start_date.getUTCHours() + 3 )
+          this.concurso.end_date = new Date(this.concurso.end_date)
+          //this.concurso.end_date.setUTCHours( this.concurso.end_date.getUTCHours() + 3 )
+
           this.day_selects[0].day = new Date(this.concurso.start_date).getDate()
           this.day_selects[0].month = new Date(this.concurso.start_date).getMonth()
           this.day_selects[0].year = new Date(this.concurso.start_date).getFullYear()
@@ -302,11 +307,17 @@ get secycat(){
     }
 
     if (f.valid && !this.secycat) {
+      let fecha_ini = new Date(this.concurso.start_date)
+      fecha_ini.setUTCHours( fecha_ini.getUTCHours() - 3 )
+
+      let fecha_fin = new Date(this.concurso.end_date)
+      fecha_fin.setUTCHours( fecha_fin.getUTCHours() - 3 )
+
       console.log("secycat: ", this.secycat)
       const model = {
         ...f.value,
-        start_date: this.concurso.start_date,
-        end_date: this.concurso.end_date
+        start_date: fecha_ini.toISOString(),
+        end_date: fecha_fin.toISOString()
       }
       if (this.image_file != undefined) {
         model.image_file = this.image_file
