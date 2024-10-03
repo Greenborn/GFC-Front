@@ -1,4 +1,4 @@
-<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''" style="height: 1000px">
+<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''" >
   <ion-header>
     <ion-toolbar>
       <ion-row class="ion-align-items-center ion-margin-end ">
@@ -30,12 +30,12 @@
         <ion-col size="12" size-md="6" size-lg="9">
           <ion-row  class="ion-no-padding  ion-justify-content-center ion-align-self-center">
             <ion-col size="auto">
-              <ion-img 
+              <img 
                 (ionError)="yepImg = false"
                 *ngIf="yepImg==true;" 
                 [src]="all_data[index].image.url != null ? configService.apiUrl(all_data[index].image.url) : ''"
                 class="img-det-modal"
-              ></ion-img>
+              />
             </ion-col>
           </ion-row>
             
