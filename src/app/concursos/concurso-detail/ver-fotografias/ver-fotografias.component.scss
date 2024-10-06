@@ -13,3 +13,8 @@
     max-height: calc(100lvh - 58px - 58px);
     width: auto;
 }
+
+.cont-gral-visor-ph{
+    height: calc(100lvh - 58px);
+    overflow-y: scroll;
+}
