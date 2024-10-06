@@ -17,4 +17,7 @@
 .cont-gral-visor-ph{
     height: calc(100lvh - 58px);
     overflow-y: scroll;
+    position: absolute;
+    margin-top: 58px;
+    width: 100vw;
 }
