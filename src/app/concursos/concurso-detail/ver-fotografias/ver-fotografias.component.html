@@ -1,29 +1,21 @@
-<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''" >
-  <ion-header>
+<ion-header>
     <ion-toolbar>
-      <ion-row class="ion-align-items-center ion-margin-end ">
-        <!-- <ion-back-button  text="Volver" [defaultHref]="'/concursos/' + id"></ion-back-button> -->
-        <!-- <ion-back-button  text="Volver" (click)="dismiss()"></ion-back-button> -->
-        <ion-col size="2" class="ion-hide-md-up">
-          <!-- <ion-back-button  text="Volver" (click)="modalController.dismiss()"></ion-back-button> -->
+      <ion-row class="ion-align-items-center">
+
+        <ion-col size="auto">
           <ion-button (click)="modalController.dismiss()" color="dark" fill="clear" class="">
             <ion-icon name="arrow-back-outline"></ion-icon>
           </ion-button>
         </ion-col>
-        <ion-col [ngClass]="{'ion-margin-start': responsiveService.isDesktop}">
-          <h5 class="ion-text-wrap">
-            {{all_data[index].image.title}} </h5>
-        </ion-col>
-        <ion-col size="1" class="ion-hide-md-down">
-          <ion-button (click)="modalController.dismiss()" fill="clear" class="">
-            <ion-icon name="close-outline"></ion-icon>
-          </ion-button>
+
+        <ion-col size="auto">
+            <h5>Detalle de Fotografía</h5>
         </ion-col>
       </ion-row>
     </ion-toolbar>
-  </ion-header>
+</ion-header>
 
-  <div class="cont-gral-visor-ph">
+<div class="cont-gral-visor-ph">
 
     <ion-grid class="w-100">
       <ion-row class="ion-justify-content-center ion-align-self-center">
@@ -85,6 +77,4 @@
       </ion-row>
     </ion-grid>
 
-  </div>
-  
 </div>

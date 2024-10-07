@@ -30,10 +30,6 @@ export class VerFotografiasComponent implements OnInit {
     })
   }
   
-  getImage() {
-
-  }
-
   anterior(){
     this.index --;
     if (this.index < 0) this.index = this.all_data.length - 1

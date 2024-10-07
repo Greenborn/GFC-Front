@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "export NODE_OPTIONS=--openssl-legacy-provider && ng serve",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && ng build --configuration production",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && ng build --configuration production && zip -r gfc_build.zip build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
