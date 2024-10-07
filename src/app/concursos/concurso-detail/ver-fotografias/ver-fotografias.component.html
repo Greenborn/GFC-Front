@@ -1,18 +1,19 @@
+<ion-content>
 <ion-header>
-    <ion-toolbar>
-      <ion-row class="ion-align-items-center">
+  <ion-toolbar>
+    <ion-row class="ion-align-items-center">
 
-        <ion-col size="auto">
-          <ion-button (click)="modalController.dismiss()" color="dark" fill="clear" class="">
-            <ion-icon name="arrow-back-outline"></ion-icon>
-          </ion-button>
-        </ion-col>
+      <ion-col size="auto">
+        <!--<ion-button (click)="modalController.dismiss()" color="dark" fill="clear" class="">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>-->
+      </ion-col>
 
-        <ion-col size="auto">
-            <h5>Detalle de Fotografía</h5>
-        </ion-col>
-      </ion-row>
-    </ion-toolbar>
+      <ion-col size="auto">
+          <h5>Detalle de Fotografía</h5>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
 </ion-header>
 
 <div class="cont-gral-visor-ph">
@@ -34,6 +35,12 @@
               <ion-col size="auto">
                 <ion-button shape="round" (click)="siguiente()" fill="solid">
                   <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+
+              <ion-col size="auto">
+                <ion-button shape="round" (click)="modalController.dismiss()" fill="solid">
+                  <ion-icon slot="icon-only" name="close-outline"></ion-icon>
                 </ion-button>
               </ion-col>
   
@@ -71,10 +78,12 @@
                 </p>
               </ion-col>
             </ion-row>
-           
+          
           </ion-col>
             
       </ion-row>
     </ion-grid>
 
 </div>
+
+</ion-content>
