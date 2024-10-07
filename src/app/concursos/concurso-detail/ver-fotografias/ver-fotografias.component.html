@@ -23,66 +23,68 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-grid class="w-100">
+  <div class="cont-gral-visor-ph">
 
-    <ion-row class="ion-padding-top ion-justify-content-center ion-align-self-center">
-      
-        <ion-col size="12" size-md="6" size-lg="9">
-          <ion-row  class="ion-no-padding  ion-justify-content-center ion-align-self-center">
-            <ion-col size="auto">
-              <img 
-                (ionError)="yepImg = false"
-                *ngIf="yepImg==true;" 
-                [src]="all_data[index].image.url != null ? configService.apiUrl(all_data[index].image.url) : ''"
-                class="img-det-modal"
-              />
-            </ion-col>
-          </ion-row>
+    <ion-grid class="w-100">
+      <ion-row class="ion-justify-content-center ion-align-self-center">
+        
+          <ion-col size="12" size-md="6" size-lg="9">
+            <ion-row class="ion-justify-content-center ion-align-items-center">
+  
+              <ion-col size="auto">
+                <ion-button shape="round" (click)="anterior()" fill="solid">
+                  <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+  
+              <ion-col></ion-col>
+  
+              <ion-col size="auto">
+                <ion-button shape="round" (click)="siguiente()" fill="solid">
+                  <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+  
+            </ion-row>
+
+            <ion-row  class="ion-no-padding  ion-justify-content-center ion-align-self-center">
+              <ion-col size="auto">
+                <img 
+                  (ionError)="yepImg = false"
+                  *ngIf="yepImg==true;" 
+                  [src]="all_data[index].image.url != null ? configService.apiUrl(all_data[index].image.url) : ''"
+                  class="img-det-modal"
+                />
+              </ion-col>
+            </ion-row>
+              
+          </ion-col>
+  
+          <ion-col size="12" size-md="6" size-lg="3">
             
-        </ion-col>
+            <ion-row>
+              <ion-col>
+                <p>
+                  <b>Título:</b> {{all_data[index].image.title}}  </p>
+                <p>
+                <p>
+                  <b>Sección:</b> {{all_data[index]?.section?.name}} </p>
+                <p>
+                  <b>Premio: </b>
+                    {{ all_data[index].metric.prize != '0' 
+                  && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}
+                </p>
+                <p>
+                  <b>Autor/a: </b>{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}} 
+                </p>
+              </ion-col>
+            </ion-row>
+           
+          </ion-col>
+            
+      </ion-row>
+    </ion-grid>
 
-        <ion-col size="12" size-md="6" size-lg="3">
-          <ion-row class="ion-justify-content-center ion-align-items-center">
-
-            <ion-col size="auto">
-              <ion-button shape="round" (click)="anterior()" fill="solid">
-                <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
-              </ion-button>
-            </ion-col>
-
-            <ion-col >
-                
-            </ion-col>
-
-            <ion-col size="auto">
-              <ion-button shape="round" (click)="siguiente()" fill="solid">
-                <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
-              </ion-button>
-            </ion-col>
-
-          </ion-row>
-
-          <ion-row>
-            <ion-col>
-              <p>
-                <b>Título:</b> {{all_data[index].image.title}}  </p>
-              <p>
-              <p>
-                <b>Sección:</b> {{all_data[index]?.section?.name}} </p>
-              <p>
-                <b>Premio: </b>
-                  {{ all_data[index].metric.prize != '0' 
-                && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}
-              </p>
-              <p>
-                <b>Autor/a: </b>{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}} 
-              </p>
-            </ion-col>
-          </ion-row>
-         
-        </ion-col>
-          
-    </ion-row>
-  </ion-grid>
+  </div>
   
 </div>

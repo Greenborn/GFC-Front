@@ -23,3 +23,12 @@
     width: auto;
     cursor: pointer;
 } 
+
+.cont-img-text {
+    max-width: 15rem;
+    text-align: center;
+    p {
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+}

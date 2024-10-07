@@ -144,49 +144,23 @@
                             <ion-col *ngFor="let r of resultadosConcursoFiltrados; index as i" class="ion-padding" size="12" size-sm="6" size-md="auto">
                               <ion-row class="ion-justify-content-center">
                                 <ion-col size="auto">
-                                  <ion-thumbnail class="img-galeria">
-                                    <img   title="Ver fotografía" (click)="openImage(i)" 
+                                    <img class="img-galeria"  title="Ver fotografía" (click)="openImage(i)" 
                                       [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
                                       [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
-                                    />
-                                  </ion-thumbnail>      
+                                    />                                    
                                 </ion-col>
                               </ion-row>
 
                               <ion-row class="ion-justify-content-center">
                                 <ion-col size="auto">
-                                  <!--<ion-text title="Código de la obra">{{r.image.code}}</ion-text>-->
-                                  <ion-text title="Nombre de la obra"> <b>{{r.image.title}}</b> - <i>{{r.section?.name}}</i>  </ion-text>
-                                </ion-col>
-                              </ion-row>
-
-                              <ion-row class="ion-justify-content-center">
-                                <ion-col size="auto">
-                                  <!--<ion-text title="Código de la obra">{{r.image.code}}</ion-text>-->
-                                  <ion-text > {{ getFullName(r.image.profile_id) }} </ion-text>
-                                </ion-col>
-                              </ion-row>
-                              <!--
-                              <ion-row>
-                                <ion-col>
-
-                                  <ion-item lines="none">
-                                    <ion-label>
-                                      <ion-card-subtitle title="Fotoclub/Agrupación/Institución del autor">{{getFotoclubName(r.image.profile_id)}}</ion-card-subtitle>
-                                      <ion-text title="Autor de la obra">
-                                        <b></b>
-                                      </ion-text>
-                                    </ion-label>
-                                  </ion-item>
-
-                                </ion-col>
-                              </ion-row>-->
-
-                              <ion-row class="ion-justify-content-center">
-                                <ion-col size="auto">
-                                  <ion-text *ngIf="!isContestNotFin || !rolificador.esConcursante(u)" >
-                                    {{ r.metric.prize != '0' && r.metric.prize != null && r.metric.prize != undefined ? r.metric.prize : '-' }} 
-                                  </ion-text>
+                                  <div class="cont-img-text">
+                                    <p><b>{{r.image.title}}</b></p>
+                                    <p><i>{{r.section?.name}}</i></p>
+                                    <p>{{ getFullName(r.image.profile_id) }}</p>
+                                    <p *ngIf="!isContestNotFin || !rolificador.esConcursante(u)" >
+                                      <b>{{ r.metric.prize != '0' && r.metric.prize != null && r.metric.prize != undefined ? r.metric.prize : '-' }} </b>
+                                    </p>
+                                  </div>
                                 </ion-col>
                               </ion-row>
 
