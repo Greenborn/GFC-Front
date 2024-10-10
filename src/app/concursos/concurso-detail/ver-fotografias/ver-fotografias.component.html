@@ -68,12 +68,12 @@
                 <p>
                 <p>
                   <b>Sección:</b> {{all_data[index]?.section?.name}} </p>
-                <p>
+                <p *ngIf="!open"> 
                   <b>Premio: </b>
                     {{ all_data[index].metric.prize != '0' 
                   && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}
                 </p>
-                <p>
+                <p *ngIf="!open">
                   <b>Autor/a: </b>{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}} 
                 </p>
               </ion-col>
