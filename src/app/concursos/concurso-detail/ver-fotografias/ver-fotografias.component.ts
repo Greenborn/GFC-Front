@@ -14,6 +14,7 @@ export class VerFotografiasComponent implements OnInit {
   @Input() modalController: ModalController;
   @Input() index: any;
   @Input() all_data: any;
+  @Input() open: any;
   public yepImg: boolean = true;
   public inscriptos: any[] = [];
 
@@ -36,8 +37,13 @@ export class VerFotografiasComponent implements OnInit {
   }
 
   siguiente(){
-    this.index ++;
+    this.index ++;console.log(this.all_data);
     if (this.index >= this.all_data.length) this.index = 0
+  }
+
+  get isContestNotFin() {return
+    //let finalizado = (new Date()).getTime() >= (new Date(this.concurso.end_date)).getTime()  
+    //return !(finalizado && this.concurso.judged)
   }
 
 }
