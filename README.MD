@@ -1,6 +1,10 @@
 # grupo_fotografico_centro
 
 # Change Log
+- **1.1.22**: 
+
+    Bug resuelto: Cuando un concurso esta abierno no se muestra nombre de autor.
+
 - **1.1.21**: 
 
     En vista de detalle de imagen, se mueve de posición botón de cerrar modal para el caso de que el navegador móvil no deje el espacio necesario para el header.

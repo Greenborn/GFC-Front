@@ -104,7 +104,8 @@ export class FotografiasComponent implements OnInit {
     }
   }
   get isContestNotFin() {
-    return this.concurso.active
+    let finalizado = (new Date()).getTime() >= (new Date(this.concurso.end_date)).getTime()  
+    return !(finalizado && this.concurso.judged)
   }
 
   get aspecto() {
@@ -305,7 +306,7 @@ export class FotografiasComponent implements OnInit {
   }
 
   openImage(index: any) {
-    this.UIUtilsService.mostrarModal(VerFotografiasComponent, {index, all_data: this.resultadosConcursoFiltrados }, true);
+    this.UIUtilsService.mostrarModal(VerFotografiasComponent, {index, all_data: this.resultadosConcursoFiltrados, open: this.isContestNotFin }, true);
   }
 
   async set_categoria_null(){

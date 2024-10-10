@@ -18,6 +18,7 @@ export interface Contest {
     categories?: Category[];
     contestRecords?: any[];
     sub_title?: string;
+    judged?:Boolean;
 }
 
 export interface ContestExpanded extends Contest {
