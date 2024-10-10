@@ -1,6 +1,10 @@
 # grupo_fotografico_centro
 
 # Change Log
+- **1.1.23**:
+
+    En desarrollo
+
 - **1.1.22**: 
 
     Bug resuelto: Cuando un concurso esta abierno no se muestra nombre de autor.
