@@ -156,7 +156,7 @@
                                   <div class="cont-img-text">
                                     <p><b>{{r.image.title}}</b></p>
                                     <p><i>{{r.section?.name}}</i></p>
-                                    <p *ngIf="!isContestNotFin">{{ getFullName(r.image.profile_id) }}</p>
+                                    <p *ngIf="!isContestNotFin || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ getFullName(r.image.profile_id) }}</p>
                                     <p *ngIf="!isContestNotFin" >
                                       <b>{{ r.metric.prize != '0' && r.metric.prize != null && r.metric.prize != undefined ? r.metric.prize : '-' }} </b>
                                     </p>
