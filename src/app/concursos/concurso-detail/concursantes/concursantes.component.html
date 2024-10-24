@@ -148,7 +148,7 @@
 
                           <ion-buttons>
 
-                            <ion-button [routerLink]="['../', 'fotografias']"
+                            <ion-button *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)" [routerLink]="['../', 'fotografias']"
                               [queryParams]="{concursante_id: m.profile_id}"
                               title="Ver fotografías">
                               <ion-icon name="images-outline"></ion-icon>
