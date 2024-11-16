@@ -87,6 +87,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     public configService: ConfigService
   ) {
     super(alertCtrl)
+
+    this.concursoDetailService.loadContestResults()
    }
   
    async ngOnDestroy() {

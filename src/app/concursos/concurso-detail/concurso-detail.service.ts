@@ -67,7 +67,7 @@ export class ConcursoDetailService implements OnInit {
     this.loadJueces()
     this.loadProfileContests()
     this.loadProfileContestsJueces()
-    this.loadContestResults()
+    //this.loadContestResults()
   }
 
   ngOnInit() {
@@ -157,14 +157,18 @@ export class ConcursoDetailService implements OnInit {
     })
   }
   async loadContestResults(attr:any = {}) {
-    let params:string = '';
-    if (attr.hasOwnProperty('page')){
-      params += '&page='+attr.page;
-    }
+   
+
+    console.log(attr)
     this.concurso.pipe(
       filter(c => c.id != undefined)
-    ).subscribe(c => {
-      const s = this.contestResultService.getAll<ContestResultExpanded>(`expand=image.profile,image.thumbnail&filter[contest_id]=${c.id}`+params).subscribe(rs => {
+    ).subscribe(c => { 
+      let params:string = '';
+      params += '&expand=profile,profile.user,profile.fotoclub,image.profile,image.thumbnail'
+      params += '&filter[contest_id]='+c.id
+      params += attr?.page ? '&page='+attr.page : ''
+      params +=  (attr?.concursante_id) ? ('&filter[profile_id]=' + attr.concursante_id) : ''
+      const s = this.contestResultService.getAll<ContestResultExpanded>(params).subscribe(rs => {
         this.resultadosConcurso.next(rs)
         s.unsubscribe()
       })

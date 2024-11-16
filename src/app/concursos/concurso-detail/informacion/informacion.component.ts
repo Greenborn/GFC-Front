@@ -87,7 +87,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   }
 
   ngOnInit() { 
-      
+    this.concursoDetailService.loadContestResults()
     this.subsc();
     this.activatedRoute.paramMap.subscribe(async paramMap => {
       

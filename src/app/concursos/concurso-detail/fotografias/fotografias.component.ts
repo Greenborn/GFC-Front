@@ -81,6 +81,12 @@ export class FotografiasComponent implements OnInit {
     public rolificador: RolificadorService,
     public auth: AuthService,
   ) { 
+    this.route.queryParams.subscribe(params => {
+      this.concursoDetailService.loadContestResults({
+        page: 1, ...params
+      })
+    })
+    
     this.filtrado['metric'] = {
       options: {
         valueProp: 'score',
@@ -130,15 +136,14 @@ export class FotografiasComponent implements OnInit {
     }
 
     this.auth.user.then(u => this.user = u);
-    if (this.concurso.id == undefined) {
-      // await this.UIUtilsService.presentLoading()
-    }
+    
     
     this.concursoDetailService.concurso.subscribe(c => {
       this.concurso = c
     })
     this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
     this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs)
+
     const s1 = this.concursoDetailService.concursantes.subscribe(
       cs => {
         this.concursantes = cs;
@@ -219,7 +224,9 @@ export class FotografiasComponent implements OnInit {
   }
 
   loadPage(page:number){
-    this.concursoDetailService.loadContestResults({page:page});
+    this.route.queryParams.subscribe(params => {
+      this.concursoDetailService.loadContestResults({page:page, filters: this.filtrado});
+    })
   }
 
   getThumbUrl(obj:any, thumb_id:number = 1){
