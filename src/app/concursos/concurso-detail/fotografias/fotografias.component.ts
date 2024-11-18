@@ -16,7 +16,6 @@ import { UserLogged } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { ContestResultService } from 'src/app/services/contest-result.service';
 import { ContestService } from 'src/app/services/contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
@@ -65,9 +64,9 @@ export class FotografiasComponent implements OnInit {
   public updatingInscriptos: boolean = false;
   mostrarFiltro: boolean = false;
 
-  public pages:any                = [];
-  public actual_page:number       = 1;
-  public page_count:number        = 0;
+  //public pages:any                = [];
+  //public actual_page:number       = 1;
+  //public page_count:number        = 0;
 
 
   constructor(
@@ -75,7 +74,6 @@ export class FotografiasComponent implements OnInit {
     public contestService: ContestService,
     public UIUtilsService: UiUtilsService,
     private route: ActivatedRoute,
-    private contestResultService: ContestResultService,
     private router: Router,
     private configService: ConfigService,
     public rolificador: RolificadorService,
@@ -157,16 +155,16 @@ export class FotografiasComponent implements OnInit {
     const s3 = this.concursoDetailService.resultadosConcurso.subscribe({
       next: rs => {
           this.resultadosConcurso = rs;
-          let meta = this.contestResultService.getAllMeta();
-          this.pages = [{number:'<'}];
-          if (meta != undefined){
-            this.page_count = meta.pageCount;
-            for (let c=0; c < meta.pageCount; c++){
-              this.pages.push({number: (c+1)});
-            }
-          }
-          this.pages.push({number: '>'});
-          this.actual_page = 1;
+          //let meta = this.contestResultService.getAllMeta();
+          //this.pages = [{number:'<'}];
+          //if (meta != undefined){
+          //  this.page_count = meta.pageCount;
+          //  for (let c=0; c < meta.pageCount; c++){
+          //    this.pages.push({number: (c+1)});
+          //  }
+          //}
+          //this.pages.push({number: '>'});
+          //this.actual_page = 1;
           
           this.resultadosConcursoOrig = [...rs];
           this.route.queryParams.subscribe(params => {
@@ -208,7 +206,7 @@ export class FotografiasComponent implements OnInit {
    
   }
 
-  goToPage(page_number){
+  /*goToPage(page_number){
     if (page_number == '<') {
       if (this.concursoDetailService.imagenes_page_number > 1){
         this.concursoDetailService.imagenes_page_number = this.concursoDetailService.imagenes_page_number - 1;
@@ -227,7 +225,7 @@ export class FotografiasComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.concursoDetailService.loadContestResults({page:page, filters: this.filtrado});
     })
-  }
+  }*/
 
   getThumbUrl(obj:any, thumb_id:number = 1){
         //si no tiene miniatura porque no tiene imagen
