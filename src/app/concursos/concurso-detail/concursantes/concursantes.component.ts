@@ -75,25 +75,50 @@ export class ConcursantesComponent implements OnInit {
       (this.user != undefined ? (this.rolificador.esDelegado(this.user) || (this.rolificador.isAdmin(this.user)) ): false)
   }
 
+  
   async ngOnInit() {
     if (this.concurso.id == undefined) {
       await this.UIUtilsService.presentLoading()
     }
-    this.concursoDetailService.concursantes.subscribe(cs => this.concursantes = cs)
-    this.concursoDetailService.inscriptos.subscribe(is => {
-      this.inscriptos = is
-      this.UIUtilsService.dismissLoading()
-      setTimeout(() => {
-          
-      }, 500)
-    })
-    this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
-    this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
-    this.concursoDetailService.resultadosConcurso.subscribe(rs => 
-      this.resultadosConcurso = rs 
-    )
     this.auth.user.then(u => this.user = u)
-    
+
+    this.subscribes()
+  }
+
+  public subscriptions = []  
+  subscribes(){
+    this.subscriptions.push(this.concursoDetailService.concursantes.subscribe(cs => this.concursantes = cs))
+    this.subscriptions.push(
+      this.concursoDetailService.inscriptos.subscribe(is => {
+        this.inscriptos = is
+        this.UIUtilsService.dismissLoading()
+        setTimeout(() => {
+            
+        }, 500)
+      })
+    )
+    this.subscriptions.push(
+      this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
+    )
+    this.subscriptions.push(
+      this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
+    )
+    this.subscriptions.push(
+      this.concursoDetailService.resultadosConcurso.subscribe(rs => 
+        this.resultadosConcurso = rs 
+      )
+    )
+  }
+
+  unsuscribes(){
+    for (let i=0; i < this.subscriptions.length; i++){
+      this.subscriptions[i].unsubscribe()
+    }
+    this.subscriptions = []
+  }
+
+  ngOnDestroy() {
+    this.unsuscribes()
   }
 
   get inscriptosFiltrados() {

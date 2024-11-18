@@ -89,43 +89,46 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   ngOnInit() { 
     this.concursoDetailService.loadContestResults()
     this.subsc();
-    this.activatedRoute.paramMap.subscribe(async paramMap => {
-      
-      const id = parseInt(paramMap.get('id'))
-      console.log("id algo: ", id)
-
-      this.concursoDetailService.concurso.subscribe({
-        next: c => {
-          this.concurso = c
-          this.noImg = false
-        } 
-      })
-      this.concursoDetailService.categoriasInscriptas.subscribe({
-        next: c => this.categoriasInscriptas = c 
-      })
-      this.concursoDetailService.seccionesInscriptas.subscribe({
-        next: c => this.seccionesInscriptas = c 
-      })
-      this.concursoDetailService.concursantes.subscribe({
-        next: c => this.concursantes = c 
-      })
-      this.concursoDetailService.inscriptos.subscribe({
-        next: c => {
-          this.inscriptos = c
-          this.estaInscripto()
-        } 
-      })
-      this.concursoDetailService.resultadosConcurso.subscribe({
-        next: c => this.resultadosConcurso = c 
-      })
-      
-    })
     
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
 }
 
 
-  subsc(){ }
+  subsc(){
+    this.subs.push(
+      this.activatedRoute.paramMap.subscribe(async paramMap => {
+      
+        const id = parseInt(paramMap.get('id'))
+        console.log("id algo: ", id)
+  
+        this.subs.push(this.concursoDetailService.concurso.subscribe({
+          next: c => {
+            this.concurso = c
+            this.noImg = false
+          } 
+        }))
+        this.subs.push(this.concursoDetailService.categoriasInscriptas.subscribe({
+          next: c => this.categoriasInscriptas = c 
+        }))
+        this.subs.push(this.concursoDetailService.seccionesInscriptas.subscribe({
+          next: c => this.seccionesInscriptas = c 
+        }))
+        this.subs.push(this.concursoDetailService.concursantes.subscribe({
+          next: c => this.concursantes = c 
+        }))
+        this.subs.push(this.concursoDetailService.inscriptos.subscribe({
+          next: c => {
+            this.inscriptos = c
+            this.estaInscripto()
+          } 
+        }))
+        this.subs.push(this.concursoDetailService.resultadosConcurso.subscribe({
+          next: c => this.resultadosConcurso = c 
+        }))
+        
+      })
+    )
+  }
 
   descargarFotografias(){
     this.compressedPhotosService.get(this.concurso.id).subscribe(data => {

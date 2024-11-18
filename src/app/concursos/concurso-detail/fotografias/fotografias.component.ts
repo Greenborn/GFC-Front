@@ -67,7 +67,7 @@ export class FotografiasComponent implements OnInit {
   //public pages:any                = [];
   //public actual_page:number       = 1;
   //public page_count:number        = 0;
-
+  public subscriptions = []
 
   constructor(
     public concursoDetailService: ConcursoDetailService,
@@ -78,13 +78,7 @@ export class FotografiasComponent implements OnInit {
     private configService: ConfigService,
     public rolificador: RolificadorService,
     public auth: AuthService,
-  ) { 
-    this.route.queryParams.subscribe(params => {
-      this.concursoDetailService.loadContestResults({
-        page: 1, ...params
-      })
-    })
-    
+  ) {     
     this.filtrado['metric'] = {
       options: {
         valueProp: 'score',
@@ -124,47 +118,22 @@ export class FotografiasComponent implements OnInit {
   ionViewWillEnter() {
   }
 
-  async ngOnInit() {
-    if (this.rolificador.isAdmin(await this.auth.user) || this.isContestNotFin ) {
-        this.atributosBusqueda.push({ 
-        valor: 'username', 
-        valorMostrado: 'Autor',  
-        callback: (c: ContestResultExpanded, query: string) => `${c.image.profile.name} ${c.image.profile.last_name}`.match(new RegExp(`${query}`, 'i'))
-      })
-    }
-
-    this.auth.user.then(u => this.user = u);
-    
-    
-    this.concursoDetailService.concurso.subscribe(c => {
-      this.concurso = c
-    })
-    this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
-    this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs)
-
-    const s1 = this.concursoDetailService.concursantes.subscribe(
-      cs => {
-        this.concursantes = cs;
-      }
-    )
-    const s2 = this.concursoDetailService.inscriptos.subscribe(cs =>{
+  
+  subscribes(){
+    this.subscriptions.push(this.concursoDetailService.concurso.subscribe(c => { this.concurso = c }))
+    this.subscriptions.push(this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs))
+    this.subscriptions.push(this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs))
+    this.subscriptions.push(this.concursoDetailService.concursantes.subscribe(
+      cs => { this.concursantes = cs; }
+    ))
+    this.subscriptions.push(this.concursoDetailService.inscriptos.subscribe(cs =>{
       this.updatingInscriptos = true
       this.inscriptos = cs
       setTimeout(() => this.updatingInscriptos = false)
-    })
-    const s3 = this.concursoDetailService.resultadosConcurso.subscribe({
+    }))
+    this.subscriptions.push(this.concursoDetailService.resultadosConcurso.subscribe({
       next: rs => {
           this.resultadosConcurso = rs;
-          //let meta = this.contestResultService.getAllMeta();
-          //this.pages = [{number:'<'}];
-          //if (meta != undefined){
-          //  this.page_count = meta.pageCount;
-          //  for (let c=0; c < meta.pageCount; c++){
-          //    this.pages.push({number: (c+1)});
-          //  }
-          //}
-          //this.pages.push({number: '>'});
-          //this.actual_page = 1;
           
           this.resultadosConcursoOrig = [...rs];
           this.route.queryParams.subscribe(params => {
@@ -202,30 +171,40 @@ export class FotografiasComponent implements OnInit {
           // this.loading = false
         }
       }
+    ))
+    this.subscriptions.push(
+      this.route.queryParams.subscribe(params => {
+        this.concursoDetailService.loadContestResults({
+          page: 1, ...params
+        })
+      })
     )
-   
   }
 
-  /*goToPage(page_number){
-    if (page_number == '<') {
-      if (this.concursoDetailService.imagenes_page_number > 1){
-        this.concursoDetailService.imagenes_page_number = this.concursoDetailService.imagenes_page_number - 1;
-      } else { return false; }
-    } else if (page_number == '>') {
-      if ((this.concursoDetailService.imagenes_page_number + 1) <= this.page_count){
-        this.concursoDetailService.imagenes_page_number = this.concursoDetailService.imagenes_page_number + 1;
-      } else { return false; }
-    } else {
-      this.concursoDetailService.imagenes_page_number = page_number;
+  unsuscribes(){
+    for (let i=0; i < this.subscriptions.length; i++){
+      this.subscriptions[i].unsubscribe()
     }
-    this.loadPage(this.concursoDetailService.imagenes_page_number);
+    this.subscriptions = []
   }
 
-  loadPage(page:number){
-    this.route.queryParams.subscribe(params => {
-      this.concursoDetailService.loadContestResults({page:page, filters: this.filtrado});
-    })
-  }*/
+  async ngOnInit() {
+    if (this.rolificador.isAdmin(await this.auth.user) || this.isContestNotFin ) {
+        this.atributosBusqueda.push({ 
+        valor: 'username', 
+        valorMostrado: 'Autor',  
+        callback: (c: ContestResultExpanded, query: string) => `${c.image.profile.name} ${c.image.profile.last_name}`.match(new RegExp(`${query}`, 'i'))
+      })
+    }
+
+    this.auth.user.then(u => this.user = u);
+    
+    this.subscribes()
+  }
+
+  async ngOnDestroy() {
+        this.unsuscribes()
+  }
 
   getThumbUrl(obj:any, thumb_id:number = 1){
         //si no tiene miniatura porque no tiene imagen

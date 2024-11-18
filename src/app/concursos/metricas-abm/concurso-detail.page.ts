@@ -91,8 +91,12 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   
    async ngOnDestroy() {
     this.desubsc();
-
-    this.routerEventSubscription.unsubscribe();
+    try {
+      this.routerEventSubscription.unsubscribe();
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
 
   async ngOnInit() {

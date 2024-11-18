@@ -63,7 +63,6 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   subs: Subscription[] = [];
   noImg: boolean = false;
 
-  private routerEventSubscription:any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -93,8 +92,6 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   
    async ngOnDestroy() {
     this.desubsc();
-
-    this.routerEventSubscription.unsubscribe();
   }
 
   async ngOnInit() {
