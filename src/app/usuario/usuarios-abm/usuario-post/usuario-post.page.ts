@@ -116,8 +116,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         name:           new FormControl(),
         last_name:      new FormControl(),
         fotoclub_id:    new FormControl(),
-        //executive:  new FormControl('')
-        //executive_rol: new FormControl(''),
+        executive:      new FormControl(''),
+        executive_rol:  new FormControl(''),
         username:       new FormControl(),
         email:          new FormControl(),
         password:       new FormControl(),
