@@ -23,7 +23,7 @@ import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar
 import { ConcursoDetailService } from '../concurso-detail.service';
 
 import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
-import { get_all } from '../../../services/contest-results.service'
+import { get_all, resultadosConcursoGeted } from '../../../services/contest-results.service'
 
 @Component({
   selector: 'app-fotografias',
@@ -157,6 +157,9 @@ export class FotografiasComponent implements OnInit {
       this.inscriptos = cs
       setTimeout(() => this.updatingInscriptos = false)
     }))
+    this.subscriptions.push(resultadosConcursoGeted.subscribe(cs =>{
+      this.setResultadosConcurso(cs?.items)
+    }))
 
     this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
       this.concurso = c
@@ -165,12 +168,7 @@ export class FotografiasComponent implements OnInit {
         ...this.route.snapshot.params
       }
       params_['contest_id'] = this.concurso.id
-      let res_results:any = await get_all(params_)
-      if (res_results === null)
-        return null
-      else {
-        this.setResultadosConcurso(res_results?.items)
-      }
+      await get_all(params_)
     }))
   }
 
@@ -342,6 +340,7 @@ export class FotografiasComponent implements OnInit {
           icon: 'trash',
           label: 'Borrar'
         })
+
       }
 
     }
