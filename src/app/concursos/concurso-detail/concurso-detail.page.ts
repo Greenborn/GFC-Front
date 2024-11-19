@@ -32,6 +32,7 @@ import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Section } from 'src/app/models/section.model';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src/app/services/contest-results.service';
 
 // TODO: sacar el contenido extra que se repite en informacion-component
 @Component({
@@ -86,8 +87,6 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     public configService: ConfigService
   ) {
     super(alertCtrl)
-
-    this.concursoDetailService.loadContestResults()
    }
   
    async ngOnDestroy() {
@@ -161,7 +160,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       this.concursoDetailService.inscriptosJueces.subscribe({
         next: c => this.inscriptosJueces = c 
       })
-      this.concursoDetailService.resultadosConcurso.subscribe({
+      resultadosConcursoGeted.subscribe({
         next: c => this.resultadosConcurso = c 
       })
 
@@ -310,7 +309,7 @@ obtenerPx() {
         r.metric = metric
         console.log('udpated metric', r)
         // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
-        this.concursoDetailService.loadContestResults()
+        await get_all_contest_results( { "contest_id" : this.concurso.id} )
       } 
       // else {
       //   this.metrics.push(metric)
@@ -390,13 +389,13 @@ obtenerPx() {
             })
           ).subscribe(
             // console.log('posted new result', cr)
-            cr => {
+            async cr => {
               this.resultadosConcurso.push({
                 ...cr,
                 image,
                 metric
               })
-              this.concursoDetailService.loadContestResults()
+              await get_all_contest_results( { "contest_id" : this.concurso.id} )
             },
             // cr => this.contestResults.push(cr),
             async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
@@ -417,22 +416,22 @@ obtenerPx() {
           super.fetch<ContestResult>(() =>
             this.contestResultService.post(model, r_updated.id)
           ).subscribe(
-            cr => {
+            async cr => {
               console.log('updated result', cr)
               r_updated.section_id = section_id
               // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
               
-              this.concursoDetailService.loadContestResults()
+              await get_all_contest_results( { "contest_id" : this.concurso.id} )
             },
-            err => {
+            async err => {
               this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
               
-              this.concursoDetailService.loadContestResults()
+              await get_all_contest_results( { "contest_id" : this.concurso.id} )
             },
           )  
         } else {
           console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
-          this.concursoDetailService.loadContestResults()
+          await get_all_contest_results( { "contest_id" : this.concurso.id} )
         }
         // console.log('replaced image', image, 'index', i)
       }
@@ -522,9 +521,9 @@ obtenerPx() {
           text: 'Confirmar',
           handler: () => {
             super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe(
-              _ => {
+              async _ => {
                 this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-                this.concursoDetailService.loadContestResults()
+                await get_all_contest_results( { "contest_id" : this.concurso.id} )
                 super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
                   _ => {},
                   async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))

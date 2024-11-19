@@ -21,7 +21,6 @@ import { ImageService } from 'src/app/services/image.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { Observable, Subscription } from 'rxjs';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
-import { filter, map } from 'rxjs/operators';
 
 import { ConcursoDetailService } from './concurso-detail.service';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
@@ -32,6 +31,8 @@ import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Section } from 'src/app/models/section.model';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+
+import { resultadosConcursoGeted } from 'src/app/services/contest-results.service';
 
 // TODO: sacar el contenido extra que se repite en informacion-component
 @Component({
@@ -166,7 +167,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       this.concursoDetailService.inscriptosJueces.subscribe({
         next: c => this.inscriptosJueces = c 
       })
-      this.concursoDetailService.resultadosConcurso.subscribe({
+      resultadosConcursoGeted.subscribe({
         next: c => this.resultadosConcurso = c 
       })
 
@@ -187,12 +188,8 @@ desubsc() {
 
 obtenerPx() {
   if (window.innerWidth > 767) {
-    // console.log(colCard.clientHeight)
-    // return window.innerWidth/6;
     return 15;
   } else {
-    // return colCard.el.clientWidth/2;
-    // return window.innerWidth/2
     return 25;
   }
 }
@@ -226,39 +223,7 @@ obtenerPx() {
     this.popover.onDidDismiss().then(_ => this.popover = undefined)
   }
 
-  // async mostrarAcciones(ev: any, r: ContestResultExpanded) {
   async mostrarAcciones(options: any) {
-    // const i = r.image
-    // this.popover = await this.popoverCtrl.create({
-    //   component: MenuAccionesComponent, //componente a mostrar
-    //   componentProps: {
-    //     acciones: [
-    //       {
-    //         accion: (params: []) => this.reviewImage(r),
-    //         params: [],
-    //         icon: 'star-outline',
-    //         label: 'Puntuar'
-    //       },
-    //       {
-    //         accion: (params: []) => this.postImage(i),
-    //         params: [],
-    //         icon: 'create',
-    //         label: 'Editar'
-    //       },
-    //       {
-    //         accion: (params: number[]) => this.deleteImage(r),
-    //         params: [],
-    //         icon: 'trash',
-    //         label: 'Borrar'
-    //       }
-    //     ]
-    //   },
-    //   cssClass: 'auto-width',
-    //   event: ev,
-    //   translucent: true,
-    //   // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
-    // });
-
     this.popover = await this.popoverCtrl.create(options)
     await this.popover.present();
     if (this.popover != undefined)

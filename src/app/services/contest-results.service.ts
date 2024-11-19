@@ -1,10 +1,18 @@
 
 import axios from "axios"
+import { BehaviorSubject } from 'rxjs';
 
-import { CONFIG } from '../../../services/config/config.service';
+import { CONFIG } from './config/config.service';
 
-export const get_all = async (attr) => {
+let result_data:any = {}
+
+export const resultadosConcursoGeted = new BehaviorSubject<any[]>([]);
+
+export const get_all = async (attr, reload = true) => {
     return new Promise(async (resolve, reject) => {
+        if (!reload)
+            return resolve(result_data)
+
         try {
             if (!attr?.contest_id)
                 return resolve(null)
@@ -22,7 +30,9 @@ export const get_all = async (attr) => {
             })
             console.log('attr_', attr.contest_id)
             if (res?.data){
-                return resolve(res.data)
+                result_data = res.data
+                resultadosConcursoGeted.next(result_data)
+                return resolve(result_data)
             } else 
                 return resolve(null)
         } catch (error) {

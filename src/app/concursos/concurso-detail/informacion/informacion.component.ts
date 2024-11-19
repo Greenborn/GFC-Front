@@ -28,6 +28,7 @@ import { ImageReviewPage } from '../image-review/image-review.page';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { CompressedPhotosService } from 'src/app/services/compressed-photos.service'
 
+import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src/app/services/contest-results.service'
 @Component({
   selector: 'app-informacion',
   templateUrl: './informacion.component.html',
@@ -87,9 +88,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   }
 
   ngOnInit() { 
-    this.concursoDetailService.loadContestResults()
     this.subsc();
-    
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
 }
 
@@ -122,7 +121,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
             this.estaInscripto()
           } 
         }))
-        this.subs.push(this.concursoDetailService.resultadosConcurso.subscribe({
+        this.subs.push(resultadosConcursoGeted.subscribe({
           next: c => this.resultadosConcurso = c 
         }))
         
@@ -262,7 +261,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
           console.log('udpating metric', r, metric)
           r.metric = metric
           console.log('udpated metric', r);
-          this.concursoDetailService.loadContestResults()
+          await get_all_contest_results( { "contest_id" : this.concurso.id} )
         } 
       }
     }
@@ -350,9 +349,9 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
             text: 'Confirmar',
             handler: () => {
               super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe(
-                _ => {
+                async _ => {
                   this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-                  this.concursoDetailService.loadContestResults()
+                  await get_all_contest_results( { "contest_id" : this.concurso.id} )
                   super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
                     _ => {},
                     async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))

@@ -9,12 +9,6 @@
   
           <app-search-bar [(data)]="resultadosConcurso" [atributosObj]="atributosBusqueda"></app-search-bar>
 
-          <!--<app-search-select *ngIf="!rolificador.esConcursante(u) || !isContestNotFin"
-            title="Premios"
-            [optionsData]="puntajes"
-            [optionsProps]="filtrado?.metric?.options">
-          </app-search-select>-->
-
         </ion-col>
       </ion-col>
   
@@ -38,15 +32,6 @@
               <ion-col size="10" size-sm="11">
                 
                 <ion-row class="ion-justify-content-end ion-align-items-end">
-  
-                  <!--<app-search-select *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || !isContestNotFin"
-                    title="Concursante"
-                    [optionsProps]="filtrado.perfil.options"
-                    [optionsData]="inscriptosProfiles"
-                    [updating]="updatingInscriptos"
-                    [emptyMessage]="inscriptosEmptyMessage"
-                    interface="popover">
-                  </app-search-select>-->
                   
                   <ion-button *ngIf="categoriaSeleccionada != null" (click)="set_categoria_null()" fill="clear" class="">
                     <ion-icon name="close-outline"></ion-icon>
@@ -204,16 +189,6 @@
                     </ion-list>
                 </ion-col>
             </ion-row>
-
-            <!--<ion-row>
-              <ion-col>
-                <ion-row class="ion-justify-content-center">
-                  <ion-col *ngFor="let page of pages" size="auto" class="pagination-element" [ngClass]="{'pagination-element-active':(concursoDetailService.imagenes_page_number==page.number)}">
-                    <span (click)="goToPage(page.number)">{{page.number}}</span>
-                  </ion-col>
-                </ion-row>
-              </ion-col>
-            </ion-row>-->
 
             <ng-template #spinner>
               <ion-row class="ion-justify-content-center">

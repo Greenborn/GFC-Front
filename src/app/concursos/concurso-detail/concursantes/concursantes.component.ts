@@ -15,9 +15,10 @@ import { RolificadorService } from 'src/app/modules/auth/services/rolificador.se
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestService } from 'src/app/services/contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
-import { MenuAccionesComponent, MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
+import { MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
+import { resultadosConcursoGeted } from 'src/app/services/contest-results.service'
 
 @Component({
   selector: 'app-concursantes',
@@ -104,7 +105,7 @@ export class ConcursantesComponent implements OnInit {
       this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
     )
     this.subscriptions.push(
-      this.concursoDetailService.resultadosConcurso.subscribe(rs => 
+      resultadosConcursoGeted.subscribe(rs => 
         this.resultadosConcurso = rs 
       )
     )

@@ -67,7 +67,6 @@ export class ConcursoDetailService implements OnInit {
     this.loadJueces()
     this.loadProfileContests()
     this.loadProfileContestsJueces()
-    //this.loadContestResults()
   }
 
   ngOnInit() {
@@ -156,7 +155,7 @@ export class ConcursoDetailService implements OnInit {
       })
     })
   }
-  async loadContestResults(attr:any = {}) {
+  /*async loadContestResults(attr:any = {}) {
    
 
     console.log(attr)
@@ -174,7 +173,7 @@ export class ConcursoDetailService implements OnInit {
       })
 
     })
-  }
+  }*/
   imagenes_page_number:number = 1;
 
   async inscribirConcursante(category_id: number = undefined, ) {

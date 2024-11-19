@@ -23,7 +23,7 @@ import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar
 import { ConcursoDetailService } from '../concurso-detail.service';
 
 import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
-import { get_all } from './contest-results.service'
+import { get_all } from '../../../services/contest-results.service'
 
 @Component({
   selector: 'app-fotografias',
@@ -69,7 +69,6 @@ export class FotografiasComponent implements OnInit {
     public contestService: ContestService,
     public UIUtilsService: UiUtilsService,
     private route: ActivatedRoute,
-    private router: Router,
     private configService: ConfigService,
     public rolificador: RolificadorService,
     public auth: AuthService,
@@ -107,10 +106,6 @@ export class FotografiasComponent implements OnInit {
 
   isLogedIn() { //agregado para seguir manteniendo el servicio auth como private
     return this.auth.loggedIn;
-  }
-
-
-  ionViewWillEnter() {
   }
 
   setResultadosConcurso(rs) {
