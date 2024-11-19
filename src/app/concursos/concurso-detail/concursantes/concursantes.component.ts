@@ -137,8 +137,8 @@ export class ConcursantesComponent implements OnInit {
   }
 
   getFotosCargadas(profile_id: number) {
-    if (this.resultadosConcurso?.items == undefined) return
-    return this.resultadosConcurso['items'].filter(cr => cr.image.profile_id == profile_id).length
+    if (this.resultadosConcurso == undefined) return
+    return this.resultadosConcurso.filter(cr => cr.image.profile_id == profile_id).length
   }
 
   getFotoclubName(profile_id: number): string {

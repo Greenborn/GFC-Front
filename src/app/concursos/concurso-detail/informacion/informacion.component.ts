@@ -426,5 +426,9 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     // document.execCommand('copy', true)
   
 
+    get isContestNotFin() {
+      let finalizado = (new Date()).getTime() >= (new Date(this.concurso.end_date)).getTime()
+      return !(finalizado)
+    }
   }
 

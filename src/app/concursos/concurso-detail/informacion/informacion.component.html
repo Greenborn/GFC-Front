@@ -75,9 +75,10 @@
 
         <ion-row class="w-100 ion-justify-content-end">
           <div>
-            <ion-button  *ngIf="!isInscripto; else btnUnsuscribe" size="small" (click)="inscribirConcursante()"
+            <ion-button  *ngIf="isContestNotFin && !isInscripto" size="small" (click)="inscribirConcursante()"
               >Inscribirme!</ion-button>
-
+            <ion-button  *ngIf="isContestNotFin && isInscripto" color="danger" size="small" (click)="desinscribirme()"
+              >Desinscribirme!</ion-button>
             <ion-button  *ngIf="rolificador.isAdmin(u)" size="small" (click)="descargarFotografias()"
               >Descargar Fotografías</ion-button>
 
@@ -90,12 +91,6 @@
           
         </ion-row>
       </ion-card-content>
-
-      <ng-template #btnUnsuscribe >
-          <ion-button color="danger" size="small" 
-          (click)="desinscribirme()"
-            >Desinscribirme</ion-button>
-      </ng-template> 
 
     </ion-card>
     
