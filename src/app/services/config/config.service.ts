@@ -4,7 +4,7 @@ export const CONFIG = {
   apiBaseUrl: "https://gfc.api.greenborn.com.ar/",//this.local ? "http://localhost:8888/" : "https://gfc.api.greenborn.com.ar/",
   loginAction:"login",
   appName: "app_gfc_-",
-  version: "1.1.25"
+  version: "1.1.26"
 }
 
 @Injectable({
