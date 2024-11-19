@@ -43,7 +43,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   // profiles: Profile[] = [];
   value = { lower: 1000, upper: 1500 };
   isInscripto: boolean;
-  resultadosConcurso: ContestResultExpanded[] = [];
+  resultadosConcurso: any = [];
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
@@ -122,7 +122,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
           } 
         }))
         this.subs.push(resultadosConcursoGeted.subscribe({
-          next: c => this.resultadosConcurso = c 
+          next: c => this.resultadosConcurso = c.items
         }))
         
       })

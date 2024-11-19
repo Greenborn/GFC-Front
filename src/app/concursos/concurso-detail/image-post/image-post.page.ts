@@ -34,7 +34,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
 
   @Input() concurso: string;
   @Input() section_max: number;
-  @Input() resultados: ContestResultExpanded[];
+  @Input() resultados: any;
   @Input() concurso_id: number;
   @Input() modalController: ModalController;
   @Input() image: GFC_Image = this.imageService.template;
@@ -148,8 +148,6 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
   
   dismiss(image: GFC_Image = undefined, section_id: number) {
-    // using the injected ModalController this page
-    // can "dismiss" itself and optionally pass back data
     this.modalController.dismiss({
       image,
       section_id

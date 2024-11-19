@@ -55,7 +55,7 @@ export class ConcursoDetailService implements OnInit {
     this.inscriptosJueces = new BehaviorSubject<ProfileContestExpanded[]>([]);
     this.categoriasInscriptas = new BehaviorSubject<ContestCategoryExpanded[]>([]);
     this.seccionesInscriptas = new BehaviorSubject<ContestSectionExpanded[]>([]);
-    this.resultadosConcurso = new BehaviorSubject<ContestResultExpanded[]>([]);
+    this.resultadosConcurso = new BehaviorSubject<any>([]);
     this.desinscribir = new EventEmitter<ProfileContestExpanded>();
     this.postImage = new EventEmitter<ImagePostParams>();
     this.reviewImage = new EventEmitter<ContestResultExpanded>();

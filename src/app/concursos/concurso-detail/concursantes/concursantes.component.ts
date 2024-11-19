@@ -106,7 +106,7 @@ export class ConcursantesComponent implements OnInit {
     )
     this.subscriptions.push(
       resultadosConcursoGeted.subscribe(rs => {
-        this.resultadosConcurso = rs 
+        this.resultadosConcurso = rs.items
       })
     )
   }

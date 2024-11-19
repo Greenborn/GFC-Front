@@ -51,7 +51,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   concurso: Contest = this.contestService.template;
   value = { lower: 1000, upper: 1500 };
   
-  resultadosConcurso: ContestResultExpanded[] = [];
+  resultadosConcurso: any = [];
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   inscriptosJueces: ProfileContestExpanded[] = [];
@@ -162,7 +162,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
         next: c => this.inscriptosJueces = c 
       })
       resultadosConcursoGeted.subscribe({
-        next: c => this.resultadosConcurso = c 
+        next: c => this.resultadosConcurso = c.items 
       })
 
       await this.concursoDetailService.loadContest(id)

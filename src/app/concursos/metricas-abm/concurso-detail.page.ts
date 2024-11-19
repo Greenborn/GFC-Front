@@ -51,7 +51,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   concurso: Contest = this.contestService.template;
   value = { lower: 1000, upper: 1500 };
   
-  resultadosConcurso: ContestResultExpanded[] = [];
+  resultadosConcurso: any = [];
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   inscriptosJueces: ProfileContestExpanded[] = [];
@@ -168,7 +168,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
         next: c => this.inscriptosJueces = c 
       })
       resultadosConcursoGeted.subscribe({
-        next: c => this.resultadosConcurso = c 
+        next: c => this.resultadosConcurso = c.items
       })
 
       await this.concursoDetailService.loadContest(id)
@@ -427,24 +427,20 @@ obtenerPx() {
             cr => {
               console.log('updated result', cr)
               r_updated.section_id = section_id
-              // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
               
               this.concursoDetailService.loadContestResults()
             },
             err => {
               this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
-              // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
               
               this.concursoDetailService.loadContestResults()
             },
           )  
         } else {
           console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
-          // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
           
               this.concursoDetailService.loadContestResults()
         }
-        // console.log('replaced image', image, 'index', i)
       }
     }
   }
@@ -536,16 +532,13 @@ obtenerPx() {
                 // this.alertCtrl.dismiss()
                 // this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
                 this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-                // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
                 this.concursoDetailService.loadContestResults()
                 super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
                   _ => {},
-                  // _ => this.images.splice(this.images.findIndex(i => i.id == image_id), 1),
                   async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
                 )
                 super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe(
                   _ => {},
-                  // _ => this.metrics.splice(this.metrics.findIndex(i => i.id == metric_id), 1),
                   async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
                 )
 

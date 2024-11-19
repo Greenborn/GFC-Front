@@ -6,7 +6,7 @@ import { CONFIG } from './config/config.service';
 
 let result_data:any = null
 
-export const resultadosConcursoGeted = new BehaviorSubject<any[]>([]);
+export const resultadosConcursoGeted = new BehaviorSubject<any>([]);
 
 export const get_all = async (attr, reload = true) => {
     return new Promise(async (resolve, reject) => {
