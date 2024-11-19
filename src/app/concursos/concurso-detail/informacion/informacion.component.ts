@@ -28,6 +28,7 @@ import { ImageReviewPage } from '../image-review/image-review.page';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { CompressedPhotosService } from 'src/app/services/compressed-photos.service'
 
+import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src/app/services/contest-results.service'
 @Component({
   selector: 'app-informacion',
   templateUrl: './informacion.component.html',
@@ -42,7 +43,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   // profiles: Profile[] = [];
   value = { lower: 1000, upper: 1500 };
   isInscripto: boolean;
-  resultadosConcurso: ContestResultExpanded[] = [];
+  resultadosConcurso: any = [];
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
@@ -87,45 +88,46 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   }
 
   ngOnInit() { 
-      
     this.subsc();
-    this.activatedRoute.paramMap.subscribe(async paramMap => {
-      
-      const id = parseInt(paramMap.get('id'))
-      console.log("id algo: ", id)
-
-      this.concursoDetailService.concurso.subscribe({
-        next: c => {
-          this.concurso = c
-          this.noImg = false
-        } 
-      })
-      this.concursoDetailService.categoriasInscriptas.subscribe({
-        next: c => this.categoriasInscriptas = c 
-      })
-      this.concursoDetailService.seccionesInscriptas.subscribe({
-        next: c => this.seccionesInscriptas = c 
-      })
-      this.concursoDetailService.concursantes.subscribe({
-        next: c => this.concursantes = c 
-      })
-      this.concursoDetailService.inscriptos.subscribe({
-        next: c => {
-          this.inscriptos = c
-          this.estaInscripto()
-        } 
-      })
-      this.concursoDetailService.resultadosConcurso.subscribe({
-        next: c => this.resultadosConcurso = c 
-      })
-      
-    })
-    
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
 }
 
 
-  subsc(){ }
+  subsc(){
+    this.subs.push(
+      this.activatedRoute.paramMap.subscribe(async paramMap => {
+      
+        const id = parseInt(paramMap.get('id'))
+        console.log("id algo: ", id)
+  
+        this.subs.push(this.concursoDetailService.concurso.subscribe({
+          next: c => {
+            this.concurso = c
+            this.noImg = false
+          } 
+        }))
+        this.subs.push(this.concursoDetailService.categoriasInscriptas.subscribe({
+          next: c => this.categoriasInscriptas = c 
+        }))
+        this.subs.push(this.concursoDetailService.seccionesInscriptas.subscribe({
+          next: c => this.seccionesInscriptas = c 
+        }))
+        this.subs.push(this.concursoDetailService.concursantes.subscribe({
+          next: c => this.concursantes = c 
+        }))
+        this.subs.push(this.concursoDetailService.inscriptos.subscribe({
+          next: c => {
+            this.inscriptos = c
+            this.estaInscripto()
+          } 
+        }))
+        this.subs.push(resultadosConcursoGeted.subscribe({
+          next: c => this.resultadosConcurso = c.items
+        }))
+        
+      })
+    )
+  }
 
   descargarFotografias(){
     this.compressedPhotosService.get(this.concurso.id).subscribe(data => {
@@ -259,7 +261,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
           console.log('udpating metric', r, metric)
           r.metric = metric
           console.log('udpated metric', r);
-          this.concursoDetailService.loadContestResults()
+          await get_all_contest_results( { "contest_id" : this.concurso.id} )
         } 
       }
     }
@@ -347,9 +349,9 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
             text: 'Confirmar',
             handler: () => {
               super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe(
-                _ => {
+                async _ => {
                   this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-                  this.concursoDetailService.loadContestResults()
+                  await get_all_contest_results( { "contest_id" : this.concurso.id} )
                   super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
                     _ => {},
                     async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))

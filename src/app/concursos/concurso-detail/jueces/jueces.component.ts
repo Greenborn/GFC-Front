@@ -49,22 +49,45 @@ export class JuecesComponent implements OnInit {
     if (this.concurso.id == undefined) {
       await this.UIUtilsService.presentLoading()
     }
-    this.concursoDetailService.jueces.subscribe(cs => this.jueces = cs)
-    this.concursoDetailService.inscriptosJueces.subscribe(is => {
-      this.inscriptos = is
-      this.UIUtilsService.dismissLoading()
-      setTimeout(() => {
-
-      }, 500)
-      console.log("jueces ionscriptos: ", this.inscriptos);
-    })
+    
     this.auth.user.then(u => this.user = u)
-    this.concursoDetailService.concurso.subscribe({
-      next: c => {
-        this.concurso = c
-      } 
-    })
+    this.subsc() 
   }
+
+  public subs = []
+  subsc() {
+    this.subs.push(this.concursoDetailService.jueces.subscribe(cs => this.jueces = cs))
+    this.subs.push(this.concursoDetailService.inscriptosJueces.subscribe(cs => this.inscriptos = cs))
+    this.subs.push(
+      this.concursoDetailService.inscriptosJueces.subscribe(is => {
+        this.inscriptos = is
+        this.UIUtilsService.dismissLoading()
+        setTimeout(() => {
+  
+        }, 500)
+        console.log("jueces ionscriptos: ", this.inscriptos);
+      })
+    )
+    this.subs.push(
+      this.concursoDetailService.concurso.subscribe({
+        next: c => {
+          this.concurso = c
+        } 
+      })
+    )
+  }
+
+  unsuscribes(){
+    for (let i=0; i < this.subs.length; i++){
+      this.subs[i].unsubscribe()
+    }
+    this.subs = []
+  }
+
+  ngOnDestroy() {
+    this.unsuscribes()
+  }
+
 
   inscribirJuez() {
     this.concursoDetailService.inscribirJuez()

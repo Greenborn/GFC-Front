@@ -15,9 +15,10 @@ import { RolificadorService } from 'src/app/modules/auth/services/rolificador.se
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestService } from 'src/app/services/contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
-import { MenuAccionesComponent, MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
+import { MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
+import { resultadosConcursoGeted } from 'src/app/services/contest-results.service'
 
 @Component({
   selector: 'app-concursantes',
@@ -32,7 +33,7 @@ export class ConcursantesComponent implements OnInit {
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
-  resultadosConcurso: ContestResultExpanded[] = [];
+  resultadosConcurso: any = [];
   
   mostrarFiltro: boolean = false;
   public categoriaSeleccionada: Category = null;
@@ -75,25 +76,50 @@ export class ConcursantesComponent implements OnInit {
       (this.user != undefined ? (this.rolificador.esDelegado(this.user) || (this.rolificador.isAdmin(this.user)) ): false)
   }
 
+  
   async ngOnInit() {
     if (this.concurso.id == undefined) {
       await this.UIUtilsService.presentLoading()
     }
-    this.concursoDetailService.concursantes.subscribe(cs => this.concursantes = cs)
-    this.concursoDetailService.inscriptos.subscribe(is => {
-      this.inscriptos = is
-      this.UIUtilsService.dismissLoading()
-      setTimeout(() => {
-          
-      }, 500)
-    })
-    this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
-    this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
-    this.concursoDetailService.resultadosConcurso.subscribe(rs => 
-      this.resultadosConcurso = rs 
-    )
     this.auth.user.then(u => this.user = u)
-    
+
+    this.subscribes()
+  }
+
+  public subscriptions = []  
+  subscribes(){
+    this.subscriptions.push(this.concursoDetailService.concursantes.subscribe(cs => this.concursantes = cs))
+    this.subscriptions.push(
+      this.concursoDetailService.inscriptos.subscribe(is => {
+        this.inscriptos = is
+        this.UIUtilsService.dismissLoading()
+        setTimeout(() => {
+            
+        }, 500)
+      })
+    )
+    this.subscriptions.push(
+      this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
+    )
+    this.subscriptions.push(
+      this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
+    )
+    this.subscriptions.push(
+      resultadosConcursoGeted.subscribe(rs => {
+        this.resultadosConcurso = rs.items
+      })
+    )
+  }
+
+  unsuscribes(){
+    for (let i=0; i < this.subscriptions.length; i++){
+      this.subscriptions[i].unsubscribe()
+    }
+    this.subscriptions = []
+  }
+
+  ngOnDestroy() {
+    this.unsuscribes()
   }
 
   get inscriptosFiltrados() {
@@ -111,7 +137,8 @@ export class ConcursantesComponent implements OnInit {
   }
 
   getFotosCargadas(profile_id: number) {
-    return this.resultadosConcurso.filter(cr => cr.image.profile_id == profile_id).length
+    if (this.resultadosConcurso?.items == undefined) return
+    return this.resultadosConcurso['items'].filter(cr => cr.image.profile_id == profile_id).length
   }
 
   getFotoclubName(profile_id: number): string {

@@ -36,14 +36,11 @@
                 <ion-tab-button tab="concursantes" *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u))">
                   <ion-icon name="people-outline"></ion-icon>
                   <ion-label>Concursantes</ion-label>
-                  <!-- <ion-badge>{{ loading ? '' : inscriptos.length }}</ion-badge> -->
-                  <!-- <ion-badge>{{concurso.countProfileContests}}</ion-badge> -->
                 </ion-tab-button>
         
-                <ion-tab-button tab="fotografias">
+                <ion-tab-button tab="fotografias" (click)="goToFotografias()">
                   <ion-icon name="images-outline"></ion-icon>
                   <ion-label>Fotografias</ion-label>
-                  <!-- <ion-badge>{{concurso.countContestResults}}</ion-badge> -->
                 </ion-tab-button>
 
               </ion-tab-bar>

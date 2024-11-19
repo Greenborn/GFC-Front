@@ -1,6 +1,6 @@
 {
   "name": "grupo_fotografico_centro",
-  "version": "1.1.24",
+  "version": "1.1.25",
   "author": "Greenborn",
   "homepage": "https://greenborn.com.ar",
   "scripts": {
@@ -24,6 +24,7 @@
     "@capacitor/keyboard": "1.0.3",
     "@capacitor/status-bar": "1.0.3",
     "@ionic/angular": "^6.5.1-dev.11674603407.1bf3d493",
+    "axios": "^1.7.7",
     "ionic-selectable": "^4.8.0",
     "nth-check": "^2.0.1",
     "tslib": "^2.2.0",
