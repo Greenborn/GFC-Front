@@ -6,10 +6,13 @@ import { CONFIG } from '../../../services/config/config.service';
 export const get_all = async (attr) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if (!attr?.contest_id)
+                return resolve(null)
+
             let params:string = '';
-            params +=   'expand=profile,profile.user,profile.fotoclub,image.profile,image.thumbnail'
-            params +=   '&filter[contest_id]='+attr.contest_id
-            params +=   attr?.page ? '&page='+attr.page : ''
+            params +=  'expand=profile,profile.user,profile.fotoclub,image.profile,image.thumbnail'
+            params +=  '&filter[contest_id]='+attr.contest_id
+            params +=  (attr?.page) ? '&page='+attr.page : ''
             params +=  (attr?.concursante_id) ? ('&filter[profile_id]=' + attr.concursante_id) : ''
             let res = await axios.get(CONFIG.apiBaseUrl+'contest-result?'+params, {
                 headers: {
