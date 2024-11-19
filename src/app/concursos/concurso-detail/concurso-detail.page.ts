@@ -140,8 +140,9 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       const id = parseInt(paramMap.get('id'))
       this.concursoDetailService.imagenes_page_number = 1;
       this.concursoDetailService.concurso.subscribe({
-        next: c => {
+        next: async c => {
           this.concurso = c
+          await get_all_contest_results( { "contest_id" : this.concurso.id}, false )
           this.noImg = false
         } 
       })
