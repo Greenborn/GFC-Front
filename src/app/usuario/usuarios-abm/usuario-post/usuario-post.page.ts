@@ -68,15 +68,11 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     public configService: ConfigService,
     private UIUtilsService: UiUtilsService,
     private formBuilder: FormBuilder,
-    private createUserService: CreateUserService,
+    private createUserService: CreateUserService
   ) { 
     super(alertCtrl)
   }
 
-  // userIsAdmin(){ //agregado para evitar error de que auth no es publico
-  //   // return this.auth.isAdmin();
-  //   return this.user == undefined ? false : this.user.role_id == 1;
-  // }
 
   isLogged():boolean{
     return this.auth.loggedIn
