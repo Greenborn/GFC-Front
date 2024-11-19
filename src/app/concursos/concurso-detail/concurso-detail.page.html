@@ -38,7 +38,7 @@
                   <ion-label>Concursantes</ion-label>
                 </ion-tab-button>
         
-                <ion-tab-button tab="fotografias" [routerLink]="['../',concurso.id, '/fotografias']">
+                <ion-tab-button tab="fotografias" (click)="goToFotografias()">
                   <ion-icon name="images-outline"></ion-icon>
                   <ion-label>Fotografias</ion-label>
                 </ion-tab-button>

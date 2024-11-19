@@ -96,37 +96,6 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     })
     return aux
   }
-    // @ViewChild('imageContest')
-  // imageContest: ElementRef;
-
-  // ngAfterViewInit() {
-  //   console.log(this.imageContest.nativeElement.offsetWidth);
-  // }
-
-  // obtenerPx(){
-  //   let elem = document.querySelector('#colCard').getBoundingClientRect();
-  //   if (window.innerWidth > 767) {
-  //     return elem.height;
-  //   } else {
-  //     return elem.width/2;
-  //   }
-  // }
-
-  // obtenerPx(colCard){
-  //   // console.log(colCard)
-  //   if (window.innerWidth > 767) {
-  //     // console.log(colCard.clientHeight)
-  //     // console.log(colCard)
-  //     // return colCard.el.getBoundingClientRect().height;
-  //     return '100%';
-  //     // return colCard.el.clientHeight;
-  //   } else {
-  //     // console.log('mobile')
-  //     // return colCard.el.clientWidth/2;
-  //     return window.innerWidth/2 + ' px'
-  //     // return window.innerWidth/2
-  //   }
-  // }
 
   ngOnInit() {}
 

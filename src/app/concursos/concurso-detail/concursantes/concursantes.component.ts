@@ -33,7 +33,7 @@ export class ConcursantesComponent implements OnInit {
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
-  resultadosConcurso: ContestResultExpanded[] = [];
+  resultadosConcurso: any = [];
   
   mostrarFiltro: boolean = false;
   public categoriaSeleccionada: Category = null;
@@ -105,9 +105,9 @@ export class ConcursantesComponent implements OnInit {
       this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
     )
     this.subscriptions.push(
-      resultadosConcursoGeted.subscribe(rs => 
+      resultadosConcursoGeted.subscribe(rs => {
         this.resultadosConcurso = rs 
-      )
+      })
     )
   }
 
@@ -137,7 +137,8 @@ export class ConcursantesComponent implements OnInit {
   }
 
   getFotosCargadas(profile_id: number) {
-    return this.resultadosConcurso.filter(cr => cr.image.profile_id == profile_id).length
+    if (this.resultadosConcurso?.items == undefined) return
+    return this.resultadosConcurso['items'].filter(cr => cr.image.profile_id == profile_id).length
   }
 
   getFotoclubName(profile_id: number): string {

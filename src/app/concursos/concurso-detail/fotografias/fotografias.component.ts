@@ -147,6 +147,17 @@ export class FotografiasComponent implements OnInit {
   }
 
   subscribes() {
+    this.subscriptions.push(this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs))
+    this.subscriptions.push(this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs))
+    this.subscriptions.push(this.concursoDetailService.concursantes.subscribe(
+      cs => { this.concursantes = cs; }
+    ))
+    this.subscriptions.push(this.concursoDetailService.inscriptos.subscribe(cs =>{
+      this.updatingInscriptos = true
+      this.inscriptos = cs
+      setTimeout(() => this.updatingInscriptos = false)
+    }))
+
     this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
       this.concurso = c
       console.log('route', this.route.snapshot.params)

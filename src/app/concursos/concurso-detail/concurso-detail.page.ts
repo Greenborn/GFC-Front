@@ -169,6 +169,9 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     });
   }
   
+  goToFotografias(){
+    this.router.navigate(['/concursos', this.concurso.id, 'fotografias']);
+  }
 
 desubsc() {
     for (const s of this.subs) {
