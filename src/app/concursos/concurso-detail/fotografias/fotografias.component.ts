@@ -23,6 +23,7 @@ import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar
 import { ConcursoDetailService } from '../concurso-detail.service';
 
 import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
+import { get_all } from './contest-results.service'
 
 @Component({
   selector: 'app-fotografias',
@@ -45,14 +46,12 @@ export class FotografiasComponent implements OnInit {
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { 
       valor: 'title', 
-      valorMostrado: 'Título', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())      
+      valorMostrado: 'Título',     
       callback: (c: ContestResultExpanded, query: string) => c.image.title.match(new RegExp(`${query}`, 'i'))
     },
     { 
       valor: 'code', 
       valorMostrado: 'Código', 
-      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase()) 
       callback: (c: ContestResultExpanded, query: string) => c.image.code.match(new RegExp(`${query}`, 'i'))
     },
   ];
@@ -64,9 +63,6 @@ export class FotografiasComponent implements OnInit {
   public updatingInscriptos: boolean = false;
   mostrarFiltro: boolean = false;
 
-  //public pages:any                = [];
-  //public actual_page:number       = 1;
-  //public page_count:number        = 0;
   public subscriptions = []
 
   constructor(
@@ -120,8 +116,8 @@ export class FotografiasComponent implements OnInit {
 
   
   subscribes(){
-    this.subscriptions.push(this.concursoDetailService.concurso.subscribe(c => { this.concurso = c }))
-    this.subscriptions.push(this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs))
+    
+    /*this.subscriptions.push(this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs))
     this.subscriptions.push(this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs))
     this.subscriptions.push(this.concursoDetailService.concursantes.subscribe(
       cs => { this.concursantes = cs; }
@@ -178,7 +174,28 @@ export class FotografiasComponent implements OnInit {
           page: 1, ...params
         })
       })
-    )
+    )*/
+
+    //get_all
+    this.subscriptions.push(this.concursoDetailService.concurso.subscribe(c => { 
+      this.concurso = c 
+
+      this.subscriptions.push(
+        this.route.queryParams.subscribe(async params => {
+          let params_:any = {
+            ...params
+          }
+          params_['contest_id'] = this.concurso.id
+          let res_results = await get_all(params_)
+          if (res_results === null)
+              return null
+          else {
+            console.log('resultados', res_results)
+          }
+        })
+      )
+    }))
+    
   }
 
   unsuscribes(){
@@ -296,8 +313,8 @@ export class FotografiasComponent implements OnInit {
   async set_categoria_null(){
     return;
   }
-  //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
 
+  //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
   can_delete(r:any){console.log(r)
     const ES_MIA = r['image'].profile_id == this.user?.profile_id
     return ES_MIA && this.concurso.active

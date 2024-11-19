@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
 
+export const CONFIG = {
+  apiBaseUrl: "https://gfc.prod-api.greenborn.com.ar/",//this.local ? "http://localhost:8888/" : "https://gfc.api.greenborn.com.ar/",
+  loginAction:"login",
+  appName: "app_gfc_prod-",
+  version: "1.1.25"
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,12 +17,7 @@ export class ConfigService {
   constructor() { }
 
   get data() {
-    return {
-      apiBaseUrl: "https://gfc.prod-api.greenborn.com.ar/",//this.local ? "http://localhost:8888/" : "https://gfc.api.greenborn.com.ar/",
-      loginAction:"login",
-      appName: "app_gfc_prod-",
-      version: "1.1.25"
-    };
+    return CONFIG;
   }
 
   get loginUrl() { 
