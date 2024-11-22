@@ -57,7 +57,7 @@
                             formControlName="dni" name="dni" [(ngModel)]="profile.dni" required></ion-input>
                     </ion-item>
 
-                    <ion-item *ngIf="(usuario.role_id == 3 || usuario.role_id == 2) && !updatingSelect; else spinner" class="expand-full">
+                    <ion-item  class="expand-full">
                         <ion-label [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación/Institución</ion-label>
                             <ion-select
                             #sFotoclub  okText="Aceptar" cancelText="Cancelar"
@@ -78,7 +78,7 @@
                         </ion-item>
 
                         <ion-item
-                            *ngIf="profile.executive == true" 
+                            *ngIf="profileExecutive()" 
                             class="expand-full">
                                 <ion-label position="floating">Rol en la comisión</ion-label>
                                 <ion-input

@@ -112,7 +112,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         name:           new FormControl(),
         last_name:      new FormControl(),
         fotoclub_id:    new FormControl(),
-        executive:      new FormControl(''),
+        executive:      new FormControl(false),
         executive_rol:  new FormControl(''),
         username:       new FormControl(),
         email:          new FormControl(),
@@ -195,12 +195,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   ionViewWillEnter() {
     if(this.isLogged()){
 
-      // super.fetch<User[]>(() => this.userService.getAll()).subscribe(r => this.users = r)
       this.auth.user.then(u => {
         this.userLogged = u
         if (this.isPost) {
-          // this.updatingSelect = true
-          // console.log('si')
+
           this.usuario.role_id = 3 // los no admin cargan delegados (select rol desactivado)
           if (u.role_id != 1) {
             this.profile.fotoclub_id = u.profile.fotoclub_id
@@ -208,10 +206,14 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           } else {
             this.profile.fotoclub_id = 0;
           }
-          // setTimeout(() => this.updatingSelect = false, 420)
+        
         }
       })
     }
+  }
+
+  profileExecutive(){
+    return Boolean(this.profile.executive) == true
   }
 
   datosCargados() {
@@ -273,26 +275,21 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       let pm: any = {
         name: f.value.name, 
         last_name: f.value.last_name, 
-        executive: f.value.executive == undefined || f.value.executive == null ? false : f.value.executive,
+        executive: f.value.executive == undefined || f.value.executive == null ? false : Boolean(f.value.executive),
         executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
-        fotoclub_id: f.value.fotoclub_id
+        fotoclub_id: this.profile.fotoclub_id,
       }
       
       if ((this.usuario.role_id == 3 || this.usuario.role_id == 2 ) && !this.selectFotoclub.value == undefined){
         pm = {
           name: f.value.name, 
           last_name: f.value.last_name, 
-          executive: f.value.executive == undefined || f.value.executive == null ? false : f.value.executive,
+          executive: f.value.executive == undefined || f.value.executive == null ? false : Boolean(f.value.executive),
           executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
-          //fotoclub_id: f.value.fotoclub_id
-          fotoclub_id: this.selectFotoclub.value,
+          fotoclub_id: this.profile.fotoclub_id,
         }
       }
-
-      if (this.isUserProfile)
-        delete pm.fotoclub_id
-
-      
+     
       if (this.file != undefined) {
         pm.image_file = this.file
       }
@@ -302,23 +299,18 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       super.fetch<any>(() => this.profileService.postFormData<any>(pm, this.profile.id)).subscribe(
         p => {
           // console.log('posteado perfil', p)
-          let rol;
-          if (this.isAdmin) {
-            rol = 1
-          } else if (! this.isLogged){
-            rol = 3
-          } else {
-            rol = this.usuario.role_id
-          }
+          
           const um: User = {
             username: f.value.username,
-            // role_id: this.isAdmin ? this.selectRol.value : this.usuario.role_id,
-            role_id: rol,
+            role_id: this.usuario.role_id,
             dni: f.value.dni,
             password: f.value.password,
-            // role_id: f.value.role_id,
             profile_id: p.id
           }
+
+          if (this.isUserProfile) 
+            delete um.role_id
+
           super.fetch<User>(() => this.userService.post(um, this.usuario.id)).subscribe(
             u => {
               this.posting = false

@@ -1,9 +1,44 @@
 # grupo_fotografico_centro
 
 # Change Log
-- **1.1.23**:
+- **1.1.32**:
 
     En desarrollo
+
+- **1.1.31**:
+
+    Edición de campo fotoclub / organización nuevamente funcional
+
+    Se corrige ancho de selectores de filtros en vista de fotografías
+
+- **1.1.29**:
+    
+    Solución a error que impedía la actualización del perfil personal (en algunos casos)
+
+    Ahora los mensajes de error muestran todos los errores (en algunos casos solo se veia ".")
+
+    En formulario de edición, el propio usuario no puede modificar su rol (por mas que fuera admin); en edición del propio perfil se oculta el campo contraseña por que el mismo se define con el botón 'cambiar contraseña'; se quita archivo .spec que no se usa
+    Corrección visual en campo selección de rol (se veia desplazado a la derecha)
+
+    Campo de edición de contraseña habilitado para usuarios administradores
+
+    Arreglo en pattern campo email (warnign en terminal)
+
+
+- **1.1.26**:
+
+    Se corrige bug por el cual se mostraba botón de inscripción en concursos cerrados
+
+    Se corrige bug que excluia algunos resultados de los filtros
+
+
+- **1.1.24**:
+
+    Se modifica visibilidad de botón de galería de imágenes en listado de concursantes
+
+- **1.1.23**:
+
+    Modificación en visibilidad de nombre de concursante
 
 - **1.1.22**: 
 
