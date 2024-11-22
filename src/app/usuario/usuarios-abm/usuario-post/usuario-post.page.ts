@@ -214,6 +214,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     }
   }
 
+  profileExecutive(){
+    return Boolean(this.profile.executive) == true
+  }
+
   datosCargados() {
     // console.log(f.valid)
     const sin_cargar = this.selectFotoclub == undefined || this.selectRol == undefined
