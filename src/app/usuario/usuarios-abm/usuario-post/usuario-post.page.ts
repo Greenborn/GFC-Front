@@ -238,7 +238,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           // }
         }
         //En caso de que se trate de un formulario de registro de usuario
-        if (this.isUserSignUp){
+      if (this.isUserSignUp){
         //se comprueba que la contraseña corresponda con su repeticion
         if (this.usuario.passwordRepeat !== this.usuario.password){
           super.displayAlert("Las contraseñas no coinciden.");
