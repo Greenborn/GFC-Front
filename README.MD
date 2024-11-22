@@ -9,7 +9,7 @@
 
     Edición de campo fotoclub / organización nuevamente funcional
 
-    
+    Se corrige ancho de selectores de filtros en vista de fotografías
 
 - **1.1.29**:
     
