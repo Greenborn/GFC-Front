@@ -21,7 +21,6 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
-
 import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
 import { get_all, resultadosConcursoGeted } from '../../../services/contest-results.service'
 
@@ -32,7 +31,7 @@ import { get_all, resultadosConcursoGeted } from '../../../services/contest-resu
 })
 export class FotografiasComponent implements OnInit {
 
-  concurso: Contest = this.contestService.template;
+  concurso: any = null;
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
@@ -61,7 +60,6 @@ export class FotografiasComponent implements OnInit {
   public categoriaSeleccionada: Category = null;
   public updatingInscriptos: boolean = false;
   mostrarFiltro: boolean = false;
-
   public subscriptions = []
 
   constructor(
@@ -94,6 +92,8 @@ export class FotografiasComponent implements OnInit {
         return c.image.profile_id == parseInt(atributoValue)
       }
     }
+
+    this.subscribes()
   }
   get isContestNotFin() {
     let finalizado = (new Date()).getTime() >= (new Date(this.concurso.end_date)).getTime()
@@ -161,15 +161,18 @@ export class FotografiasComponent implements OnInit {
       this.setResultadosConcurso(cs?.items)
     }))
 
-    this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
-      this.concurso = c
-      console.log('route', this.route.snapshot.params)
-      let params_: any = {
-        ...this.route.snapshot.params
-      }
-      params_['contest_id'] = this.concurso.id
-      await get_all(params_)
-    }))
+    if (this.concurso === null)
+      this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
+                
+        this.concurso = c
+        //console.log('route', this.route.snapshot.params)
+        let params_: any = {
+          ...this.route.snapshot.params,
+        }
+        params_['contest_id'] = this.concurso.id
+        
+        await get_all(params_)
+      }))
   }
 
   unsuscribes() {
@@ -189,8 +192,6 @@ export class FotografiasComponent implements OnInit {
     }
 
     this.auth.user.then(u => this.user = u);
-
-    this.subscribes()
   }
 
   async ngOnDestroy() {
