@@ -289,6 +289,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         }
       }
 
+      if (this.isUserProfile)
+        delete pm.fotoclub_id
+
       
       if (this.file != undefined) {
         pm.image_file = this.file
@@ -301,7 +304,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           // console.log('posteado perfil', p)
           let rol;
           if (this.isAdmin) {
-            rol = this.selectRol.value
+            rol = 1
           } else if (! this.isLogged){
             rol = 3
           } else {
