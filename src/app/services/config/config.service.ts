@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 export const CONFIG = {
   apiBaseUrl: "https://gfc.api.greenborn.com.ar/",//this.local ? "http://localhost:8888/" : "https://gfc.api.greenborn.com.ar/",
   loginAction:"login",
-  appName: "app_gfc_-",
-  version: "1.1.30"
+  appName: "app_gfc_prod-",
+  version: "1.1.31"
 }
 
 @Injectable({
