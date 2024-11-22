@@ -1,6 +1,10 @@
 # grupo_fotografico_centro
 
 # Change Log
+- **1.1.32**:
+
+    En desarrollo
+
 - **1.1.31**:
 
     Edición de campo fotoclub / organización nuevamente funcional

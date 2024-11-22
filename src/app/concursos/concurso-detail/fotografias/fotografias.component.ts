@@ -229,6 +229,9 @@ export class FotografiasComponent implements OnInit {
   }
 
   get resultadosConcursoFiltrados() {
+    if (this.resultadosConcurso == undefined) {
+      return []
+    }
     return this.resultadosConcurso.filter(rc => {
       let cond1: boolean = true;
       if (this.categoriaSeleccionada != undefined) {

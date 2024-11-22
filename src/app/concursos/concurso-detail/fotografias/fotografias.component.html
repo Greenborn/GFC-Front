@@ -39,7 +39,7 @@
 
                   <ion-item class="ion-margin-end">
                     <ion-label position="stacked">Categoría</ion-label>
-                    <ion-select okText="Aceptar" cancelText="Cancelar" [(ngModel)]="categoriaSeleccionada" interface="popover">
+                    <ion-select class="min-10rem"  okText="Aceptar" cancelText="Cancelar" [(ngModel)]="categoriaSeleccionada" interface="popover">
                        <ion-select-option *ngFor="let c of categoriasInscriptas" [value]="c.category">{{ c.category.name }}</ion-select-option>
                     </ion-select>
                   </ion-item>
@@ -50,7 +50,7 @@
 
                   <ion-item >
                     <ion-label position="stacked">Sección</ion-label>
-                    <ion-select [(ngModel)]="seccionSeleccionada" okText="Aceptar" cancelText="Cancelar"  interface="popover">
+                    <ion-select [(ngModel)]="seccionSeleccionada" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
                       <ion-select-option *ngFor="let s of seccionesInscriptas" [value]="s.section">{{ s.section.name }}</ion-select-option>
                     </ion-select>
                   </ion-item>
