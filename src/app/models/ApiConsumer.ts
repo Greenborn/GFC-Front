@@ -46,6 +46,9 @@ async displayAlert(message: string, header:string = 'Error') {
   errorFilter( e:string ){
     e = e.replace('ERROR:','');
     let i:number   = e.indexOf('CONTEXT') -1;
+
+    if (i == -2) return e
+    
     let aux:string = '';
     for (let c=0; c < i; c++){
       aux += e[c];

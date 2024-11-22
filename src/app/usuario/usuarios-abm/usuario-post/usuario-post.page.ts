@@ -68,15 +68,11 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     public configService: ConfigService,
     private UIUtilsService: UiUtilsService,
     private formBuilder: FormBuilder,
-    private createUserService: CreateUserService,
+    private createUserService: CreateUserService
   ) { 
     super(alertCtrl)
   }
 
-  // userIsAdmin(){ //agregado para evitar error de que auth no es publico
-  //   // return this.auth.isAdmin();
-  //   return this.user == undefined ? false : this.user.role_id == 1;
-  // }
 
   isLogged():boolean{
     return this.auth.loggedIn
@@ -116,8 +112,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         name:           new FormControl(),
         last_name:      new FormControl(),
         fotoclub_id:    new FormControl(),
-        //executive:  new FormControl('')
-        //executive_rol: new FormControl(''),
+        executive:      new FormControl(''),
+        executive_rol:  new FormControl(''),
         username:       new FormControl(),
         email:          new FormControl(),
         password:       new FormControl(),
@@ -242,7 +238,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           // }
         }
         //En caso de que se trate de un formulario de registro de usuario
-        if (this.isUserSignUp){
+      if (this.isUserSignUp){
         //se comprueba que la contraseña corresponda con su repeticion
         if (this.usuario.passwordRepeat !== this.usuario.password){
           super.displayAlert("Las contraseñas no coinciden.");
@@ -293,6 +289,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         }
       }
 
+      if (this.isUserProfile)
+        delete pm.fotoclub_id
+
       
       if (this.file != undefined) {
         pm.image_file = this.file
@@ -305,7 +304,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           // console.log('posteado perfil', p)
           let rol;
           if (this.isAdmin) {
-            rol = this.selectRol.value
+            rol = 1
           } else if (! this.isLogged){
             rol = 3
           } else {

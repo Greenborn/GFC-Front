@@ -78,7 +78,7 @@
                         </ion-item>
 
                         <ion-item
-                            *ngIf="form.value.executive == true" 
+                            *ngIf="profile.executive == true" 
                             class="expand-full">
                                 <ion-label position="floating">Rol en la comisión</ion-label>
                                 <ion-input
@@ -131,14 +131,14 @@
 <!-- TODO: revisar pattern -->
                         <ion-input
                             autocapitalize="off"
-                            pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                            pattern="[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+(\.[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+)*@[a-zA-Z0-9_][\-a-zA-Z0-9_]*(\.[\-a-zA-Z0-9_]+)*\.[cC][oO][mM](:[0-9]{1,5})?"
                             name="email" formControlName="email" [(ngModel)]="usuario.email"
                             required>
                         </ion-input>
                     </ion-item>
 
 <!--- CONTRASEÑA -->             
-                    <ion-item class="expand-full">
+                    <ion-item class="expand-full" *ngIf="!isUserProfile && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)">
                         <ion-col class="ion-no-padding">
                             <ion-row>
                                 <ion-col class="ion-no-padding" size="10">
@@ -193,21 +193,19 @@
                         <ion-button (click)="changePassword()">Cambiar contraseña</ion-button>
                     </ion-item>
 
-                    <div *ngIf="isLogged()">
-                        <ion-item
-                            class="expand-full"
-                            *ngIf="!updatingSelect; else spinner">
-                                <ion-label [position]="'stacked'">Rol</ion-label>
-                            
-                                <ion-select
-                                    #sRol  okText="Aceptar" cancelText="Cancelar"
-                                    name="role_id" formControlName="role_id"  [(ngModel)]="usuario.role_id"
-                                    required
-                                    [disabled]="!isAdmin">
-                                    <ion-select-option *ngFor="let r of roles" [value]="r.id">{{r.type}}</ion-select-option>
-                                </ion-select>
-                        </ion-item>
-                    </div>
+                    <ion-item
+                        class="expand-full"
+                        *ngIf="!isUserProfile && isLogged() && !updatingSelect">
+                            <ion-label [position]="'stacked'">Rol</ion-label>
+                        
+                            <ion-select
+                                #sRol  okText="Aceptar" cancelText="Cancelar"
+                                name="role_id" formControlName="role_id"  [(ngModel)]="usuario.role_id"
+                                required
+                                [disabled]="!isAdmin">
+                                <ion-select-option *ngFor="let r of roles" [value]="r.id">{{r.type}}</ion-select-option>
+                            </ion-select>
+                    </ion-item>
 
                 </ion-row>
 
