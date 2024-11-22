@@ -112,7 +112,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         name:           new FormControl(),
         last_name:      new FormControl(),
         fotoclub_id:    new FormControl(),
-        executive:      new FormControl(''),
+        executive:      new FormControl(false),
         executive_rol:  new FormControl(''),
         username:       new FormControl(),
         email:          new FormControl(),
@@ -279,7 +279,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         last_name: f.value.last_name, 
         executive: f.value.executive == undefined || f.value.executive == null ? false : Boolean(f.value.executive),
         executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
-        fotoclub_id: f.value.fotoclub_id
+        fotoclub_id: this.profile.fotoclub_id,
       }
       
       if ((this.usuario.role_id == 3 || this.usuario.role_id == 2 ) && !this.selectFotoclub.value == undefined){
@@ -288,15 +288,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           last_name: f.value.last_name, 
           executive: f.value.executive == undefined || f.value.executive == null ? false : Boolean(f.value.executive),
           executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
-          //fotoclub_id: f.value.fotoclub_id
-          fotoclub_id: this.selectFotoclub.value,
+          fotoclub_id: this.profile.fotoclub_id,
         }
       }
-
-      if (this.isUserProfile)
-        delete pm.fotoclub_id
-
-      
+     
       if (this.file != undefined) {
         pm.image_file = this.file
       }
