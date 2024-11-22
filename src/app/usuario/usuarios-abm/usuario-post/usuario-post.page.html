@@ -138,7 +138,7 @@
                     </ion-item>
 
 <!--- CONTRASEÑA -->             
-                    <ion-item class="expand-full" *ngIf="!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2">
+                    <ion-item class="expand-full" *ngIf="!isUserProfile && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)">
                         <ion-col class="ion-no-padding">
                             <ion-row>
                                 <ion-col class="ion-no-padding" size="10">
@@ -195,7 +195,7 @@
 
                     <ion-item
                         class="expand-full"
-                        *ngIf="isLogged() && !updatingSelect">
+                        *ngIf="!isUserProfile && isLogged() && !updatingSelect">
                             <ion-label [position]="'stacked'">Rol</ion-label>
                         
                             <ion-select
