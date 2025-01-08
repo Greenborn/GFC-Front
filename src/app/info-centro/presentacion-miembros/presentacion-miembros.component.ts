@@ -16,7 +16,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit {
 
   async ngOnInit() {
-    this.fotoclubService.getAll<Fotoclub>().subscribe(
+    this.fotoclubService.getAll<Fotoclub>('filter[organization_type]=INTERNO&filter[mostrar_en_ranking]=1').subscribe(
         async  p => {
           this.cantF = p.length
           this.sliderOne =
