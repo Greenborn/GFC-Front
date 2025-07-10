@@ -1,0 +1,150 @@
+# Reglas de Cursor para GFC-Front
+
+## Estructura del Proyecto
+- Aplicación Angular con Ionic/Capacitor para desarrollo móvil
+- Mantener estructura modular de Angular
+- Documentación en `documentacion/`
+- Conecta con APIs: `php_api/` (Yii2) y `node_api/` (Node.js/Express)
+
+## Convenciones de Código
+
+### TypeScript/Angular
+- Seguir las convenciones de Angular Style Guide
+- Usar camelCase para variables, métodos y propiedades
+- Usar PascalCase para nombres de clases, interfaces y componentes
+- Usar kebab-case para nombres de archivos y directorios
+- Mantener estructura de carpetas por funcionalidad
+- Usar interfaces para definir tipos de datos
+- Implementar OnDestroy en componentes que usen observables
+
+### Componentes Angular
+- Un componente por archivo
+- Usar OnPush change detection cuando sea posible
+- Implementar OnInit y OnDestroy apropiadamente
+- Usar ViewChild/ViewChildren para acceso a elementos DOM
+- Mantener componentes pequeños y enfocados
+
+### Servicios
+- Usar dependency injection
+- Implementar servicios como singletons
+- Usar observables para comunicación entre componentes
+- Manejar errores apropiadamente
+- Documentar métodos públicos con JSDoc
+
+### Templates HTML
+- Usar atributos de Angular (ngIf, ngFor, etc.)
+- Mantener templates simples y legibles
+- Usar pipes para transformación de datos
+- Implementar validación de formularios con ReactiveFormsModule
+- Usar trackBy en ngFor para optimización
+
+### Estilos SCSS
+- Usar BEM methodology para clases CSS
+- Mantener especificidad baja
+- Usar variables CSS para temas
+- Implementar responsive design
+- Seguir las convenciones de Ionic
+
+## Ionic/Capacitor
+- Usar componentes de Ionic UI
+- Implementar navegación con Ionic Router
+- Usar Capacitor plugins para funcionalidades nativas
+- Mantener compatibilidad móvil
+- Optimizar para diferentes tamaños de pantalla
+
+## Gestión de Estado
+- Usar servicios para estado compartido
+- Implementar BehaviorSubject para estado reactivo
+- Considerar NgRx para estado complejo
+- Mantener estado inmutable
+
+## Comunicación con APIs
+- Usar HttpClient para requests HTTP
+- Implementar interceptors para autenticación
+- Manejar errores de red apropiadamente
+- Usar tipos TypeScript para respuestas de API
+- Implementar retry logic cuando sea necesario
+
+## Testing
+- Escribir unit tests con Jasmine/Karma
+- Usar TestBed para testing de componentes
+- Implementar e2e tests con Protractor
+- Mantener cobertura de código alta
+- Mockear servicios externos en tests
+
+## Performance
+- Usar OnPush change detection
+- Implementar lazy loading de módulos
+- Optimizar bundle size
+- Usar trackBy en ngFor
+- Implementar virtual scrolling para listas grandes
+- Optimizar imágenes y assets
+
+## Seguridad
+- Validar todas las entradas de usuario
+- Sanitizar datos antes de renderizar
+- Implementar autenticación segura
+- Usar HTTPS en producción
+- Proteger contra XSS
+
+## Documentación
+
+### Estructura de Documentación
+- Documentación principal en directorio `documentacion/` en la raíz del proyecto
+- Crear subdirectorios para cada módulo principal: `documentacion/{modulo}/`
+- Mantener README.md en la raíz del proyecto
+- Crear README.md específico en cada `documentacion/{modulo}/`
+
+### Documentos Requeridos por Módulo
+- **README.md**: Descripción general del módulo, propósito y estructura
+- **arquitectura.md**: Diseño arquitectónico detallado del módulo
+- **componentes.md**: Documentación de componentes, servicios y pipes
+- **especificacion-universal.md**: Especificación técnica exhaustiva que permita reconstruir el módulo en otra tecnología
+
+### Enlaces y Referencias
+- Todos los documentos deben estar interconectados mediante enlaces
+- Mantener navegación coherente entre documentos
+- Usar referencias cruzadas cuando sea apropiado
+
+### Estándares de Documentación
+- Usar Markdown para todos los documentos
+- Incluir diagramas cuando sea necesario (usar Mermaid o similar)
+- Mantener ejemplos de código actualizados
+- Documentar configuraciones de deployment
+- Incluir guías de instalación y setup
+- Documentar APIs con ejemplos de uso
+- Comentar código complejo con documentación inline
+
+## Git y Versionado
+- Usar commits descriptivos de hasta 255 caracteres
+- Seguir convenciones de branching (feature/, hotfix/, etc.)
+- Mantener .gitignore actualizado
+- No committear archivos sensibles
+- Usar conventional commits
+
+## Build y Deployment
+- Configurar environments para desarrollo, staging y producción
+- Usar Angular CLI para builds
+- Implementar CI/CD
+- Optimizar bundle size
+- Configurar service workers para PWA
+
+## Accesibilidad
+- Usar atributos ARIA apropiadamente
+- Implementar navegación por teclado
+- Mantener contraste de colores adecuado
+- Usar semántica HTML correcta
+- Probar con lectores de pantalla
+
+## Internacionalización
+- Usar Angular i18n para traducciones
+- Mantener textos en archivos de traducción
+- Considerar diferentes formatos de fecha y números
+- Implementar RTL cuando sea necesario
+
+## Comunicación
+- Siempre responder en español
+- Ser claro y específico en explicaciones
+- Proporcionar ejemplos cuando sea útil
+- Mantener consistencia en terminología técnica
+- Documentar decisiones arquitectónicas importantes 
