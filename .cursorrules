@@ -94,6 +94,8 @@
 - Crear subdirectorios para cada módulo principal: `documentacion/{modulo}/`
 - Mantener README.md en la raíz del proyecto
 - Crear README.md específico en cada `documentacion/{modulo}/`
+- **Todos los nuevos documentos .md deben guardarse en el directorio `documentacion/`**
+- **Excepciones**: README.md y LICENSE.md pueden estar en la raíz del proyecto
 
 ### Documentos Requeridos por Módulo
 - **README.md**: Descripción general del módulo, propósito y estructura
