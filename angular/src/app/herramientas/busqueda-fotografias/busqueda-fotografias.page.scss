@@ -3,8 +3,9 @@
 /* Estilos para las imágenes en los resultados */
 ion-card img {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
 }
 
 /* Centrado de elementos */
