@@ -82,4 +82,25 @@ ion-icon[size="large"] {
 h3 {
   margin: 20px 0 16px 0;
   color: var(--ion-color-primary);
+}
+
+/* Autor en negrita y capitalizado */
+ion-card-subtitle strong {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+/* Centrar tarjeta única y mejorar presentación */
+.centrado-un-resultado {
+  display: flex;
+  justify-content: center;
+}
+
+.centrado-un-resultado ion-row {
+  justify-content: center;
+}
+
+.centrado-un-resultado ion-col {
+  max-width: 400px;
+  flex: 1 1 400px;
 } 

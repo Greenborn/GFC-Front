@@ -39,8 +39,8 @@
   <!-- Resultados -->
   <div *ngIf="resultados.length > 0">
     <h3>Resultados ({{ resultados.length }})</h3>
-    <ion-grid>
-      <ion-row>
+    <ion-grid [class.centrado-un-resultado]="resultados.length === 1">
+      <ion-row *ngIf="resultados.length > 1">
         <ion-col *ngFor="let imagen of resultados" size="12" size-sm="6" size-md="4" size-lg="3">
           <ion-card>
             <img [src]="imagen.thumbnail_url || imagen.url" 
@@ -50,10 +50,28 @@
             <ion-card-header>
               <ion-card-title>{{ imagen.title }}</ion-card-title>
               <ion-card-subtitle>Código: {{ imagen.code }}</ion-card-subtitle>
-              <ion-card-subtitle *ngIf="imagen.author">Autor: {{ imagen.author }}</ion-card-subtitle>
+              <ion-card-subtitle *ngIf="imagen.author">Autor: <strong>{{ imagen.author | titlecase }}</strong></ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
               <p *ngIf="imagen.description">{{ imagen.description }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="resultados.length === 1" justify-content-center>
+        <ion-col style="max-width: 400px; flex: 1 1 400px;">
+          <ion-card>
+            <img [src]="resultados[0].thumbnail_url || resultados[0].url" 
+                 alt="{{ resultados[0].title }}" 
+                 (click)="abrirImagen(resultados[0].thumbnail_url || resultados[0].url)"
+                 style="cursor: pointer;" />
+            <ion-card-header>
+              <ion-card-title>{{ resultados[0].title }}</ion-card-title>
+              <ion-card-subtitle>Código: {{ resultados[0].code }}</ion-card-subtitle>
+              <ion-card-subtitle *ngIf="resultados[0].author">Autor: <strong>{{ resultados[0].author | titlecase }}</strong></ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <p *ngIf="resultados[0].description">{{ resultados[0].description }}</p>
             </ion-card-content>
           </ion-card>
         </ion-col>
