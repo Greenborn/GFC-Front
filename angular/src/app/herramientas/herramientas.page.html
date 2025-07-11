@@ -16,6 +16,22 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+      <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Concursos</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-label>Seleccionar concurso</ion-label>
+              <ion-select [(ngModel)]="concursoSeleccionado" interface="popover" placeholder="Elige un concurso">
+                <ion-select-option *ngFor="let c of concursos" [value]="c">{{c.name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-button expand="block" color="primary" [disabled]="!concursoSeleccionado" (click)="descargarListado()">Descargar listado</ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content> 
