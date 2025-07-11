@@ -28,10 +28,17 @@ class ConfigService {
   }
 
   setLocalStorage(r, v) {
+    const key = this.data.appName + r
     if (v == null) {
-      localStorage.removeItem(this.data.appName + r)
+      localStorage.removeItem(key)
     } else {
-      localStorage.setItem(this.data.appName + r, v.toString())
+      localStorage.setItem(key, v.toString())
+      // Disparar evento para sincronizar entre pestañas
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: key,
+        newValue: v.toString(),
+        oldValue: localStorage.getItem(key)
+      }))
     }
   }
 
@@ -40,7 +47,15 @@ class ConfigService {
   }
 
   removeLocalStorage(r) {
-    localStorage.removeItem(this.data.appName + r)
+    const key = this.data.appName + r
+    const oldValue = localStorage.getItem(key)
+    localStorage.removeItem(key)
+    // Disparar evento para sincronizar entre pestañas
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: key,
+      newValue: null,
+      oldValue: oldValue
+    }))
   }
 }
 

@@ -47,7 +47,7 @@
     </div>
 
     <div v-else class="row">
-      <div class="col-12 mb-4" v-for="concurso in filteredConcursos" :key="concurso.id">
+      <div class="col-12 col-lg-8 mx-auto mb-4" v-for="concurso in filteredConcursos" :key="concurso.id">
         <div 
           class="concurso-card position-relative d-flex flex-column justify-content-end"
           :style="concurso.image ? `background-image: url('${concurso.image}')` : ''"

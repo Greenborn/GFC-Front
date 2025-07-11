@@ -84,6 +84,13 @@ export default {
       errors: {}
     }
   },
+  mounted() {
+    // Verificar si ya está autenticado al cargar el componente
+    if (authService.isLoggedIn()) {
+      console.log('Usuario ya autenticado, redirigiendo a /concursos')
+      this.$router.replace('/concursos')
+    }
+  },
   methods: {
     async login() {
       this.loading = true
@@ -97,13 +104,14 @@ export default {
         console.log('Resultado del login:', result)
         
         if (result.success) {
-          console.log('Login exitoso, redirigiendo a /concursos')
-          // Usar replace para evitar que el usuario pueda volver atrás al login
-          this.$router.replace('/concursos').then(() => {
-            console.log('Redirección completada exitosamente')
-          }).catch(err => {
-            console.error('Error en redirección:', err)
-          })
+          console.log('Login exitoso, redirigiendo a /')
+          
+          // Limpiar formulario (igual que Angular)
+          this.credentials.username = ''
+          this.credentials.password = ''
+          
+          // Redirigir a la página principal (igual que Angular)
+          this.$router.push('/')
         } else {
           console.log('Login fallido:', result.message)
           this.errorMessage = result.message

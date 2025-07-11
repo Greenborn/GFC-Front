@@ -16,17 +16,15 @@ import Fotoclubs from '../views/fotoclubs/Fotoclubs.vue'
 import FotoclubPost from '../views/fotoclubs/FotoclubPost.vue'
 import Folder from '../views/Folder.vue'
 
-// Guard de autenticación
+// Guard de autenticación (igual que Angular)
 const requireAuth = (to, from, next) => {
   console.log('Guard requireAuth: Verificando autenticación para', to.path)
-  const isLoggedIn = authService.isLoggedIn()
-  console.log('Guard requireAuth: Usuario autenticado:', isLoggedIn)
   
-  if (isLoggedIn) {
-    console.log('Guard requireAuth: Permitiendo acceso a', to.path)
+  if (authService.loggedIn) {
+    console.log('Guard requireAuth: Usuario autenticado, permitiendo acceso')
     next()
   } else {
-    console.log('Guard requireAuth: Redirigiendo a /login')
+    console.log('Guard requireAuth: No autenticado, redirigiendo a /login')
     next('/login')
   }
 }
@@ -34,16 +32,10 @@ const requireAuth = (to, from, next) => {
 // Guard para redirigir usuarios autenticados desde login/registro
 const redirectIfAuthenticated = (to, from, next) => {
   console.log('Guard redirectIfAuthenticated: Verificando para', to.path)
-  const isLoggedIn = authService.isLoggedIn()
-  console.log('Guard redirectIfAuthenticated: Usuario autenticado:', isLoggedIn)
   
-  if (isLoggedIn) {
-    console.log('Guard redirectIfAuthenticated: Redirigiendo a /concursos')
-    next('/concursos')
-  } else {
-    console.log('Guard redirectIfAuthenticated: Permitiendo acceso a', to.path)
-    next()
-  }
+  // Permitir siempre el acceso a login/registro, la redirección se manejará en el componente
+  console.log('Guard redirectIfAuthenticated: Permitiendo acceso a', to.path)
+  next()
 }
 
 const routes = [
@@ -154,6 +146,12 @@ const router = createRouter({
 
 // Guard global para manejar la autenticación
 router.beforeEach((to, from, next) => {
+  // No verificar autenticación en rutas públicas
+  if (['/', '/login', '/registro'].includes(to.path)) {
+    next()
+    return
+  }
+  
   // Forzar la verificación de autenticación en cada navegación
   authService.checkAuth()
   next()

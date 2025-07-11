@@ -24,7 +24,7 @@ class ContestService extends ApiService {
   }
 
   async getContestCategories(contestId) {
-    return await this.getAll(`contest_id=${contestId}`, 'contest-category')
+    return await this.getAll(`filter[contest_id]=${contestId}&expand=category`, 'contest-category')
   }
 
   async getContestSections(contestId) {

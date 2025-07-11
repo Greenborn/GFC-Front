@@ -29,15 +29,17 @@ class AuthService {
       const { token, id } = response.data
       
       if (token) {
-        console.log('AuthService: Token recibido, guardando en localStorage')
+        console.log('AuthService: Login exitoso, guardando token e id')
+        // Guardar token e id en localStorage (igual que Angular)
         configService.setLocalStorage('token', token)
         configService.setLocalStorage('userId', id)
-        this.isAuthenticated = true
-        this.user = { id }
         
-        // Configurar el token para futuras peticiones
+        // Actualizar estado interno
+        this.isAuthenticated = true
+        this.user = { id: parseInt(id) }
+        
+        // Configurar token para futuras peticiones
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        console.log('AuthService: Token configurado en axios headers')
         
         return { success: true, user: { id } }
       }
@@ -54,18 +56,26 @@ class AuthService {
   }
 
   async logout() {
-    try {
-      await authAxios.post('logout')
-    } catch (error) {
-      console.error('Error en logout:', error)
-    } finally {
-      this.clearAuth()
-    }
+    // Igual que Angular: limpiar token e id
+    configService.setLocalStorage('token', null)
+    configService.setLocalStorage('userId', null)
+    
+    // Limpiar estado interno
+    this.isAuthenticated = false
+    this.user = null
+    
+    // Limpiar headers de axios
+    delete axios.defaults.headers.common['Authorization']
+    
+    // Redirigir a login (igual que Angular)
+    window.location.hash = '#/login'
   }
 
+
+
   clearAuth() {
-    configService.removeLocalStorage('token')
-    configService.removeLocalStorage('userId')
+    configService.setLocalStorage('token', null)
+    configService.setLocalStorage('userId', null)
     this.isAuthenticated = false
     this.user = null
     
@@ -74,6 +84,7 @@ class AuthService {
   }
 
   checkAuth() {
+    // Igual que Angular: verificar token en localStorage
     const token = configService.getLocalStorage('token')
     const userId = configService.getLocalStorage('userId')
     
@@ -96,7 +107,19 @@ class AuthService {
     return false
   }
 
+
+
   getToken() {
+    return configService.getLocalStorage('token')
+  }
+
+  // Propiedad loggedIn (igual que Angular)
+  get loggedIn() {
+    return this.token != null
+  }
+
+  // Getter para token (igual que Angular)
+  get token() {
     return configService.getLocalStorage('token')
   }
 
@@ -111,10 +134,14 @@ class AuthService {
   }
 
   isLoggedIn() {
-    const result = this.checkAuth()
-    console.log('AuthService isLoggedIn:', result)
-    return result
+    // Igual que Angular: verificar si existe el token en localStorage
+    const token = configService.getLocalStorage('token')
+    const hasToken = token != null
+    console.log('AuthService isLoggedIn:', hasToken)
+    return hasToken
   }
+
+
 }
 
 export default new AuthService() 

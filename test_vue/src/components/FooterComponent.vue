@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-          <h5>GFC - Grupo Fotográfico Centro</h5>
+          <h5>Grupo Fotográfico Centro</h5>
           <p class="mb-0">Plataforma de gestión de concursos fotográficos</p>
         </div>
         <div class="col-md-6 text-md-end">

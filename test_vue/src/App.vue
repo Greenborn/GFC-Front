@@ -11,6 +11,7 @@
 <script>
 import NavBar from './components/NavBar.vue'
 import FooterComponent from './components/FooterComponent.vue'
+import authService from './services/auth.js'
 
 export default {
   name: 'App',

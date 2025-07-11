@@ -5,13 +5,19 @@ import configService from './config.js'
 axios.defaults.baseURL = configService.data.apiBaseUrl
 axios.defaults.headers.common['Content-Type'] = 'application/json'
 
-// Interceptor para agregar token a las peticiones
+// Interceptor para agregar token a las peticiones (igual que Angular)
 axios.interceptors.request.use(
   (config) => {
     const token = configService.getLocalStorage('token')
-    if (token) {
+    
+    // No agregar token a la petición de login
+    if (config.url !== configService.loginUrl && token) {
       config.headers.Authorization = `Bearer ${token}`
+      console.log('Agregado token a request:', config.url)
+    } else {
+      console.log('Request sin token:', config.url)
     }
+    
     return config
   },
   (error) => {
@@ -19,19 +25,27 @@ axios.interceptors.request.use(
   }
 )
 
-// Interceptor para manejar errores de respuesta
+// Interceptor para manejar errores de respuesta (igual que Angular)
 axios.interceptors.response.use(
   (response) => {
     return response
   },
   (error) => {
-    if (error.response?.status === 401) {
-      // Token expirado o inválido - solo si no estamos en login
-      if (!window.location.hash.includes('#/login')) {
-        configService.removeLocalStorage('token')
-        window.location.hash = '#/login'
-      }
+    if (error.response?.status === 401 || error.code === 'ERR_NETWORK') {
+      console.log('Catch error request sin autorización, redirect a login', error)
+      // Limpiar token e id (igual que Angular)
+      configService.setLocalStorage('token', null)
+      configService.setLocalStorage('userId', null)
+      
+      // Limpiar headers de axios
+      delete axios.defaults.headers.common['Authorization']
+      
+      // Redirigir a login
+      window.location.hash = '#/login'
+    } else {
+      console.log(`Catch error request con status ${error.response?.status}`, error)
     }
+    
     return Promise.reject(error)
   }
 )

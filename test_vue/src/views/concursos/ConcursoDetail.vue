@@ -61,7 +61,7 @@
             </div>
             <div class="mb-3">
               <span class="fw-bold">Categorías:</span>
-              <span v-for="cat in concurso?.categories || []" :key="cat" class="badge bg-light text-dark fw-semibold me-2">{{ cat }}</span>
+              <span v-for="cat in categoriesInscriptas" :key="cat.id" class="badge bg-light text-dark fw-semibold me-2">{{ cat.category?.name || cat.name }}</span>
             </div>
             <div class="mb-3">
               <span class="fw-bold">Secciones:</span>
@@ -94,6 +94,7 @@ export default {
       concurso: null,
       results: [],
       categories: [],
+      categoriesInscriptas: [],
       sections: [],
       photos: [],
       loading: true,
@@ -122,6 +123,7 @@ export default {
         this.loading = true
         const concursoId = this.$route.params.id
         this.concurso = await contestService.get(concursoId)
+        this.categoriesInscriptas = await contestService.getContestCategories(concursoId)
         // await this.loadResults() // Quitar esta línea para evitar la consulta automática
       } catch (error) {
         console.error('Error cargando concurso:', error)
