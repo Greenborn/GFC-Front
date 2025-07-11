@@ -9,9 +9,24 @@
 
 <ion-content class="ion-padding">
   <!-- Nota de ayuda -->
-  <ion-alert *ngIf="mostrarNota" [isOpen]="true" (didDismiss)="cerrarNota()" header="Ayuda" 
-    [buttons]="['Entendido']" message="Busca fotografías por título o código. Puedes usar términos parciales para encontrar coincidencias.">
-  </ion-alert>
+  <ion-card *ngIf="mostrarNota" class="nota-ayuda">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Cómo usar la búsqueda
+        <ion-button fill="clear" size="small" (click)="cerrarNota()" class="cerrar-nota">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ul>
+        <li><strong>Buscar por:</strong> Título de la obra o código asociado a la misma</li>
+        <li><strong>Para buscar:</strong> Escribe el término y presiona Enter</li>
+        <li><strong>Ver imagen completa:</strong> Haz click sobre la imagen para abrirla en tamaño completo en una nueva pestaña</li>
+      </ul>
+    </ion-card-content>
+  </ion-card>
   
   <!-- Cuadro de búsqueda -->
   <ion-searchbar 
