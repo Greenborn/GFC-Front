@@ -28,10 +28,9 @@
       </div>
       <div class="col-md-6 text-end">
         <select class="form-select d-inline-block w-auto" v-model="statusFilter" @change="filterConcursos">
-          <option value="">Todos los estados</option>
+          <option value="">Todos</option>
           <option value="active">Activos</option>
-          <option value="inactive">Inactivos</option>
-          <option value="finished">Finalizados</option>
+          <option value="closed">Cerrados</option>
         </select>
       </div>
     </div>
@@ -146,10 +145,22 @@ export default {
           (concurso.title && concurso.title.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
           (concurso.sub_title && concurso.sub_title.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
           (concurso.description && concurso.description.toLowerCase().includes(this.searchTerm.toLowerCase()))
-        
-        const matchesStatus = !this.statusFilter || concurso.status === this.statusFilter
-        
-        return matchesSearch && matchesStatus
+
+        let matchesStatus = true;
+        if (this.statusFilter === 'active') {
+          if (concurso.end_date) {
+            const cierre = new Date(concurso.end_date);
+            const ahora = new Date();
+            matchesStatus = cierre >= ahora;
+          }
+        } else if (this.statusFilter === 'closed') {
+          if (concurso.end_date) {
+            const cierre = new Date(concurso.end_date);
+            const ahora = new Date();
+            matchesStatus = cierre < ahora;
+          }
+        }
+        return matchesSearch && matchesStatus;
       })
     },
 
