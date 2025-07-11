@@ -1,4 +1,4 @@
-/* Estilos para la página de Herramientas */
+/* Estilos para la vista de búsqueda de fotografías */
 
 /* Estilos para las imágenes en los resultados */
 ion-card img {
@@ -12,14 +12,15 @@ ion-card img {
   text-align: center;
 }
 
-/* Espaciado para el botón de búsqueda */
-ion-button {
-  margin: 16px 0;
-}
-
 /* Estilos para el mensaje sin resultados */
 ion-icon[size="large"] {
   font-size: 48px;
   color: var(--ion-color-medium);
   margin-bottom: 16px;
+}
+
+/* Espaciado para el título de resultados */
+h3 {
+  margin: 20px 0 16px 0;
+  color: var(--ion-color-primary);
 } 

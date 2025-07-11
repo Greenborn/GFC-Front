@@ -3,22 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
-import { HerramientasPage } from './herramientas.page';
+import { BusquedaFotografiasPage } from './busqueda-fotografias.page';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
     path: '',
-    component: HerramientasPage
-  },
-  {
-    path: 'busqueda-fotografias',
-    loadChildren: () => import('./busqueda-fotografias/busqueda-fotografias.module').then(m => m.BusquedaFotografiasModule)
+    component: BusquedaFotografiasPage
   }
 ];
 
 @NgModule({
-  declarations: [HerramientasPage],
+  declarations: [BusquedaFotografiasPage],
   imports: [
     CommonModule,
     FormsModule,
@@ -27,4 +23,4 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ]
 })
-export class HerramientasModule { } 
+export class BusquedaFotografiasModule { } 

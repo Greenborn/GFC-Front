@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/herramientas"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Búsqueda de Fotografías</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Nota de ayuda -->
+  <ion-alert *ngIf="mostrarNota" [isOpen]="true" (didDismiss)="cerrarNota()" header="Ayuda" 
+    [buttons]="['Entendido']" message="Busca fotografías por título o código. Puedes usar términos parciales para encontrar coincidencias.">
+  </ion-alert>
+  
+  <!-- Cuadro de búsqueda -->
+  <ion-searchbar 
+    [(ngModel)]="terminoBusqueda" 
+    placeholder="Buscar por título o código..."
+    (ionInput)="onBuscar($event)"
+    (keyup.enter)="realizarBusqueda()"
+    show-clear-button="always">
+  </ion-searchbar>
+  
+  <!-- Resultados -->
+  <div *ngIf="resultados.length > 0">
+    <h3>Resultados ({{ resultados.length }})</h3>
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let imagen of resultados" size="12" size-sm="6" size-md="4" size-lg="3">
+          <ion-card>
+            <img [src]="imagen.thumbnail_url || imagen.url" alt="{{ imagen.title }}" />
+            <ion-card-header>
+              <ion-card-title>{{ imagen.title }}</ion-card-title>
+              <ion-card-subtitle>Código: {{ imagen.code }}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <p *ngIf="imagen.description">{{ imagen.description }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  
+  <!-- Mensaje sin resultados -->
+  <div *ngIf="busquedaRealizada && resultados.length === 0" class="ion-text-center">
+    <ion-icon name="search-outline" size="large"></ion-icon>
+    <p>No se encontraron resultados para "{{ terminoBusqueda }}"</p>
+  </div>
+  
+  <!-- Loading -->
+  <div *ngIf="cargando" class="ion-text-center">
+    <ion-spinner></ion-spinner>
+    <p>Buscando...</p>
+  </div>
+</ion-content> 
