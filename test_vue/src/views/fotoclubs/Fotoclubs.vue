@@ -29,8 +29,6 @@
             <p class="mb-1"><i class="bi bi-geo-alt"></i> {{ f.address }}</p>
             <p class="mb-1"><i class="bi bi-envelope"></i> {{ f.email }}</p>
             <p class="mb-1"><i class="bi bi-globe"></i> <a :href="f.website" target="_blank">{{ f.website }}</a></p>
-            <span class="badge bg-success" v-if="f.status==='active'">Activo</span>
-            <span class="badge bg-secondary" v-else>Inactivo</span>
           </div>
           <div class="card-footer bg-transparent d-flex justify-content-between">
             <router-link :to="`/organizaciones/editar/${f.id}`" class="btn btn-outline-secondary btn-sm">
