@@ -39,9 +39,18 @@ export class HerramientasPage implements OnInit {
         const data = response.participants.map(p => ({
           Nombre: p.name,
           Apellido: p.last_name,
+          DNI: p.dni,
           Categoria: p.category_name
         }));
         const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+        // Ajustar el ancho de las columnas
+        ws['!cols'] = [
+          { wch: 20 }, // Nombre
+          { wch: 20 }, // Apellido
+          { wch: 15 }, // DNI
+          { wch: 20 }  // Categoria
+        ];
+        // NOTA: XLSX no soporta estilos de encabezado (color fondo/texto) en navegadores
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Participantes');
         XLSX.writeFile(wb, `participantes_concurso_${id}.xlsx`);
