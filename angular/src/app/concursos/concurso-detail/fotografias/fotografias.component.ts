@@ -84,7 +84,6 @@ export class FotografiasComponent implements OnInit {
   public seccionSeleccionada: Section = null;
   public categoriaSeleccionada: Category = null;
   public fotoclubSeleccionado: string = null;
-  public estadoEvaluacionSeleccionado: string = null;
   public updatingInscriptos: boolean = false;
   mostrarFiltro: boolean = false;
   public subscriptions = []
@@ -269,8 +268,7 @@ export class FotografiasComponent implements OnInit {
   get hayFiltrosActivos(): boolean {
     return this.categoriaSeleccionada != null || 
            this.seccionSeleccionada != null || 
-           this.fotoclubSeleccionado != null || 
-           this.estadoEvaluacionSeleccionado != null;
+           this.fotoclubSeleccionado != null;
   }
 
   get resultadosConcursoFiltrados() {
@@ -297,18 +295,7 @@ export class FotografiasComponent implements OnInit {
         cond3 = fotoclubName === this.fotoclubSeleccionado
       }
       
-      // Filtro por estado de evaluación
-      let cond4: boolean = true;
-      if (this.estadoEvaluacionSeleccionado != undefined) {
-        const tienePuntuacion = rc.metric?.score != null && rc.metric?.score > 0;
-        if (this.estadoEvaluacionSeleccionado === 'evaluada') {
-          cond4 = tienePuntuacion;
-        } else if (this.estadoEvaluacionSeleccionado === 'no_evaluada') {
-          cond4 = !tienePuntuacion;
-        }
-      }
-      
-      return cond1 && cond2 && cond3 && cond4
+      return cond1 && cond2 && cond3
     })
   }
 
@@ -364,15 +351,10 @@ export class FotografiasComponent implements OnInit {
     this.fotoclubSeleccionado = null;
   }
 
-  async set_estado_evaluacion_null() {
-    this.estadoEvaluacionSeleccionado = null;
-  }
-
   async limpiarTodosLosFiltros() {
     this.categoriaSeleccionada = null;
     this.seccionSeleccionada = null;
     this.fotoclubSeleccionado = null;
-    this.estadoEvaluacionSeleccionado = null;
   }
 
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)

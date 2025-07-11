@@ -70,17 +70,7 @@
                     </ion-select>
                   </ion-item>
 
-                  <ion-button *ngIf="estadoEvaluacionSeleccionado != null" (click)="set_estado_evaluacion_null()" fill="clear" class="">
-                    <ion-icon name="close-outline"></ion-icon>
-                  </ion-button>
 
-                  <ion-item >
-                    <ion-label position="stacked">Estado Evaluación</ion-label>
-                    <ion-select [(ngModel)]="estadoEvaluacionSeleccionado" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
-                      <ion-select-option value="evaluada">Evaluada</ion-select-option>
-                      <ion-select-option value="no_evaluada">No Evaluada</ion-select-option>
-                    </ion-select>
-                  </ion-item>
 
                 </ion-row>
   
