@@ -51,46 +51,24 @@
 
     <div v-else class="row">
       <div class="col-12 mb-4" v-for="concurso in filteredConcursos" :key="concurso.id">
-        <div class="card">
-          <!-- Imagen del concurso en el encabezado -->
-          <div v-if="concurso.image" class="card-img-top-container">
-            <img 
-              :src="concurso.image" 
-              :alt="concurso.title || 'Imagen del concurso'"
-              class="card-img-top"
-              @error="handleImageError"
-            >
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{ concurso.title || 'Sin título' }}</h5>
-            <p class="card-text text-muted" v-if="concurso.sub_title">{{ concurso.sub_title }}</p>
-            <p class="card-text">{{ concurso.description || 'Sin descripción' }}</p>
-            
-            <div class="row mb-3">
-              <div class="col-6">
-                <small class="text-muted">Inicio:</small><br>
-                <strong>{{ formatDate(concurso.start_date) }}</strong>
-              </div>
-              <div class="col-6">
-                <small class="text-muted">Fin:</small><br>
-                <strong>{{ formatDate(concurso.end_date) }}</strong>
-              </div>
+        <div 
+          class="concurso-card position-relative d-flex flex-column justify-content-end"
+          :style="concurso.image ? `background-image: url('${concurso.image}')` : ''"
+        >
+          <div class="concurso-overlay"></div>
+          <div class="concurso-content position-relative text-white p-4">
+            <span class="badge estado-badge mb-2" :class="getStatusBadgeClass(concurso.status)">
+              {{ getStatusText(concurso.status) }}
+            </span>
+            <h4 class="fw-bold mb-2">{{ concurso.title || 'Sin título' }}</h4>
+            <div class="mb-2">
+              <small>Desde: {{ formatDate(concurso.start_date) }} - Hasta: {{ formatDate(concurso.end_date) }}</small>
             </div>
-
-            <div class="mb-3">
-              <span class="badge" :class="getStatusBadgeClass(concurso.status)">
-                {{ getStatusText(concurso.status) }}
-              </span>
-            </div>
-          </div>
-          
-          <div class="card-footer bg-transparent">
-            <div class="d-flex justify-content-between">
-              <router-link :to="`/concursos/${concurso.id}`" class="btn btn-outline-primary btn-sm">
-                <i class="bi bi-eye me-1"></i>Ver
-              </router-link>
-              <router-link :to="`/concursos/editar/${concurso.id}`" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-pencil me-1"></i>Editar
+            <p class="mb-2">{{ concurso.description || 'Sin descripción' }}</p>
+            <!-- Aquí puedes agregar categorías y secciones si están disponibles -->
+            <div class="d-flex justify-content-end">
+              <router-link :to="`/concursos/${concurso.id}`" class="btn btn-outline-light btn-sm fw-bold">
+                VER CONCURSO
               </router-link>
             </div>
           </div>
@@ -207,33 +185,41 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  transition: transform 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-}
-
-.badge {
-  font-size: 0.8rem;
-}
-
-.card-img-top-container {
-  height: 200px;
+.concurso-card {
+  min-height: 260px;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: relative;
   overflow: hidden;
-  background-color: #f8f9fa;
+  display: flex;
 }
-
-.card-img-top {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+.concurso-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 1;
 }
-
-.card-img-top:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
+.concurso-content {
+  position: relative;
+  z-index: 2;
+}
+.estado-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 3;
+  font-size: 1rem;
+  padding: 0.4em 1em;
+  border-radius: 1em;
+}
+.btn-outline-light {
+  border-color: #fff;
+  color: #fff;
+}
+.btn-outline-light:hover {
+  background: #fff;
+  color: #222;
 }
 </style> 
