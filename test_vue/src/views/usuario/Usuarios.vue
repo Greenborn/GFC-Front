@@ -47,14 +47,7 @@
           </option>
         </select>
       </div>
-      <div class="col-md-2">
-        <button 
-          class="btn btn-outline-secondary w-100" 
-          @click="toggleFilters"
-        >
-          <i class="fa fa-filter me-1"></i>Filtros
-        </button>
-      </div>
+
     </div>
 
     <div v-if="loading" class="text-center">
@@ -230,10 +223,7 @@ export default {
       })
     },
 
-    toggleFilters() {
-      // Implementar toggle de filtros avanzados
-      console.log('Toggle filters')
-    },
+
 
     getTitulo() {
       return rolificadorService.getNombreUsuarios(this.userLogged?.role_id)
