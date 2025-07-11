@@ -35,7 +35,7 @@
         <select class="form-select" v-model="roleFilter" @change="filterUsuarios">
           <option value="">Todos los roles</option>
           <option v-for="role in roles" :key="role.id" :value="role.id">
-            {{ role.name }}
+            {{ role.type }}
           </option>
         </select>
       </div>
@@ -204,8 +204,13 @@ export default {
         
         // Debug: mostrar estructura de datos
         console.log('Miembros cargados:', this.miembros)
+        console.log('Roles cargados:', this.roles)
+        console.log('Fotoclubs cargados:', this.fotoclubs)
         if (this.miembros.length > 0) {
           console.log('Ejemplo de miembro:', this.miembros[0])
+        }
+        if (this.roles.length > 0) {
+          console.log('Ejemplo de rol:', this.roles[0])
         }
         
       } catch (error) {
