@@ -49,11 +49,6 @@ export class HerramientasPage {
         show-clear-button="always">
       </ion-searchbar>
       
-      <ion-button expand="block" (click)="realizarBusqueda()" [disabled]="!terminoBusqueda">
-        <ion-icon name="search" slot="start"></ion-icon>
-        Buscar
-      </ion-button>
-      
       <!-- Resultados -->
       <div *ngIf="resultados.length > 0">
         <h3>Resultados ({{ resultados.length }})</h3>
