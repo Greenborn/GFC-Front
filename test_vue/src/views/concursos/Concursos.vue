@@ -57,8 +57,8 @@
         >
           <div class="concurso-overlay"></div>
           <div class="concurso-content position-relative text-white p-4">
-            <span class="badge estado-badge mb-2" :class="getStatusBadgeClass(concurso.status)">
-              {{ getStatusText(concurso.status) }}
+            <span class="badge estado-badge mb-2" :class="getStatusBadgeClass(concurso)">
+              {{ getStatusText(concurso) }}
             </span>
             <h4 class="fw-bold mb-2">{{ concurso.title || 'Sin título' }}</h4>
             <div class="mb-2">
@@ -158,22 +158,18 @@ export default {
       return new Date(dateString).toLocaleDateString('es-ES')
     },
 
-    getStatusBadgeClass(status) {
-      const classes = {
-        active: 'bg-success',
-        inactive: 'bg-secondary',
-        finished: 'bg-warning'
-      }
-      return classes[status] || 'bg-secondary'
+    getStatusBadgeClass(concurso) {
+      if (!concurso.end_date) return 'bg-secondary';
+      const cierre = new Date(concurso.end_date);
+      const ahora = new Date();
+      return cierre >= ahora ? 'bg-success' : 'bg-danger';
     },
 
-    getStatusText(status) {
-      const texts = {
-        active: 'Activo',
-        inactive: 'Inactivo',
-        finished: 'Finalizado'
-      }
-      return texts[status] || status
+    getStatusText(concurso) {
+      if (!concurso.end_date) return 'Desconocido';
+      const cierre = new Date(concurso.end_date);
+      const ahora = new Date();
+      return cierre >= ahora ? 'Activo' : 'Cerrado';
     },
 
     handleImageError(event) {
