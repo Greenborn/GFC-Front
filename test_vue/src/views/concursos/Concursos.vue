@@ -21,9 +21,7 @@
             v-model="searchTerm"
             @input="filterConcursos"
           >
-          <button class="btn btn-outline-secondary" type="button">
-            <i class="bi bi-search"></i>
-          </button>
+          <span class="input-group-text bg-white"><i class="fa fa-search"></i></span>
         </div>
       </div>
       <div class="col-md-6 text-end">
