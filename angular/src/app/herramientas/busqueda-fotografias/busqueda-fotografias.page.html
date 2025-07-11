@@ -53,6 +53,7 @@
               <ion-card-subtitle *ngIf="imagen.author">Autor: <strong>{{ imagen.author | titlecase }}</strong></ion-card-subtitle>
               <ion-card-subtitle *ngIf="imagen.section">Sección: <strong>{{ imagen.section }}</strong></ion-card-subtitle>
               <ion-card-subtitle *ngIf="imagen.contest?.name">Concurso: <strong>{{ imagen.contest.name }}</strong></ion-card-subtitle>
+              <ion-card-subtitle *ngIf="imagen.category?.name">Categoría: <strong>{{ imagen.category.name }}</strong></ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
               <p *ngIf="imagen.description">{{ imagen.description }}</p>
@@ -73,6 +74,7 @@
               <ion-card-subtitle *ngIf="resultados[0].author">Autor: <strong>{{ resultados[0].author | titlecase }}</strong></ion-card-subtitle>
               <ion-card-subtitle *ngIf="resultados[0].section">Sección: <strong>{{ resultados[0].section }}</strong></ion-card-subtitle>
               <ion-card-subtitle *ngIf="resultados[0].contest?.name">Concurso: <strong>{{ resultados[0].contest.name }}</strong></ion-card-subtitle>
+              <ion-card-subtitle *ngIf="resultados[0].category?.name">Categoría: <strong>{{ resultados[0].category.name }}</strong></ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
               <p *ngIf="resultados[0].description">{{ resultados[0].description }}</p>
