@@ -23,10 +23,6 @@ export class BusquedaFotografiasPage {
     this.mostrarNota = false;
   }
 
-  onBuscar(event: any) {
-    this.terminoBusqueda = event.detail.value;
-  }
-
   async realizarBusqueda() {
     if (!this.terminoBusqueda.trim()) return;
     

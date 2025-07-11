@@ -17,7 +17,6 @@
   <ion-searchbar 
     [(ngModel)]="terminoBusqueda" 
     placeholder="Buscar por título o código..."
-    (ionInput)="onBuscar($event)"
     (keyup.enter)="realizarBusqueda()"
     show-clear-button="always">
   </ion-searchbar>
