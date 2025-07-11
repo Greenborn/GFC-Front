@@ -321,7 +321,8 @@ export default {
 
       let ks = Object.keys(obj)
       for (let c = 0; c < ks.length; c++) {
-        if (ks[c] != '0' && ks[c] != 'RECHAZADA')
+        // Solo mostrar premios que suman puntajes (no RECHAZADA, 0, ni FUERA DE REGLAMENTO)
+        if (ks[c] != '0' && ks[c] != 'RECHAZADA' && ks[c] != 'FUERA DE REGLAMENTO' && obj[ks[c]] > 0)
           arr.push({ 'nombre': ks[c], 'cantidad': obj[ks[c]] })
       }
 
