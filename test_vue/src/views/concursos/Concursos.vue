@@ -50,8 +50,8 @@
     </div>
 
     <div v-else class="row">
-      <div class="col-md-6 col-lg-4 mb-4" v-for="concurso in filteredConcursos" :key="concurso.id">
-        <div class="card h-100">
+      <div class="col-12 mb-4" v-for="concurso in filteredConcursos" :key="concurso.id">
+        <div class="card">
           <div class="card-body">
             <h5 class="card-title">{{ concurso.title || 'Sin título' }}</h5>
             <p class="card-text text-muted" v-if="concurso.sub_title">{{ concurso.sub_title }}</p>
