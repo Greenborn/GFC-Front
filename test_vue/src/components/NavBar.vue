@@ -21,6 +21,9 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/organizaciones">Organizaciones</router-link>
           </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/ranking">Ranking</router-link>
+          </li>
         </ul>
         
         <ul class="navbar-nav" v-if="user">

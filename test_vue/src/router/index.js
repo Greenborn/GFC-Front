@@ -14,6 +14,7 @@ import UsuarioEdit from '../views/usuario/UsuarioEdit.vue'
 import Notificaciones from '../views/Notificaciones.vue'
 import Fotoclubs from '../views/fotoclubs/Fotoclubs.vue'
 import FotoclubPost from '../views/fotoclubs/FotoclubPost.vue'
+import Ranking from '../views/concursos/Ranking.vue'
 import Folder from '../views/Folder.vue'
 
 // Guard de autenticación (igual que Angular)
@@ -130,6 +131,12 @@ const routes = [
     path: '/organizaciones/editar/:id',
     name: 'organizacion-editar',
     component: FotoclubPost
+  },
+  {
+    path: '/ranking',
+    name: 'ranking',
+    component: Ranking,
+    beforeEnter: requireAuth
   },
   {
     path: '/folder/:id',
