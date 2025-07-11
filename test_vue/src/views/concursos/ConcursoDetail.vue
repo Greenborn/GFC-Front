@@ -223,7 +223,7 @@ export default {
         this.loading = true
         const concursoId = this.$route.params.id
         this.concurso = await contestService.get(concursoId)
-        await this.loadResults()
+        // await this.loadResults() // Quitar esta línea para evitar la consulta automática
       } catch (error) {
         console.error('Error cargando concurso:', error)
         this.errorMessage = 'Error al cargar el concurso'
