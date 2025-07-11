@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HerramientasPage } from './herramientas.page';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { IonicModule } from '@ionic/angular';
+import { HerramientasPage, BusquedaFotografiasModalComponent } from './herramientas.page';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
@@ -11,9 +14,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [HerramientasPage],
+  declarations: [HerramientasPage, BusquedaFotografiasModalComponent],
   imports: [
     CommonModule,
+    FormsModule,
+    HttpClientModule,
+    IonicModule,
     RouterModule.forChild(routes)
   ]
 })

@@ -1,1 +1,33 @@
-/* Estilos para la página de Herramientas */ 
+/* Estilos para la página de Herramientas */
+
+/* Modal de ancho completo */
+.modal-full-width {
+  --width: 100%;
+  --height: 100%;
+  --max-width: 100%;
+  --max-height: 100%;
+}
+
+/* Estilos para las imágenes en los resultados */
+ion-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Centrado de elementos */
+.ion-text-center {
+  text-align: center;
+}
+
+/* Espaciado para el botón de búsqueda */
+ion-button {
+  margin: 16px 0;
+}
+
+/* Estilos para el mensaje sin resultados */
+ion-icon[size="large"] {
+  font-size: 48px;
+  color: var(--ion-color-medium);
+  margin-bottom: 16px;
+} 
