@@ -6,6 +6,13 @@ ion-card img {
   height: auto;
   max-height: 300px;
   object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
 }
 
 /* Centrado de elementos */

@@ -28,7 +28,10 @@
       <ion-row>
         <ion-col *ngFor="let imagen of resultados" size="12" size-sm="6" size-md="4" size-lg="3">
           <ion-card>
-            <img [src]="imagen.thumbnail_url || imagen.url" alt="{{ imagen.title }}" />
+            <img [src]="imagen.thumbnail_url || imagen.url" 
+                 alt="{{ imagen.title }}" 
+                 (click)="abrirImagen(imagen.thumbnail_url || imagen.url)"
+                 style="cursor: pointer;" />
             <ion-card-header>
               <ion-card-title>{{ imagen.title }}</ion-card-title>
               <ion-card-subtitle>Código: {{ imagen.code }}</ion-card-subtitle>

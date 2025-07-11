@@ -23,6 +23,12 @@ export class BusquedaFotografiasPage {
     this.mostrarNota = false;
   }
 
+  abrirImagen(url: string) {
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
+
   async realizarBusqueda() {
     if (!this.terminoBusqueda.trim()) return;
     
