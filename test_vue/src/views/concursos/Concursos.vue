@@ -117,7 +117,21 @@ export default {
     async loadConcursos() {
       try {
         this.loading = true
-        this.concursos = await contestService.getAll()
+        const rawData = await contestService.getAll()
+        
+        // Mapear los datos para asegurar que tengan la estructura correcta
+        this.concursos = rawData.map(concurso => ({
+          id: concurso.id,
+          title: concurso.title || concurso.name || concurso.nombre || 'Sin título',
+          sub_title: concurso.sub_title || concurso.subtitle || concurso.subtitulo || '',
+          description: concurso.description || concurso.descripcion || 'Sin descripción',
+          start_date: concurso.start_date || concurso.fecha_inicio || '',
+          end_date: concurso.end_date || concurso.fecha_fin || '',
+          status: concurso.status || 'active',
+          created_at: concurso.created_at,
+          updated_at: concurso.updated_at
+        }))
+        
         this.filteredConcursos = [...this.concursos]
       } catch (error) {
         console.error('Error cargando concursos:', error)
