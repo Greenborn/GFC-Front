@@ -1,0 +1,30 @@
+{
+  "name": "gfc-vue-app",
+  "version": "1.0.0",
+  "description": "Aplicación Vue.js que replica la funcionalidad del proyecto Angular GFC",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview"
+  },
+  "keywords": [
+    "vue",
+    "gfc",
+    "fotoclub"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@popperjs/core": "^2.11.0",
+    "axios": "^1.6.0",
+    "bootstrap": "^5.3.0",
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.4.0",
+    "vite": "^4.4.11"
+  }
+}

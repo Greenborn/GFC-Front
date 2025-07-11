@@ -1,0 +1,56 @@
+.lista-elem {
+    --inner-padding-end: 0;
+ }
+ 
+.thead {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    @media(max-width:767px) {
+        flex-direction: column;
+        margin-top: 12px;
+    }
+}
+
+.img-button{
+    max-height: 100%;
+    width: auto;
+}
+
+.img-galeria {
+    height: 10rem;
+    width: auto;
+    cursor: pointer;
+} 
+
+.cont-img-text {
+    max-width: 15rem;
+    text-align: center;
+    p {
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+}
+
+.min-10rem{
+    min-width: 10rem;
+}
+
+.filtros-container {
+    ion-item {
+        --padding-start: 0;
+        --inner-padding-end: 0;
+    }
+    
+    ion-button[fill="clear"] {
+        --padding-start: 4px;
+        --padding-end: 4px;
+        margin: 0;
+    }
+}
+
+ion-chip {
+    font-size: 0.8rem;
+    height: 1.5rem;
+}
