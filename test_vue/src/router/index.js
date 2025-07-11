@@ -1,0 +1,132 @@
+import { createRouter, createWebHashHistory } from 'vue-router'
+import authService from '../services/auth.js'
+
+// Importar vistas
+import InfoCentro from '../views/InfoCentro.vue'
+import Login from '../views/Login.vue'
+import Concursos from '../views/concursos/Concursos.vue'
+import ConcursoDetail from '../views/concursos/ConcursoDetail.vue'
+import ConcursoPost from '../views/concursos/ConcursoPost.vue'
+import Usuarios from '../views/usuario/Usuarios.vue'
+import UsuarioPost from '../views/usuario/UsuarioPost.vue'
+import Perfil from '../views/usuario/Perfil.vue'
+import UsuarioEdit from '../views/usuario/UsuarioEdit.vue'
+import Notificaciones from '../views/Notificaciones.vue'
+import Fotoclubs from '../views/fotoclubs/Fotoclubs.vue'
+import FotoclubPost from '../views/fotoclubs/FotoclubPost.vue'
+import Folder from '../views/Folder.vue'
+
+// Guard de autenticación
+const requireAuth = (to, from, next) => {
+  if (authService.isLoggedIn()) {
+    next()
+  } else {
+    next('/login')
+  }
+}
+
+const routes = [
+  {
+    path: '/',
+    name: 'info-centro',
+    component: InfoCentro
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/registro',
+    name: 'registro',
+    component: UsuarioPost
+  },
+  {
+    path: '/concursos',
+    name: 'concursos',
+    component: Concursos,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/concursos/nuevo',
+    name: 'concurso-nuevo',
+    component: ConcursoPost,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/concursos/editar/:id',
+    name: 'concurso-editar',
+    component: ConcursoPost,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/concursos/:id',
+    name: 'concurso-detail',
+    component: ConcursoDetail,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/usuarios',
+    name: 'usuarios',
+    component: Usuarios,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/usuarios/nuevo',
+    name: 'usuario-nuevo',
+    component: UsuarioPost,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/usuarios/editar/:id',
+    name: 'usuario-editar',
+    component: UsuarioPost,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/perfil/:id',
+    name: 'perfil',
+    component: Perfil,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/perfil/editar',
+    name: 'perfil-editar',
+    component: UsuarioEdit,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/notificaciones',
+    name: 'notificaciones',
+    component: Notificaciones,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/organizaciones',
+    name: 'organizaciones',
+    component: Fotoclubs
+  },
+  {
+    path: '/organizaciones/nuevo',
+    name: 'organizacion-nuevo',
+    component: FotoclubPost
+  },
+  {
+    path: '/organizaciones/editar/:id',
+    name: 'organizacion-editar',
+    component: FotoclubPost
+  },
+  {
+    path: '/folder/:id',
+    name: 'folder',
+    component: Folder,
+    beforeEnter: requireAuth
+  }
+]
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes
+})
+
+export default router 
