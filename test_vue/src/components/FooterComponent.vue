@@ -3,12 +3,12 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-          <h5>GFC - Grupo Fotográfico</h5>
+          <h5>GFC - Grupo Fotográfico Centro</h5>
           <p class="mb-0">Plataforma de gestión de concursos fotográficos</p>
         </div>
         <div class="col-md-6 text-md-end">
           <p class="mb-0">Versión {{ version }}</p>
-          <p class="mb-0">&copy; 2024 GFC. Todos los derechos reservados.</p>
+          <p class="mb-0">&copy; {{ year }} GFC. Todos los derechos reservados.</p>
         </div>
       </div>
     </div>
@@ -22,7 +22,8 @@ export default {
   name: 'FooterComponent',
   data() {
     return {
-      version: configService.data.version
+      version: configService.data.version,
+      year: new Date().getFullYear()
     }
   }
 }
