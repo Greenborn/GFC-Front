@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContestService } from '../services/contest.service';
 import { Contest } from '../models/contest.model';
+import * as XLSX from 'xlsx';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-herramientas',
@@ -12,7 +14,7 @@ export class HerramientasPage implements OnInit {
   concursos: Contest[] = [];
   concursoSeleccionado: Contest | null = null;
 
-  constructor(private router: Router, private contestService: ContestService) {}
+  constructor(private router: Router, private contestService: ContestService, private http: HttpClient) {}
 
   ngOnInit() {
     this.contestService.getAll<Contest>('per-page=1000').subscribe(data => {
@@ -29,10 +31,21 @@ export class HerramientasPage implements OnInit {
   }
 
   descargarListado() {
-    // Aquí irá la lógica de descarga en el futuro
-    if (this.concursoSeleccionado) {
-      // Lógica de descarga
-      alert('Descargar listado para: ' + this.concursoSeleccionado.name);
-    }
+    if (!this.concursoSeleccionado) return;
+    const id = this.concursoSeleccionado.id;
+    const url = `https://gfc.api2.greenborn.com.ar/api/contests/participants?id=${id}`;
+    this.http.get<any>(url).subscribe(response => {
+      if (response && response.participants) {
+        const data = response.participants.map(p => ({
+          Nombre: p.name,
+          Apellido: p.last_name,
+          Categoria: p.category_name
+        }));
+        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Participantes');
+        XLSX.writeFile(wb, `participantes_concurso_${id}.xlsx`);
+      }
+    });
   }
 } 
