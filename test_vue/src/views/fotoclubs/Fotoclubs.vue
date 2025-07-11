@@ -6,7 +6,7 @@
       </div>
       <div class="col-md-6 text-end">
         <router-link to="/organizaciones/nuevo" class="btn btn-primary">
-          <i class="bi bi-plus-circle me-2"></i>Nuevo Fotoclub
+          <i class="fa fa-plus me-2"></i>Nuevo Fotoclub
         </router-link>
       </div>
     </div>
@@ -14,7 +14,7 @@
       <div class="col-md-4">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Buscar..." v-model="search" @input="filter" />
-          <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+          <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i></button>
         </div>
       </div>
       <div class="col-md-4">
@@ -34,16 +34,16 @@
           <div class="card-body">
             <h5 class="card-title">{{ f.name }}</h5>
             <p class="card-text">{{ f.description }}</p>
-            <p class="mb-1"><i class="bi bi-geo-alt"></i> {{ f.address }}</p>
-            <p class="mb-1"><i class="bi bi-envelope"></i> {{ f.email }}</p>
-            <p class="mb-1"><i class="bi bi-globe"></i> <a :href="f.website" target="_blank">{{ f.website }}</a></p>
+            <p class="mb-1"><i class="fa fa-map-marker"></i> {{ f.address }}</p>
+            <p class="mb-1"><i class="fa fa-envelope"></i> {{ f.email }}</p>
+            <p class="mb-1"><i class="fa fa-globe"></i> <a :href="f.website" target="_blank">{{ f.website }}</a></p>
             <span class="badge" :class="getTypeBadgeClass(f.organization_type)">
               {{ getTypeText(f.organization_type) }}
             </span>
           </div>
           <div class="card-footer bg-transparent d-flex justify-content-between">
             <router-link :to="`/organizaciones/editar/${f.id}`" class="btn btn-outline-secondary btn-sm">
-              <i class="bi bi-pencil"></i> Editar
+              <i class="fa fa-pencil"></i> Editar
             </router-link>
           </div>
         </div>
