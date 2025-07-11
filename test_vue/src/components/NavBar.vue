@@ -11,18 +11,18 @@
       </button>
       
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto">
+        <ul class="navbar-nav me-auto" v-if="user">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/ranking">Ranking</router-link>
+          </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/concursos">Concursos</router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/usuarios">Usuarios</router-link>
+          <li class="nav-item" v-if="isDelegadoOrAdmin">
+            <router-link class="nav-link" to="/usuarios">{{ getNombreUsuarios }}</router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="isAdmin">
             <router-link class="nav-link" to="/organizaciones">Organizaciones</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/ranking">Ranking</router-link>
           </li>
         </ul>
         
@@ -68,18 +68,47 @@
 
 <script>
 import authService from '../services/auth.js'
+import rolificadorService from '../services/rolificador.js'
 
 export default {
   name: 'NavBar',
   data() {
     return {
-      user: null
+      user: null,
+      authInterval: null
     }
   },
-  mounted() {
-    this.user = authService.getUser()
+  computed: {
+    isAdmin() {
+      return rolificadorService.isAdmin(this.user)
+    },
+    isDelegadoOrAdmin() {
+      return rolificadorService.esDelegado(this.user) || rolificadorService.isAdmin(this.user)
+    },
+    getNombreUsuarios() {
+      return rolificadorService.getNombreUsuarios(this.user?.role_id)
+    }
+  },
+  async mounted() {
+    await this.loadUser()
+    // Verificar autenticación periódicamente (similar a Angular)
+    this.authInterval = setInterval(async () => {
+      if (authService.isLoggedIn() && !this.user) {
+        await this.loadUser()
+      } else if (!authService.isLoggedIn() && this.user) {
+        this.user = null
+      }
+    }, 1000)
+  },
+  beforeUnmount() {
+    if (this.authInterval) {
+      clearInterval(this.authInterval)
+    }
   },
   methods: {
+    async loadUser() {
+      this.user = await authService.getUser()
+    },
     async logout() {
       await authService.logout()
       this.$router.push('/login')

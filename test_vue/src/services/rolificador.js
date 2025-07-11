@@ -15,17 +15,12 @@ class RolificadorService {
 
   // Verificar si el usuario es delegado
   esDelegado(user) {
-    return user && (user.role_id === 2 || user.role_id === 1)
+    return user && user.role_id === 2
   }
 
   // Obtener nombre de usuarios según el rol
   getNombreUsuarios(roleId) {
-    switch (roleId) {
-      case 1: return 'Usuarios'
-      case 2: return 'Miembros'
-      case 3: return 'Miembros'
-      default: return 'Usuarios'
-    }
+    return roleId == 1 ? 'Usuarios' : 'Autores'
   }
 
   // Obtener tipo de rol
