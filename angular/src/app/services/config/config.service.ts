@@ -5,7 +5,7 @@ export const CONFIG = {
   publicApi: "https://gfc.api2.greenborn.com.ar/",
   loginAction:"login",
   appName: "app_gfc_prod-",
-  version: "1.1.32"
+  version: "1.2.32"
 }
 
 @Injectable({
