@@ -52,6 +52,15 @@
     <div v-else class="row">
       <div class="col-12 mb-4" v-for="concurso in filteredConcursos" :key="concurso.id">
         <div class="card">
+          <!-- Imagen del concurso en el encabezado -->
+          <div v-if="concurso.image" class="card-img-top-container">
+            <img 
+              :src="concurso.image" 
+              :alt="concurso.title || 'Imagen del concurso'"
+              class="card-img-top"
+              @error="handleImageError"
+            >
+          </div>
           <div class="card-body">
             <h5 class="card-title">{{ concurso.title || 'Sin título' }}</h5>
             <p class="card-text text-muted" v-if="concurso.sub_title">{{ concurso.sub_title }}</p>
@@ -97,6 +106,7 @@
 
 <script>
 import contestService from '../../services/contest.js'
+import configService from '../../services/config.js'
 
 export default {
   name: 'Concursos',
@@ -120,17 +130,28 @@ export default {
         const rawData = await contestService.getAll()
         
         // Mapear los datos para asegurar que tengan la estructura correcta
-        this.concursos = rawData.map(concurso => ({
-          id: concurso.id,
-          title: concurso.title || concurso.name || concurso.nombre || 'Sin título',
-          sub_title: concurso.sub_title || concurso.subtitle || concurso.subtitulo || '',
-          description: concurso.description || concurso.descripcion || 'Sin descripción',
-          start_date: concurso.start_date || concurso.fecha_inicio || '',
-          end_date: concurso.end_date || concurso.fecha_fin || '',
-          status: concurso.status || 'active',
-          created_at: concurso.created_at,
-          updated_at: concurso.updated_at
-        }))
+        this.concursos = rawData.map(concurso => {
+          // Construir URL completa de la imagen
+          let imageUrl = ''
+          if (concurso.img_url) {
+            imageUrl = configService.data.apiBaseUrl + concurso.img_url
+          } else if (concurso.image || concurso.imagen || concurso.photo || concurso.foto) {
+            imageUrl = configService.data.apiBaseUrl + (concurso.image || concurso.imagen || concurso.photo || concurso.foto)
+          }
+          
+          return {
+            id: concurso.id,
+            title: concurso.title || concurso.name || concurso.nombre || 'Sin título',
+            sub_title: concurso.sub_title || concurso.subtitle || concurso.subtitulo || '',
+            description: concurso.description || concurso.descripcion || 'Sin descripción',
+            image: imageUrl,
+            start_date: concurso.start_date || concurso.fecha_inicio || '',
+            end_date: concurso.end_date || concurso.fecha_fin || '',
+            status: concurso.status || 'active',
+            created_at: concurso.created_at,
+            updated_at: concurso.updated_at
+          }
+        })
         
         this.filteredConcursos = [...this.concursos]
       } catch (error) {
@@ -175,6 +196,11 @@ export default {
         finished: 'Finalizado'
       }
       return texts[status] || status
+    },
+
+    handleImageError(event) {
+      // Ocultar la imagen si hay error al cargarla
+      event.target.style.display = 'none'
     }
   }
 }
@@ -191,5 +217,23 @@ export default {
 
 .badge {
   font-size: 0.8rem;
+}
+
+.card-img-top-container {
+  height: 200px;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.card-img-top:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
 }
 </style> 

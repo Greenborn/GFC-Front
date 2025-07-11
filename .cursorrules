@@ -1,0 +1,17 @@
+# Reglas del proyecto GFC-Front
+
+## Commits
+- Los mensajes de commit no deben superar 255 caracteres
+- Usar prefijos como: feat, fix, docs, style, refactor, test, chore
+- Ejemplo: "fix: corregir error en login form"
+
+## Código
+- Usar camelCase para variables y funciones
+- Usar PascalCase para componentes
+- Comentar funciones complejas
+- Mantener consistencia en el estilo de código
+
+## Documentación
+- Documentar APIs y funciones importantes
+- Mantener README actualizado
+- Usar comentarios claros y concisos 
