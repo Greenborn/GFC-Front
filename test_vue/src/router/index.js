@@ -18,10 +18,31 @@ import Folder from '../views/Folder.vue'
 
 // Guard de autenticación
 const requireAuth = (to, from, next) => {
-  if (authService.isLoggedIn()) {
+  console.log('Guard requireAuth: Verificando autenticación para', to.path)
+  const isLoggedIn = authService.isLoggedIn()
+  console.log('Guard requireAuth: Usuario autenticado:', isLoggedIn)
+  
+  if (isLoggedIn) {
+    console.log('Guard requireAuth: Permitiendo acceso a', to.path)
     next()
   } else {
+    console.log('Guard requireAuth: Redirigiendo a /login')
     next('/login')
+  }
+}
+
+// Guard para redirigir usuarios autenticados desde login/registro
+const redirectIfAuthenticated = (to, from, next) => {
+  console.log('Guard redirectIfAuthenticated: Verificando para', to.path)
+  const isLoggedIn = authService.isLoggedIn()
+  console.log('Guard redirectIfAuthenticated: Usuario autenticado:', isLoggedIn)
+  
+  if (isLoggedIn) {
+    console.log('Guard redirectIfAuthenticated: Redirigiendo a /concursos')
+    next('/concursos')
+  } else {
+    console.log('Guard redirectIfAuthenticated: Permitiendo acceso a', to.path)
+    next()
   }
 }
 
@@ -34,12 +55,14 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: Login
+    component: Login,
+    beforeEnter: redirectIfAuthenticated
   },
   {
     path: '/registro',
     name: 'registro',
-    component: UsuarioPost
+    component: UsuarioPost,
+    beforeEnter: redirectIfAuthenticated
   },
   {
     path: '/concursos',
@@ -127,6 +150,13 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+// Guard global para manejar la autenticación
+router.beforeEach((to, from, next) => {
+  // Forzar la verificación de autenticación en cada navegación
+  authService.checkAuth()
+  next()
 })
 
 export default router 

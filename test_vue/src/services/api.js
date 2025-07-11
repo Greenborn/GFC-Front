@@ -26,9 +26,11 @@ axios.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Token expirado o inválido
-      configService.removeLocalStorage('token')
-      window.location.hash = '#/login'
+      // Token expirado o inválido - solo si no estamos en login
+      if (!window.location.hash.includes('#/login')) {
+        configService.removeLocalStorage('token')
+        window.location.hash = '#/login'
+      }
     }
     return Promise.reject(error)
   }

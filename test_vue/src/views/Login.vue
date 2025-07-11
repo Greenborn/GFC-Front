@@ -90,12 +90,22 @@ export default {
       this.errorMessage = ''
       this.errors = {}
 
+      console.log('Iniciando login con credenciales:', this.credentials)
+
       try {
         const result = await authService.login(this.credentials)
+        console.log('Resultado del login:', result)
         
         if (result.success) {
-          this.$router.push('/concursos')
+          console.log('Login exitoso, redirigiendo a /concursos')
+          // Usar replace para evitar que el usuario pueda volver atrás al login
+          this.$router.replace('/concursos').then(() => {
+            console.log('Redirección completada exitosamente')
+          }).catch(err => {
+            console.error('Error en redirección:', err)
+          })
         } else {
+          console.log('Login fallido:', result.message)
           this.errorMessage = result.message
         }
       } catch (error) {
