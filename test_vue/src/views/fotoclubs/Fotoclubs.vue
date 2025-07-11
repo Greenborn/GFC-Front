@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row mb-4">
       <div class="col-md-6">
-        <h2>Organizaciones Fotográficas</h2>
+        <h2>Organizaciones</h2>
       </div>
       <div class="col-md-6 text-end">
         <router-link to="/organizaciones/nuevo" class="btn btn-primary">
@@ -11,11 +11,19 @@
       </div>
     </div>
     <div class="row mb-3">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Buscar..." v-model="search" @input="filter" />
           <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
         </div>
+      </div>
+      <div class="col-md-4">
+        <select class="form-select" v-model="typeFilter" @change="filter">
+          <option value="">Todos los tipos</option>
+          <option value="INTERNO">Interno</option>
+          <option value="EXTERNO">Externo</option>
+          <option value="EXTERNO_UNICEN">Externo UNICEN</option>
+        </select>
       </div>
     </div>
     <div v-if="loading" class="text-center"><div class="spinner-border"></div></div>
@@ -29,6 +37,9 @@
             <p class="mb-1"><i class="bi bi-geo-alt"></i> {{ f.address }}</p>
             <p class="mb-1"><i class="bi bi-envelope"></i> {{ f.email }}</p>
             <p class="mb-1"><i class="bi bi-globe"></i> <a :href="f.website" target="_blank">{{ f.website }}</a></p>
+            <span class="badge" :class="getTypeBadgeClass(f.organization_type)">
+              {{ getTypeText(f.organization_type) }}
+            </span>
           </div>
           <div class="card-footer bg-transparent d-flex justify-content-between">
             <router-link :to="`/organizaciones/editar/${f.id}`" class="btn btn-outline-secondary btn-sm">
@@ -48,26 +59,63 @@ import fotoclubService from '../../services/fotoclub.js'
 const fotoclubs = ref([])
 const filtered = ref([])
 const search = ref('')
+const typeFilter = ref('')
 const loading = ref(true)
 const error = ref('')
 
 const filter = () => {
   const s = search.value.toLowerCase()
-  filtered.value = fotoclubs.value.filter(f =>
-    f.name.toLowerCase().includes(s) ||
-    (f.description && f.description.toLowerCase().includes(s)) ||
-    (f.address && f.address.toLowerCase().includes(s))
-  )
+  const filteredResults = fotoclubs.value.filter(f => {
+    // Filtro de búsqueda
+    const matchesSearch = f.name.toLowerCase().includes(s) ||
+      (f.description && f.description.toLowerCase().includes(s)) ||
+      (f.address && f.address.toLowerCase().includes(s))
+    
+    // Filtro de tipo
+    const matchesType = !typeFilter.value || f.organization_type === typeFilter.value
+    
+    return matchesSearch && matchesType
+  })
+  
+  // Ordenar: INTERNO primero, luego los demás
+  filtered.value = filteredResults.sort((a, b) => {
+    if (a.organization_type === 'INTERNO' && b.organization_type !== 'INTERNO') {
+      return -1 // a va antes que b
+    }
+    if (a.organization_type !== 'INTERNO' && b.organization_type === 'INTERNO') {
+      return 1 // b va antes que a
+    }
+    return 0 // mantener orden original entre elementos del mismo tipo
+  })
 }
 onMounted(async () => {
   try {
     loading.value = true
     fotoclubs.value = await fotoclubService.getAll()
-    filtered.value = [...fotoclubs.value]
+    // Aplicar filtro inicial para ordenar por prioridad
+    filter()
   } catch (e) {
     error.value = 'Error al cargar las organizaciones'
   } finally {
     loading.value = false
   }
 })
+
+const getTypeBadgeClass = (type) => {
+  const classes = {
+    'INTERNO': 'bg-primary',
+    'EXTERNO': 'bg-success',
+    'EXTERNO_UNICEN': 'bg-warning'
+  }
+  return classes[type] || 'bg-secondary'
+}
+
+const getTypeText = (type) => {
+  const texts = {
+    'INTERNO': 'Interno',
+    'EXTERNO': 'Externo',
+    'EXTERNO_UNICEN': 'Externo UNICEN'
+  }
+  return texts[type] || type || 'Sin tipo'
+}
 </script> 
