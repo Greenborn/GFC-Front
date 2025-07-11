@@ -202,6 +202,12 @@ export default {
         this.fotoclubs = fotoclubs || []
         this.filteredUsuarios = [...this.miembros]
         
+        // Debug: mostrar estructura de datos
+        console.log('Miembros cargados:', this.miembros)
+        if (this.miembros.length > 0) {
+          console.log('Ejemplo de miembro:', this.miembros[0])
+        }
+        
       } catch (error) {
         console.error('Error cargando datos:', error)
         this.errorMessage = 'Error al cargar los datos'
@@ -264,6 +270,7 @@ export default {
 
       try {
         this.deleting = miembro.id
+        // Eliminar usuario (el perfil se elimina en cascada)
         await userService.delete(miembro.user.id)
         this.miembros = this.miembros.filter(m => m.id !== miembro.id)
         this.filterUsuarios()

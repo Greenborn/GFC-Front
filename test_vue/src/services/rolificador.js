@@ -44,17 +44,17 @@ class RolificadorService {
 
     try {
       if (this.isAdmin(userLogged)) {
-        // Admin ve todos los usuarios
-        return await userService.getAllExpanded()
+        // Admin ve todos los perfiles expandidos (igual que Angular)
+        return await profileService.getAll('expand=user,fotoclub')
       } else {
-        // Delegado ve solo usuarios de su fotoclub
+        // Delegado ve solo perfiles de su fotoclub
         if (!userLogged.profile_id) {
           console.warn('Usuario sin profile_id:', userLogged)
           return []
         }
         const userProfile = await profileService.get(userLogged.profile_id)
         if (userProfile && userProfile.fotoclub_id) {
-          return await userService.getByFotoclub(userProfile.fotoclub_id)
+          return await profileService.getAll(`filter[fotoclub_id]=${userProfile.fotoclub_id}&expand=user,fotoclub`)
         }
         return []
       }
