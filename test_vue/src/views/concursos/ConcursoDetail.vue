@@ -53,7 +53,7 @@
             <div class="mb-3">{{ concurso?.description }}</div>
             <div class="mb-3">
               <span class="fw-bold">Reglamento:</span>
-              <a v-if="concurso?.rules_url" :href="concurso.rules_url" target="_blank" class="btn btn-link btn-sm p-0 align-baseline">
+              <a v-if="reglamentoUrl" :href="reglamentoUrl" target="_blank" class="btn btn-link btn-sm p-0 align-baseline">
                 <i class="fa fa-link"></i>
               </a>
             </div>
@@ -83,6 +83,7 @@
 
 <script>
 import contestService from '../../services/contest.js'
+import configService from '../../services/config.js'
 
 export default {
   name: 'ConcursoDetail',
@@ -99,6 +100,15 @@ export default {
       sectionsLoading: false,
       photosLoading: false,
       errorMessage: ''
+    }
+  },
+  computed: {
+    reglamentoUrl() {
+      if (!this.concurso || !this.concurso.rules_url) return '';
+      // Si la URL ya es absoluta, la retorna tal cual
+      if (/^https?:\/\//.test(this.concurso.rules_url)) return this.concurso.rules_url;
+      // Si es relativa, la concatena a la base de la API
+      return configService.data.apiBaseUrl + this.concurso.rules_url;
     }
   },
   async mounted() {
