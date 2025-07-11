@@ -48,13 +48,6 @@
         </select>
       </div>
       <div class="col-md-2">
-        <select class="form-select" v-model="statusFilter" @change="filterUsuarios">
-          <option value="">Todos los estados</option>
-          <option value="active">Activos</option>
-          <option value="inactive">Inactivos</option>
-        </select>
-      </div>
-      <div class="col-md-2">
         <button 
           class="btn btn-outline-secondary w-100" 
           @click="toggleFilters"
@@ -165,7 +158,6 @@ export default {
       deleting: null,
       errorMessage: '',
       searchTerm: '',
-      statusFilter: '',
       roleFilter: '',
       fotoclubFilter: '',
       userLogged: null
@@ -234,10 +226,7 @@ export default {
         // Filtro de fotoclub
         const matchesFotoclub = !this.fotoclubFilter || miembro.fotoclub_id == this.fotoclubFilter
         
-        // Filtro de estado
-        const matchesStatus = !this.statusFilter || miembro.user?.status === this.statusFilter
-        
-        return matchesSearch && matchesRole && matchesFotoclub && matchesStatus
+        return matchesSearch && matchesRole && matchesFotoclub
       })
     },
 
