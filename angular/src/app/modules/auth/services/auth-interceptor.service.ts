@@ -1,8 +1,8 @@
 import { HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { catchError, retry, delay } from 'rxjs/operators';
+import { throwError, of } from 'rxjs';
 
 import { ConfigService } from 'src/app/services/config/config.service';
 import { AuthService } from './auth.service';
@@ -36,14 +36,29 @@ export class AuthInterceptorService implements HttpInterceptor {
     }
 
     return next.handle(request).pipe(
+      // Reintentar hasta 2 veces para errores de red
+      retry(2),
       catchError((err: HttpErrorResponse) => {
 
-        if (err.status === 401 || err.statusText == 'Unknown Error') {
-          console.log('catch error request sin autorizacion, redirect a login', err);
+        // Solo cerrar sesión en casos específicos de autenticación
+        if (err.status === 401) {
+          console.log('Error 401 - Token expirado o inválido, cerrando sesión', err);
           this.authService.logout();
-        } else {
-          console.log(`catch error request con status ${err.status}`, err)
+        } 
+        // Para errores de red (status 0), solo cerrar sesión si no hay token
+        else if (err.status === 0 && !token) {
+          console.log('Error de red sin token - redirigiendo a login', err);
+          this.authService.logout();
         }
+        // Para otros errores de red, solo loggear sin cerrar sesión
+        else if (err.status === 0) {
+          console.log('Error de red temporal después de reintentos - manteniendo sesión', err);
+        }
+        // Para otros errores HTTP, solo loggear
+        else {
+          console.log(`Error HTTP ${err.status} - ${err.statusText}`, err)
+        }
+        
         this.UIUtilsService.dismissLoading();
         return throwError( err );
 
