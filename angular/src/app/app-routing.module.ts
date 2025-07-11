@@ -80,6 +80,11 @@ const routes: Routes = [
     loadChildren: () => import('./fotoclubs-abm/fotoclubs-abm.module').then( m => m.FotoclubsAbmPageModule)
   },
   {
+    path: 'herramientas',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./herramientas/herramientas.module').then(m => m.HerramientasModule)
+  },
+  {
     path: '',
     loadChildren: () => import('./info-centro/info-centro.module').then( m => m.InfoCentroPageModule),
     pathMatch: 'full'
