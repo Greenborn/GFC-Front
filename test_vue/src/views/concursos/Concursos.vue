@@ -56,10 +56,10 @@
           :style="concurso.image ? `background-image: url('${concurso.image}')` : ''"
         >
           <div class="concurso-overlay"></div>
+          <span class="badge estado-badge mb-2" :class="getStatusBadgeClass(concurso)">
+            {{ getStatusText(concurso) }}
+          </span>
           <div class="concurso-content position-relative text-white p-4">
-            <span class="badge estado-badge mb-2" :class="getStatusBadgeClass(concurso)">
-              {{ getStatusText(concurso) }}
-            </span>
             <h4 class="fw-bold mb-2">{{ concurso.title || 'Sin título' }}</h4>
             <div class="mb-2">
               <small>Desde: {{ formatDate(concurso.start_date) }} - Hasta: {{ formatDate(concurso.end_date) }}</small>
@@ -203,12 +203,13 @@ export default {
 }
 .estado-badge {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 3;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
   font-size: 1rem;
   padding: 0.4em 1em;
   border-radius: 1em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
 }
 .btn-outline-light {
   border-color: #fff;
