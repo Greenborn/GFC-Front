@@ -53,9 +53,9 @@
       <div class="col-md-6 col-lg-4 mb-4" v-for="concurso in filteredConcursos" :key="concurso.id">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title">{{ concurso.title }}</h5>
+            <h5 class="card-title">{{ concurso.title || 'Sin título' }}</h5>
             <p class="card-text text-muted" v-if="concurso.sub_title">{{ concurso.sub_title }}</p>
-            <p class="card-text">{{ concurso.description }}</p>
+            <p class="card-text">{{ concurso.description || 'Sin descripción' }}</p>
             
             <div class="row mb-3">
               <div class="col-6">
@@ -130,9 +130,9 @@ export default {
     filterConcursos() {
       this.filteredConcursos = this.concursos.filter(concurso => {
         const matchesSearch = !this.searchTerm || 
-          concurso.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          concurso.sub_title?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          concurso.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
+          (concurso.title && concurso.title.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+          (concurso.sub_title && concurso.sub_title.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+          (concurso.description && concurso.description.toLowerCase().includes(this.searchTerm.toLowerCase()))
         
         const matchesStatus = !this.statusFilter || concurso.status === this.statusFilter
         
