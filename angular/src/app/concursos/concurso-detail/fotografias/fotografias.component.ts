@@ -52,12 +52,39 @@ export class FotografiasComponent implements OnInit {
       valorMostrado: 'Código',
       callback: (c: ContestResultExpanded, query: string) => c.image.code.match(new RegExp(`${query}`, 'i'))
     },
+    {
+      valor: 'fotoclub',
+      valorMostrado: 'Fotoclub',
+      callback: (c: ContestResultExpanded, query: string) => {
+        const fotoclubName = this.getFotoclubName(c.image.profile_id);
+        return fotoclubName.toLowerCase().includes(query.toLowerCase());
+      }
+    },
+    {
+      valor: 'seccion',
+      valorMostrado: 'Sección',
+      callback: (c: ContestResultExpanded, query: string) => c.section?.name.toLowerCase().includes(query.toLowerCase())
+    },
+    {
+      valor: 'categoria',
+      valorMostrado: 'Categoría',
+      callback: (c: ContestResultExpanded, query: string) => {
+        const inscripto = this.inscriptos.find(i => i.profile_id == c.image.profile_id);
+        if (inscripto) {
+          const categoria = this.categoriasInscriptas.find(cat => cat.category_id === inscripto.category_id);
+          return categoria?.category?.name.toLowerCase().includes(query.toLowerCase());
+        }
+        return false;
+      }
+    }
   ];
   public filtrado: any[] = [];
   puntajes: Metric[] = [];
 
   public seccionSeleccionada: Section = null;
   public categoriaSeleccionada: Category = null;
+  public fotoclubSeleccionado: string = null;
+  public estadoEvaluacionSeleccionado: string = null;
   public updatingInscriptos: boolean = false;
   mostrarFiltro: boolean = false;
   public subscriptions = []
@@ -229,22 +256,59 @@ export class FotografiasComponent implements OnInit {
     return 'No hay inscriptos'
   }
 
+  get fotoclubsDisponibles(): string[] {
+    const fotoclubs = new Set<string>();
+    this.inscriptos.forEach(inscripto => {
+      if (inscripto.profile.fotoclub?.name) {
+        fotoclubs.add(inscripto.profile.fotoclub.name);
+      }
+    });
+    return Array.from(fotoclubs).sort();
+  }
+
+  get hayFiltrosActivos(): boolean {
+    return this.categoriaSeleccionada != null || 
+           this.seccionSeleccionada != null || 
+           this.fotoclubSeleccionado != null || 
+           this.estadoEvaluacionSeleccionado != null;
+  }
+
   get resultadosConcursoFiltrados() {
     if (this.resultadosConcurso == undefined) {
       return []
     }
     return this.resultadosConcurso.filter(rc => {
+      // Filtro por categoría
       let cond1: boolean = true;
       if (this.categoriaSeleccionada != undefined) {
-        // console.log(this.categoriaSeleccionada, 'categoria')
-        cond1 = this.categoriaSeleccionada.id == this.inscriptos.find(i => i.profile_id == rc.image.profile_id).category_id
+        cond1 = this.categoriaSeleccionada.id == this.inscriptos.find(i => i.profile_id == rc.image.profile_id)?.category_id
       }
+      
+      // Filtro por sección
       let cond2: boolean = true;
       if (this.seccionSeleccionada != undefined) {
-        // console.log(this.seccionSeleccionada, 'seccion')
         cond2 = this.seccionSeleccionada.id == rc.section_id
       }
-      return cond1 && cond2
+      
+      // Filtro por fotoclub
+      let cond3: boolean = true;
+      if (this.fotoclubSeleccionado != undefined) {
+        const fotoclubName = this.getFotoclubName(rc.image.profile_id);
+        cond3 = fotoclubName === this.fotoclubSeleccionado
+      }
+      
+      // Filtro por estado de evaluación
+      let cond4: boolean = true;
+      if (this.estadoEvaluacionSeleccionado != undefined) {
+        const tienePuntuacion = rc.metric?.score != null && rc.metric?.score > 0;
+        if (this.estadoEvaluacionSeleccionado === 'evaluada') {
+          cond4 = tienePuntuacion;
+        } else if (this.estadoEvaluacionSeleccionado === 'no_evaluada') {
+          cond4 = !tienePuntuacion;
+        }
+      }
+      
+      return cond1 && cond2 && cond3 && cond4
     })
   }
 
@@ -289,7 +353,26 @@ export class FotografiasComponent implements OnInit {
   }
 
   async set_categoria_null() {
-    return;
+    this.categoriaSeleccionada = null;
+  }
+
+  async set_seccion_null() {
+    this.seccionSeleccionada = null;
+  }
+
+  async set_fotoclub_null() {
+    this.fotoclubSeleccionado = null;
+  }
+
+  async set_estado_evaluacion_null() {
+    this.estadoEvaluacionSeleccionado = null;
+  }
+
+  async limpiarTodosLosFiltros() {
+    this.categoriaSeleccionada = null;
+    this.seccionSeleccionada = null;
+    this.fotoclubSeleccionado = null;
+    this.estadoEvaluacionSeleccionado = null;
   }
 
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)

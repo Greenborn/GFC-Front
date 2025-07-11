@@ -36,3 +36,21 @@
 .min-10rem{
     min-width: 10rem;
 }
+
+.filtros-container {
+    ion-item {
+        --padding-start: 0;
+        --inner-padding-end: 0;
+    }
+    
+    ion-button[fill="clear"] {
+        --padding-start: 4px;
+        --padding-end: 4px;
+        margin: 0;
+    }
+}
+
+ion-chip {
+    font-size: 0.8rem;
+    height: 1.5rem;
+}

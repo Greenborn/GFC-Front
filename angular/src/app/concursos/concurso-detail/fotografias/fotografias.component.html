@@ -19,6 +19,10 @@
             <ion-row class="ion-justify-content-start ion-align-items-center ion-margin-top ion-margin-bottom">
 
               <h1 class="ion-margin-top ion-margin-bottom ion-margin-end"> Fotografías </h1>
+              
+              <ion-chip *ngIf="hayFiltrosActivos" color="primary" class="ion-margin-start">
+                <ion-label>{{ resultadosConcursoFiltrados.length }} de {{ resultadosConcurso?.length || 0 }}</ion-label>
+              </ion-chip>
              
               <ion-fab-button size="small"
                 *ngIf="contestService.isActive(concurso) && 
@@ -31,7 +35,7 @@
             <ion-row class="ion-align-items-center ion-padding-bottom">
               <ion-col size="10" size-sm="11">
                 
-                <ion-row class="ion-justify-content-end ion-align-items-end">
+                <ion-row class="ion-justify-content-end ion-align-items-end filtros-container">
                   
                   <ion-button *ngIf="categoriaSeleccionada != null" (click)="set_categoria_null()" fill="clear" class="">
                     <ion-icon name="close-outline"></ion-icon>
@@ -44,7 +48,7 @@
                     </ion-select>
                   </ion-item>
 
-                  <ion-button *ngIf="seccionSeleccionada != null" (click)="set_categoria_null()" fill="clear" class="">
+                  <ion-button *ngIf="seccionSeleccionada != null" (click)="set_seccion_null()" fill="clear" class="">
                     <ion-icon name="close-outline"></ion-icon>
                   </ion-button>
 
@@ -52,6 +56,29 @@
                     <ion-label position="stacked">Sección</ion-label>
                     <ion-select [(ngModel)]="seccionSeleccionada" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
                       <ion-select-option *ngFor="let s of seccionesInscriptas" [value]="s.section">{{ s.section.name }}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+
+                  <ion-button *ngIf="fotoclubSeleccionado != null" (click)="set_fotoclub_null()" fill="clear" class="">
+                    <ion-icon name="close-outline"></ion-icon>
+                  </ion-button>
+
+                  <ion-item >
+                    <ion-label position="stacked">Fotoclub</ion-label>
+                    <ion-select [(ngModel)]="fotoclubSeleccionado" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
+                      <ion-select-option *ngFor="let f of fotoclubsDisponibles" [value]="f">{{ f }}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+
+                  <ion-button *ngIf="estadoEvaluacionSeleccionado != null" (click)="set_estado_evaluacion_null()" fill="clear" class="">
+                    <ion-icon name="close-outline"></ion-icon>
+                  </ion-button>
+
+                  <ion-item >
+                    <ion-label position="stacked">Estado Evaluación</ion-label>
+                    <ion-select [(ngModel)]="estadoEvaluacionSeleccionado" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
+                      <ion-select-option value="evaluada">Evaluada</ion-select-option>
+                      <ion-select-option value="no_evaluada">No Evaluada</ion-select-option>
                     </ion-select>
                   </ion-item>
 
@@ -64,6 +91,15 @@
                   <ion-button (click)="toggleFiltro()" color="medium" expand="block"
                     class="ion-justify-content-center ion-align-items-center ion-align-self-center">
                     <ion-icon name="funnel"></ion-icon>
+                  </ion-button>
+                </ion-row>
+              </ion-col>
+
+              <ion-col size="2" size-sm="1" *ngIf="hayFiltrosActivos">
+                <ion-row class="ion-justify-content-center ion-align-items-center ion-align-self-center">
+                  <ion-button (click)="limpiarTodosLosFiltros()" color="warning" expand="block"
+                    class="ion-justify-content-center ion-align-items-center ion-align-self-center">
+                    <ion-icon name="refresh"></ion-icon>
                   </ion-button>
                 </ion-row>
               </ion-col>
