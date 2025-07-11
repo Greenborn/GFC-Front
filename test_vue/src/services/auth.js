@@ -1,5 +1,6 @@
 import axios from 'axios'
 import configService from './config.js'
+import userService from './user.js'
 
 // Crear una instancia de axios específica para autenticación sin interceptores
 const authAxios = axios.create({
@@ -34,14 +35,13 @@ class AuthService {
         configService.setLocalStorage('token', token)
         configService.setLocalStorage('userId', id)
         
-        // Actualizar estado interno
-        this.isAuthenticated = true
-        this.user = { id: parseInt(id) }
-        
         // Configurar token para futuras peticiones
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
         
-        return { success: true, user: { id } }
+        // Obtener datos completos del usuario
+        await this.loadUserData(parseInt(id))
+        
+        return { success: true, user: this.user }
       }
       console.log('AuthService: No se recibió token')
       return { success: false, message: 'Credenciales inválidas' }
@@ -52,6 +52,21 @@ class AuthService {
         success: false, 
         message: error.response?.data?.message || 'Error en el servidor' 
       }
+    }
+  }
+
+  async loadUserData(userId) {
+    try {
+      // Obtener datos completos del usuario con expand
+      const userData = await userService.get(userId, 'expand=profile,profile.fotoclub,role')
+      this.user = userData
+      this.isAuthenticated = true
+      console.log('AuthService: Datos de usuario cargados:', userData)
+    } catch (error) {
+      console.error('AuthService: Error cargando datos de usuario:', error)
+      // Si falla, al menos mantener el id básico
+      this.user = { id: userId }
+      this.isAuthenticated = true
     }
   }
 
@@ -71,8 +86,6 @@ class AuthService {
     window.location.hash = '#/login'
   }
 
-
-
   clearAuth() {
     configService.setLocalStorage('token', null)
     configService.setLocalStorage('userId', null)
@@ -83,17 +96,17 @@ class AuthService {
     delete axios.defaults.headers.common['Authorization']
   }
 
-  checkAuth() {
+  async checkAuth() {
     // Igual que Angular: verificar token en localStorage
     const token = configService.getLocalStorage('token')
     const userId = configService.getLocalStorage('userId')
     
     if (token && userId) {
-      this.isAuthenticated = true
-      this.user = { id: parseInt(userId) }
-      
       // Configurar el token para futuras peticiones
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      
+      // Obtener datos completos del usuario
+      await this.loadUserData(parseInt(userId))
       
       return true
     }
@@ -106,8 +119,6 @@ class AuthService {
     
     return false
   }
-
-
 
   getToken() {
     return configService.getLocalStorage('token')
@@ -123,11 +134,11 @@ class AuthService {
     return configService.getLocalStorage('token')
   }
 
-  getUser() {
+  async getUser() {
     if (!this.user) {
       const userId = configService.getLocalStorage('userId')
       if (userId) {
-        this.user = { id: parseInt(userId) }
+        await this.loadUserData(parseInt(userId))
       }
     }
     return this.user
@@ -140,8 +151,6 @@ class AuthService {
     console.log('AuthService isLoggedIn:', hasToken)
     return hasToken
   }
-
-
 }
 
 export default new AuthService() 

@@ -20,6 +20,21 @@ class UserService extends ApiService {
     }
   }
 
+  // Obtener usuarios con datos expandidos (igual que Angular)
+  async getAllExpanded() {
+    return await this.getAll('expand=profile,profile.fotoclub,role')
+  }
+
+  // Obtener usuarios por rol (para filtros)
+  async getByRole(roleId) {
+    return await this.getAll(`filter[role_id]=${roleId}&expand=profile,profile.fotoclub,role`)
+  }
+
+  // Obtener usuarios por fotoclub (para filtros)
+  async getByFotoclub(fotoclubId) {
+    return await this.getAll(`filter[profile.fotoclub_id]=${fotoclubId}&expand=profile,profile.fotoclub,role`)
+  }
+
   async createUser(userData) {
     return await this.post(userData)
   }
