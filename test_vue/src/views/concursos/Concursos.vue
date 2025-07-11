@@ -102,7 +102,7 @@ export default {
     async loadConcursos() {
       try {
         this.loading = true
-        const rawData = await contestService.getAll()
+        const rawData = await contestService.getAllConcursos()
         
         // Mapear los datos para asegurar que tengan la estructura correcta
         this.concursos = rawData.map(concurso => {
@@ -127,6 +127,8 @@ export default {
             updated_at: concurso.updated_at
           }
         })
+        // Ordenar por start_date descendente
+        this.concursos.sort((a, b) => new Date(b.start_date) - new Date(a.start_date))
         
         this.filteredConcursos = [...this.concursos]
       } catch (error) {

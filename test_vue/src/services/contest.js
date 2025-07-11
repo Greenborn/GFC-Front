@@ -42,6 +42,11 @@ class ContestService extends ApiService {
   async getCompressedPhotos(contestId) {
     return await this.getAll(`contest_id=${contestId}`, 'compressed-photos')
   }
+
+  async getAllConcursos() {
+    // Traer todos los concursos sin paginación (Yii2 REST)
+    return await this.getAll('per-page=1000')
+  }
 }
 
 export default new ContestService() 

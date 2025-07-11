@@ -46,7 +46,9 @@
               <button class="btn btn-primary btn-sm" title="Editar"><i class="fa fa-pen"></i></button>
               <button class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash"></i></button>
             </div>
-            <h5 class="fw-bold">{{ concurso?.title }}</h5>
+            <h3 class="fw-bold mb-2 text-dark">
+              {{ concurso?.title || concurso?.name || 'Sin título' }}
+            </h3>
             <div class="text-muted mb-2">
               Desde: {{ formatDate(concurso?.start_date) }} - Hasta: {{ formatDate(concurso?.end_date) }}
             </div>
