@@ -4,7 +4,25 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <h5>Estructura de archivos y directorios:</h5>
-  <pre style="white-space: pre-wrap; font-size: 14px; background: #f8f8f8; padding: 12px; border-radius: 6px;">{{ estructura }}</pre>
-  <ion-button expand="block" color="primary" (click)="volver()" class="ion-margin-top">Volver</ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <h5>Estructura de archivos y directorios:</h5>
+        <ng-container *ngIf="estructura && estructura.trim().length > 0; else errorEstructura">
+          <pre style="white-space: pre-wrap; font-size: 14px; background: #f8f8f8; padding: 12px; border-radius: 6px;">{{ estructura }}</pre>
+        </ng-container>
+        <ng-template #errorEstructura>
+          <ion-card color="danger">
+            <ion-card-content>
+              Error: No se pudo procesar el archivo o está vacío.
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+        <ion-button expand="block" color="primary" (click)="volver()" class="ion-margin-top">Volver</ion-button>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <!-- Segunda columna reservada para uso futuro -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content> 
