@@ -76,7 +76,7 @@ export class HerramientasPage implements OnInit {
       });
       await loading.dismiss();
       // Navegar a la vista de carga de resultados
-      this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura } });
+      this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura, categorias: this.concursoSeleccionado?.categories || [] } });
     } catch (err) {
       await loading.dismiss();
       alert('Error al leer el archivo ZIP: ' + err);
