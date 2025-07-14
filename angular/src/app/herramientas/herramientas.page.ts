@@ -4,6 +4,9 @@ import { ContestService } from '../services/contest.service';
 import { Contest } from '../models/contest.model';
 import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
+import * as JSZip from 'jszip';
+import { ModalController, LoadingController } from '@ionic/angular';
+import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
 
 @Component({
   selector: 'app-herramientas',
@@ -14,7 +17,13 @@ export class HerramientasPage implements OnInit {
   concursos: Contest[] = [];
   concursoSeleccionado: Contest | null = null;
 
-  constructor(private router: Router, private contestService: ContestService, private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private contestService: ContestService,
+    private http: HttpClient,
+    private modalController: ModalController,
+    private loadingController: LoadingController
+  ) {}
 
   ngOnInit() {
     this.contestService.getAll<Contest>('per-page=1000').subscribe(data => {
@@ -33,6 +42,45 @@ export class HerramientasPage implements OnInit {
   cargarResultados() {
     console.log('Clic en Cargar Resultados');
     // Aquí se implementará la lógica para cargar resultados de juzgamiento
+  }
+
+  async onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (!file) return;
+
+    // Validar tamaño (2GB = 2 * 1024 * 1024 * 1024 bytes)
+    const maxSize = 2 * 1024 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert('El archivo supera el tamaño máximo permitido de 2 GB.');
+      return;
+    }
+
+    // Validar extensión
+    if (!file.name.toLowerCase().endsWith('.zip')) {
+      alert('Solo se permiten archivos con extensión .zip');
+      return;
+    }
+
+    // Mostrar loading
+    const loading = await this.loadingController.create({
+      message: 'Procesando archivo...'
+    });
+    await loading.present();
+
+    // Leer y mostrar estructura del zip
+    try {
+      const zip = await JSZip.loadAsync(file);
+      let estructura = '';
+      zip.forEach((relativePath: string, zipEntry: any) => {
+        estructura += (zipEntry.dir ? '[DIR] ' : '      ') + relativePath + '\n';
+      });
+      await loading.dismiss();
+      // Navegar a la vista de carga de resultados
+      this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura } });
+    } catch (err) {
+      await loading.dismiss();
+      alert('Error al leer el archivo ZIP: ' + err);
+    }
   }
 
   descargarListado() {
