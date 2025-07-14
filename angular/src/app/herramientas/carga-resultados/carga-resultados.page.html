@@ -21,7 +21,17 @@
         <ion-button expand="block" color="primary" (click)="volver()" class="ion-margin-top">Volver</ion-button>
       </ion-col>
       <ion-col size="12" size-md="6">
-        <!-- Segunda columna reservada para uso futuro -->
+        <!-- Segunda columna: log de validaciones -->
+        <ion-card *ngIf="exportacionValida" color="success">
+          <ion-card-content>
+            Validación correcta: existe el directorio <b>exportacion</b>
+          </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="!exportacionValida" color="warning">
+          <ion-card-content>
+            no existe directorio exportacion
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
