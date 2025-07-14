@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContestService } from '../services/contest.service';
 import { Contest } from '../models/contest.model';
+import { Category } from '../models/category.model';
+import { CategoryService } from '../services/category.service';
 import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
 import * as JSZip from 'jszip';
@@ -20,6 +22,7 @@ export class HerramientasPage implements OnInit {
   constructor(
     private router: Router,
     private contestService: ContestService,
+    private categoryService: CategoryService,
     private http: HttpClient,
     private modalController: ModalController,
     private loadingController: LoadingController
@@ -45,6 +48,8 @@ export class HerramientasPage implements OnInit {
   }
 
   async onFileSelected(event: any) {
+    console.log('=== DEBUG INICIO CARGA ARCHIVO ===');
+    
     const file: File = event.target.files[0];
     if (!file) return;
 
@@ -74,9 +79,25 @@ export class HerramientasPage implements OnInit {
       zip.forEach((relativePath: string, zipEntry: any) => {
         estructura += (zipEntry.dir ? '[DIR] ' : '      ') + relativePath + '\n';
       });
+      
+      // Obtener todas las categorías del sistema
+      console.log('=== DEBUG OBTENCIÓN CATEGORÍAS ===');
+      console.log('Obteniendo todas las categorías del sistema...');
+      
+      let categorias: Category[] = [];
+      try {
+        categorias = await this.categoryService.getAll<Category>().toPromise();
+        console.log('Categorías obtenidas de API:', categorias);
+      } catch (err) {
+        console.error('Error al obtener categorías:', err);
+      }
+      
+      console.log('Categorías finales a enviar:', categorias);
+      console.log('=== FIN DEBUG OBTENCIÓN ===');
+      
       await loading.dismiss();
       // Navegar a la vista de carga de resultados
-      this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura, categorias: this.concursoSeleccionado?.categories || [] } });
+      this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura, categorias } });
     } catch (err) {
       await loading.dismiss();
       alert('Error al leer el archivo ZIP: ' + err);

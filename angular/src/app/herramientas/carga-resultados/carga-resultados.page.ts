@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { Category } from '../../models/category.model';
 
 function normalizarNombre(nombre: string): string {
-  // Quitar acentos, pasar a minúsculas y eliminar espacios
+  // Quitar acentos, pasar a minúsculas, pero mantener espacios
   return nombre
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
+    .toLowerCase()
+    .trim();
 }
 
 @Component({
@@ -44,6 +45,10 @@ export class CargaResultadosPage implements OnInit {
   }
 
   private validarCategorias(estructura: string, categorias: Category[]) {
+    console.log('=== DEBUG VALIDACIÓN CATEGORÍAS ===');
+    console.log('Categorías recibidas:', categorias);
+    console.log('Estructura completa:', estructura);
+    
     // Buscar directorios de segundo nivel bajo exportacion
     const lineas = estructura.split('\n').map(l => l.trim());
     // Solo directorios con exactamente un '/' después de 'exportacion/'
@@ -53,17 +58,34 @@ export class CargaResultadosPage implements OnInit {
       // Debe tener solo un segmento (sin más '/'), es decir, no recursivo
       return resto.length > 0 && !resto.slice(0, -1).includes('/');
     });
+    
+    console.log('Subdirectorios encontrados:', subdirs);
+    
     this.validacionesCategorias = subdirs.map(dir => {
       // Obtener el nombre del subdirectorio
       let nombreDir = dir.replace('[DIR] exportacion/', '');
       if (nombreDir.endsWith('/')) nombreDir = nombreDir.slice(0, -1);
+      
+      console.log('Procesando directorio:', nombreDir);
+      
       // Buscar si coincide con alguna categoría (ignorando acentos y mayúsculas)
-      const categoria = categorias.find(cat => normalizarNombre(cat.name) === normalizarNombre(nombreDir));
+      const categoria = categorias.find(cat => {
+        const catNormalizada = normalizarNombre(cat.name);
+        const dirNormalizada = normalizarNombre(nombreDir);
+        console.log(`Comparando: "${dirNormalizada}" vs "${catNormalizada}" (original: "${cat.name}")`);
+        return catNormalizada === dirNormalizada;
+      });
+      
       if (categoria) {
+        console.log('✅ Categoría encontrada:', categoria.name);
         return { dir: nombreDir, mensaje: `Categoría reconocida: ${categoria.name}`, color: 'success' };
       } else {
+        console.log('❌ Categoría NO encontrada para:', nombreDir);
         return { dir: nombreDir, mensaje: `Categoría desconocida: ${nombreDir}`, color: 'warning' };
       }
     });
+    
+    console.log('Validaciones finales:', this.validacionesCategorias);
+    console.log('=== FIN DEBUG ===');
   }
 } 
