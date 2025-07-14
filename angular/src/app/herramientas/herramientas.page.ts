@@ -30,6 +30,11 @@ export class HerramientasPage implements OnInit {
     this.router.navigate(['/herramientas/busqueda-fotografias']);
   }
 
+  cargarResultados() {
+    console.log('Clic en Cargar Resultados');
+    // Aquí se implementará la lógica para cargar resultados de juzgamiento
+  }
+
   descargarListado() {
     if (!this.concursoSeleccionado) return;
     const id = this.concursoSeleccionado.id;
