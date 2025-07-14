@@ -5,7 +5,8 @@ import { Category } from '../../models/category.model';
 function normalizarNombre(nombre: string): string {
   // Quitar acentos, pasar a minúsculas, pero mantener espacios
   return nombre
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Quitar diacríticos (acentos)
     .toLowerCase()
     .trim();
 }
@@ -49,6 +50,13 @@ export class CargaResultadosPage implements OnInit {
     console.log('Categorías recibidas:', categorias);
     console.log('Estructura completa:', estructura);
     
+    // Log para ver todas las categorías y sus normalizaciones
+    console.log('📋 TODAS LAS CATEGORÍAS Y SUS NORMALIZACIONES:');
+    categorias.forEach((cat, index) => {
+      const normalizada = normalizarNombre(cat.name);
+      console.log(`  ${index + 1}. "${cat.name}" → "${normalizada}"`);
+    });
+    
     // Buscar directorios de segundo nivel bajo exportacion
     const lineas = estructura.split('\n').map(l => l.trim());
     // Solo directorios con exactamente un '/' después de 'exportacion/'
@@ -73,6 +81,42 @@ export class CargaResultadosPage implements OnInit {
         const catNormalizada = normalizarNombre(cat.name);
         const dirNormalizada = normalizarNombre(nombreDir);
         console.log(`Comparando: "${dirNormalizada}" vs "${catNormalizada}" (original: "${cat.name}")`);
+        
+        // Mapeo especial para casos conocidos
+        const mapeosEspeciales: {[key: string]: string} = {
+          'estmulo': 'estimulo',  // Estmulo → Estímulo
+          'estimulo': 'estimulo'  // Estimulo → Estímulo (por si acaso)
+        };
+        
+        // Verificar si hay un mapeo especial para este directorio
+        const mapeoEspecial = mapeosEspeciales[dirNormalizada];
+        if (mapeoEspecial) {
+          console.log(`🔧 APLICANDO MAPEO ESPECIAL: "${dirNormalizada}" → "${mapeoEspecial}"`);
+          if (catNormalizada === mapeoEspecial) {
+            console.log('✅ Coincidencia por mapeo especial');
+            return true;
+          }
+        }
+        
+        // Log específico para Estmulo
+        if (nombreDir.toLowerCase() === 'estmulo' || cat.name.toLowerCase().includes('estímulo')) {
+          console.log('🔍 COMPARACIÓN ESPECIAL ESTÍMULO:');
+          console.log('  - Directorio original:', nombreDir);
+          console.log('  - Directorio normalizado:', dirNormalizada);
+          console.log('  - Categoría original:', cat.name);
+          console.log('  - Categoría normalizada:', catNormalizada);
+          console.log('  - ¿Coinciden?', catNormalizada === dirNormalizada);
+          
+          // Log adicional para verificar la normalización
+          if (cat.name.toLowerCase().includes('estímulo')) {
+            console.log('🔧 DEBUG NORMALIZACIÓN:');
+            console.log('  - Original:', cat.name);
+            console.log('  - NFD:', cat.name.normalize('NFD'));
+            console.log('  - Sin diacríticos:', cat.name.normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+            console.log('  - Final:', normalizarNombre(cat.name));
+          }
+        }
+        
         return catNormalizada === dirNormalizada;
       });
       
