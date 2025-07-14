@@ -33,12 +33,29 @@
           </ion-card-content>
         </ion-card>
         <ng-container *ngIf="exportacionValida && validacionesCategorias.length > 0">
+          <h6>Validaciones de Categorías:</h6>
           <ion-card *ngFor="let val of validacionesCategorias" [color]="val.color">
             <ion-card-content>
               {{ val.mensaje }}
             </ion-card-content>
           </ion-card>
         </ng-container>
+        
+        <ng-container *ngIf="exportacionValida && validacionesSecciones.length > 0">
+          <h6>Validaciones de Secciones ({{ validacionesSecciones.length }}):</h6>
+          <ion-card *ngFor="let val of validacionesSecciones" [color]="val.color">
+            <ion-card-content>
+              {{ val.mensaje }}
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+        
+        <!-- Debug: mostrar si no hay validaciones de secciones -->
+        <ion-card *ngIf="exportacionValida && validacionesSecciones.length === 0" color="medium">
+          <ion-card-content>
+            No se encontraron validaciones de secciones (array vacío)
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -4,6 +4,8 @@ import { ContestService } from '../services/contest.service';
 import { Contest } from '../models/contest.model';
 import { Category } from '../models/category.model';
 import { CategoryService } from '../services/category.service';
+import { Section } from '../models/section.model';
+import { SectionService } from '../services/section.service';
 import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
 import * as JSZip from 'jszip';
@@ -23,6 +25,7 @@ export class HerramientasPage implements OnInit {
     private router: Router,
     private contestService: ContestService,
     private categoryService: CategoryService,
+    private sectionService: SectionService,
     private http: HttpClient,
     private modalController: ModalController,
     private loadingController: LoadingController
@@ -80,11 +83,13 @@ export class HerramientasPage implements OnInit {
         estructura += (zipEntry.dir ? '[DIR] ' : '      ') + relativePath + '\n';
       });
       
-      // Obtener todas las categorías del sistema
-      console.log('=== DEBUG OBTENCIÓN CATEGORÍAS ===');
+      // Obtener todas las categorías y secciones del sistema
+      console.log('=== DEBUG OBTENCIÓN CATEGORÍAS Y SECCIONES ===');
       console.log('Obteniendo todas las categorías del sistema...');
       
       let categorias: Category[] = [];
+      let secciones: Section[] = [];
+      
       try {
         categorias = await this.categoryService.getAll<Category>().toPromise();
         console.log('Categorías obtenidas de API:', categorias);
@@ -92,12 +97,20 @@ export class HerramientasPage implements OnInit {
         console.error('Error al obtener categorías:', err);
       }
       
+      try {
+        secciones = await this.sectionService.getAll<Section>().toPromise();
+        console.log('Secciones obtenidas de API:', secciones);
+      } catch (err) {
+        console.error('Error al obtener secciones:', err);
+      }
+      
       console.log('Categorías finales a enviar:', categorias);
+      console.log('Secciones finales a enviar:', secciones);
       console.log('=== FIN DEBUG OBTENCIÓN ===');
       
       await loading.dismiss();
       // Navegar a la vista de carga de resultados
-      this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura, categorias } });
+      this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura, categorias, secciones } });
     } catch (err) {
       await loading.dismiss();
       alert('Error al leer el archivo ZIP: ' + err);
