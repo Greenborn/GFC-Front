@@ -248,7 +248,8 @@ export class CargaResultadosPage implements OnInit {
       '1er PREMIO', '2do PREMIO', '3er PREMIO',
       'MENCION ESPECIAL', 'MENCION HONORIFICA',
       'RECHAZADA', 'FUERA DE REGLAMENTO',
-      'PRIMER PREMIO', 'SEGUNDO PREMIO', 'TERCER PREMIO'
+      'PRIMER PREMIO', 'SEGUNDO PREMIO', 'TERCER PREMIO',
+      'ACEPTADA', 'MENCION JURADO'
     ];
     
     // Buscar elementos del tercer nivel (archivos sueltos y directorios de premios)
@@ -394,5 +395,51 @@ export class CargaResultadosPage implements OnInit {
     
     console.log('✅ FUNCIÓN validarQuintoNivel COMPLETADA');
     console.log('=== FIN DEBUG QUINTO NIVEL ===');
+  }
+
+  // Convierte la estructura de texto a un JSON anidado
+  estructuraToJson(): any {
+    const lines = this.estructura.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const root: any = {};
+    lines.forEach(line => {
+      let path = line.replace('[DIR] ', '');
+      const isDir = line.startsWith('[DIR]');
+      const parts = path.split('/').filter(p => p.length > 0);
+      let current = root;
+      for (let i = 0; i < parts.length; i++) {
+        const part = parts[i];
+        if (i === parts.length - 1) {
+          if (isDir) {
+            if (!current[part]) current[part] = {};
+          } else {
+            if (!current['__files']) current['__files'] = [];
+            current['__files'].push(part);
+          }
+        } else {
+          if (!current[part]) current[part] = {};
+          current = current[part];
+        }
+      }
+    });
+    return root;
+  }
+
+  // Devuelve true si todas las validaciones pasan
+  canCargarResultados(): boolean {
+    if (!this.exportacionValida) return false;
+    // Todas las validaciones deben ser 'success'
+    const todasCategoriasOk = this.validacionesCategorias.every(v => v.color === 'success');
+    const todasSeccionesOk = this.validacionesSecciones.every(v => v.color === 'success');
+    const todosPremiosOk = this.validacionesPremios.every(v => v.color === 'success');
+    // No debe haber fotografías sin catalogar
+    if (this.fotografiasSinCatalogar.length > 0) return false;
+    // No debe haber advertencias en validacionesFotografias
+    const todasFotografiasOk = this.validacionesFotografias.every(v => v.color === 'success' || v.color === 'medium');
+    return todasCategoriasOk && todasSeccionesOk && todosPremiosOk && todasFotografiasOk;
+  }
+
+  cargarResultados() {
+    const estructuraJson = this.estructuraToJson();
+    alert('Estructura de directorios y archivos:\n' + JSON.stringify(estructuraJson, null, 2));
   }
 } 

@@ -38,9 +38,6 @@
             <ion-card-title>Juzgamiento</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <div style="margin-bottom: 8px; color: #666; font-size: 14px;">
-              Tamaño máximo de archivo permitido: 2 GB (.zip)
-            </div>
             <!-- Input para seleccionar directorio de resultados -->
             <input type="file" webkitdirectory directory multiple (change)="onFileSelected($event)" />
             <ion-button expand="block" color="secondary" (click)="fileInput.click()">Cargar Resultados</ion-button>
