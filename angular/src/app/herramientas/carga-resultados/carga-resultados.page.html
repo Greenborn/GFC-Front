@@ -97,15 +97,6 @@
             </ion-card-content>
           </ion-card>
         </ng-container>
-        
-        <ng-container *ngIf="exportacionValida && archivosNivelesProfundos.length > 0">
-          <h6>Validación de Estructura de Directorios ({{ archivosNivelesProfundos.length }}):</h6>
-          <ion-card *ngFor="let val of archivosNivelesProfundos" [color]="val.color">
-            <ion-card-content>
-              {{ val.mensaje }}
-            </ion-card-content>
-          </ion-card>
-        </ng-container>
       </ion-col>
     </ion-row>
   </ion-grid>

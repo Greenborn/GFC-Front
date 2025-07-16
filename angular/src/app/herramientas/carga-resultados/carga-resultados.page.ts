@@ -34,7 +34,6 @@ export class CargaResultadosPage implements OnInit {
   validacionesPremios: {dir: string, mensaje: string, color: string}[] = [];
   fotografiasSinCatalogar: string[] = [];
   validacionesFotografias: {dir: string, mensaje: string, color: string}[] = [];
-  archivosNivelesProfundos: {dir: string, mensaje: string, color: string}[] = [];
 
   constructor(private router: Router) {
     const nav = this.router.getCurrentNavigation();
@@ -60,8 +59,6 @@ export class CargaResultadosPage implements OnInit {
       this.validarCuartoNivel(this.estructura);
       console.log('🔍 Llamando a validarQuintoNivel...');
       this.validarQuintoNivel(this.estructura);
-      console.log('🔍 Llamando a validarNivelesProfundos...');
-      this.validarNivelesProfundos(this.estructura);
       console.log('🔍 Validaciones completadas');
     }
   }
@@ -397,78 +394,5 @@ export class CargaResultadosPage implements OnInit {
     
     console.log('✅ FUNCIÓN validarQuintoNivel COMPLETADA');
     console.log('=== FIN DEBUG QUINTO NIVEL ===');
-  }
-
-  private validarNivelesProfundos(estructura: string) {
-    console.log('🚀 INICIANDO validarNivelesProfundos ===');
-    console.log('=== DEBUG VALIDACIÓN NIVELES PROFUNDOS ===');
-    
-    const lineas = estructura.split('\n').map(l => l.trim());
-    console.log('📁 Analizando niveles profundos de la estructura...');
-    console.log(`📊 Total de líneas a procesar: ${lineas.length}`);
-    
-    // Buscar archivos que estén por debajo del 5to nivel (6to nivel o más profundo)
-    console.log('🔍 Buscando archivos por debajo del 5to nivel...');
-    const archivosNivelesProfundos = lineas.filter(l => {
-      if (!l.startsWith('      exportacion/')) return false;
-      const resto = l.replace('      exportacion/', '');
-      const segmentos = resto.split('/');
-      // Debe tener más de 4 segmentos (categoria/seccion/premio/archivo/...)
-      return segmentos.length > 4;
-    });
-    
-    console.log(`📸 Total de archivos por debajo del 5to nivel encontrados: ${archivosNivelesProfundos.length}`);
-    
-    // Mostrar los primeros 10 archivos para debug
-    console.log('🔍 Primeros 10 archivos por debajo del 5to nivel:');
-    archivosNivelesProfundos.slice(0, 10).forEach((l, index) => {
-      const resto = l.replace('      exportacion/', '');
-      const segmentos = resto.split('/');
-      console.log(`  ${index + 1}. "${l}" → segmentos: [${segmentos.join(', ')}] (nivel ${segmentos.length})`);
-    });
-    
-    this.archivosNivelesProfundos = [];
-    
-    if (archivosNivelesProfundos.length > 0) {
-      // Agrupar archivos por ruta para mostrar mejor la información
-      const archivosPorRuta: {[key: string]: string[]} = {};
-      
-      archivosNivelesProfundos.forEach((archivo) => {
-        const resto = archivo.replace('      exportacion/', '');
-        const segmentos = resto.split('/');
-        const rutaBase = segmentos.slice(0, 4).join('/'); // Solo los primeros 4 segmentos
-        const nombreArchivo = segmentos[4]; // El archivo en el nivel profundo
-        
-        if (!archivosPorRuta[rutaBase]) {
-          archivosPorRuta[rutaBase] = [];
-        }
-        
-        archivosPorRuta[rutaBase].push(nombreArchivo);
-      });
-      
-      // Crear mensajes por ruta
-      Object.keys(archivosPorRuta).forEach((rutaBase) => {
-        const archivos = archivosPorRuta[rutaBase];
-        const nivel = rutaBase.split('/').length + 1; // +1 porque estamos contando el archivo
-        
-        this.archivosNivelesProfundos.push({
-          dir: `exportacion/${rutaBase}`,
-          mensaje: `Archivos en nivel ${nivel} (por debajo del 5to): ${archivos.length} archivos encontrados`,
-          color: 'danger'
-        });
-      });
-      
-      console.log(`❌ Total de rutas con archivos en niveles profundos: ${this.archivosNivelesProfundos.length}`);
-    } else {
-      console.log('✅ No se encontraron archivos por debajo del 5to nivel');
-      this.archivosNivelesProfundos.push({
-        dir: 'info',
-        mensaje: '✅ No se encontraron archivos por debajo del 5to nivel - Estructura válida',
-        color: 'success'
-      });
-    }
-    
-    console.log('✅ FUNCIÓN validarNivelesProfundos COMPLETADA');
-    console.log('=== FIN DEBUG NIVELES PROFUNDOS ===');
   }
 } 
