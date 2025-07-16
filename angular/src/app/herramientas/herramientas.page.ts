@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContestService } from '../services/contest.service';
 import { Contest } from '../models/contest.model';
@@ -10,6 +10,7 @@ import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
+import { RankingService } from '../services/ranking.service';
 
 @Component({
   selector: 'app-herramientas',
@@ -19,6 +20,7 @@ import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-re
 export class HerramientasPage implements OnInit {
   concursos: Contest[] = [];
   concursoSeleccionado: Contest | null = null;
+  @ViewChild('fileInput', { static: true }) fileInput!: ElementRef;
 
   constructor(
     private router: Router,
@@ -27,10 +29,16 @@ export class HerramientasPage implements OnInit {
     private sectionService: SectionService,
     private http: HttpClient,
     private modalController: ModalController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private rankingService: RankingService
   ) {}
 
   ngOnInit() {
+    // Resetear el input de archivo
+    if (this.fileInput && this.fileInput.nativeElement) {
+      this.fileInput.nativeElement.value = '';
+    }
+    
     this.contestService.getAll<Contest>('per-page=1000').subscribe(data => {
       this.concursos = data.sort((a, b) => {
         const dateA = a.end_date ? new Date(a.end_date).getTime() : 0;
@@ -98,6 +106,11 @@ export class HerramientasPage implements OnInit {
     await loading.dismiss();
     // Navegar a la vista de carga de resultados
     this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura, categorias, secciones } });
+    
+    // Resetear el input para evitar que se quede "trabado"
+    if (this.fileInput && this.fileInput.nativeElement) {
+      this.fileInput.nativeElement.value = '';
+    }
   }
 
   descargarListado() {
@@ -126,5 +139,18 @@ export class HerramientasPage implements OnInit {
         XLSX.writeFile(wb, `participantes_concurso_${id}.xlsx`);
       }
     });
+  }
+
+  async recalcularRanking() {
+    const loading = await this.loadingController.create({ message: 'Recalculando ranking...' });
+    await loading.present();
+    try {
+      await this.rankingService.recalculateRanking().toPromise();
+      await loading.dismiss();
+      alert('Ranking recalculado correctamente.');
+    } catch (error) {
+      await loading.dismiss();
+      alert('Error al recalcular ranking.');
+    }
   }
 } 
