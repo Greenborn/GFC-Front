@@ -8,7 +8,6 @@ import { Section } from '../models/section.model';
 import { SectionService } from '../services/section.service';
 import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
-import * as JSZip from 'jszip';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
 
@@ -51,70 +50,54 @@ export class HerramientasPage implements OnInit {
   }
 
   async onFileSelected(event: any) {
-    console.log('=== DEBUG INICIO CARGA ARCHIVO ===');
-    
-    const file: File = event.target.files[0];
-    if (!file) return;
-
-    // Validar tamaño (2GB = 2 * 1024 * 1024 * 1024 bytes)
-    const maxSize = 2 * 1024 * 1024 * 1024;
-    if (file.size > maxSize) {
-      alert('El archivo supera el tamaño máximo permitido de 2 GB.');
-      return;
-    }
-
-    // Validar extensión
-    if (!file.name.toLowerCase().endsWith('.zip')) {
-      alert('Solo se permiten archivos con extensión .zip');
-      return;
-    }
+    console.log('=== DEBUG INICIO CARGA DIRECTORIO ===');
+    const files: FileList = event.target.files;
+    if (!files || files.length === 0) return;
 
     // Mostrar loading
     const loading = await this.loadingController.create({
-      message: 'Procesando archivo...'
+      message: 'Procesando directorio...'
     });
     await loading.present();
 
-    // Leer y mostrar estructura del zip
+    // Procesar estructura de directorio
+    let estructura = '';
+    Array.from(files).forEach(file => {
+      const relativePath = (file as any).webkitRelativePath || file.name;
+      const isDir = false; // No hay forma directa de saber si es directorio, pero los archivos intermedios se deducen por path
+      estructura += '      ' + relativePath + '\n';
+    });
+
+    // Agregar directorios explícitamente
+    const directorios = new Set<string>();
+    Array.from(files).forEach(file => {
+      const relativePath = (file as any).webkitRelativePath || file.name;
+      const partes = relativePath.split('/');
+      for (let i = 1; i < partes.length; i++) {
+        const dir = partes.slice(0, i).join('/');
+        directorios.add(dir);
+      }
+    });
+    directorios.forEach(dir => {
+      estructura = '[DIR] ' + dir + '\n' + estructura;
+    });
+
+    // Obtener todas las categorías y secciones del sistema
+    let categorias: Category[] = [];
+    let secciones: Section[] = [];
     try {
-      const zip = await JSZip.loadAsync(file);
-      let estructura = '';
-      zip.forEach((relativePath: string, zipEntry: any) => {
-        estructura += (zipEntry.dir ? '[DIR] ' : '      ') + relativePath + '\n';
-      });
-      
-      // Obtener todas las categorías y secciones del sistema
-      console.log('=== DEBUG OBTENCIÓN CATEGORÍAS Y SECCIONES ===');
-      console.log('Obteniendo todas las categorías del sistema...');
-      
-      let categorias: Category[] = [];
-      let secciones: Section[] = [];
-      
-      try {
-        categorias = await this.categoryService.getAll<Category>().toPromise();
-        console.log('Categorías obtenidas de API:', categorias);
-      } catch (err) {
-        console.error('Error al obtener categorías:', err);
-      }
-      
-      try {
-        secciones = await this.sectionService.getAll<Section>().toPromise();
-        console.log('Secciones obtenidas de API:', secciones);
-      } catch (err) {
-        console.error('Error al obtener secciones:', err);
-      }
-      
-      console.log('Categorías finales a enviar:', categorias);
-      console.log('Secciones finales a enviar:', secciones);
-      console.log('=== FIN DEBUG OBTENCIÓN ===');
-      
-      await loading.dismiss();
-      // Navegar a la vista de carga de resultados
-      this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura, categorias, secciones } });
+      categorias = await this.categoryService.getAll<Category>().toPromise();
     } catch (err) {
-      await loading.dismiss();
-      alert('Error al leer el archivo ZIP: ' + err);
+      console.error('Error al obtener categorías:', err);
     }
+    try {
+      secciones = await this.sectionService.getAll<Section>().toPromise();
+    } catch (err) {
+      console.error('Error al obtener secciones:', err);
+    }
+    await loading.dismiss();
+    // Navegar a la vista de carga de resultados
+    this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura, categorias, secciones } });
   }
 
   descargarListado() {
