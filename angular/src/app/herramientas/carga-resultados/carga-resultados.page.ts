@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Category } from '../../models/category.model';
 import { Section } from '../../models/section.model';
+import { ContestResultService } from '../../services/contest-result.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { ConfigService } from '../../services/config/config.service';
 
 function normalizarNombre(nombre: string): string {
   // Quitar acentos, pasar a minúsculas, pero mantener espacios
@@ -35,7 +39,12 @@ export class CargaResultadosPage implements OnInit {
   fotografiasSinCatalogar: string[] = [];
   validacionesFotografias: {dir: string, mensaje: string, color: string}[] = [];
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private contestResultService: ContestResultService,
+    private http: HttpClient,
+    private config: ConfigService
+  ) {
     const nav = this.router.getCurrentNavigation();
     this.estructura = nav?.extras?.state?.estructura || '';
     this.categorias = nav?.extras?.state?.categorias || [];
@@ -438,8 +447,23 @@ export class CargaResultadosPage implements OnInit {
     return todasCategoriasOk && todasSeccionesOk && todosPremiosOk && todasFotografiasOk;
   }
 
-  cargarResultados() {
+  async cargarResultados() {
     const estructuraJson = this.estructuraToJson();
-    alert('Estructura de directorios y archivos:\n' + JSON.stringify(estructuraJson, null, 2));
+    try {
+      const token = localStorage.getItem(this.config.tokenKey);
+      const headers = token ? { Authorization: 'Bearer ' + token } : {};
+      const response = await this.http.post(
+        this.config.publicApiUrl('api/results/judging'),
+        { estructura: estructuraJson },
+        { headers }
+      ).toPromise();
+      alert('Resultados cargados correctamente.');
+    } catch (error) {
+      let msg = 'Error al cargar resultados.';
+      if (error instanceof HttpErrorResponse && error.error && error.error.message) {
+        msg += '\n' + error.error.message;
+      }
+      alert(msg);
+    }
   }
 } 
