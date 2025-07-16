@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { HerramientasPage } from './herramientas.page';
 import { RouterModule, Routes } from '@angular/router';
 import { CargaResultadosPage } from './carga-resultados/carga-resultados.page';
+import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [HerramientasPage, CargaResultadosPage],
+  declarations: [HerramientasPage, CargaResultadosPage, CargaResultadosModalComponent],
   imports: [
     CommonModule,
     FormsModule,
