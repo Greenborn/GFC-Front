@@ -6,6 +6,7 @@ import { ContestResultService } from '../../services/contest-result.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../services/config/config.service';
+import { LoadingController } from '@ionic/angular';
 
 function normalizarNombre(nombre: string): string {
   // Quitar acentos, pasar a minúsculas, pero mantener espacios
@@ -43,7 +44,8 @@ export class CargaResultadosPage implements OnInit {
     private router: Router,
     private contestResultService: ContestResultService,
     private http: HttpClient,
-    private config: ConfigService
+    private config: ConfigService,
+    private loadingController: LoadingController
   ) {
     const nav = this.router.getCurrentNavigation();
     this.estructura = nav?.extras?.state?.estructura || '';
@@ -449,6 +451,10 @@ export class CargaResultadosPage implements OnInit {
 
   async cargarResultados() {
     const estructuraJson = this.estructuraToJson();
+    const loading = await this.loadingController.create({
+      message: 'Enviando resultados...'
+    });
+    await loading.present();
     try {
       const token = localStorage.getItem(this.config.tokenKey);
       const headers = token ? { Authorization: 'Bearer ' + token } : {};
@@ -457,8 +463,10 @@ export class CargaResultadosPage implements OnInit {
         { estructura: estructuraJson },
         { headers }
       ).toPromise();
+      await loading.dismiss();
       alert('Resultados cargados correctamente.');
     } catch (error) {
+      await loading.dismiss();
       let msg = 'Error al cargar resultados.';
       if (error instanceof HttpErrorResponse && error.error && error.error.message) {
         msg += '\n' + error.error.message;
