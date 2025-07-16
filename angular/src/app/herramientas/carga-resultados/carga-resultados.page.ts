@@ -31,6 +31,10 @@ export class CargaResultadosPage implements OnInit {
   secciones: Section[] = [];
   validacionesCategorias: {dir: string, mensaje: string, color: string}[] = [];
   validacionesSecciones: {dir: string, mensaje: string, color: string}[] = [];
+  validacionesPremios: {dir: string, mensaje: string, color: string}[] = [];
+  fotografiasSinCatalogar: string[] = [];
+  validacionesFotografias: {dir: string, mensaje: string, color: string}[] = [];
+  archivosNivelesProfundos: {dir: string, mensaje: string, color: string}[] = [];
 
   constructor(private router: Router) {
     const nav = this.router.getCurrentNavigation();
@@ -52,6 +56,12 @@ export class CargaResultadosPage implements OnInit {
       this.validarCategorias(this.estructura, this.categorias);
       console.log('🔍 Llamando a validarSecciones...');
       this.validarSecciones(this.estructura, this.secciones);
+      console.log('🔍 Llamando a validarCuartoNivel...');
+      this.validarCuartoNivel(this.estructura);
+      console.log('🔍 Llamando a validarQuintoNivel...');
+      this.validarQuintoNivel(this.estructura);
+      console.log('🔍 Llamando a validarNivelesProfundos...');
+      this.validarNivelesProfundos(this.estructura);
       console.log('🔍 Validaciones completadas');
     }
   }
@@ -60,6 +70,13 @@ export class CargaResultadosPage implements OnInit {
 
   volver() {
     this.router.navigate(['/herramientas']);
+  }
+
+  obtenerNombreArchivo(ruta: string): string {
+    const partes = ruta.split('/');
+    const nombreArchivo = partes[partes.length - 1];
+    console.log(`🔍 Extrayendo nombre de archivo: "${ruta}" → "${nombreArchivo}"`);
+    return nombreArchivo;
   }
 
   private validarDirectorioExportacion(estructura: string): boolean {
@@ -219,5 +236,239 @@ export class CargaResultadosPage implements OnInit {
     console.log('Validaciones de secciones finales:', this.validacionesSecciones);
     console.log('Cantidad de validaciones de secciones:', this.validacionesSecciones.length);
     console.log('=== FIN DEBUG SECCIONES ===');
+  }
+
+  private validarCuartoNivel(estructura: string) {
+    console.log('🚀 INICIANDO validarCuartoNivel ===');
+    console.log('=== DEBUG VALIDACIÓN CUARTO NIVEL ===');
+    
+    const lineas = estructura.split('\n').map(l => l.trim());
+    console.log('📁 Analizando cuarto nivel de la estructura...');
+    console.log(`📊 Total de líneas a procesar: ${lineas.length}`);
+    
+    // Premios válidos conocidos
+    const premiosValidos = [
+      '1er PREMIO', '2do PREMIO', '3er PREMIO',
+      'MENCION ESPECIAL', 'MENCION HONORIFICA',
+      'RECHAZADA', 'FUERA DE REGLAMENTO',
+      'PRIMER PREMIO', 'SEGUNDO PREMIO', 'TERCER PREMIO'
+    ];
+    
+    // Buscar elementos del tercer nivel (archivos sueltos y directorios de premios)
+    const elementosTercerNivel = lineas.filter(l => {
+      if (!l.startsWith('[DIR] exportacion/') && !l.startsWith('      exportacion/')) return false;
+      const resto = l.replace('[DIR] exportacion/', '').replace('      exportacion/', '');
+      const segmentos = resto.split('/');
+      // Debe tener exactamente 3 segmentos (categoria/seccion/elemento)
+      const esValido = segmentos.length === 3 && segmentos[2].length > 0;
+      console.log(`🔍 Analizando tercer nivel: "${l}" → segmentos: [${segmentos.join(', ')}] → válido: ${esValido}`);
+      return esValido;
+    });
+    
+    // Debug: mostrar todas las líneas que contienen archivos
+    console.log('🔍 Todas las líneas que contienen archivos:');
+    const archivos = lineas.filter(l => l.startsWith('      exportacion/'));
+    console.log(`Total de archivos encontrados: ${archivos.length}`);
+    
+    // Debug: mostrar archivos del tercer nivel específicamente
+    console.log('🔍 Archivos del tercer nivel (categoria/seccion/archivo):');
+    const archivosTercerNivel = archivos.filter(l => {
+      const resto = l.replace('      exportacion/', '');
+      const segmentos = resto.split('/');
+      return segmentos.length === 3;
+    });
+    console.log(`Total de archivos del tercer nivel: ${archivosTercerNivel.length}`);
+    
+    // Mostrar solo los primeros 5 archivos del tercer nivel para debug
+    console.log('🔍 Primeros 5 archivos del tercer nivel:');
+    archivosTercerNivel.slice(0, 5).forEach((l, index) => {
+      const resto = l.replace('      exportacion/', '');
+      const segmentos = resto.split('/');
+      console.log(`  ${index + 1}. "${l}" → segmentos: [${segmentos.join(', ')}]`);
+    });
+    
+    console.log('🔍 Elementos del tercer nivel encontrados:', elementosTercerNivel);
+    
+    this.validacionesPremios = [];
+    this.fotografiasSinCatalogar = [];
+    
+    // Procesar directorios de premios (elementos con 3 segmentos)
+    elementosTercerNivel.filter(el => el.startsWith('[DIR]')).forEach(elemento => {
+      const resto = elemento.replace('[DIR] exportacion/', '');
+      const segmentos = resto.split('/');
+      
+      if (segmentos.length === 3) {
+        const nombreElemento = segmentos[2];
+        const rutaCompleta = `exportacion/${segmentos[0]}/${segmentos[1]}/${nombreElemento}`;
+        
+        console.log(`🔍 Procesando directorio de premio: "${nombreElemento}" en ruta: "${rutaCompleta}"`);
+        
+        const premioValido = premiosValidos.find(premio => 
+          normalizarNombre(premio) === normalizarNombre(nombreElemento)
+        );
+        
+        if (premioValido) {
+          console.log(`✅ Premio válido: "${nombreElemento}" → "${premioValido}"`);
+          this.validacionesPremios.push({
+            dir: rutaCompleta,
+            mensaje: `Premio válido: ${premioValido}`,
+            color: 'success'
+          });
+        } else {
+          console.log(`❌ Premio desconocido: "${nombreElemento}"`);
+          this.validacionesPremios.push({
+            dir: rutaCompleta,
+            mensaje: `Premio desconocido: ${nombreElemento}`,
+            color: 'warning'
+          });
+        }
+      }
+    });
+    
+    // Procesar archivos sueltos del tercer nivel
+    console.log('🔍 Procesando archivos sueltos...');
+    archivosTercerNivel.forEach((elemento, index) => {
+      if (index < 10) { // Solo procesar los primeros 10 para debug
+        const resto = elemento.replace('      exportacion/', '');
+        const segmentos = resto.split('/');
+        const nombreArchivo = segmentos[2];
+        const rutaCompleta = `exportacion/${segmentos[0]}/${segmentos[1]}/${nombreArchivo}`;
+        
+        console.log(`📸 Fotografía suelta ${index + 1}: "${nombreArchivo}" en ruta: "${rutaCompleta}"`);
+        this.fotografiasSinCatalogar.push(rutaCompleta);
+      }
+    });
+    console.log(`📸 Total de fotografías sueltas procesadas: ${this.fotografiasSinCatalogar.length}`);
+    
+    console.log('🏆 Validaciones de premios finales:', this.validacionesPremios);
+    console.log('📸 Fotografías sin catalogar:', this.fotografiasSinCatalogar);
+    console.log('Cantidad de premios validados:', this.validacionesPremios.length);
+    console.log('Cantidad de fotografías sin catalogar:', this.fotografiasSinCatalogar.length);
+    
+    // Debug: mostrar las primeras 5 fotografías
+    if (this.fotografiasSinCatalogar.length > 0) {
+      console.log('🔍 Primeras 5 fotografías sin catalogar:');
+      this.fotografiasSinCatalogar.slice(0, 5).forEach((foto, index) => {
+        console.log(`  ${index + 1}. ${foto}`);
+      });
+    }
+    
+    console.log('✅ FUNCIÓN validarCuartoNivel COMPLETADA');
+    console.log('=== FIN DEBUG CUARTO NIVEL ===');
+  }
+
+  private validarQuintoNivel(estructura: string) {
+    console.log('🚀 INICIANDO validarQuintoNivel ===');
+    console.log('=== DEBUG VALIDACIÓN QUINTO NIVEL ===');
+    
+    const lineas = estructura.split('\n').map(l => l.trim());
+    console.log('📁 Analizando quinto nivel de la estructura...');
+    console.log(`📊 Total de líneas a procesar: ${lineas.length}`);
+    
+    // Buscar archivos en todos los niveles bajo exportacion
+    const archivos = lineas.filter(l => l.match(/^exportacion\//) || l.match(/^\[DIR\] exportacion\//));
+    // Solo archivos (no directorios)
+    const archivosSolo = archivos.filter(l => !l.startsWith('[DIR]'));
+    
+    this.validacionesFotografias = [];
+    this.fotografiasSinCatalogar = [];
+    
+    // Procesar todos los archivos
+    archivosSolo.forEach((archivo) => {
+      const resto = archivo.replace('exportacion/', '');
+      const segmentos = resto.split('/');
+      // Si el archivo está en el 5to nivel (4 segmentos antes del nombre de archivo), es válido
+      if (segmentos.length === 4) {
+        // Archivo correctamente catalogado, no hacer nada especial aquí
+      } else {
+        // Archivo fuera del 5to nivel, agregar a sin catalogar
+        this.fotografiasSinCatalogar.push('exportacion/' + resto);
+      }
+    });
+    
+    // Mensaje de advertencia si hay fotografías sin catalogar
+    if (this.fotografiasSinCatalogar.length > 0) {
+      this.validacionesFotografias.push({
+        dir: 'sinCatalogar',
+        mensaje: `⚠️ Se encontraron ${this.fotografiasSinCatalogar.length} fotografías fuera del 5to nivel (sin catalogar).`,
+        color: 'danger'
+      });
+    }
+    
+    console.log('✅ FUNCIÓN validarQuintoNivel COMPLETADA');
+    console.log('=== FIN DEBUG QUINTO NIVEL ===');
+  }
+
+  private validarNivelesProfundos(estructura: string) {
+    console.log('🚀 INICIANDO validarNivelesProfundos ===');
+    console.log('=== DEBUG VALIDACIÓN NIVELES PROFUNDOS ===');
+    
+    const lineas = estructura.split('\n').map(l => l.trim());
+    console.log('📁 Analizando niveles profundos de la estructura...');
+    console.log(`📊 Total de líneas a procesar: ${lineas.length}`);
+    
+    // Buscar archivos que estén por debajo del 5to nivel (6to nivel o más profundo)
+    console.log('🔍 Buscando archivos por debajo del 5to nivel...');
+    const archivosNivelesProfundos = lineas.filter(l => {
+      if (!l.startsWith('      exportacion/')) return false;
+      const resto = l.replace('      exportacion/', '');
+      const segmentos = resto.split('/');
+      // Debe tener más de 4 segmentos (categoria/seccion/premio/archivo/...)
+      return segmentos.length > 4;
+    });
+    
+    console.log(`📸 Total de archivos por debajo del 5to nivel encontrados: ${archivosNivelesProfundos.length}`);
+    
+    // Mostrar los primeros 10 archivos para debug
+    console.log('🔍 Primeros 10 archivos por debajo del 5to nivel:');
+    archivosNivelesProfundos.slice(0, 10).forEach((l, index) => {
+      const resto = l.replace('      exportacion/', '');
+      const segmentos = resto.split('/');
+      console.log(`  ${index + 1}. "${l}" → segmentos: [${segmentos.join(', ')}] (nivel ${segmentos.length})`);
+    });
+    
+    this.archivosNivelesProfundos = [];
+    
+    if (archivosNivelesProfundos.length > 0) {
+      // Agrupar archivos por ruta para mostrar mejor la información
+      const archivosPorRuta: {[key: string]: string[]} = {};
+      
+      archivosNivelesProfundos.forEach((archivo) => {
+        const resto = archivo.replace('      exportacion/', '');
+        const segmentos = resto.split('/');
+        const rutaBase = segmentos.slice(0, 4).join('/'); // Solo los primeros 4 segmentos
+        const nombreArchivo = segmentos[4]; // El archivo en el nivel profundo
+        
+        if (!archivosPorRuta[rutaBase]) {
+          archivosPorRuta[rutaBase] = [];
+        }
+        
+        archivosPorRuta[rutaBase].push(nombreArchivo);
+      });
+      
+      // Crear mensajes por ruta
+      Object.keys(archivosPorRuta).forEach((rutaBase) => {
+        const archivos = archivosPorRuta[rutaBase];
+        const nivel = rutaBase.split('/').length + 1; // +1 porque estamos contando el archivo
+        
+        this.archivosNivelesProfundos.push({
+          dir: `exportacion/${rutaBase}`,
+          mensaje: `Archivos en nivel ${nivel} (por debajo del 5to): ${archivos.length} archivos encontrados`,
+          color: 'danger'
+        });
+      });
+      
+      console.log(`❌ Total de rutas con archivos en niveles profundos: ${this.archivosNivelesProfundos.length}`);
+    } else {
+      console.log('✅ No se encontraron archivos por debajo del 5to nivel');
+      this.archivosNivelesProfundos.push({
+        dir: 'info',
+        mensaje: '✅ No se encontraron archivos por debajo del 5to nivel - Estructura válida',
+        color: 'success'
+      });
+    }
+    
+    console.log('✅ FUNCIÓN validarNivelesProfundos COMPLETADA');
+    console.log('=== FIN DEBUG NIVELES PROFUNDOS ===');
   }
 } 

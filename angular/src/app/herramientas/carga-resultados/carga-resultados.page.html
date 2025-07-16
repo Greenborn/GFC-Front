@@ -56,6 +56,56 @@
             No se encontraron validaciones de secciones (array vacío)
           </ion-card-content>
         </ion-card>
+        
+        <ng-container *ngIf="exportacionValida && validacionesPremios.length > 0">
+          <h6>Validaciones de Premios ({{ validacionesPremios.length }}):</h6>
+          <ion-card *ngFor="let val of validacionesPremios" [color]="val.color">
+            <ion-card-content>
+              {{ val.mensaje }}
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+        
+        <ng-container *ngIf="exportacionValida && fotografiasSinCatalogar.length > 0">
+          <h6>Fotografías Sin Catalogar ({{ fotografiasSinCatalogar.length }}):</h6>
+          <ion-card color="warning">
+            <ion-card-content>
+              <p>Las siguientes fotografías no están en directorios de premios:</p>
+              <div class="fotografias-badges">
+                <ion-badge *ngFor="let foto of fotografiasSinCatalogar; let i = index" color="warning" class="ion-margin-end ion-margin-bottom">
+                  {{ obtenerNombreArchivo(foto) }}
+                </ion-badge>
+              </div>
+              <!-- Debug: mostrar las rutas completas -->
+              <details class="ion-margin-top">
+                <summary>Ver rutas completas (debug)</summary>
+                <div style="font-size: 12px; margin-top: 8px;">
+                  <div *ngFor="let foto of fotografiasSinCatalogar; let i = index">
+                    {{ i + 1 }}. {{ foto }}
+                  </div>
+                </div>
+              </details>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+        
+        <ng-container *ngIf="exportacionValida && validacionesFotografias.length > 0">
+          <h6>Validaciones de Directorios de Premios ({{ validacionesFotografias.length }}):</h6>
+          <ion-card *ngFor="let val of validacionesFotografias" [color]="val.color">
+            <ion-card-content>
+              {{ val.mensaje }}
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+        
+        <ng-container *ngIf="exportacionValida && archivosNivelesProfundos.length > 0">
+          <h6>Validación de Estructura de Directorios ({{ archivosNivelesProfundos.length }}):</h6>
+          <ion-card *ngFor="let val of archivosNivelesProfundos" [color]="val.color">
+            <ion-card-content>
+              {{ val.mensaje }}
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
       </ion-col>
     </ion-row>
   </ion-grid>
