@@ -1,0 +1,32 @@
+ion-content {
+  h5 {
+    margin-bottom: 12px;
+    color: var(--ion-color-primary);
+  }
+  pre {
+    background: #f8f8f8;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    color: #333;
+  }
+  ion-card-content {
+    color: #111 !important;
+  }
+  
+  .fotografias-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    
+    ion-badge {
+      font-size: 12px;
+      padding: 6px 10px;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+} 

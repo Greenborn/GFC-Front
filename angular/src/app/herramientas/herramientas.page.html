@@ -32,6 +32,28 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+      <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Juzgamiento</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <!-- Input para seleccionar directorio de resultados -->
+            <input #fileInput type="file" webkitdirectory directory multiple (change)="onFileSelected($event)" style="display: none;" />
+            <ion-button expand="block" color="secondary" (click)="fileInput.click()">Cargar Resultados</ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Ranking</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-button expand="block" color="primary" (click)="recalcularRanking()">Recalcular Ranking</ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content> 
