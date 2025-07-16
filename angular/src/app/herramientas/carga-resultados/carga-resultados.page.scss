@@ -13,4 +13,20 @@ ion-content {
   ion-card-content {
     color: #111 !important;
   }
+  
+  .fotografias-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    
+    ion-badge {
+      font-size: 12px;
+      padding: 6px 10px;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 } 
