@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 export const CONFIG = {
-  apiBaseUrl: "https://gfc.prod-api.greenborn.com.ar/",//this.local ? "http://localhost:8888/" : "https://gfc.api.greenborn.com.ar/",
-  publicApi: "https://gfc.api2.greenborn.com.ar/",
-  loginAction:"login",
-  appName: "app_gfc_prod-",
-  version: "1.3.32"
+  apiBaseUrl: environment.apiBaseUrl,
+  publicApi: environment.publicApi,
+  loginAction: environment.loginAction,
+  appName: environment.appName,
+  version: environment.version
 }
 
 @Injectable({
