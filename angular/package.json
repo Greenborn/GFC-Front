@@ -5,8 +5,11 @@
   "homepage": "https://greenborn.com.ar",
   "scripts": {
     "ng": "ng",
+    "prestart": "node scripts/generate-env.js",
     "start": "export NODE_OPTIONS=--openssl-legacy-provider && ng serve",
+    "prebuild": "node scripts/generate-env.js",
     "build": "export NODE_OPTIONS=--openssl-legacy-provider && ng build --configuration production && zip -r gfc_build.zip build",
+    "generate-env": "node scripts/generate-env.js",
     "update-version": "node update-version.js"
   },
   "private": true,
