@@ -4,6 +4,7 @@ import { Fotoclub } from '../models/fotoclub.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,8 @@ export class FotoclubService extends ApiService<Fotoclub> {
     const token = localStorage.getItem(this.config.tokenKey);
     const headers = token ? { Authorization: 'Bearer ' + token } : {};
     const url = this.config.data.publicApi.replace(/\/$/, '') + '/api/fotoclub/get_all';
-    return this.http.get<K[]>(url, { headers });
+    return this.http.get<{items: K[]}>(url, { headers }).pipe(
+      map(resp => resp.items)
+    );
   }
 }
