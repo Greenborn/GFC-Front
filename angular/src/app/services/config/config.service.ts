@@ -72,11 +72,14 @@ export class ConfigService {
     if (recurso.startsWith('http') || recurso.startsWith('data:')) {
       return recurso;
     }
-    // Si la URL ya es relativa a assets, la retorna igual
-    if (recurso.startsWith('/')) {
-      return this.data.imagesBaseUrl + recurso;
+    // Normalizar base y recurso para evitar dobles barras o rutas relativas
+    let base = this.data.imagesBaseUrl;
+    if (!base.startsWith('http')) {
+      base = 'https://' + base.replace(/^\/+/, '');
     }
-    return this.data.imagesBaseUrl + '/' + recurso;
+    // Eliminar barra inicial del recurso si existe
+    recurso = recurso.replace(/^\/+/, '');
+    return base.replace(/\/$/, '') + '/' + recurso;
   }
 
 }
