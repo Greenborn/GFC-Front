@@ -1,6 +1,7 @@
 // Configuración de la aplicación
 export const CONFIG = {
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL || "https://gfc.prod-api.greenborn.com.ar/",
+  publicApi: import.meta.env.VITE_PUBLIC_API_URL || "https://gfc.api2.greenborn.com.ar/",
   loginAction: import.meta.env.VITE_LOGIN_ACTION || "login",
   appName: import.meta.env.VITE_APP_NAME || "app_gfc_prod-",
   version: import.meta.env.VITE_VERSION || "1.1.32"
@@ -25,6 +26,10 @@ class ConfigService {
 
   apiUrl(recurso) {
     return this.data.apiBaseUrl + recurso
+  }
+
+  publicApiUrl(recurso) {
+    return this.data.publicApi + recurso
   }
 
   setLocalStorage(r, v) {

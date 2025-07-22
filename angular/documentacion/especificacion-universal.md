@@ -940,6 +940,11 @@ Optional Environment Variables:
   SESSION_TIMEOUT: integer
 ```
 
+### Variables de Entorno Adicionales
+
+- `IMAGES_BASE_URL`: URL base para la obtención de imágenes estáticas (fotos de usuarios, concursos, etc). Ejemplo: `https://assets.prod-gfc.greenborn.com.ar`
+- `PUBLIC_API_URL`: URL base para endpoints públicos protegidos, como `/api/fotoclub/get_all`.
+
 ### Requisitos de Infraestructura
 ```yaml
 Minimum Requirements:
@@ -1314,6 +1319,20 @@ User Preferences:
   - Privacy: Data sharing preferences
   - Theme: Light/dark mode preference
 ```
+
+### Endpoints Específicos
+
+- `GET {PUBLIC_API_URL}/api/fotoclub/get_all`: Devuelve la lista de organizaciones/fotoclubs. Requiere token de sesión en el header `Authorization: Bearer <token>`. La respuesta es `{ items: Fotoclub[] }`.
+- `PUT {PUBLIC_API_URL}/api/fotoclub/edit`: Edita una organización/fotoclub existente. Requiere token de sesión en el header `Authorization: Bearer <token>`. El id de la organización debe enviarse en el body junto con los demás datos a modificar.
+
+### Construcción de URLs de Imágenes
+
+Las URLs de imágenes en el frontend se construyen usando la variable `IMAGES_BASE_URL` y el path relativo recibido desde la API. Ejemplo:
+
+```typescript
+const url = `${IMAGES_BASE_URL}/images/profile_123.jpg`;
+```
+El frontend se encarga de normalizar la URL para evitar dobles barras o rutas relativas incorrectas.
 
 ---
 

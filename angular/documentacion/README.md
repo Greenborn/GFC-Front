@@ -248,3 +248,20 @@ Breve descripción de la funcionalidad.
 **Última actualización**: Diciembre 2024  
 **Versión de documentación**: 1.1.32  
 **Mantenido por**: Equipo de Desarrollo Greenborn 
+
+## ⚙️ Variables de Entorno y Endpoints Relevantes
+
+- `IMAGES_BASE_URL`: Define la URL base para todas las imágenes estáticas del sistema. Ejemplo: `https://assets.prod-gfc.greenborn.com.ar`
+- `PUBLIC_API_URL`: Define la base para endpoints públicos protegidos, como la obtención de fotoclubs.
+
+### Ejemplo de uso en frontend
+```typescript
+// Construcción de URL de imagen de perfil
+const url = `${IMAGES_BASE_URL}/images/profile_123.jpg`;
+```
+
+### Endpoint de Fotoclubs
+- `GET {PUBLIC_API_URL}/api/fotoclub/get_all` (requiere token):
+  - Respuesta: `{ items: Fotoclub[] }`
+  - El frontend extrae el array de `items` para mostrar la lista de organizaciones.
+- `PUT {PUBLIC_API_URL}/api/fotoclub/edit` (requiere token): Edita una organización existente. El id debe enviarse en el body junto con los datos a modificar.

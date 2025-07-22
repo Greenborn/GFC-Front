@@ -10,6 +10,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { FooterService } from 'src/app/services/footer.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { FooterPostComponent } from './footer-post/footer-post.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-footer',
@@ -37,7 +38,7 @@ export class FooterComponent extends ApiConsumer implements OnInit {
       this.footer = f
       // console.log('foot', f);
     })
-    this.version = this.configService.data.version;
+    this.version = environment.version;
   }
 
   get faceUrl(){

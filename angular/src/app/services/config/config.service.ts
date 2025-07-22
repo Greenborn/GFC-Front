@@ -1,11 +1,25 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+
+interface EnvironmentWithImagesBaseUrl {
+  production: boolean;
+  version: string;
+  apiBaseUrl: string;
+  publicApi: string;
+  loginAction: string;
+  appName: string;
+  imagesBaseUrl: string;
+}
+
+const env: EnvironmentWithImagesBaseUrl = environment as EnvironmentWithImagesBaseUrl;
 
 export const CONFIG = {
-  apiBaseUrl: "https://gfc.prod-api.greenborn.com.ar/",//this.local ? "http://localhost:8888/" : "https://gfc.api.greenborn.com.ar/",
-  publicApi: "https://gfc.api2.greenborn.com.ar/",
-  loginAction:"login",
-  appName: "app_gfc_prod-",
-  version: "1.3.32"
+  apiBaseUrl: env.apiBaseUrl,
+  publicApi: env.publicApi,
+  loginAction: env.loginAction,
+  appName: env.appName,
+  version: env.version,
+  imagesBaseUrl: env.imagesBaseUrl
 }
 
 @Injectable({
@@ -47,6 +61,25 @@ export class ConfigService {
   }
   getLocalStorage(r: string): string {
     return localStorage.getItem(this.data.appName + r)
+  }
+
+  get imagesBaseUrl() {
+    return this.data.imagesBaseUrl;
+  }
+
+  imageUrl(recurso: string) {
+    // Si la URL ya es absoluta, no la modifica
+    if (recurso.startsWith('http') || recurso.startsWith('data:')) {
+      return recurso;
+    }
+    // Normalizar base y recurso para evitar dobles barras o rutas relativas
+    let base = this.data.imagesBaseUrl;
+    if (!base.startsWith('http')) {
+      base = 'https://' + base.replace(/^\/+/, '');
+    }
+    // Eliminar barra inicial del recurso si existe
+    recurso = recurso.replace(/^\/+/, '');
+    return base.replace(/\/$/, '') + '/' + recurso;
   }
 
 }

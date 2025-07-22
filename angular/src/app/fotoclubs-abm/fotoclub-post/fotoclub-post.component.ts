@@ -38,12 +38,11 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
   }
 
   ngOnInit() {
-    this.img_url = this.configService.data.apiBaseUrl + this.fotoclub.photo_url;
     if (this.fotoclub === undefined) {
-      this.fotoclub = this.fotoclubService.template
-    } else {
-      this.name = this.fotoclub.name;
+      this.fotoclub = this.fotoclubService.template;
     }
+    this.img_url = this.fotoclub.photo_url ? this.configService.imageUrl(this.fotoclub.photo_url) : '';
+    this.name = this.fotoclub.name;
   }
 
   datosCargados() {
@@ -53,7 +52,8 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
   async postFotoclub(form: NgForm) {
       if (form.valid) {
         this.posting = true
-        this.fotoclubService.post(form.value, this.fotoclub.id).subscribe(
+        const data = { ...form.value, id: this.fotoclub.id };
+        this.fotoclubService.post(data, this.fotoclub.id).subscribe(
          async  fotoclub => {
             this.posting = false
             this.modalController.dismiss({ fotoclub })

@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { HerramientasPage } from './herramientas.page';
 import { RouterModule, Routes } from '@angular/router';
+import { CargaResultadosPage } from './carga-resultados/carga-resultados.page';
+import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
 
 const routes: Routes = [
   {
@@ -14,11 +16,15 @@ const routes: Routes = [
   {
     path: 'busqueda-fotografias',
     loadChildren: () => import('./busqueda-fotografias/busqueda-fotografias.module').then(m => m.BusquedaFotografiasModule)
+  },
+  {
+    path: 'carga-resultados',
+    component: CargaResultadosPage
   }
 ];
 
 @NgModule({
-  declarations: [HerramientasPage],
+  declarations: [HerramientasPage, CargaResultadosPage, CargaResultadosModalComponent],
   imports: [
     CommonModule,
     FormsModule,

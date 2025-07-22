@@ -42,7 +42,7 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
     if (this.parrafo === undefined) {
       this.parrafo = this.infoCentroService.template
     } else {
-      this.img_url = this.configService.apiUrl(this.parrafo.img_url)
+      this.img_url = this.configService.imageUrl(this.parrafo.img_url)
     }
   }
 
@@ -65,7 +65,7 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
         this.img_url = undefined
         this.loadedImg = false
       } else {
-        this.img_url = this.configService.apiUrl(this.parrafo.img_url)
+        this.img_url = this.configService.imageUrl(this.parrafo.img_url)
       }
     } else {
       this.parrafo.img_url = ''
