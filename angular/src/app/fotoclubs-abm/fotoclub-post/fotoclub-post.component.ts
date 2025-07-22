@@ -52,7 +52,8 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
   async postFotoclub(form: NgForm) {
       if (form.valid) {
         this.posting = true
-        this.fotoclubService.post(form.value, this.fotoclub.id).subscribe(
+        const data = { ...form.value, id: this.fotoclub.id };
+        this.fotoclubService.post(data, this.fotoclub.id).subscribe(
          async  fotoclub => {
             this.posting = false
             this.modalController.dismiss({ fotoclub })
