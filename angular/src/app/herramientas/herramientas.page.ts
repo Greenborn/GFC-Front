@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
 import { RankingService } from '../services/ranking.service';
+import { ConfigService } from '../services/config/config.service';
 
 @Component({
   selector: 'app-herramientas',
@@ -30,7 +31,8 @@ export class HerramientasPage implements OnInit {
     private http: HttpClient,
     private modalController: ModalController,
     private loadingController: LoadingController,
-    private rankingService: RankingService
+    private rankingService: RankingService,
+    private config: ConfigService
   ) {}
 
   ngOnInit() {
@@ -117,7 +119,9 @@ export class HerramientasPage implements OnInit {
     if (!this.concursoSeleccionado) return;
     const id = this.concursoSeleccionado.id;
     const url = `https://gfc.api2.greenborn.com.ar/api/contests/participants?id=${id}`;
-    this.http.get<any>(url).subscribe(response => {
+    const token = localStorage.getItem(this.config.tokenKey);
+    const headers = token ? { Authorization: 'Bearer ' + token } : {};
+    this.http.get<any>(url, { headers }).subscribe(response => {
       if (response && response.participants) {
         const data = response.participants.map(p => ({
           Nombre: p.name,
