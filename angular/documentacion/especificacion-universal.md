@@ -1323,6 +1323,7 @@ User Preferences:
 ### Endpoints Específicos
 
 - `GET {PUBLIC_API_URL}/api/fotoclub/get_all`: Devuelve la lista de organizaciones/fotoclubs. Requiere token de sesión en el header `Authorization: Bearer <token>`. La respuesta es `{ items: Fotoclub[] }`.
+- `PUT {PUBLIC_API_URL}/api/fotoclub/edit`: Edita una organización/fotoclub existente. Requiere token de sesión en el header `Authorization: Bearer <token>`. El id de la organización debe enviarse en el body junto con los demás datos a modificar.
 
 ### Construcción de URLs de Imágenes
 
