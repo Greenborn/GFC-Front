@@ -57,13 +57,12 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
 
   async postFotoclub(f: Fotoclub = undefined) {
     const { fotoclub } = await this.UIUtilsService.mostrarModal(FotoclubPostComponent, { fotoclub: {...f} })
-    // console.log('Dismissed modal post fotoclub. Recibido ', f)
     if (fotoclub == undefined) return;
-    if (f != undefined) {
-      this.fotoclubs.splice(this.fotoclubs.findIndex(f1 => f1.id == f.id), 1, fotoclub)
-    } else {
-      this.fotoclubs.push(fotoclub)
-    }
+    await this.UIUtilsService.presentLoading();
+    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(fs => {
+      this.fotoclubs = fs;
+      this.UIUtilsService.dismissLoading();
+    })
   }
 
   async deleteFotoclub(f: Fotoclub) {
