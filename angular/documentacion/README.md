@@ -264,3 +264,4 @@ const url = `${IMAGES_BASE_URL}/images/profile_123.jpg`;
 - `GET {PUBLIC_API_URL}/api/fotoclub/get_all` (requiere token):
   - Respuesta: `{ items: Fotoclub[] }`
   - El frontend extrae el array de `items` para mostrar la lista de organizaciones.
+- `PUT {PUBLIC_API_URL}/api/fotoclub/edit` (requiere token): Edita una organización existente. El id debe enviarse en el body junto con los datos a modificar.
