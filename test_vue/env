@@ -2,3 +2,4 @@ VITE_API_BASE_URL=https://gfc.prod-api.greenborn.com.ar/
 VITE_LOGIN_ACTION=login
 VITE_APP_NAME=app_gfc_prod-
 VITE_VERSION=1.1.32 
+VITE_IMAGES_BASE_URL=assets.prod-gfc.greenborn.com.ar 
