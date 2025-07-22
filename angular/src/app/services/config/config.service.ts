@@ -1,12 +1,25 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
+interface EnvironmentWithImagesBaseUrl {
+  production: boolean;
+  version: string;
+  apiBaseUrl: string;
+  publicApi: string;
+  loginAction: string;
+  appName: string;
+  imagesBaseUrl: string;
+}
+
+const env: EnvironmentWithImagesBaseUrl = environment as EnvironmentWithImagesBaseUrl;
+
 export const CONFIG = {
-  apiBaseUrl: environment.apiBaseUrl,
-  publicApi: environment.publicApi,
-  loginAction: environment.loginAction,
-  appName: environment.appName,
-  version: environment.version
+  apiBaseUrl: env.apiBaseUrl,
+  publicApi: env.publicApi,
+  loginAction: env.loginAction,
+  appName: env.appName,
+  version: env.version,
+  imagesBaseUrl: env.imagesBaseUrl
 }
 
 @Injectable({
@@ -48,6 +61,22 @@ export class ConfigService {
   }
   getLocalStorage(r: string): string {
     return localStorage.getItem(this.data.appName + r)
+  }
+
+  get imagesBaseUrl() {
+    return this.data.imagesBaseUrl;
+  }
+
+  imageUrl(recurso: string) {
+    // Si la URL ya es absoluta, no la modifica
+    if (recurso.startsWith('http') || recurso.startsWith('data:')) {
+      return recurso;
+    }
+    // Si la URL ya es relativa a assets, la retorna igual
+    if (recurso.startsWith('/')) {
+      return this.data.imagesBaseUrl + recurso;
+    }
+    return this.data.imagesBaseUrl + '/' + recurso;
   }
 
 }

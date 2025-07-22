@@ -86,7 +86,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   get imgSource(): string {
-    return this.imageData != '' ? this.imageData : this.configService.apiUrl(this.image.url);
+    return this.imageData != '' ? this.imageData : this.configService.imageUrl(this.image.url);
   }
 
   async ngOnInit() {

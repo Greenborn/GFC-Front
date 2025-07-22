@@ -32,7 +32,7 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
     this.publicContestService.getAll('sort=-id').subscribe(
       ok => {
           this.concurso = ok[0];
-          this.bg_image = this.configService.data.apiBaseUrl + this.concurso.img_url;
+          this.bg_image = this.configService.imageUrl(this.concurso.img_url);
           loading.dismiss();
       },
       err => {

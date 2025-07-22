@@ -40,7 +40,7 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   }
 
   get imgSource(): string {
-    return this.configService.apiUrl(this.image.url)
+    return this.configService.imageUrl(this.image.url)
   }
 
   ngOnInit() {

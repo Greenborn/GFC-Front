@@ -62,7 +62,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     if (imgUrl == null){
       return ''
     }
-   let result = this.configService.apiUrl(imgUrl)
+   let result = this.configService.imageUrl(imgUrl)
    if (result == null){
      return ''
    }

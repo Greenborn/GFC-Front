@@ -53,7 +53,8 @@ export const environment = {
   apiBaseUrl: '${envVars.API_BASE_URL || 'https://gfc.prod-api.greenborn.com.ar/'}',
   publicApi: '${envVars.PUBLIC_API_URL || 'https://gfc.api2.greenborn.com.ar/'}',
   loginAction: '${envVars.LOGIN_ACTION || 'login'}',
-  appName: '${envVars.APP_NAME || 'app_gfc_prod-'}'
+  appName: '${envVars.APP_NAME || 'app_gfc_prod-'}',
+  imagesBaseUrl: '${envVars.IMAGES_BASE_URL || 'assets.prod-gfc.greenborn.com.ar'}'
 };
 `;
 }
