@@ -127,6 +127,7 @@ export class HerramientasPage implements OnInit {
           Nombre: p.name,
           Apellido: p.last_name,
           DNI: p.dni,
+          Email: p.email,
           Categoria: p.category_name
         }));
         const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
@@ -135,6 +136,7 @@ export class HerramientasPage implements OnInit {
           { wch: 20 }, // Nombre
           { wch: 20 }, // Apellido
           { wch: 15 }, // DNI
+          { wch: 20 }, // Email
           { wch: 20 }  // Categoria
         ];
         // NOTA: XLSX no soporta estilos de encabezado (color fondo/texto) en navegadores
