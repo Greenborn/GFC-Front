@@ -139,4 +139,28 @@ export class AuthService {
     this.router.navigateByUrl('/login')
   }
 
+  /**
+   * Solicita el envío de un código de recuperación al email
+   */
+  solicitarRecuperacionPassword(email: string) {
+    const url = this.config.getRecuperacionPasswordUrl('recupera_pass');
+    return this.http.post(url, { email });
+  }
+
+  /**
+   * Confirma el código de recuperación enviado al email
+   */
+  confirmarCodigoRecuperacion(email: string, code: string) {
+    const url = this.config.getRecuperacionPasswordUrl('recupera_pass_confirm_code');
+    return this.http.post(url, { email, code });
+  }
+
+  /**
+   * Establece una nueva contraseña usando el código recibido
+   */
+  cambiarPasswordConCodigo(email: string, code: string, pass_0: string, pass_1: string) {
+    const url = this.config.getRecuperacionPasswordUrl('recupera_pass_new_pass');
+    return this.http.post(url, { email, code, pass_0, pass_1 });
+  }
+
 }

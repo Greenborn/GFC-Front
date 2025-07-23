@@ -94,6 +94,10 @@ const routes: Routes = [
     loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule),
     pathMatch: 'full'
   },
+  // {
+  //   path: 'recuperar-password',
+  //   component: RecuperarPasswordComponent
+  // },
 
   // {
   //   path: 'login',
