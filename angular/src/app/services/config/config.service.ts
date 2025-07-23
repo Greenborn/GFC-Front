@@ -82,4 +82,13 @@ export class ConfigService {
     return base.replace(/\/$/, '') + '/' + recurso;
   }
 
+  get nodeApiBaseUrl() {
+    // fallback por si la variable no existe en environment
+    return (environment as any).nodeApiBaseUrl || 'https://gfc.api2.greenborn.com.ar/api/';
+  }
+
+  getRecuperacionPasswordUrl(endpoint: string) {
+    return this.nodeApiBaseUrl + 'auth/' + endpoint;
+  }
+
 }

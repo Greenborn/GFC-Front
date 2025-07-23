@@ -8,5 +8,7 @@ export const environment = {
   apiBaseUrl: 'https://gfc.prod-api.greenborn.com.ar/',
   publicApi: 'https://gfc.api2.greenborn.com.ar/',
   loginAction: 'login',
-  appName: 'app_gfc_prod-'
+  appName: 'app_gfc_prod-',
+  imagesBaseUrl: 'https://assets.prod-gfc.greenborn.com.ar',
+  nodeApiBaseUrl: 'https://gfc.api2.greenborn.com.ar/api/'
 }; 
