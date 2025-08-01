@@ -191,9 +191,9 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
    
     if (!file) return;
 
-    if(file.size > (1024 * 1024 * 200)) {
+    if(file.size > (1024 * 1024 * 50)) {
       //console.log(file.size)
-      this.texto_img = "El peso máximo admitido para la fotografía es de 200MB"
+      this.texto_img = "El peso máximo admitido para la fotografía es de 50MB"
       this.file = undefined;
       this.imageData = '';
       return;
