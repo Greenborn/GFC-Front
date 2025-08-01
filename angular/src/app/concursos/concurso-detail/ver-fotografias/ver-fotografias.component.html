@@ -51,7 +51,7 @@
                 <img 
                   (ionError)="yepImg = false"
                   *ngIf="yepImg==true;" 
-                  [src]="all_data[index].image.url != null ? configService.apiUrl(all_data[index].image.url) : ''"
+                  [src]="all_data[index].image.url != null ? configService.imageUrl(all_data[index].image.url) : ''"
                   class="img-det-modal"
                 />
               </ion-col>

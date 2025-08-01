@@ -128,7 +128,7 @@
           <ion-img 
             (ionError)="noImg(avatarImg)"
          
-            [src]="p.img_url != null ? configService.apiUrl(p.img_url) : '' "
+            [src]="p.img_url != null ? configService.imageUrl(p.img_url) : '' "
           ></ion-img>
         </ion-avatar>
         <ion-row  class="ion-no-padding ion-justify-content-center ion-align-items-center">
@@ -197,7 +197,7 @@
                   <ion-img 
                     (ionError)="noImg(rowImg)"
                 
-                    [src]="configService.apiUrl(p.img_url)"
+                    [src]="configService.imageUrl(p.img_url)"
                   ></ion-img>
                 </ion-avatar>
             </ion-row>
