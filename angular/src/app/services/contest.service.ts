@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Contest, ContestExpanded } from '../models/contest.model';
 import { ContestCategory, ContestCategoryExpanded } from '../models/contest_category.model';
 import { ContestSection, ContestSectionExpanded } from '../models/contest_section.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
+import { ApiSerializedResponse } from '../models/ApiResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +30,31 @@ export class ContestService extends ApiService<Contest> {
       end_date: undefined,
       max_img_section: 3,
       sub_title: ''
+    }
+  }
+
+  // Sobrescribimos getAll para usar publicApiUrl en lugar de apiUrl
+  getAll<K = Contest>(getParams: string = '', resource: string = null): Observable<K[]> {
+    if (this.fetchAllOnce && this.all != undefined) {
+      console.log('get all stored', this.all)
+      return new Observable(suscriber => {
+        suscriber.next(this.all as K[])
+      })
+    } else {
+      const url = this.config.publicApiUrl(`${resource ?? this.recurso}?${getParams}`)
+      return this.http.get<ApiSerializedResponse<K>>(url).pipe(
+        map((data) => {
+          console.log('get all', url, data)
+          if (this.fetchAllOnce) {
+            this.all = data.items;
+          }
+          if (data != null){
+            this.all_meta = data._meta;
+            return data.items;
+          }
+          return null;
+        })
+      )
     }
   }
 
