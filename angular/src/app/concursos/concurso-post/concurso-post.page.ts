@@ -145,7 +145,7 @@ get secycat(){
           this.day_selects[1].year = new Date(this.concurso.end_date).getFullYear()
           this.day_selects[1].hour = new Date(this.concurso.end_date).getHours()
           this.day_selects[1].minute = new Date(this.concurso.end_date).getMinutes()
-          this.img_url = this.configService.apiUrl(c.img_url)
+          this.img_url = this.configService.imageUrl(c.img_url)
           if (c.rules_url)
             // this.rules_url = this.configService.apiUrl(c.rules_url)
             this.rules_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.configService.apiUrl(c.rules_url))
