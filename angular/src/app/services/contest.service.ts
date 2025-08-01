@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -42,7 +42,14 @@ export class ContestService extends ApiService<Contest> {
       })
     } else {
       const url = this.config.publicApiUrl(`${resource ?? this.recurso}?${getParams}`)
-      return this.http.get<ApiSerializedResponse<K>>(url).pipe(
+      
+      // Obtener token del localStorage
+      const token = localStorage.getItem(this.config.tokenKey);
+      const headers = token ? new HttpHeaders({
+        'Authorization': 'Bearer ' + token
+      }) : new HttpHeaders();
+
+      return this.http.get<ApiSerializedResponse<K>>(url, { headers }).pipe(
         map((data) => {
           console.log('get all', url, data)
           if (this.fetchAllOnce) {
