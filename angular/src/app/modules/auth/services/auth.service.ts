@@ -97,7 +97,8 @@ export class AuthService {
       const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
 
       // this.gral.presentLoading();
-      this.http.post(this.config.loginUrl, model, { headers }).subscribe(
+      const loginUrl = this.config.nodeApiBaseUrl + 'auth/login';
+      this.http.post(loginUrl, model, { headers }).subscribe(
         data => {
           const r = (data as any)
           // this.gral.dismissLoading();
