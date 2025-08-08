@@ -30,6 +30,7 @@ import { get_all, resultadosConcursoGeted } from '../../../services/contest-resu
   styleUrls: ['./fotografias.component.scss'],
 })
 export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
+  private static readonly AUTOLOAD_INTERVAL_MS = 300; // Tiempo entre peticiones de página
   // El scroll infinito ahora se hace automáticamente con timeout, no por evento scroll
 
   concurso: any = null;
@@ -221,7 +222,7 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
     const autoLoad = async () => {
       if (!this.loadingScroll && !this.noMoreResults) {
         await this.loadMoreNative();
-        setTimeout(autoLoad, 100); // Espera 300ms entre cada carga
+        setTimeout(autoLoad, FotografiasComponent.AUTOLOAD_INTERVAL_MS);
       }
     };
     setTimeout(autoLoad, 1200); // Espera 1.2s para asegurar render inicial
