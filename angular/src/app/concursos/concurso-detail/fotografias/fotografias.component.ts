@@ -30,6 +30,7 @@ import { get_all, resultadosConcursoGeted } from '../../../services/contest-resu
   styleUrls: ['./fotografias.component.scss'],
 })
 export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
+  // El scroll infinito ahora se hace automáticamente con timeout, no por evento scroll
 
   concurso: any = null;
   imagenCargada: boolean[] = [];
@@ -216,34 +217,18 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.scrollListener = () => {
-      const el = this.scrollContainer?.nativeElement;
-      if (!el || this.loadingScroll || this.noMoreResults) return;
-      const threshold = 300; // px antes del final
-      console.log('Scroll event fired', {
-        scrollTop: el.scrollTop,
-        scrollHeight: el.scrollHeight,
-        clientHeight: el.clientHeight
-      });
-      if (el.scrollHeight - el.scrollTop - el.clientHeight < threshold) {
-        this.loadMoreNative();
+    // Cargar automáticamente la siguiente página después de mostrar la primera y seguir cargando mientras haya más
+    const autoLoad = async () => {
+      if (!this.loadingScroll && !this.noMoreResults) {
+        await this.loadMoreNative();
+        setTimeout(autoLoad, 100); // Espera 300ms entre cada carga
       }
     };
-    this.scrollContainer?.nativeElement.addEventListener('scroll', this.scrollListener);
-    // Disparar carga si el contenido inicial no permite scroll
-    setTimeout(() => {
-      const el = this.scrollContainer?.nativeElement;
-      if (el && el.scrollHeight <= el.clientHeight && !this.loadingScroll && !this.noMoreResults) {
-        this.loadMoreNative();
-      }
-    }, 500);
+    setTimeout(autoLoad, 1200); // Espera 1.2s para asegurar render inicial
   }
 
   async ngOnDestroy() {
-    if (this.scrollContainer?.nativeElement && this.scrollListener) {
-      this.scrollContainer.nativeElement.removeEventListener('scroll', this.scrollListener);
-    }
-    this.unsuscribes()
+  this.unsuscribes()
   }
 
   set_categoria_null() {
