@@ -37,6 +37,8 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
   categoriasInscriptas: ContestCategoryExpanded[] = [];
   seccionesInscriptas: ContestSectionExpanded[] = [];
   resultadosObtenidos: ContestResultExpanded[] = [];
+  colaImagenes: ContestResultExpanded[] = [];
+  procesandoCola: boolean = false;
   resultadosFiltrados: ContestResultExpanded[] = [];
   fotoclubs: Fotoclub[] = [];
   user: UserLogged;
@@ -359,12 +361,15 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       const data: any = await get_all(params_, true);
       if (data && Array.isArray(data.items) && data.items.length) {
-        // Concatenar los nuevos resultados
-        this.resultadosObtenidos = [...this.resultadosObtenidos, ...data.items];
-        this.resultadosFiltrados = [...this.resultadosObtenidos]; // Sin filtros
+        // Guardar las nuevas imágenes en la cola temporal
+        this.colaImagenes = [...this.colaImagenes, ...data.items];
         this.paginaActual = nextPage;
         if (data._meta && data._meta.currentPage >= data._meta.pageCount) {
           this.noMoreResults = true;
+        }
+        // Iniciar el procesamiento de la cola si no está en curso
+        if (!this.procesandoCola) {
+          this.procesarColaImagenes();
         }
       } else {
         this.noMoreResults = true;
@@ -373,6 +378,22 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
       this.noMoreResults = false;
     }
     this.loadingScroll = false;
+  }
+
+  procesarColaImagenes() {
+    this.procesandoCola = true;
+    const procesar = () => {
+      if (this.colaImagenes.length > 0) {
+        const imagen = this.colaImagenes.shift();
+        this.resultadosObtenidos.push(imagen);
+        // Actualizar resultados filtrados (sin filtros)
+        // ...existing code...
+        setTimeout(procesar, 500);
+      } else {
+        this.procesandoCola = false;
+      }
+    };
+    procesar();
   }
 
   getFotoclubName(profile_id: number): string {
