@@ -88,6 +88,10 @@ export class FotografiasComponent implements OnInit {
   mostrarFiltro: boolean = false;
   public subscriptions = []
 
+  page: number = 1;
+  perPage: number = 20;
+  loadingScroll: boolean = false;
+
   constructor(
     public concursoDetailService: ConcursoDetailService,
     public contestService: ContestService,
@@ -189,14 +193,13 @@ export class FotografiasComponent implements OnInit {
 
     if (this.concurso === null)
       this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
-                
         this.concurso = c
-        //console.log('route', this.route.snapshot.params)
         let params_: any = {
           ...this.route.snapshot.params,
         }
         params_['contest_id'] = this.concurso.id
-        
+        params_['page'] = this.page;
+        params_['per-page'] = this.perPage;
         await get_all(params_)
       }))
   }
@@ -448,5 +451,23 @@ export class FotografiasComponent implements OnInit {
     const n2 = e2.metric.score
     return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
       (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+  }
+
+  async loadMore(event) {
+    if (this.loadingScroll) return;
+    this.loadingScroll = true;
+    this.page++;
+    let params_: any = {
+      ...this.route.snapshot.params,
+      contest_id: this.concurso.id,
+      page: this.page,
+      'per-page': this.perPage
+    };
+    const data: any = await get_all(params_, true);
+    if (data && Array.isArray(data.items) && data.items.length) {
+      this.resultadosConcurso = [...this.resultadosConcurso, ...data.items];
+    }
+    this.loadingScroll = false;
+    event.target.complete();
   }
 }
