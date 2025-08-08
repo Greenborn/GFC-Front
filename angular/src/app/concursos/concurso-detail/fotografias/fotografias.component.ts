@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Category } from 'src/app/models/category.model';
@@ -29,7 +29,7 @@ import { get_all, resultadosConcursoGeted } from '../../../services/contest-resu
   templateUrl: './fotografias.component.html',
   styleUrls: ['./fotografias.component.scss'],
 })
-export class FotografiasComponent implements OnInit {
+export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   concurso: any = null;
   concursantes: ProfileExpanded[] = [];
@@ -91,6 +91,9 @@ export class FotografiasComponent implements OnInit {
   page: number = 1;
   perPage: number = 20;
   loadingScroll: boolean = false;
+  @ViewChild('scrollContainer') scrollContainer: ElementRef;
+  scrollListener: any;
+  noMoreResults: boolean = false;
 
   constructor(
     public concursoDetailService: ConcursoDetailService,
@@ -176,6 +179,19 @@ export class FotografiasComponent implements OnInit {
     });
   }
 
+  // Reiniciar paginación y resultados solo al cargar o cambiar filtros
+  async reloadFotografias() {
+    this.page = 1;
+    let params_: any = {
+      ...this.route.snapshot.params,
+      contest_id: this.concurso.id,
+      page: this.page,
+      'per-page': this.perPage
+    };
+    const data: any = await get_all(params_, true);
+    this.resultadosConcurso = (data && Array.isArray(data.items)) ? data.items : [];
+  }
+
   subscribes() {
     this.subscriptions.push(this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs))
     this.subscriptions.push(this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs))
@@ -188,19 +204,14 @@ export class FotografiasComponent implements OnInit {
       setTimeout(() => this.updatingInscriptos = false)
     }))
     this.subscriptions.push(resultadosConcursoGeted.subscribe(cs =>{
-      this.setResultadosConcurso(cs?.items)
+      // No reiniciar resultados aquí, solo en reloadFotografias
+      // this.setResultadosConcurso(cs?.items)
     }))
 
     if (this.concurso === null)
       this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
         this.concurso = c
-        let params_: any = {
-          ...this.route.snapshot.params,
-        }
-        params_['contest_id'] = this.concurso.id
-        params_['page'] = this.page;
-        params_['per-page'] = this.perPage;
-        await get_all(params_)
+        await this.reloadFotografias();
       }))
   }
 
@@ -223,134 +234,34 @@ export class FotografiasComponent implements OnInit {
     this.auth.user.then(u => this.user = u);
   }
 
+  ngAfterViewInit() {
+    this.scrollListener = () => {
+      const el = this.scrollContainer?.nativeElement;
+      if (!el || this.loadingScroll || this.noMoreResults) return;
+      const threshold = 200; // px antes del final
+      if (el.scrollHeight - el.scrollTop - el.clientHeight < threshold) {
+        this.loadMoreNative();
+      }
+    };
+    this.scrollContainer?.nativeElement.addEventListener('scroll', this.scrollListener);
+  }
+
   async ngOnDestroy() {
+    if (this.scrollContainer?.nativeElement && this.scrollListener) {
+      this.scrollContainer.nativeElement.removeEventListener('scroll', this.scrollListener);
+    }
     this.unsuscribes()
   }
 
-  getThumbUrl(obj: any, thumb_id: number = 1) {
-    //si no tiene miniatura porque no tiene imagen
-    if (obj == null) {
-      return '';
-    }
-    //si llega un objeto no iterable
-    if (obj !== undefined && (obj.length === undefined || obj.length == 0)) {
-      return this.configService.imageUrl(obj.url);
-    }
-    //si se trata de un arreglo
-    for (let c = 0; c < obj.length; c++) {
-      if (obj[c].thumbnail_type == thumb_id) {
-        return this.configService.imageUrl(obj[c].url);
-      }
-    }
-    return '';
-  }
-
-  checkPermissions(reg: any) {
-    return this.contestService.isActive(this.concurso) &&
-      (this.user != undefined ? (this.rolificador.esDelegado(this.user) || this.rolificador.isAdmin(this.user) || (this.rolificador.esConcursante(this.user) && reg?.image?.profile_id == this.user.profile_id)) : false)
-  }
-
-  get inscriptosProfiles(): Profile[] {
-    const inscriptos = this.categoriaSeleccionada != null ? this.inscriptos.filter(i => i.category_id == this.categoriaSeleccionada.id) : this.inscriptos
-    return inscriptos.map(i => i.profile)
-  }
-  get inscriptosEmptyMessage(): string {
-    return 'No hay inscriptos'
-  }
-
-  get fotoclubsDisponibles(): string[] {
-    const fotoclubs = new Set<string>();
-    this.inscriptos.forEach(inscripto => {
-      if (inscripto.profile.fotoclub?.name) {
-        fotoclubs.add(inscripto.profile.fotoclub.name);
-      }
-    });
-    return Array.from(fotoclubs).sort();
-  }
-
-  get hayFiltrosActivos(): boolean {
-    return this.categoriaSeleccionada != null || 
-           this.seccionSeleccionada != null || 
-           this.fotoclubSeleccionado != null;
-  }
-
-  get resultadosConcursoFiltrados() {
-    if (this.resultadosConcurso == undefined) {
-      return []
-    }
-    return this.resultadosConcurso.filter(rc => {
-      // Filtro por categoría
-      let cond1: boolean = true;
-      if (this.categoriaSeleccionada != undefined) {
-        cond1 = this.categoriaSeleccionada.id == this.inscriptos.find(i => i.profile_id == rc.image.profile_id)?.category_id
-      }
-      
-      // Filtro por sección
-      let cond2: boolean = true;
-      if (this.seccionSeleccionada != undefined) {
-        cond2 = this.seccionSeleccionada.id == rc.section_id
-      }
-      
-      // Filtro por fotoclub
-      let cond3: boolean = true;
-      if (this.fotoclubSeleccionado != undefined) {
-        const fotoclubName = this.getFotoclubName(rc.image.profile_id);
-        cond3 = fotoclubName === this.fotoclubSeleccionado
-      }
-      
-      return cond1 && cond2 && cond3
-    })
-  }
-
-  toggleFiltro() {
-    this.mostrarFiltro = !this.mostrarFiltro;
-  }
-
-  getFotoclubName(profile_id: number): string {
-    const profile = this.inscriptos.find(p => p.profile_id == profile_id);
-    if (profile != undefined) {
-      if (profile.profile.fotoclub == null) {
-        return '';
-      } else {
-        return profile.profile.fotoclub.name;
-      }
-    }
-    return '';
-  }
-
-  getFullName(profile_id: number) {
-    const p = this.inscriptos.find(p => p.profile_id == profile_id)
-    return p != undefined ? `${p.profile.name} ${p.profile.last_name}` : ''
-  }
-
-  postImage(image: Image = undefined, section_id: number = undefined) {
-    if (section_id == undefined) {
-      section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
-    }
-    let section_max = this.concurso.max_img_section
-    let resultados = this.resultadosConcurso
-
-    this.concursoDetailService.postImage.emit({
-      image,
-      section_id,
-      section_max,
-      resultados
-    });
-  }
-
-  openImage(index: any) {
-    this.UIUtilsService.mostrarModal(VerFotografiasComponent, { index, all_data: this.resultadosConcursoFiltrados, open: this.isContestNotFin }, true);
-  }
-
-  async set_categoria_null() {
+  set_categoria_null() {
     this.categoriaSeleccionada = null;
   }
 
-  async set_seccion_null() {
+  set_seccion_null() {
     this.seccionSeleccionada = null;
   }
 
-  async set_fotoclub_null() {
+  set_fotoclub_null() {
     this.fotoclubSeleccionado = null;
   }
 
@@ -358,6 +269,7 @@ export class FotografiasComponent implements OnInit {
     this.categoriaSeleccionada = null;
     this.seccionSeleccionada = null;
     this.fotoclubSeleccionado = null;
+    await this.reloadFotografias();
   }
 
   //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
@@ -453,8 +365,8 @@ export class FotografiasComponent implements OnInit {
       (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
   }
 
-  async loadMore(event) {
-    if (this.loadingScroll) return;
+  async loadMoreNative() {
+    if (this.loadingScroll || this.noMoreResults) return;
     this.loadingScroll = true;
     this.page++;
     let params_: any = {
@@ -463,11 +375,105 @@ export class FotografiasComponent implements OnInit {
       page: this.page,
       'per-page': this.perPage
     };
-    const data: any = await get_all(params_, true);
-    if (data && Array.isArray(data.items) && data.items.length) {
-      this.resultadosConcurso = [...this.resultadosConcurso, ...data.items];
+    try {
+      const data: any = await get_all(params_, true);
+      if (data && Array.isArray(data.items) && data.items.length) {
+        const nuevos = data.items.filter((item: any) => !this.resultadosConcurso.some((r: any) => r.id === item.id));
+        this.resultadosConcurso = [...this.resultadosConcurso, ...nuevos];
+        if (nuevos.length === 0) {
+          this.noMoreResults = true;
+        }
+      } else {
+        this.noMoreResults = true;
+      }
+    } catch (error) {
+      this.page--;
+      this.noMoreResults = false;
     }
     this.loadingScroll = false;
-    event.target.complete();
+  }
+
+  getFotoclubName(profile_id: number): string {
+    const profile = this.inscriptos.find(p => p.profile_id == profile_id);
+    if (profile != undefined) {
+      if (profile.profile.fotoclub == null) {
+        return '';
+      } else {
+        return profile.profile.fotoclub.name;
+      }
+    }
+    return '';
+  }
+
+  openImage(index: any) {
+    this.UIUtilsService.mostrarModal(VerFotografiasComponent, { index, all_data: this.resultadosConcursoFiltrados, open: this.isContestNotFin }, true);
+  }
+
+  checkPermissions(reg: any) {
+    return this.contestService.isActive(this.concurso) &&
+      (this.user != undefined ? (this.rolificador.esDelegado(this.user) || this.rolificador.isAdmin(this.user) || (this.rolificador.esConcursante(this.user) && reg?.image?.profile_id == this.user.profile_id)) : false)
+  }
+
+  postImage(image: Image = undefined, section_id: number = undefined) {
+    if (section_id == undefined) {
+      section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
+    }
+    let section_max = this.concurso.max_img_section
+    let resultados = this.resultadosConcurso
+
+    this.concursoDetailService.postImage.emit({
+      image,
+      section_id,
+      section_max,
+      resultados
+    });
+  }
+
+  get resultadosConcursoFiltrados() {
+    if (this.resultadosConcurso == undefined) {
+      return [];
+    }
+    return this.resultadosConcurso.filter(rc => {
+      // Filtro por categoría
+      let cond1: boolean = true;
+      if (this.categoriaSeleccionada != undefined) {
+        cond1 = this.categoriaSeleccionada.id == this.inscriptos.find(i => i.profile_id == rc.image.profile_id)?.category_id
+      }
+      // Filtro por sección
+      let cond2: boolean = true;
+      if (this.seccionSeleccionada != undefined) {
+        cond2 = this.seccionSeleccionada.id == rc.section_id
+      }
+      // Filtro por fotoclub
+      let cond3: boolean = true;
+      if (this.fotoclubSeleccionado != undefined) {
+        const fotoclubName = this.getFotoclubName(rc.image.profile_id);
+        cond3 = fotoclubName === this.fotoclubSeleccionado
+      }
+      return cond1 && cond2 && cond3
+    })
+  }
+
+  getThumbUrl(obj: any, thumb_id: number = 1) {
+    //si no tiene miniatura porque no tiene imagen
+    if (obj == null) {
+      return '';
+    }
+    //si llega un objeto no iterable
+    if (obj !== undefined && (obj.length === undefined || obj.length == 0)) {
+      return this.configService.imageUrl(obj.url);
+    }
+    //si se trata de un arreglo
+    for (let c = 0; c < obj.length; c++) {
+      if (obj[c].thumbnail_type == thumb_id) {
+        return this.configService.imageUrl(obj[c].url);
+      }
+    }
+    return '';
+  }
+
+  getFullName(profile_id: number) {
+    const p = this.inscriptos.find(p => p.profile_id == profile_id)
+    return p != undefined ? `${p.profile.name} ${p.profile.last_name}` : ''
   }
 }
