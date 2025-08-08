@@ -466,8 +466,24 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Los filtros están deshabilitados, se muestra directamente el arreglo
   get resultadosConcursoFiltrados() {
-    // Los filtros están deshabilitados, siempre retorna los resultados obtenidos
-    return this.resultadosObtenidos;
+    // Aplica los filtros activos sobre los resultados obtenidos
+    let filtrados = [...this.resultadosObtenidos];
+    if (this.categoriaSeleccionada) {
+      filtrados = filtrados.filter(r => {
+        const inscripto = this.inscriptos.find(i => i.profile_id == r.image.profile_id);
+        return inscripto && inscripto.category_id === this.categoriaSeleccionada.id;
+      });
+    }
+    if (this.seccionSeleccionada) {
+      filtrados = filtrados.filter(r => r.section && r.section.id === this.seccionSeleccionada.id);
+    }
+    if (this.fotoclubSeleccionado) {
+      filtrados = filtrados.filter(r => {
+        const fotoclubName = this.getFotoclubName(r.image.profile_id);
+        return fotoclubName === this.fotoclubSeleccionado;
+      });
+    }
+    return filtrados;
   }
 
   getThumbUrl(obj: any, thumb_id: number = 1) {
