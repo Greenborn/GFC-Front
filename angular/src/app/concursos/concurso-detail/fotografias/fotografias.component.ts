@@ -36,8 +36,8 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
   inscriptos: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
   seccionesInscriptas: ContestSectionExpanded[] = [];
-  resultadosConcurso: ContestResultExpanded[] = [];
-  resultadosConcursoOrig: ContestResultExpanded[] = [];
+  resultadosObtenidos: ContestResultExpanded[] = [];
+  resultadosFiltrados: ContestResultExpanded[] = [];
   fotoclubs: Fotoclub[] = [];
   user: UserLogged;
 
@@ -88,7 +88,7 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
   mostrarFiltro: boolean = false;
   public subscriptions = []
 
-  page: number = 1;
+  paginaActual: number = 1;
   perPage: number = 20;
   loadingScroll: boolean = false;
   @ViewChild('scrollContainer') scrollContainer: ElementRef;
@@ -142,54 +142,23 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setResultadosConcurso(rs) {
-    this.resultadosConcurso = rs;
-
-    this.resultadosConcursoOrig = [...rs];
-    this.route.queryParams.subscribe(params => {
-
-      this.resultadosConcurso = [...this.resultadosConcursoOrig]
-
-      this.resultadosConcurso.forEach(e => {
-        if (e.metric.prize != '0' && e.metric.prize != null && e.metric.prize != undefined && e.metric.prize != '') {
-          if (this.puntajes.find(element => element.score == e.metric.score) == undefined) {
-            this.puntajes.push(e.metric)
-          }
-        }
-      })
-
-      const filterCallbacks: {
-        queryValue: string;
-        callback: Function;
-      }[] = [];
-
-      for (const f of [this.filtrado['metric'], this.filtrado['perfil']]) {
-        // console.log('analizando filter callback', f)
-        if (params[f.options.queryParam] != undefined) {
-          // console.log('agregando filter callback', f.options.queryParam)
-          filterCallbacks.push({
-            callback: f.filterCallback,
-            queryValue: params[f.options.queryParam]
-          })
-        }
-      }
-
-      for (const f of filterCallbacks) {
-        this.resultadosConcurso = this.resultadosConcurso.filter(p => f.callback(p, f.queryValue))
-      }
-    });
+    // Deshabilitado: solo actualiza los resultados obtenidos y filtrados
+    this.resultadosObtenidos = rs;
+    this.resultadosFiltrados = [...rs];
   }
 
   // Reiniciar paginación y resultados solo al cargar o cambiar filtros
   async reloadFotografias() {
-    this.page = 1;
+    this.paginaActual = 1;
     let params_: any = {
       ...this.route.snapshot.params,
       contest_id: this.concurso.id,
-      page: this.page,
+      page: this.paginaActual,
       'per-page': this.perPage
     };
     const data: any = await get_all(params_, true);
-    this.resultadosConcurso = (data && Array.isArray(data.items)) ? data.items : [];
+    this.resultadosObtenidos = (data && Array.isArray(data.items)) ? data.items : [];
+    this.resultadosFiltrados = [...this.resultadosObtenidos]; // Sin filtros
   }
 
   subscribes() {
@@ -239,6 +208,11 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
       const el = this.scrollContainer?.nativeElement;
       if (!el || this.loadingScroll || this.noMoreResults) return;
       const threshold = 300; // px antes del final
+      console.log('Scroll event fired', {
+        scrollTop: el.scrollTop,
+        scrollHeight: el.scrollHeight,
+        clientHeight: el.clientHeight
+      });
       if (el.scrollHeight - el.scrollTop - el.clientHeight < threshold) {
         this.loadMoreNative();
       }
@@ -375,19 +349,20 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
   async loadMoreNative() {
     if (this.loadingScroll || this.noMoreResults) return;
     this.loadingScroll = true;
-    this.page++;
+    let nextPage = this.paginaActual + 1;
     let params_: any = {
       ...this.route.snapshot.params,
       contest_id: this.concurso.id,
-      page: this.page,
+      page: nextPage,
       'per-page': this.perPage
     };
     try {
       const data: any = await get_all(params_, true);
       if (data && Array.isArray(data.items) && data.items.length) {
-        const nuevos = data.items.filter((item: any) => !this.resultadosConcurso.some((r: any) => r.id === item.id));
-        this.resultadosConcurso = [...this.resultadosConcurso, ...nuevos];
-        // Usar _meta para saber si hay más páginas
+        // Concatenar los nuevos resultados
+        this.resultadosObtenidos = [...this.resultadosObtenidos, ...data.items];
+        this.resultadosFiltrados = [...this.resultadosObtenidos]; // Sin filtros
+        this.paginaActual = nextPage;
         if (data._meta && data._meta.currentPage >= data._meta.pageCount) {
           this.noMoreResults = true;
         }
@@ -395,7 +370,6 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
         this.noMoreResults = true;
       }
     } catch (error) {
-      this.page--;
       this.noMoreResults = false;
     }
     this.loadingScroll = false;
@@ -427,7 +401,7 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
       section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
     }
     let section_max = this.concurso.max_img_section
-    let resultados = this.resultadosConcurso
+  let resultados = this.resultadosObtenidos;
 
     this.concursoDetailService.postImage.emit({
       image,
@@ -437,29 +411,10 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  // Los filtros están deshabilitados, se muestra directamente el arreglo
   get resultadosConcursoFiltrados() {
-    if (this.resultadosConcurso == undefined) {
-      return [];
-    }
-    return this.resultadosConcurso.filter(rc => {
-      // Filtro por categoría
-      let cond1: boolean = true;
-      if (this.categoriaSeleccionada != undefined) {
-        cond1 = this.categoriaSeleccionada.id == this.inscriptos.find(i => i.profile_id == rc.image.profile_id)?.category_id
-      }
-      // Filtro por sección
-      let cond2: boolean = true;
-      if (this.seccionSeleccionada != undefined) {
-        cond2 = this.seccionSeleccionada.id == rc.section_id
-      }
-      // Filtro por fotoclub
-      let cond3: boolean = true;
-      if (this.fotoclubSeleccionado != undefined) {
-        const fotoclubName = this.getFotoclubName(rc.image.profile_id);
-        cond3 = fotoclubName === this.fotoclubSeleccionado
-      }
-      return cond1 && cond2 && cond3
-    })
+    // Los filtros están deshabilitados, siempre retorna los resultados obtenidos
+    return this.resultadosObtenidos;
   }
 
   getThumbUrl(obj: any, thumb_id: number = 1) {
