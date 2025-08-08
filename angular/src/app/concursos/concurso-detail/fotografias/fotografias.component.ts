@@ -160,8 +160,10 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
       'per-page': this.perPage
     };
     const data: any = await get_all(params_, true);
-    this.resultadosObtenidos = (data && Array.isArray(data.items)) ? data.items : [];
-    this.resultadosFiltrados = [...this.resultadosObtenidos]; // Sin filtros
+  this.resultadosObtenidos = (data && Array.isArray(data.items)) ? data.items : [];
+  this.resultadosFiltrados = [...this.resultadosObtenidos]; // Sin filtros
+  // Inicializar imagenCargada en true para fade-in inmediato
+  this.imagenCargada = Array(this.resultadosObtenidos.length).fill(true);
   }
 
   subscribes() {
@@ -204,6 +206,13 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.auth.user.then(u => this.user = u);
+
+    // Aplicar fade-in a los elementos de la primera página en el primer tick
+    setTimeout(() => {
+      for (let i = 0; i < this.resultadosObtenidos.length; i++) {
+        this.imagenCargada[i] = true;
+      }
+    }, 0);
   }
 
   ngAfterViewInit() {
