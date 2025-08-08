@@ -30,7 +30,7 @@ import { get_all, resultadosConcursoGeted } from '../../../services/contest-resu
   styleUrls: ['./fotografias.component.scss'],
 })
 export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
-  private static readonly AUTOLOAD_INTERVAL_MS = 300; // Tiempo entre peticiones de página
+  private static readonly AUTOLOAD_INTERVAL_MS = 100; // Tiempo entre peticiones de página
   // El scroll infinito ahora se hace automáticamente con timeout, no por evento scroll
 
   concurso: any = null;
@@ -221,7 +221,8 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
     // Cargar automáticamente la siguiente página después de mostrar la primera y seguir cargando mientras haya más
     const autoLoad = async () => {
       if (!this.loadingScroll && !this.noMoreResults) {
-        await this.loadMoreNative();
+        const success = await this.loadMoreNative();
+        // Si la petición falla, reintenta la misma página
         setTimeout(autoLoad, FotografiasComponent.AUTOLOAD_INTERVAL_MS);
       }
     };
@@ -347,6 +348,7 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
   async loadMoreNative() {
     if (this.loadingScroll || this.noMoreResults) return;
     this.loadingScroll = true;
+    // Mantener la página actual si hay error
     let nextPage = this.paginaActual + 1;
     let params_: any = {
       ...this.route.snapshot.params,
@@ -354,12 +356,14 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
       page: nextPage,
       'per-page': this.perPage
     };
+    let success = false;
     try {
       const data: any = await get_all(params_, true);
       if (data && Array.isArray(data.items) && data.items.length) {
         // Guardar las nuevas imágenes en la cola temporal
         this.colaImagenes = [...this.colaImagenes, ...data.items];
         this.paginaActual = nextPage;
+        success = true;
         if (data._meta && data._meta.currentPage >= data._meta.pageCount) {
           this.noMoreResults = true;
         }
@@ -371,9 +375,12 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
         this.noMoreResults = true;
       }
     } catch (error) {
+      // No avanzar de página, reintentar en el próximo ciclo
       this.noMoreResults = false;
+      success = false;
     }
     this.loadingScroll = false;
+    return success;
   }
 
   procesarColaImagenes() {
