@@ -3,7 +3,7 @@ import axios from "axios"
 import { BehaviorSubject } from 'rxjs';
 
 import { LoadingController } from '@ionic/angular';
-import { CONFIG } from './config/config.service';
+import { CONFIG, ConfigService } from './config/config.service';
 
 let result_data:any = null
 
@@ -29,7 +29,8 @@ export const get_all = async (attr, reload = true) => {
             if (attr?.present_loading)
                 await loading.present()
             
-            let res = await axios.get(CONFIG.apiBaseUrl+'contest-result?'+params, {
+                const configService = new ConfigService();
+                let res = await axios.get(configService.nodeApiBaseUrl+'contest-result?'+params, {
                 headers: {
                     'Authorization': 'Bearer '+localStorage.getItem(CONFIG.appName + 'token' ),
                     'Content-Type':  'application/json'
