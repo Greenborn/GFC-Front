@@ -22,6 +22,7 @@ export const get_all = async (attr, reload = true) => {
             params +=  'expand=profile,profile.user,profile.fotoclub,image.profile,image.thumbnail'
             params +=  '&filter[contest_id]='+attr.contest_id
             params +=  (attr?.page) ? '&page='+attr.page : ''
+            params +=  (attr?.perPage || attr?.['per-page']) ? '&per-page='+(attr.perPage || attr['per-page']) : '&per-page=20';
             params +=  (attr?.concursante_id) ? ('&filter[profile_id]=' + attr.concursante_id) : ''
             
             const loadingCtrl = new LoadingController()
