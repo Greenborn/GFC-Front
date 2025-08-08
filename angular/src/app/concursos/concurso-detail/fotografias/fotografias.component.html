@@ -156,8 +156,8 @@
                               <ion-row class="ion-justify-content-center">
                                 <ion-col size="auto">
                                     <img class="img-galeria"  title="Ver fotografía" (click)="openImage(i)" 
-                                      [ngStyle]="aspecto && (getThumbUrl(r.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
-                                      [src]="getThumbUrl(r.thumbnail,1) != '' ? getThumbUrl(r.thumbnail,1) : './assets/no-pictures.png'"
+                                      [ngStyle]="aspecto && (getThumbUrl(r.thumbnails[0],1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
+                                      [src]="getThumbUrl(r.thumbnails[0],1) != '' ? getThumbUrl(r.thumbnails[0],1) : './assets/no-pictures.png'"
                                     />                                    
                                 </ion-col>
                               </ion-row>
@@ -215,7 +215,9 @@
                     </ion-list>
                 </ion-col>
             </ion-row>
-
+            <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más fotografías..."></ion-infinite-scroll-content>
+            </ion-infinite-scroll>
             <ng-template #spinner>
               <ion-row class="ion-justify-content-center">
                 <ion-spinner></ion-spinner>
