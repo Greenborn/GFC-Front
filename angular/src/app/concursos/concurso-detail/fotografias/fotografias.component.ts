@@ -238,12 +238,19 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scrollListener = () => {
       const el = this.scrollContainer?.nativeElement;
       if (!el || this.loadingScroll || this.noMoreResults) return;
-      const threshold = 200; // px antes del final
+      const threshold = 300; // px antes del final
       if (el.scrollHeight - el.scrollTop - el.clientHeight < threshold) {
         this.loadMoreNative();
       }
     };
     this.scrollContainer?.nativeElement.addEventListener('scroll', this.scrollListener);
+    // Disparar carga si el contenido inicial no permite scroll
+    setTimeout(() => {
+      const el = this.scrollContainer?.nativeElement;
+      if (el && el.scrollHeight <= el.clientHeight && !this.loadingScroll && !this.noMoreResults) {
+        this.loadMoreNative();
+      }
+    }, 500);
   }
 
   async ngOnDestroy() {
@@ -380,7 +387,8 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
       if (data && Array.isArray(data.items) && data.items.length) {
         const nuevos = data.items.filter((item: any) => !this.resultadosConcurso.some((r: any) => r.id === item.id));
         this.resultadosConcurso = [...this.resultadosConcurso, ...nuevos];
-        if (nuevos.length === 0) {
+        // Usar _meta para saber si hay más páginas
+        if (data._meta && data._meta.currentPage >= data._meta.pageCount) {
           this.noMoreResults = true;
         }
       } else {
