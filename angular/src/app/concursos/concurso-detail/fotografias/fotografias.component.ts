@@ -32,6 +32,7 @@ import { get_all, resultadosConcursoGeted } from '../../../services/contest-resu
 export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   concurso: any = null;
+  imagenCargada: boolean[] = [];
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
@@ -385,10 +386,39 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
     const procesar = () => {
       if (this.colaImagenes.length > 0) {
         const imagen = this.colaImagenes.shift();
-        this.resultadosObtenidos.push(imagen);
-        // Actualizar resultados filtrados (sin filtros)
-        // ...existing code...
-        setTimeout(procesar, 500);
+        const thumbObj = imagen.image && imagen.image.thumbnail ? imagen.image.thumbnail : null;
+        const url = this.getThumbUrl(thumbObj, 1);
+        if (url) {
+          const img = new window.Image();
+          img.src = url;
+          img.onload = () => {
+            this.resultadosObtenidos.push(imagen);
+            this.imagenCargada.push(false);
+            setTimeout(() => {
+              // En el siguiente tick, activar el fade-in
+              const idx = this.resultadosObtenidos.length - 1;
+              this.imagenCargada[idx] = true;
+              setTimeout(procesar, 100);
+            }, 0);
+          };
+          img.onerror = () => {
+            this.resultadosObtenidos.push(imagen);
+            this.imagenCargada.push(false);
+            setTimeout(() => {
+              const idx = this.resultadosObtenidos.length - 1;
+              this.imagenCargada[idx] = true;
+              setTimeout(procesar, 100);
+            }, 0);
+          };
+        } else {
+          this.resultadosObtenidos.push(imagen);
+          this.imagenCargada.push(false);
+          setTimeout(() => {
+            const idx = this.resultadosObtenidos.length - 1;
+            this.imagenCargada[idx] = true;
+            setTimeout(procesar, 100);
+          }, 0);
+        }
       } else {
         this.procesandoCola = false;
       }
