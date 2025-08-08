@@ -400,7 +400,7 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
               // En el siguiente tick, activar el fade-in
               const idx = this.resultadosObtenidos.length - 1;
               this.imagenCargada[idx] = true;
-              setTimeout(procesar, 100);
+              setTimeout(procesar, 10);
             }, 0);
           };
           img.onerror = () => {
@@ -409,7 +409,7 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
             setTimeout(() => {
               const idx = this.resultadosObtenidos.length - 1;
               this.imagenCargada[idx] = true;
-              setTimeout(procesar, 100);
+              setTimeout(procesar, 10);
             }, 0);
           };
         } else {
@@ -418,7 +418,7 @@ export class FotografiasComponent implements OnInit, AfterViewInit, OnDestroy {
           setTimeout(() => {
             const idx = this.resultadosObtenidos.length - 1;
             this.imagenCargada[idx] = true;
-            setTimeout(procesar, 100);
+            setTimeout(procesar, 10);
           }, 0);
         }
       } else {
