@@ -54,7 +54,8 @@ export const environment = {
   publicApi: '${envVars.PUBLIC_API_URL || 'https://gfc.api2.greenborn.com.ar/'}',
   loginAction: '${envVars.LOGIN_ACTION || 'login'}',
   appName: '${envVars.APP_NAME || 'app_gfc_prod-'}',
-  imagesBaseUrl: '${envVars.IMAGES_BASE_URL || 'assets.prod-gfc.greenborn.com.ar'}'
+  imagesBaseUrl: '${envVars.IMAGES_BASE_URL || 'assets.prod-gfc.greenborn.com.ar'}',
+  nodeApiBaseUrl: ${envVars.NODE_API_BASE_URL ? `'${envVars.NODE_API_BASE_URL.replace(/['"]+/g, '')}'` : "''"}
 };
 `;
 }
@@ -88,6 +89,7 @@ function generateEnvironmentFiles() {
   console.log(`   LOGIN_ACTION: ${envVars.LOGIN_ACTION}`);
   console.log(`   APP_NAME: ${envVars.APP_NAME}`);
   console.log(`   APP_VERSION: ${envVars.APP_VERSION}`);
+  console.log(`   NODE_API_BASE_URL: ${envVars.NODE_API_BASE_URL}`);
 }
 
 // Ejecutar si se llama directamente
