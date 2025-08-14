@@ -377,7 +377,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       if (this.concurso.rules_url == null ) {
         this.UIUtilsService.mostrarError({ message: 'No se encuentra un reglamento cargado para este concurso.' })
       } else {
-        window.open(this.configService.apiUrl(this.concurso.rules_url), '_blank');
+        window.open(this.configService.imageUrl(this.concurso.rules_url), '_blank');
       }
     }
 
