@@ -10,5 +10,5 @@ export const environment = {
   loginAction: 'login',
   appName: 'app_gfc_prod-',
   imagesBaseUrl: 'https://assets.prod-gfc.greenborn.com.ar',
-  nodeApiBaseUrl: 'https://gfc.api2.greenborn.com.ar/api/'
+  nodeApiBaseUrl: ''
 };
