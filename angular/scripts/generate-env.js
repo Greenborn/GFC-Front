@@ -18,7 +18,7 @@ function readEnvFile() {
     console.log('⚠️  No se encontró archivo .env ni config.env, usando valores por defecto');
     return {
       API_BASE_URL: 'https://gfc.prod-api.greenborn.com.ar/',
-      PUBLIC_API_URL: 'https://gfc.api2.greenborn.com.ar/',
+      PUBLIC_API_URL: 'http://localhost:7779/',
       LOGIN_ACTION: 'login',
       APP_NAME: 'app_gfc_prod-',
       APP_VERSION: '1.5.0'
@@ -51,7 +51,7 @@ export const environment = {
   version: '${envVars.APP_VERSION || '1.5.0'}',
   // Configuración de la API
   apiBaseUrl: '${envVars.API_BASE_URL || 'https://gfc.prod-api.greenborn.com.ar/'}',
-  publicApi: '${envVars.PUBLIC_API_URL || 'https://gfc.api2.greenborn.com.ar/'}',
+  publicApi: '${envVars.PUBLIC_API_URL || 'http://localhost:7779/'}',
   loginAction: '${envVars.LOGIN_ACTION || 'login'}',
   appName: '${envVars.APP_NAME || 'app_gfc_prod-'}',
   imagesBaseUrl: '${envVars.IMAGES_BASE_URL || 'assets.prod-gfc.greenborn.com.ar'}',
