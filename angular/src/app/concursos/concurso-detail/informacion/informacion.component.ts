@@ -131,7 +131,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
 
   descargarFotografias(){
     this.compressedPhotosService.get(this.concurso.id).subscribe(data => {
-      window.open( 'https://gfc.prod-api.greenborn.com.ar/' + data.download_url, '_blank')
+      window.open( 'https://gfc.api.greenborn.com.ar/' + data.download_url, '_blank')
     })
   }
 

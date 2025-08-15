@@ -45,8 +45,9 @@ export class FotoclubService extends ApiService<Fotoclub> {
     const token = localStorage.getItem(this.config.tokenKey);
     const headers = token ? { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
     if (id === undefined) {
-      // Alta: usar comportamiento heredado (POST a apiBaseUrl/fotoclub)
-      return super.post(model, id, getParams);
+      // Alta: POST a https://localhost:7779/api/fotoclubs/create
+      const url = this.config.data.publicApi.replace(/\/$/, '') + '/api/fotoclub/create';
+      return this.http.post<K>(url, model, { headers });
     } else {
       // Edición: PUT a {PUBLIC_API_URL}/api/fotoclub/edit
       const url = this.config.data.publicApi.replace(/\/$/, '') + '/api/fotoclub/edit';

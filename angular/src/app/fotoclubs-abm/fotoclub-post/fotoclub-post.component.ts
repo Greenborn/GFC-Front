@@ -51,18 +51,23 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
 
   async postFotoclub(form: NgForm) {
       if (form.valid) {
-        this.posting = true
+        this.posting = true;
         const data = { ...form.value, id: this.fotoclub.id };
+        // Si hay imagen cargada en base64, agregarla como 'image'
+        if (this.fotoclub.photo_base64 && this.fotoclub.photo_base64.file) {
+          data.image = this.fotoclub.photo_base64.file;
+        }
         this.fotoclubService.post(data, this.fotoclub.id).subscribe(
-         async  fotoclub => {
-            this.posting = false
-            this.modalController.dismiss({ fotoclub })
+          async fotoclub => {
+            this.posting = false;
+            this.modalController.dismiss({ fotoclub });
           },
           err => {
-            this.posting = false
-            console.log('Error post fotoclub', err)
-            this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error) })
-          });
+            this.posting = false;
+            console.log('Error post fotoclub', err);
+            this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error) });
+          }
+        );
       }
   }
 
