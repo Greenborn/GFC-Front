@@ -36,7 +36,7 @@ export class BusquedaFotografiasPage {
     this.busquedaRealizada = true;
     
     try {
-      const url = this.config.publicApiUrl(`images/search?q=${encodeURIComponent(this.terminoBusqueda)}`);
+      const url = this.config.publicApiUrl(`/images/search?q=${encodeURIComponent(this.terminoBusqueda)}`);
       const response: any = await this.http.get(url).toPromise();
       
       this.resultados = response.data || response || [];

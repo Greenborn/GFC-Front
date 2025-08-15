@@ -35,7 +35,7 @@ export class FotoclubService extends ApiService<Fotoclub> {
     // Usa la base parametrizada para el endpoint y agrega el token de sesión
     const token = localStorage.getItem(this.config.tokenKey);
     const headers = token ? { Authorization: 'Bearer ' + token } : {};
-    const url = this.config.data.publicApi.replace(/\/$/, '') + 'fotoclub/get_all';
+    const url = this.config.data.publicApi.replace(/\/$/, '') + '/fotoclub/get_all';
     return this.http.get<{items: K[]}>(url, { headers }).pipe(
       map(resp => resp.items)
     );
@@ -45,10 +45,10 @@ export class FotoclubService extends ApiService<Fotoclub> {
     const token = localStorage.getItem(this.config.tokenKey);
     const headers = token ? { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
     if (id === undefined) {
-      const url = this.config.data.publicApi.replace(/\/$/, '') + 'fotoclub/create';
+      const url = this.config.data.publicApi.replace(/\/$/, '') + '/fotoclub/create';
       return this.http.post<K>(url, model, { headers });
     } else {
-      const url = this.config.data.publicApi.replace(/\/$/, '') + 'fotoclub/edit';
+      const url = this.config.data.publicApi.replace(/\/$/, '') + '/fotoclub/edit';
       return this.http.put<K>(url, model, { headers });
     }
   }
