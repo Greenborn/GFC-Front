@@ -84,7 +84,7 @@ export class ConfigService {
 
   get nodeApiBaseUrl() {
     // fallback por si la variable no existe en environment
-    return (environment as any).nodeApiBaseUrl || 'http://localhost:7779//';
+    return (environment as any).nodeApiBaseUrl || 'http://localhost:7779/api/';
   }
 
   getRecuperacionPasswordUrl(endpoint: string) {
