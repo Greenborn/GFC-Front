@@ -26,6 +26,6 @@ export class RankingService extends ApiService<any> {
   recalculateRanking() {
     const token = localStorage.getItem(this.config.tokenKey);
     const headers = token ? { Authorization: 'Bearer ' + token } : {};
-    return this.http.post(this.config.publicApiUrl('api/results/recalcular-ranking'), {}, { headers });
+    return this.http.post(this.config.publicApiUrl('/results/recalcular-ranking'), {}, { headers });
   }
 }

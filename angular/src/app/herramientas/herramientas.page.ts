@@ -118,7 +118,11 @@ export class HerramientasPage implements OnInit {
   descargarListado() {
     if (!this.concursoSeleccionado) return;
     const id = this.concursoSeleccionado.id;
+<<<<<<< HEAD
     const url = `https://gfc.api2-dev.greenborn.com.ar/api/contests/participants?id=${id}`;
+=======
+  const url = `${this.config.nodeApiBaseUrl}contests/participants?id=${id}`;
+>>>>>>> master
     const token = localStorage.getItem(this.config.tokenKey);
     const headers = token ? { Authorization: 'Bearer ' + token } : {};
     this.http.get<any>(url, { headers }).subscribe(response => {

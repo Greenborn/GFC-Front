@@ -49,9 +49,9 @@ export class AuthService {
       this._user = new Promise<UserLogged>(resolve => {
         // console.log('get user ' + this._user)
         // 
-        const s = this.http.get<UserLogged>(
-          `${this.config.apiUrl('user')}/${this.userId}?expand=profile,profile.fotoclub,role`
-        ).subscribe(
+    // Nueva llamada usando nodeApiBaseUrl y endpoint local
+    const url = `${this.config.nodeApiBaseUrl}user/${this.userId}`;
+    const s = this.http.get<UserLogged>(url).subscribe(
           u => {
             console.log('fetching user data', u)
             resolve(u)

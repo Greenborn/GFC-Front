@@ -65,10 +65,10 @@
                     <input type="file" (change)="handleFileInput($event.target['files'])" />
                   </ion-item>
                   <div>
-                      <ion-row class="ion-justify-content-center">
-    
-                        <ion-img (ionError)="img_url=''" [src]="img_url" alt=""> </ion-img>
-                      </ion-row>
+                    <ion-row class="ion-justify-content-center">
+                      <!-- Mostrar imagen cargada o la de photo_url si existe -->
+                      <ion-img (ionError)="img_url=''" [src]="img_url || (fotoclub.photo_url ? configService.imageUrl(fotoclub.photo_url) : '')" alt=""></ion-img>
+                    </ion-row>
                   </div>
                 </ion-col>
               </ion-row>
