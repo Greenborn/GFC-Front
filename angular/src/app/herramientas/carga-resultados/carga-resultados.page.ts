@@ -459,7 +459,7 @@ export class CargaResultadosPage implements OnInit {
       const token = localStorage.getItem(this.config.tokenKey);
       const headers = token ? { Authorization: 'Bearer ' + token } : {};
       const response = await this.http.post(
-        this.config.publicApiUrl('api/results/judging'),
+        this.config.publicApiUrl('results/judging'),
         { estructura: estructuraJson },
         { headers }
       ).toPromise();

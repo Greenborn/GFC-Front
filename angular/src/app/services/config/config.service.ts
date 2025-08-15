@@ -84,7 +84,7 @@ export class ConfigService {
 
   get nodeApiBaseUrl() {
     // fallback por si la variable no existe en environment
-    return (environment as any).nodeApiBaseUrl || 'https://gfc.api2-dev.greenborn.com.arapi/';
+    return (environment as any).nodeApiBaseUrl;
   }
 
   getRecuperacionPasswordUrl(endpoint: string) {
