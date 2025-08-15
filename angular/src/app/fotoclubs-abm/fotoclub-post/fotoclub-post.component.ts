@@ -28,7 +28,7 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
     private fotoclubService: FotoclubService,
     public responsiveService: ResponsiveService,
     public UIUtilsService: UiUtilsService,
-    private configService: ConfigService
+  public configService: ConfigService
   ) { 
     super(alertCtrl)
   }
