@@ -3,12 +3,12 @@
 
 export const environment = {
   production: false,
-  version: '1.8.9',
+  version: '1.8.10',
   // Configuración de la API
-  apiBaseUrl: 'http://localhost:8088/',
-  publicApi: 'http://localhost:7779/api/',
+  apiBaseUrl: 'https://gfc.api.greenborn.com.ar/',
+  publicApi: 'https://gfc.api2-dev.greenborn.com.ar',
   loginAction: 'login',
   appName: 'app_gfc_dev-',
-  imagesBaseUrl: 'http://localhost:8088/',
-  nodeApiBaseUrl: 'http://localhost:7779/api/'
+  imagesBaseUrl: 'https://assets.dev-gfc.greenborn.com.ar',
+  nodeApiBaseUrl: 'https://gfc.api2-dev.greenborn.com.ar'
 };
