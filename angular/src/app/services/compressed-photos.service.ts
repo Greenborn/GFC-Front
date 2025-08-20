@@ -11,10 +11,16 @@ import { ConfigService } from './config/config.service';
 export class CompressedPhotosService extends ApiService<CompressedPhotos> {
 
   constructor(
-    http: HttpClient,
-    config: ConfigService
+    protected http: HttpClient,
+    protected config: ConfigService
   ) {
     super('compressed-photos', http, config)
+  }
+
+  getCompressedPhotos(contestId: number) {
+    const baseUrl = this.config.nodeApiBaseUrl;
+    const url = `${baseUrl}contest/compressed-photos?id=${contestId}`;
+    return this.http.get<CompressedPhotos>(url);
   }
 
   get template(): CompressedPhotos {
