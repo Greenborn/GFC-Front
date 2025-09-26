@@ -137,13 +137,17 @@ export class FotografiasComponent implements OnInit {
   setResultadosConcurso(rs) {
     this.resultadosConcurso = rs;
 
+    // Asignar el objeto section correspondiente a cada resultado
+    this.resultadosConcurso.forEach(e => {
+      e.section = this.seccionesInscriptas.find(s => s.section.id === e.section_id)?.section;
+    });
+
     this.resultadosConcursoOrig = [...rs];
     this.route.queryParams.subscribe(params => {
-
       this.resultadosConcurso = [...this.resultadosConcursoOrig]
 
       this.resultadosConcurso.forEach(e => {
-        if (e.metric.prize != '0' && e.metric.prize != null && e.metric.prize != undefined && e.metric.prize != '') {
+        if (e?.metric?.prize != '0' && e?.metric?.prize != null && e?.metric?.prize != undefined && e?.metric?.prize != '') {
           if (this.puntajes.find(element => element.score == e.metric.score) == undefined) {
             this.puntajes.push(e.metric)
           }
@@ -156,9 +160,7 @@ export class FotografiasComponent implements OnInit {
       }[] = [];
 
       for (const f of [this.filtrado['metric'], this.filtrado['perfil']]) {
-        // console.log('analizando filter callback', f)
         if (params[f.options.queryParam] != undefined) {
-          // console.log('agregando filter callback', f.options.queryParam)
           filterCallbacks.push({
             callback: f.filterCallback,
             queryValue: params[f.options.queryParam]
