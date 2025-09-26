@@ -78,6 +78,12 @@ export class FotografiasComponent implements OnInit {
       }
     }
   ];
+    get atributosBusquedaFiltrados(): SearchBarComponentAtributo[] {
+      if (this.rolificador && this.user && this.rolificador.esConcursante(this.user) && this.isContestNotFin) {
+        return this.atributosBusqueda.filter(a => ['title','categoria','seccion'].includes(a.valor));
+      }
+      return this.atributosBusqueda;
+    }
   public filtrado: any[] = [];
   puntajes: Metric[] = [];
 

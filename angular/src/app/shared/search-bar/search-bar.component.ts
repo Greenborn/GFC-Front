@@ -56,8 +56,8 @@ export class SearchBarComponent implements OnInit, OnChanges {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    // console.log('detectomg data change', changes.data.currentValue)
-    if (changes.data.currentValue != this.dataFiltered) {
+    // console.log('detectomg data change', changes.data?.currentValue)
+    if (changes.data && changes.data.currentValue != this.dataFiltered) {
       this.origData = changes.data.currentValue
       this.atributoSelected = ''
       // this.searchQuery = ''

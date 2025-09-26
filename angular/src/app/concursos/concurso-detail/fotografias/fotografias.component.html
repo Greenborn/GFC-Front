@@ -7,7 +7,7 @@
         <ion-col >
           <ion-title class="ion-margin-top">Búsqueda</ion-title>
   
-          <app-search-bar [(data)]="resultadosConcurso" [atributosObj]="atributosBusqueda"></app-search-bar>
+          <app-search-bar [(data)]="resultadosConcurso" [atributosObj]="atributosBusquedaFiltrados"></app-search-bar>
 
         </ion-col>
       </ion-col>
@@ -63,11 +63,11 @@
                     <ion-icon name="close-outline"></ion-icon>
                   </ion-button>
 
-                  <ion-item >
-                    <ion-label position="stacked">Fotoclub</ion-label>
-                    <ion-select [(ngModel)]="fotoclubSeleccionado" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
-                      <ion-select-option *ngFor="let f of fotoclubsDisponibles" [value]="f">{{ f }}</ion-select-option>
-                    </ion-select>
+                  <ion-item *ngIf="!isContestNotFin || !rolificador.esConcursante(u)">
+                      <ion-label position="stacked">Fotoclub</ion-label>
+                        <ion-select [(ngModel)]="fotoclubSeleccionado" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
+                          <ion-select-option *ngFor="let f of fotoclubsDisponibles" [value]="f">{{ f }}</ion-select-option>
+                        </ion-select>
                   </ion-item>
 
 
