@@ -63,9 +63,9 @@
                     <ion-icon name="close-outline"></ion-icon>
                   </ion-button>
 
-                  <ion-item >
+                  <ion-item *ngIf="!isContestNotFin || !rolificador.esConcursante(u)">
                       <ion-label position="stacked">Fotoclub</ion-label>
-                        <ion-select *ngIf="!isContestNotFin || !rolificador.esConcursante(u)" [(ngModel)]="fotoclubSeleccionado" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
+                        <ion-select [(ngModel)]="fotoclubSeleccionado" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
                           <ion-select-option *ngFor="let f of fotoclubsDisponibles" [value]="f">{{ f }}</ion-select-option>
                         </ion-select>
                   </ion-item>
