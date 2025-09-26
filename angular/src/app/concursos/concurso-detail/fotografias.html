@@ -26,7 +26,7 @@
                 <ion-radio slot="start" value="concursante"></ion-radio>
               </ion-item>
 
-              <ion-item lines="none">
+              <ion-item lines="none" *ngIf="!isContestNotFin || !rolificador.esConcursante(u)">
                 <ion-label>Fotoclub/Agrupación/Institución</ion-label>
                 <ion-radio slot="start" value="fotoclub"></ion-radio>
               </ion-item>
