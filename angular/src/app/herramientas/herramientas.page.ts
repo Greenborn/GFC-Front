@@ -128,7 +128,8 @@ export class HerramientasPage implements OnInit {
           Apellido: p.last_name,
           DNI: p.dni,
           Email: p.email,
-          Categoria: p.category_name
+          Categoria: p.category_name,
+          "Fotoclub/Organización/Insitución": p.fotoclub_name
         }));
         const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
         // Ajustar el ancho de las columnas
@@ -137,7 +138,8 @@ export class HerramientasPage implements OnInit {
           { wch: 20 }, // Apellido
           { wch: 15 }, // DNI
           { wch: 20 }, // Email
-          { wch: 20 }  // Categoria
+          { wch: 20 }, // Categoria
+          { wch: 30 }  // Fotoclub/Organización/Insitución
         ];
         // NOTA: XLSX no soporta estilos de encabezado (color fondo/texto) en navegadores
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
