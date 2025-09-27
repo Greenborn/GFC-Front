@@ -47,6 +47,24 @@
                 <ion-icon name="link-outline"></ion-icon>
               </ion-button>
             </ion-row>
+
+            <ion-row class="w-100 ion-justify-content-end">
+          <div>
+            <ion-button  *ngIf="isContestNotFin && !isInscripto" size="small" (click)="inscribirConcursante()"
+              >Inscribirme!</ion-button>
+            <ion-button  *ngIf="isContestNotFin && isInscripto" color="danger" size="small" (click)="desinscribirme()"
+              >Desinscribirme!</ion-button>
+            <ion-button  *ngIf="rolificador.isAdmin(u)" size="small" (click)="descargarFotografias()"
+              >Descargar Fotografías</ion-button>
+
+            <ion-button  size="small" 
+              (click)="compartir()">
+              <ion-icon name="share-social-outline"></ion-icon>
+            </ion-button>
+
+          </div>
+          
+        </ion-row>
             
             <ion-row class="ion-margin-top">
               <b>Categorias:</b>
@@ -73,23 +91,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row class="w-100 ion-justify-content-end">
-          <div>
-            <ion-button  *ngIf="isContestNotFin && !isInscripto" size="small" (click)="inscribirConcursante()"
-              >Inscribirme!</ion-button>
-            <ion-button  *ngIf="isContestNotFin && isInscripto" color="danger" size="small" (click)="desinscribirme()"
-              >Desinscribirme!</ion-button>
-            <ion-button  *ngIf="rolificador.isAdmin(u)" size="small" (click)="descargarFotografias()"
-              >Descargar Fotografías</ion-button>
-
-            <ion-button  size="small" 
-              (click)="compartir()">
-              <ion-icon name="share-social-outline"></ion-icon>
-            </ion-button>
-
-          </div>
-          
-        </ion-row>
+        
       </ion-card-content>
 
     </ion-card>
