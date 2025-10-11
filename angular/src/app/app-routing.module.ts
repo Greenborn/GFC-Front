@@ -96,9 +96,14 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-        path: 'politica-privacidad',
-        component: PoliticaPrivacidadComponent
-      }
+    path: 'registro',
+    loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule),
+    pathMatch: 'full'
+  },
+  {
+    path: 'politica-privacidad',
+    component: PoliticaPrivacidadComponent
+  }
   // {
   //   path: 'recuperar-password',
   //   component: RecuperarPasswordComponent
