@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common'
 
-
+import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 import { NavbarComponent } from './nav/navbar/navbar.component';
 import { FooterComponent } from './nav/footer/footer.component';
 import { SidebarComponent } from './nav/sidebar/sidebar.component';
@@ -32,6 +32,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     FooterComponent,
     FooterPostComponent,
     SidebarComponent,
+      PoliticaPrivacidadComponent,
   ],
   exports:[
     FooterPostComponent,

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 // import { LoggedInGuard } from './guards/logged-in.guard';
 import { AuthGuard } from './modules/auth/guards/auth.guard';
+import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 
 const routes: Routes = [
   // {
@@ -94,6 +95,10 @@ const routes: Routes = [
     loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule),
     pathMatch: 'full'
   },
+  {
+        path: 'politica-privacidad',
+        component: PoliticaPrivacidadComponent
+      }
   // {
   //   path: 'recuperar-password',
   //   component: RecuperarPasswordComponent
