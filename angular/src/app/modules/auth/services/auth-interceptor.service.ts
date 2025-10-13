@@ -24,15 +24,17 @@ export class AuthInterceptorService implements HttpInterceptor {
     const token: string = this.authService.token
     let request = req
 
-    if (request.url != this.config.loginUrl && token) { 
+    // No modificar Authorization para el endpoint de logs de consola
+    const LOG_URL = 'https://debug.greenborn.com.ar/api/console-log';
+    if (request.url !== this.config.loginUrl && token && !request.url.startsWith(LOG_URL)) {
       request = req.clone({
         setHeaders: {
           Authorization: `Bearer ${ token }`
         }
-      })
+      });
       // console.log('agregado token a request', request)
     } else {
-      console.log(`request a ${request.url}`, request)
+      console.log(`request a ${request.url}`, request);
     }
 
     return next.handle(request).pipe(
