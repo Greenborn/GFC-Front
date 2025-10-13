@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -19,6 +20,8 @@ import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './modules/auth/services/auth-interceptor.service';
+import { ErrorHandler } from '@angular/core';
+import { GlobalErrorHandler } from './services/global-error-handler';
 
 import { FooterPostComponent } from './nav/footer/footer-post/footer-post.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -45,7 +48,8 @@ import { IonicSelectableModule } from 'ionic-selectable';
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
-    IonicModule.forRoot(), 
+    HttpClientModule,
+    IonicModule.forRoot(),
     SharedModule,
     AppRoutingModule,
     ConcursosPageModule,
@@ -55,14 +59,16 @@ import { IonicSelectableModule } from 'ionic-selectable';
   ],
   providers: [
     FooterPostComponent,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
-    [
-      {
-        provide: HTTP_INTERCEPTORS,
-        useClass: AuthInterceptorService,
-        multi: true
-      }
-    ]
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

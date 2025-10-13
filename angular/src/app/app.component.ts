@@ -1,4 +1,5 @@
-import { Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { ConsoleLogService } from './services/console-log.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ResponsiveService } from './services/ui/responsive.service';
@@ -23,9 +24,10 @@ export class AppComponent implements OnDestroy {
 
   // https://stackoverflow.com/questions/59552387/how-to-reload-a-page-in-angular-8-the-proper-way
   constructor(
-    public router: Router, 
+    public router: Router,
     private activatedRoute: ActivatedRoute,
-    public responsiveService: ResponsiveService
+    public responsiveService: ResponsiveService,
+    private consoleLogService: ConsoleLogService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.routerSub = this.router.events.subscribe((event) => {
@@ -35,15 +37,25 @@ export class AppComponent implements OnDestroy {
       }
     }); 
 
-    var DEBUG = !window.location.href.includes('heroku');
-    if(!DEBUG){
-        // if(!window.console) window.console = undefined;
-        var methods = ["log"];
-        // var methods = ["log", "debug", "warn", "info"];
-        for(var i=0;i<methods.length;i++){
-            console[methods[i]] = function(){};
-        }
-    }
+    // Interceptar todos los errores de consola
+    const originalConsoleError = console.error;
+    console.error = (...args: any[]) => {
+      // Enviar al servicio de logs
+      try {
+        this.consoleLogService.sendLog(
+          'error',
+          args.map(a => (typeof a === 'string' ? a : JSON.stringify(a))).join(' '),
+          {
+            accion: 'console.error',
+            usuario_id: localStorage.getItem('usuario_id') || undefined
+          }
+        );
+      } catch (e) {
+        // Si falla el envío, no romper el flujo
+      }
+      // Mostrar en consola como siempre
+      originalConsoleError.apply(console, args);
+    };
   }
 
   ngOnDestroy(){
