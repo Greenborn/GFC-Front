@@ -19,8 +19,7 @@ export interface SearchBarComponentAtributo {
 export class SearchBarComponent implements OnInit, OnChanges {
 
   @ViewChild('atributoSelect') atributoSelect: ElementRef;
-  @ViewChild('queryInput') queryInput: ElementRef;
-  // @ViewChild('queryInput') queryInput: IonSearchbar;
+  @ViewChild('queryInput') queryInput: IonSearchbar;
   @Input() atributos: string[] = undefined;
   @Input() atributosObj: SearchBarComponentAtributo[] = undefined;
   @Input() data: any[];
@@ -35,9 +34,10 @@ export class SearchBarComponent implements OnInit, OnChanges {
 
   constructor() { }
 
-  getCancelbuttonStatus(q: HTMLIonSearchbarElement) {
+  getCancelbuttonStatus() {
     // console.log(q.value)
-    const empty = q.value == undefined || q.value == '' 
+    if (!this.queryInput) return 'never';
+    const empty = this.queryInput.value == undefined || this.queryInput.value == '' 
     return empty ? 'never' : 'always'
   }
 
@@ -64,7 +64,7 @@ export class SearchBarComponent implements OnInit, OnChanges {
       if (this.queryInput != undefined) {
         // const q = await this.queryInput.getInputElement()
         // q.value = ''
-        this.queryInput.nativeElement.value = ''
+        this.queryInput.value = ''
       }
     }
   } 
@@ -75,7 +75,7 @@ export class SearchBarComponent implements OnInit, OnChanges {
     }
     // let atributo: string = this.atributoSelect.nativeElement.value;
     let atributo: string = this.atributoSelected;
-    let query: string = this.queryInput.nativeElement.value;
+    let query: string = this.queryInput.value;
     // let query: string = this.queryInput.value;
 
     let atributoObj: SearchBarComponentAtributo = (this.atributosObj ?? []).find(a => atributo == a.valor)

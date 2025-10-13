@@ -8,7 +8,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common'
 
-
+import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
+import { CondicionesServicioComponent } from './condiciones-servicio/condiciones-servicio.component';
 import { NavbarComponent } from './nav/navbar/navbar.component';
 import { FooterComponent } from './nav/footer/footer.component';
 import { SidebarComponent } from './nav/sidebar/sidebar.component';
@@ -32,6 +33,8 @@ import { IonicSelectableModule } from 'ionic-selectable';
     FooterComponent,
     FooterPostComponent,
     SidebarComponent,
+    PoliticaPrivacidadComponent,
+    CondicionesServicioComponent,
   ],
   exports:[
     FooterPostComponent,
@@ -43,9 +46,9 @@ import { IonicSelectableModule } from 'ionic-selectable';
     ReactiveFormsModule,
     BrowserModule,
     IonicModule.forRoot(), 
+    SharedModule,
     AppRoutingModule,
     ConcursosPageModule,
-    SharedModule,
     CommonModule,
     IonicSelectableModule,
     AuthModule
