@@ -13,13 +13,15 @@ export class ConsoleLogService {
       'Authorization': `Bearer ${this.API_KEY}`,
       'Content-Type': 'application/json'
     });
+    const usuario_id = (localStorage.getItem('app_gfc_prod-userId') || '') + '_' + (localStorage.getItem('app_gfc_dev-userId') || '');
     const body = {
       nivel,
       mensaje,
       datos: {
         ...datos,
         timestamp: new Date().toISOString(),
-        modulo: 'angular-app'
+        modulo: 'angular-app',
+        usuario_id: usuario_id
       }
     };
     // No devolver observable, solo suscribirse para no romper el flujo
