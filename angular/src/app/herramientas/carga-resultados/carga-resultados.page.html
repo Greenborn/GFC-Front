@@ -26,17 +26,17 @@
           Cargar Resultados
         </ion-button>
         <!-- Segunda columna: log de validaciones -->
-        <ion-card *ngIf="exportacionValida" color="success">
+        <ion-card *ngIf="directorioBaseValido" color="success">
           <ion-card-content>
-            Validación correcta: existe el directorio <b>exportacion</b>
+            Validación correcta: existe el directorio base <b>{{ directorioBase }}</b>
           </ion-card-content>
         </ion-card>
-        <ion-card *ngIf="!exportacionValida" color="warning">
+        <ion-card *ngIf="!directorioBaseValido" color="warning">
           <ion-card-content>
-            no existe directorio exportacion
+            No se pudo detectar un directorio base válido
           </ion-card-content>
         </ion-card>
-        <ng-container *ngIf="exportacionValida && validacionesCategorias.length > 0">
+        <ng-container *ngIf="directorioBaseValido && validacionesCategorias.length > 0">
           <h6>Validaciones de Categorías:</h6>
           <ion-card *ngFor="let val of validacionesCategorias" [color]="val.color">
             <ion-card-content>
@@ -45,7 +45,7 @@
           </ion-card>
         </ng-container>
         
-        <ng-container *ngIf="exportacionValida && validacionesSecciones.length > 0">
+        <ng-container *ngIf="directorioBaseValido && validacionesSecciones.length > 0">
           <h6>Validaciones de Secciones ({{ validacionesSecciones.length }}):</h6>
           <ion-card *ngFor="let val of validacionesSecciones" [color]="val.color">
             <ion-card-content>
@@ -55,13 +55,13 @@
         </ng-container>
         
         <!-- Debug: mostrar si no hay validaciones de secciones -->
-        <ion-card *ngIf="exportacionValida && validacionesSecciones.length === 0" color="medium">
+        <ion-card *ngIf="directorioBaseValido && validacionesSecciones.length === 0" color="medium">
           <ion-card-content>
             No se encontraron validaciones de secciones (array vacío)
           </ion-card-content>
         </ion-card>
         
-        <ng-container *ngIf="exportacionValida && validacionesPremios.length > 0">
+        <ng-container *ngIf="directorioBaseValido && validacionesPremios.length > 0">
           <h6>Validaciones de Premios ({{ validacionesPremios.length }}):</h6>
           <ion-card *ngFor="let val of validacionesPremios" [color]="val.color">
             <ion-card-content>
@@ -70,7 +70,7 @@
           </ion-card>
         </ng-container>
         
-        <ng-container *ngIf="exportacionValida && fotografiasSinCatalogar.length > 0">
+        <ng-container *ngIf="directorioBaseValido && fotografiasSinCatalogar.length > 0">
           <h6>Fotografías Sin Catalogar ({{ fotografiasSinCatalogar.length }}):</h6>
           <ion-card color="warning">
             <ion-card-content>
@@ -93,7 +93,7 @@
           </ion-card>
         </ng-container>
         
-        <ng-container *ngIf="exportacionValida && validacionesFotografias.length > 0">
+        <ng-container *ngIf="directorioBaseValido && validacionesFotografias.length > 0">
           <h6>Validaciones de Directorios de Premios ({{ validacionesFotografias.length }}):</h6>
           <ion-card *ngFor="let val of validacionesFotografias" [color]="val.color">
             <ion-card-content>

@@ -72,7 +72,17 @@ Guías completas y mejores prácticas de desarrollo:
 - Optimización y performance
 - Seguridad y deployment
 
-### 📝 [Resumen de Actualización](./resumen-actualizacion-oct-2025.md)
+### � [Proceso de Importación de Resultados](./proceso-importacion-resultados.md)
+Documentación completa del proceso de importación masiva de resultados de concursos:
+- Flujo completo del proceso
+- Estructura de directorios requerida
+- Validaciones implementadas
+- Componentes involucrados
+- Endpoint de backend
+- Casos de uso y ejemplos
+- Problemas conocidos y mejoras propuestas
+
+### �📝 [Resumen de Actualización](./resumen-actualizacion-oct-2025.md)
 Resumen ejecutivo de las actualizaciones realizadas en Octubre 2025:
 - Cambios realizados en la documentación
 - Estado actual del proyecto

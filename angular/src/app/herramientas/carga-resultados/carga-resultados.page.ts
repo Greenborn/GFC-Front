@@ -31,7 +31,8 @@ function normalizarNombre(nombre: string): string {
 })
 export class CargaResultadosPage implements OnInit {
   estructura: string = '';
-  exportacionValida: boolean = false;
+  directorioBaseValido: boolean = false;
+  directorioBase: string = '';
   categorias: Category[] = [];
   secciones: Section[] = [];
   validacionesCategorias: {dir: string, mensaje: string, color: string}[] = [];
@@ -57,11 +58,13 @@ export class CargaResultadosPage implements OnInit {
     console.log('Categorías recibidas:', this.categorias.length);
     console.log('Secciones recibidas:', this.secciones.length);
     
-    // Validar si existe el directorio exportacion en el primer nivel
-    this.exportacionValida = this.validarDirectorioExportacion(this.estructura);
-    console.log('Exportación válida:', this.exportacionValida);
+    // Detectar el directorio base automáticamente
+    this.directorioBase = this.detectarDirectorioBase(this.estructura);
+    this.directorioBaseValido = this.directorioBase.length > 0;
+    console.log('Directorio base detectado:', this.directorioBase);
+    console.log('Directorio base válido:', this.directorioBaseValido);
     
-    if (this.exportacionValida) {
+    if (this.directorioBaseValido) {
       console.log('🔍 Iniciando validaciones...');
       this.validarCategorias(this.estructura, this.categorias);
       console.log('🔍 Llamando a validarSecciones...');
@@ -87,10 +90,26 @@ export class CargaResultadosPage implements OnInit {
     return nombreArchivo;
   }
 
-  private validarDirectorioExportacion(estructura: string): boolean {
-    if (!estructura) return false;
+  private detectarDirectorioBase(estructura: string): string {
+    if (!estructura) return '';
     const lineas = estructura.split('\n').map(l => l.trim());
-    return lineas.some(l => l === '[DIR] exportacion/' || l === '[DIR] exportacion');
+    
+    // Buscar el primer directorio de primer nivel
+    const primerDir = lineas.find(l => {
+      if (!l.startsWith('[DIR] ')) return false;
+      const path = l.replace('[DIR] ', '').replace(/\/$/, '');
+      // Es de primer nivel si no contiene '/'
+      return !path.includes('/');
+    });
+    
+    if (primerDir) {
+      const dirBase = primerDir.replace('[DIR] ', '').replace(/\/$/, '');
+      console.log(`📁 Directorio base detectado: "${dirBase}"`);
+      return dirBase;
+    }
+    
+    console.log('⚠️ No se pudo detectar directorio base');
+    return '';
   }
 
   private validarCategorias(estructura: string, categorias: Category[]) {
@@ -105,12 +124,14 @@ export class CargaResultadosPage implements OnInit {
       console.log(`  ${index + 1}. "${cat.name}" → "${normalizada}"`);
     });
     
-    // Buscar directorios de segundo nivel bajo exportacion
+    // Buscar directorios de segundo nivel bajo el directorio base
     const lineas = estructura.split('\n').map(l => l.trim());
-    // Solo directorios con exactamente un '/' después de 'exportacion/'
+    const prefijoBusqueda = `[DIR] ${this.directorioBase}/`;
+    
+    // Solo directorios con exactamente un '/' después del directorio base
     const subdirs = lineas.filter(l => {
-      if (!l.startsWith('[DIR] exportacion/')) return false;
-      const resto = l.replace('[DIR] exportacion/', '');
+      if (!l.startsWith(prefijoBusqueda)) return false;
+      const resto = l.replace(prefijoBusqueda, '');
       // Debe tener solo un segmento (sin más '/'), es decir, no recursivo
       return resto.length > 0 && !resto.slice(0, -1).includes('/');
     });
@@ -119,7 +140,7 @@ export class CargaResultadosPage implements OnInit {
     
     this.validacionesCategorias = subdirs.map(dir => {
       // Obtener el nombre del subdirectorio
-      let nombreDir = dir.replace('[DIR] exportacion/', '');
+      let nombreDir = dir.replace(prefijoBusqueda, '');
       if (nombreDir.endsWith('/')) nombreDir = nombreDir.slice(0, -1);
       
       console.log('Procesando directorio:', nombreDir);
@@ -194,14 +215,16 @@ export class CargaResultadosPage implements OnInit {
       console.log(`  ${index + 1}. "${sec.name}" → "${normalizada}"`);
     });
     
-    // Buscar directorios de tercer nivel bajo exportacion/categoria/
+    // Buscar directorios de tercer nivel bajo directorioBase/categoria/
     const lineas = estructura.split('\n').map(l => l.trim());
     console.log('📁 Todas las líneas de la estructura:', lineas);
     
-    // Solo directorios con exactamente dos '/' después de 'exportacion/' (tercer nivel)
+    const prefijoBusqueda = `[DIR] ${this.directorioBase}/`;
+    
+    // Solo directorios con exactamente dos '/' después del directorio base (tercer nivel)
     const subdirs = lineas.filter(l => {
-      if (!l.startsWith('[DIR] exportacion/')) return false;
-      const resto = l.replace('[DIR] exportacion/', '');
+      if (!l.startsWith(prefijoBusqueda)) return false;
+      const resto = l.replace(prefijoBusqueda, '');
       // Debe tener exactamente dos '/' (tres segmentos: categoria/seccion/)
       const segmentos = resto.split('/');
       const esValido = segmentos.length === 3 && segmentos[1].length > 0; // El segundo segmento es la sección
@@ -213,7 +236,7 @@ export class CargaResultadosPage implements OnInit {
     
     this.validacionesSecciones = subdirs.map(dir => {
       // Obtener el nombre del subdirectorio (sección)
-      let nombreDir = dir.replace('[DIR] exportacion/', '');
+      let nombreDir = dir.replace(prefijoBusqueda, '');
       if (nombreDir.endsWith('/')) nombreDir = nombreDir.slice(0, -1);
       
       // Extraer solo el nombre de la sección (segundo segmento)
@@ -254,6 +277,9 @@ export class CargaResultadosPage implements OnInit {
     console.log('📁 Analizando cuarto nivel de la estructura...');
     console.log(`📊 Total de líneas a procesar: ${lineas.length}`);
     
+    const prefijoBusquedaDir = `[DIR] ${this.directorioBase}/`;
+    const prefijoBusquedaArchivo = `      ${this.directorioBase}/`;
+    
     // Premios válidos conocidos
     const premiosValidos = [
       '1er PREMIO', '2do PREMIO', '3er PREMIO',
@@ -265,8 +291,8 @@ export class CargaResultadosPage implements OnInit {
     
     // Buscar elementos del tercer nivel (archivos sueltos y directorios de premios)
     const elementosTercerNivel = lineas.filter(l => {
-      if (!l.startsWith('[DIR] exportacion/') && !l.startsWith('      exportacion/')) return false;
-      const resto = l.replace('[DIR] exportacion/', '').replace('      exportacion/', '');
+      if (!l.startsWith(prefijoBusquedaDir) && !l.startsWith(prefijoBusquedaArchivo)) return false;
+      const resto = l.replace(prefijoBusquedaDir, '').replace(prefijoBusquedaArchivo, '');
       const segmentos = resto.split('/');
       // Debe tener exactamente 3 segmentos (categoria/seccion/elemento)
       const esValido = segmentos.length === 3 && segmentos[2].length > 0;
@@ -276,13 +302,13 @@ export class CargaResultadosPage implements OnInit {
     
     // Debug: mostrar todas las líneas que contienen archivos
     console.log('🔍 Todas las líneas que contienen archivos:');
-    const archivos = lineas.filter(l => l.startsWith('      exportacion/'));
+    const archivos = lineas.filter(l => l.startsWith(prefijoBusquedaArchivo));
     console.log(`Total de archivos encontrados: ${archivos.length}`);
     
     // Debug: mostrar archivos del tercer nivel específicamente
     console.log('🔍 Archivos del tercer nivel (categoria/seccion/archivo):');
     const archivosTercerNivel = archivos.filter(l => {
-      const resto = l.replace('      exportacion/', '');
+      const resto = l.replace(prefijoBusquedaArchivo, '');
       const segmentos = resto.split('/');
       return segmentos.length === 3;
     });
@@ -291,7 +317,7 @@ export class CargaResultadosPage implements OnInit {
     // Mostrar solo los primeros 5 archivos del tercer nivel para debug
     console.log('🔍 Primeros 5 archivos del tercer nivel:');
     archivosTercerNivel.slice(0, 5).forEach((l, index) => {
-      const resto = l.replace('      exportacion/', '');
+      const resto = l.replace(prefijoBusquedaArchivo, '');
       const segmentos = resto.split('/');
       console.log(`  ${index + 1}. "${l}" → segmentos: [${segmentos.join(', ')}]`);
     });
@@ -303,12 +329,12 @@ export class CargaResultadosPage implements OnInit {
     
     // Procesar directorios de premios (elementos con 3 segmentos)
     elementosTercerNivel.filter(el => el.startsWith('[DIR]')).forEach(elemento => {
-      const resto = elemento.replace('[DIR] exportacion/', '');
+      const resto = elemento.replace(prefijoBusquedaDir, '');
       const segmentos = resto.split('/');
       
       if (segmentos.length === 3) {
         const nombreElemento = segmentos[2];
-        const rutaCompleta = `exportacion/${segmentos[0]}/${segmentos[1]}/${nombreElemento}`;
+        const rutaCompleta = `${this.directorioBase}/${segmentos[0]}/${segmentos[1]}/${nombreElemento}`;
         
         console.log(`🔍 Procesando directorio de premio: "${nombreElemento}" en ruta: "${rutaCompleta}"`);
         
@@ -338,10 +364,10 @@ export class CargaResultadosPage implements OnInit {
     console.log('🔍 Procesando archivos sueltos...');
     archivosTercerNivel.forEach((elemento, index) => {
       if (index < 10) { // Solo procesar los primeros 10 para debug
-        const resto = elemento.replace('      exportacion/', '');
+        const resto = elemento.replace(prefijoBusquedaArchivo, '');
         const segmentos = resto.split('/');
         const nombreArchivo = segmentos[2];
-        const rutaCompleta = `exportacion/${segmentos[0]}/${segmentos[1]}/${nombreArchivo}`;
+        const rutaCompleta = `${this.directorioBase}/${segmentos[0]}/${segmentos[1]}/${nombreArchivo}`;
         
         console.log(`📸 Fotografía suelta ${index + 1}: "${nombreArchivo}" en ruta: "${rutaCompleta}"`);
         this.fotografiasSinCatalogar.push(rutaCompleta);
@@ -374,8 +400,11 @@ export class CargaResultadosPage implements OnInit {
     console.log('📁 Analizando quinto nivel de la estructura...');
     console.log(`📊 Total de líneas a procesar: ${lineas.length}`);
     
-    // Buscar archivos en todos los niveles bajo exportacion
-    const archivos = lineas.filter(l => l.match(/^exportacion\//) || l.match(/^\[DIR\] exportacion\//));
+    const regexArchivo = new RegExp(`^${this.directorioBase}/`);
+    const regexDir = new RegExp(`^\\[DIR\\] ${this.directorioBase}/`);
+    
+    // Buscar archivos en todos los niveles bajo el directorio base
+    const archivos = lineas.filter(l => l.match(regexArchivo) || l.match(regexDir));
     // Solo archivos (no directorios)
     const archivosSolo = archivos.filter(l => !l.startsWith('[DIR]'));
     
@@ -384,14 +413,14 @@ export class CargaResultadosPage implements OnInit {
     
     // Procesar todos los archivos
     archivosSolo.forEach((archivo) => {
-      const resto = archivo.replace('exportacion/', '');
+      const resto = archivo.replace(`${this.directorioBase}/`, '');
       const segmentos = resto.split('/');
       // Si el archivo está en el 5to nivel (4 segmentos antes del nombre de archivo), es válido
       if (segmentos.length === 4) {
         // Archivo correctamente catalogado, no hacer nada especial aquí
       } else {
         // Archivo fuera del 5to nivel, agregar a sin catalogar
-        this.fotografiasSinCatalogar.push('exportacion/' + resto);
+        this.fotografiasSinCatalogar.push(`${this.directorioBase}/` + resto);
       }
     });
     
@@ -437,7 +466,7 @@ export class CargaResultadosPage implements OnInit {
 
   // Devuelve true si todas las validaciones pasan
   canCargarResultados(): boolean {
-    if (!this.exportacionValida) return false;
+    if (!this.directorioBaseValido) return false;
     // Todas las validaciones deben ser 'success'
     const todasCategoriasOk = this.validacionesCategorias.every(v => v.color === 'success');
     const todasSeccionesOk = this.validacionesSecciones.every(v => v.color === 'success');
