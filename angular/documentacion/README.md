@@ -55,6 +55,38 @@ Definición completa de todos los modelos de datos:
 - Modelos de utilidad
 - Enums y tipos
 
+### 🔧 [Análisis de Dependencias](./analisis-dependencias.md)
+Análisis exhaustivo de dependencias y recomendaciones de actualización:
+- Estado actual de dependencias
+- Vulnerabilidades conocidas
+- Plan de actualización recomendado
+- Guías de migración
+- Consideraciones de seguridad
+
+### 👨‍💻 [Guías de Desarrollo](./guias-desarrollo.md)
+Guías completas y mejores prácticas de desarrollo:
+- Configuración del entorno
+- Convenciones de código
+- Patrones de desarrollo
+- Testing y calidad
+- Optimización y performance
+- Seguridad y deployment
+
+### 📝 [Resumen de Actualización](./resumen-actualizacion-oct-2025.md)
+Resumen ejecutivo de las actualizaciones realizadas en Octubre 2025:
+- Cambios realizados en la documentación
+- Estado actual del proyecto
+- Métricas de documentación
+- Recomendaciones prioritarias
+
+### 📋 [Informe Completo de Revisión](./INFORME-COMPLETO-REVISION-OCT-2025.md)
+Informe exhaustivo de la revisión y actualización del proyecto:
+- Trabajo completo realizado
+- Estado actual detallado
+- Hallazgos y recomendaciones
+- Checklist de validación
+- Conclusiones y próximos pasos
+
 ## 🚀 Inicio Rápido
 
 ### Para Desarrolladores Nuevos
@@ -222,13 +254,15 @@ Breve descripción de la funcionalidad.
 
 ## 📝 Changelog de Documentación
 
-### Versión 1.1.32 (Actual)
+### Versión 1.9.14 (Actual - Octubre 2025)
 - ✅ Documentación completa de arquitectura
 - ✅ Documentación de todos los componentes
 - ✅ Mapeo completo de rutas
 - ✅ Documentación de servicios
 - ✅ Definición de modelos
 - ✅ README principal de documentación
+- ✅ Actualización de versiones de dependencias
+- ✅ Especificación técnica universal completa
 
 ### Versión 1.1.31
 - 🔄 Actualización de componentes de concursos
@@ -245,8 +279,8 @@ Breve descripción de la funcionalidad.
 
 ---
 
-**Última actualización**: Diciembre 2024  
-**Versión de documentación**: 1.1.32  
+**Última actualización**: Octubre 2025  
+**Versión de documentación**: 1.9.14  
 **Mantenido por**: Equipo de Desarrollo Greenborn 
 
 ## ⚙️ Variables de Entorno y Endpoints Relevantes

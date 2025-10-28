@@ -172,7 +172,14 @@ Para soporte técnico o consultas, contactar a través de:
 
 ## 📝 Change Log
 
-### **1.1.32** (En desarrollo)
+### **1.9.14** (Actual - Octubre 2025)
+- ✅ Actualización de dependencias críticas
+- ✅ Mejoras en la seguridad del sistema
+- ✅ Optimizaciones de rendimiento
+- ✅ Actualización completa de documentación técnica
+- ✅ Correcciones de bugs menores
+
+### **1.1.32**
 - Mejoras en la interfaz de usuario
 - Optimizaciones de rendimiento
 - Correcciones de bugs menores

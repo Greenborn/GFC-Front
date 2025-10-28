@@ -2,6 +2,9 @@
 
 Este documento explica cómo configurar las variables de entorno para ambos proyectos (Angular y Vue).
 
+**Última actualización**: Octubre 2025  
+**Versión del proyecto**: 1.9.14
+
 ## Proyecto Angular
 
 ### ✅ Sistema Automático de Variables de Entorno
@@ -18,14 +21,20 @@ El proyecto Angular ahora usa un **sistema automático** que lee variables desde
 ```bash
 # URLs de la API
 API_BASE_URL=https://gfc.prod-api.greenborn.com.ar/
-PUBLIC_API_URL=https://gfc.api2.greenborn.com.ar/
+PUBLIC_API_URL=https://gfc.api2.greenborn.com.ar/api/
+
+# URLs de recursos estáticos
+IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
+
+# API de Node.js (para autenticación y recuperación de contraseña)
+NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 
 # Configuración de autenticación
 LOGIN_ACTION=login
 
 # Configuración de la aplicación
 APP_NAME=app_gfc_prod-
-APP_VERSION=1.5.0
+APP_VERSION=1.9.14
 ```
 
 ### Cómo Funciona
@@ -75,9 +84,11 @@ Los archivos `environment.ts` y `environment.prod.ts` se generan automáticament
 
 export const environment = {
   production: false, // o true para producción
-  version: '1.5.0',
+  version: '1.9.14',
   apiBaseUrl: 'https://gfc.prod-api.greenborn.com.ar/',
-  publicApi: 'https://gfc.api2.greenborn.com.ar/',
+  publicApi: 'https://gfc.api2.greenborn.com.ar/api/',
+  imagesBaseUrl: 'https://assets.prod-gfc.greenborn.com.ar',
+  nodeApiBaseUrl: 'https://gfc.api2.greenborn.com.ar/api/',
   loginAction: 'login',
   appName: 'app_gfc_prod-'
 };

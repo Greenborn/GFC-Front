@@ -255,8 +255,9 @@ component/
 ### Core Dependencies
 - **Angular**: 12.1.1 - Framework principal
 - **Ionic**: 6.5.1 - UI Framework
-- **RxJS**: Gestión reactiva
-- **Axios**: Cliente HTTP
+- **RxJS**: 6.6.0 - Gestión reactiva
+- **Axios**: 1.10.0 - Cliente HTTP
+- **TypeScript**: 4.2.4 - Lenguaje de programación
 
 ### Development Dependencies
 - **Angular CLI**: 12.1.1 - Herramientas de desarrollo
