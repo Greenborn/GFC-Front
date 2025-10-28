@@ -38,4 +38,22 @@ ion-card {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+/* Estilos para alertas de error */
+.alert-danger {
+  --backdrop-opacity: 0.5;
+  
+  .alert-head {
+    color: var(--ion-color-danger);
+  }
+  
+  .alert-message {
+    color: var(--ion-color-danger-shade);
+  }
+  
+  .alert-button {
+    color: var(--ion-color-danger);
+    font-weight: 600;
+  }
 } 

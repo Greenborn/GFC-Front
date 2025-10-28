@@ -8,7 +8,7 @@ import { Section } from '../models/section.model';
 import { SectionService } from '../services/section.service';
 import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
 import { RankingService } from '../services/ranking.service';
 import { ConfigService } from '../services/config/config.service';
@@ -31,6 +31,7 @@ export class HerramientasPage implements OnInit {
     private http: HttpClient,
     private modalController: ModalController,
     private loadingController: LoadingController,
+    private alertController: AlertController,
     private rankingService: RankingService,
     private config: ConfigService
   ) {}
@@ -61,57 +62,117 @@ export class HerramientasPage implements OnInit {
 
   async onFileSelected(event: any) {
     console.log('=== DEBUG INICIO CARGA DIRECTORIO ===');
-    const files: FileList = event.target.files;
-    if (!files || files.length === 0) return;
-
-    // Mostrar loading
-    const loading = await this.loadingController.create({
-      message: 'Procesando directorio...'
+    
+    // Mostrar loading INMEDIATAMENTE al detectar el evento
+    let loading = await this.loadingController.create({
+      message: 'Iniciando procesamiento...',
+      spinner: 'crescent'
     });
     await loading.present();
-
-    // Procesar estructura de directorio
-    let estructura = '';
-    Array.from(files).forEach(file => {
-      const relativePath = (file as any).webkitRelativePath || file.name;
-      const isDir = false; // No hay forma directa de saber si es directorio, pero los archivos intermedios se deducen por path
-      estructura += '      ' + relativePath + '\n';
-    });
-
-    // Agregar directorios explícitamente
-    const directorios = new Set<string>();
-    Array.from(files).forEach(file => {
-      const relativePath = (file as any).webkitRelativePath || file.name;
-      const partes = relativePath.split('/');
-      for (let i = 1; i < partes.length; i++) {
-        const dir = partes.slice(0, i).join('/');
-        directorios.add(dir);
-      }
-    });
-    directorios.forEach(dir => {
-      estructura = '[DIR] ' + dir + '\n' + estructura;
-    });
-
-    // Obtener todas las categorías y secciones del sistema
-    let categorias: Category[] = [];
-    let secciones: Section[] = [];
-    try {
-      categorias = await this.categoryService.getAll<Category>().toPromise();
-    } catch (err) {
-      console.error('Error al obtener categorías:', err);
-    }
-    try {
-      secciones = await this.sectionService.getAll<Section>().toPromise();
-    } catch (err) {
-      console.error('Error al obtener secciones:', err);
-    }
-    await loading.dismiss();
-    // Navegar a la vista de carga de resultados
-    this.router.navigate(['/herramientas/carga-resultados'], { state: { estructura, categorias, secciones } });
     
-    // Resetear el input para evitar que se quede "trabado"
-    if (this.fileInput && this.fileInput.nativeElement) {
-      this.fileInput.nativeElement.value = '';
+    const files: FileList = event.target.files;
+    
+    // Resetear el input inmediatamente para permitir reselección
+    const inputElement = this.fileInput?.nativeElement;
+    
+    if (!files || files.length === 0) {
+      console.log('No se seleccionaron archivos');
+      await loading.dismiss();
+      return;
+    }
+    
+    try {
+      console.log(`Procesando ${files.length} archivos...`);
+
+      // Actualizar mensaje de loading
+      loading.message = `Analizando estructura (${files.length} archivos)...`;
+      
+      // Procesar estructura de directorio
+      let estructura = '';
+      Array.from(files).forEach(file => {
+        const relativePath = (file as any).webkitRelativePath || file.name;
+        estructura += '      ' + relativePath + '\n';
+      });
+
+      // Agregar directorios explícitamente
+      const directorios = new Set<string>();
+      Array.from(files).forEach(file => {
+        const relativePath = (file as any).webkitRelativePath || file.name;
+        const partes = relativePath.split('/');
+        for (let i = 1; i < partes.length; i++) {
+          const dir = partes.slice(0, i).join('/');
+          directorios.add(dir);
+        }
+      });
+      directorios.forEach(dir => {
+        estructura = '[DIR] ' + dir + '\n' + estructura;
+      });
+
+      console.log(`Directorios detectados: ${directorios.size}`);
+
+      // Obtener todas las categorías y secciones del sistema
+      loading.message = 'Cargando categorías y secciones...';
+      let categorias: Category[] = [];
+      let secciones: Section[] = [];
+      
+      try {
+        categorias = await this.categoryService.getAll<Category>().toPromise();
+        console.log(`Categorías obtenidas: ${categorias.length}`);
+      } catch (err) {
+        console.error('Error al obtener categorías:', err);
+        throw new Error('No se pudieron cargar las categorías del sistema');
+      }
+      
+      try {
+        secciones = await this.sectionService.getAll<Section>().toPromise();
+        console.log(`Secciones obtenidas: ${secciones.length}`);
+      } catch (err) {
+        console.error('Error al obtener secciones:', err);
+        throw new Error('No se pudieron cargar las secciones del sistema');
+      }
+
+      // Validar que se haya procesado algo
+      if (!estructura || estructura.trim().length === 0) {
+        throw new Error('No se pudo procesar la estructura del directorio');
+      }
+
+      loading.message = 'Preparando vista de validación...';
+      
+      // Navegar a la vista de carga de resultados
+      await this.router.navigate(['/herramientas/carga-resultados'], { 
+        state: { estructura, categorias, secciones } 
+      });
+
+      // Dar un pequeño delay para que la navegación se complete antes de cerrar el loading
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      await loading.dismiss();
+      console.log('=== PROCESO COMPLETADO EXITOSAMENTE ===');
+      
+    } catch (error) {
+      console.error('=== ERROR EN PROCESO DE CARGA ===', error);
+      
+      // Cerrar loading si está abierto
+      if (loading) {
+        await loading.dismiss();
+      }
+
+      // Mostrar alerta de error al usuario
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido al procesar el directorio';
+      
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: errorMessage,
+        buttons: ['OK'],
+        cssClass: 'alert-danger'
+      });
+      await alert.present();
+      
+    } finally {
+      // Resetear el input para permitir nueva selección
+      if (inputElement) {
+        inputElement.value = '';
+      }
     }
   }
 
