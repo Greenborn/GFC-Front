@@ -52,7 +52,8 @@
                           <ion-col size="2">Posición</ion-col>
                           <ion-col size="4">Participante</ion-col>
                           <ion-col size="3">Puntaje</ion-col>
-                          <ion-col size="3">Premios</ion-col>
+                          <ion-col size="2">Premios</ion-col>
+                          <ion-col size="1"></ion-col>
 
                         </ion-row>
                       </ion-grid>
@@ -85,10 +86,13 @@
                                 *ngIf="rg.score_total >= 200 && r.nombre_categoria == 'Estímulo' && r.pestania_seccion != -1"
                                 color="warning">Habilitado a participar en primera</ion-badge>
                             </ion-col>
-                            <ion-col size="3">
+                            <ion-col size="2">
                               <span *ngFor="let premio of rg.premios_temporada">
                                 <ion-badge>{{premio.cantidad}} - {{premio.nombre}}</ion-badge> &nbsp;
                               </span>
+                              </ion-col>
+                            <ion-col size="1" class="vertical-align-center">
+                              <ion-button size="small" (click)="verDetalle(rg)">Detalles</ion-button>
                             </ion-col>
                           </ion-row>
                         </ion-grid>
