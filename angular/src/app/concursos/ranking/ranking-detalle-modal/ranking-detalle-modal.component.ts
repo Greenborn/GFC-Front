@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-ranking-detalle-modal',
@@ -9,7 +11,11 @@ import { ModalController } from '@ionic/angular';
 export class RankingDetalleModalComponent {
   @Input() detalle: any;
 
-  constructor(private modalController: ModalController) {}
+  constructor(
+    public modalController: ModalController,
+    public responsiveService: ResponsiveService,
+    public configService: ConfigService
+  ) {}
 
   cerrar() {
     this.modalController.dismiss();

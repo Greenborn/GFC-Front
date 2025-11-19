@@ -1,112 +1,128 @@
-<ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-row class="ion-align-items-center ion-justify-content-between">
-          <ion-col>
-            <h2>
-              {{ detalle?.contest?.name }}
-            </h2>
-            <ion-card-subtitle>
-              {{ detalle?.contest?.start_date | date: 'dd/MM/yyyy HH:mm' }} -
-              {{ detalle?.contest?.end_date | date: 'dd/MM/yyyy HH:mm' }}
-            </ion-card-subtitle>
-          </ion-col>
-          <ion-col size="auto">
-            <ion-button size="small" (click)="cerrar()">Cerrar</ion-button>
-          </ion-col>
-        </ion-row>
+<div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
+  <ion-header>
+    <ion-toolbar>
+      <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
+        <ion-col>
+          <h5 class="ion-text-wrap">
+            {{ detalle?.contest?.name }}
+          </h5>
+        </ion-col>
+        <ion-col size="1" class="ion-hide-md-down">
+          <ion-button (click)="modalController.dismiss()" fill="clear" class="">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ion-header>
 
-        <ion-card class="ion-margin-top">
-          <ion-card-header>
-            <ion-card-title>Participante</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-row class="ion-align-items-center">
-              <ion-col size="2" class="ion-hide-sm-down">
-                <img [src]="detalle?.profile?.img_url" style="width: 100%; border-radius: 6px;" />
-              </ion-col>
-              <ion-col>
-                <ion-text>
-                  <b>{{ detalle?.profile?.name }} {{ detalle?.profile?.last_name }}</b>
-                </ion-text>
-                <div>
-                  {{ detalle?.profile?.fotoclub?.name }}
-                </div>
-              </ion-col>
-            </ion-row>
-            <ion-row class="ion-margin-top">
-              <ion-col>
-                <b>Categorías:</b>
-                <span *ngFor="let c of detalle?.categories" class="ion-margin-start">
-                  <ion-badge color="light">{{ c.name }}</ion-badge>
-                </span>
-              </ion-col>
-            </ion-row>
-            <ion-row class="ion-margin-top">
-              <ion-col>
-                <b>Secciones:</b>
-                <span *ngFor="let s of detalle?.sections" class="ion-margin-start">
-                  <ion-badge color="light">{{ s.name }}</ion-badge>
-                </span>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
+  <div slot="start" class="w-100 inner-content ion-float-md-start">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-row class="ion-align-items-center ion-justify-content-between">
+            <ion-col>
+              <ion-card-subtitle>
+                {{ detalle?.contest?.start_date }} -
+                {{ detalle?.contest?.end_date }}
+              </ion-card-subtitle>
+            </ion-col>
+            <ion-col size="auto">
+              <ion-button size="small" (click)="cerrar()">Cerrar</ion-button>
+            </ion-col>
+          </ion-row>
 
-        <ion-card class="ion-margin-top">
-          <ion-card-header>
-            <ion-card-title>Resultados</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-list>
-              <ion-item color="dark">
-                <ion-grid>
-                  <ion-row>
-                    <ion-col size="3">Sección</ion-col>
-                    <ion-col size="3">Categoría</ion-col>
-                    <ion-col size="3">Imagen</ion-col>
-                    <ion-col size="3">Métrica</ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-item>
-              <ng-container *ngFor="let r of detalle?.results">
-                <ion-item *ngFor="let img of r.images">
+          <ion-card class="ion-margin-top">
+            <ion-card-header>
+              <ion-card-title>Participante</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row class="ion-align-items-center">
+                <ion-col size="2" class="ion-hide-sm-down">
+                  <img [src]="configService.imageUrl(detalle?.profile?.img_url)" style="width: 100%; border-radius: 6px;" />
+                </ion-col>
+                <ion-col>
+                  <ion-text>
+                    <b>{{ detalle?.profile?.name }} {{ detalle?.profile?.last_name }}</b>
+                  </ion-text>
+                  <div>
+                    {{ detalle?.profile?.fotoclub?.name }}
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row class="ion-margin-top">
+                <ion-col>
+                  <b>Categorías:</b>
+                  <span *ngFor="let c of detalle?.categories" class="ion-margin-start">
+                    <ion-badge color="light">{{ c.name }}</ion-badge>
+                  </span>
+                </ion-col>
+              </ion-row>
+              <ion-row class="ion-margin-top">
+                <ion-col>
+                  <b>Secciones:</b>
+                  <span *ngFor="let s of detalle?.sections" class="ion-margin-start">
+                    <ion-badge color="light">{{ s.name }}</ion-badge>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card class="ion-margin-top">
+            <ion-card-header>
+              <ion-card-title>Resultados</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-list>
+                <ion-item color="dark">
                   <ion-grid>
                     <ion-row>
-                      <ion-col size="3">{{ r.section }}</ion-col>
-                      <ion-col size="3">{{ r.category }}</ion-col>
-                      <ion-col size="3">#{{ img.image_id }}</ion-col>
-                      <ion-col size="3">
-                        <ion-badge>{{ img.metric?.prize }}</ion-badge>
-                        <span class="ion-margin-start">{{ img.metric?.score }}</span>
-                      </ion-col>
+                      <ion-col size="3">Sección</ion-col>
+                      <ion-col size="3">Categoría</ion-col>
+                      <ion-col size="3">Imagen</ion-col>
+                      <ion-col size="3">Métrica</ion-col>
                     </ion-row>
                   </ion-grid>
                 </ion-item>
-              </ng-container>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
+                <ng-container *ngFor="let r of detalle?.results">
+                  <ion-item *ngFor="let img of r.images">
+                    <ion-grid>
+                      <ion-row>
+                        <ion-col size="3">{{ r.section }}</ion-col>
+                        <ion-col size="3">{{ r.category }}</ion-col>
+                        <ion-col size="3">#{{ img.image_id }}</ion-col>
+                        <ion-col size="3">
+                          <ion-badge>{{ img.metric?.prize }}</ion-badge>
+                          <span class="ion-margin-start">{{ img.metric?.score }}</span>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-item>
+                </ng-container>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
 
-        <ion-card class="ion-margin-top ion-margin-bottom">
-          <ion-card-header>
-            <ion-card-title>Ranking</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-row>
-              <ion-col size="6">
-                <b>Puntaje total:</b>
-                <span class="ion-margin-start">{{ detalle?.ranking?.total_score }}</span>
-              </ion-col>
-              <ion-col size="6">
-                <b>Posición:</b>
-                <span class="ion-margin-start">{{ detalle?.ranking?.position }}</span>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+          <ion-card class="ion-margin-top ion-margin-bottom">
+            <ion-card-header>
+              <ion-card-title>Ranking</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row>
+                <ion-col size="6">
+                  <b>Puntaje total:</b>
+                  <span class="ion-margin-start">{{ detalle?.ranking?.total_score }}</span>
+                </ion-col>
+                <ion-col size="6">
+                  <b>Posición:</b>
+                  <span class="ion-margin-start">{{ detalle?.ranking?.position }}</span>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</div>
