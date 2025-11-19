@@ -39,7 +39,7 @@
             <ion-card-content>
               <ion-row class="ion-align-items-center">
                 <ion-col size="2" class="ion-hide-sm-down">
-                  <img [src]="configService.imageUrl(detalle?.profile?.img_url)" style="width: 100%; border-radius: 6px;" />
+                  <app-usuario-img [src]="detalle?.profile?.img_url ? configService.imageUrl(detalle?.profile?.img_url) : ''"></app-usuario-img>
                 </ion-col>
                 <ion-col>
                   <ion-text>
