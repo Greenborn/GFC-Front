@@ -52,4 +52,33 @@ export class RankingDetalleModalComponent {
     }
     return d?.ranking?.total_score ?? 0;
   }
+
+  sortResults(results: any[]): any[] {
+    if (!Array.isArray(results)) return [];
+    return [...results].sort((a: any, b: any) => {
+      const ac = (a?.category ?? '').toString().toLowerCase();
+      const bc = (b?.category ?? '').toString().toLowerCase();
+      if (ac < bc) return -1;
+      if (ac > bc) return 1;
+      const as = (a?.section ?? '').toString().toLowerCase();
+      const bs = (b?.section ?? '').toString().toLowerCase();
+      if (as < bs) return -1;
+      if (as > bs) return 1;
+      return 0;
+    });
+  }
+
+  sortImages(images: any[]): any[] {
+    if (!Array.isArray(images)) return [];
+    return [...images].sort((a: any, b: any) => {
+      const sa = a?.metric?.score ?? 0;
+      const sb = b?.metric?.score ?? 0;
+      if (sb !== sa) return sb - sa;
+      const pa = (a?.metric?.prize ?? '').toString().toLowerCase();
+      const pb = (b?.metric?.prize ?? '').toString().toLowerCase();
+      if (pa < pb) return -1;
+      if (pa > pb) return 1;
+      return 0;
+    });
+  }
 }
