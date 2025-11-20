@@ -60,6 +60,24 @@
                 <ion-col></ion-col>
               </ion-row>
               
+          </ion-card-content>
+          </ion-card>
+
+          <ion-card class="ion-margin-top ion-margin-bottom">
+            <ion-card-header>
+              <ion-card-title>Sumatoria de puntajes</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row>
+                <ion-col size="6">
+                  <b>Total general:</b>
+                  <span class="ion-margin-start">{{ totalScoreAll() }}</span>
+                </ion-col>
+                <ion-col size="6" *ngIf="detalle?.items">
+                  <b>Concursos contabilizados:</b>
+                  <span class="ion-margin-start">{{ detalle.items.length }}</span>
+                </ion-col>
+              </ion-row>
             </ion-card-content>
           </ion-card>
 
@@ -73,21 +91,25 @@
                   <ion-item color="dark">
                     <ion-grid>
                       <ion-row>
-                        <ion-col size="3">Sección</ion-col>
                         <ion-col size="3">Categoría</ion-col>
-                        <ion-col size="3">Imagen</ion-col>
-                        <ion-col size="3">Métrica</ion-col>
+                        <ion-col size="3">Sección</ion-col>
+                        <ion-col size="2">Miniatura</ion-col>
+                        <ion-col size="2">Obra</ion-col>
+                        <ion-col size="2">Métrica</ion-col>
                       </ion-row>
                     </ion-grid>
                   </ion-item>
-                  <ng-container *ngFor="let r of detalle?.results">
-                    <ion-item *ngFor="let img of r.images">
+                  <ng-container *ngFor="let r of sortResults(detalle?.results)">
+                    <ion-item *ngFor="let img of sortImages(r.images)">
                       <ion-grid>
-                        <ion-row>
-                          <ion-col size="3">{{ r.section }}</ion-col>
+                        <ion-row class="ion-align-items-center">
                           <ion-col size="3">{{ r.category }}</ion-col>
-                          <ion-col size="3">#{{ img.image_id }}</ion-col>
-                          <ion-col size="3">
+                          <ion-col size="3">{{ r.section }}</ion-col>
+                          <ion-col size="2">
+                            <img [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" />
+                          </ion-col>
+                          <ion-col size="2" class="cap">{{ img.title }}</ion-col>
+                          <ion-col size="2">
                             <ion-badge>{{ img.metric?.prize }}</ion-badge>
                             <span class="ion-margin-start">{{ img.metric?.score }}</span>
                           </ion-col>
@@ -132,21 +154,25 @@
                     <ion-item color="dark">
                       <ion-grid>
                         <ion-row>
-                          <ion-col size="3">Sección</ion-col>
                           <ion-col size="3">Categoría</ion-col>
-                          <ion-col size="3">Imagen</ion-col>
-                          <ion-col size="3">Métrica</ion-col>
+                          <ion-col size="3">Sección</ion-col>
+                          <ion-col size="2">Miniatura</ion-col>
+                          <ion-col size="2">Obra</ion-col>
+                          <ion-col size="2">Métrica</ion-col>
                         </ion-row>
                       </ion-grid>
                     </ion-item>
-                    <ng-container *ngFor="let r of it?.results">
-                      <ion-item *ngFor="let img of r.images">
+                    <ng-container *ngFor="let r of sortResults(it?.results)">
+                      <ion-item *ngFor="let img of sortImages(r.images)">
                         <ion-grid>
-                          <ion-row>
-                            <ion-col size="3">{{ r.section }}</ion-col>
+                          <ion-row class="ion-align-items-center">
                             <ion-col size="3">{{ r.category }}</ion-col>
-                            <ion-col size="3">#{{ img.image_id }}</ion-col>
-                            <ion-col size="3">
+                            <ion-col size="3">{{ r.section }}</ion-col>
+                            <ion-col size="2">
+                              <img [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" />
+                            </ion-col>
+                            <ion-col size="2" class="cap">{{ img.title }}</ion-col>
+                            <ion-col size="2">
                               <ion-badge>{{ img.metric?.prize }}</ion-badge>
                               <span class="ion-margin-start">{{ img.metric?.score }}</span>
                             </ion-col>
@@ -177,6 +203,7 @@
               </ion-card>
             </ng-container>
           </ng-template>
+          
         </ion-col>
       </ion-row>
     </ion-grid>

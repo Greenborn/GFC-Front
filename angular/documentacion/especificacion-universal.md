@@ -1453,6 +1453,6 @@ La especificación técnica universal del Grupo Fotográfico Centro está **comp
 
 **Esta especificación técnica universal permite replicar el sistema del Grupo Fotográfico Centro en cualquier stack tecnológico, manteniendo la funcionalidad, comportamiento y estética originales.**
 
-**Versión**: 1.9.14  
+**Versión**: 1.9.15  
 **Última Actualización**: Octubre 2025  
 **Estado**: ✅ Completa y Lista para Implementación 
