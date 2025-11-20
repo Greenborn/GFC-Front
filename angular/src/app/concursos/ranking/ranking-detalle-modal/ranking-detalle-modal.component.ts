@@ -43,4 +43,13 @@ export class RankingDetalleModalComponent {
     }
     return s;
   }
+
+  totalScoreAll(): number {
+    const d = this.detalle;
+    if (!d) return 0;
+    if (d.items && Array.isArray(d.items)) {
+      return d.items.reduce((acc: number, it: any) => acc + (it?.ranking?.total_score ?? 0), 0);
+    }
+    return d?.ranking?.total_score ?? 0;
+  }
 }
