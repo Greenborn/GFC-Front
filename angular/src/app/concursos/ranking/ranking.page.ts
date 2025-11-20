@@ -247,7 +247,7 @@ export class RankingPage implements OnInit {
       await loading.dismiss();
       const modal = await this.modalController.create({
         component: RankingDetalleModalComponent,
-        cssClass: 'auto-width',
+        cssClass: 'auto-width modal-wide',
         componentProps: { detalle }
       });
       await modal.present();

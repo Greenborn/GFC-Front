@@ -75,6 +75,10 @@
     margin-right: 0 !important;
   }
 
+  ion-modal.modal-wide {
+    --width: 80vw;
+  }
+
   ion-modal.auto-width {
     &.bottom {
       align-items: flex-end;
