@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { RankingService } from '../../services/ranking.service';
-import {  LoadingController } from '@ionic/angular';
+import { LoadingController, ModalController, AlertController } from '@ionic/angular';
+import { RankingDetalleModalComponent } from './ranking-detalle-modal/ranking-detalle-modal.component';
+import { ContestResultService } from '../../services/contest-result.service';
 
 @Component({
   selector: 'app-ranking',
@@ -11,8 +13,11 @@ import {  LoadingController } from '@ionic/angular';
 export class RankingPage implements OnInit {
 
   constructor(
-   private rankingService: RankingService,
-   public loadingController: LoadingController,
+    private rankingService: RankingService,
+    public loadingController: LoadingController,
+    private modalController: ModalController,
+    private alertController: AlertController,
+    private contestResultService: ContestResultService,
   ) { 
     this.cargarRanking()
   }
@@ -227,5 +232,33 @@ export class RankingPage implements OnInit {
       loading.dismiss()
       this.ranking = this.procesar_ranking( r )
     })
+  }
+
+  async verDetalle(rg: any) {
+    const profile_id = rg.profile_id;
+    const contest_id = rg.last_contest_id ?? rg.contest_id ?? null;
+    const year = contest_id ? undefined : this.anio;
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Cargando...'
+    });
+    await loading.present();
+    this.rankingService.getDetalleRanking(profile_id, contest_id ?? undefined, year).subscribe(async detalle => {
+      await loading.dismiss();
+      const modal = await this.modalController.create({
+        component: RankingDetalleModalComponent,
+        cssClass: 'auto-width modal-wide',
+        componentProps: { detalle }
+      });
+      await modal.present();
+    }, async _err => {
+      await loading.dismiss();
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'No se pudo obtener el detalle de ranking.',
+        buttons: ['Aceptar']
+      });
+      await alert.present();
+    });
   }
 }
