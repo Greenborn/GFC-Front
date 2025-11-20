@@ -264,7 +264,7 @@ Breve descripción de la funcionalidad.
 
 ## 📝 Changelog de Documentación
 
-### Versión 1.9.14 (Actual - Octubre 2025)
+### Versión 1.9.15 (Actual - Octubre 2025)
 - ✅ Documentación completa de arquitectura
 - ✅ Documentación de todos los componentes
 - ✅ Mapeo completo de rutas
@@ -290,7 +290,7 @@ Breve descripción de la funcionalidad.
 ---
 
 **Última actualización**: Octubre 2025  
-**Versión de documentación**: 1.9.14  
+**Versión de documentación**: 1.9.15  
 **Mantenido por**: Equipo de Desarrollo Greenborn 
 
 ## ⚙️ Variables de Entorno y Endpoints Relevantes
