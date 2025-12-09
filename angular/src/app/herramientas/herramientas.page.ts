@@ -222,4 +222,33 @@ export class HerramientasPage implements OnInit {
       alert('Error al recalcular ranking.');
     }
   }
-} 
+
+  async descargarCompiladoGanadoras() {
+    const loading = await this.loadingController.create({ message: 'Generando compilado...' });
+    await loading.present();
+    try {
+      const url = this.config.nodeApiBaseUrl + 'contest/compiled-winners';
+      const r = await this.http.get<any>(url).toPromise();
+      await loading.dismiss();
+      if (r && r.success && r.download_url) {
+        window.open(r.download_url, '_blank');
+      } else {
+        const alert = await this.alertController.create({
+          header: 'Aviso',
+          message: 'No se pudo obtener la URL de descarga.',
+          buttons: ['OK']
+        });
+        await alert.present();
+      }
+    } catch (err) {
+      await loading.dismiss();
+      const msg = err && err.error && err.error.message ? err.error.message : 'Error al generar el compilado.';
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: msg,
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
+  }
+}

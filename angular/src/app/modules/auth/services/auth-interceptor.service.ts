@@ -44,8 +44,10 @@ export class AuthInterceptorService implements HttpInterceptor {
 
         // Solo cerrar sesión en casos específicos de autenticación
         if (err.status === 401) {
-          console.log('Error 401 - Token expirado o inválido, cerrando sesión', err);
-          this.authService.logout();
+          const isLoginRequest = (request.url === this.config.loginUrl) || (request.url.startsWith(this.config.nodeApiBaseUrl) && request.url.indexOf('auth/login') !== -1)
+          if (!isLoginRequest) {
+            this.authService.logout();
+          }
         } 
         // Para errores de red (status 0), solo cerrar sesión si no hay token
         else if (err.status === 0 && !token) {
