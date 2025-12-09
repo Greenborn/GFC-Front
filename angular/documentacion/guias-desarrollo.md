@@ -5,7 +5,7 @@
 Este documento proporciona guías detalladas, mejores prácticas y convenciones de desarrollo para el proyecto Grupo Fotográfico Centro.
 
 **Última actualización**: Octubre 2025  
-**Versión del proyecto**: 1.9.15
+**Versión del proyecto**: 1.10.15
 
 ## 📚 Índice
 
@@ -77,7 +77,7 @@ IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
 NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 
 # App Configuration
-VERSION=1.9.15
+VERSION=1.10.15
 PRODUCTION=false
 ```
 

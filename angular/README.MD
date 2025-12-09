@@ -172,7 +172,7 @@ Para soporte técnico o consultas, contactar a través de:
 
 ## 📝 Change Log
 
-### **1.9.15** (Actual - Octubre 2025)
+### **1.10.15** (Actual - Octubre 2025)
 - ✅ Actualización de dependencias críticas
 - ✅ Mejoras en la seguridad del sistema
 - ✅ Optimizaciones de rendimiento

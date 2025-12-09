@@ -5,7 +5,7 @@
 Este documento proporciona un análisis exhaustivo de las dependencias del proyecto, identificando versiones obsoletas, vulnerabilidades potenciales y recomendaciones de actualización.
 
 **Fecha de análisis**: Octubre 2025  
-**Versión del proyecto**: 1.9.15
+**Versión del proyecto**: 1.10.15
 
 ## 🔍 Estado Actual de Dependencias
 
@@ -111,7 +111,7 @@ Ninguna vulnerabilidad crítica detectada actualmente.
 git checkout -b feat/upgrade-angular-18
 
 # 2. Backup del proyecto actual
-git tag v1.9.15-pre-upgrade
+git tag v1.10.15-pre-upgrade
 
 # 3. Documentar estado actual
 npm audit
