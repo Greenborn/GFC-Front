@@ -44,7 +44,8 @@ export class LoginViewComponent implements OnInit {
     this.loading = true
     this.error = undefined
     this.auth.login(this.login, (err) => {
-      this.error = err.message
+      const msg = (err && err.error && err.error.message) ? err.error.message : (err && err.message ? err.message : 'Usuario o contraseña incorrecta.')
+      this.error = msg
       this.loading = false
     }).then(r => {
       if (r == true) {
