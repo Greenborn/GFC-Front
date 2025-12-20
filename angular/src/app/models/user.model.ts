@@ -12,6 +12,7 @@ export interface User {
     passwordRepeat?: string;
     role?: Role;
     dni?: string;
+    status?: number;
 }
 export interface UserLogged extends User {
     profile: ProfileExpanded,

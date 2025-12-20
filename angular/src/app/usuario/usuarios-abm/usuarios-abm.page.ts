@@ -21,6 +21,7 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-usuarios-abm',
@@ -85,7 +86,8 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     public loadingController: LoadingController,
     private route: ActivatedRoute,
     public configService: ConfigService,
-    public UIUtilsService: UiUtilsService
+    public UIUtilsService: UiUtilsService,
+    private http: HttpClient
   ) {
     super(alertCtrl)
     // this.funcionesOrdenamiento['fotoclub'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
@@ -115,6 +117,12 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
       return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
         (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
+    }
+    this.funcionesOrdenamiento['estado'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
+      const s1 = e1.user && typeof e1.user.status === 'number' ? e1.user.status : 1
+      const s2 = e2.user && typeof e2.user.status === 'number' ? e2.user.status : 1
+      return creciente ? (s1 < s2 ? -1 : (s1 == s2 ? 0 : 1)) :
+        (s1 > s2 ? -1 : (s1 == s2 ? 0 : 1))
     }
 
     this.filtrado['fotoclub'] = {
@@ -234,9 +242,14 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       this.popover = undefined
     }
 
+    if (!p.user || p.user.id == null) {
+      await this.UIUtilsService.mostrarError({ message: 'El perfil no tiene usuario asociado.' });
+      return;
+    }
+
     const alert = await this.alertCtrl.create({
-      header: 'Confirmar borrado',
-      message: 'Cuidado',
+      header: 'Confirmar deshabilitación',
+      message: 'Se procederá a deshabilitar al usuario. No se elimina para preservar la vinculación con su contenido. Al deshabilitar se invalida el access_token y no podrá acceder al sistema.',
       buttons: [
         {
           text: 'Cancelar',
@@ -244,23 +257,20 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
         }, {
           text: 'Confirmar',
           handler: async () => {
-            // super.fetch<void>(() => this.userService.delete(id)).subscribe(_ => this.ionViewWillEnter())
-            //ya que por DB se borra en cascada, no necesita borrar el perfil
-            // super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(
-            //   _ => {
-                super.fetch<void>(() => this.userService.delete(p.user.id)).subscribe(_ => {
-                  this.miembros.splice(
-                    this.miembros.findIndex(m => m.id == p.id),
-                    1
-                    )
-                    super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(r => {})
-                },
-                async err => {
-                  this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
-                }
-                
-                )
-            
+            try {
+              const url = `${this.configService.nodeApiBaseUrl}disable_user`;
+              const body = { id: p.user.id, status: 0 };
+              const r: any = await this.http.post(url, body).toPromise();
+              const message = r && r.message ? r.message : 'Usuario deshabilitado';
+              await this.UIUtilsService.mostrarAlert({ header: 'Acción realizada', message, buttons: [{ text: 'OK', role: 'cancel' }] });
+              const idx = this.miembros.findIndex(m => m.id == p.id);
+              if (idx >= 0) {
+                this.miembros.splice(idx, 1);
+              }
+            } catch (err: any) {
+              const msg = err?.error?.message || 'Error al deshabilitar usuario';
+              await this.UIUtilsService.mostrarError({ message: msg });
+            }
           }
         }
       ]
@@ -283,8 +293,8 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
           {
             accion: (params: number[]) => this.deleteUsuario(p),
             params: [],
-            icon: 'trash',
-            label: 'Borrar'
+            icon: 'remove-circle',
+            label: 'Deshabilitar'
           }
         ]
       },
