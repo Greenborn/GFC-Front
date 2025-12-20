@@ -235,7 +235,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
   //   // return this.usuarios.filter(u => u.username.substr(0, q.length) == q)
   // }
 
-  async deleteUsuario(p: ProfileExpanded) {
+  async toggleUsuarioStatus(p: ProfileExpanded) {
 
     if (this.popover != undefined) {
       this.popoverCtrl.dismiss(this.popover);
@@ -247,9 +247,16 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       return;
     }
 
+    const currentStatus = typeof p.user.status === 'number' ? p.user.status : 1;
+    const newStatus = currentStatus === 1 ? 0 : 1;
+    const confirmHeader = newStatus === 0 ? 'Confirmar deshabilitación' : 'Confirmar habilitación';
+    const confirmMessage = newStatus === 0 
+      ? 'Se procederá a deshabilitar al usuario. No se elimina para preservar la vinculación con su contenido. Al deshabilitar se invalida el access_token y no podrá acceder al sistema.'
+      : 'Se procederá a habilitar al usuario. Podrá volver a acceder al sistema.';
+
     const alert = await this.alertCtrl.create({
-      header: 'Confirmar deshabilitación',
-      message: 'Se procederá a deshabilitar al usuario. No se elimina para preservar la vinculación con su contenido. Al deshabilitar se invalida el access_token y no podrá acceder al sistema.',
+      header: confirmHeader,
+      message: confirmMessage,
       buttons: [
         {
           text: 'Cancelar',
@@ -259,14 +266,13 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
           handler: async () => {
             try {
               const url = `${this.configService.nodeApiBaseUrl}disable_user`;
-              const body = { id: p.user.id, status: 0 };
+              const body = { id: p.user.id, status: newStatus };
               const r: any = await this.http.post(url, body).toPromise();
               const message = r && r.message ? r.message : 'Usuario deshabilitado';
               await this.UIUtilsService.mostrarAlert({ header: 'Acción realizada', message, buttons: [{ text: 'OK', role: 'cancel' }] });
+              p.user.status = newStatus;
               const idx = this.miembros.findIndex(m => m.id == p.id);
-              if (idx >= 0) {
-                this.miembros.splice(idx, 1);
-              }
+              if (idx >= 0 && this.miembros[idx].user) this.miembros[idx].user.status = newStatus;
             } catch (err: any) {
               const msg = err?.error?.message || 'Error al deshabilitar usuario';
               await this.UIUtilsService.mostrarError({ message: msg });
@@ -291,10 +297,10 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
             label: 'Editar'
           },
           {
-            accion: (params: number[]) => this.deleteUsuario(p),
+            accion: (params: number[]) => this.toggleUsuarioStatus(p),
             params: [],
-            icon: 'remove-circle',
-            label: 'Deshabilitar'
+            icon: (p.user && p.user.status === 0) ? 'checkmark-circle' : 'remove-circle',
+            label: (p.user && p.user.status === 0) ? 'Habilitar' : 'Deshabilitar'
           }
         ]
       },

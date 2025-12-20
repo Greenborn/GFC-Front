@@ -259,8 +259,8 @@
                         <ion-button [routerLink]="['editar/' + getUserId(m.user)]">
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
-                        <ion-button (click)="deleteUsuario(m)">
-                          <ion-icon name="remove-circle"></ion-icon>
+                        <ion-button (click)="toggleUsuarioStatus(m)">
+                          <ion-icon [name]="m.user.status == 0 ? 'checkmark-circle' : 'remove-circle'"></ion-icon>
                         </ion-button>
                       </ion-buttons>
                     </ion-col>
