@@ -22,6 +22,7 @@ export class HerramientasPage implements OnInit {
   concursos: Contest[] = [];
   concursoSeleccionado: Contest | null = null;
   @ViewChild('fileInput', { static: true }) fileInput!: ElementRef;
+  @ViewChild('folderInput', { static: false }) folderInput!: ElementRef;
 
   constructor(
     private router: Router,
@@ -249,6 +250,83 @@ export class HerramientasPage implements OnInit {
         buttons: ['OK']
       });
       await alert.present();
+    }
+  }
+
+  onFolderSelected(event: any) {
+    const files: FileList = event.target.files;
+    
+    if (!files || files.length === 0) {
+      console.log('No se seleccionaron archivos');
+      return;
+    }
+
+    // Construir estructura de directorios y archivos
+    const estructura: any = {
+      raiz: '',
+      directorios: {},
+      archivos: []
+    };
+
+    // Obtener el nombre del directorio raíz
+    const primerArchivo = files[0] as any;
+    const rutaCompleta = primerArchivo.webkitRelativePath || primerArchivo.name;
+    estructura.raiz = rutaCompleta.split('/')[0];
+
+    // Procesar todos los archivos
+    Array.from(files).forEach(file => {
+      const relativePath = (file as any).webkitRelativePath || file.name;
+      const partes = relativePath.split('/');
+      
+      // Eliminar el directorio raíz del path
+      const pathSinRaiz = partes.slice(1);
+      
+      if (pathSinRaiz.length === 1) {
+        // Archivo en la raíz
+        estructura.archivos.push(file.name);
+      } else {
+        // Archivo en subdirectorio
+        let dirActual = estructura.directorios;
+        
+        // Navegar/crear la estructura de directorios
+        for (let i = 0; i < pathSinRaiz.length - 1; i++) {
+          const nombreDir = pathSinRaiz[i];
+          if (!dirActual[nombreDir]) {
+            dirActual[nombreDir] = {
+              archivos: [],
+              subdirectorios: {}
+            };
+          }
+          dirActual = dirActual[nombreDir].subdirectorios;
+        }
+        
+        // Agregar el archivo al directorio correspondiente
+        const nombreArchivo = pathSinRaiz[pathSinRaiz.length - 1];
+        const dirPadre = pathSinRaiz.slice(0, -1);
+        let dirDestino = estructura.directorios;
+        
+        for (const d of dirPadre) {
+          dirDestino = dirDestino[d].subdirectorios;
+        }
+        
+        const ultimoDir = dirPadre[dirPadre.length - 1];
+        if (ultimoDir) {
+          let temp = estructura.directorios;
+          for (let i = 0; i < dirPadre.length - 1; i++) {
+            temp = temp[dirPadre[i]].subdirectorios;
+          }
+          temp[ultimoDir].archivos.push(nombreArchivo);
+        }
+      }
+    });
+
+    // Mostrar en consola
+    console.log('=== ESTRUCTURA DE DIRECTORIOS Y ARCHIVOS ===');
+    console.log(JSON.stringify(estructura, null, 2));
+
+    // Resetear el input para permitir nueva selección
+    if (this.folderInput && this.folderInput.nativeElement) {
+      this.folderInput.nativeElement.value = '';
     }
   }
 }

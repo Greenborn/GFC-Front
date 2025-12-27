@@ -64,6 +64,17 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+      <ion-col size="12" size-sm="6" size-md="4" size-lg="3">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Fotografías del Año</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <input #folderInput type="file" webkitdirectory directory multiple (change)="onFolderSelected($event)" style="display: none;" />
+            <ion-button expand="block" color="success" (click)="folderInput.click()">Seleccionar Carpeta</ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content> 
