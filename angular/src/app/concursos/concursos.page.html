@@ -110,83 +110,93 @@
               </ion-col>
             </ion-row>
             <ion-list
-              *ngIf="concursos.length > 0; else (loading ? spinner : texto)"
+              *ngIf="itemsMezclados.length > 0; else (loading ? spinner : texto)"
             >
             
-              <ion-card
-                *ngFor="let c of concursos; index as i"
-                [ngStyle]="responsiveService.isDesktop ? {'background-image': 'url(' + getImg(c.img_url) + ')', 'background-size' : '100% auto'} : {'background-image': 'url(' + getImg(c.img_url) + ')', 'background-size' : 'auto 100%'}"
-              >
-                <div class="w-100 h-100 capa-opacidad">
-                  
-                  <ion-col #colCard id="colCard" size="12">
-                    <ion-row class="h-100">
-                      <ion-card-header>
-                        <ion-row class="ion-align-items-center">
-                          <ion-col class="ion-no-padding">
-                            <app-contest-status-chip
-                              [contest]="c"
-                            ></app-contest-status-chip>
-                            <ion-card-title [color]="aspecto == false ? 'light' : 'dark'"
-                              >{{c.name}}</ion-card-title
-                            >
-                          </ion-col>
-                        </ion-row>
-                        <ion-card-subtitle [color]="aspecto == false ? 'light' : 'dark'" 
-                          >Desde: {{get_fecha_formateada(c.start_date) }} - Hasta:
-                          {{get_fecha_formateada(c.end_date)  }}</ion-card-subtitle
+              <ng-container *ngFor="let item of itemsMezclados; index as i">
+                <!-- Card de Concurso -->
+                <ion-card
+                  *ngIf="item.tipo === 'concurso'"
+                  [ngStyle]="responsiveService.isDesktop ? {'background-image': 'url(' + getImg(item.concurso.img_url) + ')', 'background-size' : '100% auto'} : {'background-image': 'url(' + getImg(item.concurso.img_url) + ')', 'background-size' : 'auto 100%'}"
+                >
+                  <div class="w-100 h-100 capa-opacidad">
+                    
+                    <ion-col #colCard id="colCard" size="12">
+                      <ion-row class="h-100">
+                        <ion-card-header>
+                          <ion-row class="ion-align-items-center">
+                            <ion-col class="ion-no-padding">
+                              <app-contest-status-chip
+                                [contest]="item.concurso"
+                              ></app-contest-status-chip>
+                              <ion-card-title [color]="aspecto == false ? 'light' : 'dark'"
+                                >{{item.concurso.name}}</ion-card-title
+                              >
+                            </ion-col>
+                          </ion-row>
+                          <ion-card-subtitle [color]="aspecto == false ? 'light' : 'dark'" 
+                            >Desde: {{get_fecha_formateada(item.concurso.start_date) }} - Hasta:
+                            {{get_fecha_formateada(item.concurso.end_date)  }}</ion-card-subtitle
+                          >
+                        </ion-card-header>
+                        <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
+
+                        <ion-card-content
+                          style="padding-bottom: 0 !important"
+                          class="w-100"
                         >
-                      </ion-card-header>
-                      <!-- <ion-img [src]="concurso.thumbnailUrl"></ion-img> -->
+                          <!-- <ion-row > -->
 
-                      <ion-card-content
-                        style="padding-bottom: 0 !important"
-                        class="w-100"
-                      >
-                        <!-- <ion-row > -->
-
-                        <p class="line-clamp">{{c.description}}</p>
-                        <!-- </ion-row> -->
-                        <ion-row class="ion-margin-top">
-                          <b>Categorias:</b>
-                          <ion-badge
-                          [color]="aspecto == false ? 'dark' : 'light'"
-                            class="ion-margin-start"
-                            *ngFor="let c of c.categories"
-                          >
-                            {{c.name}}
-                          </ion-badge>
-                        </ion-row>
-                        <ion-row class="ion-margin-bottom">
-                          <b>Secciones:</b>
-                          <ion-badge
-                          [color]="aspecto == false ? 'dark' : 'light'"
-                            class="ion-margin-start"
-                            *ngFor="let s of c.sections"
-                          >
-                            {{s.name}}
-                          </ion-badge>
-                        </ion-row>
-                        <ion-row class="w-100">
-                          <ion-col class="ion-float-right ion-align-self-end">
-                          
-                            <ion-button
-                            fill="outline"
-                              class="ion-float-right btn-contest"
-                              size="small"
-                              [routerLink]="[c.id]"
-                              >Ver concurso</ion-button
+                          <p class="line-clamp">{{item.concurso.description}}</p>
+                          <!-- </ion-row> -->
+                          <ion-row class="ion-margin-top">
+                            <b>Categorias:</b>
+                            <ion-badge
+                            [color]="aspecto == false ? 'dark' : 'light'"
+                              class="ion-margin-start"
+                              *ngFor="let c of item.concurso.categories"
                             >
-                                           
-                          </ion-col>
-                        </ion-row>
-                      </ion-card-content>
+                              {{c.name}}
+                            </ion-badge>
+                          </ion-row>
+                          <ion-row class="ion-margin-bottom">
+                            <b>Secciones:</b>
+                            <ion-badge
+                            [color]="aspecto == false ? 'dark' : 'light'"
+                              class="ion-margin-start"
+                              *ngFor="let s of item.concurso.sections"
+                            >
+                              {{s.name}}
+                            </ion-badge>
+                          </ion-row>
+                          <ion-row class="w-100">
+                            <ion-col class="ion-float-right ion-align-self-end">
+                            
+                              <ion-button
+                              fill="outline"
+                                class="ion-float-right btn-contest"
+                                size="small"
+                                [routerLink]="[item.concurso.id]"
+                                >Ver concurso</ion-button
+                              >
+                                             
+                            </ion-col>
+                          </ion-row>
+                        </ion-card-content>
 
-                    </ion-row>
-                  </ion-col>
-                  
-                </div>
-              </ion-card>
+                      </ion-row>
+                    </ion-col>
+                    
+                  </div>
+                </ion-card>
+
+                <!-- Card de Fotos del Año -->
+                <app-fotos-anio-card
+                  *ngIf="item.tipo === 'fotos-anio'"
+                  [fotos]="item.fotosAnio"
+                  [temporada]="item.temporada"
+                ></app-fotos-anio-card>
+              </ng-container>
             </ion-list>
             <ng-template #texto>
               <ion-item>No se encontraron concursos</ion-item>

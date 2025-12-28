@@ -1,0 +1,123 @@
+.fotos-anio-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  margin: 20px 0;
+  
+  ion-card-header {
+    ion-card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      color: white;
+      
+      ion-icon {
+        font-size: 1.8rem;
+        color: gold;
+      }
+    }
+  }
+  
+  ion-card-content {
+    padding: 0;
+    
+    ion-slides {
+      height: 500px;
+      
+      @media (max-width: 768px) {
+        height: 400px;
+      }
+    }
+    
+    .slide-content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      
+      .image-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        margin-bottom: 15px;
+        
+        img {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+        }
+      }
+      
+      .info-container {
+        text-align: center;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+        
+        .puesto {
+          margin-bottom: 10px;
+          
+          ion-badge {
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            
+            ion-icon {
+              margin-right: 5px;
+            }
+          }
+        }
+        
+        .obra-titulo {
+          font-size: 1.3rem;
+          font-weight: bold;
+          margin: 10px 0;
+          color: white;
+        }
+        
+        .autor-nombre {
+          font-size: 1rem;
+          color: #f0f0f0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 5px;
+          margin: 5px 0;
+          
+          ion-icon {
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
+    
+    .no-fotos {
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+// Estilos para los controles del slider
+::ng-deep .fotos-anio-card {
+  .swiper-pagination-bullet {
+    background: white;
+    opacity: 0.5;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background: gold;
+    opacity: 1;
+  }
+  
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: white;
+  }
+}
