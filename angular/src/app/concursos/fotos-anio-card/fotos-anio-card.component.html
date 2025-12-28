@@ -9,32 +9,48 @@
   
   <ion-card-content>
     <div *ngIf="fotos && fotos.length > 0; else noFotos">
-      <ion-slides [options]="slideOpts" #slides>
-        <ion-slide *ngFor="let foto of fotos; let i = index">
-          <div class="slide-content">
-            <div class="image-container">
-              <img 
-                [src]="getImageUrl(foto.url_imagen)" 
-                [alt]="foto.nombre_obra"
-                (error)="$event.target.src='../../../assets/no-pictures.png'"
-              />
-            </div>
-            <div class="info-container">
-              <div class="puesto">
-                <ion-badge color="warning">
-                  <ion-icon name="medal"></ion-icon>
-                  {{ foto.puesto }}
-                </ion-badge>
+      <div class="slides-container">
+        <ion-slides [options]="slideOpts" #slides>
+          <ion-slide *ngFor="let foto of fotos; let i = index">
+            <div class="slide-content">
+              <div class="image-container" (click)="abrirFotoDetalle(i)" style="cursor: pointer;">
+                <img 
+                  [src]="getImageUrl(foto.url_imagen)" 
+                  [alt]="foto.nombre_obra"
+                  (error)="$event.target.src='../../../assets/no-pictures.png'"
+                />
               </div>
-              <h3 class="obra-titulo">{{ foto.nombre_obra }}</h3>
-              <p class="autor-nombre">
-                <ion-icon name="person"></ion-icon>
-                {{ foto.nombre_autor }}
-              </p>
+              <div class="info-container">
+                <div class="puesto">
+                  <ion-badge color="warning">
+                    <ion-icon name="medal"></ion-icon>
+                    {{ foto.puesto }}
+                  </ion-badge>
+                </div>
+                <h3 class="obra-titulo">{{ foto.nombre_obra }}</h3>
+                <p class="autor-nombre">
+                  <ion-icon name="person"></ion-icon>
+                  {{ foto.nombre_autor }}
+                </p>
+              </div>
             </div>
-          </div>
-        </ion-slide>
-      </ion-slides>
+          </ion-slide>
+        </ion-slides>
+        
+        <!-- Botones de navegación -->
+        <ion-button 
+          class="nav-button prev-button" 
+          fill="clear" 
+          (click)="slidePrev()">
+          <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+        </ion-button>
+        <ion-button 
+          class="nav-button next-button" 
+          fill="clear" 
+          (click)="slideNext()">
+          <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+        </ion-button>
+      </div>
     </div>
     
     <ng-template #noFotos>

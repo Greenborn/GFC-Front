@@ -66,7 +66,7 @@
                 <p>
                   <b>Título:</b> {{all_data[index].image.title}}  </p>
                 <p>
-                <p>
+                <p *ngIf="all_data[index]?.section">
                   <b>Sección:</b> {{all_data[index]?.section?.name}} </p>
                 <p *ngIf="!open"> 
                   <b>Premio: </b>
