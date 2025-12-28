@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild ,AfterViewInit} from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { Event, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 // import { ConcursoService } from '../services/concurso.service';
 import { NotificacionesPage } from '../notificaciones/notificaciones.page';
@@ -49,7 +50,8 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     public rolificador: RolificadorService,
     alertController: AlertController,
     public configService: ConfigService,
-    public responsiveService: ResponsiveService
+    public responsiveService: ResponsiveService,
+    private http: HttpClient
   ) { 
     // super('concursos page', alertController)
     super(alertController)
@@ -139,6 +141,25 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
       this.concursos = r
       this.loading = false
     })
+
+    // Obtener listado de fotos del año
+    this.obtenerFotosDelAnio();
+  }
+
+  obtenerFotosDelAnio() {
+    const url = `${this.configService.nodeApiBaseUrl}foto-del-anio`;
+    const token = localStorage.getItem(this.configService.tokenKey);
+    const headers = token ? { Authorization: 'Bearer ' + token } : {};
+
+    this.http.get<any>(url, { headers }).subscribe(
+      response => {
+        console.log('=== FOTOS DEL AÑO OBTENIDAS ===');
+        console.log(response);
+      },
+      error => {
+        console.error('Error al obtener fotos del año:', error);
+      }
+    );
   }
 
   // para implementar busqueda con la api (sobrescribe variable de concursos)
