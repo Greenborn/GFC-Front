@@ -11,17 +11,17 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
   templateUrl: './contest-record-form.component.html',
   styleUrls: ['./contest-record-form.component.scss'],
 })
-export class ContestRecordFormComponent extends ApiConsumer implements OnInit{
+export class ContestRecordFormComponent extends ApiConsumer implements OnInit {
 
-  @Input() concurso:any;
-  @Input() grabacion:any;
+  @Input() concurso: any;
+  @Input() grabacion: any;
   @Input() modalController: ModalController;
   
   constructor(
-    alertCtrl:                    AlertController,
-    public responsiveService:     ResponsiveService,
-    public UIUtilsService:        UiUtilsService,
-    private configService:        ConfigService,
+    alertCtrl: AlertController,
+    public responsiveService: ResponsiveService,
+    public UIUtilsService: UiUtilsService,
+    private configService: ConfigService,
     private contestRecordService: ContestRecordService
   ) { 
     super(alertCtrl);
@@ -33,47 +33,47 @@ export class ContestRecordFormComponent extends ApiConsumer implements OnInit{
 
   ngOnInit() {}
 
-
-  async guardar(){
-    if (this.grabacion.object == '' || this.grabacion.object == undefined){
+  async guardar() {
+    if (this.grabacion.object == '' || this.grabacion.object == undefined) {
       super.displayAlert('Es necesario definir un nombre');
       return false;
     }
 
-    if (this.grabacion.url == '' || this.grabacion.url == undefined){
+    if (this.grabacion.url == '' || this.grabacion.url == undefined) {
       super.displayAlert('Es necesaria definir una url');
       return false;
     }
 
     await this.UIUtilsService.presentLoading();
-    if (this.grabacion.id === undefined){
+    
+    if (this.grabacion.id === undefined) {
+      // Crear nuevo registro
       this.contestRecordService.post(this.grabacion).subscribe(
-        ok => { 
+        response => { 
           super.displayAlert('Enlace de grabación guardado');
           this.UIUtilsService.dismissLoading();
-          this.modalController.dismiss();
-          document.location.reload();
+          this.modalController.dismiss({ grabacion: response.data });
         },
         err => {
           this.UIUtilsService.dismissLoading();
-          super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+          const errorMsg = err?.response?.data?.message || 'Error al guardar la grabación';
+          super.displayAlert(errorMsg);
         }
       );
     } else {
+      // Actualizar registro existente
       this.contestRecordService.put(this.grabacion, this.grabacion.id).subscribe(
-        ok => { 
+        response => { 
           super.displayAlert('Enlace de grabación guardado');
           this.UIUtilsService.dismissLoading();
-          this.modalController.dismiss();
-          document.location.reload();
+          this.modalController.dismiss({ grabacion: response.data });
         },
         err => {
           this.UIUtilsService.dismissLoading();
-          super.displayAlert(this.errorFilter(err.error['error-info'][2]));
+          const errorMsg = err?.response?.data?.message || 'Error al actualizar la grabación';
+          super.displayAlert(errorMsg);
         }
       );
     }
-    
-    
   }
 }

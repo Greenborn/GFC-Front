@@ -1,0 +1,69 @@
+<ion-card class="fotos-anio-card">
+  <ion-card-header>
+    <ion-card-title>
+      <ion-icon name="trophy"></ion-icon>
+      Fotografías del Año {{ temporada }}
+    </ion-card-title>
+    <ion-card-subtitle>
+      {{ fotos?.length || 0 }} fotografías
+      <span *ngIf="url_grabacion">
+        | <a [href]="url_grabacion" target="_blank" rel="noopener noreferrer">
+          <ion-icon name="videocam"></ion-icon> Ver grabación
+        </a>
+      </span>
+    </ion-card-subtitle>
+  </ion-card-header>
+  
+  <ion-card-content>
+    <div *ngIf="fotos && fotos.length > 0; else noFotos">
+      <div class="slides-container">
+        <ion-slides [options]="slideOpts" #slides>
+          <ion-slide *ngFor="let foto of fotos; let i = index">
+            <div class="slide-content">
+              <div class="image-container" (click)="abrirFotoDetalle(i)" style="cursor: pointer;">
+                <img 
+                  [src]="getImageUrl(foto.url_imagen)" 
+                  [alt]="foto.nombre_obra"
+                  (error)="$event.target.src='../../../assets/no-pictures.png'"
+                />
+              </div>
+              <div class="info-container">
+                <div class="puesto">
+                  <ion-badge color="warning">
+                    <ion-icon name="medal"></ion-icon>
+                    {{ foto.puesto }}
+                  </ion-badge>
+                </div>
+                <h3 class="obra-titulo">{{ foto.nombre_obra }}</h3>
+                <p class="autor-nombre">
+                  <ion-icon name="person"></ion-icon>
+                  {{ foto.nombre_autor }}
+                </p>
+              </div>
+            </div>
+          </ion-slide>
+        </ion-slides>
+        
+        <!-- Botones de navegación -->
+        <ion-button 
+          class="nav-button prev-button" 
+          fill="clear" 
+          (click)="slidePrev()">
+          <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+        </ion-button>
+        <ion-button 
+          class="nav-button next-button" 
+          fill="clear" 
+          (click)="slideNext()">
+          <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+    
+    <ng-template #noFotos>
+      <div class="no-fotos">
+        <p>No hay fotografías del año disponibles para esta temporada.</p>
+      </div>
+    </ng-template>
+  </ion-card-content>
+</ion-card>

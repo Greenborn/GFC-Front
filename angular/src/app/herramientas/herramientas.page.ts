@@ -22,6 +22,17 @@ export class HerramientasPage implements OnInit {
   concursos: Contest[] = [];
   concursoSeleccionado: Contest | null = null;
   @ViewChild('fileInput', { static: true }) fileInput!: ElementRef;
+  @ViewChild('folderInput', { static: false }) folderInput!: ElementRef;
+  
+  // Variables para el modal de Agregar Grabación
+  isModalGrabacionOpen = false;
+  anioActual = new Date().getFullYear();
+  anioAnterior = this.anioActual - 1;
+  urlInvalida = false;
+  grabacionData = {
+    temporada: new Date().getFullYear(),
+    url: ''
+  };
 
   constructor(
     private router: Router,
@@ -247,6 +258,226 @@ export class HerramientasPage implements OnInit {
         header: 'Error',
         message: msg,
         buttons: ['OK']
+      });
+      await alert.present();
+    }
+  }
+
+  async onFolderSelected(event: any) {
+    const files: FileList = event.target.files;
+    
+    if (!files || files.length === 0) {
+      console.log('No se seleccionaron archivos');
+      return;
+    }
+
+    // Mostrar loading
+    const loading = await this.loadingController.create({
+      message: 'Procesando directorio de fotos del año...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
+    try {
+      // Construir estructura de directorios y archivos
+      const estructura: any = {
+        raiz: '',
+        directorios: {},
+        archivos: []
+      };
+
+      // Obtener el nombre del directorio raíz
+      const primerArchivo = files[0] as any;
+      const rutaCompleta = primerArchivo.webkitRelativePath || primerArchivo.name;
+      estructura.raiz = rutaCompleta.split('/')[0];
+
+      // Procesar todos los archivos
+      Array.from(files).forEach(file => {
+        const relativePath = (file as any).webkitRelativePath || file.name;
+        const partes = relativePath.split('/');
+        
+        // Eliminar el directorio raíz del path
+        const pathSinRaiz = partes.slice(1);
+        
+        if (pathSinRaiz.length === 1) {
+          // Archivo en la raíz
+          estructura.archivos.push(file.name);
+        } else {
+          // Archivo en subdirectorio
+          let dirActual = estructura.directorios;
+          
+          // Navegar/crear la estructura de directorios
+          for (let i = 0; i < pathSinRaiz.length - 1; i++) {
+            const nombreDir = pathSinRaiz[i];
+            if (!dirActual[nombreDir]) {
+              dirActual[nombreDir] = {
+                archivos: [],
+                subdirectorios: {}
+              };
+            }
+            dirActual = dirActual[nombreDir].subdirectorios;
+          }
+          
+          // Agregar el archivo al directorio correspondiente
+          const nombreArchivo = pathSinRaiz[pathSinRaiz.length - 1];
+          const dirPadre = pathSinRaiz.slice(0, -1);
+          let dirDestino = estructura.directorios;
+          
+          for (const d of dirPadre) {
+            dirDestino = dirDestino[d].subdirectorios;
+          }
+          
+          const ultimoDir = dirPadre[dirPadre.length - 1];
+          if (ultimoDir) {
+            let temp = estructura.directorios;
+            for (let i = 0; i < dirPadre.length - 1; i++) {
+              temp = temp[dirPadre[i]].subdirectorios;
+            }
+            temp[ultimoDir].archivos.push(nombreArchivo);
+          }
+        }
+      });
+
+      // Mostrar en consola
+      console.log('=== ESTRUCTURA DE DIRECTORIOS Y ARCHIVOS ===');
+      console.log(JSON.stringify(estructura, null, 2));
+
+      // Enviar al endpoint
+      loading.message = 'Enviando datos al servidor...';
+      const url = `${this.config.nodeApiBaseUrl}foto-del-anio`;
+      const token = localStorage.getItem(this.config.tokenKey);
+      const headers = token ? { Authorization: 'Bearer ' + token } : {};
+
+      const response = await this.http.post<any>(url, estructura, { headers }).toPromise();
+      
+      await loading.dismiss();
+
+      // Mostrar resultado exitoso
+      const alert = await this.alertController.create({
+        header: 'Éxito',
+        message: 'La estructura de fotos del año se envió correctamente al servidor.',
+        buttons: ['OK']
+      });
+      await alert.present();
+
+      console.log('Respuesta del servidor:', response);
+
+    } catch (error) {
+      await loading.dismiss();
+      
+      console.error('Error al procesar/enviar fotos del año:', error);
+      
+      const errorMessage = error && error.error && error.error.message 
+        ? error.error.message 
+        : 'Error al procesar o enviar la estructura de fotos del año.';
+      
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: errorMessage,
+        buttons: ['OK'],
+        cssClass: 'alert-danger'
+      });
+      await alert.present();
+      
+    } finally {
+      // Resetear el input para permitir nueva selección
+      if (this.folderInput && this.folderInput.nativeElement) {
+        this.folderInput.nativeElement.value = '';
+      }
+    }
+  }
+
+  // Métodos para el modal de Agregar Grabación
+  abrirModalAgregarGrabacion() {
+    this.isModalGrabacionOpen = true;
+    this.grabacionData = {
+      temporada: this.anioActual,
+      url: ''
+    };
+    this.urlInvalida = false;
+  }
+
+  cerrarModalGrabacion() {
+    this.isModalGrabacionOpen = false;
+    this.grabacionData = {
+      temporada: this.anioActual,
+      url: ''
+    };
+    this.urlInvalida = false;
+  }
+
+  validarUrl() {
+    const url = this.grabacionData.url.trim();
+    
+    if (url.length === 0) {
+      this.urlInvalida = false;
+      return;
+    }
+    
+    try {
+      const urlObj = new URL(url);
+      this.urlInvalida = !(urlObj.protocol === 'http:' || urlObj.protocol === 'https:');
+    } catch (e) {
+      this.urlInvalida = true;
+    }
+  }
+
+  async agregarGrabacion() {
+    if (this.urlInvalida || !this.grabacionData.url) {
+      return;
+    }
+
+    const loading = await this.loadingController.create({
+      message: 'Agregando grabación...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
+    try {
+      const url = `${this.config.nodeApiBaseUrl}contest-record`;
+      const token = localStorage.getItem(this.config.tokenKey);
+      const headers = token ? { 
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      } : {
+        'Content-Type': 'application/json'
+      };
+
+      const body = {
+        contest_id: 51, // Según el ejemplo del curl
+        url: this.grabacionData.url,
+        object: "Foto del Año",
+        temporada: this.grabacionData.temporada,
+        type: "FOTO_DEL_ANIO"
+      };
+
+      const response = await this.http.post<any>(url, body, { headers }).toPromise();
+      
+      await loading.dismiss();
+
+      const alert = await this.alertController.create({
+        header: 'Éxito',
+        message: 'La grabación se agregó correctamente.',
+        buttons: ['OK']
+      });
+      await alert.present();
+
+      this.cerrarModalGrabacion();
+
+    } catch (error) {
+      await loading.dismiss();
+      
+      console.error('Error al agregar grabación:', error);
+      
+      const errorMessage = error && error.error && error.error.message 
+        ? error.error.message 
+        : 'Error al agregar la grabación.';
+      
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: errorMessage,
+        buttons: ['OK'],
+        cssClass: 'alert-danger'
       });
       await alert.present();
     }

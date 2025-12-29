@@ -12,6 +12,7 @@ import { RankingDetalleModalComponent } from './ranking/ranking-detalle-modal/ra
 import { SharedModule } from '../shared/shared.module';
 import { SeccionPostComponent } from './secciones-abm/seccion-post/seccion-post.component';
 import { MetricasPostComponent } from './metricas-abm/metricas-post/metricas-post.component';
+import { FotosAnioCardComponent } from './fotos-anio-card/fotos-anio-card.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,13 @@ import { MetricasPostComponent } from './metricas-abm/metricas-post/metricas-pos
     ConcursosPageRoutingModule,
     SharedModule
   ],
-  declarations: [ConcursosPage, RankingPage, RankingDetalleModalComponent, SeccionPostComponent, MetricasPostComponent]
+  declarations: [
+    ConcursosPage, 
+    RankingPage, 
+    RankingDetalleModalComponent, 
+    SeccionPostComponent, 
+    MetricasPostComponent,
+    FotosAnioCardComponent
+  ]
 })
 export class ConcursosPageModule {}

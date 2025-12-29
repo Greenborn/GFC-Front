@@ -477,20 +477,17 @@ obtenerPx() {
           role: 'cancel'
         }, {
           text: 'Confirmar',
-          // handler: async () => {
           handler: () => {
-            // await this.contestSvc.deleteConcurso(this.concurso.id);
-            super.fetch<void>(() => 
-              this.contestService.delete(this.concurso.id)
-            ).subscribe(
-              _ => {
-                console.log('deleted', _)
+            this.contestService.deleteContest(this.concurso.id).subscribe(
+              response => {
+                console.log('Concurso eliminado', response)
                 this.router.navigate(['/concursos']);
               }, 
               async err => {
+                const errorMsg = err?.response?.data?.message || err?.message || 'Error al eliminar el concurso';
                 (await this.alertCtrl.create({
                   header: 'Error',
-                  message: this.errorFilter(err.error['error-info'][2]),
+                  message: errorMsg,
                   buttons: [{
                     text: 'Ok',
                     role: 'cancel'
