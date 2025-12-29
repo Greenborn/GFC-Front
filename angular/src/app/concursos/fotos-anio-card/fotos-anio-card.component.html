@@ -4,7 +4,14 @@
       <ion-icon name="trophy"></ion-icon>
       Fotografías del Año {{ temporada }}
     </ion-card-title>
-    <ion-card-subtitle>{{ fotos?.length || 0 }} fotografías</ion-card-subtitle>
+    <ion-card-subtitle>
+      {{ fotos?.length || 0 }} fotografías
+      <span *ngIf="url_grabacion">
+        | <a [href]="url_grabacion" target="_blank" rel="noopener noreferrer">
+          <ion-icon name="videocam"></ion-icon> Ver grabación
+        </a>
+      </span>
+    </ion-card-subtitle>
   </ion-card-header>
   
   <ion-card-content>

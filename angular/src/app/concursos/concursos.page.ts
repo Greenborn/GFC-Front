@@ -236,7 +236,8 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
         this.itemsMezclados.push({
           tipo: 'fotos-anio',
           fotosAnio: fotosData.items,
-          temporada: fotosData.temporada
+          temporada: fotosData.temporada,
+          url_grabacion: fotosData.url_grabacion
         });
       } else {
         console.log(`  - No hay fotos del año para ${anio}`);

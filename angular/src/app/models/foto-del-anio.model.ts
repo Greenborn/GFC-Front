@@ -12,6 +12,7 @@ export interface FotoDelAnio {
 export interface FotosDelAnioResponse {
   items: FotoDelAnio[];
   temporada: number;
+  url_grabacion?: string | null;
 }
 
 export interface ItemConcursoOFoto {
@@ -19,4 +20,5 @@ export interface ItemConcursoOFoto {
   concurso?: any;
   fotosAnio?: FotoDelAnio[];
   temporada?: number;
+  url_grabacion?: string | null;
 }

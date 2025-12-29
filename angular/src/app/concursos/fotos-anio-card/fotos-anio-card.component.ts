@@ -13,6 +13,7 @@ import { VerFotografiasComponent } from '../concurso-detail/ver-fotografias/ver-
 export class FotosAnioCardComponent implements OnInit, OnChanges {
   @Input() fotos: FotoDelAnio[] = [];
   @Input() temporada: number = 0;
+  @Input() url_grabacion: string | null = null;
   @ViewChild('slides', { static: false }) slides: IonSlides;
 
   slideOpts = {
