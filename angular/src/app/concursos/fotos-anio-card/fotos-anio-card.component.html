@@ -24,7 +24,7 @@
                 <img 
                   [src]="getImageUrl(foto.url_imagen)" 
                   [alt]="foto.nombre_obra"
-                  (error)="$event.target.src='../../../assets/no-pictures.png'"
+                  (error)="onImageError($event)"
                 />
               </div>
               <div class="info-container">

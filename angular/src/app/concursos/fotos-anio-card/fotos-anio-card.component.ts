@@ -59,6 +59,11 @@ export class FotosAnioCardComponent implements OnInit, OnChanges {
     return fullUrl;
   }
 
+  onImageError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = '../../../assets/no-pictures.png';
+  }
+
   get aspecto() {
     return document.body.classList.contains("dark");
   }
