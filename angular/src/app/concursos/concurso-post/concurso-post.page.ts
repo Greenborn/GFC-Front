@@ -125,11 +125,13 @@ get secycat(){
       if (id != null) {
         // this.loading = true
         super.fetch<Contest>(() => 
-          this.contestService.get(parseInt(id),'expand=contestRecords')
+          this.contestService.get(parseInt(id))
         ).subscribe(c => {
           // c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
           // c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
           this.concurso = c
+          // Inicializar contestRecords como array vacío, se cargará desde ContestRecordsComponent
+          this.concurso.contestRecords = [];
           this.concurso.start_date = new Date(this.concurso.start_date)
           //this.concurso.start_date.setUTCHours( this.concurso.start_date.getUTCHours() + 3 )
           this.concurso.end_date = new Date(this.concurso.end_date)

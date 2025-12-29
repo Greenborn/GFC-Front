@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import axios from 'axios';
 import { Contest, ContestExpanded } from '../models/contest.model';
 import { ContestCategory, ContestCategoryExpanded } from '../models/contest_category.model';
 import { ContestSection, ContestSectionExpanded } from '../models/contest_section.model';
@@ -94,5 +95,22 @@ export class ContestService extends ApiService<Contest> {
     let d = new Date(fecha);
     let s = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString();
     return s;
+  }
+
+  /**
+   * Eliminar concurso usando API Node.js
+   * DELETE /api/contest/:id
+   */
+  deleteContest(id: number): Observable<any> {
+    const url = `${this.config.nodeApiBaseUrl}contest/${id}`;
+    const headers = {
+      'Authorization': 'Bearer ' + localStorage.getItem(this.config.data.appName + 'token'),
+      'Content-Type': 'application/json'
+    };
+    
+    return from(
+      axios.delete(url, { headers })
+        .then(res => res.data)
+    );
   }
 }
