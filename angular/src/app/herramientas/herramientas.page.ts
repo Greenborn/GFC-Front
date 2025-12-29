@@ -23,6 +23,16 @@ export class HerramientasPage implements OnInit {
   concursoSeleccionado: Contest | null = null;
   @ViewChild('fileInput', { static: true }) fileInput!: ElementRef;
   @ViewChild('folderInput', { static: false }) folderInput!: ElementRef;
+  
+  // Variables para el modal de Agregar Grabación
+  isModalGrabacionOpen = false;
+  anioActual = new Date().getFullYear();
+  anioAnterior = this.anioActual - 1;
+  urlInvalida = false;
+  grabacionData = {
+    temporada: new Date().getFullYear(),
+    url: ''
+  };
 
   constructor(
     private router: Router,
@@ -374,6 +384,102 @@ export class HerramientasPage implements OnInit {
       if (this.folderInput && this.folderInput.nativeElement) {
         this.folderInput.nativeElement.value = '';
       }
+    }
+  }
+
+  // Métodos para el modal de Agregar Grabación
+  abrirModalAgregarGrabacion() {
+    this.isModalGrabacionOpen = true;
+    this.grabacionData = {
+      temporada: this.anioActual,
+      url: ''
+    };
+    this.urlInvalida = false;
+  }
+
+  cerrarModalGrabacion() {
+    this.isModalGrabacionOpen = false;
+    this.grabacionData = {
+      temporada: this.anioActual,
+      url: ''
+    };
+    this.urlInvalida = false;
+  }
+
+  validarUrl() {
+    const url = this.grabacionData.url.trim();
+    
+    if (url.length === 0) {
+      this.urlInvalida = false;
+      return;
+    }
+    
+    try {
+      const urlObj = new URL(url);
+      this.urlInvalida = !(urlObj.protocol === 'http:' || urlObj.protocol === 'https:');
+    } catch (e) {
+      this.urlInvalida = true;
+    }
+  }
+
+  async agregarGrabacion() {
+    if (this.urlInvalida || !this.grabacionData.url) {
+      return;
+    }
+
+    const loading = await this.loadingController.create({
+      message: 'Agregando grabación...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
+    try {
+      const url = `${this.config.nodeApiBaseUrl}contest-record`;
+      const token = localStorage.getItem(this.config.tokenKey);
+      const headers = token ? { 
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      } : {
+        'Content-Type': 'application/json'
+      };
+
+      const body = {
+        contest_id: 51, // Según el ejemplo del curl
+        url: this.grabacionData.url,
+        object: "Foto del Año",
+        temporada: this.grabacionData.temporada,
+        type: "FOTO_DEL_ANIO"
+      };
+
+      const response = await this.http.post<any>(url, body, { headers }).toPromise();
+      
+      await loading.dismiss();
+
+      const alert = await this.alertController.create({
+        header: 'Éxito',
+        message: 'La grabación se agregó correctamente.',
+        buttons: ['OK']
+      });
+      await alert.present();
+
+      this.cerrarModalGrabacion();
+
+    } catch (error) {
+      await loading.dismiss();
+      
+      console.error('Error al agregar grabación:', error);
+      
+      const errorMessage = error && error.error && error.error.message 
+        ? error.error.message 
+        : 'Error al agregar la grabación.';
+      
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: errorMessage,
+        buttons: ['OK'],
+        cssClass: 'alert-danger'
+      });
+      await alert.present();
     }
   }
 }
