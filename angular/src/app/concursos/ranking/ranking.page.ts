@@ -38,6 +38,12 @@ export class RankingPage implements OnInit {
     return categoria.ranks_seccion[ categoria.pestania_seccion ].profiles
   }
 
+  isHabilitado(rg: any, r: any): boolean {
+    if (r.nombre_categoria !== 'Estímulo' || r.pestania_seccion != -1) return false;
+    const generalProfile = r.profiles.find(p => p.profile_id === rg.profile_id);
+    return generalProfile && generalProfile.score_total >= 200;
+  }
+
   procesar_ranking( r ){
     let ranks = { 'profiles': [], 'fotoclubs': r.fotoclubs }
     let cats  = {}

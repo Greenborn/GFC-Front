@@ -81,10 +81,10 @@
                             <ion-col size="2" class="vertical-align-center"># {{rg.posicion_temporada}}</ion-col>
                             <ion-col size="4" class="vertical-align-center cap">{{rg.name}}</ion-col>
                             <ion-col size="3" class="vertical-align-center">
-                              {{rg.puntaje_temporada}}
+                              {{rg.puntaje_temporada}} &nbsp;
                               <ion-badge 
-                                *ngIf="rg.score_total >= 200 && r.nombre_categoria == 'Estímulo' && r.pestania_seccion != -1"
-                                color="warning">Habilitado a participar en primera</ion-badge>
+                                *ngIf="isHabilitado(rg, r)"
+                                color="warning">Habilitado a participar en primera </ion-badge>
                             </ion-col>
                             <ion-col size="2">
                               <span *ngFor="let premio of rg.premios_temporada">
