@@ -41,7 +41,7 @@ export class RankingPage implements OnInit {
   isHabilitado(rg: any, r: any): boolean {
     if (r.nombre_categoria !== 'Estímulo' || r.pestania_seccion != -1) return false;
     const generalProfile = r.profiles.find(p => p.profile_id === rg.profile_id);
-    return generalProfile && generalProfile.score_total >= 200;
+    return generalProfile && generalProfile.score_total >= 240;
   }
 
   procesar_ranking( r ){
