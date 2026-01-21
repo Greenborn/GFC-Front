@@ -49,7 +49,7 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
 
   async ngOnInit() {
     await this.UIUtilsService.presentLoading()
-    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(fs => {
+    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll('inc_disabled=true')).subscribe(fs => {
       this.fotoclubs = fs
       this.UIUtilsService.dismissLoading()
     })
@@ -59,7 +59,7 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
     const { fotoclub } = await this.UIUtilsService.mostrarModal(FotoclubPostComponent, { fotoclub: {...f} })
     if (fotoclub == undefined) return;
     await this.UIUtilsService.presentLoading();
-    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(fs => {
+    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll('inc_disabled=true')).subscribe(fs => {
       this.fotoclubs = fs;
       this.UIUtilsService.dismissLoading();
     })

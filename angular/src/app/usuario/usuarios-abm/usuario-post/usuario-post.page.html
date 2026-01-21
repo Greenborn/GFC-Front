@@ -57,11 +57,12 @@
                             formControlName="dni" name="dni" [(ngModel)]="profile.dni" required></ion-input>
                     </ion-item>
 
-                    <ion-item  class="expand-full">
+                    <ion-item  class="expand-full fotoclub-select-item">
                         <ion-label [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación/Institución</ion-label>
                             <ion-select
                             #sFotoclub  okText="Aceptar" cancelText="Cancelar"
                             formControlName="fotoclub_id" name="fotoclub_id" [(ngModel)]="profile.fotoclub_id"
+                            [interfaceOptions]="{ cssClass: 'fotoclub-select-modal' }"
                             required>
                             <ion-select-option *ngFor="let f of fotoclubes" [value]="f.id">{{f.name}}</ion-select-option>
                             </ion-select>

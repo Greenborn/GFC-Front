@@ -109,6 +109,21 @@
                 </ion-item>
               </ion-row>
 
+              <ion-row class="ion-padding-top">
+                <ion-item class="w-100 ion-margin-bottom">
+                  <ion-label position="floating">Habilitado</ion-label>
+                  <ion-select
+                    name="enabled"
+                    [(ngModel)]="fotoclub.enabled"
+                    ngDefaultControl
+                    required
+                  >
+                    <ion-select-option [value]="true">Si</ion-select-option>
+                    <ion-select-option [value]="false">No</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-row>
+
               <ion-row class="ion-justify-content-end">
                 <ion-col size="12">
                   <ion-row class="ion-justify-content-end">
