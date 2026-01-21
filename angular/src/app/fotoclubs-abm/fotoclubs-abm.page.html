@@ -51,7 +51,7 @@
                 <ion-grid>
                   <ion-col>
                     <ion-row>
-                      <ion-col size="8.5" size-md="9">
+                      <ion-col size="8.5" size-md="10">
                         <ion-row>
                           <app-th-sort
                             [sortFn]="funcionesOrdenamiento['fotoclub']"
@@ -60,13 +60,13 @@
                           ></app-th-sort>
                         </ion-row>
                       </ion-col>
-                      <ion-col size="2" size-md="1">
+                      <ion-col size="2" size-md="1" class="ion-text-center">
                         <ion-row>
                           <b>Habilitado</b>
                         </ion-row>
                       </ion-col>
-                      <ion-col size="1.5" size-md="1">
-                        <!-- <b>Acciones</b> -->
+                      <ion-col size="1" size-md="1" class="ion-text-center">
+                        <b>Acciones</b>
                       </ion-col>
                     </ion-row>
                   </ion-col>
@@ -77,12 +77,12 @@
             <ion-list *ngIf="fotoclubs.length > 0; else texto">
               <ion-item *ngFor="let f of fotoclubs">
                 <ion-grid>
-                  <ion-row size="12">
-                    <ion-col size="12" size-sm="8.5" size-md="9">
+                  <ion-row>
+                    <ion-col size="12" size-sm="9" size-md="10">
                       <ion-row
                         class="ion-align-items-center ion-justify-content-between"
                       >
-                        <ion-col size="10.5" size-sm="12">
+                        <ion-col size="12">
                           <ion-row>
                             <ion-col size="12">
                               <ion-row>
@@ -109,7 +109,7 @@
                           size="1.5"
                           class="ion-hide-sm-up ion-justify-content-center"
                         >
-                          <ion-buttons>
+                          <ion-buttons class="ion-justify-content-center">
                             <ion-button (click)="mostrarAcciones($event, f)">
                               <ion-icon
                                 slot="start"
@@ -124,7 +124,7 @@
                     <ion-col
                       size="2"
                       size-md="1"
-                      class="ion-align-self-center ion-hide-sm-down"
+                      class="ion-align-self-center ion-text-center ion-hide-sm-down"
                     >
                       <ion-badge [color]="f.enabled ? 'success' : 'danger'">
                         {{ f.enabled ? 'Si' : 'No' }}
@@ -133,13 +133,13 @@
                     <ion-col
                       size="1.5"
                       size-md="1"
-                      class="ion-align-self-center ion-hide-sm-down"
+                      class="ion-align-self-center ion-text-center ion-hide-sm-down"
                     >
-                      <ion-buttons>
+                      <ion-buttons class="ion-justify-content-center">
                         <ion-button (click)="postFotoclub(f)">
                           <ion-icon name="create"></ion-icon>
                         </ion-button>
-                        <ion-button (click)="deleteFotoclub(f)">
+                        <ion-button *ngIf="false" (click)="deleteFotoclub(f)">
                           <ion-icon name="trash"></ion-icon>
                         </ion-button>
                       </ion-buttons>
