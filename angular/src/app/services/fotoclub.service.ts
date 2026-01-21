@@ -28,6 +28,7 @@ export class FotoclubService extends ApiService<Fotoclub> {
       instagram: undefined,
       email: undefined,
       photo_url: undefined,
+      enabled: true,
     }
   }
 
@@ -39,6 +40,13 @@ export class FotoclubService extends ApiService<Fotoclub> {
     return this.http.get<{items: K[]}>(url, { headers }).pipe(
       map(resp => resp.items)
     );
+  }
+
+  get<K = Fotoclub>(id: number, getParams: string = ''): Observable<K> {
+    const token = localStorage.getItem(this.config.tokenKey);
+    const headers = token ? { Authorization: 'Bearer ' + token } : {};
+    const url = this.config.data.publicApi.replace(/\/$/, '') + `/fotoclub/${id}`;
+    return this.http.get<K>(url, { headers });
   }
 
   post<K = Fotoclub>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
