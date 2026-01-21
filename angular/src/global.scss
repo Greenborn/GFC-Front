@@ -152,3 +152,16 @@ ion-note{
   --height: 100vh !important;
   --width: 100vw !important;
 }
+
+/* Modal del ion-select de Fotoclub/Agrupación/Institución (usuarios-abm) */
+@media (min-width: 768px) {
+  ion-alert.fotoclub-select-modal {
+    --width: 600px;
+    --max-width: 600px;
+  }
+
+  ion-alert.fotoclub-select-modal .alert-wrapper {
+    width: 600px;
+    max-width: 600px;
+  }
+}
