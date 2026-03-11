@@ -29,6 +29,8 @@ export class FotoclubService extends ApiService<Fotoclub> {
       email: undefined,
       photo_url: undefined,
       enabled: true,
+      organization_type: 'INTERNO',
+      mostrar_en_ranking: true,
     }
   }
 

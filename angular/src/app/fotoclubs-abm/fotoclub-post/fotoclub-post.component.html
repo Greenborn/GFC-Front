@@ -124,6 +124,33 @@
                 </ion-item>
               </ion-row>
 
+              <ion-row class="ion-padding-top">
+                <ion-item class="w-100 ion-margin-bottom">
+                  <ion-label position="floating">Tipo de Organización</ion-label>
+                  <ion-select
+                    name="organization_type"
+                    [(ngModel)]="fotoclub.organization_type"
+                    ngDefaultControl
+                    required
+                  >
+                    <ion-select-option value="INTERNO">Interno</ion-select-option>
+                    <ion-select-option value="EXTERNO_0">Externo</ion-select-option>
+                    <ion-select-option value="EXTERNO_UNICEN">UNICEN</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-row>
+
+              <ion-row class="ion-padding-top">
+                <ion-item class="w-100 ion-margin-bottom">
+                  <ion-label>Mostrar en Ranking</ion-label>
+                  <ion-checkbox
+                    name="mostrar_en_ranking"
+                    [(ngModel)]="fotoclub.mostrar_en_ranking"
+                    ngDefaultControl
+                  ></ion-checkbox>
+                </ion-item>
+              </ion-row>
+
               <ion-row class="ion-justify-content-end">
                 <ion-col size="12">
                   <ion-row class="ion-justify-content-end">

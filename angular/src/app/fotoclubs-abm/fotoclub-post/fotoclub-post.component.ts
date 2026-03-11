@@ -41,6 +41,11 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
     if (this.fotoclub === undefined) {
       this.fotoclub = this.fotoclubService.template;
     }
+
+    // guarantee the new fields have sensible defaults even when editing
+    this.fotoclub.organization_type = this.fotoclub.organization_type ?? 'INTERNO';
+    this.fotoclub.mostrar_en_ranking = this.fotoclub.mostrar_en_ranking ?? true;
+
     this.img_url = this.fotoclub.photo_url ? this.configService.imageUrl(this.fotoclub.photo_url) : '';
     this.name = this.fotoclub.name;
   }
