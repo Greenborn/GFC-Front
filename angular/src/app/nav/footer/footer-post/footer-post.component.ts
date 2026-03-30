@@ -43,34 +43,32 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
 
   async postFooter() {
     if (this.datosCargados()) {
-        // setTimeout(() => this.cont = 0, 500)
-        this.posting = true
-       // let i: Footer;//footer
-        const model: Footer = {
-          facebook: this.footer.facebook,
-          instagram: this.footer.instagram,
-          youtube: this.footer.youtube,
-          email: this.footer.email
-        }
-        console.log('posting', model)
-        // super.fetch<any>(() =>
-          // this.footerService.postFormData<any>(model)
-        // ).subscribe(
-          super.fetch<Footer>(
-            () => this.footerService.post(model, this.footer.id)
-          ).subscribe(
-         footer => {
-            console.log('posted ', footer)
-            this.posting = false
-            // i = footer
-            this.modalController.dismiss({ footer })
-          },
-          async err => {
-            super.displayAlert(this.errorFilter(err.error['message']))
-            this.posting = false
-          },
-        )
+      this.posting = true
+      const model: Footer = {
+        id: this.footer.id,
+        facebook: this.footer.facebook,
+        instagram: this.footer.instagram,
+        youtube: this.footer.youtube,
+        email: this.footer.email
       }
+
+      console.log('posting', model)
+
+      super.fetch<Footer>(
+        () => this.footerService.post(model, model.id)
+      ).subscribe(
+        footer => {
+          console.log('posted ', footer)
+          this.posting = false
+          this.modalController.dismiss({ footer })
+        },
+        async err => {
+          const message = err?.error?.text || err?.error?.message || err?.message || 'Error al actualizar footer';
+          super.displayAlert(this.errorFilter(message))
+          this.posting = false
+        }
+      )
+    }
   }
     
   dismiss() {
