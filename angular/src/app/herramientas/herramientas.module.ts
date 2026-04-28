@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { HerramientasPage } from './herramientas.page';
 import { RouterModule, Routes } from '@angular/router';
 import { CargaResultadosPage } from './carga-resultados/carga-resultados.page';
+import { SharedModule } from '../shared/shared.module';
 import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
 
 const routes: Routes = [
@@ -28,6 +29,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     RouterModule.forChild(routes)
   ]
 })

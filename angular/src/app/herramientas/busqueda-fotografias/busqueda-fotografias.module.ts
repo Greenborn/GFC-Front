@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 import { BusquedaFotografiasPage } from './busqueda-fotografias.page';
 import { RouterModule, Routes } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
     FormsModule,
     HttpClientModule,
     IonicModule,
+    SharedModule,
     RouterModule.forChild(routes)
   ]
 })
