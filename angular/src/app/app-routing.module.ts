@@ -109,17 +109,6 @@ const routes: Routes = [
     path: 'condiciones-servicio',
     component: CondicionesServicioComponent
   }
-  // {
-  //   path: 'recuperar-password',
-  //   component: RecuperarPasswordComponent
-  // },
-
-  // {
-  //   path: 'login',
-  //   loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  // }
-
-
 ];
 
 @NgModule({
