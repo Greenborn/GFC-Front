@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { FooterComponent } from '../nav/footer/footer.component';
 import { UsuarioImgComponent } from './usuario-img/usuario-img.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { MenuAccionesComponent } from './menu-acciones/menu-acciones.component';
@@ -16,6 +17,7 @@ import { SearchSelectComponent } from './search-select/search-select.component';
 
 @NgModule({
   declarations: [
+    FooterComponent,
     UsuarioImgComponent,
     SearchBarComponent,
     SearchSelectComponent,
@@ -34,6 +36,7 @@ import { SearchSelectComponent } from './search-select/search-select.component';
     RouterModule,
   ],
   exports: [
+    FooterComponent,
     CommonModule,
     IonicModule,
     FormsModule,

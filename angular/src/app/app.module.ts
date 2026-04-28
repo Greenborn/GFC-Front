@@ -12,7 +12,6 @@ import { CommonModule } from '@angular/common'
 import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 import { CondicionesServicioComponent } from './condiciones-servicio/condiciones-servicio.component';
 import { NavbarComponent } from './nav/navbar/navbar.component';
-import { FooterComponent } from './nav/footer/footer.component';
 import { SidebarComponent } from './nav/sidebar/sidebar.component';
 import { ConcursosPageModule } from './concursos/concursos.module';
 import { SharedModule } from './shared/shared.module';
@@ -33,7 +32,6 @@ import { IonicSelectableModule } from 'ionic-selectable';
   declarations: [
     AppComponent,
     NavbarComponent,
-    FooterComponent,
     FooterPostComponent,
     SidebarComponent,
     PoliticaPrivacidadComponent,
