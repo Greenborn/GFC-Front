@@ -199,6 +199,9 @@
                 ></app-fotos-anio-card>
               </ng-container>
             </ion-list>
+            <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreConcursos($event)" [disabled]="!hasMoreConcursos">
+              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más concursos..."></ion-infinite-scroll-content>
+            </ion-infinite-scroll>
             <ng-template #texto>
               <ion-item>No se encontraron concursos</ion-item>
             </ng-template>

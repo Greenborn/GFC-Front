@@ -36,6 +36,10 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   public concursos: Contest[] = [];
   public itemsMezclados: ItemConcursoOFoto[] = [];
   public fotosDelAnioPorTemporada: Map<number, FotosDelAnioResponse> = new Map();
+  public concursoPage: number = 1;
+  public concursoPageSize: number = 20;
+  public hasMoreConcursos: boolean = true;
+  public loadingMore: boolean = false;
   public searchParams: SearchBarComponentParams;
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { valor: 'name', valorMostrado: 'Nombre',
@@ -138,9 +142,14 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
 
   ionViewWillEnter() {
     this.loading = true;
-    
-    // Obtener concursos y fotos del año en paralelo
-    const concursos$ = this.contestService.getAll('expand=categories,sections&sort=-id');
+    this.concursoPage = 1;
+    this.hasMoreConcursos = true;
+    this.concursos = [];
+    this.itemsMezclados = [];
+    this.fotosDelAnioPorTemporada.clear();
+
+    const pageParams = `expand=categories,sections&sort=-id&page=${this.concursoPage}&per-page=${this.concursoPageSize}`;
+    const concursos$ = this.contestService.getAll(pageParams);
     const url = `${this.configService.nodeApiBaseUrl}foto-del-anio`;
     const token = localStorage.getItem(this.configService.tokenKey);
     const headers = token ? { Authorization: 'Bearer ' + token } : {};
@@ -152,39 +161,15 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     }).subscribe(
       ({ concursos, fotosAnio }) => {
         this.concursos = concursos;
-        
-        console.log('=== DATOS RECIBIDOS ===');
-        console.log('Concursos:', concursos);
-        console.log('Fotos del año RAW:', fotosAnio);
-        
-        // Organizar fotos del año por temporada
-        this.fotosDelAnioPorTemporada.clear();
-        
-        // La API puede devolver un array de objetos o un solo objeto
-        const fotosArray = Array.isArray(fotosAnio) ? fotosAnio : [fotosAnio];
-        
-        fotosArray.forEach(fotoData => {
-          if (fotoData && fotoData.temporada && fotoData.items && fotoData.items.length > 0) {
-            // Ordenar las fotos por el campo 'orden'
-            fotoData.items.sort((a, b) => a.orden - b.orden);
-            this.fotosDelAnioPorTemporada.set(fotoData.temporada, fotoData);
-            console.log(`Temporada ${fotoData.temporada} agregada con ${fotoData.items.length} fotos`);
-          }
-        });
-        
-        console.log('Temporadas organizadas:', this.fotosDelAnioPorTemporada);
-        console.log('Cantidad de temporadas:', this.fotosDelAnioPorTemporada.size);
-        
-        // Mezclar concursos y fotos del año
+        this.procesarFotosDelAnio(fotosAnio);
+        this.actualizarEstadoPaginacion(concursos);
         this.mezclarConcursosYFotos();
-        
         this.loading = false;
       },
       error => {
         console.error('Error al cargar datos:', error);
-        // Si falla, al menos mostrar los concursos
         super.fetch<Contest[]>(() => 
-          this.contestService.getAll('expand=categories,sections&sort=-id')
+          this.contestService.getAll(pageParams)
         ).subscribe(r => {
           this.concursos = r;
           this.mezclarConcursosYFotos();
@@ -266,6 +251,69 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     console.log('=== MEZCLA COMPLETADA ===');
     console.log('Items mezclados total:', this.itemsMezclados.length);
     console.log('Items mezclados:', this.itemsMezclados);
+  }
+
+  private procesarFotosDelAnio(fotosAnio: any) {
+    this.fotosDelAnioPorTemporada.clear();
+    const fotosArray = Array.isArray(fotosAnio) ? fotosAnio : [fotosAnio];
+
+    fotosArray.forEach(fotoData => {
+      if (fotoData && fotoData.temporada && fotoData.items && fotoData.items.length > 0) {
+        fotoData.items.sort((a, b) => a.orden - b.orden);
+        this.fotosDelAnioPorTemporada.set(fotoData.temporada, fotoData);
+        console.log(`Temporada ${fotoData.temporada} agregada con ${fotoData.items.length} fotos`);
+      }
+    });
+  }
+
+  private actualizarEstadoPaginacion(concursos: Contest[]) {
+    const meta: any = this.contestService.getAllMeta();
+    if (meta && typeof meta.page !== 'undefined' && typeof meta.pageCount !== 'undefined') {
+      this.hasMoreConcursos = meta.page < meta.pageCount;
+    } else {
+      this.hasMoreConcursos = concursos.length === this.concursoPageSize;
+    }
+  }
+
+  loadMoreConcursos(event: any) {
+    if (this.loadingMore || !this.hasMoreConcursos) {
+      if (event) {
+        event.target.complete();
+      }
+      return;
+    }
+
+    this.loadingMore = true;
+    this.concursoPage += 1;
+    const pageParams = `expand=categories,sections&sort=-id&page=${this.concursoPage}&per-page=${this.concursoPageSize}`;
+
+    this.contestService.getAll(pageParams).subscribe(
+      concursos => {
+        if (concursos && concursos.length > 0) {
+          this.concursos.push(...concursos);
+          this.mezclarConcursosYFotos();
+          this.actualizarEstadoPaginacion(concursos);
+        } else {
+          this.hasMoreConcursos = false;
+        }
+        if (event) {
+          event.target.complete();
+          if (!this.hasMoreConcursos) {
+            event.target.disabled = true;
+          }
+        }
+        this.loadingMore = false;
+      },
+      error => {
+        console.error('Error al cargar más concursos:', error);
+        if (event) {
+          event.target.complete();
+          event.target.disabled = true;
+        }
+        this.hasMoreConcursos = false;
+        this.loadingMore = false;
+      }
+    );
   }
 
   // para implementar busqueda con la api (sobrescribe variable de concursos)
