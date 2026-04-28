@@ -110,10 +110,11 @@
               </ion-col>
             </ion-row>
             <ion-list
-              *ngIf="itemsMezclados.length > 0; else (loading ? spinner : texto)"
+              *ngIf="itemGroups.length > 0; else (loading ? spinner : texto)"
             >
             
-              <ng-container *ngFor="let item of itemsMezclados; index as i">
+              <ng-container *ngFor="let group of itemGroups; index as gi">
+              <ng-container *ngFor="let item of group; trackBy: trackByItem; index as i">
                 <!-- Card de Concurso -->
                 <ion-card
                   *ngIf="item.tipo === 'concurso'"
@@ -198,8 +199,9 @@
                   [url_grabacion]="item.url_grabacion"
                 ></app-fotos-anio-card>
               </ng-container>
+            </ng-container>
             </ion-list>
-            <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreConcursos($event)" [disabled]="!hasMoreConcursos">
+            <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreConcursos($event)" [disabled]="!hasMoreConcursos && allItems.length === 0">
               <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más concursos..."></ion-infinite-scroll-content>
             </ion-infinite-scroll>
             <ng-template #texto>

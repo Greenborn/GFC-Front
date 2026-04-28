@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild ,AfterViewInit} from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { Event, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // import { ConcursoService } from '../services/concurso.service';
 import { NotificacionesPage } from '../notificaciones/notificaciones.page';
@@ -34,13 +34,15 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   anchoImg: boolean = false;
   // public concursos: Concurso[] = [];
   public concursos: Contest[] = [];
-  public itemsMezclados: ItemConcursoOFoto[] = [];
+  public allItems: ItemConcursoOFoto[] = [];
+  public itemGroups: ItemConcursoOFoto[][] = [];
   public fotosDelAnioPorTemporada: Map<number, FotosDelAnioResponse> = new Map();
   public concursoPage: number = 1;
   public concursoPageSize: number = 20;
+  public itemsChunkSize: number = 4;
   public hasMoreConcursos: boolean = true;
   public loadingMore: boolean = false;
-  public searchParams: SearchBarComponentParams;
+  public searchParams?: SearchBarComponentParams;
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { valor: 'name', valorMostrado: 'Nombre',
       callback: (c: Contest, query: string) => c.name.match(new RegExp(`^${query}`, 'i'))
@@ -68,28 +70,21 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     return document.body.classList.contains("dark")
    }
    
-  getImg(imgUrl) {
-    if (imgUrl == null){
-      return ''
+  getImg(imgUrl: string | null | undefined): string {
+    if (imgUrl == null) {
+      return '';
     }
-   let result = this.configService.imageUrl(imgUrl)
-   if (result == null){
-     return ''
-   }
-   return result
+    const result = this.configService.imageUrl(imgUrl);
+    return result ?? '';
   }
     
-  obtenerTamanio(event){
+  obtenerTamanio(event: any) {
     // console.log(event.srcElement.offsetWidth)
-    if (event.srcElement.offsetWidth > event.srcElement.offsetEight){
-      this.anchoImg = true;
-    } else {
-      this.anchoImg = false;
-    }
+    this.anchoImg = event.srcElement.offsetWidth > event.srcElement.offsetEight;
   }
 
-  get_fecha_formateada(fecha){
-    let date = new Date(fecha)
+  get_fecha_formateada(fecha: string | number | Date): string {
+    const date = new Date(fecha);
     let aux = date.getFullYear() + '/' + Number(date.getMonth() + 1).toLocaleString(undefined, {
       minimumIntegerDigits: 2,
       minimumFractionDigits: 0
@@ -145,14 +140,15 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     this.concursoPage = 1;
     this.hasMoreConcursos = true;
     this.concursos = [];
-    this.itemsMezclados = [];
+    this.allItems = [];
+    this.itemGroups = [];
     this.fotosDelAnioPorTemporada.clear();
 
     const pageParams = `expand=categories,sections&sort=-id&page=${this.concursoPage}&per-page=${this.concursoPageSize}`;
     const concursos$ = this.contestService.getAll(pageParams);
     const url = `${this.configService.nodeApiBaseUrl}foto-del-anio`;
     const token = localStorage.getItem(this.configService.tokenKey);
-    const headers = token ? { Authorization: 'Bearer ' + token } : {};
+    const headers = token ? new HttpHeaders({ Authorization: 'Bearer ' + token }) : undefined;
     const fotosAnio$ = this.http.get<any>(url, { headers });
 
     forkJoin({
@@ -163,7 +159,12 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
         this.concursos = concursos;
         this.procesarFotosDelAnio(fotosAnio);
         this.actualizarEstadoPaginacion(concursos);
-        this.mezclarConcursosYFotos();
+        this.allItems = this.mezclarConcursosYFotos();
+        this.itemGroups = [];
+        this.loadNextGroup();
+        if (this.allItems.length > 0) {
+          this.loadNextGroup();
+        }
         this.loading = false;
       },
       error => {
@@ -172,19 +173,24 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
           this.contestService.getAll(pageParams)
         ).subscribe(r => {
           this.concursos = r;
-          this.mezclarConcursosYFotos();
+          this.allItems = this.mezclarConcursosYFotos();
+          this.itemGroups = [];
+          this.loadNextGroup();
+          if (this.allItems.length > 0) {
+            this.loadNextGroup();
+          }
           this.loading = false;
         });
       }
     );
   }
 
-  mezclarConcursosYFotos() {
-    this.itemsMezclados = [];
-    
+  private mezclarConcursosYFotos(): ItemConcursoOFoto[] {
     console.log('=== INICIANDO MEZCLA ===');
     console.log('Concursos totales:', this.concursos.length);
     console.log('Temporadas con fotos:', this.fotosDelAnioPorTemporada.size);
+    
+    const itemsMezclados: ItemConcursoOFoto[] = [];
     
     // Los concursos están ordenados del más reciente al más viejo
     // Agrupar concursos por año
@@ -210,15 +216,13 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     
     console.log('Años a procesar:', anios);
     
-    // Para cada año, agregar primero las fotos del año y luego los concursos
     anios.forEach(anio => {
       console.log(`Procesando año ${anio}`);
       
-      // Agregar fotos del año al inicio del año (final de temporada) si existen
       if (this.fotosDelAnioPorTemporada.has(anio)) {
         const fotosData = this.fotosDelAnioPorTemporada.get(anio)!;
         console.log(`  - Agregando fotos del año: ${fotosData.items.length} fotos`);
-        this.itemsMezclados.push({
+        itemsMezclados.push({
           tipo: 'fotos-anio',
           fotosAnio: fotosData.items,
           temporada: fotosData.temporada,
@@ -229,17 +233,14 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
       }
       
       const concursosDelAnio = concursosPorAnio.get(anio) || [];
-      
-      // Ordenar concursos del año del más reciente al más viejo (por fecha de fin)
       concursosDelAnio.sort((a, b) => {
         const fechaA = a.end_date ? new Date(a.end_date).getTime() : 0;
         const fechaB = b.end_date ? new Date(b.end_date).getTime() : 0;
-        return fechaB - fechaA; // Descendente (más reciente primero)
+        return fechaB - fechaA;
       });
       
-      // Agregar todos los concursos del año (del más reciente al más viejo)
       concursosDelAnio.forEach(concurso => {
-        this.itemsMezclados.push({
+        itemsMezclados.push({
           tipo: 'concurso',
           concurso: concurso
         });
@@ -249,17 +250,65 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     });
     
     console.log('=== MEZCLA COMPLETADA ===');
-    console.log('Items mezclados total:', this.itemsMezclados.length);
-    console.log('Items mezclados:', this.itemsMezclados);
+    console.log('Items mezclados total:', itemsMezclados.length);
+    return itemsMezclados;
+  }
+
+  private mezclarConcursosPorPagina(concursos: Contest[]): ItemConcursoOFoto[] {
+    const items: ItemConcursoOFoto[] = [];
+    const concursosPorAnio: Map<number, Contest[]> = new Map();
+
+    concursos.forEach(concurso => {
+      const anio = concurso.end_date ? new Date(concurso.end_date).getFullYear() : 0;
+      if (!concursosPorAnio.has(anio)) {
+        concursosPorAnio.set(anio, []);
+      }
+      concursosPorAnio.get(anio)!.push(concurso);
+    });
+
+    const aniosConcursos = Array.from(concursosPorAnio.keys()).sort((a, b) => b - a);
+
+    aniosConcursos.forEach(anio => {
+      const fotosData = this.fotosDelAnioPorTemporada.get(anio);
+      const fotosYaMostradas = this.itemGroups.some(
+        group => group.some(item => item.tipo === 'fotos-anio' && item.temporada === anio)
+      ) || this.allItems.some(
+        item => item.tipo === 'fotos-anio' && item.temporada === anio
+      );
+      if (fotosData && !fotosYaMostradas) {
+        items.push({
+          tipo: 'fotos-anio',
+          fotosAnio: fotosData.items,
+          temporada: fotosData.temporada,
+          url_grabacion: fotosData.url_grabacion
+        });
+      }
+
+      const concursosDelAnio = concursosPorAnio.get(anio) || [];
+      concursosDelAnio.sort((a, b) => {
+        const fechaA = a.end_date ? new Date(a.end_date).getTime() : 0;
+        const fechaB = b.end_date ? new Date(b.end_date).getTime() : 0;
+        return fechaB - fechaA;
+      });
+
+      concursosDelAnio.forEach(concurso => {
+        items.push({
+          tipo: 'concurso',
+          concurso: concurso
+        });
+      });
+    });
+
+    return items;
   }
 
   private procesarFotosDelAnio(fotosAnio: any) {
     this.fotosDelAnioPorTemporada.clear();
     const fotosArray = Array.isArray(fotosAnio) ? fotosAnio : [fotosAnio];
 
-    fotosArray.forEach(fotoData => {
+    fotosArray.forEach((fotoData: any) => {
       if (fotoData && fotoData.temporada && fotoData.items && fotoData.items.length > 0) {
-        fotoData.items.sort((a, b) => a.orden - b.orden);
+        fotoData.items.sort((a: any, b: any) => a.orden - b.orden);
         this.fotosDelAnioPorTemporada.set(fotoData.temporada, fotoData);
         console.log(`Temporada ${fotoData.temporada} agregada con ${fotoData.items.length} fotos`);
       }
@@ -268,15 +317,34 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
 
   private actualizarEstadoPaginacion(concursos: Contest[]) {
     const meta: any = this.contestService.getAllMeta();
-    if (meta && typeof meta.page !== 'undefined' && typeof meta.pageCount !== 'undefined') {
-      this.hasMoreConcursos = meta.page < meta.pageCount;
+    if (meta && typeof meta.currentPage !== 'undefined' && typeof meta.pageCount !== 'undefined') {
+      this.hasMoreConcursos = meta.currentPage < meta.pageCount;
     } else {
       this.hasMoreConcursos = concursos.length === this.concursoPageSize;
     }
   }
 
+  private loadNextGroup(): number {
+    if (this.allItems.length === 0) {
+      return 0;
+    }
+    const nextGroup = this.allItems.splice(0, this.itemsChunkSize);
+    this.itemGroups.push(nextGroup);
+    return nextGroup.length;
+  }
+
+  trackByItem(index: number, item: ItemConcursoOFoto): string {
+    if (item.tipo === 'concurso' && item.concurso?.id != null) {
+      return `concurso-${item.concurso.id}`;
+    }
+    if (item.tipo === 'fotos-anio' && item.temporada != null) {
+      return `fotos-anio-${item.temporada}`;
+    }
+    return `${item.tipo}-${index}`;
+  }
+
   loadMoreConcursos(event: any) {
-    if (this.loadingMore || !this.hasMoreConcursos) {
+    if (this.loadingMore) {
       if (event) {
         event.target.complete();
       }
@@ -284,6 +352,28 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     }
 
     this.loadingMore = true;
+
+    if (this.allItems.length > 0) {
+      this.loadNextGroup();
+      if (event) {
+        event.target.complete();
+      }
+      if (!this.hasMoreConcursos && this.allItems.length === 0 && event) {
+        event.target.disabled = true;
+      }
+      this.loadingMore = false;
+      return;
+    }
+
+    if (!this.hasMoreConcursos) {
+      if (event) {
+        event.target.complete();
+        event.target.disabled = true;
+      }
+      this.loadingMore = false;
+      return;
+    }
+
     this.concursoPage += 1;
     const pageParams = `expand=categories,sections&sort=-id&page=${this.concursoPage}&per-page=${this.concursoPageSize}`;
 
@@ -291,14 +381,16 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
       concursos => {
         if (concursos && concursos.length > 0) {
           this.concursos.push(...concursos);
-          this.mezclarConcursosYFotos();
+          const nuevosItems = this.mezclarConcursosPorPagina(concursos);
+          this.allItems.push(...nuevosItems);
           this.actualizarEstadoPaginacion(concursos);
+          this.loadNextGroup();
         } else {
           this.hasMoreConcursos = false;
         }
         if (event) {
           event.target.complete();
-          if (!this.hasMoreConcursos) {
+          if (!this.hasMoreConcursos && this.allItems.length === 0) {
             event.target.disabled = true;
           }
         }
@@ -321,12 +413,10 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   //   console.log(searchQuery)
   // }
 
-  errorImg(e){
+  errorImg(e: any) {
     e.currentTarget.src='../../../assets/no-pictures.png';
     e.currentTarget.style='width: 25%; height: 25%; object-fit: contain;';
     e.currentTarget.parentNode.style= 'display: flex; align-items: center; justify-content: center;';
-    
-
   }
 
   // popover
