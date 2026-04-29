@@ -24,6 +24,7 @@ export class SearchBarComponent implements OnInit, OnChanges {
   @Input() atributosObj: SearchBarComponentAtributo[] = undefined;
   @Input() data: any[];
   @Input() innerSelect: boolean = false;
+  @Input() hideFieldSelector: boolean = false;
 
   @Output() dataChange = new EventEmitter<any[]>()
   @Output() buscar = new EventEmitter<SearchBarComponentParams>()
@@ -70,13 +71,15 @@ export class SearchBarComponent implements OnInit, OnChanges {
   } 
 
   output() {
-    if (this.origData == undefined) {
+    if (this.origData == undefined && this.data != undefined) {
       this.origData = [...this.data]
+    }
+    if (!this.atributoSelected && this.atributosPasados?.length === 1) {
+      this.atributoSelected = this.getAtributoValor(this.atributosPasados[0])
     }
     // let atributo: string = this.atributoSelect.nativeElement.value;
     let atributo: string = this.atributoSelected;
     let query: string = this.queryInput.value;
-    // let query: string = this.queryInput.value;
 
     let atributoObj: SearchBarComponentAtributo = (this.atributosObj ?? []).find(a => atributo == a.valor)
     let filterCallback: Function;
@@ -91,16 +94,13 @@ export class SearchBarComponent implements OnInit, OnChanges {
       // console.log('TODO: Filtrando por todos los callbacks y atributos...')
       filterCallback = (e: any, q: string) => this.atributosObj.map(o => o.callback(e, q)).reduce((acc, v) => acc || v)
     }
-    // console.log('Buscando ', query, ' atributo: ', this.atributoSelect.nativeElement.value)
-    // this.buscar.emit({
-    //   query,
-    //   atributo
-    // });
-    // console.log('searching', atributo, query, this.atributoSelect.nativeElement)
-    this.dataFiltered = this.origData.filter(e => filterCallback(e, query))
-    this.dataChange.emit(
-      this.dataFiltered
-    )
+    this.buscar.emit({ atributo, query });
+    if (this.origData != undefined) {
+      this.dataFiltered = this.origData.filter(e => filterCallback(e, query))
+      this.dataChange.emit(
+        this.dataFiltered
+      )
+    }
   }
 
   changeRadio(atributoValue: string | EventTarget = '') {

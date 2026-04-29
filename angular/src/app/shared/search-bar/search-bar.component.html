@@ -29,7 +29,7 @@
         <ion-select-option value="email">Email</ion-select-option> -->
       </ion-select>
     </ion-row>
-    <ion-row *ngIf="!innerSelect">
+    <ion-row *ngIf="!innerSelect && !hideFieldSelector && atributosPasados?.length > 1">
       <ion-list>
         <ion-radio-group
           (ionChange)="changeRadio($event.target)"

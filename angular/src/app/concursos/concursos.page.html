@@ -2,111 +2,52 @@
   
   <ion-grid *ngIf=" (auth.user | async) as userLogged">
     <ion-row>
-      <ion-col size="12" size-md="3" *ngIf="mostrarFiltro">
-        <ion-col>
-          <ion-title class="ion-margin-top">Búsqueda</ion-title>
-          <app-search-bar
-            [(data)]="concursos"
-            [atributosObj]="atributosBusqueda"
+      <ion-col size="12" size-md="8">
+        <ion-row
+          class="
+            ion-justify-content-start
+            ion-align-items-center
+            ion-margin-top
+            ion-margin-bottom
+          "
+          *ngIf="isLogedIn()"
+        >
+          <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
+            Concursos
+          </h1>
+
+          <ion-fab-button
+            size="small"
+            *ngIf="(rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged))"
+            [routerLink]="['nuevo']"
           >
-          </app-search-bar>
-
-          <ion-row>
-            <ion-list-header>
-              <ion-label>Fecha:</ion-label>
-            </ion-list-header>
-            <ion-col>
-              <ion-item>
-                <ion-label position="stacked">Desde</ion-label>
-                <ion-input
-                  type="number"
-                  min="1967"
-                  max="2021"
-                  name="desde_fecha"
-                >
-                </ion-input>
-              </ion-item>
-            </ion-col>
-            <ion-col>
-              <ion-item>
-                <ion-label position="stacked">Hasta</ion-label>
-                <ion-input type="number" min="1" max="13" name="hasta_fecha">
-                </ion-input>
-              </ion-item>
-            </ion-col>
-            <ion-col>
-              <ion-fab-button size="small" disabled>
-                <ion-icon name="arrow-forward-circle"></ion-icon>
-              </ion-fab-button>
-            </ion-col>
-          </ion-row>
-
-        </ion-col>
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+        </ion-row>
       </ion-col>
-      <ion-col>
-        <ion-row *ngIf="(auth.user | async) as u">
-          <ion-col size-md="10" push-md="1">
-            <ion-row
-              class="
-                ion-justify-content-start
-                ion-align-items-center
-                ion-margin-top
-                ion-margin-bottom
-              "
-              *ngIf="isLogedIn()"
-            >
-              <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">
-                Concursos
-              </h1>
-              
 
-              <ion-fab-button
-                size="small"
-                *ngIf="
-                     (rolificador.esDelegado(u) || rolificador.isAdmin(u))"
-                [routerLink]="['nuevo']"
-              >
-                <ion-icon name="add"></ion-icon>
-              </ion-fab-button>
-              
-            </ion-row>
-            
+      <ion-col size="12" size-md="4" class="ion-align-self-center ion-text-right">
+        <app-search-bar
+          (buscar)="buscarConcursos($event)"
+          [atributosObj]="atributosBusqueda"
+          [hideFieldSelector]="true"
+        >
+        </app-search-bar>
+      </ion-col>
+    </ion-row>
 
-            <ion-row class="ion-align-items-center ion-padding-bottom">
+    <ion-row class="ion-align-items-center ion-padding-bottom">
               <ion-col class="ion-no-padding" size="10" size-sm="11">
                 <ion-button
                   [routerLink]="['secciones']"
-                  *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)"
+                  *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
                   >Administrar secciones</ion-button
                 >
 
                 <ion-button
                   [routerLink]="['metricas']"
-                  *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)"
+                  *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
                   >Administrar Puntajes</ion-button>
-              </ion-col>
-              <ion-col size="2" size-sm="1">
-                <ion-row
-                  class="
-                    ion-justify-content-center
-                    ion-align-items-center
-                    ion-align-self-center
-                  "
-                >
-                  <ion-button
-                    (click)="toggleFiltro()"
-                    color="medium"
-                    expand="block"
-                    class="
-                      ion-justify-content-center
-                      ion-align-items-center
-                      ion-align-self-center
-                    "
-                  >
-                    <ion-icon name="funnel"></ion-icon>
-                    <!-- <ion-icon name="options"></ion-icon> -->
-                  </ion-button>
-                </ion-row>
               </ion-col>
             </ion-row>
             <ion-list
@@ -212,11 +153,6 @@
                 <ion-spinner></ion-spinner>
               </ion-row>
             </ng-template>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-      <!-- filtro y busqueda -->
-    </ion-row>
   </ion-grid>
   <app-footer></app-footer>
 </ion-content>

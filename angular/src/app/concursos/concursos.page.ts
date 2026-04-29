@@ -30,7 +30,6 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
 
   markChip: boolean = false;
   public loading: boolean = true;
-  mostrarFiltro: boolean = false;
   anchoImg: boolean = false;
   // public concursos: Concurso[] = [];
   public concursos: Contest[] = [];
@@ -42,7 +41,10 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   public itemsChunkSize: number = 4;
   public hasMoreConcursos: boolean = true;
   public loadingMore: boolean = false;
-  public searchParams?: SearchBarComponentParams;
+  public searchQuery: string = '';
+  public searchAttribute: string = '';
+  public currentSearchQuery: string = '';
+  public currentSearchAttribute?: string;
   public atributosBusqueda: SearchBarComponentAtributo[] = [
     { valor: 'name', valorMostrado: 'Nombre',
       callback: (c: Contest, query: string) => c.name.match(new RegExp(`^${query}`, 'i'))
@@ -112,39 +114,31 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   //   const q = this.searchQuery;
   //   return this.concursos.filter(c => c.name.substr(0, q.length) == q)
   // }
-  async filtrarConcursos(output: SearchBarComponentParams) {
-    // if (output != undefined) {
-    //   // console.log('buscando', output)
-    //   let { atributo, query } = output;
-    //   this.searchParams = output;
-    //   // this.concursos = (await this.db.getConcursos()).filter(u => {
-    //   this.concursos = this.concursos.filter(u => {
-    //     // console.log('buscando', atributo, query)
-    //     switch (atributo) {
-    //       case 'description': return u[atributo].search(new RegExp(query, 'i')) > -1;
-    //       default: return u[atributo].search(new RegExp(`^${query}`, 'i')) > -1
-    //     }
-    //   });
-    // }
-  }
-  toggleChipMark() {
-    this.markChip = !this.markChip;
-  }
-
-  toggleFiltro() {
-    this.mostrarFiltro = !this.mostrarFiltro;
-  }
-
-  ionViewWillEnter() {
-    this.loading = true;
+  buscarConcursos(output: SearchBarComponentParams) {
+    this.searchQuery = output?.query?.trim() ?? '';
+    this.searchAttribute = output?.atributo ?? '';
+    this.currentSearchQuery = this.searchQuery;
+    this.currentSearchAttribute = this.searchAttribute;
     this.concursoPage = 1;
     this.hasMoreConcursos = true;
     this.concursos = [];
     this.allItems = [];
     this.itemGroups = [];
     this.fotosDelAnioPorTemporada.clear();
+    this.loadConcursos();
+  }
 
-    const pageParams = `expand=categories,sections&sort=-id&page=${this.concursoPage}&per-page=${this.concursoPageSize}`;
+  private getPageParams(page: number = this.concursoPage): string {
+    let params = `expand=categories,sections&sort=-id&page=${page}&per-page=${this.concursoPageSize}`;
+    if (this.currentSearchQuery && this.currentSearchQuery.length > 0) {
+      params += `&search=${encodeURIComponent(this.currentSearchQuery)}`;
+    }
+    return params;
+  }
+
+  private loadConcursos(page: number = 1) {
+    this.concursoPage = page;
+    const pageParams = this.getPageParams(page);
     const concursos$ = this.contestService.getAll(pageParams);
     const url = `${this.configService.nodeApiBaseUrl}foto-del-anio`;
     const token = localStorage.getItem(this.configService.tokenKey);
@@ -169,7 +163,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
       },
       error => {
         console.error('Error al cargar datos:', error);
-        super.fetch<Contest[]>(() => 
+        super.fetch<Contest[]>(() =>
           this.contestService.getAll(pageParams)
         ).subscribe(r => {
           this.concursos = r;
@@ -183,6 +177,22 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
         });
       }
     );
+  }
+  toggleChipMark() {
+    this.markChip = !this.markChip;
+  }
+
+  ionViewWillEnter() {
+    this.loading = true;
+    this.concursoPage = 1;
+    this.hasMoreConcursos = true;
+    this.concursos = [];
+    this.allItems = [];
+    this.itemGroups = [];
+    this.fotosDelAnioPorTemporada.clear();
+    this.currentSearchQuery = '';
+    this.currentSearchAttribute = undefined;
+    this.loadConcursos();
   }
 
   private mezclarConcursosYFotos(): ItemConcursoOFoto[] {
@@ -375,7 +385,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     }
 
     this.concursoPage += 1;
-    const pageParams = `expand=categories,sections&sort=-id&page=${this.concursoPage}&per-page=${this.concursoPageSize}`;
+    const pageParams = this.getPageParams(this.concursoPage);
 
     this.contestService.getAll(pageParams).subscribe(
       concursos => {
