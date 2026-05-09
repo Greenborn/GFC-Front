@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ApiChangePasswordBody } from '../models/ApiRequest';
+import { ApiChangePasswordBody, ApiAdminChangePasswordBody } from '../models/ApiRequest';
 import { User } from '../models/user.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
@@ -30,6 +30,15 @@ export class UserService extends ApiService<User> {
 
   changePassword(params: ApiChangePasswordBody, userId: number): Observable<any> {
     return super.put(params, userId, 'change-password')
+  }
+
+  updatePassword(params: ApiAdminChangePasswordBody, userId: number): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put(
+      `${this.config.nodeApiBaseUrl}${this.recurso}/${userId}/password`,
+      params,
+      { headers }
+    );
   }
    
 }

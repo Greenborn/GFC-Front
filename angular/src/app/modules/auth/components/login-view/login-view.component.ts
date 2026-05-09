@@ -47,7 +47,8 @@ export class LoginViewComponent implements OnInit {
     this.error = undefined
     this.auth.login(this.login, (err) => {
       const isCredencialesInvalidas = err && (err.status === 401 || (err.error && (err.error.message?.toString().includes('Unauthorized') || err.error.error?.toString().includes('Unauthorized'))))
-      const mensaje = isCredencialesInvalidas ? 'Usuario o contraseña incorrectos.' : 'Ocurrió un problema al iniciar sesión. Intenta nuevamente.'
+      const apiMessage = err?.error?.error ?? err?.error?.message ?? err?.error ?? err?.message ?? (err?.r === false ? err?.error : undefined) ?? (typeof err === 'string' ? err : undefined)
+      const mensaje = isCredencialesInvalidas ? 'Usuario o contraseña incorrectos.' : apiMessage ?? 'Ocurrió un problema al iniciar sesión. Intenta nuevamente.'
       this.uiUtils.mostrarError({
         header: 'Inicio de sesión',
         message: mensaje,
