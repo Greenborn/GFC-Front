@@ -51,9 +51,10 @@ export class ChangePasswordComponent extends ApiConsumer implements OnInit {
         new_password: this.new_password
       };
       super.fetch<any>(() => this.userService.changePassword(body, this.userId)).subscribe(
-        () => {
+        res => {
           this.posting = false;
           this.modalController.dismiss();
+          super.displayAlert(res?.message ?? 'Contraseña actualizada correctamente', 'Éxito');
         },
         err => {
           this.posting = false;
@@ -65,9 +66,10 @@ export class ChangePasswordComponent extends ApiConsumer implements OnInit {
         password: this.new_password
       };
       super.fetch<any>(() => this.userService.updatePassword(body, this.userId)).subscribe(
-        () => {
+        res => {
           this.posting = false;
           this.modalController.dismiss();
+          super.displayAlert(res?.message ?? 'Contraseña actualizada correctamente', 'Éxito');
         },
         err => {
           this.posting = false;
