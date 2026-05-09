@@ -9,6 +9,7 @@ interface EnvironmentWithImagesBaseUrl {
   loginAction: string;
   appName: string;
   imagesBaseUrl: string;
+  nodeApiBaseUrl: string;
 }
 
 const env: EnvironmentWithImagesBaseUrl = environment as EnvironmentWithImagesBaseUrl;
@@ -19,7 +20,8 @@ export const CONFIG = {
   loginAction: env.loginAction,
   appName: env.appName,
   version: env.version,
-  imagesBaseUrl: env.imagesBaseUrl
+  imagesBaseUrl: env.imagesBaseUrl,
+  nodeApiBaseUrl: env.nodeApiBaseUrl
 }
 
 @Injectable({
@@ -36,7 +38,7 @@ export class ConfigService {
   }
 
   get loginUrl() { 
-    return this.data.apiBaseUrl + this.data.loginAction 
+    return this.nodeApiBaseUrl + this.data.loginAction 
   }
   
   get tokenKey() { 

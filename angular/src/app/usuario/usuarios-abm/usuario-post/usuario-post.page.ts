@@ -344,14 +344,13 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   async changePassword() {
-    // console.log('change password')
-
     const modal = await this.modalController.create({
       component: ChangePasswordComponent,
       cssClass: 'auto-width',
       componentProps: {
-        "modalController": this.modalController,
-        "userId": this.userLogged.id
+        modalController: this.modalController,
+        userId: this.usuario?.id ?? this.userLogged?.id,
+        requireOldPassword: this.isUserProfile
       }
     });
     await modal.present()
