@@ -323,11 +323,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
             },
             err => {
               this.posting = false
-          //     console.log('posteado perfil', p)
-            super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${this.errorFilter(err.statusText)}`)
-            super.fetch<void>(() => this.profileService.delete(p.id)).subscribe(_ => {
-              console.log(`Perfil ${p.id} eliminado`)
-            })
+              super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${this.errorFilter(err.statusText)}`)
             }
           )
         },
