@@ -36,7 +36,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   @ViewChild('f') formUsuario: HTMLFormElement;
 
   public usuario: User = this.userService.template;
+  public originalUsuario: User;
   public profile: Profile = this.profileService.template;
+  public originalProfile: Profile;
   public fotoclubes: Fotoclub[] = []
   public roles: Role[] = []
   public usernameFocus = false
@@ -170,10 +172,23 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         dataPromises.push(
           new Promise(resolve => super.fetch<User>(() => this.userService.get(parseInt(id))).subscribe(u => {
             this.usuario = u
+            this.originalUsuario = JSON.parse(JSON.stringify(u));
             super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => {
               this.profile = p
               this.profile.dni = this.usuario.dni
+              this.originalProfile = JSON.parse(JSON.stringify(this.profile));
               this.img_url = p.img_url != null ? this.configService.imageUrl(p.img_url) : ''
+              this.form.patchValue({
+                name: this.profile.name,
+                last_name: this.profile.last_name,
+                fotoclub_id: this.profile.fotoclub_id,
+                executive: this.profile.executive,
+                executive_rol: this.profile.executive_rol,
+                username: this.usuario.username,
+                email: this.usuario.email,
+                role_id: this.usuario.role_id,
+                dni: this.usuario.dni,
+              });
               // loading.dismiss()
               resolve(true)
             })
@@ -224,6 +239,41 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     return res
   }
 
+  private getChangedFields(original: any, current: any): any {
+    const diff: any = {};
+    for (const key of Object.keys(current)) {
+      const originalValue = original ? original[key] : undefined;
+      const currentValue = current[key];
+      if (currentValue === undefined && originalValue === undefined) {
+        continue;
+      }
+      if (currentValue !== originalValue) {
+        diff[key] = currentValue;
+      }
+    }
+    return diff;
+  }
+
+  private getCurrentProfileState(): any {
+    return {
+      name: this.form.get('name')?.value,
+      last_name: this.form.get('last_name')?.value,
+      executive: this.form.get('executive')?.value == undefined || this.form.get('executive')?.value == null ? false : Boolean(this.form.get('executive')?.value),
+      executive_rol: this.form.get('executive_rol')?.value ?? '',
+      fotoclub_id: this.form.get('fotoclub_id')?.value,
+    };
+  }
+
+  private getCurrentUserState(): any {
+    return {
+      username: this.form.get('username')?.value,
+      email: this.form.get('email')?.value,
+      role_id: this.form.get('role_id')?.value,
+      dni: this.form.get('dni')?.value,
+      password: this.form.get('password')?.value || undefined,
+    };
+  }
+
   async postUsuario() {
       let f = this.form;
     //if (f.valid) {
@@ -272,67 +322,67 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       }
 
       //En caso de que se trate de un formulario de ediciòn de usuarios
-      let pm: any = {
-        name: f.value.name, 
-        last_name: f.value.last_name, 
-        executive: f.value.executive == undefined || f.value.executive == null ? false : Boolean(f.value.executive),
-        executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
-        fotoclub_id: this.profile.fotoclub_id,
-      }
-      
-      if ((this.usuario.role_id == 3 || this.usuario.role_id == 2 ) && !this.selectFotoclub.value == undefined){
-        pm = {
-          name: f.value.name, 
-          last_name: f.value.last_name, 
-          executive: f.value.executive == undefined || f.value.executive == null ? false : Boolean(f.value.executive),
-          executive_rol: f.value.executive_rol == undefined || (f.value.executive == undefined || f.value.executive == null) ? '' : f.value.executive_rol,
-          fotoclub_id: this.profile.fotoclub_id,
-        }
-      }
-     
+      const profilePayload: any = this.getChangedFields(this.originalProfile, this.getCurrentProfileState());
+
       if (this.file != undefined) {
-        pm.image_file = this.file
+        profilePayload.image_file = this.file;
       }
-      
+
+      const userPayload: any = this.getChangedFields(this.originalUsuario, this.getCurrentUserState());
+
+      if (this.isUserProfile) {
+        delete userPayload.role_id;
+      }
+
+      if (!this.originalProfile || !this.originalUsuario) {
+        super.displayAlert('No se pudieron comparar los datos originales. Intente recargar la página.');
+        return;
+      }
+
+      if (Object.keys(profilePayload).length === 0 && Object.keys(userPayload).length === 0) {
+        super.displayAlert('No hay cambios para guardar.');
+        return;
+      }
+
       this.posting = true
-      
-      super.fetch<any>(() => this.profileService.postFormData<any>(pm, this.profile.id)).subscribe(
-        p => {
-          // console.log('posteado perfil', p)
-          
-          const um: User = {
-            username: f.value.username,
-            role_id: this.usuario.role_id,
-            dni: f.value.dni,
-            password: f.value.password,
-            profile_id: p.id
-          }
 
-          if (this.isUserProfile) 
-            delete um.role_id
-
-          super.fetch<User>(() => this.userService.post(um, this.usuario.id)).subscribe(
-            u => {
-              this.posting = false
-              console.log('exito post user', u)
-              if (this.isUserProfile) {
-                this.auth.updateUser()
-              }
-              this.location.back()
-              // this.router.navigate(['/usuarios']);
-            },
-            err => {
-              this.posting = false
-              super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${this.errorFilter(err.statusText)}`)
-            }
-          )
-        },
-        err => {
-          this.posting = false
-          console.log('error post profile', err)
-          super.displayAlert(this.errorFilter(err.error[0].message))
+      const updateProfile = async () => {
+        if (Object.keys(profilePayload).length === 0) {
+          return { id: this.profile.id };
         }
-      )
+        return super.fetch<any>(() => this.profileService.postFormData<any>(profilePayload, this.profile.id)).toPromise();
+      }
+
+      const updateUser = async (profileResultId?: number) => {
+        if (Object.keys(userPayload).length === 0) {
+          return null;
+        }
+
+        const um: any = { ...userPayload };
+        return super.fetch<User>(() => this.userService.post(um, this.usuario.id)).toPromise();
+      }
+
+      try {
+        const profileResult = await updateProfile();
+        const userResult = await updateUser(profileResult?.id);
+
+        this.posting = false
+        if (userResult != null && this.isUserProfile) {
+          this.auth.updateUser()
+        }
+
+        this.location.back()
+      } catch (err: any) {
+        this.posting = false
+        console.log('error updating user/profile', err)
+        if (err?.error?.message) {
+          super.displayAlert(this.errorFilter(err.error.message))
+        } else if (Array.isArray(err?.error) && err.error[0]?.message) {
+          super.displayAlert(this.errorFilter(err.error[0].message))
+        } else {
+          super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${this.errorFilter(err.statusText || err.message || '')}`)
+        }
+      }
     //}
     //else {
     //  console.log('Form usuario no valido:', f);
