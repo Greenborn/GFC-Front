@@ -182,6 +182,16 @@ export class RankingPage implements OnInit {
       }
     }
 
+    // eliminar secciones vacías para que no se muestren botones sin ranking
+    for (let c=0; c < ranks.profiles.length; c++){
+      ranks.profiles[c].ranks_seccion = ranks.profiles[c].ranks_seccion.filter(
+        seccion => seccion.profiles && seccion.profiles.length > 0
+      )
+      if (ranks.profiles[c].pestania_seccion >= ranks.profiles[c].ranks_seccion.length) {
+        ranks.profiles[c].pestania_seccion = -1
+      }
+    }
+
     return ranks;
   }
 
