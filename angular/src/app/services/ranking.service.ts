@@ -14,7 +14,6 @@ export class RankingService extends ApiService<any> {
     config: ConfigService
   ) {
     super('ranking', http, config)
-    this.fetchAllOnce = true
    }
 
    get template(): any {
