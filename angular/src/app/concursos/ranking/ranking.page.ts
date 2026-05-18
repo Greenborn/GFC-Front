@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { RankingService } from '../../services/ranking.service';
 import { LoadingController, ModalController, AlertController } from '@ionic/angular';
@@ -48,29 +50,37 @@ export class RankingPage implements OnInit {
     let ranks = { 'profiles': [], 'fotoclubs': r.fotoclubs }
     let cats  = {}
     let sects = {}
+    let profileIndexMaps: { [categoryId: number]: { [profileId: string]: number } } = {}
+    let sectionIndexMaps: { [categoryId: number]: { [sectionId: string]: { [profileId: string]: number } } } = {}
 
     //se crea estructura de ranking a partir de categorias
     for (let c=0; c < r.Category.length; c++){
-      cats[r.Category[c].id] = r.Category[c]
+      const categoryId = r.Category[c].id
+      cats[categoryId] = r.Category[c]
       ranks.profiles.push({
         nombre_categoria: r.Category[c].name,
-        id_categoria: r.Category[c].id,
+        id_categoria: categoryId,
         profiles: [],
         pestania_seccion: -1,
         ranks_seccion: []
       })
+      profileIndexMaps[categoryId] = {}
+      sectionIndexMaps[categoryId] = {}
     }
 
     //se crea estructura de rankings de secciones
     for (let c=0; c < r.Section.length; c++){
-      sects[r.Section[c].id] = r.Section[c] 
+      const sectionId = r.Section[c].id
+      sects[sectionId] = r.Section[c] 
 
       for (let i=0; i < ranks.profiles.length; i++){
+        const categoryId = ranks.profiles[i].id_categoria
         ranks.profiles[i].ranks_seccion.push({
-          nombre_seccion: sects[r.Section[c].id].name,
-          id_seccion: r.Section[c].id,
+          nombre_seccion: sects[sectionId].name,
+          id_seccion: sectionId,
           profiles: []
         })
+        sectionIndexMaps[categoryId][sectionId] = {}
       }
     }
 
@@ -83,24 +93,38 @@ export class RankingPage implements OnInit {
         //se asigna un perfil al ranking de la categoria que el corresponde
         for (let i=0; i < ranks.profiles.length; i++){
           if (ranks.profiles[i].id_categoria == perfil.category_id){
-            //si existe el perfil se suman los puntos, caso contrario se inserta registro nuevo
-            let encontrado = false
-            for (let j=0; j < ranks.profiles[i].profiles.length; j++){
-              if (ranks.profiles[i].profiles[j].profile_id == perfil.profile_id ){
-                ranks.profiles[i].profiles[j].puntaje_temporada += perfil.puntaje_temporada
-                ranks.profiles[i].profiles[j].score_total       += perfil.score_total
-                ranks.profiles[i].profiles[j].premios_temporada = this.sumar_premios( ranks.profiles[i].profiles[j].premios_temporada, perfil.premios_temporada )
-                encontrado = true
-                break;
-              }
-            }
-            if (!encontrado)
+            const categoryId = ranks.profiles[i].id_categoria
+            const profileKey = String(perfil.profile_id)
+            let profileIdx = profileIndexMaps[categoryId][profileKey]
+
+            if (profileIdx === undefined){
+              profileIdx = ranks.profiles[i].profiles.length
+              profileIndexMaps[categoryId][profileKey] = profileIdx
               ranks.profiles[i].profiles.push( {...perfil} )
-            
+            } else {
+              const existingProfile = ranks.profiles[i].profiles[profileIdx]
+              existingProfile.puntaje_temporada += perfil.puntaje_temporada
+              existingProfile.score_total       += perfil.score_total
+              existingProfile.premios_temporada = this.sumar_premios( existingProfile.premios_temporada, perfil.premios_temporada )
+            }
+
             //se asigna el perfil al sub-ranking de la sección
             for (let j=0; j < ranks.profiles[i].ranks_seccion.length; j++){
               if (ranks.profiles[i].ranks_seccion[j].id_seccion == perfil.section_id){
-                ranks.profiles[i].ranks_seccion[j].profiles.push( {...perfil} )
+                const sectionId = ranks.profiles[i].ranks_seccion[j].id_seccion
+                const sectionKey = String(perfil.profile_id)
+                let sectionIdx = sectionIndexMaps[categoryId][sectionId][sectionKey]
+
+                if (sectionIdx === undefined){
+                  sectionIdx = ranks.profiles[i].ranks_seccion[j].profiles.length
+                  sectionIndexMaps[categoryId][sectionId][sectionKey] = sectionIdx
+                  ranks.profiles[i].ranks_seccion[j].profiles.push( {...perfil} )
+                } else {
+                  const existingSectionProfile = ranks.profiles[i].ranks_seccion[j].profiles[sectionIdx]
+                  existingSectionProfile.puntaje_temporada += perfil.puntaje_temporada
+                  existingSectionProfile.score_total       += perfil.score_total
+                  existingSectionProfile.premios_temporada = this.sumar_premios( existingSectionProfile.premios_temporada, perfil.premios_temporada )
+                }
                 break;
               }
             }
@@ -182,6 +206,16 @@ export class RankingPage implements OnInit {
       }
     }
 
+    // eliminar secciones vacías para que no se muestren botones sin ranking
+    for (let c=0; c < ranks.profiles.length; c++){
+      ranks.profiles[c].ranks_seccion = ranks.profiles[c].ranks_seccion.filter(
+        seccion => seccion.profiles && seccion.profiles.length > 0
+      )
+      if (ranks.profiles[c].pestania_seccion >= ranks.profiles[c].ranks_seccion.length) {
+        ranks.profiles[c].pestania_seccion = -1
+      }
+    }
+
     return ranks;
   }
 
@@ -234,9 +268,70 @@ export class RankingPage implements OnInit {
       message: 'Cargando...'
     })
     await loading.present()
-    this.rankingService.getAll().subscribe(r => {
-      loading.dismiss()
+    this.rankingService.getAll(`year=${this.anio}`).subscribe(r => {
       this.ranking = this.procesar_ranking( r )
+
+      // Collect unique profile IDs from the general ranking
+      const profileIdSet: Set<number> = new Set()
+      for (const cat of this.ranking.profiles) {
+        for (const p of cat.profiles) {
+          profileIdSet.add(p.profile_id)
+        }
+      }
+
+      const profileIds = Array.from(profileIdSet)
+      if (profileIds.length === 0) {
+        loading.dismiss()
+        return
+      }
+
+      // Fetch correct season totals from the Node API for each profile in parallel
+      const detailRequests = profileIds.map(profile_id =>
+        this.rankingService.getDetalleRanking(profile_id, undefined, this.anio).pipe(
+          catchError(() => of(null))
+        )
+      )
+
+      forkJoin(detailRequests).subscribe(details => {
+        // Build map: profile_id -> correct total score
+        const scoreMap: { [profile_id: number]: number } = {}
+        details.forEach((detail, idx) => {
+          if (detail) {
+            const pid = profileIds[idx]
+            const total = (detail.items ?? []).reduce(
+              (acc: number, it: any) => acc + (it?.ranking?.total_score ?? 0), 0
+            )
+            scoreMap[pid] = total
+          }
+        })
+
+        // Update general ranking scores with Node API totals and re-sort
+        for (const cat of this.ranking.profiles) {
+          for (const p of cat.profiles) {
+            if (scoreMap[p.profile_id] !== undefined) {
+              p.puntaje_temporada = scoreMap[p.profile_id]
+              p.score_total = scoreMap[p.profile_id]
+            }
+          }
+
+          cat.profiles.sort((a: any, b: any) => {
+            if (a.puntaje_temporada < b.puntaje_temporada) return -1 * this.sentido_orden
+            if (a.puntaje_temporada > b.puntaje_temporada) return 1 * this.sentido_orden
+            return 0
+          })
+
+          let pos = 1
+          for (let i = 0; i < cat.profiles.length; i++) {
+            cat.profiles[i].posicion_temporada = pos
+            if (i + 1 < cat.profiles.length &&
+                cat.profiles[i].puntaje_temporada !== cat.profiles[i + 1].puntaje_temporada) {
+              pos++
+            }
+          }
+        }
+
+        loading.dismiss()
+      })
     })
   }
 
