@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ProfileContest } from '../models/profile_contest';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
@@ -18,11 +19,14 @@ export class ProfileContestService extends ApiService<ProfileContest> {
    }
 
   getAll<K = ProfileContest>(getParams: string = '', resource: string = null): Observable<K[]> {
-    const endpoint = resource === 'profile-registrable'
-      ? `${this.config.nodeApiBaseUrl}${resource}?${getParams}`
-      : `${this.config.apiUrl(`${resource ?? this.recurso}?${getParams}`)}`;
+    const endpoint = `${this.config.nodeApiBaseUrl}${resource ?? this.recurso}?${getParams}`;
+    return this.http.get<any>(endpoint).pipe(
+      map(data => data?.items ?? data)
+    );
+  }
 
-    return this.http.get<K[]>(endpoint);
+  get<K = ProfileContest>(id: number, getParams: string = ''): Observable<K> {
+    return this.http.get<K>(`${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`);
   }
 
    get template(): ProfileContest {
