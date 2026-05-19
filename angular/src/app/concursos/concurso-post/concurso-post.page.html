@@ -25,9 +25,9 @@
           >
           <!-- *ngIf="!loading; else spinner" -->
           <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
-          <ion-row>
+          <ion-row class="equal-height-row">
             <ion-col size="12" size-md="4">
-              <ion-card>
+              <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Información</ion-card-title>
                 </ion-card-header>
@@ -79,7 +79,7 @@
             </ion-col>
 
             <ion-col size="12" size-md="4">
-              <ion-card>
+              <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Fechas</ion-card-title>
                 </ion-card-header>
@@ -103,10 +103,6 @@
                           <option *ngFor="let d of day_selects[0].months;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-                    </ion-row>
-                  </ion-item>
-                  <ion-item>
-                    <ion-row>
                       <ion-col>
                         <ion-label>Año</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -114,6 +110,10 @@
                           <option *ngFor="let d of day_selects[0].years;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
+                    </ion-row>
+                  </ion-item>
+                  <ion-item>
+                    <ion-row>
                       <ion-col>
                         <ion-label>Hora</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -121,10 +121,6 @@
                           <option *ngFor="let d of day_selects[0].hours;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-                    </ion-row>
-                  </ion-item>
-                  <ion-item>
-                    <ion-row>
                       <ion-col>
                         <ion-label>Minutos</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -154,10 +150,6 @@
                           <option *ngFor="let d of day_selects[1].months;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-                    </ion-row>
-                  </ion-item>
-                  <ion-item>
-                    <ion-row>
                       <ion-col>
                         <ion-label>Año</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -165,6 +157,10 @@
                           <option *ngFor="let d of day_selects[1].years;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
+                    </ion-row>
+                  </ion-item>
+                  <ion-item>
+                    <ion-row>
                       <ion-col>
                         <ion-label>Hora</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -172,10 +168,6 @@
                           <option *ngFor="let d of day_selects[1].hours;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-                    </ion-row>
-                  </ion-item>
-                  <ion-item>
-                    <ion-row>
                       <ion-col>
                         <ion-label>Minutos</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -190,7 +182,7 @@
             </ion-col>
 
             <ion-col size="12" size-md="4">
-              <ion-card>
+              <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Configuración</ion-card-title>
                 </ion-card-header>
@@ -260,6 +252,19 @@
                       ></ion-checkbox>
                     </ion-item>
                   </div>
+
+                  <ion-item>
+                    <ion-label position="stacked">Tipo de organización</ion-label>
+                    <ion-select
+                      name="organization_type"
+                      [(ngModel)]="concurso.organization_type"
+                      required
+                    >
+                      <ion-select-option value="INTERNO">Interno</ion-select-option>
+                      <ion-select-option value="EXTERNO_0">Externo</ion-select-option>
+                      <ion-select-option value="EXTERNO_UNICEN">UNICEN</ion-select-option>
+                    </ion-select>
+                  </ion-item>
                 </ion-card-content>
               </ion-card>
             </ion-col>
