@@ -34,6 +34,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   seccionesSeleccionadas: { id: number; seleccionada: boolean; }[] = [];
   seccionesInscriptas: ContestSection[] = [];
   descrChangeFocus: boolean = false;
+  nombreChangeFocus: boolean = false;
+  subtituloChangeFocus: boolean = false;
   public posting: boolean = false;
   // public loading: boolean = false;
   public loadingCategorias: boolean = true;
