@@ -22,6 +22,7 @@ export const get_all = async (attr, reload = true) => {
             params +=  'expand=profile,profile.user,profile.fotoclub,image.profile,image.thumbnail'
             params +=  '&filter[contest_id]='+attr.contest_id
             params +=  (attr?.page) ? '&page='+attr.page : ''
+            params +=  (attr?.perPage) ? '&per-page='+attr.perPage : ''
             params +=  (attr?.concursante_id) ? ('&filter[profile_id]=' + attr.concursante_id) : ''
             
             const loadingCtrl = new LoadingController()
@@ -29,7 +30,7 @@ export const get_all = async (attr, reload = true) => {
             if (attr?.present_loading)
                 await loading.present()
             
-            let res = await axios.get(CONFIG.apiBaseUrl+'contest-result?'+params, {
+            let res = await axios.get(CONFIG.nodeApiBaseUrl+'contest-result?'+params, {
                 headers: {
                     'Authorization': 'Bearer '+localStorage.getItem(CONFIG.appName + 'token' ),
                     'Content-Type':  'application/json'

@@ -25,7 +25,7 @@ export abstract class ApiService<T> {
 
   get<K = T>(id: number, getParams: string = ''): Observable<K> {
     console.log('get', this.recurso, id)
-    const useNodeApi = this.recurso === 'contest-category' || this.recurso === 'contest-section'
+    const useNodeApi = this.recurso === 'contest-category' || this.recurso === 'contest-section' || this.recurso === 'contest-result'
     const url = useNodeApi
       ? `${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`
       : this.config.apiUrl(`${this.recurso}/${id}?${getParams}`)
@@ -47,7 +47,7 @@ export abstract class ApiService<T> {
       })
     } else {
       const recurso = resource ?? this.recurso
-      const useNodeApi = recurso === 'contest-category' || recurso === 'contest-section'
+      const useNodeApi = recurso === 'contest-category' || recurso === 'contest-section' || recurso === 'contest-result'
       const url = useNodeApi
         ? `${this.config.nodeApiBaseUrl}${recurso}?${getParams}`
         : this.config.apiUrl(`${recurso}?${getParams}`)
