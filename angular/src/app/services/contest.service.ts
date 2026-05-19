@@ -66,6 +66,11 @@ export class ContestService extends ApiService<Contest> {
     }
   }
 
+  get<K = Contest>(id: number, getParams: string = ''): Observable<K> {
+    const url = `${this.config.nodeApiBaseUrl}contest/${id}?${getParams}`;
+    return this.http.get<K>(url);
+  }
+
   getCategoriasInscriptas(contest_id: number): Observable<ContestCategoryExpanded[]> {
     return super.getAll<ContestCategoryExpanded>(`filter[contest_id]=${contest_id}&expand=category`, 'contest-category')
   }
