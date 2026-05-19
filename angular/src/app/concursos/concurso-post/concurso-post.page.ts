@@ -34,6 +34,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   seccionesSeleccionadas: { id: number; seleccionada: boolean; }[] = [];
   seccionesInscriptas: ContestSection[] = [];
   descrChangeFocus: boolean = false;
+  nombreChangeFocus: boolean = false;
+  subtituloChangeFocus: boolean = false;
   public posting: boolean = false;
   // public loading: boolean = false;
   public loadingCategorias: boolean = true;
@@ -130,6 +132,7 @@ get secycat(){
           // c.start_date = this.contestService.formatearFechaParaHTML(c.start_date);
           // c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
           this.concurso = c
+          this.concurso.organization_type = this.concurso.organization_type ?? 'INTERNO'
           // Inicializar contestRecords como array vacío, se cargará desde ContestRecordsComponent
           this.concurso.contestRecords = [];
           this.concurso.start_date = new Date(this.concurso.start_date)
@@ -147,10 +150,12 @@ get secycat(){
           this.day_selects[1].year = new Date(this.concurso.end_date).getFullYear()
           this.day_selects[1].hour = new Date(this.concurso.end_date).getHours()
           this.day_selects[1].minute = new Date(this.concurso.end_date).getMinutes()
-          this.img_url = this.configService.imageUrl(c.img_url)
-          if (c.rules_url)
-            // this.rules_url = this.configService.apiUrl(c.rules_url)
-            this.rules_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.configService.apiUrl(c.rules_url))
+          this.img_url = c.img_url ? this.configService.imageUrl(c.img_url) : ''
+          if (c.rules_url) {
+            this.rules_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.configService.imageUrl(c.rules_url))
+          } else {
+            this.rules_url = undefined
+          }
           super.fetch<ContestCategory[]>(() => this.contestService.getCategoriasInscriptas(c.id)).subscribe(async c => {
             this.categoriasInscriptas = c
             await getCategorias
@@ -185,7 +190,7 @@ get secycat(){
         let fecha =  new Date()
         this.concurso.start_date = fecha.toISOString()
         this.day_selects[0].selected_str = this.concurso.start_date
-        
+        this.concurso.organization_type = this.concurso.organization_type ?? 'INTERNO'
         
         getCategorias.then(() => {
           this.categoriasSeleccionadas = this.categorias.map(c => ({

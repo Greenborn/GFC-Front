@@ -19,6 +19,7 @@ export interface Contest {
     contestRecords?: any[];
     sub_title?: string;
     judged?:Boolean;
+    organization_type?: 'INTERNO' | 'EXTERNO_0' | 'EXTERNO_UNICEN';
 }
 
 export interface ContestExpanded extends Contest {

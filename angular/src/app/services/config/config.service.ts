@@ -70,7 +70,11 @@ export class ConfigService {
   }
 
   imageUrl(recurso: string) {
+    if (!recurso) {
+      return '';
+    }
     // Si la URL ya es absoluta, no la modifica
+    recurso = recurso.toString();
     if (recurso.startsWith('http') || recurso.startsWith('data:')) {
       return recurso;
     }
