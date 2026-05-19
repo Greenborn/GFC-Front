@@ -26,58 +26,68 @@
           <!-- *ngIf="!loading; else spinner" -->
           <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
           <ion-row>
-            <ion-col size="12" size-md="6">
-              <ion-list class="ion-align-items-end">
-                <ion-item>
-                  <ion-label position="stacked">Nombre</ion-label>
-                  <ion-textarea
-                    name="name"
-                    [ngModel]="concurso.name"
-                    autocapitalize="sentences"
-                    auto-grow="true"
-                    maxlength="250"
-                    (ionFocus)="nombreChangeFocus = true"
-                    (ionBlur)="nombreChangeFocus = false"
-                    required
-                  ></ion-textarea>
-                  <ion-note *ngIf="nombreChangeFocus">Máximo 250 caracteres</ion-note>
-                </ion-item>
+            <ion-col size="12" size-md="4">
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Información</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-item>
+                    <ion-label position="stacked">Nombre</ion-label>
+                    <ion-textarea
+                      name="name"
+                      [ngModel]="concurso.name"
+                      autocapitalize="sentences"
+                      auto-grow="true"
+                      maxlength="250"
+                      (ionFocus)="nombreChangeFocus = true"
+                      (ionBlur)="nombreChangeFocus = false"
+                      required
+                    ></ion-textarea>
+                    <ion-note *ngIf="nombreChangeFocus">Máximo 250 caracteres</ion-note>
+                  </ion-item>
 
-                <ion-item>
-                  <ion-label position="stacked">Sub-título</ion-label>
-                  <ion-textarea
-                    name="sub_title"
-                    [ngModel]="concurso.sub_title"
-                    auto-grow="true"
-                    maxlength="250"
-                    (ionFocus)="subtituloChangeFocus = true"
-                    (ionBlur)="subtituloChangeFocus = false"
-                  ></ion-textarea>
-                  <ion-note *ngIf="subtituloChangeFocus">Máximo 250 caracteres</ion-note>
-                </ion-item>
+                  <ion-item>
+                    <ion-label position="stacked">Sub-título</ion-label>
+                    <ion-textarea
+                      name="sub_title"
+                      [ngModel]="concurso.sub_title"
+                      auto-grow="true"
+                      maxlength="250"
+                      (ionFocus)="subtituloChangeFocus = true"
+                      (ionBlur)="subtituloChangeFocus = false"
+                    ></ion-textarea>
+                    <ion-note *ngIf="subtituloChangeFocus">Máximo 250 caracteres</ion-note>
+                  </ion-item>
 
-                <ion-item>
-                  <ion-label position="floating">Descripción</ion-label>
-                  <ion-textarea
-                    (ionFocus)="descrChangeFocus = true"
-                    (ionBlur)="descrChangeFocus = false"
-                    maxlength="250"
-                    autocapitalize="sentences"
-                    auto-grow="true"
-                    name="description"
-                    [ngModel]="concurso.description"
-                    required
-                  ></ion-textarea>
-                </ion-item>
-                <ion-note *ngIf="descrChangeFocus">Máximo 250 caracteres</ion-note>
-              </ion-list>
+                  <ion-item>
+                    <ion-label position="stacked">Descripción</ion-label>
+                    <ion-textarea
+                      (ionFocus)="descrChangeFocus = true"
+                      (ionBlur)="descrChangeFocus = false"
+                      maxlength="250"
+                      autocapitalize="sentences"
+                      auto-grow="true"
+                      name="description"
+                      [ngModel]="concurso.description"
+                      required
+                    ></ion-textarea>
+                  </ion-item>
+                  <ion-note *ngIf="descrChangeFocus">Máximo 250 caracteres</ion-note>
+                </ion-card-content>
+              </ion-card>
             </ion-col>
 
-            <ion-col size="12" size-md="6">
-              <ion-list class="ion-align-items-end">
-                <ion-item>
-                  <ion-col size="12" class="ion-padding-end">
+            <ion-col size="12" size-md="4">
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Fechas</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-item>
                     <ion-label>Inicio</ion-label>
+                  </ion-item>
+                  <ion-item>
                     <ion-row>
                       <ion-col>
                         <ion-label>Día</ion-label>
@@ -86,7 +96,6 @@
                           <option *ngFor="let d of day_selects[0].days;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-
                       <ion-col>
                         <ion-label>Mes</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -94,7 +103,10 @@
                           <option *ngFor="let d of day_selects[0].months;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-
+                    </ion-row>
+                  </ion-item>
+                  <ion-item>
+                    <ion-row>
                       <ion-col>
                         <ion-label>Año</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -102,7 +114,6 @@
                           <option *ngFor="let d of day_selects[0].years;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-
                       <ion-col>
                         <ion-label>Hora</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -110,7 +121,10 @@
                           <option *ngFor="let d of day_selects[0].hours;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-
+                    </ion-row>
+                  </ion-item>
+                  <ion-item>
+                    <ion-row>
                       <ion-col>
                         <ion-label>Minutos</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -119,12 +133,12 @@
                         </select>
                       </ion-col>
                     </ion-row>
-                  </ion-col>
-                </ion-item>
+                  </ion-item>
 
-                <ion-item>
-                  <ion-col size="12" class="ion-padding-start">
+                  <ion-item>
                     <ion-label>Finalización</ion-label>
+                  </ion-item>
+                  <ion-item>
                     <ion-row>
                       <ion-col>
                         <ion-label>Día</ion-label>
@@ -133,7 +147,6 @@
                           <option *ngFor="let d of day_selects[1].days;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-
                       <ion-col>
                         <ion-label>Mes</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -141,7 +154,10 @@
                           <option *ngFor="let d of day_selects[1].months;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-
+                    </ion-row>
+                  </ion-item>
+                  <ion-item>
+                    <ion-row>
                       <ion-col>
                         <ion-label>Año</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -149,7 +165,6 @@
                           <option *ngFor="let d of day_selects[1].years;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-
                       <ion-col>
                         <ion-label>Hora</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -157,7 +172,10 @@
                           <option *ngFor="let d of day_selects[1].hours;" value="{{d.v}}">{{d.t}}</option>
                         </select>
                       </ion-col>
-
+                    </ion-row>
+                  </ion-item>
+                  <ion-item>
+                    <ion-row>
                       <ion-col>
                         <ion-label>Minutos</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
@@ -166,33 +184,34 @@
                         </select>
                       </ion-col>
                     </ion-row>
-                  </ion-col>
-                </ion-item>
-
-                <ion-item>
-                  <ion-label position="stacked">Total de imágenes por sección</ion-label>
-                  <ion-input
-                    name="max_img_section"
-                    [ngModel]="concurso.max_img_section"
-                    type="number"
-                    required
-                  ></ion-input>
-                </ion-item>
-              </ion-list>
+                  </ion-item>
+                </ion-card-content>
+              </ion-card>
             </ion-col>
-          </ion-row>
-          <ion-row>
 
-            <ion-col size="12" size-sm="6">
-              <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
-              <ion-list >
-                  <ion-item class="ion-no-padding " lines="full"
+            <ion-col size="12" size-md="4">
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Configuración</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-item>
+                    <ion-label position="stacked">Total de imágenes por sección</ion-label>
+                    <ion-input
+                      name="max_img_section"
+                      [ngModel]="concurso.max_img_section"
+                      type="number"
+                      required
+                    ></ion-input>
+                  </ion-item>
+
+                  <ion-item class="ion-no-padding" lines="full"
                     button (click)="mostrarCategorias = !mostrarCategorias"
                     [disabled]="loadingCategorias"
                   >
                     <ion-row class="ion-align-items-center ion-justify-content-between w-100">
                       <ion-list-header style="width: initial">Categorias</ion-list-header>
-                      <ion-button 
+                      <ion-button
                         class="ion-margin-start"
                         size="small"
                         fill="clear"
@@ -213,21 +232,15 @@
                       ></ion-checkbox>
                     </ion-item>
                   </div>
-              </ion-list>
 
-            </ion-col>
-            <ion-col size="12" size-sm="6">
-              <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
-              <ion-list>
-                <ion-item class="ion-no-padding " lines="full"
-                  button (click)="mostrarSecciones = !mostrarSecciones"
-                  [disabled]="loadingSecciones"
-                >
-                <ion-row class="ion-align-items-center ion-justify-content-between w-100">
+                  <ion-item class="ion-no-padding" lines="full"
+                    button (click)="mostrarSecciones = !mostrarSecciones"
+                    [disabled]="loadingSecciones"
+                  >
+                    <ion-row class="ion-align-items-center ion-justify-content-between w-100">
                       <ion-list-header style="width: initial">Secciones</ion-list-header>
-                      <ion-button 
+                      <ion-button
                         class="ion-margin-start"
-                        
                         size="small"
                         fill="clear"
                       >
@@ -235,25 +248,26 @@
                           name="chevron-{{mostrarSecciones ? 'up' : 'down'}}-outline"
                         ></ion-icon>
                       </ion-button>
-                  </ion-row>
-                </ion-item>
-                <div *ngIf="mostrarSecciones">
-                  <ion-item *ngFor="let s of secciones" lines="none">
-                    <ion-label>{{s.name}}</ion-label>
-                    <ion-checkbox
-                      slot="start"
-                      [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
-                      [ngModelOptions]="{standalone: true}"
-                    ></ion-checkbox>
+                    </ion-row>
                   </ion-item>
-                </div>
-              </ion-list>
+                  <div *ngIf="mostrarSecciones">
+                    <ion-item *ngFor="let s of secciones" lines="none">
+                      <ion-label>{{s.name}}</ion-label>
+                      <ion-checkbox
+                        slot="start"
+                        [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
+                        [ngModelOptions]="{standalone: true}"
+                      ></ion-checkbox>
+                    </ion-item>
+                  </div>
+                </ion-card-content>
+              </ion-card>
             </ion-col>
           </ion-row>
 
-          <ion-row class="w-100">
+          <ion-row class="w-100 equal-height-row">
             <ion-col size="12" size-md="4">
-              <ion-card>
+              <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Imagen</ion-card-title>
                 </ion-card-header>
@@ -270,7 +284,7 @@
             </ion-col>
 
             <ion-col size="12" size-md="4">
-              <ion-card>
+              <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Reglamento</ion-card-title>
                 </ion-card-header>
@@ -288,7 +302,7 @@
             </ion-col>
 
             <ion-col size="12" size-md="4">
-              <ion-card>
+              <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Grabaciones</ion-card-title>
                 </ion-card-header>
