@@ -25,9 +25,12 @@ export abstract class ApiService<T> {
 
   get<K = T>(id: number, getParams: string = ''): Observable<K> {
     console.log('get', this.recurso, id)
-    return this.http.get<K>(
-      this.config.apiUrl(`${this.recurso}/${id}?${getParams}`)
-    )
+    const useNodeApi = this.recurso === 'contest-category' || this.recurso === 'contest-section'
+    const url = useNodeApi
+      ? `${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`
+      : this.config.apiUrl(`${this.recurso}/${id}?${getParams}`)
+
+    return this.http.get<K>(url)
   }
 
   public getAllMeta(){
@@ -43,7 +46,11 @@ export abstract class ApiService<T> {
         suscriber.next(this.all as K[])
       })
     } else {
-      const url = this.config.apiUrl(`${resource ?? this.recurso}?${getParams}`)
+      const recurso = resource ?? this.recurso
+      const useNodeApi = recurso === 'contest-category' || recurso === 'contest-section'
+      const url = useNodeApi
+        ? `${this.config.nodeApiBaseUrl}${recurso}?${getParams}`
+        : this.config.apiUrl(`${recurso}?${getParams}`)
       // console.log('getting', url))
       return this.http.get<ApiSerializedResponse<K>>(url).pipe(
         map((data) => {
