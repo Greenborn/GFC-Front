@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Section } from '../models/section.model';
+import { ApiSerializedResponse } from '../models/ApiResponse';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
 
@@ -23,5 +26,24 @@ export class SectionService extends ApiService<Section> {
       name: undefined,
       parent_id: null
     }
+  }
+
+  getAll<K = Section>(getParams: string = '', resource: string = null): Observable<K[]> {
+    const recurso = resource ?? this.recurso;
+    const url = `${this.config.nodeApiBaseUrl}${recurso}?${getParams}`;
+    return this.http.get<ApiSerializedResponse<K>>(url).pipe(
+      map((data) => {
+        if (data != null) {
+          this.all_meta = data._meta;
+          return data.items;
+        }
+        return null;
+      })
+    );
+  }
+
+  get<K = Section>(id: number, getParams: string = '') {
+    const url = `${this.config.nodeApiBaseUrl}section/${id}?${getParams}`;
+    return this.http.get<K>(url);
   }
 }
