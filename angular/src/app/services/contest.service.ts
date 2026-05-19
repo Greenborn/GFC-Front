@@ -66,6 +66,11 @@ export class ContestService extends ApiService<Contest> {
     }
   }
 
+  get<K = Contest>(id: number, getParams: string = ''): Observable<K> {
+    const url = `${this.config.nodeApiBaseUrl}contest/${id}?${getParams}`;
+    return this.http.get<K>(url);
+  }
+
   getCategoriasInscriptas(contest_id: number): Observable<ContestCategoryExpanded[]> {
     return super.getAll<ContestCategoryExpanded>(`filter[contest_id]=${contest_id}&expand=category`, 'contest-category')
   }
@@ -112,5 +117,30 @@ export class ContestService extends ApiService<Contest> {
       axios.delete(url, { headers })
         .then(res => res.data)
     );
+  }
+
+  /**
+   * Crear/actualizar concurso usando Node API
+   * POST /api/contest
+   * PUT  /api/contest/:id
+   */
+  postFormData<K = Contest>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
+    const formData = new FormData();
+    for (const key in model) {
+      if (Object.prototype.hasOwnProperty.call(model, key)) {
+        const value = (model as any)[key];
+        if (value !== undefined && value !== null) {
+          formData.append(key, value);
+        }
+      }
+    }
+
+    const url = id == undefined
+      ? `${this.config.nodeApiBaseUrl}contest?${getParams}`
+      : `${this.config.nodeApiBaseUrl}contest/${id}?${getParams}`;
+
+    return id == undefined ?
+      this.http.post<K>(url, formData) :
+      this.http.put<K>(url, formData);
   }
 }

@@ -382,25 +382,14 @@ get secycat(){
         },
         async err => {
           this.posting = false;
-          try {
-            (await this.alertCtrl.create({
-              header: 'Error',
-              message: (err.error as []).map(e => (e as any).message).join('<br>'),
-              buttons: [{
-                text: 'Ok',
-                role: 'cancel'
-              }]
-            })).present()
-          } catch(e) {
-            (await this.alertCtrl.create({
-              header: 'Error',
-              message: this.errorFilter(err.error['error-info'][2]),
-              buttons: [{
-                text: 'Ok',
-                role: 'cancel'
-              }]
-            })).present()
-          }
+          (await this.alertCtrl.create({
+            header: 'Error',
+            message: this.getErrorMessage(err),
+            buttons: [{
+              text: 'Ok',
+              role: 'cancel'
+            }]
+          })).present()
         },
       )
       // this.router.navigate(['/concursos/' + id]);
@@ -416,6 +405,35 @@ get secycat(){
 
   getCategoryName(id: number) {
     return this.categorias.find(c => c.id == id).name
+  }
+
+  private getErrorMessage(err: any): string {
+    if (!err) {
+      return 'Error desconocido';
+    }
+
+    if (err.error) {
+      if (Array.isArray(err.error)) {
+        return err.error.map((e: any) => e?.message || JSON.stringify(e)).join('<br>');
+      }
+      if (err.error['error-info'] && Array.isArray(err.error['error-info']) && err.error['error-info'].length > 2) {
+        return this.errorFilter(err.error['error-info'][2]);
+      }
+      if (typeof err.error === 'string') {
+        return err.error;
+      }
+      if (err.error.message) {
+        return err.error.message;
+      }
+    }
+
+    if (err.message) {
+      return err.message;
+    }
+    if (err.statusText) {
+      return err.statusText;
+    }
+    return 'Error desconocido';
   }
 
   // async agregarCategoria(ev) {
@@ -435,7 +453,7 @@ get secycat(){
         err => {
           reject(err)
           console.log('Error post contest category', err)
-          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
+          this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
         }
       )
     })
@@ -462,7 +480,7 @@ get secycat(){
               // this.router.navigate(['/concursos']);
             }, 
             async err => {
-              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
+              this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
               resolve(false)
             }
           )
@@ -487,7 +505,7 @@ get secycat(){
         err => {
           reject(err)
           console.log('Error post contest section', err)
-          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
+          this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
         }
       )
     })
@@ -514,7 +532,7 @@ get secycat(){
               // this.router.navigate(['/concursos']);
             }, 
             async err => {
-              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
+              this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
               resolve(false)
             }
           )

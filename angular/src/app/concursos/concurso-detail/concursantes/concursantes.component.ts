@@ -43,12 +43,12 @@ export class ConcursantesComponent implements OnInit {
     { 
       valor: 'nombre', 
       valorMostrado: 'Nombre',     
-      callback: (p: ProfileContestExpanded, query: string) => p.profile.name.match(new RegExp(`^${query}`, 'i'))
+      callback: (p: ProfileContestExpanded, query: string) => p.profile?.name?.match(new RegExp(`^${query}`, 'i')) ?? false
     },
     { 
       valor: 'apellido', 
       valorMostrado: 'Apellido', 
-      callback: (p: ProfileContestExpanded, query: string) => p.profile.last_name.match(new RegExp(`^${query}`, 'i'))
+      callback: (p: ProfileContestExpanded, query: string) => p.profile?.last_name?.match(new RegExp(`^${query}`, 'i')) ?? false
     }
   ];
 
@@ -143,25 +143,25 @@ export class ConcursantesComponent implements OnInit {
 
   getFotoclubName(profile_id: number): string {
     const profile = this.inscriptos.find(p => p.profile_id == profile_id)
-    return profile != undefined ? profile.profile.fotoclub.name : ''
+    return profile?.profile?.fotoclub?.name ?? ''
   }
 
   getFullName(profile_id: number) {
     const p = this.inscriptos.find(p => p.profile_id == profile_id)
-    return p != undefined ? `${p.profile.name} ${p.profile.last_name}` : ''
+    return p?.profile ? `${p.profile.name ?? ''} ${p.profile.last_name ?? ''}`.trim() : ''
   }
 
 
   ordenarPorApellido(e1: ProfileContestExpanded, e2: ProfileContestExpanded, creciente: boolean) {
-    const n1 = e1.profile.last_name
-    const n2 = e2.profile.last_name;
+    const n1 = e1.profile?.last_name ?? ''
+    const n2 = e2.profile?.last_name ?? '';
     
     return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
       (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
   }
   ordenarPorFotoclub(e1: ProfileContestExpanded, e2: ProfileContestExpanded, creciente: boolean) {
-    const n1 = e1.profile.fotoclub.name
-    const n2 = e2.profile.fotoclub.name
+    const n1 = e1.profile?.fotoclub?.name ?? ''
+    const n2 = e2.profile?.fotoclub?.name ?? ''
     
     return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) : 
       (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))

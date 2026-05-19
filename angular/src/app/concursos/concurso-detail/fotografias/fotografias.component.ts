@@ -22,7 +22,7 @@ import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-accione
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
-import { get_all, resultadosConcursoGeted } from '../../../services/contest-results.service'
+import { get_all } from '../../../services/contest-results.service'
 
 @Component({
   selector: 'app-fotografias',
@@ -94,6 +94,13 @@ export class FotografiasComponent implements OnInit {
   mostrarFiltro: boolean = false;
   public subscriptions = []
 
+  public pageNumber = 1;
+  public pageSize = 20;
+  public hasMorePages = true;
+  public loadingPage = false;
+  public loadingInitial = false;
+  public currentQueryParams: any = {};
+
   constructor(
     public concursoDetailService: ConcursoDetailService,
     public contestService: ContestService,
@@ -141,43 +148,116 @@ export class FotografiasComponent implements OnInit {
   }
 
   setResultadosConcurso(rs) {
-    this.resultadosConcurso = rs;
+    this.resultadosConcurso = rs || [];
 
     // Asignar el objeto section correspondiente a cada resultado
     this.resultadosConcurso.forEach(e => {
       e.section = this.seccionesInscriptas.find(s => s.section.id === e.section_id)?.section;
     });
 
-    this.resultadosConcursoOrig = [...rs];
-    this.route.queryParams.subscribe(params => {
-      this.resultadosConcurso = [...this.resultadosConcursoOrig]
+    this.resultadosConcursoOrig = [...this.resultadosConcurso];
+    this.updatePuntajes();
+    this.applyQueryFilters();
+  }
 
-      this.resultadosConcurso.forEach(e => {
-        if (e?.metric?.prize != '0' && e?.metric?.prize != null && e?.metric?.prize != undefined && e?.metric?.prize != '') {
-          if (this.puntajes.find(element => element.score == e.metric.score) == undefined) {
-            this.puntajes.push(e.metric)
-          }
+  updatePuntajes() {
+    this.puntajes = [];
+    this.resultadosConcursoOrig.forEach(e => {
+      if (e?.metric?.prize != '0' && e?.metric?.prize != null && e?.metric?.prize != undefined && e?.metric?.prize != '') {
+        if (this.puntajes.find(element => element.score == e.metric.score) == undefined) {
+          this.puntajes.push(e.metric)
         }
-      })
-
-      const filterCallbacks: {
-        queryValue: string;
-        callback: Function;
-      }[] = [];
-
-      for (const f of [this.filtrado['metric'], this.filtrado['perfil']]) {
-        if (params[f.options.queryParam] != undefined) {
-          filterCallbacks.push({
-            callback: f.filterCallback,
-            queryValue: params[f.options.queryParam]
-          })
-        }
-      }
-
-      for (const f of filterCallbacks) {
-        this.resultadosConcurso = this.resultadosConcurso.filter(p => f.callback(p, f.queryValue))
       }
     });
+  }
+
+  applyQueryFilters() {
+    this.resultadosConcurso = [...this.resultadosConcursoOrig];
+
+    if (!this.currentQueryParams) {
+      return;
+    }
+
+    const filterCallbacks: {
+      queryValue: string;
+      callback: Function;
+    }[] = [];
+
+    for (const f of [this.filtrado['metric'], this.filtrado['perfil']]) {
+      if (this.currentQueryParams[f.options.queryParam] != undefined) {
+        filterCallbacks.push({
+          callback: f.filterCallback,
+          queryValue: this.currentQueryParams[f.options.queryParam]
+        });
+      }
+    }
+
+    for (const f of filterCallbacks) {
+      this.resultadosConcurso = this.resultadosConcurso.filter(p => f.callback(p, f.queryValue));
+    }
+  }
+
+  async loadPage(page: number = 1, reset: boolean = false, event?: any) {
+    if (this.loadingPage || !this.concurso?.id) {
+      if (event?.target) {
+        event.target.complete();
+      }
+      return;
+    }
+
+    if (reset) {
+      this.pageNumber = 1;
+      this.hasMorePages = true;
+      this.resultadosConcurso = [];
+      this.resultadosConcursoOrig = [];
+      this.puntajes = [];
+      this.loadingInitial = true;
+    }
+
+    this.loadingPage = true;
+
+    const response: any = await get_all({
+      contest_id: this.concurso.id,
+      page,
+      perPage: this.pageSize,
+      present_loading: reset
+    });
+
+    if (event?.target) {
+      event.target.complete();
+    }
+
+    if (!response || !Array.isArray(response.items)) {
+      this.hasMorePages = false;
+      this.loadingPage = false;
+      this.loadingInitial = false;
+      return;
+    }
+
+    const items = response.items || [];
+    const allItems = reset ? items : [...this.resultadosConcursoOrig, ...items];
+
+    this.setResultadosConcurso(allItems);
+    this.pageNumber = page;
+
+    if (response.page !== undefined && response.pages !== undefined) {
+      this.hasMorePages = response.page < response.pages;
+    } else if (response.total !== undefined) {
+      this.hasMorePages = this.resultadosConcursoOrig.length < response.total;
+    } else {
+      this.hasMorePages = items.length >= this.pageSize;
+    }
+
+    this.loadingPage = false;
+    this.loadingInitial = false;
+  }
+
+  loadMoreImages(event: any) {
+    if (!this.hasMorePages) {
+      event.target.complete();
+      return;
+    }
+    this.loadPage(this.pageNumber + 1, false, event);
   }
 
   subscribes() {
@@ -191,21 +271,12 @@ export class FotografiasComponent implements OnInit {
       this.inscriptos = cs
       setTimeout(() => this.updatingInscriptos = false)
     }))
-    this.subscriptions.push(resultadosConcursoGeted.subscribe(cs =>{
-      this.setResultadosConcurso(cs?.items)
-    }))
-
     if (this.concurso === null)
       this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
-                
         this.concurso = c
-        //console.log('route', this.route.snapshot.params)
-        let params_: any = {
-          ...this.route.snapshot.params,
+        if (this.concurso && this.concurso.id) {
+          await this.loadPage(1, true)
         }
-        params_['contest_id'] = this.concurso.id
-        
-        await get_all(params_)
       }))
   }
 
@@ -226,6 +297,11 @@ export class FotografiasComponent implements OnInit {
     }
 
     this.auth.user.then(u => this.user = u);
+
+    this.route.queryParams.subscribe(params => {
+      this.currentQueryParams = params;
+      this.applyQueryFilters();
+    });
   }
 
   async ngOnDestroy() {
