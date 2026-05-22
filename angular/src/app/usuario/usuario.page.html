@@ -26,20 +26,14 @@
           <ion-item 
           
           lines="none"
-            *ngIf="(authService.user | async) as u">
+            *ngIf="authUser as u">
             <ion-col   >
               <ion-row
                 class="ion-justify-content-center ion-align-items-center"
               >
               <!--TODO: revisar size por aspect -->
                 <ion-col size="11" class="ion-align-items-center"> 
-                  <!-- <app-usuario-img [src]="usuario.img_url"></app-usuario-img> -->
-                  <!-- <ion-row> -->
-
-                    <!-- <ion-thumbnail> -->
-                      <app-usuario-img [src]="u.profile.img_url != null ? configService.imageUrl(u.profile.img_url) : ''"></app-usuario-img>
-                    <!-- </ion-thumbnail> -->
-                  <!-- </ion-row> -->
+                  <app-usuario-img [src]="userProfile?.img_url ? configService.imageUrl(userProfile.img_url) : ''"></app-usuario-img>
                 </ion-col>
               </ion-row>
               <ion-row>
@@ -51,8 +45,8 @@
                   >
 
                   <ion-card-subtitle class="ion-text-center"
-                    >{{u.profile.name}}
-                    {{u.profile.last_name}}</ion-card-subtitle
+                    >{{userProfile?.name || u.profile?.name}}
+                    {{userProfile?.last_name || u.profile?.last_name}}</ion-card-subtitle
                   >
                 </ion-col>
               </ion-row>

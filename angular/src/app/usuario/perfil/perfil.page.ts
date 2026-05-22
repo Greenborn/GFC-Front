@@ -86,33 +86,36 @@ export class PerfilPage extends ApiConsumer implements OnInit {
   }
 
   async ngOnInit() {
-    this.activatedRoute.paramMap.subscribe(async (paramMap) => {
-      const id = parseInt(paramMap.get("id"));
-      super
-        .fetch<Stadistics>(() =>
-          this.stadisticsService.getAll(`filter[id]=${id}`)
-        )
-        .subscribe((r) => {
-          // this.stadisticsService.get(id)).subscribe(r => {
-          this.estadisticas = r[0];
-          // this.estadisticas = r
-          //porque postgresql no admite PK en las view, por eso en el back no funciona del get por id
-          // console.log("estadisticas: ", r[0]);
-        });
-
-      this.authService.user.then((u) => {
-        super
-          .fetch<ProfileExpanded>(() => this.rolificador.getMiembro(u, id))
-          .subscribe((m) => {
-            this.miembro = m;
-            this.userId = m.user.id;
-            // console.log("miembro: ", m);
-          });
-      });
-    });
+    // The route can be visited again after editing a profile, so the data should be refreshed
+    // every time the page becomes active.
   }
 
-  ionViewWillEnter() {}
+  async ionViewWillEnter() {
+    const id = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
+    if (!isNaN(id)) {
+      await this.loadPerfil(id);
+    }
+  }
+
+  private async loadPerfil(id: number) {
+    this.estadisticas = null;
+    this.miembro = null;
+
+    super
+      .fetch<Stadistics>(() => this.stadisticsService.getAll(`filter[id]=${id}`))
+      .subscribe((r) => {
+        this.estadisticas = r[0];
+      });
+
+    this.authService.user.then((u) => {
+      super
+        .fetch<ProfileExpanded>(() => this.rolificador.getMiembro(u, id))
+        .subscribe((m) => {
+          this.miembro = m;
+          this.userId = m.user.id;
+        });
+    });
+  }
 
   async privilegies() {
     let usuario = this.authService.user;
