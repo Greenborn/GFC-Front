@@ -275,13 +275,13 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   private getCurrentUserState(): any {
-    return {
+    const userState: any = {
       username: this.form.get('username')?.value,
       email: this.form.get('email')?.value,
       role_id: this.form.get('role_id')?.value,
       dni: this.form.get('dni')?.value,
-      password: this.form.get('password')?.value || undefined,
     };
+    return userState;
   }
 
   async postUsuario() {
