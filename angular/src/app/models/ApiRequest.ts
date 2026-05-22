@@ -5,4 +5,5 @@ export interface ApiChangePasswordBody {
 
 export interface ApiAdminChangePasswordBody {
     password: string;
+    actual_password?: string;
 }

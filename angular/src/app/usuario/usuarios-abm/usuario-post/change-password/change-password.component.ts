@@ -46,7 +46,8 @@ export class ChangePasswordComponent extends ApiConsumer implements OnInit {
     this.posting = true;
 
     const body: ApiAdminChangePasswordBody = {
-      password: this.new_password
+      password: this.new_password,
+      ...(this.requireOldPassword ? { actual_password: f.value.old_password } : {})
     };
     super.fetch<any>(() => this.userService.updatePassword(body, this.userId)).subscribe(
       res => {
