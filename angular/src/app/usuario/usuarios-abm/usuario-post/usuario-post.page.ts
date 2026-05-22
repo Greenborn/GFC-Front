@@ -405,6 +405,12 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           this.auth.updateUser()
         }
 
+        const alert = await this.UIUtilsService.mostrarAlert({
+          header: 'Éxito',
+          message: 'Los cambios se han guardado correctamente.',
+          buttons: [{ text: 'OK', role: 'cancel' }]
+        });
+        await alert.onDidDismiss();
         this.location.back()
       } catch (err: any) {
         this.posting = false

@@ -18,6 +18,9 @@ import { UserService } from '../services/user.service';
 })
 export class UsuarioPage extends ApiConsumer implements OnInit {
 
+  public authUser: User = null;
+  public userProfile: Profile = null;
+
   // user: User;
   // user: Promise<User>;
   // public username: string;
@@ -51,22 +54,25 @@ export class UsuarioPage extends ApiConsumer implements OnInit {
   }
 
   ngOnInit() {
-    // this.user = this.userService.template;
-    // this.userId = this.authService.userId
+    this.authService.user.then(u => {
+      this.authUser = u;
+      if (u != null) {
+        this.userProfile = u.profile ?? null;
+        if (!this.userProfile?.img_url && u.profile_id != null) {
+          super.fetch<Profile>(() => this.profileService.get(u.profile_id)).subscribe(p => {
+            this.userProfile = p;
+          });
+        }
+      }
+    });
   }
 
   ionViewWillEnter() {
-    // this.profile = new Promise<Profile>(resolve => {
-    //   this.authService.user.then(u => 
-    //     super.fetch<Profile>(
-    //       () => this.profileService.get(u.profile_id)
-    //     ).subscribe(p => resolve(p))
-    //   )
-    // })
-    // this.authService.user.then(u => this.profile = this.profileService)
-    // this.user = this.authService.user
-    // this.username = this.authService.username;
-    // this.authService.user.then(u => this.user = u)
+    if (this.authUser?.profile_id != null) {
+      super.fetch<Profile>(() => this.profileService.get(this.authUser.profile_id)).subscribe(p => {
+        this.userProfile = p;
+      });
+    }
   }
 
   logout() {
