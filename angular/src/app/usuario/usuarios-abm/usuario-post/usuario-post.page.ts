@@ -107,7 +107,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   form: FormGroup;
   async ngOnInit() {
     this.ImageChangeClick.subscribe({  next: ( response: any ) => {
-      this.profileImageUpload.nativeElement.querySelector('input').click();
+      if (this.profileImageUpload && this.profileImageUpload.nativeElement) {
+        this.profileImageUpload.nativeElement.click();
+      }
     }});
 
     let formControls = {

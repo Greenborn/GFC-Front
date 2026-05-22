@@ -12,6 +12,28 @@
     }
 }
 
+.profile-image-card {
+    min-height: 280px;
+}
+
+.profile-image-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-image-card-content app-usuario-img,
+.profile-image-card-content app-usuario-img img {
+    width: 100%;
+    max-width: 260px;
+    min-height: 260px;
+}
+
+.upload-button-row {
+    width: 100%;
+}
+
 /* Estilos para el modal del select de fotoclub */
 // Modal del ion-select de fotoclub (usa ion-alert por debajo)
 ion-alert.fotoclub-select-modal {
