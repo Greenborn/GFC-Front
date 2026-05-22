@@ -39,7 +39,7 @@
                     <ion-item class="expand-full">
                         <ion-label position="floating">Nombre</ion-label>
                         <ion-input
-                            formControlName="name" name="name" [(ngModel)]="profile.name"
+                            formControlName="name" name="name"
                             autocapitalize="words" required>
                         </ion-input>
                     </ion-item>
@@ -47,21 +47,21 @@
                     <ion-item class="expand-full">
                         <ion-label position="floating">Apellido</ion-label>
                         <ion-input
-                            formControlName="last_name" name="last_name" [(ngModel)]="profile.last_name"
+                            formControlName="last_name" name="last_name"
                             autocapitalize="words" required></ion-input>
                     </ion-item>
 
                     <ion-item class="expand-full">
                         <ion-label position="floating">DNI</ion-label>
                         <ion-input
-                            formControlName="dni" name="dni" [(ngModel)]="profile.dni" required></ion-input>
+                            formControlName="dni" name="dni" required></ion-input>
                     </ion-item>
 
                     <ion-item  class="expand-full fotoclub-select-item">
-                        <ion-label [position]="(profile.fotoclub_id != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación/Institución</ion-label>
+                        <ion-label [position]="(form.get('fotoclub_id').value != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación/Institución</ion-label>
                             <ion-select
                             #sFotoclub  okText="Aceptar" cancelText="Cancelar"
-                            formControlName="fotoclub_id" name="fotoclub_id" [(ngModel)]="profile.fotoclub_id"
+                            formControlName="fotoclub_id" name="fotoclub_id"
                             [interfaceOptions]="{ cssClass: 'fotoclub-select-modal' }"
                             required>
                             <ion-select-option *ngFor="let f of fotoclubes" [value]="f.id">{{f.name}}</ion-select-option>
@@ -74,7 +74,7 @@
                             <ion-checkbox 
                             slot="start"
                             color="primary"
-                            name="executive" formControlName="executive" [ngModel]="profile.executive">
+                            name="executive" formControlName="executive">
                             </ion-checkbox>
                         </ion-item>
 
@@ -83,7 +83,7 @@
                             class="expand-full">
                                 <ion-label position="floating">Rol en la comisión</ion-label>
                                 <ion-input
-                                    formControlName="executive_rol" name="executive_rol" [(ngModel)]="profile.executive_rol"
+                                    formControlName="executive_rol" name="executive_rol"
                                     autocapitalize="words"
                                     required></ion-input>
                         </ion-item>
@@ -115,7 +115,7 @@
                             (ionFocus)="usernameFocus=true" (ionBlur)="usernameFocus=false"
                             autocapitalize="off"
                             pattern="[a-zA-Z0-9]{1,20}"
-                            formControlName="username" name="username" [(ngModel)]="usuario.username"
+                            formControlName="username" name="username"
                             required>
                             <ion-icon
                             *ngIf="usernameFocus"
@@ -133,7 +133,7 @@
                         <ion-input
                             autocapitalize="off"
                             pattern="[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+(\.[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+)*@[a-zA-Z0-9_][\-a-zA-Z0-9_]*(\.[\-a-zA-Z0-9_]+)*\.[cC][oO][mM](:[0-9]{1,5})?"
-                            name="email" formControlName="email" [(ngModel)]="usuario.email"
+                            name="email" formControlName="email"
                             required>
                         </ion-input>
                     </ion-item>
@@ -149,7 +149,7 @@
                                         id="ctr-1" class="text-right"
                                         pattern=".{8,}"
                                         type="password" 
-                                        formControlName="password" name="password" [(ngModel)]="usuario.password"></ion-input>
+                                        formControlName="password" name="password"></ion-input>
                                 </ion-col>
 
                                 <ion-col  class="ion-no-padding ion-align-self-center" size="2">
@@ -176,7 +176,7 @@
                                         id="ctr-1"
                                         type="password"
                                         class="text-right"
-                                        name="passwordRepeat" formControlName="passwordRepeat" [(ngModel)]="usuario.passwordRepeat"></ion-input>
+                                        name="passwordRepeat" formControlName="passwordRepeat"></ion-input>
                                 </ion-col>
                                 <ion-col
                                     class="ion-no-padding ion-align-self-center"
@@ -205,9 +205,8 @@
                         
                             <ion-select
                                 #sRol  okText="Aceptar" cancelText="Cancelar"
-                                name="role_id" formControlName="role_id"  [(ngModel)]="usuario.role_id"
-                                required
-                                [disabled]="!isAdmin">
+                                name="role_id" formControlName="role_id"
+                                required>
                                 <ion-select-option *ngFor="let r of roles" [value]="r.id">{{r.type}}</ion-select-option>
                             </ion-select>
                     </ion-item>

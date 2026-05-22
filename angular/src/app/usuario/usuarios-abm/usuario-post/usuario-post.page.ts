@@ -156,6 +156,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       )
     } else {
       this.usuario.role_id = 3
+      this.form.patchValue({ role_id: 3 });
     }
     dataPromises.push(
       new Promise(resolve => super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => {
@@ -217,18 +218,27 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           this.usuario.role_id = 3 // los no admin cargan delegados (select rol desactivado)
           if (u.role_id != 1) {
             this.profile.fotoclub_id = u.profile.fotoclub_id
-            
+            this.form.patchValue({ fotoclub_id: u.profile.fotoclub_id });
           } else {
             this.profile.fotoclub_id = 0;
+            this.form.patchValue({ fotoclub_id: 0 });
           }
-        
+        }
+
+        const roleControl = this.form.get('role_id');
+        if (roleControl) {
+          if (!this.isAdmin) {
+            roleControl.disable();
+          } else {
+            roleControl.enable();
+          }
         }
       })
     }
   }
 
   profileExecutive(){
-    return Boolean(this.profile.executive) == true
+    return Boolean(this.form.get('executive')?.value) === true
   }
 
   datosCargados() {
@@ -291,15 +301,37 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         }
         //En caso de que se trate de un formulario de registro de usuario
       if (this.isUserSignUp){
+        const password = this.form.get('password')?.value;
+        const passwordRepeat = this.form.get('passwordRepeat')?.value;
+
         //se comprueba que la contraseña corresponda con su repeticion
-        if (this.usuario.passwordRepeat !== this.usuario.password){
+        if (passwordRepeat !== password){
           super.displayAlert("Las contraseñas no coinciden.");
           return;
         }
 
+        const profileData: any = {
+          ...this.profile,
+          name: this.form.get('name')?.value,
+          last_name: this.form.get('last_name')?.value,
+          dni: this.form.get('dni')?.value,
+          fotoclub_id: this.form.get('fotoclub_id')?.value,
+          executive: this.form.get('executive')?.value,
+          executive_rol: this.form.get('executive_rol')?.value,
+        };
+
+        const userData: any = {
+          ...this.usuario,
+          username: this.form.get('username')?.value,
+          email: this.form.get('email')?.value,
+          password,
+          role_id: this.form.get('role_id')?.value,
+          dni: this.form.get('dni')?.value,
+        };
+
         //hacer peticiòn para registrar usuario
         await this.UIUtilsService.presentLoading();
-        this.createUserService.post({userData:this.usuario, profileData:this.profile}).subscribe(
+        this.createUserService.post({userData, profileData}).subscribe(
           ok => {
             this.UIUtilsService.dismissLoading();
             if (ok['success'] == false){
