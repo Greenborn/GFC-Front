@@ -45,37 +45,19 @@ export class ChangePasswordComponent extends ApiConsumer implements OnInit {
 
     this.posting = true;
 
-    if (this.requireOldPassword) {
-      const body: ApiChangePasswordBody = {
-        old_password: f.value.old_password,
-        new_password: this.new_password
-      };
-      super.fetch<any>(() => this.userService.changePassword(body, this.userId)).subscribe(
-        res => {
-          this.posting = false;
-          this.modalController.dismiss();
-          super.displayAlert(res?.message ?? 'Contraseña actualizada correctamente', 'Éxito');
-        },
-        err => {
-          this.posting = false;
-          super.displayAlert(this.errorFilter(err.error['message']));
-        }
-      );
-    } else {
-      const body: ApiAdminChangePasswordBody = {
-        password: this.new_password
-      };
-      super.fetch<any>(() => this.userService.updatePassword(body, this.userId)).subscribe(
-        res => {
-          this.posting = false;
-          this.modalController.dismiss();
-          super.displayAlert(res?.message ?? 'Contraseña actualizada correctamente', 'Éxito');
-        },
-        err => {
-          this.posting = false;
-          super.displayAlert(this.errorFilter(err.error['message']));
-        }
-      );
-    }
+    const body: ApiAdminChangePasswordBody = {
+      password: this.new_password
+    };
+    super.fetch<any>(() => this.userService.updatePassword(body, this.userId)).subscribe(
+      res => {
+        this.posting = false;
+        this.modalController.dismiss();
+        super.displayAlert(res?.message ?? 'Contraseña actualizada correctamente', 'Éxito');
+      },
+      err => {
+        this.posting = false;
+        super.displayAlert(this.errorFilter(err.error['message']));
+      }
+    );
   }
 }

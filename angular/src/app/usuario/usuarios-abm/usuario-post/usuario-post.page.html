@@ -190,11 +190,7 @@
                         <p *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null"> - Atención: Las contraseñas no coinciden</p>
                     </ion-note>
 
-                    <ion-item class="expand-full" *ngIf="!isPost && isLogged() && isAdmin">
-                        <ion-button (click)="changePassword()">Definir nueva contraseña</ion-button>
-                    </ion-item>
-
-                    <ion-item class="expand-full" *ngIf="isUserProfile">
+                    <ion-item class="expand-full" *ngIf="!isPost && isLogged()">
                         <ion-button (click)="changePassword()">Cambiar contraseña</ion-button>
                     </ion-item>
 

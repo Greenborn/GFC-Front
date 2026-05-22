@@ -99,13 +99,18 @@ export class UserService extends ApiService<User> {
   }
 
   changePassword(params: ApiChangePasswordBody, userId: number): Observable<any> {
-    return super.put(params, userId, 'change-password')
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put(
+      this.nodeUserUrl(`${this.recurso}/${userId}/password`),
+      params,
+      { headers }
+    );
   }
 
   updatePassword(params: ApiAdminChangePasswordBody, userId: number): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.put(
-      `${this.config.nodeApiBaseUrl}${this.recurso}/${userId}/password`,
+      this.nodeUserUrl(`${this.recurso}/${userId}/password`),
       params,
       { headers }
     );
