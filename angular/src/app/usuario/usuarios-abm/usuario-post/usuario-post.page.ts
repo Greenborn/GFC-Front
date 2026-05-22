@@ -367,7 +367,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         const userResult = await updateUser(profileResult?.id);
 
         this.posting = false
-        if (userResult != null && this.isUserProfile) {
+        if (this.isUserProfile) {
+          // Invalidate the cached logged-in user so the menu and profile popovers
+          // reload the latest profile image and name after a self-edition.
           this.auth.updateUser()
         }
 
