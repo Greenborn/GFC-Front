@@ -22,7 +22,7 @@
                       </h2>
                     </ion-col>
                     <ion-col size="auto" class="ion-align-self-center">
-                      <ion-button *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
+                      <ion-button class="ion-margin-start" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
                         [routerLink]="['nuevo']" size="default"
                       >
                         <ion-icon slot="start" name="add"></ion-icon>
@@ -37,6 +37,7 @@
                     placeholder="Buscar usuarios"
                     debounce="0"
                     (keyup.enter)="buscarUsuarios()"
+                    (ionBlur)="buscarUsuarios()"
                     showCancelButton="never"
                   >
                   </ion-searchbar>
