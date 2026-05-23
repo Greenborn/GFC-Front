@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Usuario } from '../usuario.model';
+import { Component, OnInit } from '@angular/core';
 
 import { AlertController, LoadingController, PopoverController } from '@ionic/angular';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { SearchBarComponentAtributo, SearchBarComponentParams } from 'src/app/shared/search-bar/search-bar.component';
 
 import { MenuAccionesComponent } from '../../shared/menu-acciones/menu-acciones.component';
@@ -30,7 +29,6 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
-  mostrarFiltro: boolean = false;
   user: User = undefined;
   miembros: ProfileExpanded[] = [];
   miembrosOrig: ProfileExpanded[] = [];
@@ -84,7 +82,6 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     public auth: AuthService,
     public rolificador: RolificadorService,
     public loadingController: LoadingController,
-    private route: ActivatedRoute,
     public configService: ConfigService,
     public UIUtilsService: UiUtilsService,
     private http: HttpClient
@@ -167,10 +164,6 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     // }
   }
 
-  toggleFiltro() {
-    this.mostrarFiltro = !this.mostrarFiltro;
-  }
-
   getTitulo(u: UserLogged) {
     const nombreUsuarios = this.rolificador.getNombreUsuarios(u.role_id)
     if (!this.rolificador.isAdmin(u)) {
@@ -215,13 +208,29 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
   // filtrarUsuarios({ atributo, query }: SearchBarComponentParams) {
   //   this.usuariosFiltrados = this.usuarios.filter(u => u[atributo].substr(0, query.length) == query)
   // }
-  async filtrarUsuarios(output: SearchBarComponentParams) {
-    if (output != undefined) {
-      console.log('buscando', output)
-      let { atributo, query } = output;
-      this.searchParams = output;
-      // this.usuarios = (await this.usuarioSvc.getUsuarios()).filter(u => u[atributo].substr(0, query.length) == query);
+  private sanitizeSearchQuery(query: string): string {
+    if (query == undefined || query == null) {
+      return '';
     }
+    let cleaned = query.toString().trim().substring(0, 100);
+    cleaned = cleaned.replace(/<|>|"|'|;|\\|\||%|`|\u0000/g, '');
+    cleaned = cleaned.replace(/--|\/\*|\*\//g, '');
+    return cleaned;
+  }
+
+  async buscarUsuarios() {
+    const term = this.sanitizeSearchQuery(this.searchQuery);
+    await this.loadMiembros(term);
+  }
+
+  private async loadMiembros(searchTerm: string = '') {
+    this.auth.user.then(u => {
+      this.user = u;
+      super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u, searchTerm)).subscribe(m => {
+        this.miembros = m;
+        this.miembrosOrig = [...m];
+      });
+    });
   }
   // get usuariosFiltrados() {
   //   if (this.user != undefined && this.profiles.length > 0) {
@@ -372,56 +381,12 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     await loading.present()
     this.auth.user.then(u => {
       this.user = u
-      // this.users = super.fetch<User[]>(() => this.userService.getAll('expand=profile'))
-      // this.miembros = super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u))
-
-      super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u)).subscribe(m => {
+      super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u, this.sanitizeSearchQuery(this.searchQuery))).subscribe(m => {
         this.miembros = m
         this.miembrosOrig = [...m]
         loading.dismiss();
-        this.route.queryParams.subscribe(params => {
-
-          // console.log('detecting query params change', params)
-
-          this.miembros = [...this.miembrosOrig]
-
-          const filterCallbacks: {
-            queryValue: string;
-            callback: Function;
-          }[] = [];
-
-          for (const f of [this.filtrado['rol'], this.filtrado['fotoclub']]) {
-            // console.log('analizando filter callback', f)
-            if (params[f.options.queryParam] != undefined) {
-              // console.log('agregando filter callback', f.options.queryParam)
-              filterCallbacks.push({
-                callback: f.filterCallback,
-                queryValue: params[f.options.queryParam]
-              })
-            }
-          }
-
-          for (const f of filterCallbacks) {
-            this.miembros = this.miembros.filter(p => f.callback(p, f.queryValue))
-          }
-        });
       })
-      // this.users = super.fetch<User[]>(() => this.rolificador.getUsers(u)).pipe(
-      //   filter()
-      // )
-      // super.fetch<Profile[]>(() => this.rolificador.getProfiles(u)).subscribe(r => this.profiles = r)
-      // if (this.rolificador.isAdmin(u)) {
-      //   this.users = super.fetch<User[]>(() => this.userService.getAll())
-      //   super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(r => this.profiles = r)
-      // } else {
-
-      // }
     })
-    // super.fetch<User[]>(() => this.userService.getAll()).subscribe(r => this.users = r)
-    // super.fetch<Profile[]>(() => this.profileService.getAll()).subscribe(r => {
-    //   this.profiles = r
-    //   // this.loading = false
-    // })
   }
 
   // para implementar busqueda con la api (sobrescribe variable de usuarios)
