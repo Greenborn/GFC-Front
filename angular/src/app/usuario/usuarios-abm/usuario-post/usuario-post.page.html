@@ -22,22 +22,33 @@
 <ion-content>
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="2" class="ion-hide-md-down">
-        <app-usuario-img [src]="img_url" [imageChangeEnabled]="true" [imageChangeClick]="ImageChangeClick"></app-usuario-img>
-        <ion-input  style="visibility:hidden;position: fixed;" #ProfileImageUpload type="file" (change)="fileUpload($event.target)" ></ion-input>
-      </ion-col>
       <ion-col size-sm="12" size-md="9" size-lg="7">
-        <ion-row>
+        <form class="w-100" [formGroup]="form" (ngSubmit)="postUsuario()">
+          <ion-row>
+            <ion-col size="12" size-md="4">
+              <ion-card class="profile-image-card">
+                <ion-card-header>
+                  <ion-card-title>Foto de perfil</ion-card-title>
+                </ion-card-header>
+                <ion-card-content class="profile-image-card-content">
+                  <app-usuario-img [src]="img_url" [imageChangeEnabled]="true" [imageChangeClick]="ImageChangeClick"></app-usuario-img>
+                  <ion-item lines="none" class="upload-button-row">
+                    <ion-button expand="block" fill="outline" size="small" type="button" (click)="ProfileImageUpload.click()">
+                      Cambiar imagen
+                    </ion-button>
+                  </ion-item>
+                  <input #ProfileImageUpload type="file" accept="image/*" style="display:none" (change)="fileUpload($event.target)" />
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
 
-            <form class="w-100" [formGroup]="form" (ngSubmit)="postUsuario()">
-              <ion-row>
-                <ion-col size="12">
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Datos del perfil</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      <ion-item class="expand-full">
+            <ion-col size="12" size-md="8">
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Datos del perfil</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <ion-item class="expand-full">
                         <ion-label position="floating">Nombre</ion-label>
                         <ion-input
                             formControlName="name" name="name"
@@ -90,18 +101,6 @@
                         </ion-item>
                       </div>
 
-                      <ion-item class="expand-full ion-hide-md-up ion-no-padding sinC">
-                        <ion-col size="10" size-md="12" >
-                          <ion-input type="file" (change)="fileUpload($event.target)"></ion-input>
-                        </ion-col>
-                        
-                        <ion-col size="2"
-                            class="ion-align-self-center ion-hide-sm-up ion-no-padding">
-                          <ion-item class="ion-no-padding sinC">
-                            <app-usuario-img [src]="img_url"></app-usuario-img>
-                          </ion-item>    
-                        </ion-col>
-                      </ion-item>
                     </ion-card-content>
                   </ion-card>
                 </ion-col>
@@ -242,8 +241,6 @@
                 </ion-col>
               </ion-row>
             </form>
-          
-        </ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>
