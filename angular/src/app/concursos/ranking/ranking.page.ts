@@ -335,16 +335,23 @@ export class RankingPage implements OnInit {
     })
   }
 
-  async verDetalle(rg: any) {
+  async verDetalle(rg: any, categoria: any) {
     const profile_id = rg.profile_id;
     const contest_id = rg.last_contest_id ?? rg.contest_id ?? null;
     const year = contest_id ? undefined : this.anio;
+
+    let section_id: number | undefined;
+    if (categoria && categoria.pestania_seccion != -1) {
+      const seccion = categoria.ranks_seccion[categoria.pestania_seccion];
+      if (seccion) section_id = seccion.id_seccion;
+    }
+
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
       message: 'Cargando...'
     });
     await loading.present();
-    this.rankingService.getDetalleRanking(profile_id, contest_id ?? undefined, year).subscribe({
+    this.rankingService.getDetalleRanking(profile_id, contest_id ?? undefined, year, section_id).subscribe({
       next: async detalle => {
         await loading.dismiss();
         const modal = await this.modalController.create({

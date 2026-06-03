@@ -29,11 +29,12 @@ export class RankingService extends ApiService<any> {
     return this.http.post(this.config.publicApiUrl('results/recalcular-ranking'), {}, { headers });
   }
 
-  getDetalleRanking(profile_id: number, contest_id?: number, year?: number): Observable<any> {
+  getDetalleRanking(profile_id: number, contest_id?: number, year?: number, section_id?: number): Observable<any> {
     const url = `${this.config.nodeApiBaseUrl}ranking/detalle`;
     let params = new HttpParams().set('profile_id', String(profile_id));
     if (contest_id != null) params = params.set('contest_id', String(contest_id));
     if (year != null) params = params.set('year', String(year));
+    if (section_id != null) params = params.set('section_id', String(section_id));
     return this.http.get<any>(url, { params });
   }
 }
