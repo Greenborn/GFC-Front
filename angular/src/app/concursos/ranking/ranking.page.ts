@@ -231,13 +231,13 @@ export class RankingPage implements OnInit {
     let ks = Object.keys(obj2)
     for (let c=0; c < ks.length; c++){
       if (obj1.hasOwnProperty( ks[c] )){
-        obj1[ks[c]] += obj2[ks[c]]
+        salida[ks[c]] = obj1[ks[c]] + obj2[ks[c]]
       } else {
-        obj1[ks[c]] = obj2[ks[c]]
+        salida[ks[c]] = obj2[ks[c]]
       }
     }
     
-    return obj1;
+    return salida;
   }
 
   arreglo_premios( obj ){
