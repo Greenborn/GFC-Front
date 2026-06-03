@@ -15,6 +15,8 @@ import { ImageService } from 'src/app/services/image.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConcursoDetailService } from '../concurso-detail.service';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 
 export interface ImagePostParams {
   image?: GFC_Image;
@@ -61,6 +63,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   public img_url = '';
   public profiles_list:any = {};
   profile: ProfileContestExpanded[];
+  showProfileSelector = true;
 
   constructor(
     private imageService: ImageService,
@@ -68,7 +71,9 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     public responsiveService: ResponsiveService,
     public concursoDetailService: ConcursoDetailService,
     public ProfileService: ProfileService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private authService: AuthService,
+    private rolificador: RolificadorService
   ) { 
     super(alertCtrl)
   }
@@ -98,6 +103,16 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     for (let c=0; c<this.profiles.length; c++){
       this.profiles_list.push({ name:this.profiles[c].profile.name + ' ' + this.profiles[c].profile.last_name, id:this.profiles[c].profile.id });   
     }
+    const user = await this.authService.user;
+    if (user && this.rolificador.esConcursante(user)) {
+      this.showProfileSelector = false;
+      const match = this.profiles_list.find(p => p.id === user.profile_id);
+      if (match) {
+        this.perfil_elegido = match;
+        this.image.profile_id = match.id;
+      }
+    }
+
     this.perfil_elegido = this.profiles_list.find(e => e.id == this.image.profile_id);
 
     if(this.profiles_list.length == 1) {
