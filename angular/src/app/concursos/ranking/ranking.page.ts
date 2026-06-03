@@ -344,22 +344,25 @@ export class RankingPage implements OnInit {
       message: 'Cargando...'
     });
     await loading.present();
-    this.rankingService.getDetalleRanking(profile_id, contest_id ?? undefined, year).subscribe(async detalle => {
-      await loading.dismiss();
-      const modal = await this.modalController.create({
-        component: RankingDetalleModalComponent,
-        cssClass: 'auto-width modal-wide',
-        componentProps: { detalle }
-      });
-      await modal.present();
-    }, async _err => {
-      await loading.dismiss();
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'No se pudo obtener el detalle de ranking.',
-        buttons: ['Aceptar']
-      });
-      await alert.present();
+    this.rankingService.getDetalleRanking(profile_id, contest_id ?? undefined, year).subscribe({
+      next: async detalle => {
+        await loading.dismiss();
+        const modal = await this.modalController.create({
+          component: RankingDetalleModalComponent,
+          cssClass: 'auto-width modal-wide',
+          componentProps: { detalle }
+        });
+        await modal.present();
+      },
+      error: async _err => {
+        await loading.dismiss();
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se pudo obtener el detalle de ranking.',
+          buttons: ['Aceptar']
+        });
+        await alert.present();
+      }
     });
   }
 }

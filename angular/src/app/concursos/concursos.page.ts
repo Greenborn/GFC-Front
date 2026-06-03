@@ -148,8 +148,8 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     forkJoin({
       concursos: concursos$,
       fotosAnio: fotosAnio$
-    }).subscribe(
-      ({ concursos, fotosAnio }) => {
+    }).subscribe({
+      next: ({ concursos, fotosAnio }) => {
         this.concursos = concursos;
         this.procesarFotosDelAnio(fotosAnio);
         this.actualizarEstadoPaginacion(concursos);
@@ -161,7 +161,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
         }
         this.loading = false;
       },
-      error => {
+      error: error => {
         console.error('Error al cargar datos:', error);
         super.fetch<Contest[]>(() =>
           this.contestService.getAll(pageParams)
@@ -176,7 +176,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
           this.loading = false;
         });
       }
-    );
+    });
   }
   toggleChipMark() {
     this.markChip = !this.markChip;
@@ -387,8 +387,8 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     this.concursoPage += 1;
     const pageParams = this.getPageParams(this.concursoPage);
 
-    this.contestService.getAll(pageParams).subscribe(
-      concursos => {
+    this.contestService.getAll(pageParams).subscribe({
+      next: concursos => {
         if (concursos && concursos.length > 0) {
           this.concursos.push(...concursos);
           const nuevosItems = this.mezclarConcursosPorPagina(concursos);
@@ -406,7 +406,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
         }
         this.loadingMore = false;
       },
-      error => {
+      error: error => {
         console.error('Error al cargar más concursos:', error);
         if (event) {
           event.target.complete();
@@ -415,7 +415,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
         this.hasMoreConcursos = false;
         this.loadingMore = false;
       }
-    );
+    });
   }
 
   // para implementar busqueda con la api (sobrescribe variable de concursos)

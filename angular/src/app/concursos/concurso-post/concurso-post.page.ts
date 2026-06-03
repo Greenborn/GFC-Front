@@ -336,8 +336,8 @@ get secycat(){
       
       super.fetch<any>(() =>
         this.contestService.postFormData<any>(model, this.concurso.id)
-      ).subscribe(
-        async contest => {
+      ).subscribe({
+        next: async contest => {
           // check y post categorias inscriptas
           const inscripcionesCategorias: Promise<ContestCategory>[] = []
           const desinscripcionesCategorias: Promise<boolean>[] = []
@@ -385,7 +385,7 @@ get secycat(){
           if (resDesinscripcionesCategorias.find(r => r === false) == undefined && resDesinscripcionesSecciones.find(r => r === false) == undefined)
             this.router.navigate(['/concursos/', contest.id]);
         },
-        async err => {
+        error: async err => {
           this.posting = false;
           (await this.alertCtrl.create({
             header: 'Error',
@@ -396,7 +396,7 @@ get secycat(){
             }]
           })).present()
         },
-      )
+      })
       // this.router.navigate(['/concursos/' + id]);
     }
     else {
@@ -450,17 +450,17 @@ get secycat(){
         category_id
       }
       console.log('agregando categoria', model)
-      super.fetch<ContestCategory>(() => this.contestCategoryService.post(model)).subscribe(
-        cc => {
+      super.fetch<ContestCategory>(() => this.contestCategoryService.post(model)).subscribe({
+        next: cc => {
           this.categoriasInscriptas.push(cc)
           resolve(cc)
         },
-        err => {
+        error: err => {
           reject(err)
           console.log('Error post contest category', err)
           this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
         }
-      )
+      })
     })
   }
 
@@ -475,8 +475,8 @@ get secycat(){
 
           this.fetch<void>(() => 
             this.contestCategoryService.delete(contestCategory.id)
-          ).subscribe(
-            _ => {
+          ).subscribe({
+            next: _ => {
               console.log('deleted contest category', contestCategory, _)
               // this.updatingSelect = true
               this.categoriasInscriptas.splice(this.categoriasInscriptas.findIndex(c => c.id == contestCategory.id), 1)
@@ -484,11 +484,11 @@ get secycat(){
               // setTimeout(() => this.updatingSelect = false)
               // this.router.navigate(['/concursos']);
             }, 
-            async err => {
+            error: async err => {
               this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
               resolve(false)
             }
-          )
+          })
           // }
         }, 
         async () => resolve(true)
@@ -502,17 +502,17 @@ get secycat(){
         section_id
       }
       console.log('agregando seccion', model)
-      super.fetch<ContestSection>(() => this.contestSectionService.post(model)).subscribe(
-        cc => {
+      super.fetch<ContestSection>(() => this.contestSectionService.post(model)).subscribe({
+        next: cc => {
           this.seccionesInscriptas.push(cc)
           resolve(cc)
         },
-        err => {
+        error: err => {
           reject(err)
           console.log('Error post contest section', err)
           this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
         }
-      )
+      })
     })
   }
 
@@ -527,8 +527,8 @@ get secycat(){
 
           this.fetch<void>(() => 
             this.contestSectionService.delete(contestSection.id)
-          ).subscribe(
-            _ => {
+          ).subscribe({
+            next: _ => {
               console.log('deleted contest section', contestSection, _)
               // this.updatingSelect = true
               this.seccionesInscriptas.splice(this.seccionesInscriptas.findIndex(c => c.id == contestSection.id), 1)
@@ -536,11 +536,11 @@ get secycat(){
               // setTimeout(() => this.updatingSelect = false)
               // this.router.navigate(['/concursos']);
             }, 
-            async err => {
+            error: async err => {
               this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
               resolve(false)
             }
-          )
+          })
           // }
         }, 
         async () => resolve(true)

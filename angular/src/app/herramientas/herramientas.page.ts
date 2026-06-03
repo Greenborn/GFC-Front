@@ -12,6 +12,7 @@ import { ModalController, LoadingController, AlertController } from '@ionic/angu
 import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
 import { RankingService } from '../services/ranking.service';
 import { ConfigService } from '../services/config/config.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-herramientas',
@@ -127,7 +128,7 @@ export class HerramientasPage implements OnInit {
       let secciones: Section[] = [];
       
       try {
-        categorias = await this.categoryService.getAll<Category>().toPromise();
+        categorias = await firstValueFrom(this.categoryService.getAll<Category>());
         console.log(`Categorías obtenidas: ${categorias.length}`);
       } catch (err) {
         console.error('Error al obtener categorías:', err);
@@ -135,7 +136,7 @@ export class HerramientasPage implements OnInit {
       }
       
       try {
-        secciones = await this.sectionService.getAll<Section>().toPromise();
+        secciones = await firstValueFrom(this.sectionService.getAll<Section>());
         console.log(`Secciones obtenidas: ${secciones.length}`);
       } catch (err) {
         console.error('Error al obtener secciones:', err);
@@ -225,7 +226,7 @@ export class HerramientasPage implements OnInit {
     const loading = await this.loadingController.create({ message: 'Recalculando ranking...' });
     await loading.present();
     try {
-      await this.rankingService.recalculateRanking().toPromise();
+      await firstValueFrom(this.rankingService.recalculateRanking());
       await loading.dismiss();
       alert('Ranking recalculado correctamente.');
     } catch (error) {
@@ -239,7 +240,7 @@ export class HerramientasPage implements OnInit {
     await loading.present();
     try {
       const url = this.config.nodeApiBaseUrl + 'contest/compiled-winners';
-      const r = await this.http.get<any>(url).toPromise();
+      const r = await firstValueFrom(this.http.get<any>(url));
       await loading.dismiss();
       if (r && r.success && r.download_url) {
         window.open(r.download_url, '_blank');
@@ -348,7 +349,7 @@ export class HerramientasPage implements OnInit {
       const token = localStorage.getItem(this.config.tokenKey);
       const headers = token ? { Authorization: 'Bearer ' + token } : {};
 
-      const response = await this.http.post<any>(url, estructura, { headers }).toPromise();
+      const response = await firstValueFrom(this.http.post<any>(url, estructura, { headers }));
       
       await loading.dismiss();
 
@@ -451,7 +452,7 @@ export class HerramientasPage implements OnInit {
         type: "FOTO_DEL_ANIO"
       };
 
-      const response = await this.http.post<any>(url, body, { headers }).toPromise();
+      const response = await firstValueFrom(this.http.post<any>(url, body, { headers }));
       
       await loading.dismiss();
 

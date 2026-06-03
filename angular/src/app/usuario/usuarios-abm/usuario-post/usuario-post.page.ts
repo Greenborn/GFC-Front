@@ -19,7 +19,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { CreateUserService } from 'src/app/services/create-user.service';
 import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
-import { Subject } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { ComparePassword } from 'src/app/modules/auth/validators/password.validator';
 
 @Component({
@@ -384,7 +384,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         if (Object.keys(profilePayload).length === 0) {
           return { id: this.profile.id };
         }
-        return super.fetch<any>(() => this.profileService.postFormData<any>(profilePayload, this.profile.id)).toPromise();
+        return firstValueFrom(super.fetch<any>(() => this.profileService.postFormData<any>(profilePayload, this.profile.id)));
       }
 
       const updateUser = async (profileResultId?: number) => {
@@ -393,7 +393,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         }
 
         const um: any = { ...userPayload };
-        return super.fetch<User>(() => this.userService.post(um, this.usuario.id)).toPromise();
+        return firstValueFrom(super.fetch<User>(() => this.userService.post(um, this.usuario.id)));
       }
 
       try {

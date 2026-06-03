@@ -252,8 +252,8 @@ obtenerPx() {
             } else {
               super.fetch<void>(() => 
                 this.profileContestService.delete(profileContest.id)
-              ).subscribe(
-                _ => {
+              ).subscribe({
+                next: _ => {
                   console.log('deleted', _)
                   this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
                   this.inscriptosJueces.splice(this.inscriptosJueces.findIndex(i => i.id == profileContest.id), 1)
@@ -262,7 +262,7 @@ obtenerPx() {
                   this.concursoDetailService.loadProfileContestsJueces()
                   // this.router.navigate(['/concursos']);
                 }, 
-                async err => {
+                error: async err => {
                   (await this.alertCtrl.create({
                     header: 'Error',
                     message: this.errorFilter(err.error['error-info'][2]),
@@ -272,7 +272,7 @@ obtenerPx() {
                     }]
                   })).present()
                 }
-              )
+              })
 
             }
           }
@@ -394,9 +394,9 @@ obtenerPx() {
               metric_id: metric.id,
               section_id
             })
-          ).subscribe(
+          ).subscribe({
             // console.log('posted new result', cr)
-            cr => {
+            next: cr => {
               this.resultadosConcurso.push({
                 ...cr,
                 image,
@@ -406,8 +406,8 @@ obtenerPx() {
               this.concursoDetailService.loadContestResults()
             },
             // cr => this.contestResults.push(cr),
-            async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
-          )
+            error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+          })
         })
         // console.log('posted image', image, 'index', i)
       } else {
@@ -423,19 +423,19 @@ obtenerPx() {
           delete model.id
           super.fetch<ContestResult>(() =>
             this.contestResultService.post(model, r_updated.id)
-          ).subscribe(
-            cr => {
+          ).subscribe({
+            next: cr => {
               console.log('updated result', cr)
               r_updated.section_id = section_id
               
               this.concursoDetailService.loadContestResults()
             },
-            err => {
+            error: err => {
               this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
               
               this.concursoDetailService.loadContestResults()
             },
-          )  
+          })  
         } else {
           console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
           
@@ -481,12 +481,12 @@ obtenerPx() {
         }, {
           text: 'Confirmar',
           handler: () => {
-            this.contestService.deleteContest(this.concurso.id).subscribe(
-              response => {
+            this.contestService.deleteContest(this.concurso.id).subscribe({
+              next: response => {
                 console.log('Concurso eliminado', response)
                 this.router.navigate(['/concursos']);
               }, 
-              async err => {
+              error: async err => {
                 const errorMsg = err?.response?.data?.message || err?.message || 'Error al eliminar el concurso';
                 (await this.alertCtrl.create({
                   header: 'Error',
@@ -497,7 +497,7 @@ obtenerPx() {
                   }]
                 })).present()
               }
-            )
+            })
           }
         }
       ]
@@ -524,24 +524,24 @@ obtenerPx() {
         }, {
           text: 'Confirmar',
           handler: () => {
-            super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe(
-              _ => {
+            super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe({
+              next: _ => {
                 // this.alertCtrl.dismiss()
                 // this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
                 this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
                 this.concursoDetailService.loadContestResults()
-                super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
-                  _ => {},
-                  async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
-                )
-                super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe(
-                  _ => {},
-                  async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
-                )
+                super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
+                  next: _ => {},
+                  error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+                })
+                super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({
+                  next: _ => {},
+                  error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+                })
 
               },
-              async err => super.displayAlert(this.errorFilter(err))
-            )
+              error: async err => super.displayAlert(this.errorFilter(err))
+            })
             // return false
           }
         }

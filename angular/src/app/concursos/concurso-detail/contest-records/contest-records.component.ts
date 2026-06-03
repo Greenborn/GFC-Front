@@ -33,16 +33,16 @@ export class ContestRecordsComponent extends ApiConsumer implements OnInit {
     this.contestRecordService.getAll({ 
       contestId: this.concurso.id,
       perPage: 100 
-    }).subscribe(
-      response => {
+    }).subscribe({
+      next: response => {
         // La API Node.js devuelve { items: [], _meta: {} }
         this.concurso.contestRecords = response.items || [];
       },
-      err => {
+      error: err => {
         console.error('Error al cargar contest records:', err);
         this.concurso.contestRecords = [];
       }
-    );
+    });
   }
 
   async addGrabacion() {
@@ -69,17 +69,17 @@ export class ContestRecordsComponent extends ApiConsumer implements OnInit {
   async eliminarGrabacion(grabacion) {
     const loading = await this.loadingController.create({ message: 'Borrando grabación' });
     await loading.present();
-    this.contestRecordService.delete(grabacion.id).subscribe(
-      ok => {
+    this.contestRecordService.delete(grabacion.id).subscribe({
+      next: ok => {
         loading.dismiss();
         this.displayAlert('Grabación eliminada exitosamente');
         this.loadContestRecords();
       },
-      err => {
+      error: err => {
         loading.dismiss();
         const errorMsg = err?.response?.data?.message || 'Ocurrió un error al intentar eliminar la grabación';
         this.displayAlert(errorMsg);
       }
-    );
+    });
   }
 }

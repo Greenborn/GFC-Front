@@ -16,7 +16,7 @@ import { User, UserLogged } from 'src/app/models/user.model';
 import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
@@ -276,7 +276,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
             try {
               const url = `${this.configService.nodeApiBaseUrl}disable_user`;
               const body = { id: p.user.id, status: newStatus };
-              const r: any = await this.http.post(url, body).toPromise();
+              const r: any = await firstValueFrom(this.http.post(url, body));
               const message = r && r.message ? r.message : 'Usuario deshabilitado';
               await this.UIUtilsService.mostrarAlert({ header: 'Acción realizada', message, buttons: [{ text: 'OK', role: 'cancel' }] });
               p.user.status = newStatus;

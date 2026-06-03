@@ -48,32 +48,32 @@ export class ContestRecordFormComponent extends ApiConsumer implements OnInit {
     
     if (this.grabacion.id === undefined) {
       // Crear nuevo registro
-      this.contestRecordService.post(this.grabacion).subscribe(
-        response => { 
+      this.contestRecordService.post(this.grabacion).subscribe({
+        next: response => { 
           super.displayAlert('Enlace de grabación guardado');
           this.UIUtilsService.dismissLoading();
           this.modalController.dismiss({ grabacion: response.data });
         },
-        err => {
+        error: err => {
           this.UIUtilsService.dismissLoading();
           const errorMsg = err?.response?.data?.message || 'Error al guardar la grabación';
           super.displayAlert(errorMsg);
         }
-      );
+      });
     } else {
       // Actualizar registro existente
-      this.contestRecordService.put(this.grabacion, this.grabacion.id).subscribe(
-        response => { 
+      this.contestRecordService.put(this.grabacion, this.grabacion.id).subscribe({
+        next: response => { 
           super.displayAlert('Enlace de grabación guardado');
           this.UIUtilsService.dismissLoading();
           this.modalController.dismiss({ grabacion: response.data });
         },
-        err => {
+        error: err => {
           this.UIUtilsService.dismissLoading();
           const errorMsg = err?.response?.data?.message || 'Error al actualizar la grabación';
           super.displayAlert(errorMsg);
         }
-      );
+      });
     }
   }
 }

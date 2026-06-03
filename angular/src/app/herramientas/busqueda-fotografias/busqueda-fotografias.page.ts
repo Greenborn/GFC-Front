@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../services/config/config.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-busqueda-fotografias',
@@ -37,7 +38,7 @@ export class BusquedaFotografiasPage {
     
     try {
       const url = this.config.publicApiUrl(`images/search?q=${encodeURIComponent(this.terminoBusqueda)}`);
-      const response: any = await this.http.get(url).toPromise();
+      const response: any = await firstValueFrom(this.http.get(url));
       
       this.resultados = response.data || response || [];
     } catch (error) {
