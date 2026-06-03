@@ -20,7 +20,7 @@ export class UsuarioImgComponent implements OnInit {
   }
 
   imageClick(){
-    this.imageChangeClick.next();
+    this.imageChangeClick.next(true);
   }
 
  

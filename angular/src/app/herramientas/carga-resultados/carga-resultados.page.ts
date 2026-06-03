@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../services/config/config.service';
 import { LoadingController } from '@ionic/angular';
+import { firstValueFrom } from 'rxjs';
 
 function normalizarNombre(nombre: string): string {
   // Quitar acentos, pasar a minúsculas, pero mantener espacios
@@ -487,11 +488,11 @@ export class CargaResultadosPage implements OnInit {
     try {
       const token = localStorage.getItem(this.config.tokenKey);
       const headers = token ? { Authorization: 'Bearer ' + token } : {};
-      const response = await this.http.post(
+      const response = await firstValueFrom(this.http.post(
         this.config.publicApiUrl('results/judging'),
         { estructura: estructuraJson },
         { headers }
-      ).toPromise();
+      ));
       await loading.dismiss();
       alert('Resultados cargados correctamente.');
     } catch (error) {

@@ -47,8 +47,10 @@ export class RolificadorService {
   }
 
 
-  getMiembros(u: UserLogged): Observable<ProfileExpanded[]> {
-    return this.profileService.getAll<ProfileExpanded>("expand=user" + (!this.isAdmin(u) ? `&filter[fotoclub_id]=${u.profile.fotoclub_id}` : '')).pipe(
+  getMiembros(u: UserLogged, q: string = ''): Observable<ProfileExpanded[]> {
+    const queryPart = q ? `&q=${encodeURIComponent(q)}` : '';
+    const params = `expand=user${!this.isAdmin(u) ? `&filter[fotoclub_id]=${u.profile.fotoclub_id}` : ''}${queryPart}`;
+    return this.profileService.getAll<ProfileExpanded>(params).pipe(
       map(profiles => {
         // console.log('mapeando perfiles', profiles)
         return profiles.filter(p => p.id == u.profile_id ? false : (this.isAdmin(u) ? true : p.user.role_id == 3))

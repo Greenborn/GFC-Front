@@ -206,13 +206,13 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
               } else {
                 super.fetch<void>(() => 
                   this.profileContestService.delete(profileContest.id)
-                ).subscribe(
-                  _ => {
+                ).subscribe({
+                  next: _ => {
                     console.log('deleted', _)
                     this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
                     this.concursoDetailService.loadProfileContests();
                   }, 
-                  async err => {
+                  error: async err => {
                     (await this.alertCtrl.create({
                       header: 'Error',
                       message: this.errorFilter(err.error['error-info'][2]),
@@ -222,7 +222,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                       }]
                     })).present()
                   }
-                )
+                })
   
               }
             }
@@ -304,12 +304,12 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
           }, {
             text: 'Confirmar',
             handler: () => {
-              this.contestService.deleteContest(this.concurso.id).subscribe(
-                response => {
+              this.contestService.deleteContest(this.concurso.id).subscribe({
+                next: response => {
                   console.log('Concurso eliminado', response)
                   this.router.navigate(['/concursos']);
                 }, 
-                async err => {
+                error: async err => {
                   const errorMsg = err?.response?.data?.message || err?.message || 'Error al eliminar el concurso';
                   (await this.alertCtrl.create({
                     header: 'Error',
@@ -320,7 +320,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                     }]
                   })).present()
                 }
-              )
+              })
             }
           }
         ]
@@ -347,22 +347,22 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
           }, {
             text: 'Confirmar',
             handler: () => {
-              super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe(
-                async _ => {
+              super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe({
+                next: async _ => {
                   this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
                   await get_all_contest_results( { "contest_id" : this.concurso.id} )
-                  super.fetch<null>(() => this.imageService.delete(image_id)).subscribe(
-                    _ => {},
-                    async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
-                  )
-                  super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe(
-                    _ => {},
-                    async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
-                  )
-  
+                  super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
+                    next: _ => {},
+                    error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+                  })
+                  super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({
+                    next: _ => {},
+                    error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+                  })
+
                 },
-                async err => super.displayAlert(this.errorFilter(err))
-              )
+                error: async err => super.displayAlert(this.errorFilter(err))
+              })
               // return false
             }
           }

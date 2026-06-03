@@ -51,23 +51,7 @@
                   </ion-col>
                 </ion-row>
 
-                <ion-item *ngIf="profiles_list.length > 1; else unicoElemento" class="w-100 ion-margin-bottom">
-                  <ion-label [position]="(image.profile_id != undefined) ? 'stacked' : 'floating'">Concursante</ion-label>
-                  <ionic-selectable  item-content #profileSelect
-                    [(ngModel)]="perfil_elegido" [items]="profiles_list"
-                    itemValueField="id"          itemTextField="name"
-                    [canSearch]="true"
-                    >
-                  </ionic-selectable>
-                  
-                </ion-item>
 
-                <ng-template #unicoElemento >
-                    <ion-item class="w-100 ion-margin-bottom">
-                    <ion-label position="floating">Concursante</ion-label>
-                    <ion-input color="dark" name="profile" [(ngModel)]="profile" disabled></ion-input>
-                  </ion-item>
-                </ng-template>
               </ion-row>
 
               <ion-row>

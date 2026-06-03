@@ -1,20 +1,17 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { IonicSelectableComponent } from 'ionic-selectable';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Image as GFC_Image } from 'src/app/models/image.model';
-import { Profile } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { Section } from 'src/app/models/section.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 
 import { ImageService } from 'src/app/services/image.service';
-import { ProfileService } from 'src/app/services/profile.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConcursoDetailService } from '../concurso-detail.service';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 export interface ImagePostParams {
   image?: GFC_Image;
@@ -42,33 +39,27 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   @Input() secciones: Section[];
 
   @Input() section_id: number = undefined;
-  
 
-  @ViewChild('profileSelect') profileSelect: IonicSelectableComponent;
   public file: File;
   public imageData: string = '';
   public cont: number = 0;
   public photo_base64:any;
-  perfil_elegido: Profile = this.ProfileService.template;
   texto_img: string = null;
   texto_sec: string = null;
   sectionPos = false;
   
   seccionesInscriptas: ContestSectionExpanded[] = [];
 
-  // public profiles: Profile[];
   public posting: boolean = false; 
   public img_url = '';
-  public profiles_list:any = {};
-  profile: ProfileContestExpanded[];
 
   constructor(
     private imageService: ImageService,
     alertCtrl: AlertController,
     public responsiveService: ResponsiveService,
     public concursoDetailService: ConcursoDetailService,
-    public ProfileService: ProfileService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private authService: AuthService
   ) { 
     super(alertCtrl)
   }
@@ -92,19 +83,11 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   async ngOnInit() {
     this.concursoDetailService.seccionesInscriptas.subscribe(cs => this.seccionesInscriptas = cs);
     this.img_url = this.image.url;
-    
-    //modificacion datos de concursantes para concatenar nombre y apellido
-    this.profiles_list = [];
-    for (let c=0; c<this.profiles.length; c++){
-      this.profiles_list.push({ name:this.profiles[c].profile.name + ' ' + this.profiles[c].profile.last_name, id:this.profiles[c].profile.id });   
-    }
-    this.perfil_elegido = this.profiles_list.find(e => e.id == this.image.profile_id);
 
-    if(this.profiles_list.length == 1) {
-      this.profile = this.profiles_list[0].name
-      this.image.profile_id = this.profiles_list[0].id
-      // console.log ("hay uno", this.profiles_list[0].name)
-     }
+    if (this.image.id == undefined) {
+      const user = await this.authService.user;
+      this.image.profile_id = user?.profile_id;
+    }
   }
 
   async postImage() {
@@ -113,13 +96,13 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
    
            this.posting = true
            let i: GFC_Image;
-           const model: any = {
-             title: this.image.title,
-             code: this.code,
-             photo_base64:this.photo_base64,
-             url:'_',
-             profile_id:  this.profiles_list.length != 1 ? this.perfil_elegido['id'] : this.image.profile_id
-           }
+            const model: any = {
+              title: this.image.title,
+              code: this.code,
+              photo_base64:this.photo_base64,
+              url:'_',
+              profile_id: this.image.profile_id
+            }
            if (this.file != undefined) {
              model.image_file = this.file
            }
@@ -142,7 +125,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
 
   datosCargados() {
     return this.image.title !=  undefined 
-        && (this.image.profile_id != undefined || this.perfil_elegido != undefined )
+        && this.image.profile_id != undefined
         && (this.section_id != undefined && this.sectionSelect != false) 
         && this.imgSource.split('/').pop() != 'undefined'
   }
@@ -160,7 +143,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     let cantSec = 0;
     let secOrigin = null;
 
-    let profile = this.profiles_list.length != 1 ? this.perfil_elegido['id'] : this.image.profile_id
+    let profile = this.image.profile_id
     this.resultados.forEach(e => {
       if (e.image.profile_id == profile && e.section_id == this.section_id){
         cantSec++
