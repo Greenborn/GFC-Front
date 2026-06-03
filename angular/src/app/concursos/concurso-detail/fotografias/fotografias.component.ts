@@ -22,7 +22,7 @@ import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-accione
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
-import { get_all } from '../../../services/contest-results.service'
+import { get_all, resultadosConcursoGeted } from '../../../services/contest-results.service'
 
 @Component({
   selector: 'app-fotografias',
@@ -278,6 +278,10 @@ export class FotografiasComponent implements OnInit {
           await this.loadPage(1, true)
         }
       }))
+
+    this.subscriptions.push(resultadosConcursoGeted.subscribe(() => {
+      this.loadPage(1, true)
+    }))
   }
 
   unsuscribes() {
