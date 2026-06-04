@@ -28,10 +28,10 @@
                 </ion-tab-button>
                 
                 <!-- TODO: cambiar el icono por uno mas acorde -->
-                <ion-tab-button tab="jueces" *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u) )">
+                <!-- <ion-tab-button tab="jueces" *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u) )">
                     <ion-icon name="ribbon-outline"></ion-icon>
                     <ion-label>Jueces</ion-label>
-                </ion-tab-button>
+                </ion-tab-button> -->
 
                 <ion-tab-button tab="concursantes" *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u))">
                   <ion-icon name="people-outline"></ion-icon>

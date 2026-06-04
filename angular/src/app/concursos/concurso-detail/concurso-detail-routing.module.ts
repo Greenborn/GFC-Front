@@ -5,7 +5,7 @@ import { ConcursantesComponent } from './concursantes/concursantes.component';
 import { ConcursoDetailPage } from './concurso-detail.page';
 import { FotografiasComponent } from './fotografias/fotografias.component';
 import { InformacionComponent } from './informacion/informacion.component';
-import { JuecesComponent } from './jueces/jueces.component';
+// import { JuecesComponent } from './jueces/jueces.component';
 import { JuzgamientoComponent } from './juzgamiento/juzgamiento.component';
 
 const routes: Routes = [
@@ -19,9 +19,9 @@ const routes: Routes = [
       {
         path: 'fotografias',  component: FotografiasComponent,
       },
-      {
-        path: 'jueces',       component: JuecesComponent,
-      },
+      // {
+      //   path: 'jueces',       component: JuecesComponent,
+      // },
       {
         path: 'juzgamiento',  component: JuzgamientoComponent,
       },
