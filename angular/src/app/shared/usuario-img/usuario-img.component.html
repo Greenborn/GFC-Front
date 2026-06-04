@@ -1,8 +1,6 @@
-
-<ion-avatar class="img-thumb">
-
+<div class="img-thumb">
   <div class="cont">
-    <ion-icon *ngIf="src == '' || src == undefined" size="large" name="person-circle-outline"></ion-icon>
-    <span *ngIf="!(src == '' || src == undefined)"><img src="{{src}}" /></span>
+    <ion-icon *ngIf="!src || imgError" size="large" name="person-circle-outline"></ion-icon>
+    <span *ngIf="src && !imgError"><img src="{{src}}" (error)="imgError = true" /></span>
   </div>
-</ion-avatar>
+</div>

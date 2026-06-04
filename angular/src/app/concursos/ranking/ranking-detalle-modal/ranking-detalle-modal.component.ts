@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { VerFotografiasComponent } from '../../concurso-detail/ver-fotografias/ver-fotografias.component';
 
 @Component({
   selector: 'app-ranking-detalle-modal',
@@ -10,11 +12,14 @@ import { ConfigService } from 'src/app/services/config/config.service';
 })
 export class RankingDetalleModalComponent {
   @Input() detalle: any;
+  @Input() categoriaNombre = '';
+  @Input() seccionNombre = 'General';
 
   constructor(
     public modalController: ModalController,
     public responsiveService: ResponsiveService,
-    public configService: ConfigService
+    public configService: ConfigService,
+    private UIUtilsService: UiUtilsService
   ) {}
 
   cerrar() {
@@ -80,5 +85,48 @@ export class RankingDetalleModalComponent {
       if (pa > pb) return 1;
       return 0;
     });
+  }
+
+  openPhotoModal(img: any, results?: any[]) {
+    const source = results || this.detalle?.results || [];
+    const sortedResults = this.sortResults(source);
+    const allImages: any[] = [];
+
+    sortedResults.forEach((r: any) => {
+      const sortedImages = this.sortImages(r.images || []);
+      sortedImages.forEach((i: any) => {
+        const fullUrl = i.url || i.image_url || i.full_url || i.original_url || i.thumbnail_url;
+        allImages.push({
+          image: {
+            id: i.id || i.contest_image_id,
+            title: i.title,
+            url: fullUrl,
+            thumbnail: i.thumbnail_url,
+            code: i.code || '',
+            profile: {
+              name: this.detalle?.profile?.name || '',
+              last_name: this.detalle?.profile?.last_name || ''
+            }
+          },
+          section: r.section ? { name: typeof r.section === 'string' ? r.section : r.section?.name } : null,
+          metric: {
+            prize: i.metric?.prize,
+            score: i.metric?.score
+          }
+        });
+      });
+    });
+
+    const index = allImages.findIndex(
+      (item: any) => item.image.thumbnail === (img.thumbnail_url || img.url)
+    );
+
+    if (index === -1) return;
+
+    this.UIUtilsService.mostrarModal(
+      VerFotografiasComponent,
+      { index, all_data: allImages, open: false },
+      true
+    );
   }
 }

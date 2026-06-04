@@ -341,9 +341,13 @@ export class RankingPage implements OnInit {
     const year = contest_id ? undefined : this.anio;
 
     let section_id: number | undefined;
+    let seccionNombre = 'General';
     if (categoria && categoria.pestania_seccion != -1) {
       const seccion = categoria.ranks_seccion[categoria.pestania_seccion];
-      if (seccion) section_id = seccion.id_seccion;
+      if (seccion) {
+        section_id = seccion.id_seccion;
+        seccionNombre = seccion.nombre_seccion;
+      }
     }
 
     const loading = await this.loadingController.create({
@@ -357,7 +361,11 @@ export class RankingPage implements OnInit {
         const modal = await this.modalController.create({
           component: RankingDetalleModalComponent,
           cssClass: 'auto-width modal-wide',
-          componentProps: { detalle }
+          componentProps: {
+            detalle,
+            categoriaNombre: categoria?.nombre_categoria || '',
+            seccionNombre
+          }
         });
         await modal.present();
       },

@@ -13,6 +13,8 @@ export class UsuarioImgComponent implements OnInit {
   @Input() imageChangeClick:Subject<any> = new Subject();
   @Input() imageChangeEnabled:Boolean = false;
 
+  imgError = false;
+
   constructor() { }
 
   ngOnInit() {
