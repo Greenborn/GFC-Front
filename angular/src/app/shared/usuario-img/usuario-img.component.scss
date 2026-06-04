@@ -1,28 +1,32 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .img-thumb {
-    width:       100% !important;
-    padding-top: 100%;
-    position:    relative;
+    width: 100%;
+    aspect-ratio: 1;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
     user-select: none;
 }
 
-.img-thumb .cont{
-    position:           absolute;
-    top:                0%;
-    left:               0%;
-    width:              100%;
-    height:             100%;
-    border-radius:      100%;
-    overflow:           hidden;
-    text-align:         center;
+.img-thumb .cont {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
 }
 
-.img-thumb .cont ion-icon{
-    width:    100%;
-    height:   100%;
-    
+.img-thumb .cont ion-icon {
+    width: 100%;
+    height: 100%;
 }
 
-.img-thumb .cont img{
+.img-thumb .cont img {
     width: 100%;
     height: 100%;
     object-fit: cover;

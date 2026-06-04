@@ -4,3 +4,40 @@ h2 {
 img {
   object-fit: cover;
 }
+
+.participante-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.participante-avatar-col {
+  flex: 0 0 auto;
+  width: 30%;
+  max-width: 120px;
+}
+
+.participante-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.2rem;
+  flex: 1;
+}
+
+.participante-lista li {
+  margin: 0;
+}
+
+.card-row {
+  @media (min-width: 768px) {
+    ion-col {
+      display: flex;
+      ion-card {
+        flex: 1;
+      }
+    }
+  }
+}
+
