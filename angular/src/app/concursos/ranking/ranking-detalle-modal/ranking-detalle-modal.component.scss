@@ -5,6 +5,10 @@ img {
   object-fit: cover;
 }
 
+.img-clickable {
+  cursor: pointer;
+}
+
 .participante-layout {
   display: flex;
   flex-wrap: wrap;

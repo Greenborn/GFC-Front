@@ -3,11 +3,8 @@
     <ion-toolbar>
       <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
         <ion-col>
-          <h5 class="ion-text-wrap" *ngIf="!detalle?.items">
-            {{ detalle?.contest?.name }}
-          </h5>
-          <h5 class="ion-text-wrap" *ngIf="detalle?.items">
-            Detalle de ranking - Año {{ detalle?.year }}
+          <h5 class="ion-text-wrap">
+            {{ categoriaNombre }} - {{ seccionNombre }} - Año {{ detalle?.year }}
           </h5>
         </ion-col>
         <ion-col size="1" class="ion-hide-md-down">
@@ -98,7 +95,7 @@
                           <ion-col size="3">{{ r.category }}</ion-col>
                           <ion-col size="3">{{ r.section }}</ion-col>
                           <ion-col size="2">
-                            <img [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" />
+                            <img class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" (click)="openPhotoModal(img)" />
                           </ion-col>
                           <ion-col size="2" class="cap">{{ img.title }}</ion-col>
                           <ion-col size="2">
@@ -158,7 +155,7 @@
                             <ion-col size="3">{{ r.category }}</ion-col>
                             <ion-col size="3">{{ r.section }}</ion-col>
                             <ion-col size="2">
-                              <img [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" />
+                              <img class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" (click)="openPhotoModal(img, it.results)" />
                             </ion-col>
                             <ion-col size="2" class="cap">{{ img.title }}</ion-col>
                             <ion-col size="2">
