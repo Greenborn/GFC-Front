@@ -149,7 +149,6 @@ export class FotografiasComponent implements OnInit {
       this.hasMorePages = true;
       this.resultadosConcurso = [];
       this.resultadosConcursoOrig = [];
-      this.puntajes = [];
       this.loadingInitial = true;
       if (!showLoading) {
         this.mostrarPropias = false;
