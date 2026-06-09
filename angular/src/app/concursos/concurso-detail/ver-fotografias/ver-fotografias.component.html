@@ -1,4 +1,4 @@
-<div class="visor-container">
+<div class="visor-container" [class.fs]="isFullscreen">
 
   <div class="visor-main" [class.desktop]="responsiveService.isDesktop">
 
@@ -12,18 +12,57 @@
         <ion-icon name="chevron-back-outline"></ion-icon>
       </button>
 
-      <div class="image-wrapper">
-        <img
-          (ionError)="yepImg = false"
-          *ngIf="yepImg"
-          [src]="all_data[index].image.url != null ? configService.imageUrl(all_data[index].image.url) : ''"
-          class="img-det-modal"
-        />
+      <div class="image-wrapper"
+           [class.grabbable]="scale > 1 && !isDragging"
+           [class.grabbing]="isDragging"
+           (mousedown)="onDragStart($event)"
+           (mousemove)="onDragMove($event)"
+           (mouseup)="onDragEnd($event)"
+           (mouseleave)="onDragEnd($event)"
+           (touchstart)="onTouchStart($event)"
+           (touchmove)="onTouchMove($event)"
+           (touchend)="onTouchEnd($event)"
+           (wheel)="onWheel($event)">
+
+        <div class="image-transform"
+             [style.transform]="imageTransform">
+          <img
+            (error)="yepImg = false"
+            (load)="onImageLoad($event)"
+            *ngIf="yepImg"
+            [src]="all_data[index].image.url != null ? configService.imageUrl(all_data[index].image.url) : ''"
+            class="img-det-modal"
+            draggable="false"
+          />
+        </div>
+
       </div>
 
       <button class="btn-nav btn-next" (click)="siguiente()">
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </button>
+
+      <div class="zoom-controls">
+        <button class="zoom-btn" (click)="zoomOut()" [disabled]="scale <= minScale">
+          <ion-icon name="remove-outline"></ion-icon>
+        </button>
+        <span class="zoom-level">{{ scale | number:'1.1-1' }}x</span>
+        <button class="zoom-btn" (click)="zoomIn()" [disabled]="scale >= maxScale">
+          <ion-icon name="add-outline"></ion-icon>
+        </button>
+        <span class="zoom-divider"></span>
+        <button class="zoom-btn" (click)="fit()" title="Ajustar">
+          <ion-icon name="scan-outline"></ion-icon>
+        </button>
+        <span class="zoom-divider"></span>
+        <button class="zoom-btn" (click)="toggleFullscreen()" [title]="isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'">
+          <ion-icon [name]="isFullscreen ? 'contract-outline' : 'expand-outline'"></ion-icon>
+        </button>
+        <span class="zoom-divider" *ngIf="canDownload"></span>
+        <button class="zoom-btn" *ngIf="canDownload" (click)="downloadImage()" title="Descargar imagen">
+          <ion-icon name="download-outline"></ion-icon>
+        </button>
+      </div>
 
     </div>
 
