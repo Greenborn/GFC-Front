@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Filtros y orden</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Ordenar por</ion-label>
+      <ion-button *ngIf="hasSort" (click)="toggleSortDir()" fill="clear" size="small">
+        <ion-icon [name]="localSortAsc ? 'arrow-up-outline' : 'arrow-down-outline'" slot="start"></ion-icon>
+        {{ localSortAsc ? 'Asc' : 'Desc' }}
+      </ion-button>
+    </ion-list-header>
+    <ion-radio-group [value]="localSortBy" (ionChange)="onSortChange($event)">
+      <ion-item lines="none">
+        <ion-label>Sin ordenar</ion-label>
+        <ion-radio value=""></ion-radio>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Título</ion-label>
+        <ion-radio value="title"></ion-radio>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Autor</ion-label>
+        <ion-radio value="author"></ion-radio>
+      </ion-item>
+      <ion-item lines="none" [disabled]="!isContestJudged">
+        <ion-label>Premio</ion-label>
+        <ion-radio value="prize"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>Secciones</ion-list-header>
+    <ion-chip (click)="seccionAll()" [color]="todasSecciones ? 'primary' : 'medium'">
+      <ion-label>Todas</ion-label>
+    </ion-chip>
+    <ion-chip *ngFor="let s of seccionesInscriptas"
+      (click)="toggleSeccion(s.section.id)"
+      [color]="localSecciones.has(s.section.id) ? 'primary' : 'medium'">
+      <ion-label>{{ s.section.name }}</ion-label>
+    </ion-chip>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>Categorías</ion-list-header>
+    <ion-chip (click)="categoriaAll()" [color]="todasCategorias ? 'primary' : 'medium'">
+      <ion-label>Todos</ion-label>
+    </ion-chip>
+    <ion-chip *ngFor="let c of categoriasInscriptas"
+      (click)="toggleCategoria(c.category.id)"
+      [color]="localCategorias.has(c.category.id) ? 'primary' : 'medium'">
+      <ion-label>{{ c.category.name }}</ion-label>
+    </ion-chip>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>Premios</ion-list-header>
+    <ion-chip (click)="premioAll()" [color]="todosPremios ? 'primary' : 'medium'">
+      <ion-label>Todos</ion-label>
+    </ion-chip>
+    <ion-chip *ngFor="let p of puntajes"
+      (click)="togglePremio(p.prize)"
+      [color]="localPremios.has(p.prize) ? 'primary' : 'medium'">
+      <ion-label>{{ p.prize }}</ion-label>
+    </ion-chip>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>Filtrar por autor</ion-list-header>
+    <ion-item>
+      <ion-input [(ngModel)]="localFiltroAutor" placeholder="Nombre del autor"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="isContestJudged">
+    <ion-list-header>Filtrar por código</ion-list-header>
+    <ion-item>
+      <ion-input [(ngModel)]="localFiltroCodigo" placeholder="Código de fotografía"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" fill="clear" color="danger" (click)="resetAll()" class="ion-margin">
+    <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+    Limpiar filtros
+  </ion-button>
+</ion-content>
