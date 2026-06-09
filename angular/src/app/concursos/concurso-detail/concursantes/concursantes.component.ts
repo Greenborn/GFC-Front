@@ -93,9 +93,6 @@ export class ConcursantesComponent implements OnInit {
       this.concursoDetailService.inscriptos.subscribe(is => {
         this.inscriptos = is
         this.UIUtilsService.dismissLoading()
-        setTimeout(() => {
-            
-        }, 500)
       })
     )
     this.subscriptions.push(

@@ -108,11 +108,15 @@ export class ConcursoDetailService implements OnInit {
     this.concurso.pipe(
       filter(c => c.id != undefined)
     ).subscribe(c => {
-      // const s = this.rolificador.getConcursantesInscriptos(u, c.id).subscribe(is => {
-      const s = this.profileContestService.getAll<ProfileContestExpanded>(`expand=profile,profile.user,profile.fotoclub&filter[contest_id]=${c.id}`).subscribe(is => {
-        // console.log('updated inscriptos', is)
-        this.inscriptos.next(is)
-        s.unsubscribe()
+      const s = this.profileContestService.getAll<ProfileContestExpanded>(`expand=profile,profile.user,profile.fotoclub&filter[contest_id]=${c.id}`).subscribe({
+        next: is => {
+          this.inscriptos.next(is)
+          s.unsubscribe()
+        },
+        error: () => {
+          this.inscriptos.next([])
+          s.unsubscribe()
+        }
       })
     })
   }

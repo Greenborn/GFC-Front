@@ -16,7 +16,7 @@
                     <ion-label>Jueces</ion-label>
                 </ion-tab-button> -->
 
-                <ion-tab-button tab="concursantes" *ngIf="!concurso.active || (rolificador.esDelegado(u) || rolificador.isAdmin(u))">
+                <ion-tab-button tab="concursantes" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || concurso.judged">
                   <ion-icon name="people-outline"></ion-icon>
                   <ion-label>Concursantes</ion-label>
                 </ion-tab-button>
