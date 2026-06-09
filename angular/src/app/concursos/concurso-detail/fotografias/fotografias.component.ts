@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 
-import { Category } from 'src/app/models/category.model';
 import { Contest } from 'src/app/models/contest.model';
 import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
@@ -9,20 +7,21 @@ import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { Image } from 'src/app/models/image.model';
 import { Metric } from 'src/app/models/metric.model';
-import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
+import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
-import { Section } from 'src/app/models/section.model';
 import { UserLogged } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestService } from 'src/app/services/contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
-import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
 import { get_all, resultadosConcursoGeted } from '../../../services/contest-results.service'
+import { FiltrosOrdenModalComponent, FiltrosOrdenState } from './filtros-orden-modal.component';
+import { MetricAbmService } from 'src/app/services/metric-abm.service';
 
 @Component({
   selector: 'app-fotografias',
@@ -41,57 +40,19 @@ export class FotografiasComponent implements OnInit {
   fotoclubs: Fotoclub[] = [];
   user: UserLogged;
 
-  public atributosBusqueda: SearchBarComponentAtributo[] = [
-    {
-      valor: 'title',
-      valorMostrado: 'Título',
-      callback: (c: ContestResultExpanded, query: string) => c.image.title.match(new RegExp(`${query}`, 'i'))
-    },
-    {
-      valor: 'code',
-      valorMostrado: 'Código',
-      callback: (c: ContestResultExpanded, query: string) => c.image.code.match(new RegExp(`${query}`, 'i'))
-    },
-    {
-      valor: 'fotoclub',
-      valorMostrado: 'Fotoclub',
-      callback: (c: ContestResultExpanded, query: string) => {
-        const fotoclubName = this.getFotoclubName(c.image.profile_id);
-        return fotoclubName.toLowerCase().includes(query.toLowerCase());
-      }
-    },
-    {
-      valor: 'seccion',
-      valorMostrado: 'Sección',
-      callback: (c: ContestResultExpanded, query: string) => c.section?.name.toLowerCase().includes(query.toLowerCase())
-    },
-    {
-      valor: 'categoria',
-      valorMostrado: 'Categoría',
-      callback: (c: ContestResultExpanded, query: string) => {
-        const inscripto = this.inscriptos.find(i => i.profile_id == c.image.profile_id);
-        if (inscripto) {
-          const categoria = this.categoriasInscriptas.find(cat => cat.category_id === inscripto.category_id);
-          return categoria?.category?.name.toLowerCase().includes(query.toLowerCase());
-        }
-        return false;
-      }
-    }
-  ];
-    get atributosBusquedaFiltrados(): SearchBarComponentAtributo[] {
-      if (this.rolificador && this.user && this.rolificador.esConcursante(this.user) && this.isContestNotFin) {
-        return this.atributosBusqueda.filter(a => ['title','categoria','seccion'].includes(a.valor));
-      }
-      return this.atributosBusqueda;
-    }
-  public filtrado: any[] = [];
   puntajes: Metric[] = [];
 
-  public seccionSeleccionada: Section = null;
-  public categoriaSeleccionada: Category = null;
-  public fotoclubSeleccionado: string = null;
-  public updatingInscriptos: boolean = false;
-  mostrarFiltro: boolean = false;
+  sidebarVisible: boolean = false;
+  sortBy: string = '';
+  sortAsc: boolean = true;
+  seccionesSeleccionadas: Set<number> = new Set();
+  categoriasSeleccionadas: Set<number> = new Set();
+  premiosSeleccionados: Set<string> = new Set();
+  filtroAutor: string = '';
+  filtroCodigo: string = '';
+  terminoBusqueda: string = '';
+  private filterTimeout: any;
+
   public subscriptions = []
 
   public pageNumber = 1;
@@ -99,105 +60,73 @@ export class FotografiasComponent implements OnInit {
   public hasMorePages = true;
   public loadingPage = false;
   public loadingInitial = false;
-  public currentQueryParams: any = {};
 
   constructor(
     public concursoDetailService: ConcursoDetailService,
     public contestService: ContestService,
     public UIUtilsService: UiUtilsService,
-    private route: ActivatedRoute,
+    public responsiveService: ResponsiveService,
     private configService: ConfigService,
     public rolificador: RolificadorService,
     public auth: AuthService,
+    private metricAbmService: MetricAbmService,
   ) {
-    this.filtrado['metric'] = {
-      options: {
-        valueProp: 'score',
-        titleProp: 'prize',
-        queryParam: 'score'
-      },
-      filterCallback: (c: ContestResultExpanded, atributoValue: string) => {
-        return c.metric.score == parseInt(atributoValue)
-      }
-    }
-
-    this.filtrado['perfil'] = {
-      options: {
-        valueProp: 'id',
-        titleProp: (p: Profile) => `${(p.name)[0].toUpperCase()}${p.name.substr(1)} ${(p.last_name)[0].toUpperCase()}${p.last_name.substr(1)}`,
-        queryParam: 'concursante_id'
-      },
-      filterCallback: (c: ContestResultExpanded, atributoValue: string) => {
-        return c.image.profile_id == parseInt(atributoValue)
-      }
-    }
-
     this.subscribes()
   }
+
   get isContestNotFin() {
     let finalizado = (new Date()).getTime() >= (new Date(this.concurso.end_date)).getTime()
     return !(finalizado && this.concurso.judged)
+  }
+
+  get isContestJudged(): boolean {
+    let finalizado = (new Date()).getTime() >= (new Date(this.concurso.end_date)).getTime()
+    return finalizado && this.concurso.judged
   }
 
   get aspecto() {
     return document.body.classList.contains("dark")
   }
 
-  isLogedIn() { //agregado para seguir manteniendo el servicio auth como private
+  get filtrosActivosCount(): number {
+    let count = 0;
+    if (this.seccionesSeleccionadas.size > 0) count++;
+    if (this.categoriasSeleccionadas.size > 0) count++;
+    if (this.premiosSeleccionados.size > 0) count++;
+    if (this.filtroAutor) count++;
+    if (this.filtroCodigo) count++;
+    return count;
+  }
+
+  get sortLabel(): string {
+    if (!this.sortBy) return '';
+    const labels = { title: 'Título', author: 'Autor', prize: 'Premio' };
+    const dir = this.sortAsc ? '↑' : '↓';
+    return `${labels[this.sortBy] || this.sortBy} ${dir}`;
+  }
+
+  isLogedIn() {
     return this.auth.loggedIn;
   }
 
   setResultadosConcurso(rs) {
     this.resultadosConcurso = rs || [];
 
-    // Asignar el objeto section correspondiente a cada resultado
     this.resultadosConcurso.forEach(e => {
       e.section = this.seccionesInscriptas.find(s => s.section.id === e.section_id)?.section;
     });
 
     this.resultadosConcursoOrig = [...this.resultadosConcurso];
-    this.updatePuntajes();
-    this.applyQueryFilters();
   }
 
-  updatePuntajes() {
-    this.puntajes = [];
-    this.resultadosConcursoOrig.forEach(e => {
-      if (e?.metric?.prize != '0' && e?.metric?.prize != null && e?.metric?.prize != undefined && e?.metric?.prize != '') {
-        if (this.puntajes.find(element => element.score == e.metric.score) == undefined) {
-          this.puntajes.push(e.metric)
-        }
-      }
-    });
+  get resultadosConcursoFiltrados() {
+    if (this.resultadosConcurso == undefined) {
+      return []
+    }
+    return this.resultadosConcurso
   }
 
-  applyQueryFilters() {
-    this.resultadosConcurso = [...this.resultadosConcursoOrig];
-
-    if (!this.currentQueryParams) {
-      return;
-    }
-
-    const filterCallbacks: {
-      queryValue: string;
-      callback: Function;
-    }[] = [];
-
-    for (const f of [this.filtrado['metric'], this.filtrado['perfil']]) {
-      if (this.currentQueryParams[f.options.queryParam] != undefined) {
-        filterCallbacks.push({
-          callback: f.filterCallback,
-          queryValue: this.currentQueryParams[f.options.queryParam]
-        });
-      }
-    }
-
-    for (const f of filterCallbacks) {
-      this.resultadosConcurso = this.resultadosConcurso.filter(p => f.callback(p, f.queryValue));
-    }
-  }
-
-  async loadPage(page: number = 1, reset: boolean = false, event?: any) {
+  async loadPage(page: number = 1, reset: boolean = false, event?: any, showLoading: boolean = true) {
     if (this.loadingPage || !this.concurso?.id) {
       if (event?.target) {
         event.target.complete();
@@ -220,7 +149,15 @@ export class FotografiasComponent implements OnInit {
       contest_id: this.concurso.id,
       page,
       perPage: this.pageSize,
-      present_loading: reset
+      present_loading: showLoading && reset,
+      search: this.terminoBusqueda || undefined,
+      sort: this.sortBy || undefined,
+      sort_dir: this.sortBy ? (this.sortAsc ? 'asc' : 'desc') : undefined,
+      section_ids: this.seccionesSeleccionadas.size > 0 ? [...this.seccionesSeleccionadas] : undefined,
+      category_ids: this.categoriasSeleccionadas.size > 0 ? [...this.categoriasSeleccionadas] : undefined,
+      prizes: this.premiosSeleccionados.size > 0 ? [...this.premiosSeleccionados] : undefined,
+      author: this.filtroAutor || undefined,
+      code: this.filtroCodigo || undefined,
     });
 
     if (event?.target) {
@@ -267,15 +204,13 @@ export class FotografiasComponent implements OnInit {
       cs => { this.concursantes = cs; }
     ))
     this.subscriptions.push(this.concursoDetailService.inscriptos.subscribe(cs =>{
-      this.updatingInscriptos = true
       this.inscriptos = cs
-      setTimeout(() => this.updatingInscriptos = false)
     }))
     if (this.concurso === null)
       this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
         this.concurso = c
         if (this.concurso && this.concurso.id) {
-          await this.loadPage(1, true)
+          await this.loadPage(1, true, null, true)
         }
       }))
 
@@ -292,36 +227,164 @@ export class FotografiasComponent implements OnInit {
   }
 
   async ngOnInit() {
-    if (this.rolificador.isAdmin(await this.auth.user) || this.isContestNotFin) {
-      this.atributosBusqueda.push({
-        valor: 'username',
-        valorMostrado: 'Autor',
-        callback: (c: ContestResultExpanded, query: string) => `${c.image.profile.name} ${c.image.profile.last_name}`.match(new RegExp(`${query}`, 'i'))
-      })
-    }
-
     this.auth.user.then(u => this.user = u);
+    this.cargarMetricas();
+  }
 
-    this.route.queryParams.subscribe(params => {
-      this.currentQueryParams = params;
-      this.applyQueryFilters();
+  cargarMetricas() {
+    this.metricAbmService.getAll().subscribe(s => {
+      this.puntajes = s;
     });
   }
 
   async ngOnDestroy() {
+    if (this.filterTimeout) clearTimeout(this.filterTimeout);
     this.unsuscribes()
   }
 
+  toggleSidebar() {
+    if (this.responsiveService.isDesktop) {
+      this.sidebarVisible = !this.sidebarVisible;
+    } else {
+      this.openFilterModal();
+    }
+  }
+
+  async openFilterModal() {
+    const result = await this.UIUtilsService.mostrarModal(
+      FiltrosOrdenModalComponent,
+      {
+        sortBy: this.sortBy,
+        sortAsc: this.sortAsc,
+        seccionesInscriptas: this.seccionesInscriptas,
+        categoriasInscriptas: this.categoriasInscriptas,
+        puntajes: this.puntajes,
+        isContestJudged: this.isContestJudged,
+        seccionesSeleccionadas: [...this.seccionesSeleccionadas],
+        categoriasSeleccionadas: [...this.categoriasSeleccionadas],
+        premiosSeleccionados: [...this.premiosSeleccionados],
+        filtroAutor: this.filtroAutor,
+        filtroCodigo: this.filtroCodigo,
+      },
+      true
+    );
+
+    if (!result) return;
+
+      const state = result as FiltrosOrdenState;
+    if (state.sortBy !== undefined) this.sortBy = state.sortBy || '';
+    if (state.sortAsc !== undefined) this.sortAsc = state.sortAsc;
+    this.seccionesSeleccionadas = new Set(state.seccionesSeleccionadas || []);
+    this.categoriasSeleccionadas = new Set(state.categoriasSeleccionadas || []);
+    this.premiosSeleccionados = new Set(state.premiosSeleccionados || []);
+    this.filtroAutor = state.filtroAutor || '';
+    this.filtroCodigo = state.filtroCodigo || '';
+    this.loadPage(1, true, null, false);
+  }
+
+  onFilterInput() {
+    if (this.filterTimeout) clearTimeout(this.filterTimeout);
+    this.filterTimeout = setTimeout(() => {
+      this.loadPage(1, true, null, false);
+    }, 1000);
+  }
+
+  onSearchChange(event: any) {
+    this.terminoBusqueda = event.detail?.value || '';
+    this.loadPage(1, true, null, false);
+  }
+
+  onSortChange(event: any) {
+    this.sortBy = event.detail.value || '';
+    this.loadPage(1, true, null, false);
+  }
+
+  setSortBy(value: string) {
+    if (this.sortBy === value) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortBy = value;
+      this.sortAsc = true;
+    }
+    this.loadPage(1, true, null, false);
+  }
+
+  toggleSortDir() {
+    this.sortAsc = !this.sortAsc;
+    this.loadPage(1, true, null, false);
+  }
+
+  toggleSeccion(id: number) {
+    if (this.seccionesSeleccionadas.has(id))
+      this.seccionesSeleccionadas.delete(id);
+    else
+      this.seccionesSeleccionadas.add(id);
+    this.loadPage(1, true, null, false);
+  }
+
+  seccionAll() {
+    this.seccionesSeleccionadas.clear();
+    this.loadPage(1, true, null, false);
+  }
+
+  get todasSecciones(): boolean {
+    return this.seccionesSeleccionadas.size === 0;
+  }
+
+  toggleCategoria(id: number) {
+    if (this.categoriasSeleccionadas.has(id))
+      this.categoriasSeleccionadas.delete(id);
+    else
+      this.categoriasSeleccionadas.add(id);
+    this.loadPage(1, true, null, false);
+  }
+
+  categoriaAll() {
+    this.categoriasSeleccionadas.clear();
+    this.loadPage(1, true, null, false);
+  }
+
+  get todasCategorias(): boolean {
+    return this.categoriasSeleccionadas.size === 0;
+  }
+
+  togglePremio(prize: string) {
+    if (this.premiosSeleccionados.has(prize))
+      this.premiosSeleccionados.delete(prize);
+    else
+      this.premiosSeleccionados.add(prize);
+    this.loadPage(1, true, null, false);
+  }
+
+  premioAll() {
+    this.premiosSeleccionados.clear();
+    this.loadPage(1, true, null, false);
+  }
+
+  get todosPremios(): boolean {
+    return this.premiosSeleccionados.size === 0;
+  }
+
+  limpiarFiltros() {
+    if (this.filterTimeout) clearTimeout(this.filterTimeout);
+    this.sortBy = '';
+    this.sortAsc = true;
+    this.terminoBusqueda = '';
+    this.seccionesSeleccionadas.clear();
+    this.categoriasSeleccionadas.clear();
+    this.premiosSeleccionados.clear();
+    this.filtroAutor = '';
+    this.filtroCodigo = '';
+    this.loadPage(1, true, null, false);
+  }
+
   getThumbUrl(obj: any, thumb_id: number = 1) {
-    //si no tiene miniatura porque no tiene imagen
     if (obj == null) {
       return '';
     }
-    //si llega un objeto no iterable
     if (obj !== undefined && (obj.length === undefined || obj.length == 0)) {
       return this.configService.imageUrl(obj.url);
     }
-    //si se trata de un arreglo
     for (let c = 0; c < obj.length; c++) {
       if (obj[c].thumbnail_type == thumb_id) {
         return this.configService.imageUrl(obj[c].url);
@@ -333,62 +396,6 @@ export class FotografiasComponent implements OnInit {
   checkPermissions(reg: any) {
     return this.contestService.isActive(this.concurso) &&
       (this.user != undefined ? (this.rolificador.esDelegado(this.user) || this.rolificador.isAdmin(this.user) || (this.rolificador.esConcursante(this.user) && reg?.image?.profile_id == this.user.profile_id)) : false)
-  }
-
-  get inscriptosProfiles(): Profile[] {
-    const inscriptos = this.categoriaSeleccionada != null ? this.inscriptos.filter(i => i.category_id == this.categoriaSeleccionada.id) : this.inscriptos
-    return inscriptos.map(i => i.profile)
-  }
-  get inscriptosEmptyMessage(): string {
-    return 'No hay inscriptos'
-  }
-
-  get fotoclubsDisponibles(): string[] {
-    const fotoclubs = new Set<string>();
-    this.inscriptos.forEach(inscripto => {
-      if (inscripto.profile.fotoclub?.name) {
-        fotoclubs.add(inscripto.profile.fotoclub.name);
-      }
-    });
-    return Array.from(fotoclubs).sort();
-  }
-
-  get hayFiltrosActivos(): boolean {
-    return this.categoriaSeleccionada != null || 
-           this.seccionSeleccionada != null || 
-           this.fotoclubSeleccionado != null;
-  }
-
-  get resultadosConcursoFiltrados() {
-    if (this.resultadosConcurso == undefined) {
-      return []
-    }
-    return this.resultadosConcurso.filter(rc => {
-      // Filtro por categoría
-      let cond1: boolean = true;
-      if (this.categoriaSeleccionada != undefined) {
-        cond1 = this.categoriaSeleccionada.id == this.inscriptos.find(i => i.profile_id == rc.image.profile_id)?.category_id
-      }
-      
-      // Filtro por sección
-      let cond2: boolean = true;
-      if (this.seccionSeleccionada != undefined) {
-        cond2 = this.seccionSeleccionada.id == rc.section_id
-      }
-      
-      // Filtro por fotoclub
-      let cond3: boolean = true;
-      if (this.fotoclubSeleccionado != undefined) {
-        const fotoclubName = this.getFotoclubName(rc.image.profile_id);
-        cond3 = fotoclubName === this.fotoclubSeleccionado
-      }
-      
-      return cond1 && cond2 && cond3
-    })
-  }
-
-  toggleFiltro() {
-    this.mostrarFiltro = !this.mostrarFiltro;
   }
 
   getFotoclubName(profile_id: number): string {
@@ -410,7 +417,7 @@ export class FotografiasComponent implements OnInit {
 
   postImage(image: Image = undefined, section_id: number = undefined) {
     if (section_id == undefined) {
-      section_id = this.seccionSeleccionada != null ? this.seccionSeleccionada.id : undefined
+      section_id = this.seccionesSeleccionadas.size > 0 ? [...this.seccionesSeleccionadas][0] : undefined
     }
     let section_max = this.concurso.max_img_section
     let resultados = this.resultadosConcurso
@@ -427,27 +434,7 @@ export class FotografiasComponent implements OnInit {
     this.UIUtilsService.mostrarModal(VerFotografiasComponent, { index, all_data: this.resultadosConcursoFiltrados, open: this.isContestNotFin }, true);
   }
 
-  async set_categoria_null() {
-    this.categoriaSeleccionada = null;
-  }
-
-  async set_seccion_null() {
-    this.seccionSeleccionada = null;
-  }
-
-  async set_fotoclub_null() {
-    this.fotoclubSeleccionado = null;
-  }
-
-  async limpiarTodosLosFiltros() {
-    this.categoriaSeleccionada = null;
-    this.seccionSeleccionada = null;
-    this.fotoclubSeleccionado = null;
-  }
-
-  //botones de acciones disponibles para cada elemento listado (mobile, menu hamburguesa)
   can_delete(r: any) {
-    console.log(r)
     const ES_MIA = r['image'].profile_id == this.user?.profile_id
     return ES_MIA && this.concurso.active
   }
@@ -457,13 +444,11 @@ export class FotografiasComponent implements OnInit {
     return ES_MIA && this.concurso.active
   }
 
-
   async mostrarAcciones(ev: any, r: ContestResultExpanded, index: any) {
     const image = r.image
     const acciones = [
       {
         accion: (params: []) => this.openImage(index),
-        // accion: (params: []) => this.reviewImage(r),
         params: [],
         icon: 'image-outline',
         label: 'Ver'
@@ -502,39 +487,15 @@ export class FotografiasComponent implements OnInit {
 
     }
     const options = {
-      component: MenuAccionesComponent, //componente a mostrar
+      component: MenuAccionesComponent,
       componentProps: {
         acciones
       },
       cssClass: 'auto-width',
       event: ev,
       translucent: true,
-      // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
     }
 
     this.concursoDetailService.mostrarAcciones.emit(options)
-  }
-
-  //Funciones de ordenamiento para los app-th-sort
-
-  ordenarPorAutor(e1: ContestResultExpanded, e2: ContestResultExpanded, creciente: boolean) {
-    const n1 = e1.image.profile.last_name
-    const n2 = e2.image.profile.last_name
-    return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
-      (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
-  }
-
-  ordenarPorObra(e1: ContestResultExpanded, e2: ContestResultExpanded, creciente: boolean) {
-    const n1 = e1.image.title
-    const n2 = e2.image.title
-    return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
-      (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
-  }
-
-  ordenarPorPremio(e1: ContestResultExpanded, e2: ContestResultExpanded, creciente: boolean) {
-    const n1 = e1.metric.score
-    const n2 = e2.metric.score
-    return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
-      (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
   }
 }

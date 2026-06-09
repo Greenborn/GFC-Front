@@ -1,227 +1,195 @@
 <ion-content>
-
   <ion-grid *ngIf="(auth.user | async) as u" class="ion-no-padding ion-no-margin" #content>
     <ion-row class="ion-justify-content-center">
-      
-      <ion-col size="12" size-md="3" *ngIf="mostrarFiltro">
-        <ion-col >
-          <ion-title class="ion-margin-top">Búsqueda</ion-title>
-  
-          <app-search-bar [(data)]="resultadosConcurso" [atributosObj]="atributosBusquedaFiltrados"></app-search-bar>
-
-        </ion-col>
+      <ion-col size="12">
+        <ion-row class="ion-align-items-center ion-padding-top ion-padding-bottom ion-padding-start ion-padding-end">
+          <ion-col size="8" size-sm="9" size-md="10">
+            <ion-searchbar [ngModel]="terminoBusqueda" (ionChange)="onSearchChange($event)" placeholder="Buscar fotografías..." debounce="1000"></ion-searchbar>
+          </ion-col>
+          <ion-col size="4" size-sm="3" size-md="2">
+            <ion-button (click)="toggleSidebar()" color="dark" expand="block">
+              <ion-icon name="options-outline" slot="start"></ion-icon>
+              <span class="ion-hide-sm-down">Filtros</span>
+              <ion-badge *ngIf="filtrosActivosCount > 0 || sortBy" color="primary" class="ion-margin-start">
+                {{ filtrosActivosCount }}{{ sortLabel ? ' · ' + sortLabel : '' }}
+              </ion-badge>
+            </ion-button>
+          </ion-col>
+        </ion-row>
       </ion-col>
-  
-      <ion-col>
-        <ion-row>
-          <ion-col size="11.5" push="0.25">
-            
-            <ion-row class="ion-justify-content-start ion-align-items-center ion-margin-top ion-margin-bottom">
+    </ion-row>
 
-              <h1 class="ion-margin-top ion-margin-bottom ion-margin-end"> Fotografías </h1>
-              
-              <ion-chip *ngIf="hayFiltrosActivos" color="primary" class="ion-margin-start">
-                <ion-label>{{ resultadosConcursoFiltrados.length }} de {{ resultadosConcurso?.length || 0 }}</ion-label>
-              </ion-chip>
-             
+    <ion-row>
+      <ion-col size-md="3" *ngIf="sidebarVisible && responsiveService.isDesktop" class="sidebar-col">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Ordenar por</ion-label>
+            <ion-button *ngIf="sortBy" (click)="toggleSortDir()" fill="clear" size="small">
+              <ion-icon [name]="sortAsc ? 'arrow-up-outline' : 'arrow-down-outline'" slot="start"></ion-icon>
+              {{ sortAsc ? 'Asc' : 'Desc' }}
+            </ion-button>
+          </ion-list-header>
+          <ion-radio-group [value]="sortBy" (ionChange)="onSortChange($event)">
+            <ion-item lines="none">
+              <ion-label>Sin ordenar</ion-label>
+              <ion-radio value=""></ion-radio>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label>Título</ion-label>
+              <ion-radio value="title"></ion-radio>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label>Autor</ion-label>
+              <ion-radio value="author"></ion-radio>
+            </ion-item>
+            <ion-item lines="none" [disabled]="!isContestJudged">
+              <ion-label>Premio</ion-label>
+              <ion-radio value="prize"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+
+        <ion-list>
+          <ion-list-header>Secciones</ion-list-header>
+          <ion-chip (click)="seccionAll()" [color]="todasSecciones ? 'primary' : 'medium'" class="sidebar-chip">
+            <ion-label>Todas</ion-label>
+          </ion-chip>
+          <ion-chip *ngFor="let s of seccionesInscriptas"
+            (click)="toggleSeccion(s.section.id)"
+            [color]="seccionesSeleccionadas.has(s.section.id) ? 'primary' : 'medium'"
+            class="sidebar-chip">
+            <ion-label>{{ s.section.name }}</ion-label>
+          </ion-chip>
+        </ion-list>
+
+        <ion-list>
+          <ion-list-header>Categorías</ion-list-header>
+          <ion-chip (click)="categoriaAll()" [color]="todasCategorias ? 'primary' : 'medium'" class="sidebar-chip">
+            <ion-label>Todos</ion-label>
+          </ion-chip>
+          <ion-chip *ngFor="let c of categoriasInscriptas"
+            (click)="toggleCategoria(c.category.id)"
+            [color]="categoriasSeleccionadas.has(c.category.id) ? 'primary' : 'medium'"
+            class="sidebar-chip">
+            <ion-label>{{ c.category.name }}</ion-label>
+          </ion-chip>
+        </ion-list>
+
+        <ion-list>
+          <ion-list-header>Premios</ion-list-header>
+          <ion-chip (click)="premioAll()" [color]="todosPremios ? 'primary' : 'medium'" class="sidebar-chip">
+            <ion-label>Todos</ion-label>
+          </ion-chip>
+          <ion-chip *ngFor="let p of puntajes"
+            (click)="togglePremio(p.prize)"
+            [color]="premiosSeleccionados.has(p.prize) ? 'primary' : 'medium'"
+            class="sidebar-chip">
+            <ion-label>{{ p.prize }}</ion-label>
+          </ion-chip>
+        </ion-list>
+
+        <ion-list>
+          <ion-list-header>Filtrar por autor</ion-list-header>
+          <ion-item>
+            <ion-input [(ngModel)]="filtroAutor" (ionInput)="onFilterInput()" placeholder="Nombre del autor"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-list *ngIf="isContestJudged">
+          <ion-list-header>Filtrar por código</ion-list-header>
+          <ion-item>
+            <ion-input [(ngModel)]="filtroCodigo" (ionInput)="onFilterInput()" placeholder="Código de fotografía"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-button expand="block" fill="clear" color="danger" (click)="limpiarFiltros()" class="ion-margin">
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+          Limpiar filtros
+        </ion-button>
+      </ion-col>
+
+      <ion-col [size]="sidebarVisible && responsiveService.isDesktop ? 9 : 12">
+        <ion-row>
+          <ion-col>
+            <ion-row class="ion-justify-content-start ion-align-items-center ion-margin-top ion-margin-bottom">
               <ion-fab-button size="small"
-                *ngIf="contestService.isActive(concurso) && 
+                *ngIf="contestService.isActive(concurso) &&
                       (rolificador.esDelegado(u) || rolificador.isAdmin(u) || rolificador.esConcursante(u)) "
                 (click)="postImage()">
                 <ion-icon name="add"></ion-icon>
               </ion-fab-button>
             </ion-row>
-  
-            <ion-row class="ion-align-items-center ion-padding-bottom">
-              <ion-col size="10" size-sm="11">
-                
-                <ion-row class="ion-justify-content-end ion-align-items-end filtros-container">
-                  
-                  <ion-button *ngIf="categoriaSeleccionada != null" (click)="set_categoria_null()" fill="clear" class="">
-                    <ion-icon name="close-outline"></ion-icon>
-                  </ion-button>
 
-                  <ion-item class="ion-margin-end">
-                    <ion-label position="stacked">Categoría</ion-label>
-                    <ion-select class="min-10rem"  okText="Aceptar" cancelText="Cancelar" [(ngModel)]="categoriaSeleccionada" interface="popover">
-                       <ion-select-option *ngFor="let c of categoriasInscriptas" [value]="c.category">{{ c.category.name }}</ion-select-option>
-                    </ion-select>
-                  </ion-item>
-
-                  <ion-button *ngIf="seccionSeleccionada != null" (click)="set_seccion_null()" fill="clear" class="">
-                    <ion-icon name="close-outline"></ion-icon>
-                  </ion-button>
-
-                  <ion-item >
-                    <ion-label position="stacked">Sección</ion-label>
-                    <ion-select [(ngModel)]="seccionSeleccionada" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
-                      <ion-select-option *ngFor="let s of seccionesInscriptas" [value]="s.section">{{ s.section.name }}</ion-select-option>
-                    </ion-select>
-                  </ion-item>
-
-                  <ion-button *ngIf="fotoclubSeleccionado != null" (click)="set_fotoclub_null()" fill="clear" class="">
-                    <ion-icon name="close-outline"></ion-icon>
-                  </ion-button>
-
-                  <ion-item *ngIf="!isContestNotFin || !rolificador.esConcursante(u)">
-                      <ion-label position="stacked">Fotoclub</ion-label>
-                        <ion-select [(ngModel)]="fotoclubSeleccionado" class="min-10rem"  okText="Aceptar" cancelText="Cancelar"  interface="popover">
-                          <ion-select-option *ngFor="let f of fotoclubsDisponibles" [value]="f">{{ f }}</ion-select-option>
-                        </ion-select>
-                  </ion-item>
-
-
-
-                </ion-row>
-  
-              </ion-col>
-
-              <ion-col size="2" size-sm="1">
-                <ion-row class="ion-justify-content-center ion-align-items-center ion-align-self-center">
-                  <ion-button (click)="toggleFiltro()" color="medium" expand="block"
-                    class="ion-justify-content-center ion-align-items-center ion-align-self-center">
-                    <ion-icon name="funnel"></ion-icon>
-                  </ion-button>
-                </ion-row>
-              </ion-col>
-
-              <ion-col size="2" size-sm="1" *ngIf="hayFiltrosActivos">
-                <ion-row class="ion-justify-content-center ion-align-items-center ion-align-self-center">
-                  <ion-button (click)="limpiarTodosLosFiltros()" color="warning" expand="block"
-                    class="ion-justify-content-center ion-align-items-center ion-align-self-center">
-                    <ion-icon name="refresh"></ion-icon>
-                  </ion-button>
-                </ion-row>
-              </ion-col>
-
-            </ion-row>
-            
             <ion-row>
               <ion-col>
-                  <ion-list>
-                    <ion-item color="dark">
-                      <ion-grid>
-                        <ion-row class="ion-padding-end">
-                          <ion-col size="7" size-md="4" class="">
-                            <ion-row>
-                              <app-th-sort  [sortFn]="ordenarPorObra" [(data)]="resultadosConcurso" title="Obra"></app-th-sort>
-                            </ion-row>
-                          </ion-col>
-      
-                          <ion-col
-                            class="ion-hide-md-down ion-padding-start" size="5" size-md="4">
-                            <ion-row *ngIf="!rolificador.esJuez(u)"> 
-                              <app-th-sort
-                                [sortFn]="ordenarPorAutor" [(data)]="resultadosConcurso" title="Autor"></app-th-sort>
-                            </ion-row>
-                          </ion-col>
-        
-                          <ion-col size="3" size-md="2">
-                            <ion-row>
-                              <app-th-sort
-                              *ngIf="!isContestNotFin || !rolificador.esConcursante(u)"
-                              [sortFn]="ordenarPorPremio"
-                                [(data)]="resultadosConcurso"
-                                title="Premio"
-                              ></app-th-sort>
-                            </ion-row>
-                          </ion-col>
-      
-                          <ion-col class="ion-hide-md-down" size="2">
-                            <ion-row>
-                            </ion-row>
-                          </ion-col>
-                          <ion-col class="ion-hide-md-up" size="2">
-                            <ion-row>
-                            </ion-row>
-                          </ion-col>
-        
-                          <ion-col size="2"></ion-col>
-                        </ion-row>
-                      </ion-grid>
-                    </ion-item>
-                  </ion-list>
-              </ion-col>
-            </ion-row>
-            
-            <ion-row>
-                <ion-col>
-                    <ion-list>
-                      <ion-item lines="none" class="ion-no-padding lista-elem">
-                      <!-- Si hay resultados-->   
-                        <ion-grid class="ion-no-padding" *ngIf="resultadosConcursoFiltrados.length > 0">
+                <ion-list>
+                  <ion-item lines="none" class="ion-no-padding lista-elem">
+                    <ion-grid class="ion-no-padding" *ngIf="resultadosConcursoFiltrados.length > 0">
+                      <ion-row class="ion-justify-content-center">
+                        <ion-col *ngFor="let r of resultadosConcursoFiltrados; index as i" class="ion-padding" size="12" size-sm="6" size-md="auto">
                           <ion-row class="ion-justify-content-center">
-
-                            <ion-col *ngFor="let r of resultadosConcursoFiltrados; index as i" class="ion-padding" size="12" size-sm="6" size-md="auto">
-                              <ion-row class="ion-justify-content-center">
-                                <ion-col size="auto">
-                                    <img class="img-galeria"  title="Ver fotografía" (click)="openImage(i)" 
-                                      [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
-                                      [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
-                                    />                                    
-                                </ion-col>
-                              </ion-row>
-
-                              <ion-row class="ion-justify-content-center">
-                                <ion-col size="auto">
-                                  <div class="cont-img-text">
-                                    <p><b>{{r.image.title}}</b></p>
-                                    <p><i>{{r.section?.name}}</i></p>
-                                    <p *ngIf="!isContestNotFin || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ getFullName(r.image.profile_id) }}</p>
-                                    <p *ngIf="!isContestNotFin" >
-                                      <b>{{ r.metric?.prize ? r.metric.prize : '-' }} </b>
-                                    </p>
-                                  </div>
-                                </ion-col>
-                              </ion-row>
-
-                              <ion-row>
-                                <ion-col class="ion-align-self-center">
-                                  <!--botonera opciones -->
-                                  <ion-buttons class="ion-hide-md-down ion-justify-content-center">
-                                    <ion-button *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
-                                      <ion-icon name="star-outline"></ion-icon>
-                                    </ion-button>
-        
-                                    <ion-button *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
-                                      <ion-icon name="create"></ion-icon>
-                                    </ion-button>
-        
-                                    <ion-button *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
-                                      <ion-icon name="trash"></ion-icon>
-                                    </ion-button>
-                                  </ion-buttons>
-        
-                                  <ion-buttons class="ion-hide-md-up">
-                                    <ion-button (click)="mostrarAcciones($event, r, i) ">
-                                      <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-                                    </ion-button>
-                                  </ion-buttons>
-        
-                                </ion-col>
-                              </ion-row>
-
+                            <ion-col size="auto">
+                              <img class="img-galeria" title="Ver fotografía" (click)="openImage(i)"
+                                [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
+                                [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
+                              />
                             </ion-col>
-
                           </ion-row>
-                        </ion-grid> 
 
-                       <!-- Si no hay resultados--> 
-                        <ion-grid class="ion-no-padding" *ngIf="resultadosConcursoFiltrados.length == undefined">    
-                          <ng-template #texto>No hay fotografias</ng-template>
-                        </ion-grid >
-                        
-                      </ion-item>
-                    </ion-list>
+                          <ion-row class="ion-justify-content-center">
+                            <ion-col size="auto">
+                              <div class="cont-img-text">
+                                <p><b>{{r.image.title}}</b></p>
+                                <p><i>{{r.section?.name}}</i></p>
+                                <p *ngIf="!isContestNotFin || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ getFullName(r.image.profile_id) }}</p>
+                                <p *ngIf="!isContestNotFin">
+                                  <b>{{ r.metric?.prize ? r.metric.prize : '-' }} </b>
+                                </p>
+                              </div>
+                            </ion-col>
+                          </ion-row>
 
-                    <ion-row *ngIf="loadingInitial && resultadosConcurso.length === 0" class="ion-justify-content-center ion-padding">
-                      <ion-spinner name="crescent"></ion-spinner>
-                    </ion-row>
+                          <ion-row>
+                            <ion-col class="ion-align-self-center">
+                              <ion-buttons class="ion-hide-md-down ion-justify-content-center">
+                                <ion-button *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
+                                  <ion-icon name="star-outline"></ion-icon>
+                                </ion-button>
 
-                    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreImages($event)" [disabled]="!hasMorePages">
-                      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más fotografías..."></ion-infinite-scroll-content>
-                    </ion-infinite-scroll>
-                </ion-col>
+                                <ion-button *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
+                                  <ion-icon name="create"></ion-icon>
+                                </ion-button>
+
+                                <ion-button *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
+                                  <ion-icon name="trash"></ion-icon>
+                                </ion-button>
+                              </ion-buttons>
+
+                              <ion-buttons class="ion-hide-md-up">
+                                <ion-button (click)="mostrarAcciones($event, r, i)">
+                                  <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                                </ion-button>
+                              </ion-buttons>
+                            </ion-col>
+                          </ion-row>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+
+                    <ion-grid class="ion-no-padding" *ngIf="resultadosConcursoFiltrados.length == undefined">
+                      <ng-template #texto>No hay fotografias</ng-template>
+                    </ion-grid>
+                  </ion-item>
+                </ion-list>
+
+                <ion-row *ngIf="loadingInitial && resultadosConcurso.length === 0" class="ion-justify-content-center ion-padding">
+                  <ion-spinner name="crescent"></ion-spinner>
+                </ion-row>
+
+                <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreImages($event)" [disabled]="!hasMorePages">
+                  <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más fotografías..."></ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+              </ion-col>
             </ion-row>
 
             <ng-template #spinner>
@@ -229,7 +197,6 @@
                 <ion-spinner></ion-spinner>
               </ion-row>
             </ng-template>
-
           </ion-col>
         </ion-row>
       </ion-col>
