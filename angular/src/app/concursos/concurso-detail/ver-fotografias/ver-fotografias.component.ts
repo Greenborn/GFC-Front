@@ -16,6 +16,7 @@ export class VerFotografiasComponent implements OnInit {
   @Input() all_data: any;
   @Input() open: any;
   public yepImg: boolean = true;
+  public metadataOpen: boolean = false;
   public inscriptos: any[] = [];
 
   constructor(
@@ -31,6 +32,10 @@ export class VerFotografiasComponent implements OnInit {
     })
   }
   
+  toggleMetadata(){
+    this.metadataOpen = !this.metadataOpen;
+  }
+
   anterior(){
     this.index --;
     if (this.index < 0) this.index = this.all_data.length - 1
