@@ -120,7 +120,7 @@
                                     <b>{{ m.profile?.name || '' }} {{ m.profile?.last_name || '' }}</b>
                                   </ion-text>
                                 </ion-card-subtitle>
-                                <ion-card-subtitle title="Username">{{ getFotosCargadas(m.profile_id) }} fotos cargadas</ion-card-subtitle>
+                                <ion-card-subtitle title="Username">{{ m.photo_count ?? 0 }} fotos cargadas</ion-card-subtitle>
                               </ion-label>
                             </ion-col>
 

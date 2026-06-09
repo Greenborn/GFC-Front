@@ -8,5 +8,6 @@ export interface ProfileContest {
 }
 
 export interface ProfileContestExpanded extends ProfileContest {
-    profile: ProfileExpanded
+    profile: ProfileExpanded,
+    photo_count?: number
 }
