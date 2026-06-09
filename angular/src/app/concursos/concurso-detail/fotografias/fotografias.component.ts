@@ -171,6 +171,7 @@ export class FotografiasComponent implements OnInit {
       prizes: this.premiosSeleccionados.size > 0 ? [...this.premiosSeleccionados] : undefined,
       author: this.filtroAutor || undefined,
       code: this.filtroCodigo || undefined,
+      skipPublish: true,
     });
 
     if (event?.target) {
@@ -230,7 +231,6 @@ export class FotografiasComponent implements OnInit {
 
     this.subscriptions.push(resultadosConcursoGeted.subscribe(() => {
       this.loadPage(1, true)
-      this.cargarPropiasFotos();
     }))
   }
 
@@ -256,7 +256,10 @@ export class FotografiasComponent implements OnInit {
   }
 
   async cargarPropiasFotos() {
-    if (!this.user?.profile_id || !this.concurso?.id) return;
+    if (!this.user?.profile_id || !this.concurso?.id) {
+      this.propiasFotos = [];
+      return;
+    }
     const response: any = await get_all({
       contest_id: this.concurso.id,
       concursante_id: this.user.profile_id,
@@ -265,9 +268,8 @@ export class FotografiasComponent implements OnInit {
       present_loading: false,
       skipPublish: true,
     });
-    if (response?.items) {
-      this.propiasFotos = response.items;
-    }
+    const items: ContestResultExpanded[] = response?.items || [];
+    this.propiasFotos = items.filter(r => r.image?.profile_id === this.user.profile_id);
   }
 
   async ngOnDestroy() {
