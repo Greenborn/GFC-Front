@@ -70,24 +70,17 @@
 
               </ion-row>
 
-              <ion-row class="ion-justify-content-end">
-                <ion-col size="12">
-                  <ion-row class="ion-justify-content-end">
-
-                    <ion-col push-sm="3" size="12" size-sm="3" class="ion-align-self-center">
-                       <app-btn-post
-                        [posting]="posting"
-                        [disabled]="!datosCargados()"
-                        (post)="postImage()"
-                      ></app-btn-post>
-                    </ion-col>
-
-                    <ion-col class="ion-align-self-center" pull-sm="3" size="12" size-sm="3">
-                      <ion-button expand="block" (click)="modalController.dismiss()" fill="clear">
-                        Cancelar</ion-button>
-                    </ion-col>
-
-                  </ion-row>
+              <ion-row class="ion-justify-content-center ion-padding-top">
+                <ion-col size="auto">
+                  <ion-button color="danger" (click)="modalController.dismiss()">
+                    Cancelar
+                  </ion-button>
+                </ion-col>
+                <ion-col size="auto">
+                  <ion-button color="success" [disabled]="!datosCargados()" (click)="postImage()">
+                    <ion-spinner *ngIf="posting" size="small"></ion-spinner>
+                    <span *ngIf="!posting">Guardar</span>
+                  </ion-button>
                 </ion-col>
               </ion-row>
             </ion-col>

@@ -61,7 +61,8 @@ export const get_all = async (attr, reload = true) => {
                 if (attr?.present_loading)
                     await loading.dismiss();
                 result_data = res.data
-                resultadosConcursoGeted.next(result_data)
+                if (!attr?.skipPublish)
+                  resultadosConcursoGeted.next(result_data)
                 return resolve(result_data)
             } else {
                 if (attr?.present_loading)
