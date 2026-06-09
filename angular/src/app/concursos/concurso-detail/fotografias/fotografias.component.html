@@ -141,7 +141,7 @@
                         <div class="cont-img-text">
                           <p><b>{{r.image.title}}</b></p>
                           <p><i>{{r.section?.name}}</i></p>
-                          <p *ngIf="!isContestNotFin || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ getFullName(r.image.profile_id) }}</p>
+                          <p *ngIf="concurso?.judged || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ r.image.profile?.name }} {{ r.image.profile?.last_name }}</p>
                           <p *ngIf="!isContestNotFin">
                             <b>{{ r.metric?.prize ? r.metric.prize : '-' }} </b>
                           </p>
@@ -202,18 +202,17 @@
                               <div class="cont-img-text">
                                 <p><b>{{r.image.title}}</b></p>
                                 <p><i>{{r.section?.name}}</i></p>
-                                <p *ngIf="!isContestNotFin || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ getFullName(r.image.profile_id) }}</p>
-                                <p *ngIf="!isContestNotFin">
-                                  <b>{{ r.metric?.prize ? r.metric.prize : '-' }} </b>
-                                </p>
-                              </div>
-                            </ion-col>
-                          </ion-row>
-
-                          <ion-row>
-                            <ion-col class="ion-align-self-center">
-                              <ion-buttons class="ion-hide-md-down ion-justify-content-center">
-                                <ion-button *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
+                          <p *ngIf="concurso?.judged || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ r.image.profile?.name }} {{ r.image.profile?.last_name }}</p>
+                          <p *ngIf="!isContestNotFin">
+                            <b>{{ r.metric?.prize ? r.metric.prize : '-' }} </b>
+                          </p>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col class="ion-align-self-center">
+                        <ion-buttons class="ion-hide-md-down ion-justify-content-center">
+                          <ion-button *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
                                   <ion-icon name="star-outline"></ion-icon>
                                 </ion-button>
 

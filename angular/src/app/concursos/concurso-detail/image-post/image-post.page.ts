@@ -124,10 +124,13 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   }
 
   datosCargados() {
-    return this.image.title !=  undefined 
+    const tieneImagen = this.imageData != '' || (this.image?.url != null && this.image?.url != undefined && this.image?.url != '');
+    return this.image.title != undefined
+        && this.image.title?.trim() != ''
         && this.image.profile_id != undefined
-        && (this.section_id != undefined && this.sectionSelect != false) 
-        && this.imgSource.split('/').pop() != 'undefined'
+        && this.section_id != undefined && this.section_id != null
+        && this.sectionSelect != false
+        && tieneImagen
   }
   
   dismiss(image: GFC_Image = undefined, section_id: number) {
