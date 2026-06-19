@@ -1,0 +1,19 @@
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center ion-align-items-center" style="height: 100vh;">
+      <ion-col size="12" size-md="4" class="ion-text-center">
+        <div *ngIf="!error; else errorTemplate">
+          <ion-spinner></ion-spinner>
+          <ion-text>
+            <p>Autenticando...</p>
+          </ion-text>
+        </div>
+        <ng-template #errorTemplate>
+          <ion-text color="danger">
+            <p>{{ error }}</p>
+          </ion-text>
+        </ng-template>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

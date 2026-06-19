@@ -10,6 +10,8 @@ interface EnvironmentWithImagesBaseUrl {
   appName: string;
   imagesBaseUrl: string;
   nodeApiBaseUrl: string;
+  ssoBaseUrl: string;
+  ssoRedirect: string;
 }
 
 const env: EnvironmentWithImagesBaseUrl = environment as EnvironmentWithImagesBaseUrl;
@@ -21,7 +23,9 @@ export const CONFIG = {
   appName: env.appName,
   version: env.version,
   imagesBaseUrl: env.imagesBaseUrl,
-  nodeApiBaseUrl: env.nodeApiBaseUrl
+  nodeApiBaseUrl: env.nodeApiBaseUrl,
+  ssoBaseUrl: env.ssoBaseUrl,
+  ssoRedirect: env.ssoRedirect
 }
 
 @Injectable({
@@ -95,6 +99,14 @@ export class ConfigService {
 
   getRecuperacionPasswordUrl(endpoint: string) {
     return this.nodeApiBaseUrl + 'auth/' + endpoint;
+  }
+
+  get ssoBaseUrl() {
+    return this.data.ssoBaseUrl;
+  }
+
+  get ssoRedirect() {
+    return this.data.ssoRedirect;
   }
 
 }

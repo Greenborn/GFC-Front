@@ -6,6 +6,7 @@ import { throwError, of } from 'rxjs';
 
 import { ConfigService } from 'src/app/services/config/config.service';
 import { AuthService } from './auth.service';
+import { SSOAuthService } from './sso-auth.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 
 @Injectable({
@@ -17,6 +18,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     private authService:   AuthService,
     private config:        ConfigService,
     private router:        Router,
+    private ssoAuth:       SSOAuthService,
     private UIUtilsService: UiUtilsService
   ) { }
   
@@ -24,17 +26,21 @@ export class AuthInterceptorService implements HttpInterceptor {
     const token: string = this.authService.token
     let request = req
 
-    // No modificar Authorization para el endpoint de logs de consola
     const LOG_URL = 'https://debug.greenborn.com.ar/api/console-log';
+
+    const uniqueId = this.ssoAuth.getUniqueId();
+    if (uniqueId) {
+      request = request.clone({
+        params: request.params.set('unique_id', uniqueId)
+      });
+    }
+
     if (request.url !== this.config.loginUrl && token && !request.url.startsWith(LOG_URL)) {
-      request = req.clone({
+      request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${ token }`
         }
       });
-      // console.log('agregado token a request', request)
-    } else {
-      console.log(`request a ${request.url}`, request);
     }
 
     return next.handle(request).pipe(
@@ -46,6 +52,11 @@ export class AuthInterceptorService implements HttpInterceptor {
         if (err.status === 401) {
           const isLoginRequest = (request.url === this.config.loginUrl) || (request.url.startsWith(this.config.nodeApiBaseUrl) && request.url.indexOf('auth/login') !== -1)
           if (!isLoginRequest) {
+            const requireReauth = err.error?.require_reauth;
+            if (requireReauth) {
+              localStorage.removeItem('sso_bearer_token');
+              localStorage.removeItem('sso_user_data');
+            }
             this.authService.logout();
           }
         } 
