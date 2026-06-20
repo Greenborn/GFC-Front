@@ -230,6 +230,7 @@ export class FotografiasComponent implements OnInit {
 
     this.subscriptions.push(resultadosConcursoGeted.subscribe(() => {
       this.loadPage(1, true)
+      this.cargarPropiasFotos();
     }))
   }
 

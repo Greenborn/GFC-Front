@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,13 @@ export class RankingService extends ApiService<any> {
   ) {
     super('ranking', http, config)
    }
+
+  getAll<K = any>(getParams: string = '', resource: string = null): Observable<K> {
+    const url = `${this.config.nodeApiBaseUrl}${resource ?? this.recurso}?${getParams}`;
+    return this.http.get<any>(url).pipe(
+      map(data => data?.items ?? data)
+    );
+  }
 
    get template(): any {
     return {

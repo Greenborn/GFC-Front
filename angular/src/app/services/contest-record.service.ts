@@ -35,6 +35,11 @@ export class ContestRecordService {
     if (params?.sort) queryParams.append('sort', params.sort);
     if (params?.contestId) queryParams.append('filter[contest_id]', params.contestId.toString());
 
+    const uniqueId = localStorage.getItem('sso_client_unique_id');
+    if (uniqueId) {
+      queryParams.append('unique_id', uniqueId);
+    }
+
     const url = `${this.getBaseUrl()}?${queryParams.toString()}`;
     return from(axios.get(url, { headers: this.getHeaders() }).then(res => res.data));
   }
@@ -44,7 +49,8 @@ export class ContestRecordService {
    * GET /api/contest-record/:id
    */
   get(id: number): Observable<ContestRecord> {
-    const url = `${this.getBaseUrl()}/${id}`;
+    const uniqueId = localStorage.getItem('sso_client_unique_id');
+    const url = `${this.getBaseUrl()}/${id}${uniqueId ? '?unique_id=' + uniqueId : ''}`;
     return from(axios.get(url, { headers: this.getHeaders() }).then(res => res.data));
   }
 
