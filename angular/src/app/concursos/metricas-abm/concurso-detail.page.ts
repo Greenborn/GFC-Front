@@ -406,7 +406,7 @@ obtenerPx() {
               this.concursoDetailService.loadContestResults()
             },
             // cr => this.contestResults.push(cr),
-            error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+            error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
           })
         })
         // console.log('posted image', image, 'index', i)
@@ -431,7 +431,7 @@ obtenerPx() {
               this.concursoDetailService.loadContestResults()
             },
             error: err => {
-              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
+              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]) })
               
               this.concursoDetailService.loadContestResults()
             },
@@ -531,12 +531,12 @@ obtenerPx() {
                 this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
                 this.concursoDetailService.loadContestResults()
                 super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
-                  next: _ => {},
-                  error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+                  next: _ => this.concursoDetailService.loadContestResults(),
+                  error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
                 })
                 super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({
                   next: _ => {},
-                  error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+                  error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
                 })
 
               },

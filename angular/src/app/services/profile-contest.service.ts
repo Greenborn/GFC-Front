@@ -29,6 +29,13 @@ export class ProfileContestService extends ApiService<ProfileContest> {
     return this.http.get<K>(`${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`);
   }
 
+  post<K = ProfileContest>(model: any, id: number = undefined, getParams: string = ''): Observable<K> {
+    const url = `${this.config.nodeApiBaseUrl}${this.recurso}?${getParams}`;
+    return id == undefined
+      ? this.http.post<K>(url, model)
+      : this.http.put<K>(url, model);
+  }
+
    get template(): ProfileContest {
     return {
       id: undefined,

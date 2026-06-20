@@ -57,6 +57,22 @@
                         required
                       ></ion-input>
                     </ion-item>
+
+                    <ion-item class="w-100">
+                      <ion-label>Tipo de organización</ion-label>
+                      <ion-select
+                        [ngModel]="metric.organization_type"
+                        name="organization_type"
+                        required
+                        okText="Aceptar"
+                        cancelText="Cancelar"
+                      >
+                        <ion-select-option value="INTERNO">Interno</ion-select-option>
+                        <ion-select-option value="EXTERNO">Externo</ion-select-option>
+                        <ion-select-option value="EXTERNO_0">Externo 0</ion-select-option>
+                        <ion-select-option value="EXTERNO_UNICEN">Externo UNICEN</ion-select-option>
+                      </ion-select>
+                    </ion-item>
                     <!-- <ion-row >
                       <ion-item>
                         <ion-label>Subsección</ion-label>

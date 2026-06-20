@@ -50,6 +50,11 @@ export const get_all = async (attr, reload = true) => {
             if (attr?.present_loading)
                 await loading.present()
             
+            const uniqueId = localStorage.getItem('sso_client_unique_id');
+            if (uniqueId) {
+              params += '&unique_id=' + encodeURIComponent(uniqueId);
+            }
+
             let res = await axios.get(CONFIG.nodeApiBaseUrl+'contest-result?'+params, {
                 headers: {
                     'Authorization': 'Bearer '+localStorage.getItem(CONFIG.appName + 'token' ),

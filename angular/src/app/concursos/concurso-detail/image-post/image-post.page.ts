@@ -95,29 +95,25 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     if (this.datosCargados()) {
    
            this.posting = true
-           let i: GFC_Image;
-            const model: any = {
-              title: this.image.title,
-              code: this.code,
-              photo_base64:this.photo_base64,
-              url:'_',
-              profile_id: this.image.profile_id
-            }
-           if (this.file != undefined) {
-             model.image_file = this.file
-           }
-          //hacer que agarre bien al usuario TODO:
-          this.imageService.post<any>(model, this.image.id).subscribe(
+            let i: GFC_Image;
+             const model: any = {
+               title: this.image.title,
+               code: this.code,
+               photo_base64:this.photo_base64,
+               url:'_',
+               profile_id: this.image.profile_id
+             }
+           this.imageService.post<any>(model, this.image.id).subscribe(
              // image => this.dismiss(image),
              image => {
                this.posting = false
                i = image
                this.dismiss(i, this.section_id)
              },
-             async err => {
-               super.displayAlert(this.errorFilter(err.error['message']))
-               this.posting = false
-             },
+              async err => {
+                super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2] || err.message))
+                this.posting = false
+              },
             
            );
     }

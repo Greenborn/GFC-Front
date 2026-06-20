@@ -402,7 +402,7 @@ obtenerPx() {
               await get_all_contest_results( { "contest_id" : this.concurso.id} )
             },
             // cr => this.contestResults.push(cr),
-            error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+            error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
           })
         })
         // console.log('posted image', image, 'index', i)
@@ -428,7 +428,7 @@ obtenerPx() {
               await get_all_contest_results( { "contest_id" : this.concurso.id} )
             },
             error: async err => {
-              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
+              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]) })
               
               await get_all_contest_results( { "contest_id" : this.concurso.id} )
             },
@@ -526,12 +526,12 @@ obtenerPx() {
                 this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
                 await get_all_contest_results( { "contest_id" : this.concurso.id} )
                 super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
-                  next: _ => {},
-                  error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+                  next: _ => get_all_contest_results({ "contest_id": this.concurso.id }),
+                  error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
                 })
                 super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({
                   next: _ => {},
-                  error: async err => super.displayAlert(this.errorFilter(err.error['error-info'][2]))
+                  error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
                 })
 
               },
