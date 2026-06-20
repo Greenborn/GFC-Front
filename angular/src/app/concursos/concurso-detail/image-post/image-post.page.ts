@@ -110,10 +110,10 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
                i = image
                this.dismiss(i, this.section_id)
              },
-             async err => {
-               super.displayAlert(this.errorFilter(err.error['message']))
-               this.posting = false
-             },
+              async err => {
+                super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2] || err.message))
+                this.posting = false
+              },
             
            );
     }
