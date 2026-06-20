@@ -9,6 +9,10 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { User, UserLogged } from 'src/app/models/user.model';
 import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 
+const SSO_TOKEN_KEY = 'sso_bearer_token';
+const SSO_USER_KEY = 'sso_user_data';
+const SSO_CLIENT_UNIQUE_ID = 'sso_client_unique_id';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -43,13 +47,12 @@ export class AuthService {
   }
 
   get user(): Promise<UserLogged|null> {
-    // return this._user
+    if (!this.userId || isNaN(this.userId)) {
+      return Promise.resolve(null);
+    }
 
     if (this._user == undefined && this.loggedIn) {
       this._user = new Promise<UserLogged>(resolve => {
-        // console.log('get user ' + this._user)
-        // 
-    // Nueva llamada usando nodeApiBaseUrl y endpoint local
     const url = `${this.config.nodeApiBaseUrl}user/${this.userId}`;
     const s = this.http.get<UserLogged>(url).subscribe(
           u => {
@@ -63,10 +66,7 @@ export class AuthService {
           () => s.unsubscribe()
         )
         
-        
       })
-    } else {
-      // console.log('return user')
     }
     
     return this._user
@@ -133,7 +133,22 @@ export class AuthService {
     })
   }
 
-  async logout() { // cerrar sesion en api
+  async logout() {
+    const ssoToken = localStorage.getItem(SSO_TOKEN_KEY);
+    if (ssoToken) {
+      try {
+        const uniqueId = localStorage.getItem(SSO_CLIENT_UNIQUE_ID) || `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        await fetch(`${this.config.ssoBaseUrl}/auth/logout?unique_id=${uniqueId}`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${ssoToken}` }
+        });
+      } catch (error) {
+        console.error('Error al cerrar sesión SSO:', error);
+      }
+      localStorage.removeItem(SSO_TOKEN_KEY);
+      localStorage.removeItem(SSO_USER_KEY);
+      localStorage.removeItem(SSO_CLIENT_UNIQUE_ID);
+    }
     this.token  = this.userId = null
     this.userId = undefined;
     this._user  = undefined 

@@ -14,11 +14,13 @@ import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { Profile } from 'src/app/models/profile.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { SSOAuthService } from 'src/app/modules/auth/services/sso-auth.service';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { CreateUserService } from 'src/app/services/create-user.service';
 import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
+import { HttpHeaders } from '@angular/common/http';
 import { Subject, firstValueFrom } from 'rxjs';
 import { ComparePassword } from 'src/app/modules/auth/validators/password.validator';
 
@@ -70,7 +72,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     public configService: ConfigService,
     private UIUtilsService: UiUtilsService,
     private formBuilder: FormBuilder,
-    private createUserService: CreateUserService
+    private createUserService: CreateUserService,
+    private ssoAuth: SSOAuthService
   ) { 
     super(alertCtrl)
   }
@@ -113,17 +116,17 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     }});
 
     let formControls = {
-        name:           new FormControl(),
-        last_name:      new FormControl(),
-        fotoclub_id:    new FormControl(),
+        name:           new FormControl('', Validators.required),
+        last_name:      new FormControl('', Validators.required),
+        fotoclub_id:    new FormControl(null, Validators.required),
         executive:      new FormControl(false),
         executive_rol:  new FormControl(''),
-        username:       new FormControl(),
-        email:          new FormControl(),
-        password:       new FormControl(),
-        passwordRepeat: new FormControl(),
-        role_id:        new FormControl(),
-        dni:            new FormControl(),
+        username:       new FormControl('', Validators.required),
+        email:          new FormControl('', Validators.required),
+        password:       new FormControl('', Validators.required),
+        passwordRepeat: new FormControl('', Validators.required),
+        role_id:        new FormControl(null, Validators.required),
+        dni:            new FormControl('', Validators.required),
     };
 
     this.form = this.formBuilder.group( formControls, {
@@ -138,9 +141,13 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     await loading.present();
 
     //si se está en pagina de registro, se mopdifica el texto del botòn
-    this.isUserSignUp = this.router.url == '/registro';
+    this.isUserSignUp = this.router.url.split('?')[0] === '/registro';
     if (this.isUserSignUp){
       this.submitBtnText = "Siguiente";
+      const email = this.activatedRoute.snapshot.queryParams['email'];
+      if (email) {
+        this.form.patchValue({ email });
+      }
     }
 
     if(this.isLogged()){
@@ -303,41 +310,62 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         }
         //En caso de que se trate de un formulario de registro de usuario
       if (this.isUserSignUp){
-        const password = this.form.get('password')?.value;
-        const passwordRepeat = this.form.get('passwordRepeat')?.value;
-
-        //se comprueba que la contraseña corresponda con su repeticion
-        if (passwordRepeat !== password){
-          super.displayAlert("Las contraseñas no coinciden.");
+        if (this.form.invalid) {
+          Object.keys(this.form.controls).forEach(key => {
+            this.form.get(key)?.markAsTouched();
+          });
+          super.displayAlert('Completa todos los campos.');
           return;
         }
 
-        const profileData: any = {
-          ...this.profile,
-          name: this.form.get('name')?.value,
-          last_name: this.form.get('last_name')?.value,
-          dni: this.form.get('dni')?.value,
-          fotoclub_id: this.form.get('fotoclub_id')?.value,
-          executive: this.form.get('executive')?.value,
-          executive_rol: this.form.get('executive_rol')?.value,
-        };
+        const isSSO = this.ssoAuth.isSSOSession();
 
-        const userData: any = {
-          ...this.usuario,
-          username: this.form.get('username')?.value,
-          email: this.form.get('email')?.value,
-          password,
-          role_id: this.form.get('role_id')?.value,
-          dni: this.form.get('dni')?.value,
-        };
+        const email = this.form.get('email')?.value;
+        const username = this.form.get('username')?.value;
+        const name = `${this.form.get('name')?.value ?? ''} ${this.form.get('last_name')?.value ?? ''}`.trim() || username;
 
-        //hacer peticiòn para registrar usuario
+        const body: any = { email, username, name };
+
+        let headers: HttpHeaders | undefined;
+
+        if (isSSO) {
+          body.sso = true;
+          body.unique_id = this.ssoAuth.getUniqueId();
+          const token = this.ssoAuth.getToken();
+          if (token) {
+            headers = new HttpHeaders({
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            });
+          }
+        } else {
+          const password = this.form.get('password')?.value;
+          const passwordRepeat = this.form.get('passwordRepeat')?.value;
+
+          if (passwordRepeat !== password){
+            super.displayAlert("Las contraseñas no coinciden.");
+            return;
+          }
+
+          body.password = password;
+        }
+
+        body.img_perfil_b64 = this.file ? await this.resizeImageToBase64(this.file) : null;
+
         await this.UIUtilsService.presentLoading();
-        this.createUserService.post({userData, profileData}).subscribe(
+        this.createUserService.post(body, undefined, '', headers).subscribe(
           ok => {
             this.UIUtilsService.dismissLoading();
             if (ok['success'] == false){
               super.displayAlert(this.errorFilter(ok['error']));
+            } else if (isSSO) {
+              const token = this.ssoAuth.getToken();
+              if (token) {
+                this.auth.token = token;
+              }
+              this.auth.userId = ok['user']?.id;
+              this.auth.updateUser();
+              this.router.navigateByUrl('/');
             } else {
               let profileConfirm  = this.UIUtilsService.mostrarModal(ConfirmUserComponent, { 
                 "signUpVerifToken": ok['sign_up_verif_token']
@@ -350,8 +378,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           }
         );
 
-        //redirigir a siguiente pàgina
-        console.log("hacer peticion de registro");
         return;
       }
 
@@ -445,6 +471,37 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
   }
 
+  private resizeImageToBase64(file: File): Promise<string | null> {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          let { width, height } = img;
+          const MAX = 1024;
+          if (width > MAX || height > MAX) {
+            if (width > height) {
+              height = Math.round(height * MAX / width);
+              width = MAX;
+            } else {
+              width = Math.round(width * MAX / height);
+              height = MAX;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext('2d')?.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', 0.9));
+        };
+        img.onerror = () => resolve(null);
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    });
+  }
+
     // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
     // fileUpload(event: FileList) {
     fileUpload(event: EventTarget) {
@@ -452,17 +509,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       const file = (event as HTMLInputElement).files.item(0)
   
       if (!file) return;
-  
-      if (file.type.split('/')[0] !== 'image') { 
-        console.log('File type is not supported!')
-        return;
-      }
-  
-      // this.isImgUploading = true;
-      // this.isImgUploaded = false;
-  
-      // this.FileName = file.name;
-      // console.log('uploaded', file)
+
       this.file = file
   
       const fileReader = new FileReader();

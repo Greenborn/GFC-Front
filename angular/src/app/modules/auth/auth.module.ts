@@ -6,6 +6,7 @@ import { LoginViewComponent } from './components/login-view/login-view.component
 import { RecuperarPasswordSolicitudComponent } from './components/recuperar-password/recuperar-password-solicitud.component';
 import { RecuperarPasswordCodigoComponent } from './components/recuperar-password/recuperar-password-codigo.component';
 import { RecuperarPasswordExitoComponent } from './components/recuperar-password/recuperar-password-exito.component';
+import { LoginRedirectComponent } from './components/login-redirect/login-redirect.component';
 
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule }   from '@angular/common/http';
@@ -17,6 +18,10 @@ const routes: Routes = [
     path: 'login',
     component: LoginViewComponent,
     // loadChildren: () => import('./components/login-view/login-view.component').then(c => LoginViewComponent)
+  },
+  {
+    path: 'login-redirect',
+    component: LoginRedirectComponent
   },
   {
     path: 'recuperar-password',
@@ -43,7 +48,8 @@ const routes: Routes = [
     LoginViewComponent,
     RecuperarPasswordSolicitudComponent,
     RecuperarPasswordCodigoComponent,
-    RecuperarPasswordExitoComponent
+    RecuperarPasswordExitoComponent,
+    LoginRedirectComponent
   ],
   imports: [
     CommonModule,

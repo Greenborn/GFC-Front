@@ -21,7 +21,9 @@ function readEnvFile() {
       PUBLIC_API_URL: 'https://gfc.api2-dev.greenborn.com.ar',
       LOGIN_ACTION: 'login',
       APP_NAME: 'app_gfc_prod-',
-      APP_VERSION: '1.5.0'
+      APP_VERSION: '1.5.0',
+      SSO_BASE_URL: 'https://auth.greenborn.com.ar',
+      SSO_REDIRECT: ''
     };
   }
 
@@ -55,7 +57,9 @@ export const environment = {
   loginAction: '${envVars.LOGIN_ACTION || 'login'}',
   appName: '${envVars.APP_NAME || 'app_gfc_prod-'}',
   imagesBaseUrl: '${envVars.IMAGES_BASE_URL || 'assets.prod-gfc.greenborn.com.ar'}',
-  nodeApiBaseUrl: ${envVars.NODE_API_BASE_URL ? `'${envVars.NODE_API_BASE_URL.replace(/['"]+/g, '')}'` : "''"}
+  nodeApiBaseUrl: ${envVars.NODE_API_BASE_URL ? `'${envVars.NODE_API_BASE_URL.replace(/['"]+/g, '')}'` : "''"},
+  ssoBaseUrl: '${envVars.SSO_BASE_URL || 'https://auth.greenborn.com.ar'}',
+  ssoRedirect: '${envVars.SSO_REDIRECT || ''}'
 };
 `;
 }
@@ -90,6 +94,8 @@ function generateEnvironmentFiles() {
   console.log(`   APP_NAME: ${envVars.APP_NAME}`);
   console.log(`   APP_VERSION: ${envVars.APP_VERSION}`);
   console.log(`   NODE_API_BASE_URL: ${envVars.NODE_API_BASE_URL}`);
+  console.log(`   SSO_BASE_URL: ${envVars.SSO_BASE_URL}`);
+  console.log(`   SSO_REDIRECT: ${envVars.SSO_REDIRECT}`);
 }
 
 // Ejecutar si se llama directamente

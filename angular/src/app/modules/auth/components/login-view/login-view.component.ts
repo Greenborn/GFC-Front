@@ -4,6 +4,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { Login } from '../../models/login.model';
 import { AuthService } from '../../services/auth.service';
+import { SSOAuthService } from '../../services/sso-auth.service';
 
 @Component({
   selector: 'app-login-view',
@@ -25,7 +26,8 @@ export class LoginViewComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     public responsiveService: ResponsiveService,
-    private uiUtils: UiUtilsService
+    private uiUtils: UiUtilsService,
+    private ssoAuth: SSOAuthService
   ) { }
 
   ngOnInit() {}
@@ -63,6 +65,10 @@ export class LoginViewComponent implements OnInit {
       }
       this.loading = false
     })
+  }
+
+  loginWithGoogle(){
+    this.ssoAuth.login();
   }
 
   recordarPass(){
