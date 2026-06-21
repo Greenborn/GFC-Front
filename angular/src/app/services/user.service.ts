@@ -61,7 +61,10 @@ export class UserService extends ApiService<User> {
   postFormData<K = User>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
     const f = new FormData();
     for (let key in model) {
-      f.append(key, (model as any)[key]);
+      const value = (model as any)[key];
+      if (value !== undefined && value !== null) {
+        f.append(key, value);
+      }
     }
     return id == undefined ?
       this.http.post<K>(
