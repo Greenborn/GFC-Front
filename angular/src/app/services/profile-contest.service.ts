@@ -36,6 +36,10 @@ export class ProfileContestService extends ApiService<ProfileContest> {
       : this.http.put<K>(url, model);
   }
 
+  delete(id: number): Observable<any> {
+    return this.http.delete(`${this.config.nodeApiBaseUrl}${this.recurso}/${id}`);
+  }
+
    get template(): ProfileContest {
     return {
       id: undefined,
