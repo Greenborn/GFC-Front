@@ -1,45 +1,162 @@
+:host {
+    font-size: 1.5em;
+}
+
 .logoEntrada{
-    // filter: contrast(200%);
     filter: invert(100%);
 }
 
-.margin-top{
+.logo-container {
+    text-align: center;
     margin-top: 5%;
+    margin-bottom: 24px;
 }
 
 .expand-full{
     width: 100%;
 }
 
-ion-card{
-    border: solid 1px #cecece;
+.credential-fields {
+    max-width: 61.8%;
+    margin: 0 auto;
+}
+
+.input-bordered {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --inner-padding-end: 0px;
+    --inner-padding-start: 0px;
+    --background: transparent;
+    --border-color: transparent;
+    --highlight-color-focused: transparent;
+    --highlight-color-valid: transparent;
+    --highlight-color-invalid: transparent;
 }
 
 ion-item {
     --inner-padding-end: 0px;
+    --min-height: 44px;
 }
 
-// @media (prefers-color-scheme: dark) {
-// body.dark {
-ion-content.dark {
-    /*
-     * Dark Colors
-     * -------------------------------------------
-     */
-     .logoEntrada{
-        // filter: contrast(200%);
-        filter: invert(0);
-    }
-    ion-card{
-        border: solid 1px rgb(41, 41, 41);
+ion-item.item {
+    --border-color: transparent;
+}
+
+.login-accordion-group {
+    background: transparent;
+}
+
+.login-accordion {
+    background: var(--ion-card-background, #fff);
+    border-radius: 12px;
+    border: solid 1px #cecece;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.accordion-header {
+    --background: transparent;
+    --border-color: transparent;
+    --inner-padding-end: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    min-height: 52px;
+
+    ion-label {
+        pointer-events: none;
+        text-align: center;
+        width: 100%;
     }
 }
 
-//Para que se pueda hacer click en el enlace de recuperar contraseña
+.accordion-content {
+    padding-top: 0;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    margin: 24px 16px;
+    gap: 16px;
+
+    .separator-line {
+        flex: 1;
+        height: 1px;
+        background: #cecece;
+    }
+
+    .separator-text {
+        color: #999;
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+}
+
+.google-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.google-btn {
+    --border-color: #cecece;
+    --color: #444;
+    font-weight: 700;
+    --background: linear-gradient(135deg, #e8f0fe 0%, #fce8e6 50%, #fef7e0 100%);
+    --background-activated: linear-gradient(135deg, #d2e3fc 0%, #f9d1ce 50%, #fdefb8 100%);
+    --background-hover: linear-gradient(135deg, #d2e3fc 0%, #f9d1ce 50%, #fdefb8 100%);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.google-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.google-btn:active {
+    transform: translateY(0);
+}
+
 .item-cover{
     display:none;
 }
 
 ion-label{
     pointer-events:all!important;
+}
+
+ion-content.dark {
+    .logoEntrada{
+        filter: invert(0);
+    }
+
+    .login-accordion {
+        background: var(--ion-card-background, #1e1e1e);
+        border-color: rgb(41, 41, 41);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .input-bordered {
+        border-color: rgb(60, 60, 60);
+    }
+
+    .separator-line {
+        background: rgb(60, 60, 60);
+    }
+
+    .separator-text {
+        color: #555;
+    }
+
+    .google-btn {
+        --border-color: rgb(60, 60, 60);
+        --color: #aaa;
+    }
 }

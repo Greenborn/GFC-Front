@@ -1,75 +1,75 @@
 <ion-content [ngClass]="{'dark': responsiveService.darkMode}">
   <ion-grid>
-    <ion-col>
-      <ion-row class="ion-justify-content-center">
-        <ion-col size="12" size-md="4">
-          <ion-row class="ion-justify-content-center margin-top">
-            <ion-img
-              class="logoEntrada"
-              src="../../assets/portadaGFC.png"
-            ></ion-img>
-          </ion-row>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="4">
+        <div class="logo-container">
+          <ion-img
+            class="logoEntrada"
+            src="../../assets/portadaGFC.png"
+          ></ion-img>
+        </div>
 
-          <ion-row>
-            <ion-card class="ion-margin-top expand-full no-border">
-              <div class="expand-full ion-padding-start ion-padding-end" class="ion-margin">
-                <ion-item class="expand-full">
-                    <ion-row>
-                        <ion-col class="ion-no-padding ion-margin-top" size="12">
-                            <ion-label>Usuario</ion-label> 
-                        </ion-col>
-                        <ion-col class="ion-no-padding" size="12">
-                            <ion-input
-                                class="text-right"
-                                (keypress)="keyPress($event)"
-                                [(ngModel)]="login.username"
-                                ngDefaultControl></ion-input>
-                        </ion-col>
-                    </ion-row>
+        <div class="google-btn-wrapper">
+          <ion-button
+            fill="outline"
+            class="google-btn"
+            (click)="loginWithGoogle()"
+          >
+            <ion-icon slot="start" name="logo-google"></ion-icon>
+            Ingresar con Google
+          </ion-button>
+        </div>
+
+        <div class="separator">
+          <span class="separator-line"></span>
+          <span class="separator-text">o</span>
+          <span class="separator-line"></span>
+        </div>
+
+        <ion-accordion-group class="login-accordion-group">
+          <ion-accordion class="login-accordion" value="credentials">
+            <ion-item slot="header" class="accordion-header" lines="none">
+              <ion-label>Usuario y Contraseña</ion-label>
+            </ion-item>
+            <div slot="content" class="accordion-content ion-padding">
+              <div class="credential-fields">
+                <ion-item class="expand-full input-bordered">
+                  <ion-label position="stacked">Usuario</ion-label>
+                  <ion-input
+                    placeholder="Ingresá tu usuario"
+                    (keypress)="keyPress($event)"
+                    [(ngModel)]="login.username"
+                    ngDefaultControl
+                  ></ion-input>
                 </ion-item>
 
-                <ion-item class="expand-full">
-                  <ion-col class="ion-no-padding">
-                    <ion-row>
-                        <ion-col class="ion-no-padding ion-margin-top" size="12">
-                            <ion-label class="w-100">
-                                Contraseña <!--<a href="#/login" (click)="recordarPass()" class="ion-float-right">Olvidé mi contraseña</a>-->
-                            </ion-label> 
-                        </ion-col>
-                      <ion-col class="ion-no-padding" size="11">
-                            
-                        <ion-input
-                          #passInput
-                          tabindex="0"
-                          id="ctr-1"
-                          type="password"
-                          class="text-right"
-                          (keypress)="keyPress($event, 'next')"
-                          [(ngModel)]="login.password"
-                          ngDefaultControl
-                        ></ion-input>
-                      </ion-col>
-                      <ion-col
-                        class="ion-no-padding ion-align-self-center"
-                        size="1"
-                      >
-                        <ion-row>
-                          <app-ojo inputId="ctr-1"></app-ojo>
-                        </ion-row>
-                      </ion-col>
-                    </ion-row>
-                  </ion-col>
-                </ion-item>
-
-                <ion-item class="expand-full">
-                  <!-- Enlace de recuperación de contraseña -->
-                      <a href="/#/recuperar-password" class="enlace-recuperar-pass">¿Olvidaste tu contraseña?</a>
+                <ion-item class="expand-full input-bordered">
+                  <ion-label position="stacked">Contraseña</ion-label>
+                  <ion-input
+                    #passInput
+                    id="ctr-1"
+                    type="password"
+                    placeholder="Ingresá tu contraseña"
+                    (keypress)="keyPress($event, 'next')"
+                    [(ngModel)]="login.password"
+                    ngDefaultControl
+                  ></ion-input>
+                  <app-ojo slot="end" inputId="ctr-1"></app-ojo>
                 </ion-item>
               </div>
+
+              <ion-item class="expand-full" lines="none">
+                <a href="/#/recuperar-password" class="enlace-recuperar-pass">¿Olvidaste tu contraseña?</a>
+              </ion-item>
+
+              <ion-item color="danger" *ngIf="error != undefined" lines="none" class="ion-no-padding">
+                <ion-label>{{ error }}</ion-label>
+              </ion-item>
+
               <ion-button
                 color="primary"
                 expand="block"
-                class="ion-margin"
+                class="ion-margin-top"
                 (click)="next()"
               >
                 <ion-label *ngIf="!loading; else spinner">Ingresar</ion-label>
@@ -79,25 +79,10 @@
                   </ion-row>
                 </ng-template>
               </ion-button>
-
-              <ion-item color="danger" *ngIf="error != undefined">
-                <ion-label>{{ error }}</ion-label>
-              </ion-item>
-
-              <ion-row class="ion-justify-content-center ion-padding-top">
-                <ion-col size="12" class="ion-text-center">
-                  <ion-text class="ion-padding">o</ion-text>
-                </ion-col>
-              </ion-row>
-
-              <ion-button expand="block" fill="outline" (click)="loginWithGoogle()" class="ion-margin">
-                <ion-icon slot="start" name="logo-google"></ion-icon>
-                Ingresar con Google
-              </ion-button>
-            </ion-card>
-          </ion-row>
-        </ion-col>
-      </ion-row>
-    </ion-col>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>
