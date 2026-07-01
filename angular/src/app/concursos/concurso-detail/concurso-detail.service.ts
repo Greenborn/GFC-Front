@@ -38,6 +38,7 @@ export class ConcursoDetailService implements OnInit {
   public reviewImage: EventEmitter<ContestResultExpanded>;
   public deleteImage: EventEmitter<ContestResultExpanded>;
   public mostrarAcciones: EventEmitter<any>;
+  public refreshPhotos: EventEmitter<void>;
   
   constructor(
     public UIUtilsService: UiUtilsService,
@@ -61,6 +62,7 @@ export class ConcursoDetailService implements OnInit {
     this.reviewImage = new EventEmitter<ContestResultExpanded>();
     this.deleteImage = new EventEmitter<ContestResultExpanded>();
     this.mostrarAcciones = new EventEmitter<any>();
+    this.refreshPhotos = new EventEmitter<void>();
     
     
     this.loadConcursantes()

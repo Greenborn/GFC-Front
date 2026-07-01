@@ -19,7 +19,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
-import { get_all, resultadosConcursoGeted } from '../../../services/contest-results.service'
+import { get_all } from '../../../services/contest-results.service'
 import { FiltrosOrdenModalComponent, FiltrosOrdenState } from './filtros-orden-modal.component';
 import { MetricAbmService } from 'src/app/services/metric-abm.service';
 import { InscribirConcursanteComponent } from '../inscribir-concursante/inscribir-concursante.component';
@@ -65,6 +65,7 @@ export class FotografiasComponent implements OnInit {
   public hasMorePages = true;
   public loadingPage = false;
   public loadingInitial = false;
+  private pendingRefresh = false;
 
   constructor(
     public concursoDetailService: ConcursoDetailService,
@@ -179,8 +180,7 @@ export class FotografiasComponent implements OnInit {
 
     if (!response || !Array.isArray(response.items)) {
       this.hasMorePages = false;
-      this.loadingPage = false;
-      this.loadingInitial = false;
+      this.finishLoading();
       return;
     }
 
@@ -198,8 +198,17 @@ export class FotografiasComponent implements OnInit {
       this.hasMorePages = items.length >= this.pageSize;
     }
 
+    this.finishLoading();
+  }
+
+  private finishLoading() {
     this.loadingPage = false;
     this.loadingInitial = false;
+    if (this.pendingRefresh) {
+      this.pendingRefresh = false;
+      this.loadPage(1, true);
+      this.cargarPropiasFotos();
+    }
   }
 
   loadMoreImages(event: any) {
@@ -228,9 +237,14 @@ export class FotografiasComponent implements OnInit {
         }
       }))
 
-    this.subscriptions.push(resultadosConcursoGeted.subscribe(() => {
-      this.loadPage(1, true)
-      this.cargarPropiasFotos();
+    this.subscriptions.push(this.concursoDetailService.refreshPhotos.subscribe(async () => {
+      if (this.loadingPage) {
+        this.pendingRefresh = true;
+        return;
+      }
+      await new Promise(r => setTimeout(r, 1000));
+      await this.loadPage(1, true);
+      await this.cargarPropiasFotos();
     }))
   }
 
