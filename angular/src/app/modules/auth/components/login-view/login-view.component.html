@@ -9,15 +9,16 @@
           ></ion-img>
         </div>
 
-        <ion-button
-          expand="block"
-          fill="outline"
-          class="google-btn"
-          (click)="loginWithGoogle()"
-        >
-          <ion-icon slot="start" name="logo-google"></ion-icon>
-          Ingresar con Google
-        </ion-button>
+        <div class="google-btn-wrapper">
+          <ion-button
+            fill="outline"
+            class="google-btn"
+            (click)="loginWithGoogle()"
+          >
+            <ion-icon slot="start" name="logo-google"></ion-icon>
+            Ingresar con Google
+          </ion-button>
+        </div>
 
         <div class="separator">
           <span class="separator-line"></span>
@@ -31,27 +32,31 @@
               <ion-label>Usuario y Contraseña</ion-label>
             </ion-item>
             <div slot="content" class="accordion-content ion-padding">
-              <ion-item class="expand-full">
-                <ion-label position="stacked">Usuario</ion-label>
-                <ion-input
-                  (keypress)="keyPress($event)"
-                  [(ngModel)]="login.username"
-                  ngDefaultControl
-                ></ion-input>
-              </ion-item>
+              <div class="credential-fields">
+                <ion-item class="expand-full input-bordered">
+                  <ion-label position="stacked">Usuario</ion-label>
+                  <ion-input
+                    placeholder="Ingresá tu usuario"
+                    (keypress)="keyPress($event)"
+                    [(ngModel)]="login.username"
+                    ngDefaultControl
+                  ></ion-input>
+                </ion-item>
 
-              <ion-item class="expand-full">
-                <ion-label position="stacked">Contraseña</ion-label>
-                <ion-input
-                  #passInput
-                  id="ctr-1"
-                  type="password"
-                  (keypress)="keyPress($event, 'next')"
-                  [(ngModel)]="login.password"
-                  ngDefaultControl
-                ></ion-input>
-                <app-ojo slot="end" inputId="ctr-1"></app-ojo>
-              </ion-item>
+                <ion-item class="expand-full input-bordered">
+                  <ion-label position="stacked">Contraseña</ion-label>
+                  <ion-input
+                    #passInput
+                    id="ctr-1"
+                    type="password"
+                    placeholder="Ingresá tu contraseña"
+                    (keypress)="keyPress($event, 'next')"
+                    [(ngModel)]="login.password"
+                    ngDefaultControl
+                  ></ion-input>
+                  <app-ojo slot="end" inputId="ctr-1"></app-ojo>
+                </ion-item>
+              </div>
 
               <ion-item class="expand-full" lines="none">
                 <a href="/#/recuperar-password" class="enlace-recuperar-pass">¿Olvidaste tu contraseña?</a>
