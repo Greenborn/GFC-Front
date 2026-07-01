@@ -314,6 +314,7 @@ obtenerPx() {
         console.log('udpated metric', r)
         // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
         await get_all_contest_results( { "contest_id" : this.concurso.id} )
+        this.concursoDetailService.refreshPhotos.emit()
       } 
       // else {
       //   this.metrics.push(metric)
@@ -400,6 +401,7 @@ obtenerPx() {
                 metric
               })
               await get_all_contest_results( { "contest_id" : this.concurso.id} )
+              this.concursoDetailService.refreshPhotos.emit()
             },
             // cr => this.contestResults.push(cr),
             error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
@@ -426,16 +428,19 @@ obtenerPx() {
               // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
               
               await get_all_contest_results( { "contest_id" : this.concurso.id} )
+              this.concursoDetailService.refreshPhotos.emit()
             },
             error: async err => {
               this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]) })
               
               await get_all_contest_results( { "contest_id" : this.concurso.id} )
+              this.concursoDetailService.refreshPhotos.emit()
             },
           })  
         } else {
           console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
           await get_all_contest_results( { "contest_id" : this.concurso.id} )
+          this.concursoDetailService.refreshPhotos.emit()
         }
         // console.log('replaced image', image, 'index', i)
       }
@@ -525,6 +530,7 @@ obtenerPx() {
               next: async _ => {
                 this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
                 await get_all_contest_results( { "contest_id" : this.concurso.id} )
+                this.concursoDetailService.refreshPhotos.emit()
                 super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
                   next: _ => get_all_contest_results({ "contest_id": this.concurso.id }),
                   error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
