@@ -99,9 +99,14 @@ export class FotografiasComponent implements OnInit {
     if (this.seccionesSeleccionadas.size > 0) count++;
     if (this.categoriasSeleccionadas.size > 0) count++;
     if (this.premiosSeleccionados.size > 0) count++;
-    if (this.filtroAutor) count++;
+    if (this.filtroAutor && this.canFilterByAuthor) count++;
     if (this.filtroCodigo) count++;
     return count;
+  }
+
+  get canFilterByAuthor(): boolean {
+    if (!this.user) return true;
+    return this.isContestJudged || !this.rolificador.esConcursante(this.user);
   }
 
   get sortLabel(): string {
@@ -157,6 +162,11 @@ export class FotografiasComponent implements OnInit {
     }
 
     this.loadingPage = true;
+
+    if (!this.canFilterByAuthor) {
+      if (this.sortBy === 'author') this.sortBy = '';
+      this.filtroAutor = '';
+    }
 
     const response: any = await get_all({
       contest_id: this.concurso.id,
@@ -309,6 +319,7 @@ export class FotografiasComponent implements OnInit {
         categoriasInscriptas: this.categoriasInscriptas,
         puntajes: this.puntajes,
         isContestJudged: this.isContestJudged,
+        canFilterByAuthor: this.canFilterByAuthor,
         seccionesSeleccionadas: [...this.seccionesSeleccionadas],
         categoriasSeleccionadas: [...this.categoriasSeleccionadas],
         premiosSeleccionados: [...this.premiosSeleccionados],

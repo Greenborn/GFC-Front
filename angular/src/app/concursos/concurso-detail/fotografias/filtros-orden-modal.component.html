@@ -27,7 +27,7 @@
         <ion-label>Título</ion-label>
         <ion-radio value="title"></ion-radio>
       </ion-item>
-      <ion-item lines="none">
+      <ion-item lines="none" *ngIf="canFilterByAuthor">
         <ion-label>Autor</ion-label>
         <ion-radio value="author"></ion-radio>
       </ion-item>
@@ -62,7 +62,7 @@
     </ion-chip>
   </ion-list>
 
-  <ion-list>
+  <ion-list *ngIf="isContestJudged">
     <ion-list-header>Premios</ion-list-header>
     <ion-chip (click)="premioAll()" [color]="todosPremios ? 'primary' : 'medium'">
       <ion-label>Todos</ion-label>
@@ -74,7 +74,7 @@
     </ion-chip>
   </ion-list>
 
-  <ion-list>
+  <ion-list *ngIf="canFilterByAuthor">
     <ion-list-header>Filtrar por autor</ion-list-header>
     <ion-item>
       <ion-input [(ngModel)]="localFiltroAutor" placeholder="Nombre del autor"></ion-input>
