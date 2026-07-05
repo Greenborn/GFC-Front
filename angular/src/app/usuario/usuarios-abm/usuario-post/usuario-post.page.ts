@@ -140,8 +140,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     })
     await loading.present();
 
-    //si se está en pagina de registro, se mopdifica el texto del botòn
-    this.isUserSignUp = this.router.url.split('?')[0] === '/registro';
+    this.isUserSignUp = this.activatedRoute.snapshot.pathFromRoot.some(r => r.routeConfig?.path === 'registro');
     if (this.isUserSignUp){
       this.submitBtnText = "Siguiente";
       const email = this.activatedRoute.snapshot.queryParams['email'];
