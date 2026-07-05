@@ -121,59 +121,62 @@
             <ion-row class="ion-justify-content-start ion-align-items-center ion-margin-top ion-margin-bottom">
             </ion-row>
 
-            <ion-row *ngIf="mostrarPropias && propiasFotos.length > 0">
+            <ion-row *ngIf="propiasFotos.length > 0">
               <ion-col>
-                <ion-list-header>
-                  <ion-label>Mis fotografías</ion-label>
-                </ion-list-header>
-                <ion-row class="ion-justify-content-center">
-                  <ion-col *ngFor="let r of propiasFotos; index as i" class="ion-padding" size="12" size-sm="6" size-md="auto">
-                    <ion-row class="ion-justify-content-center">
-                      <ion-col size="auto">
-                        <img class="img-galeria" title="Ver fotografía" (click)="openImage(i, propiasFotos)"
-                          [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
-                          [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
-                        />
-                      </ion-col>
-                    </ion-row>
-                    <ion-row class="ion-justify-content-center">
-                      <ion-col size="auto">
-                        <div class="cont-img-text">
-                          <p><b>{{r.image.title}}</b></p>
-                          <p><i>{{r.section?.name}}</i></p>
-                          <p *ngIf="concurso?.judged || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ r.image.profile?.name }} {{ r.image.profile?.last_name }}</p>
-                          <p *ngIf="!isContestNotFin">
-                            <b>{{ r.metric?.prize ? r.metric.prize : '-' }} </b>
-                          </p>
-                        </div>
-                      </ion-col>
-                    </ion-row>
-                    <ion-row>
-                      <ion-col class="ion-align-self-center">
-                        <ion-buttons class="ion-hide-md-down ion-justify-content-center">
-                          <ion-button *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
-                            <ion-icon name="star-outline"></ion-icon>
-                          </ion-button>
-                          <ion-button *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
-                            <ion-icon name="create"></ion-icon>
-                          </ion-button>
-                          <ion-button *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
-                            <ion-icon name="trash"></ion-icon>
-                          </ion-button>
-                        </ion-buttons>
-                        <ion-buttons class="ion-hide-md-up">
-                          <ion-button (click)="mostrarAcciones($event, r, i, propiasFotos)">
-                            <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-                          </ion-button>
-                        </ion-buttons>
-                      </ion-col>
-                    </ion-row>
-                  </ion-col>
-                </ion-row>
+                <ion-item button (click)="propiasExpandidas = !propiasExpandidas" lines="none" detail="false">
+                  <ion-label><strong>Mis fotografías</strong></ion-label>
+                  <ion-icon slot="end" [name]="propiasExpandidas ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+                </ion-item>
+                <div *ngIf="propiasExpandidas">
+                  <ion-row class="ion-justify-content-center">
+                    <ion-col *ngFor="let r of propiasFotos; index as i" class="ion-padding" size="12" size-sm="6" size-md="auto">
+                      <ion-row class="ion-justify-content-center">
+                        <ion-col size="auto">
+                          <img class="img-galeria" title="Ver fotografía" (click)="openImage(i, propiasFotos)"
+                            [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
+                            [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
+                          />
+                        </ion-col>
+                      </ion-row>
+                      <ion-row class="ion-justify-content-center">
+                        <ion-col size="auto">
+                          <div class="cont-img-text">
+                            <p><b>{{r.image.title}}</b></p>
+                            <p><i>{{r.section?.name}}</i></p>
+                            <p *ngIf="concurso?.judged || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ r.image.profile?.name }} {{ r.image.profile?.last_name }}</p>
+                            <p *ngIf="!isContestNotFin">
+                              <b>{{ r.metric?.prize ? r.metric.prize : '-' }} </b>
+                            </p>
+                          </div>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col class="ion-align-self-center">
+                          <ion-buttons class="ion-hide-md-down ion-justify-content-center">
+                            <ion-button *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
+                              <ion-icon name="star-outline"></ion-icon>
+                            </ion-button>
+                            <ion-button *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
+                              <ion-icon name="create"></ion-icon>
+                            </ion-button>
+                            <ion-button *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
+                              <ion-icon name="trash"></ion-icon>
+                            </ion-button>
+                          </ion-buttons>
+                          <ion-buttons class="ion-hide-md-up">
+                            <ion-button (click)="mostrarAcciones($event, r, i, propiasFotos)">
+                              <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                            </ion-button>
+                          </ion-buttons>
+                        </ion-col>
+                      </ion-row>
+                    </ion-col>
+                  </ion-row>
+                </div>
               </ion-col>
             </ion-row>
 
-            <ion-row *ngIf="mostrarPropias && propiasFotos.length > 0 && resultadosConcursoFiltrados.length > 0">
+            <ion-row *ngIf="propiasFotos.length > 0 && resultadosConcursoFiltrados.length > 0">
               <ion-col>
                 <ion-list-header>
                   <ion-label>Todas las fotografías</ion-label>

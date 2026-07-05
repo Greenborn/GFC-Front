@@ -45,7 +45,8 @@ export class FotografiasComponent implements OnInit {
 
   puntajes: Metric[] = [];
   propiasFotos: ContestResultExpanded[] = [];
-  mostrarPropias: boolean = true;
+  propiasExpandidas: boolean = true;
+
 
   sidebarVisible: boolean = false;
   sortBy: string = '';
@@ -135,7 +136,7 @@ export class FotografiasComponent implements OnInit {
       return []
     }
     let items = this.resultadosConcurso;
-    if (this.mostrarPropias && this.propiasFotos.length > 0) {
+    if (this.propiasFotos.length > 0) {
       const ids = new Set(this.propiasFotos.map(p => p.id));
       items = items.filter(r => !ids.has(r.id));
     }
@@ -156,9 +157,6 @@ export class FotografiasComponent implements OnInit {
       this.resultadosConcurso = [];
       this.resultadosConcursoOrig = [];
       this.loadingInitial = true;
-      if (!showLoading) {
-        this.mostrarPropias = false;
-      }
     }
 
     this.loadingPage = true;
@@ -436,7 +434,6 @@ export class FotografiasComponent implements OnInit {
     this.filtroAutor = '';
     this.filtroCodigo = '';
     this.loadPage(1, true, null, false);
-    this.mostrarPropias = true;
   }
 
   getThumbUrl(obj: any, thumb_id: number = 1) {
