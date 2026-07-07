@@ -55,7 +55,7 @@ export class VerFotografiasComponent implements OnInit {
   ) { }
 
   get canDownload(): boolean {
-    return this.user != null && (this.rolificador.isAdmin(this.user) || this.rolificador.esDelegado(this.user));
+    return this.user != null;
   }
 
   ngOnInit() {
