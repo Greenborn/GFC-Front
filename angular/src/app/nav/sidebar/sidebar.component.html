@@ -10,6 +10,10 @@
     <ion-list *ngIf="(auth.user | async) as u">
       <!-- <ion-item>Home</ion-item> -->
       <!-- <ion-item>Reglamento</ion-item> -->
+      <ion-item [routerLink]="['/usuarios', 'editar', u.id]">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        Editar perfil
+      </ion-item>
       <ion-item [routerLink]="['/concursos']">Concursos</ion-item>
       <!-- <ion-item>Galería</ion-item> -->
       <!-- <ion-item [routerLink]="['/usuarios']" *ngIf="isLoggedIn()">Usuarios</ion-item> -->

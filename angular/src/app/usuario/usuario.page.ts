@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from '../models/ApiConsumer';
 import { Profile } from '../models/profile.model';
@@ -8,8 +7,7 @@ import { AuthService } from '../modules/auth/services/auth.service';
 import { ConfigService } from '../services/config/config.service';
 import { ProfileService } from '../services/profile.service';
 import { UserService } from '../services/user.service';
-// import { AuthService } from '../services/auth/auth.service';
-// import { Usuario } from './usuario.model';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-usuario',
@@ -20,6 +18,7 @@ export class UsuarioPage extends ApiConsumer implements OnInit {
 
   public authUser: User = null;
   public userProfile: Profile = null;
+  public version = environment.version;
 
   // user: User;
   // user: Promise<User>;
@@ -73,10 +72,6 @@ export class UsuarioPage extends ApiConsumer implements OnInit {
         this.userProfile = p;
       });
     }
-  }
-
-  logout() {
-    // this.authService.logout();
   }
 
 }
