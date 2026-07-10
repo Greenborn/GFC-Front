@@ -180,3 +180,13 @@ ion-note{
     max-width: 600px;
   }
 }
+
+.app-slide-card {
+  background: var(--ion-card-background, var(--ion-item-background, #fff));
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  height: 100%;
+  padding: 1rem;
+  margin: 0.25rem;
+  box-sizing: border-box;
+}

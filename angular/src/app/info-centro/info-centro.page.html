@@ -8,10 +8,10 @@
     </ion-row>
 
     <!-- CONTENERDEOR ICONOS/ACCESO DIRECTOS -->
-    <ion-row class="ion-margin-top ion-margin-bottom">
+    <ion-row class="full-section">
       <ion-col>
         <ion-row class="ion-justify-content-around ion-text-center">
-          <ion-col size="3">
+          <ion-col size="4" size-sm="3">
             <ion-row class="ion-align-items-center">
               <ion-col>
               <ion-icon name="aperture-outline"></ion-icon>
@@ -20,13 +20,13 @@
             <ion-row class="ion-justify-content-center">
               <h3>Fotografía</h3>
             </ion-row>
-            <ion-row>
+            <ion-row class="icon-text">
               <ion-text
               >Lorem ipsum dolor sit amet,consectetur adipiscing elit</ion-text>
             </ion-row>
             </ion-col
           >
-          <ion-col  size="3" >
+          <ion-col size="4" size-sm="3">
             <ion-row class="ion-align-items-center">
               <ion-col>
                 <ion-icon name="trophy-outline"
@@ -38,13 +38,13 @@
             <ion-row class="ion-justify-content-center">
               <h3>Concursos</h3>
             </ion-row>
-            <ion-row>
+            <ion-row class="icon-text">
               <ion-text>Concursos internos con jurados representantes F.A.F</ion-text>
     
             </ion-row>
           
           </ion-col>
-          <ion-col  size="3.5">
+          <ion-col size="4" size-sm="3.5">
             <ion-row class="ion-align-items-center">
               <ion-col>
               <ion-icon name="people-outline"></ion-icon>
@@ -53,7 +53,7 @@
             <ion-row class="ion-justify-content-center">
               <h3>Camaradería</h3>
             </ion-row>
-            <ion-row>
+            <ion-row class="icon-text">
               <ion-text
               >Un espacio para compartir el interés por la fotografía
               artística</ion-text>
@@ -63,11 +63,9 @@
         </ion-row>
       </ion-col>
     </ion-row>
-   
-   
 
     <!-- SOBRE GRUPO FOTOGRAFICO CENTRO -->
-    <ion-row class="ion-margin-top ion-margin-bottom bg-gray1 ion-text-center">
+    <ion-row class="bg-gray1 ion-text-center full-section">
       <ion-col>
         <ion-row class="ion-justify-content-center" >
           <ion-col size="10">
@@ -95,116 +93,16 @@
     </ion-row>
 
     <!-- COMISIÒN DIRECTIVA -->
-    <ion-row>
+    <ion-row class="full-section">
       <app-presentacion-comision-directiva
         class="w-100"
       ></app-presentacion-comision-directiva>
     </ion-row>
 
     <!-- MIEMBROS -->
-    <ion-row>
+    <ion-row class="full-section">
       <app-presentacion-miembros class="w-100"></app-presentacion-miembros>
     </ion-row>
 
-    <!-- SUBSCRIBITE, igual ahora no se agrega -->
-    <ion-row> </ion-row>
   </ion-grid>
 </ion-content>
-
-<!--
-<ion-content>
-  <div *ngIf="(auth.user | async) as u">
- 
-
-    <div *ngFor="let p of parrafos; index as i; first as isFirst">
-      
-      <ion-col #rowHeader class="ion-no-padding ion-justify-content-center" *ngIf="isFirst; else parrafo">
-          
-
-        <ion-avatar #avatarImg
-          [style.width]="'100%'" 
-          [style.height.vh]="15"
-        >
-          <ion-img 
-            (ionError)="noImg(avatarImg)"
-         
-            [src]="p.img_url != null ? configService.imageUrl(p.img_url) : '' "
-          ></ion-img>
-        </ion-avatar>
-        <ion-row  class="ion-no-padding ion-justify-content-center ion-align-items-center">
-          <h1 *ngIf="p.title">{{p.title}}</h1>          
-          
-            <ion-button (click)="postParrafo(p)" *ngIf="rolificador.isAdmin(u)" 
-              size="small"  class="ion-margin-start"
-            >
-              <ion-icon name="create"></ion-icon>
-            </ion-button>
-        </ion-row>
-        
-        <ion-row *ngIf="rolificador.isAdmin(u)"
-          class="ion-justify-content-center ion-padding-top ion-padding-bottom" 
-          style="background: var(--ion-color-light); --ion-padding: 8px"
-        >
-            <ion-row class="ion-align-items-center"
-              [style.width]="(responsiveService.isDesktop ? '85%' : '95%')"
-            >
-              <h2 class="ion-margin-end"> Agregar parrafo </h2>
-              <ion-fab-button (click)="postParrafo()"
-                size="small"
-              >
-                <ion-icon name="add"></ion-icon>
-              </ion-fab-button>
-            </ion-row>
-        </ion-row>
-      </ion-col>
-      <ng-template #parrafo>
-        <ion-grid  class="ion-no-padding ion-margin-bottom">
-          <ion-row class="ion-align-items-center ion-justify-content-center">
-            <h3 *ngIf="p.title">{{p.title}}</h3>
-
-              <ion-buttons class="ion-hide-sm-down ion-margin-start" *ngIf="rolificador.isAdmin(u)">
-                <ion-button (click)="postParrafo(p)">
-                  <ion-icon name="create"></ion-icon>
-                </ion-button>
-                <ion-button (click)="deleteParrafo(p)">
-                  <ion-icon name="trash"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-              <ion-buttons class="ion-hide-sm-up"  *ngIf="rolificador.isAdmin(u)">
-                <ion-button
-                  (click)="mostrarAcciones($event, p)"
-                >
-                  <ion-icon
-                    slot="start"
-                    ios="ellipsis-horizontal"
-                    md="ellipsis-vertical"
-                  ></ion-icon>
-                </ion-button>
-              </ion-buttons>
-          </ion-row>
-          <ion-col class="ion-no-padding">
-            <ion-row>
-              <ion-text *ngIf="p.content" 
-                class="ion-margin-bottom ion-margin-top ion-padding-start ion-padding-end ion-text-justify" 
-                [style]="'--ion-padding: ' + (responsiveService.isDesktop ? '16%' : '5%')"
-                >{{p.content}}</ion-text>
-            </ion-row>
-            <ion-row #rowImg class="ion-no-padding ion-justify-content-center">
-                <ion-avatar 
-                  [style.width]="p.id == 1 ? '100%' : (responsiveService.isDesktop ? '85%' : '95%')" 
-                  [style.height.vh]="p.id == 1 ? 15 : obtenerVh()"
-                >
-                  <ion-img 
-                    (ionError)="noImg(rowImg)"
-                
-                    [src]="configService.imageUrl(p.img_url)"
-                  ></ion-img>
-                </ion-avatar>
-            </ion-row>
-          </ion-col>
-        </ion-grid>
-      </ng-template>
-      </div>
-  </div>
-</ion-content>
--->

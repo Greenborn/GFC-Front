@@ -17,9 +17,9 @@
   <ion-card-content>
     <div *ngIf="fotos && fotos.length > 0; else noFotos">
       <div class="slides-container">
-        <ion-slides [options]="slideOpts" #slides>
-          <ion-slide *ngFor="let foto of fotos; let i = index">
-            <div class="slide-content">
+        <app-slides [options]="slideOpts" #slides>
+          <div #slide class="app-slide" *ngFor="let foto of fotos; let i = index">
+            <div class="slide-content app-slide-card">
               <div class="image-container" (click)="abrirFotoDetalle(i)" style="cursor: pointer;">
                 <img 
                   [src]="getImageUrl(foto.url_imagen)" 
@@ -41,8 +41,8 @@
                 </p>
               </div>
             </div>
-          </ion-slide>
-        </ion-slides>
+          </div>
+        </app-slides>
         
         <!-- Botones de navegación -->
         <ion-button 

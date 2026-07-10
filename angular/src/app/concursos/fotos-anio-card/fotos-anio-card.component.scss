@@ -29,8 +29,9 @@
       position: relative;
     }
     
-    ion-slides {
+    app-slides {
       height: 500px;
+      display: block;
       
       @media (max-width: 768px) {
         height: 400px;
@@ -147,20 +148,11 @@
   }
 }
 
-// Estilos para los controles del slider
-::ng-deep .fotos-anio-card {
-  .swiper-pagination-bullet {
-    background: white;
-    opacity: 0.5;
-  }
-  
-  .swiper-pagination-bullet-active {
-    background: gold;
-    opacity: 1;
-  }
-  
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: white;
-  }
+// Estilos para la paginación del slider
+::ng-deep .fotos-anio-card .app-slides-bullet {
+  background: white;
+}
+
+::ng-deep .fotos-anio-card .app-slides-bullet.active {
+  background: gold;
 }

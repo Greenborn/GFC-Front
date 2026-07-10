@@ -1,4 +1,4 @@
-<ion-row class="ion-margin-top bg-gray1 ion-text-center">
+<ion-row class="ion-margin-top bg-gray-light ion-text-center main-row">
   <ion-col>
     <ion-row class="ion-justify-content-center" >
       <ion-col size="10">
@@ -8,9 +8,9 @@
 
         <ion-row >
           <ion-col size="12">
-            <ion-slides [options]="slideOptions" #slideWithNav>
-              <ion-slide *ngFor="let s of sliderOne.slidesItems">
-                <ion-row class="w-100 spc h-100">
+            <app-slides [options]="slideOptions" #slideWithNav>
+              <div #slide class="app-slide" *ngFor="let s of sliderOne.slidesItems">
+                <ion-row class="w-100 spc h-100 app-slide-card">
 
                   <ion-col size-md="6" size="12" class="div ion-padding">
                       
@@ -35,12 +35,11 @@
 
                 </ion-row>
                
-               </ion-slide>
-           </ion-slides>
+              </div>
+            </app-slides>
             </ion-col
           >
 
-            <!-- If we need navigation buttons -->
           <a *ngIf="cantF > 1 && responsiveService.isDesktop" (click)="swipePrev()"> <div class="swiper-button-prev" ></div> </a>
           <a *ngIf="cantF > 1 && responsiveService.isDesktop" (click)="swipeNext()"><div class="swiper-button-next" ></div></a>
           

@@ -16,12 +16,41 @@ ion-img{ max-width: 100% !important; max-height: 50vh !important;  object-fit: c
 ion-icon {
     width: 30% !important;  
     height : auto !important;  
-    max-width: 30% !important;  //any size
-    max-height: auto !important; //any size 
+    max-width: 30% !important;
+    max-height: auto !important;
     aspect-ratio: 1/1 !important;
-  }
+}
 
-  @supports not (aspect-ratio: 1 / 1) {
+@media (max-width: 767px) {
+    ion-icon {
+        width: 40% !important;
+        max-width: 40% !important;
+    }
+
+    .icon-text {
+        font-size: 0.85rem;
+    }
+
+    .full-section {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.section-spacing {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.icon-text {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
+
+@supports not (aspect-ratio: 1 / 1) {
     .element::before {
       float: left;
       padding-top: 100%;
@@ -33,4 +62,4 @@ ion-icon {
       content: "";
       clear: both;
     }
-  }
+}

@@ -1,0 +1,80 @@
+.app-slides-container {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.app-slides-track {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100%;
+  transition-property: transform;
+  transition-timing-function: ease;
+}
+
+:host ::ng-deep .app-slide {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.app-slides-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0;
+  line-height: 1;
+}
+
+.app-slides-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.app-slides-btn:active {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.app-slides-btn-prev {
+  left: 8px;
+}
+
+.app-slides-btn-next {
+  right: 8px;
+}
+
+.app-slides-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.app-slides-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ion-color-medium, #888);
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.app-slides-bullet.active {
+  opacity: 1;
+  background: var(--ion-color-primary, #3880ff);
+  transform: scale(1.3);
+}

@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AlertController, IonSlides } from '@ionic/angular';
-import { ConcursosPageModule } from 'src/app/concursos/concursos.module';
+import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { SlidesComponent } from 'src/app/shared/slides/slides.component';
 
 @Component({
   selector: 'app-presentacion-miembros',
@@ -28,7 +28,7 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
         })
   }
 
-  @ViewChild('slideWithNav', { static: false }) slideWithNav: IonSlides;
+  @ViewChild('slideWithNav', { static: false }) slideWithNav: SlidesComponent;
 
   cantF: number = 1;
   sliderOne: any = {
@@ -39,11 +39,9 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
   slideOptions: any = {
     initialSlide: 0,
     slidesPerView: 1,
+    slidesPerViewTablet: 3,
+    slidesPerViewDesktop: 4,
     autoplay: true,
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
   };
 
   get aspecto() {
@@ -86,10 +84,10 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
   ) {
     
     super(alertController);
-    //Item object for Nature
   }
+
   async swipeNext(){
-    if (await this.slideWithNav.isEnd() != true){
+    if (!(await this.slideWithNav.isEnd())){
       this.slideWithNav.slideNext()
     } else {
       this.slideWithNav.slideTo(0)
@@ -97,10 +95,10 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
   }
 
   async swipePrev(){
-    if (await this.slideWithNav.isBeginning() != true){
+    if (!(await this.slideWithNav.isBeginning())){
       this.slideWithNav.slidePrev()
     } else {
-      this.slideWithNav.slideTo(await this.slideWithNav.length() - 1)
+      this.slideWithNav.slideTo((await this.slideWithNav.length()) - 1)
     }
   }
 

@@ -20,3 +20,19 @@
 .uc-col h2{
     font-weight: bolder;
 }
+
+@media (max-width: 767px) {
+    .ultimo-concurso-content{
+        height: 100vh;
+        background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.1) 100%);
+    }
+
+    .uc-col{
+        margin-bottom: 0;
+        align-self: flex-end;
+    }
+
+    .uc-col h2{
+        font-size: 1.5rem;
+    }
+}

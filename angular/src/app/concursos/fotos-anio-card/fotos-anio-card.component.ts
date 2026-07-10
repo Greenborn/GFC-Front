@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, OnChanges, ViewChild } from '@angular/core';
-import { IonSlides } from '@ionic/angular';
 import { FotoDelAnio } from 'src/app/models/foto-del-anio.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { VerFotografiasComponent } from '../concurso-detail/ver-fotografias/ver-fotografias.component';
+import { SlidesComponent } from 'src/app/shared/slides/slides.component';
 
 @Component({
   selector: 'app-fotos-anio-card',
@@ -14,23 +14,16 @@ export class FotosAnioCardComponent implements OnInit, OnChanges {
   @Input() fotos: FotoDelAnio[] = [];
   @Input() temporada: number = 0;
   @Input() url_grabacion: string | null = null;
-  @ViewChild('slides', { static: false }) slides: IonSlides;
+  @ViewChild('slides', { static: false }) slides: SlidesComponent;
 
   slideOpts = {
     initialSlide: 0,
     speed: 400,
-    loop: true,
+    slidesPerView: 1,
+    slidesPerViewTablet: 3,
+    slidesPerViewDesktop: 4,
     autoplay: {
-      delay: 5000,
-      disableOnInteraction: false
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true
-    },
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev'
+      delay: 5000
     }
   };
 

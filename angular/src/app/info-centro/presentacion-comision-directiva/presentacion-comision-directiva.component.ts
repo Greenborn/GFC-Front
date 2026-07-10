@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController, IonSlides } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Profile } from 'src/app/models/profile.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { PublicProfileService } from 'src/app/services/public-profile.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { SlidesComponent } from 'src/app/shared/slides/slides.component';
 
 @Component({
   selector: 'app-presentacion-comision-directiva',
@@ -26,18 +27,17 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
       };
       this.slideOptions = {
         initialSlide: 0,
-        slidesPerView: p.length < 3 ? p.length : 3,
+        slidesPerView: 1,
+        slidesPerViewTablet: 3,
+        slidesPerViewDesktop: 4,
         autoplay: true,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
+        navigation: true,
       };
           
         })
   }
 
-  @ViewChild('slideWithNav', { static: false }) slideWithNav: IonSlides;
+  @ViewChild('slideWithNav', { static: false }) slideWithNav: SlidesComponent;
 
   sliderOne: any = {
     isBeginningSlide: true,
@@ -54,10 +54,10 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
   ) {
     
     super(alertController);
-    //Item object for Nature
   }
+
   async swipeNext(){
-    if (await this.slideWithNav.isEnd() != true){
+    if (!(await this.slideWithNav.isEnd())){
       this.slideWithNav.slideNext()
     } else {
       this.slideWithNav.slideTo(0)
@@ -65,10 +65,10 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
   }
 
   async swipePrev(){
-    if (await this.slideWithNav.isBeginning() != true){
+    if (!(await this.slideWithNav.isBeginning())){
       this.slideWithNav.slidePrev()
     } else {
-      this.slideWithNav.slideTo(await this.slideWithNav.length() - 1)
+      this.slideWithNav.slideTo((await this.slideWithNav.length()) - 1)
     }
   }
 

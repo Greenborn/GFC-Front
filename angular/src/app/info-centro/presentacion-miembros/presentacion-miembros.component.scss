@@ -1,4 +1,4 @@
-.bg-gray1{
+.bg-gray-light{
     background-color: #dadada;
     margin-bottom: 0;
 }
@@ -18,4 +18,13 @@ ion-img {
 
 .colorTarget{
     color: black;
+}
+
+@media (max-width: 767px) {
+    :host .main-row {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 }
