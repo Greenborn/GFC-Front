@@ -7,102 +7,66 @@
       ></app-presentacion-ultimo-concurso>
     </ion-row>
 
-    <!-- CONTENERDEOR ICONOS/ACCESO DIRECTOS -->
-    <ion-row class="full-section">
-      <ion-col>
-        <ion-row class="ion-justify-content-around ion-text-center">
-          <ion-col size="4" size-sm="3">
-            <ion-row class="ion-align-items-center">
-              <ion-col>
-              <ion-icon name="aperture-outline"></ion-icon>
-              </ion-col>
-            </ion-row>
-            <ion-row class="ion-justify-content-center">
-              <h3>Fotografía</h3>
-            </ion-row>
-            <ion-row class="icon-text">
-              <ion-text
-              >Lorem ipsum dolor sit amet,consectetur adipiscing elit</ion-text>
-            </ion-row>
-            </ion-col
-          >
-          <ion-col size="4" size-sm="3">
-            <ion-row class="ion-align-items-center">
-              <ion-col>
-                <ion-icon name="trophy-outline"
-                ></ion-icon
-                >
+    <div class="content-container">
+      <!-- CARDS FEATURE -->
+      <div class="features-section">
+        <div class="feature-card">
+          <ion-icon name="aperture-outline"></ion-icon>
+          <h3>Fotografía</h3>
+          <p>Explorá el arte de capturar momentos únicos con creatividad y técnica.</p>
+        </div>
+        <div class="feature-card">
+          <ion-icon name="trophy-outline"></ion-icon>
+          <h3>Concursos</h3>
+          <p>Concursos internos con jurados representantes F.A.F.</p>
+        </div>
+        <div class="feature-card">
+          <ion-icon name="people-outline"></ion-icon>
+          <h3>Camaradería</h3>
+          <p>Un espacio para compartir el interés por la fotografía artística.</p>
+        </div>
+      </div>
 
-              </ion-col>
-            </ion-row>
-            <ion-row class="ion-justify-content-center">
-              <h3>Concursos</h3>
-            </ion-row>
-            <ion-row class="icon-text">
-              <ion-text>Concursos internos con jurados representantes F.A.F</ion-text>
-    
-            </ion-row>
-          
-          </ion-col>
-          <ion-col size="4" size-sm="3.5">
-            <ion-row class="ion-align-items-center">
-              <ion-col>
-              <ion-icon name="people-outline"></ion-icon>
-              </ion-col>
-            </ion-row>
-            <ion-row class="ion-justify-content-center">
-              <h3>Camaradería</h3>
-            </ion-row>
-            <ion-row class="icon-text">
-              <ion-text
-              >Un espacio para compartir el interés por la fotografía
-              artística</ion-text>
-            </ion-row>
-           </ion-col
-          >
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-    <!-- SOBRE GRUPO FOTOGRAFICO CENTRO -->
-    <ion-row class="bg-gray1 ion-text-center full-section">
-      <ion-col>
-        <ion-row class="ion-justify-content-center" >
-          <ion-col size="10">
-            <ion-row>
-              <ion-col><h2>Sobre GFC</h2></ion-col>
-            </ion-row>
-    
-            <ion-row  class="ion-padding-bottom">
-              <ion-col class="ion-padding-bottom"
-                ><ion-text class="ion-text-justify">
-                  El GFC (Grupo Fotográfico Centro) agrupa desde el año 1967 a
-                  fotoclubes del centro este de la provincia de Buenos Aires
-                  pertenecientes a la F.A.F (Federación Argentina de Fotografía).
-                  Las ciudades que se encuentran representadas actualmente son:
-                  Balcarce, Benito Juarez, Necochea, Olavarria y Tandil. Cuenta como
-                  objetivo la promoción de la actividad fotográfica en el ámbito
-                  fotoclubista y el aprendizaje continuo.
-                </ion-text></ion-col
-              >
-            </ion-row>
-          </ion-col>
-        </ion-row>
-      </ion-col>
+      <!-- SOBRE GRUPO FOTOGRAFICO CENTRO -->
+      <ion-row class="bg-gray1 ion-text-center full-section">
+        <ion-col>
+          <ion-row class="ion-justify-content-center" >
+            <ion-col size="10">
+              <ion-row>
+                <ion-col><h2>Sobre GFC</h2></ion-col>
+              </ion-row>
       
-    </ion-row>
+              <ion-row  class="ion-padding-bottom">
+                <ion-col class="ion-padding-bottom"
+                  ><ion-text class="ion-text-justify">
+                    El GFC (Grupo Fotográfico Centro) agrupa desde el año 1967 a
+                    fotoclubes del centro este de la provincia de Buenos Aires
+                    pertenecientes a la F.A.F (Federación Argentina de Fotografía).
+                    Las ciudades que se encuentran representadas actualmente son:
+                    Balcarce, Benito Juarez, Necochea, Olavarria y Tandil. Cuenta como
+                    objetivo la promoción de la actividad fotográfica en el ámbito
+                    fotoclubista y el aprendizaje continuo.
+                  </ion-text></ion-col
+                >
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        
+      </ion-row>
 
-    <!-- COMISIÒN DIRECTIVA -->
-    <ion-row class="full-section">
-      <app-presentacion-comision-directiva
-        class="w-100"
-      ></app-presentacion-comision-directiva>
-    </ion-row>
+      <!-- COMISIÒN DIRECTIVA -->
+      <ion-row class="full-section">
+        <app-presentacion-comision-directiva
+          class="w-100"
+        ></app-presentacion-comision-directiva>
+      </ion-row>
 
-    <!-- MIEMBROS -->
-    <ion-row class="full-section">
-      <app-presentacion-miembros class="w-100"></app-presentacion-miembros>
-    </ion-row>
+      <!-- MIEMBROS -->
+      <ion-row class="full-section">
+        <app-presentacion-miembros class="w-100"></app-presentacion-miembros>
+      </ion-row>
+    </div>
 
   </ion-grid>
 </ion-content>

@@ -1,7 +1,8 @@
-import { AfterContentInit, Component, ContentChildren, ElementRef, HostListener, Input, OnChanges, OnDestroy, QueryList, Renderer2, SimpleChanges } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, HostListener, Input, OnChanges, OnDestroy, QueryList, Renderer2, SimpleChanges } from '@angular/core';
 
 const TABLET_BREAKPOINT = 768;
 const DESKTOP_BREAKPOINT = 1200;
+const RESIZE_DEBOUNCE = 150;
 
 export interface SlidesOptions {
   initialSlide?: number;
@@ -18,8 +19,9 @@ export interface SlidesOptions {
   selector: 'app-slides',
   templateUrl: './slides.component.html',
   styleUrls: ['./slides.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SlidesComponent implements AfterContentInit, OnChanges, OnDestroy {
+export class SlidesComponent implements AfterContentInit, AfterContentChecked, OnChanges, OnDestroy {
   @Input() options: SlidesOptions = {};
 
   @ContentChildren('slide', { descendants: true, read: ElementRef })
@@ -35,16 +37,22 @@ export class SlidesComponent implements AfterContentInit, OnChanges, OnDestroy {
   private containerEl!: HTMLElement;
   private trackEl!: HTMLElement;
   private initialized = false;
+  private resizeTimer: ReturnType<typeof setTimeout> | null = null;
+  private currentWidth = 0;
+  private cachedSlideW = 0;
+  private cachedBullets: number[] = [];
 
   constructor(
     private elementRef: ElementRef,
-    private renderer: Renderer2
-  ) {}
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.currentWidth = window.innerWidth;
+  }
 
   get deviceType(): 'mobile' | 'tablet' | 'desktop' {
-    const w = window.innerWidth;
-    if (w >= DESKTOP_BREAKPOINT) return 'desktop';
-    if (w >= TABLET_BREAKPOINT) return 'tablet';
+    if (this.currentWidth >= DESKTOP_BREAKPOINT) return 'desktop';
+    if (this.currentWidth >= TABLET_BREAKPOINT) return 'tablet';
     return 'mobile';
   }
 
@@ -68,9 +76,8 @@ export class SlidesComponent implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   get transform(): string {
-    if (!this.totalSlides || !this.containerEl) return 'translateX(0)';
-    const slideW = this.containerEl.offsetWidth / this.slidesPerView;
-    return `translateX(-${this.currentIndex * slideW}px)`;
+    if (!this.totalSlides) return 'translateX(0)';
+    return `translateX(-${this.currentIndex * this.cachedSlideW}px)`;
   }
 
   get transitionDuration(): string {
@@ -78,31 +85,35 @@ export class SlidesComponent implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   get bullets(): number[] {
-    const count = Math.max(1, this.totalSlides - this.slidesPerView + 1);
-    return Array.from({ length: count }, (_, i) => i);
+    return this.cachedBullets;
   }
 
   get bulletIndex(): number {
-    return Math.min(this.currentIndex, this.totalSlides - this.slidesPerView);
+    return Math.min(this.currentIndex, Math.max(0, this.totalSlides - this.slidesPerView));
   }
 
   @HostListener('window:resize')
   onResize(): void {
-    this.layout();
+    if (this.resizeTimer) clearTimeout(this.resizeTimer);
+    this.resizeTimer = setTimeout(() => {
+      this.currentWidth = window.innerWidth;
+      this.layout();
+      this.cdr.markForCheck();
+    }, RESIZE_DEBOUNCE);
   }
 
   ngAfterContentInit(): void {
     this.containerEl = this.elementRef.nativeElement.querySelector('.app-slides-container') as HTMLElement;
     this.trackEl = this.elementRef.nativeElement.querySelector('.app-slides-track') as HTMLElement;
-
-    this.slideElements.changes.subscribe(() => {
-      this.updateSlides();
-    });
-
     this.updateSlides();
-
     if (this.options.autoplay) {
       this.startAutoplay();
+    }
+  }
+
+  ngAfterContentChecked(): void {
+    if (this.slideElements.length !== this.totalSlides) {
+      this.updateSlides();
     }
   }
 
@@ -114,20 +125,29 @@ export class SlidesComponent implements AfterContentInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopAutoplay();
+    if (this.resizeTimer) clearTimeout(this.resizeTimer);
   }
 
   private layout(): void {
     if (!this.containerEl || !this.totalSlides) return;
     const spv = this.slidesPerView;
-    const slideW = this.containerEl.offsetWidth / spv;
-    const trackW = this.totalSlides * slideW;
+    this.cachedSlideW = this.containerEl.offsetWidth / spv;
+    const trackW = this.totalSlides * this.cachedSlideW;
     this.renderer.setStyle(this.trackEl, 'width', `${trackW}px`);
     this.slideElements.forEach(el => {
-      this.renderer.setStyle(el.nativeElement, 'flex', `0 0 ${slideW}px`);
-      this.renderer.setStyle(el.nativeElement, 'max-width', `${slideW}px`);
+      this.renderer.setStyle(el.nativeElement, 'flex', `0 0 ${this.cachedSlideW}px`);
+      this.renderer.setStyle(el.nativeElement, 'max-width', `${this.cachedSlideW}px`);
     });
     if (this.initialized && this.currentIndex > Math.max(0, this.totalSlides - spv)) {
       this.currentIndex = Math.max(0, this.totalSlides - spv);
+    }
+    this.updateBullets();
+  }
+
+  private updateBullets(): void {
+    const count = Math.max(1, this.totalSlides - this.slidesPerView + 1);
+    if (this.cachedBullets.length !== count) {
+      this.cachedBullets = Array.from({ length: count }, (_, i) => i);
     }
   }
 
@@ -144,6 +164,7 @@ export class SlidesComponent implements AfterContentInit, OnChanges, OnDestroy {
     } else if (this.currentIndex > Math.max(0, this.totalSlides - this.slidesPerView)) {
       this.currentIndex = Math.max(0, this.totalSlides - this.slidesPerView);
     }
+    this.cdr.markForCheck();
   }
 
   slideNext(): void {
@@ -153,6 +174,7 @@ export class SlidesComponent implements AfterContentInit, OnChanges, OnDestroy {
     } else {
       this.currentIndex = 0;
     }
+    this.cdr.markForCheck();
   }
 
   slidePrev(): void {
@@ -162,29 +184,27 @@ export class SlidesComponent implements AfterContentInit, OnChanges, OnDestroy {
     } else {
       this.currentIndex = max;
     }
+    this.cdr.markForCheck();
   }
 
   slideTo(index: number): void {
     const max = Math.max(0, this.totalSlides - this.slidesPerView);
     if (index >= 0 && index <= max) {
       this.currentIndex = index;
+      this.cdr.markForCheck();
     }
   }
 
-  goToBullet(index: number): void {
-    this.slideTo(index);
-  }
-
-  async isBeginning(): Promise<boolean> {
+  isBeginning(): boolean {
     return this.currentIndex === 0;
   }
 
-  async isEnd(): Promise<boolean> {
+  isEnd(): boolean {
     const max = Math.max(0, this.totalSlides - this.slidesPerView);
     return this.currentIndex >= max;
   }
 
-  async length(): Promise<number> {
+  length(): number {
     return this.totalSlides;
   }
 

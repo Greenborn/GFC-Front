@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from '../models/ApiConsumer';
 import { InfoCentro } from '../models/info_centro.model';
@@ -17,7 +17,7 @@ import { InfoCentroPostComponent } from './info-centro-post/info-centro-post.com
   templateUrl: './info-centro.page.html',
   styleUrls: ['./info-centro.page.scss'],
 })
-export class InfoCentroPage extends ApiConsumer implements OnInit {
+export class InfoCentroPage extends ApiConsumer {
 
   public parrafos: InfoCentro[] = [];
 
@@ -32,15 +32,6 @@ export class InfoCentroPage extends ApiConsumer implements OnInit {
     public configService: ConfigService
   ) {
     super(alertController)
-  }
-
-  ngOnInit() {
-
-  }
-
-  noImg(avatarImg){
-    // console.log(rowImg)
-    avatarImg.el.classList.add('ion-hide')
   }
 
   ionViewWillEnter() {

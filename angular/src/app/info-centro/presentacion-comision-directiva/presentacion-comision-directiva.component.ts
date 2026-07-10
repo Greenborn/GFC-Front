@@ -56,19 +56,19 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
     super(alertController);
   }
 
-  async swipeNext(){
-    if (!(await this.slideWithNav.isEnd())){
+  swipeNext(){
+    if (!this.slideWithNav.isEnd()){
       this.slideWithNav.slideNext()
     } else {
       this.slideWithNav.slideTo(0)
     }
   }
 
-  async swipePrev(){
-    if (!(await this.slideWithNav.isBeginning())){
+  swipePrev(){
+    if (!this.slideWithNav.isBeginning()){
       this.slideWithNav.slidePrev()
     } else {
-      this.slideWithNav.slideTo((await this.slideWithNav.length()) - 1)
+      this.slideWithNav.slideTo(this.slideWithNav.length() - 1)
     }
   }
 

@@ -35,7 +35,7 @@
       class="app-slides-bullet"
       *ngFor="let _ of bullets; let i = index"
       [class.active]="i === bulletIndex"
-      (click)="goToBullet(i)"
+      (click)="slideTo(i)"
     ></span>
   </div>
 </div>

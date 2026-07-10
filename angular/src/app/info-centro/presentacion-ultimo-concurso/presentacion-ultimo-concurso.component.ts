@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ConfigService } from 'src/app/services/config/config.service';
@@ -16,7 +15,6 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
     private publicContestService: PublicContestService,
     public  alertController:      AlertController,
     private loadingController:    LoadingController,
-    private router:               Router,
     private configService:        ConfigService
   ) {
     super(alertController);
@@ -24,7 +22,6 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
 
   public concurso:any;
   public bg_image:string;
-  @ViewChild('btnInic') content: HTMLElement
 
   async ngOnInit() {
     const loading = await this.loadingController.create({ message: '' });
