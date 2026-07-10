@@ -1,97 +1,80 @@
 <ion-row size="12" *ngIf="auth.user | async as u">
-  <ion-col>
+  <ion-col class="info-col">
     
-    <ion-card class="ion-no-margin">
+    <ion-card class="ion-no-margin info-card">
       
-      <ion-card-header>
-        <ion-row>
-          <ion-col>
-            <ion-row class="ion-align-items-center">
-              <ion-col class="ion-no-padding">
-                    <ion-card-title>{{ concurso.name }}</ion-card-title>
-              </ion-col>
-            </ion-row>
-            <ion-row class="">
-              <ion-card-subtitle>
-                Desde: {{ fechaInicio | date: "dd/MM/yyyy HH:mm" }} - Hasta:
-                {{ fechaFin | date: "dd/MM/yyyy HH:mm" }}
-              </ion-card-subtitle>
-            </ion-row>
-          </ion-col>
+      <ion-card-header class="ion-no-padding info-header">
+        <div class="info-header-main">
+          <ion-card-title class="info-title">{{ concurso.name }}</ion-card-title>
+          <ion-card-subtitle>
+            Desde: {{ fechaInicio | date: "dd/MM/yyyy HH:mm" }} - Hasta:
+            {{ fechaFin | date: "dd/MM/yyyy HH:mm" }}
+          </ion-card-subtitle>
+        </div>
 
-          <ion-col *ngIf="(rolificador.esDelegado(u) || rolificador.isAdmin(u))"
-                    class="ion-align-self-start">
-
-            <ion-button class="ion-float-right" (click)="deleteConcurso()">
-              <ion-icon name="trash"></ion-icon>
-            </ion-button>
-
-            <ion-button class="ion-float-right"
-                        [routerLink]="['/concursos/editar/' + concurso.id]">
-              <ion-icon name="create"></ion-icon>
-            </ion-button>
-            
-          </ion-col>
-        
-        </ion-row>
+        <div *ngIf="(rolificador.esDelegado(u) || rolificador.isAdmin(u))" class="info-admin-col">
+          <ion-button (click)="deleteConcurso()" size="small">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+          <ion-button [routerLink]="['/concursos/editar/' + concurso.id]" size="small">
+            <ion-icon name="create"></ion-icon>
+          </ion-button>
+        </div>
       </ion-card-header>
       
-      <ion-card-content>
-        <ion-row class="w-100">
-          <ion-col>
+      <ion-card-content class="ion-no-padding">
+        <div class="info-body">
+          <ion-text class="info-desc">{{ concurso.description }}</ion-text>
 
-            <ion-text>{{ concurso.description }}</ion-text>
-            <ion-row class="ion-margin-top ion-align-items-center">
-              <b class="ion-margin-end">Reglamento</b>
-              <ion-button (click)="openRules()" size="small">
-                <ion-icon name="link-outline"></ion-icon>
-              </ion-button>
-            </ion-row>
-
-            <ion-row class="w-100 ion-justify-content-center">
-          <div>
-            <ion-button  *ngIf="isContestNotFin && !isInscripto" size="small" (click)="inscribirConcursante()"
-              >Inscribirme!</ion-button>
-            <ion-button  *ngIf="isContestNotFin && isInscripto" color="danger" size="small" (click)="desinscribirme()"
-              >Desinscribirme!</ion-button>
-            <ion-button  size="small" (click)="descargarFotografias()"
-              >Descargar Fotografías</ion-button>
-
-            <ion-button  size="small" 
-              (click)="compartir()">
+          <div class="info-actions">
+            <ion-button *ngIf="isContestNotFin && !isInscripto" size="small" (click)="inscribirConcursante()">
+              Inscribirme!
+            </ion-button>
+            <ion-button *ngIf="isContestNotFin && isInscripto" color="danger" size="small" (click)="desinscribirme()">
+              Desinscribirme!
+            </ion-button>
+            <ion-button size="small" (click)="descargarFotografias()">
+              Descargar Fotografías
+            </ion-button>
+            <ion-button size="small" (click)="compartir()">
               <ion-icon name="share-social-outline"></ion-icon>
             </ion-button>
-
           </div>
-          
-        </ion-row>
-            
-            <ion-row class="ion-margin-top">
-              <b>Categorias:</b>
-              <ion-badge color="light"  class="ion-margin-start" *ngFor="let c of categoriasInscriptasAsc">
+
+          <div class="info-rule-row">
+            <b>Reglamento</b>
+            <ion-button (click)="openRules()" size="small">
+              <ion-icon name="link-outline"></ion-icon>
+            </ion-button>
+          </div>
+
+          <div class="info-tags-row">
+            <b>Categorias:</b>
+            <div class="info-tags">
+              <ion-badge color="light" *ngFor="let c of categoriasInscriptasAsc">
                 {{ c.category.name }}
               </ion-badge>
-            </ion-row>
+            </div>
+          </div>
 
-            <ion-row class="ion-margin-top ion-margin-bottom">
-              <b>Secciones:</b>
-              <ion-badge color="light" class="ion-margin-start"  *ngFor="let s of seccionesInscriptasAsc">
+          <div class="info-tags-row">
+            <b>Secciones:</b>
+            <div class="info-tags">
+              <ion-badge color="light" *ngFor="let s of seccionesInscriptasAsc">
                 {{ s.section.name }}
               </ion-badge>
-            </ion-row>
+            </div>
+          </div>
 
-            <ion-row class="ion-margin-top ion-margin-bottom">
-              <b>Grabaciones:</b>
-              <ion-badge color="light" class="ion-margin-start"  *ngFor="let s of concurso.contestRecords">
+          <div class="info-tags-row" *ngIf="concurso.contestRecords?.length">
+            <b>Grabaciones:</b>
+            <div class="info-tags">
+              <ion-badge color="light" *ngFor="let s of concurso.contestRecords">
                 <a href="{{s.url}}" target="_blank">{{ s.object }}</a>
               </ion-badge>
-            </ion-row>
-            
-
-          </ion-col>
-        </ion-row>
-
-        
+            </div>
+          </div>
+        </div>
       </ion-card-content>
 
     </ion-card>

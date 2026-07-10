@@ -1,21 +1,58 @@
-.bg-gray1{
+.bg-gray-light{
     background-color: #dadada;
     margin-bottom: 0;
 }
 
-ion-img {
-    width: auto !important;  
-    height : 100% !important;  
-    max-width: auto !important;  //any size
-    max-height: 100% !important; //any size 
-    aspect-ratio: 16/9 !important;
-}
-
-.spc{
-    padding-left: 10% !important;
-    padding-right: 10% !important;
-}
-
 .colorTarget{
     color: black;
+}
+
+.member-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.member-photo {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+
+    ion-img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+    }
+}
+
+.member-info {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1;
+}
+
+.member-links {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+
+    a {
+        font-size: 1.2rem;
+        text-decoration: none;
+    }
+}
+
+@media (max-width: 767px) {
+    :host .main-row {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 }
