@@ -1,10 +1,8 @@
-const { spawnSync } = require('child_process');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
 const projectBasePath = path.resolve(__dirname, '..');
-const nodeModulesDir = path.join(projectBasePath, 'node_modules');
 
 function nodeMajorVersion() {
   return parseInt(process.version.slice(1), 10);
@@ -47,6 +45,7 @@ function createNgccLockFile() {
     .update(relativeTsconfigPath)
     .digest('hex');
 
+  const nodeModulesDir = path.join(projectBasePath, 'node_modules');
   const runHashBasePath = path.join(nodeModulesDir, '.cli-ngcc');
   if (!fs.existsSync(runHashBasePath)) {
     fs.mkdirSync(runHashBasePath, { recursive: true });
@@ -59,25 +58,6 @@ function createNgccLockFile() {
 }
 
 if (nodeMajorVersion() >= 22) {
-  console.log('Node >=22 detectado. Ejecutando ngcc en modo síncrono...');
-  const result = spawnSync(
-    process.execPath,
-    [
-      require.resolve('@angular/compiler-cli/bundles/ngcc/main-ngcc.js'),
-      '--source', nodeModulesDir,
-      '--first-only',
-      '--async', 'false',
-      '--tsconfig', path.join(projectBasePath, 'tsconfig.app.json'),
-      '--use-program-dependencies',
-    ],
-    { stdio: 'inherit' }
-  );
-
-  if (result.status === 0) {
-    createNgccLockFile();
-    console.log('ngcc completado exitosamente.');
-  } else {
-    console.error('ngcc falló con código', result.status);
-    process.exit(result.status);
-  }
+  console.log('Node >=22 detectado. La compilación AOT ahora maneja ngcc automáticamente.');
+  createNgccLockFile();
 }
