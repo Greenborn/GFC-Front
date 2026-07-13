@@ -48,7 +48,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   @ViewChild('tabsContent') tabsContent: HTMLIonRowElement
 
   mostrarFiltro: boolean = false;
-  concurso: Contest = this.contestService.template;
+  concurso: Contest;
   value = { lower: 1000, upper: 1500 };
   
   resultadosConcurso: any = [];
@@ -87,6 +87,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     public configService: ConfigService
   ) {
     super(alertCtrl)
+    this.concurso = this.contestService.template;
    }
   
    async ngOnDestroy() {
