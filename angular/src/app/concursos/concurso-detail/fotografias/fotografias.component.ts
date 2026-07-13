@@ -300,11 +300,7 @@ export class FotografiasComponent implements OnInit {
   }
 
   toggleSidebar() {
-    if (this.responsiveService.isDesktop) {
-      this.sidebarVisible = !this.sidebarVisible;
-    } else {
-      this.openFilterModal();
-    }
+    this.sidebarVisible = !this.sidebarVisible;
   }
 
   async openFilterModal() {
@@ -353,7 +349,17 @@ export class FotografiasComponent implements OnInit {
   }
 
   onSortChange(event: any) {
-    this.sortBy = event.detail.value || '';
+    this.sortBy = event.detail?.value || '';
+    this.loadPage(1, true, null, false);
+  }
+
+  onSortChangeManual(value: string) {
+    if (this.sortBy === value) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortBy = value;
+      this.sortAsc = true;
+    }
     this.loadPage(1, true, null, false);
   }
 

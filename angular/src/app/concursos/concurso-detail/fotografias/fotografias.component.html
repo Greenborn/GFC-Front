@@ -26,96 +26,79 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-3" *ngIf="sidebarVisible && responsiveService.isDesktop" class="sidebar-col">
-        <ion-list>
-          <ion-list-header>
-            <ion-label>Ordenar por</ion-label>
-            <ion-button *ngIf="sortBy" (click)="toggleSortDir()" fill="clear" size="small">
-              <ion-icon [name]="sortAsc ? 'arrow-up-outline' : 'arrow-down-outline'" slot="start"></ion-icon>
-              {{ sortAsc ? 'Asc' : 'Desc' }}
-            </ion-button>
-          </ion-list-header>
-          <ion-radio-group [value]="sortBy" (ionChange)="onSortChange($event)">
-            <ion-item lines="none">
-              <ion-label>Sin ordenar</ion-label>
-              <ion-radio value=""></ion-radio>
-            </ion-item>
-            <ion-item lines="none">
-              <ion-label>Título</ion-label>
-              <ion-radio value="title"></ion-radio>
-            </ion-item>
-            <ion-item lines="none" *ngIf="canFilterByAuthor">
-              <ion-label>Autor</ion-label>
-              <ion-radio value="author"></ion-radio>
-            </ion-item>
-            <ion-item lines="none" [disabled]="!isContestJudged">
-              <ion-label>Premio</ion-label>
-              <ion-radio value="prize"></ion-radio>
-            </ion-item>
-          </ion-radio-group>
-        </ion-list>
+    <!-- Backdrop para mobile -->
+    <div class="sidebar-backdrop" *ngIf="sidebarVisible && !responsiveService.isDesktop" (click)="toggleSidebar()"></div>
 
-        <ion-list>
-          <ion-list-header>Secciones</ion-list-header>
-          <ion-chip (click)="seccionAll()" [color]="todasSecciones ? 'primary' : 'medium'" class="sidebar-chip">
-            <ion-label>Todas</ion-label>
-          </ion-chip>
-          <ion-chip *ngFor="let s of seccionesInscriptas"
-            (click)="toggleSeccion(s.section.id)"
-            [color]="seccionesSeleccionadas.has(s.section.id) ? 'primary' : 'medium'"
-            class="sidebar-chip">
-            <ion-label>{{ s.section.name }}</ion-label>
-          </ion-chip>
-        </ion-list>
-
-        <ion-list>
-          <ion-list-header>Categorías</ion-list-header>
-          <ion-chip (click)="categoriaAll()" [color]="todasCategorias ? 'primary' : 'medium'" class="sidebar-chip">
-            <ion-label>Todos</ion-label>
-          </ion-chip>
-          <ion-chip *ngFor="let c of categoriasInscriptas"
-            (click)="toggleCategoria(c.category.id)"
-            [color]="categoriasSeleccionadas.has(c.category.id) ? 'primary' : 'medium'"
-            class="sidebar-chip">
-            <ion-label>{{ c.category.name }}</ion-label>
-          </ion-chip>
-        </ion-list>
-
-        <ion-list *ngIf="isContestJudged">
-          <ion-list-header>Premios</ion-list-header>
-          <ion-chip (click)="premioAll()" [color]="todosPremios ? 'primary' : 'medium'" class="sidebar-chip">
-            <ion-label>Todos</ion-label>
-          </ion-chip>
-          <ion-chip *ngFor="let p of puntajes"
-            (click)="togglePremio(p.prize)"
-            [color]="premiosSeleccionados.has(p.prize) ? 'primary' : 'medium'"
-            class="sidebar-chip">
-            <ion-label>{{ p.prize }}</ion-label>
-          </ion-chip>
-        </ion-list>
-
-        <ion-list *ngIf="canFilterByAuthor">
-          <ion-list-header>Filtrar por autor</ion-list-header>
-          <ion-item>
-            <ion-input [(ngModel)]="filtroAutor" (ionInput)="onFilterInput()" placeholder="Nombre del autor"></ion-input>
-          </ion-item>
-        </ion-list>
-
-        <ion-list *ngIf="isContestJudged">
-          <ion-list-header>Filtrar por código</ion-list-header>
-          <ion-item>
-            <ion-input [(ngModel)]="filtroCodigo" (ionInput)="onFilterInput()" placeholder="Código de fotografía"></ion-input>
-          </ion-item>
-        </ion-list>
-
-        <ion-button expand="block" fill="clear" color="danger" (click)="limpiarFiltros()" class="m-3">
-          <ion-icon name="close-circle-outline" slot="start"></ion-icon>
-          Limpiar filtros
-        </ion-button>
+    <!-- Sidebar panel -->
+    <div class="sidebar-panel" [class.show]="sidebarVisible" [class.desktop]="responsiveService.isDesktop">
+      <div class="sidebar-header">
+        <h6 class="m-0">Filtros</h6>
+        <button class="btn btn-sm btn-close" *ngIf="!responsiveService.isDesktop" (click)="toggleSidebar()"></button>
       </div>
+      <div class="sidebar-body">
+        <div class="filter-section">
+          <div class="filter-section-title">Ordenar por</div>
+          <div class="filter-options">
+            <button class="btn btn-sm" [class.btn-primary]="sortBy === ''" (click)="onSortChangeManual('')">Sin ordenar</button>
+            <button class="btn btn-sm" [class.btn-primary]="sortBy === 'title'" (click)="onSortChangeManual('title')">
+              Título {{ sortBy === 'title' ? (sortAsc ? '↑' : '↓') : '' }}
+            </button>
+            <button class="btn btn-sm" *ngIf="canFilterByAuthor" [class.btn-primary]="sortBy === 'author'" (click)="onSortChangeManual('author')">
+              Autor {{ sortBy === 'author' ? (sortAsc ? '↑' : '↓') : '' }}
+            </button>
+            <button class="btn btn-sm" [class.btn-primary]="sortBy === 'prize'" [disabled]="!isContestJudged" (click)="onSortChangeManual('prize')">
+              Premio {{ sortBy === 'prize' ? (sortAsc ? '↑' : '↓') : '' }}
+            </button>
+          </div>
+        </div>
 
-      <div class="col" [ngClass]="sidebarVisible && responsiveService.isDesktop ? 'col-9' : 'col-12'">
+        <div class="filter-section">
+          <div class="filter-section-title">Secciones</div>
+          <div class="filter-options">
+            <button class="btn btn-sm" [class.btn-primary]="todasSecciones" (click)="seccionAll()">Todas</button>
+            <button class="btn btn-sm" *ngFor="let s of seccionesInscriptas"
+              [class.btn-primary]="seccionesSeleccionadas.has(s.section.id)"
+              (click)="toggleSeccion(s.section.id)">{{ s.section.name }}</button>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-section-title">Categorías</div>
+          <div class="filter-options">
+            <button class="btn btn-sm" [class.btn-primary]="todasCategorias" (click)="categoriaAll()">Todos</button>
+            <button class="btn btn-sm" *ngFor="let c of categoriasInscriptas"
+              [class.btn-primary]="categoriasSeleccionadas.has(c.category.id)"
+              (click)="toggleCategoria(c.category.id)">{{ c.category.name }}</button>
+          </div>
+        </div>
+
+        <div class="filter-section" *ngIf="isContestJudged">
+          <div class="filter-section-title">Premios</div>
+          <div class="filter-options">
+            <button class="btn btn-sm" [class.btn-primary]="todosPremios" (click)="premioAll()">Todos</button>
+            <button class="btn btn-sm" *ngFor="let p of puntajes"
+              [class.btn-primary]="premiosSeleccionados.has(p.prize)"
+              (click)="togglePremio(p.prize)">{{ p.prize }}</button>
+          </div>
+        </div>
+
+        <div class="filter-section" *ngIf="canFilterByAuthor">
+          <div class="filter-section-title">Filtrar por autor</div>
+          <input class="form-control form-control-sm" [(ngModel)]="filtroAutor" (input)="onFilterInput()" placeholder="Nombre del autor">
+        </div>
+
+        <div class="filter-section" *ngIf="isContestJudged">
+          <div class="filter-section-title">Filtrar por código</div>
+          <input class="form-control form-control-sm" [(ngModel)]="filtroCodigo" (input)="onFilterInput()" placeholder="Código de fotografía">
+        </div>
+
+        <button class="btn btn-outline-danger btn-sm w-100 mt-2" (click)="limpiarFiltros()">
+          Limpiar filtros
+        </button>
+      </div>
+    </div>
+
+    <div class="col" [ngStyle]="{'width': sidebarVisible && responsiveService.isDesktop ? '75%' : '100%'}">
         <div class="row">
           <div class="col">
             <div class="row justify-content-start align-items-center mt-3 mb-3">
@@ -179,8 +162,8 @@
             <div class="row">
               <div class="col">
                 <ion-list>
-                  <ion-item lines="none" class="p-0 lista-elem">
-                    <div class="container-fluid p-0" *ngIf="resultadosConcursoFiltrados.length > 0">
+                  <ion-item lines="none" class="p-0 lista-elem" *ngIf="resultadosConcursoFiltrados.length > 0">
+                    <div class="container-fluid p-0">
                       <div class="row justify-content-center">
                         <div class="col p-3 foto-card-col col-12 col-sm-6 col-md-auto" *ngFor="let r of resultadosConcursoFiltrados; index as i">
                           <img class="img-galeria" title="Ver fotografía" (click)="openImage(i)"
@@ -218,8 +201,10 @@
                         </div>
                       </div>
                     </div>
+                  </ion-item>
 
-                    <div class="container-fluid p-0" *ngIf="resultadosConcursoFiltrados.length == undefined">
+                  <ion-item lines="none" class="p-0 lista-elem" *ngIf="resultadosConcursoFiltrados.length == 0">
+                    <div class="container-fluid p-0">
                       <ng-template #texto>No hay fotografias</ng-template>
                     </div>
                   </ion-item>
@@ -242,7 +227,6 @@
             </ng-template>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </ion-content>
