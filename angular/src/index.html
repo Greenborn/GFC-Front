@@ -19,32 +19,50 @@
 
   <!-- Loading indicator visible mientras Ionic no se haya hidratado -->
   <style nonce="gfc-loader-style">
-    html:not(.hydrated):not(.ion-ce):not(.gfc-force-visible)::before {
-      content: 'Cargando\2026';
+    @keyframes gfc-loader-bar {
+      0%, 100% { width: 40px; opacity: 0.3; }
+      50% { width: 80px; opacity: 1; }
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- Loader DOM-based (funciona en todos los browsers, incluyendo Safari iOS) -->
+  <div id="gfc-loader" class="gfc-loader">
+    <span class="gfc-loader-text">Cargando\u2026</span>
+    <span class="gfc-loader-bar"></span>
+  </div>
+
+  <div id="gfc-diag" style="position:fixed;top:0;left:0;right:0;z-index:99999;padding:8px 12px;font:12px/1.4 sans-serif;background:#ffc;color:#333;text-align:center;border-bottom:2px solid #e80;display:none">GFC cargando...</div>
+
+  <style nonce="gfc-loader-style">
+    .gfc-loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 100000;
+      background: #fff;
+    }
+    .gfc-loader-text {
       font: 16px/1.4 sans-serif;
       color: #666;
-      z-index: 100000;
     }
-    html:not(.hydrated):not(.ion-ce):not(.gfc-force-visible)::after {
-      content: '';
-      position: fixed;
-      top: calc(50% + 24px);
-      left: 50%;
-      transform: translateX(-50%);
+    .gfc-loader-bar {
+      margin-top: 8px;
       width: 40px;
       height: 4px;
       background: #3880ff;
       border-radius: 2px;
       animation: gfc-loader-bar 1.2s ease-in-out infinite;
-      z-index: 100000;
     }
-    @keyframes gfc-loader-bar {
-      0%, 100% { width: 40px; opacity: 0.3; }
-      50% { width: 80px; opacity: 1; }
+    html.hydrated .gfc-loader,
+    html.ion-ce .gfc-loader,
+    html.gfc-force-visible .gfc-loader {
+      display: none;
     }
   </style>
 
@@ -59,18 +77,11 @@
         var d = document.getElementById('gfc-diag');
         if (d) {
           d.style.display = 'block';
-          d.style.background = '#f80';
           d.textContent = 'La aplicaci\u00f3n est\u00e1 demorando. Si ves esto por m\u00e1s de 30s, recarg\u00e1 la p\u00e1gina.';
         }
       }, GFC_WATCHDOG_DELAY);
-      // No cancelar el watchdog con gfc-ready; el loader CSS se oculta con hydrated o ion-ce
     })();
   </script>
-
-</head>
-
-<body>
-  <div id="gfc-diag" style="position:fixed;top:0;left:0;right:0;z-index:99999;padding:8px 12px;font:12px/1.4 sans-serif;background:#ffc;color:#333;text-align:center;border-bottom:2px solid #e80;display:none">GFC cargando...</div>
 
   <script nonce="gfc-diag-start">
     window.__gfcLoaded = false;
