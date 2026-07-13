@@ -2,93 +2,46 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size-md="10" push-md="1" >
+      <ion-col size-md="10" push-md="1">
 
         <div class="accordion">
           <div *ngFor="let r of ranking.profiles; let i = index" class="accordion-item">
-            <div class="accordion-header" (click)="toggleCategory(i)">
+            <div class="accordion-header" (click)="toggleCategory(i)" [class.expanded]="expandedCategories[i]">
               <h2>{{r.nombre_categoria}}</h2>
               <span class="accordion-arrow" [class.open]="expandedCategories[i]">&#9660;</span>
             </div>
             <div class="accordion-body" *ngIf="expandedCategories[i]">
-              <!-- SELECTOR DE SECCION-->
-              <ion-row>
-                <ion-col>
-                  <div class="rank-btn-seccion" 
-                        [ngClass]="{ active: (r.pestania_seccion == -1)}"
-                        (click)="r.pestania_seccion = -1">General (Total de secciones)</div>
-                </ion-col>
-                <ion-col
-                  *ngFor="let btnSec of r.ranks_seccion; let iSec = index">
-                  <div class="rank-btn-seccion"
-                       [ngClass]="{ active: (r.pestania_seccion == iSec)}"
-                       (click)="r.pestania_seccion = iSec">
-                       {{btnSec.nombre_seccion}}</div>
-                </ion-col>
-              </ion-row>
+              <div class="seccion-selector">
+                <span class="rank-pill" [class.active]="r.pestania_seccion == -1" (click)="r.pestania_seccion = -1">General</span>
+                <span class="rank-pill" *ngFor="let btnSec of r.ranks_seccion; let iSec = index" [class.active]="r.pestania_seccion == iSec" (click)="r.pestania_seccion = iSec">{{btnSec.nombre_seccion}}</span>
+              </div>
 
-              <ion-row class="encabezado-tabla">
-                <ion-col>
+              <div class="rank-table">
+                <div class="rank-table-header">
+                  <div class="rank-col rank-col-pos">Posición</div>
+                  <div class="rank-col rank-col-name">Participante</div>
+                  <div class="rank-col rank-col-score">Puntaje</div>
+                  <div class="rank-col rank-col-prizes">Premios</div>
+                  <div class="rank-col rank-col-action"></div>
+                </div>
 
-                    <ion-list>
-                      <ion-item color="dark">
-
-                        <ion-grid>
-                          <ion-row class="ion-padding-end">
-
-                            <ion-col size="2">Posición</ion-col>
-                            <ion-col size="4">Participante</ion-col>
-                            <ion-col size="3">Puntaje</ion-col>
-                            <ion-col size="2">Premios</ion-col>
-                            <ion-col size="1"></ion-col>
-
-                          </ion-row>
-                        </ion-grid>
-
-                      </ion-item>
-                    </ion-list>
-
-                </ion-col>
-              </ion-row>
-
-              <ion-row class="ranks-participantes">
-                <ion-col>
-
-              <ion-row *ngFor="let rg of obtener_filas(r)" class="fila-tabla">
-                <ion-col>
-
-                    <ion-list>
-                      <ion-item >
-
-                        <ion-grid>
-                          <ion-row>
-
-                            <ion-col size="2" class="vertical-align-center"># {{rg.posicion_temporada}}</ion-col>
-                            <ion-col size="4" class="vertical-align-center cap">{{rg.name}}</ion-col>
-                            <ion-col size="3" class="vertical-align-center">
-                              {{rg.puntaje_temporada}} &nbsp;
-                              <ion-badge 
-                                *ngIf="isHabilitado(rg, r)"
-                                color="warning">Habilitado a participar en primera </ion-badge>
-                            </ion-col>
-                            <ion-col size="2">
-                              <span *ngFor="let premio of rg.premios_temporada">
-                                <ion-badge>{{premio.cantidad}} - {{premio.nombre}}</ion-badge> &nbsp;
-                              </span>
-                              </ion-col>
-                            <ion-col size="1" class="vertical-align-center">
-                              <ion-button size="small" (click)="verDetalle(rg, r)">Detalles</ion-button>
-                            </ion-col>
-                          </ion-row>
-                        </ion-grid>
-
-                      </ion-item>
-                    </ion-list>
-
-                </ion-col>
-              </ion-row>
-                </ion-col>
-              </ion-row>
+                <div class="rank-table-body">
+                  <div class="rank-table-row" *ngFor="let rg of obtener_filas(r)">
+                    <div class="rank-col rank-col-pos">#{{rg.posicion_temporada}}</div>
+                    <div class="rank-col rank-col-name cap">{{rg.name}}</div>
+                    <div class="rank-col rank-col-score">
+                      {{rg.puntaje_temporada}}
+                      <span class="habilitado-badge" *ngIf="isHabilitado(rg, r)">Habilitado</span>
+                    </div>
+                    <div class="rank-col rank-col-prizes">
+                      <span class="prize-badge" *ngFor="let premio of rg.premios_temporada">{{premio.cantidad}} - {{premio.nombre}}</span>
+                    </div>
+                    <div class="rank-col rank-col-action">
+                      <ion-button size="small" fill="clear" (click)="verDetalle(rg, r)">Detalles</ion-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -96,61 +49,32 @@
 
         <div class="accordion">
           <div class="accordion-item">
-            <div class="accordion-header" (click)="toggleFotoclub()">
-              <h1 class="ion-margin-top ion-margin-bottom ion-margin-end">Por fotoclub - {{anio}}</h1>
+            <div class="accordion-header" (click)="toggleFotoclub()" [class.expanded]="fotoclubExpanded">
+              <h1>Por fotoclub - {{anio}}</h1>
               <span class="accordion-arrow" [class.open]="fotoclubExpanded">&#9660;</span>
             </div>
             <div class="accordion-body" *ngIf="fotoclubExpanded">
-              <ion-row class="encabezado-tabla">
-                <ion-col>
+              <div class="rank-table">
+                <div class="rank-table-header">
+                  <div class="rank-col rank-col-pos">Posición</div>
+                  <div class="rank-col rank-col-name">Fotoclub</div>
+                  <div class="rank-col rank-col-score">Puntaje</div>
+                  <div class="rank-col rank-col-eff">Efectividad</div>
+                  <div class="rank-col rank-col-prizes">Premios</div>
+                </div>
 
-                    <ion-list>
-                      <ion-item color="dark">
-
-                        <ion-grid>
-                          <ion-row class="ion-padding-end">
-
-                            <ion-col size="1">Posición</ion-col>
-                            <ion-col size="3">Fotoclub</ion-col>
-                            <ion-col size="3">Puntaje</ion-col>
-                            <ion-col size="2">Porcentaje Efectividad</ion-col>
-                            <ion-col size="3">Premios</ion-col>
-
-                          </ion-row>
-                        </ion-grid>
-
-                      </ion-item>
-                    </ion-list>
-
-                </ion-col>
-              </ion-row>
-
-              <ion-row *ngFor="let r of ranking.fotoclubs" class="fila-tabla">
-                <ion-col>
-
-                    <ion-list>
-                      <ion-item >
-
-                        <ion-grid>
-                          <ion-row class="ion-padding-end">
-
-                            <ion-col size="1"># {{r.posicion_temporada}}</ion-col>
-                            <ion-col class="cap" size="3">{{r.name}}</ion-col>
-                            <ion-col size="3">{{r.puntaje_temporada}}</ion-col>
-                            <ion-col size="2">{{r.porc_efectividad_anual.porcentaje | number: '1.1'}} %</ion-col>
-                            <ion-col size="3">
-                              <span *ngFor="let premio of r.premios_temporada">
-                                <ion-badge>{{premio.cantidad}} - {{premio.nombre}}</ion-badge> &nbsp;
-                              </span>
-                            </ion-col>
-                          </ion-row>
-                        </ion-grid>
-
-                      </ion-item>
-                    </ion-list>
-
-                </ion-col>
-              </ion-row>
+                <div class="rank-table-body">
+                  <div class="rank-table-row" *ngFor="let r of ranking.fotoclubs">
+                    <div class="rank-col rank-col-pos">#{{r.posicion_temporada}}</div>
+                    <div class="rank-col rank-col-name cap">{{r.name}}</div>
+                    <div class="rank-col rank-col-score">{{r.puntaje_temporada}}</div>
+                    <div class="rank-col rank-col-eff">{{r.porc_efectividad_anual.porcentaje | number: '1.1'}}%</div>
+                    <div class="rank-col rank-col-prizes">
+                      <span class="prize-badge" *ngFor="let premio of r.premios_temporada">{{premio.cantidad}} - {{premio.nombre}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

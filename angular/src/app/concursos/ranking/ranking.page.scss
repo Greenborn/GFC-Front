@@ -3,35 +3,49 @@ ion-content {
 }
 
 .accordion {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .accordion-item {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 10px;
     overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    background: var(--ion-card-background, #fff);
 }
 
 .accordion-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
+    padding: 14px 20px;
     background: var(--ion-card-background, #fff);
     cursor: pointer;
     user-select: none;
+    transition: background 0.15s;
+}
+
+.accordion-header:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.accordion-header.expanded {
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .accordion-header h1,
 .accordion-header h2 {
     margin: 0;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--ion-text-color, #222);
 }
 
 .accordion-arrow {
-    font-size: 12px;
-    transition: transform 0.2s ease;
-    color: #888;
+    font-size: 13px;
+    transition: transform 0.25s ease;
+    color: #aaa;
 }
 
 .accordion-arrow.open {
@@ -39,31 +53,149 @@ ion-content {
 }
 
 .accordion-body {
-    border-top: 1px solid #eee;
+    padding: 0;
 }
 
-.rank-btn-seccion {
+/* Section selector pills */
+.seccion-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px 20px;
+    background: #fafafa;
+    border-bottom: 1px solid #eee;
+}
+
+.rank-pill {
     display: inline-block;
-    padding: 6px 14px;
-    margin: 4px;
-    border: 1px solid #ccc;
+    padding: 5px 14px;
+    border: 1px solid #d0d0d0;
     border-radius: 999px;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 500;
     cursor: pointer;
     user-select: none;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
-    color: #555;
-    background: transparent;
+    transition: all 0.2s;
+    color: #666;
+    background: #fff;
 }
 
-.rank-btn-seccion:hover {
-    background: #f0f0f0;
-    border-color: #999;
+.rank-pill:hover {
+    border-color: var(--ion-color-primary, #3880ff);
+    color: var(--ion-color-primary, #3880ff);
 }
 
-.rank-btn-seccion.active {
+.rank-pill.active {
     background: var(--ion-color-primary, #3880ff);
     color: #fff;
     border-color: var(--ion-color-primary, #3880ff);
+}
+
+/* Table */
+.rank-table {
+    display: flex;
+    flex-direction: column;
+}
+
+.rank-table-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background: #f5f5f5;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #888;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.rank-table-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.15s;
+}
+
+.rank-table-row:last-child {
+    border-bottom: none;
+}
+
+.rank-table-row:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.rank-col {
+    padding: 0 6px;
+}
+
+.rank-col-pos {
+    width: 9%;
+    min-width: 60px;
+    font-weight: 600;
+    color: var(--ion-text-color, #222);
+    font-size: 0.9rem;
+}
+
+.rank-col-name {
+    flex: 1;
+    font-weight: 500;
+    color: var(--ion-text-color, #222);
+}
+
+.rank-col-score {
+    width: 14%;
+    min-width: 90px;
+    font-weight: 600;
+    color: var(--ion-color-primary, #3880ff);
+    font-size: 0.95rem;
+}
+
+.rank-col-eff {
+    width: 14%;
+    min-width: 90px;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.rank-col-prizes {
+    width: 30%;
+    min-width: 130px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.rank-col-action {
+    width: 10%;
+    min-width: 80px;
+    text-align: right;
+}
+
+/* Prize badges */
+.prize-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #eef3ff;
+    color: #2a6eb0;
+    border: 1px solid #d6e2f5;
+    white-space: nowrap;
+}
+
+/* Habilitado badge */
+.habilitado-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    margin-left: 6px;
+    vertical-align: middle;
 }
