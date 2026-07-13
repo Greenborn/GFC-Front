@@ -4,7 +4,7 @@
       <ion-col size="12" size-lg="6">
         <ion-row class="ion-align-items-center ion-padding-top ion-padding-bottom ion-padding-start ion-padding-end">
           <ion-col>
-            <ion-searchbar [ngModel]="terminoBusqueda" (ionChange)="onSearchChange($event)" placeholder="Buscar fotografías..." debounce="1000"></ion-searchbar>
+            <ion-searchbar [ngModel]="terminoBusqueda" (ionInput)="onSearchChange($event)" placeholder="Buscar fotografías..." debounce="1000"></ion-searchbar>
           </ion-col>
           <ion-col size="auto">
             <ion-button (click)="toggleSidebar()" color="dark" expand="block">

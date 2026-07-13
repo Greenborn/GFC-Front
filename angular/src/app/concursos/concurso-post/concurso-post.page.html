@@ -1,17 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-grid>
-      <ion-row class="ion-justify-content-end">
-        <ion-col size="12" size-md="11">
-          <ion-row>
-            <ion-buttons>
-              <ion-back-button text="Volver"  defaultHref="/concursos"></ion-back-button>
-            </ion-buttons>
-            <ion-title>{{formTitle}}</ion-title>
-          </ion-row>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <ion-buttons slot="start">
+      <ion-back-button text="Volver" defaultHref="/concursos"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{formTitle}}</ion-title>
   </ion-toolbar>
 </ion-header>
 

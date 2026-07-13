@@ -1,14 +1,15 @@
 <!-- <ion-header> -->
 <ion-toolbar color="light">
-  <ion-buttons class="clickeable" [routerLink]="['/']" slot="start">
-    <ion-thumbnail>
-      <ion-img src="../../../assets/gfc-logo.png"></ion-img>
-    </ion-thumbnail>
-    <ion-title class="ion-hide-md-down ion-no-padding"
-      >Grupo Fotográfico Centro</ion-title
-    >
+  <ion-buttons slot="start">
+    <ion-button [routerLink]="['/']" class="clickeable">
+      <ion-thumbnail>
+        <ion-img src="../../../assets/gfc-logo.png"></ion-img>
+      </ion-thumbnail>
+    </ion-button>
   </ion-buttons>
-  <!-- <ion-title slot="start">Icono Page</ion-title> -->
+  <ion-title class="ion-hide-md-down ion-no-padding clickeable" [routerLink]="['/']"
+    >Grupo Fotográfico Centro</ion-title
+  >
   <ion-buttons
     slot="secondary"
     class="ion-hide-md-down ion-padding-start"

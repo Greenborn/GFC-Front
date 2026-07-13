@@ -1,21 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-grid>
-      <ion-row class="ion-justify-content-end">
-        <ion-col size="12" size-md="11">
-          <ion-row>
-            <ion-buttons>
-              <ion-back-button text="Volver" defaultHref="/usuarios"></ion-back-button>
-            </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button text="Volver" defaultHref="/usuarios"></ion-back-button>
+    </ion-buttons>
 
-            <ion-title  *ngIf="isLogged(); else registroFuera">{{formTitle}}</ion-title>
-            <ng-template #registroFuera>
-              <ion-title>Registrarme</ion-title>
-            </ng-template>
-          </ion-row>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <ion-title *ngIf="isLogged(); else registroFuera">{{formTitle}}</ion-title>
+    <ng-template #registroFuera>
+      <ion-title>Registrarme</ion-title>
+    </ng-template>
   </ion-toolbar>
 </ion-header>
 
