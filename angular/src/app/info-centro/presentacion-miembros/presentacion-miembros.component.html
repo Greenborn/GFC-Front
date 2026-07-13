@@ -1,13 +1,13 @@
-<ion-row class="ion-margin-top bg-gray-light ion-text-center main-row">
-  <ion-col>
-    <ion-row class="ion-justify-content-center" >
-      <ion-col size="10">
-        <ion-row>
-          <ion-col><h2 class="colorTarget">Miembros</h2></ion-col>
-        </ion-row>
+<div class="row mt-3 bg-gray-light text-center main-row">
+  <div class="col">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div class="row">
+          <div class="col"><h2 class="colorTarget">Miembros</h2></div>
+        </div>
 
-        <ion-row >
-          <ion-col size="12">
+        <div class="row">
+          <div class="col-12">
             <app-slides [options]="slideOptions" #slideWithNav>
               <div #slide class="app-slide" *ngFor="let s of sliderOne.slidesItems">
                 <div class="app-slide-card member-card">
@@ -18,23 +18,23 @@
                     <h3 class="colorTarget">{{s.name}}</h3>
 
                     <div class="member-links">
-                      <a *ngIf="instagramUrl(s.instagram) != null" [href]="instagramUrl(s.instagram)" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'dark' : 'light'" name="logo-instagram"></ion-icon></a>
-                      <a *ngIf="faceUrl(s.facebook) != null" [href]="faceUrl(s.facebook)" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'dark' : 'light'" name="logo-facebook"></ion-icon></a>
-                      <a *ngIf="mailUrl(s.email) != null" href="mailto:{{mailUrl(s.email)}}" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'dark' : 'light'" name="mail"></ion-icon></a>
+                      <a *ngIf="instagramUrl(s.instagram) != null" [href]="instagramUrl(s.instagram)" target="_blank" class="me-3"><ion-icon [color]="aspecto == false ? 'dark' : 'light'" name="logo-instagram"></ion-icon></a>
+                      <a *ngIf="faceUrl(s.facebook) != null" [href]="faceUrl(s.facebook)" target="_blank" class="me-3"><ion-icon [color]="aspecto == false ? 'dark' : 'light'" name="logo-facebook"></ion-icon></a>
+                      <a *ngIf="mailUrl(s.email) != null" href="mailto:{{mailUrl(s.email)}}" target="_blank" class="me-3"><ion-icon [color]="aspecto == false ? 'dark' : 'light'" name="mail"></ion-icon></a>
                     </div>
                   </div>
                 </div>
                </div>
             </app-slides>
-            </ion-col
+            </div
           >
 
           <a *ngIf="cantF > 1 && responsiveService.isDesktop" (click)="swipePrev()"> <div class="swiper-button-prev" ></div> </a>
           <a *ngIf="cantF > 1 && responsiveService.isDesktop" (click)="swipeNext()"><div class="swiper-button-next" ></div></a>
           
-        </ion-row>
-      </ion-col>
-    </ion-row>
-  </ion-col>
+        </div>
+      </div>
+    </div>
+  </div>
   
-</ion-row>
+</div>

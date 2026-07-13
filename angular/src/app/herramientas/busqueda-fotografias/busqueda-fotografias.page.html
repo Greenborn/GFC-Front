@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="p-3">
   <!-- Nota de ayuda -->
   <ion-card *ngIf="mostrarNota" class="nota-ayuda">
     <ion-card-header>
@@ -39,9 +39,9 @@
   <!-- Resultados -->
   <div *ngIf="resultados.length > 0">
     <h3>Resultados ({{ resultados.length }})</h3>
-    <ion-grid [class.centrado-un-resultado]="resultados.length === 1">
-      <ion-row *ngIf="resultados.length > 1">
-        <ion-col *ngFor="let imagen of resultados" size="12" size-sm="6" size-md="4" size-lg="3">
+    <div class="container-fluid" [class.centrado-un-resultado]="resultados.length === 1">
+      <div class="row" *ngIf="resultados.length > 1">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let imagen of resultados">
           <ion-card>
             <img [src]="imagen.thumbnail_url || imagen.url" 
                  alt="{{ imagen.title }}" 
@@ -59,10 +59,10 @@
               <p *ngIf="imagen.description">{{ imagen.description }}</p>
             </ion-card-content>
           </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row *ngIf="resultados.length === 1" justify-content-center>
-        <ion-col style="max-width: 400px; flex: 1 1 400px;">
+        </div>
+      </div>
+      <div class="row" *ngIf="resultados.length === 1" class="justify-content-center">
+        <div style="max-width: 400px; flex: 1 1 400px;">
           <ion-card>
             <img [src]="resultados[0].thumbnail_url || resultados[0].url" 
                  alt="{{ resultados[0].title }}" 
@@ -80,19 +80,19 @@
               <p *ngIf="resultados[0].description">{{ resultados[0].description }}</p>
             </ion-card-content>
           </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+        </div>
+      </div>
+    </div>
   </div>
   
   <!-- Mensaje sin resultados -->
-  <div *ngIf="busquedaRealizada && resultados.length === 0" class="ion-text-center">
+  <div *ngIf="busquedaRealizada && resultados.length === 0" class="text-center">
     <ion-icon name="search-outline" size="large"></ion-icon>
     <p>No se encontraron resultados para "{{ terminoBusqueda }}"</p>
   </div>
   
   <!-- Loading -->
-  <div *ngIf="cargando" class="ion-text-center">
+  <div *ngIf="cargando" class="text-center">
     <ion-spinner></ion-spinner>
     <p>Buscando...</p>
   </div>

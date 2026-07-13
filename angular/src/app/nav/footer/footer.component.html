@@ -1,24 +1,20 @@
-  <ion-grid>
-    <ion-row  >
-      <ion-col size="auto"  *ngIf="auth.user | async as u" class="ion-align-self-center"
-      >
-      <ion-button  *ngIf="rolificador.isAdmin(u)" style="margin-bottom: 0;" (click)="editar($event)">
-        <ion-icon name="create"></ion-icon>
-      </ion-button>
-    </ion-col>
-      <ion-col >
-        <ion-row class="ion-justify-content-center ion-align-items-center h-100">
-          <a [href]="youUrl" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="logo-youtube"> youtube</ion-icon></a>
-          <a [href]="instagramUrl" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="logo-instagram">Instagram </ion-icon> </a>
-          <a [href]="faceUrl" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="logo-facebook">Facebook </ion-icon></a>
-          <a href="mailto:{{mailUrl}}" target="_blank" class="ion-margin-end"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="mail"> E-mail</ion-icon></a>
-          
-        </ion-row>
-       
-      </ion-col>
-      <ion-col size="auto">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-auto align-self-center" *ngIf="auth.user | async as u">
+        <ion-button *ngIf="rolificador.isAdmin(u)" style="margin-bottom: 0;" (click)="editar($event)">
+          <ion-icon name="create"></ion-icon>
+        </ion-button>
+      </div>
+      <div class="col">
+        <div class="row justify-content-center align-items-center h-100">
+          <a [href]="youUrl" target="_blank" class="me-3"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="logo-youtube"> youtube</ion-icon></a>
+          <a [href]="instagramUrl" target="_blank" class="me-3"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="logo-instagram">Instagram </ion-icon> </a>
+          <a [href]="faceUrl" target="_blank" class="me-3"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="logo-facebook">Facebook </ion-icon></a>
+          <a href="mailto:{{mailUrl}}" target="_blank" class="me-3"><ion-icon [color]="aspecto == false ? 'light' : 'dark'" name="mail"> E-mail</ion-icon></a>
+        </div>
+      </div>
+      <div class="col-auto">
         <span><small>v{{version}}</small></span>
-      </ion-col>
-     
-    </ion-row>
-  </ion-grid>
+      </div>
+    </div>
+  </div>

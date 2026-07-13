@@ -1,7 +1,7 @@
 <ion-content [ngClass]="{'dark': responsiveService.darkMode}">
-  <ion-grid>
-    <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-md="4">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-4">
         <div class="logo-container">
           <ion-img
             class="logoEntrada"
@@ -31,7 +31,7 @@
             <ion-item slot="header" class="accordion-header" lines="none">
               <ion-label>Usuario y Contraseña</ion-label>
             </ion-item>
-            <div slot="content" class="accordion-content ion-padding">
+            <div slot="content" class="accordion-content p-3">
               <div class="credential-fields">
                 <ion-item class="expand-full input-bordered">
                   <ion-label position="stacked">Usuario</ion-label>
@@ -62,27 +62,27 @@
                 <a href="/#/recuperar-password" class="enlace-recuperar-pass">¿Olvidaste tu contraseña?</a>
               </ion-item>
 
-              <ion-item color="danger" *ngIf="error != undefined" lines="none" class="ion-no-padding">
+              <ion-item color="danger" *ngIf="error != undefined" lines="none" class="p-0">
                 <ion-label>{{ error }}</ion-label>
               </ion-item>
 
               <ion-button
                 color="primary"
                 expand="block"
-                class="ion-margin-top"
+                class="mt-3"
                 (click)="next()"
               >
                 <ion-label *ngIf="!loading; else spinner">Ingresar</ion-label>
                 <ng-template #spinner>
-                  <ion-row class="ion-justify-content-center">
+                  <div class="row justify-content-center">
                     <ion-spinner></ion-spinner>
-                  </ion-row>
+                  </div>
                 </ng-template>
               </ion-button>
             </div>
           </ion-accordion>
         </ion-accordion-group>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      </div>
+    </div>
+  </div>
 </ion-content>

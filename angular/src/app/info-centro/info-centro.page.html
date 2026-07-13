@@ -1,11 +1,11 @@
 <ion-content>
-  <ion-grid class="ion-no-padding">
+  <div class="container-fluid p-0">
     <!-- PRESENTACION ULTIMO CONCURSO-->
-    <ion-row>
+    <div class="row">
       <app-presentacion-ultimo-concurso
         class="w-100"
       ></app-presentacion-ultimo-concurso>
-    </ion-row>
+    </div>
 
     <div class="content-container">
       <!-- CARDS FEATURE -->
@@ -28,16 +28,16 @@
       </div>
 
       <!-- SOBRE GRUPO FOTOGRAFICO CENTRO -->
-      <ion-row class="bg-gray1 ion-text-center full-section">
-        <ion-col>
-          <ion-row class="ion-justify-content-center" >
-            <ion-col size="10">
-              <ion-row>
-                <ion-col><h2>Sobre GFC</h2></ion-col>
-              </ion-row>
+      <div class="row bg-gray1 text-center full-section">
+        <div class="col">
+          <div class="row justify-content-center">
+            <div class="col-10">
+              <div class="row">
+                <div class="col"><h2>Sobre GFC</h2></div>
+              </div>
       
-              <ion-row  class="ion-padding-bottom">
-                <ion-col class="ion-padding-bottom"
+              <div class="row pb-3">
+                <div class="col pb-3"
                   ><ion-text class="ion-text-justify">
                     El GFC (Grupo Fotográfico Centro) agrupa desde el año 1967 a
                     fotoclubes del centro este de la provincia de Buenos Aires
@@ -46,27 +46,27 @@
                     Balcarce, Benito Juarez, Necochea, Olavarria y Tandil. Cuenta como
                     objetivo la promoción de la actividad fotográfica en el ámbito
                     fotoclubista y el aprendizaje continuo.
-                  </ion-text></ion-col
+                  </ion-text></div
                 >
-              </ion-row>
-            </ion-col>
-          </ion-row>
-        </ion-col>
+              </div>
+            </div>
+          </div>
+        </div>
         
-      </ion-row>
+      </div>
 
       <!-- COMISIÒN DIRECTIVA -->
-      <ion-row class="full-section">
+      <div class="row full-section">
         <app-presentacion-comision-directiva
           class="w-100"
         ></app-presentacion-comision-directiva>
-      </ion-row>
+      </div>
 
       <!-- MIEMBROS -->
-      <ion-row class="full-section">
+      <div class="row full-section">
         <app-presentacion-miembros class="w-100"></app-presentacion-miembros>
-      </ion-row>
+      </div>
     </div>
 
-  </ion-grid>
+  </div>
 </ion-content>

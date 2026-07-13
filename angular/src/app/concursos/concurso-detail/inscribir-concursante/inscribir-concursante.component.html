@@ -1,34 +1,29 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
   <ion-header>
     <ion-toolbar>
-      <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
-        <!-- <ion-back-button  text="Volver" [defaultHref]="'/concursos/' + id"></ion-back-button> -->
-        <!-- <ion-back-button text="Volver"  (click)="dismiss()"></ion-back-button> -->
-        <ion-col>
+      <div class="row align-items-center ms-3 me-3">
+        <div class="col">
           <h5 class="ion-text-wrap">
             Inscribir concursante a {{ contest.name }}
           </h5>
-        </ion-col>
-        <ion-col size="1" class="ion-hide-md-down">
+        </div>
+        <div class="col-1 d-none d-md-block">
           <ion-button (click)="modalController.dismiss()" fill="clear" class="">
             <ion-icon name="close-outline"></ion-icon>
           </ion-button>
-        </ion-col>
-      </ion-row>
+        </div>
+      </div>
     </ion-toolbar>
   </ion-header>
 
-  <div slot="start" class="w-100 inner-content ion-float-md-start">
-    <ion-grid>
-      <ion-row class="ion-justify-content-center ion-align-self-center">
-        <ion-col>
-          <ion-row>
-            <ion-col>
-              <ion-row class="ion-padding-top">
-                <ion-item *ngIf="concursantes.length > 1; else unicoElemento" class="w-100 ion-margin-bottom">
-                  <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
-                  
-
+  <div slot="start" class="w-100 inner-content float-md-start">
+    <div class="container-fluid">
+      <div class="row justify-content-center align-self-center">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <div class="row pt-3">
+                <ion-item *ngIf="concursantes.length > 1; else unicoElemento" class="w-100 mb-3">
                     <ion-label position="floating">Concursante</ion-label>
                     <app-searchable-select
                       [(ngModel)]="profileContest.profile_id"
@@ -37,13 +32,11 @@
                       itemTextField="name"
                       placeholder="Seleccionar concursante"
                     ></app-searchable-select>
-                 
+                  
                 </ion-item>
-                <ng-template #unicoElemento 
+                <ng-template #unicoElemento>
                 
-                >
-                
-                <ion-item class="w-100 ion-margin-bottom">
+                <ion-item class="w-100 mb-3">
                 <ion-label position="floating">Concursante</ion-label>
                 <ion-input color="dark"
                 [(ngModel)]="concursantes[0].name"
@@ -52,13 +45,11 @@
                 </ion-input>
               </ion-item>
                 </ng-template>
-              </ion-row>
-              <ion-row class="ion-padding-top">
-                <ion-item class="w-100 ion-margin-bottom">
-                  <!-- [position]="(profile_id != undefined) ? 'stacked' : 'floating'" -->
+              </div>
+              <div class="row pt-3">
+                <ion-item class="w-100 mb-3">
                   <ion-label position="floating">Categoría</ion-label>
-                  <ion-select [(ngModel)]="profileContest.category_id"  okText="Aceptar" cancelText="Cancelar" ngDefaultControl>
-                    <!-- [(value)]="image.profile_id" -->
+                  <ion-select [(ngModel)]="profileContest.category_id" okText="Aceptar" cancelText="Cancelar" ngDefaultControl>
                     <ion-select-option
                       *ngFor="let c of categorias"
                       [value]="c.id"
@@ -66,25 +57,25 @@
                     >
                   </ion-select>
                 </ion-item>
-              </ion-row>
+              </div>
 
-              <ion-row class="ion-justify-content-center ion-padding-top">
-                <ion-col size="auto">
+              <div class="row justify-content-center pt-3">
+                <div class="col-auto">
                   <ion-button color="danger" (click)="modalController.dismiss()">
                     Cancelar
                   </ion-button>
-                </ion-col>
-                <ion-col size="auto">
+                </div>
+                <div class="col-auto">
                   <ion-button color="success" [disabled]="!datosCargados()" (click)="inscribirConcursante()">
                     <ion-spinner *ngIf="posting" size="small"></ion-spinner>
                     <span *ngIf="!posting">Completar Inscripción</span>
                   </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-col>
-          </ion-row>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

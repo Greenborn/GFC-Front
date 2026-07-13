@@ -12,12 +12,12 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row class="ion-justify-content-center">
-      <ion-col size-sm="12" size-md="9" size-lg="7">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-sm-12 col-md-9 col-lg-7">
         <form class="w-100" [formGroup]="form" (ngSubmit)="postUsuario()">
-          <ion-row>
-            <ion-col size="12" size-md="4">
+          <div class="row">
+            <div class="col-12 col-md-4">
               <ion-card class="profile-image-card">
                 <ion-card-header>
                   <ion-card-title>Foto de perfil</ion-card-title>
@@ -32,9 +32,9 @@
                   <input #ProfileImageUpload type="file" accept="image/*" style="display:none" (change)="fileUpload($event.target)" />
                 </ion-card-content>
               </ion-card>
-            </ion-col>
+            </div>
 
-            <ion-col size="12" size-md="8">
+            <div class="col-12 col-md-8">
               <ion-card>
                 <ion-card-header>
                   <ion-card-title>Datos del perfil</ion-card-title>
@@ -61,10 +61,10 @@
                             formControlName="dni" name="dni" required></ion-input>
                       </ion-item>
 
-                      <ion-item  class="expand-full fotoclub-select-item">
+                      <ion-item class="expand-full fotoclub-select-item">
                         <ion-label [position]="(form.get('fotoclub_id').value != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación/Institución</ion-label>
                         <ion-select
-                            #sFotoclub  okText="Aceptar" cancelText="Cancelar"
+                            #sFotoclub okText="Aceptar" cancelText="Cancelar"
                             formControlName="fotoclub_id" name="fotoclub_id"
                             [interfaceOptions]="{ cssClass: 'fotoclub-select-modal' }"
                             required>
@@ -95,9 +95,9 @@
 
                     </ion-card-content>
                   </ion-card>
-                </ion-col>
+                </div>
 
-                <ion-col size="12">
+                <div class="col-12">
                   <ion-card>
                     <ion-card-header>
                       <ion-card-title>Datos del usuario</ion-card-title>
@@ -132,9 +132,9 @@
                       </ion-item>
 
                       <ion-item class="expand-full" *ngIf="isPost && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)">
-                        <ion-col class="ion-no-padding">
-                          <ion-row>
-                            <ion-col class="ion-no-padding" size="10">
+                        <div class="col p-0">
+                          <div class="row">
+                            <div class="col p-0 col-10">
                               <ion-label position="floating">Contraseña </ion-label>
                               <ion-input
                                   tabindex="0"
@@ -142,13 +142,13 @@
                                   pattern=".{8,}"
                                   type="password" 
                                   formControlName="password" name="password"></ion-input>
-                            </ion-col>
+                            </div>
 
-                            <ion-col  class="ion-no-padding ion-align-self-center" size="2">
+                            <div class="col p-0 align-self-center col-2">
                               <app-ojo inputId="ctr-1"></app-ojo>
-                            </ion-col>
-                          </ion-row>
-                        </ion-col>
+                            </div>
+                          </div>
+                        </div>
                       </ion-item>
 
                       <ion-note [ngStyle]="{ color: (form.get('passwordRepeat').dirty || form.get('password').dirty) && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">
@@ -157,9 +157,9 @@
                       </ion-note>
 
                       <ion-item class="expand-full" *ngIf="!isUserProfile && isUserSignUp">
-                        <ion-col class="ion-no-padding">
-                          <ion-row>
-                            <ion-col class="ion-no-padding" size="10">
+                        <div class="col p-0">
+                          <div class="row">
+                            <div class="col p-0 col-10">
                               <ion-label position="floating">Repetir Contraseña</ion-label>
                               <ion-input
                                   tabindex="0"
@@ -167,13 +167,11 @@
                                   type="password"
                                   class="text-right"
                                   name="passwordRepeat" formControlName="passwordRepeat"></ion-input>
-                            </ion-col>
-                            <ion-col
-                                class="ion-no-padding ion-align-self-center"
-                                size="2">
-                            </ion-col>
-                          </ion-row>
-                        </ion-col>
+                            </div>
+                            <div class="col p-0 align-self-center col-2">
+                            </div>
+                          </div>
+                        </div>
                       </ion-item>
 
                       <ion-note [ngStyle]="{ color: form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">
@@ -185,9 +183,9 @@
                       </ion-item>
                     </ion-card-content>
                   </ion-card>
-                </ion-col>
+                </div>
 
-                <ion-col size="12" *ngIf="!isUserProfile && isLogged() && !updatingSelect">
+                <div class="col-12" *ngIf="!isUserProfile && isLogged() && !updatingSelect">
                   <ion-card>
                     <ion-card-header>
                       <ion-card-title>Configuración</ion-card-title>
@@ -196,7 +194,7 @@
                       <ion-item class="expand-full">
                         <ion-label [position]="'stacked'">Rol</ion-label>
                         <ion-select
-                            #sRol  okText="Aceptar" cancelText="Cancelar"
+                            #sRol okText="Aceptar" cancelText="Cancelar"
                             name="role_id" formControlName="role_id"
                             required>
                           <ion-select-option *ngFor="let r of roles" [value]="r.id">{{r.type}}</ion-select-option>
@@ -204,42 +202,34 @@
                       </ion-item>
                     </ion-card-content>
                   </ion-card>
-                </ion-col>
+                </div>
 
-                <ion-col size="12" class="ion-justify-content-end">
-                  <ion-row class="ion-justify-content-end">
-                    <ion-col
-                        push-sm="3"
-                        size="12"
-                        size-sm="3"
-                        class="ion-align-self-center">
+                <div class="col-12 justify-content-end">
+                  <div class="row justify-content-end">
+                    <div class="col-12 col-sm-3 align-self-center">
                       <app-btn-post
                           [posting]="posting"
-                          [text] = "submitBtnText"
+                          [text]="submitBtnText"
                       ></app-btn-post>
-                    </ion-col>
+                    </div>
 
-                    <ion-col
-                        class="ion-align-self-center"
-                        pull-sm="3"
-                        size="12"
-                        size-sm="3">
+                    <div class="col-12 col-sm-3 align-self-center">
                       <ion-back-button
                           text="Cancelar"
                           icon=""
                           defaultHref="/usuarios"></ion-back-button>
-                    </ion-col>
-                  </ion-row>
-                </ion-col>
-              </ion-row>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </form>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      </div>
+    </div>
+  </div>
   
   <ng-template #spinner>
-    <ion-row class="ion-justify-content-center" *ngIf="(usuario.role_id == 3 || usuario.role_id == 2)">
+    <div class="row justify-content-center" *ngIf="(usuario.role_id == 3 || usuario.role_id == 2)">
       <ion-spinner></ion-spinner>
-    </ion-row>
+    </div>
   </ng-template>
 </ion-content>

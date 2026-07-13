@@ -1,40 +1,40 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page': ''">
   <ion-header>
     <ion-toolbar>
-      <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
+      <div class="row align-items-center ms-3 me-3">
       
-        <ion-col>
+        <div class="col">
           <h5 class="ion-text-wrap">{{ formTitle }}</h5>
-        </ion-col>
+        </div>
         
-        <ion-col size="1" class="ion-hide-md-down">
+        <div class="col-1 d-none d-md-block">
           <ion-button (click)="modalController.dismiss()" fill="clear" class="">
             <ion-icon name="close-outline"></ion-icon>
           </ion-button>
-        </ion-col>
+        </div>
       
-      </ion-row>
+      </div>
     </ion-toolbar>
   </ion-header>
 
-  <div slot="start" class="inner-content ion-float-md-start">
-    <ion-grid>
-      <ion-row class="ion-justify-content-center ion-align-self-center">
-        <ion-col>
-          <ion-row>
-            <ion-col>
-              <ion-row class="ion-padding-top">
+  <div slot="start" class="inner-content float-md-start">
+    <div class="container-fluid">
+      <div class="row justify-content-center align-self-center">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <div class="row pt-3">
                 
-                <ion-item class="w-100 ion-margin-bottom">
+                <ion-item class="w-100 mb-3">
                   <ion-label position="floating">Titulo</ion-label>
                   <ion-input
                     autocapitalize="sentences" [(ngModel)]="image.title"
                     ngDefaultControl></ion-input>
                 </ion-item>
 
-                <ion-row class="w-100">
-                  <ion-col class="ion-no-padding">
-                    <ion-item class="w-100 ion-no-padding ion-margin-bottom">
+                <div class="row w-100">
+                  <div class="col p-0">
+                    <ion-item class="w-100 p-0 mb-3">
                       <input type="file" accept=".jpeg,.jpg" (change)="handleFileInput($event.target['files'])" />
                     </ion-item>
                     
@@ -44,21 +44,21 @@
                     </ion-chip>
                     
                     <div>
-                        <ion-row  *ngIf="img_url != '' || imageData != ''"  class="ion-justify-content-center">
+                        <div class="row" *ngIf="img_url != '' || imageData != ''" class="justify-content-center">
                           <ion-img (ionError)="img_url=''" [src]="imgSource" alt=""> </ion-img>
-                        </ion-row>
+                        </div>
                     </div>
-                  </ion-col>
-                </ion-row>
+                  </div>
+                </div>
 
 
-              </ion-row>
+              </div>
 
-              <ion-row>
+              <div class="row">
 
-                <ion-item class="w-100 ion-margin-bottom">
+                <ion-item class="w-100 mb-3">
                   <ion-label position="floating">Sección</ion-label>
-                  <ion-select (ionChange)=" sectionSelect" [(ngModel)]="section_id"  okText="Aceptar" cancelText="Cancelar" ngDefaultControl>
+                  <ion-select (ionChange)="sectionSelect" [(ngModel)]="section_id" okText="Aceptar" cancelText="Cancelar" ngDefaultControl>
                     <ion-select-option *ngFor="let s of secciones" [value]="s.id">{{ s.name }}</ion-select-option>
                   </ion-select>
                 </ion-item>
@@ -68,25 +68,25 @@
                   <ion-label>{{texto_sec}}</ion-label>
                 </ion-chip>
 
-              </ion-row>
+              </div>
 
-              <ion-row class="ion-justify-content-center ion-padding-top">
-                <ion-col size="auto">
+              <div class="row justify-content-center pt-3">
+                <div class="col-auto">
                   <ion-button color="danger" (click)="modalController.dismiss()">
                     Cancelar
                   </ion-button>
-                </ion-col>
-                <ion-col size="auto">
+                </div>
+                <div class="col-auto">
                   <ion-button color="success" [disabled]="!datosCargados()" (click)="postImage()">
                     <ion-spinner *ngIf="posting" size="small"></ion-spinner>
                     <span *ngIf="!posting">Guardar</span>
                   </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-col>
-          </ion-row>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

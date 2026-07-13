@@ -1,27 +1,27 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
   <ion-header>
     <ion-toolbar>
-      <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
-        <ion-col>
+      <div class="row align-items-center ms-3 me-3">
+        <div class="col">
           <h5 class="ion-text-wrap">Editar footer</h5>
-        </ion-col>
-        <ion-col size="1" class="ion-hide-md-down">
+        </div>
+        <div class="col-1 d-none d-md-block">
           <ion-button (click)="modalController.dismiss()" fill="clear" class="">
             <ion-icon name="close-outline"></ion-icon>
           </ion-button>
-        </ion-col>
-      </ion-row>
+        </div>
+      </div>
     </ion-toolbar>
   </ion-header>
 
-  <div slot="start" class="inner-content ion-float-md-start w-100">
-    <ion-grid>
-      <ion-row class="ion-justify-content-center ion-align-self-center">
-        <ion-col>
-          <ion-row>
-            <ion-col>
-              <ion-row class="ion-padding-top">
-                <ion-item class="w-100 ion-margin-bottom">
+  <div slot="start" class="inner-content float-md-start w-100">
+    <div class="container-fluid">
+      <div class="row justify-content-center align-self-center">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <div class="row pt-3">
+                <ion-item class="w-100 mb-3">
                   <ion-label position="floating"><ion-icon name="logo-facebook"></ion-icon> Facebook</ion-label>
                   <ion-input
                   [(ngModel)]="footer.facebook"
@@ -31,9 +31,9 @@
                   ></ion-input>
                 </ion-item>
                 
-              </ion-row>
-              <ion-row class="ion-padding-top">
-                <ion-item class="w-100 ion-margin-bottom">
+              </div>
+              <div class="row pt-3">
+                <ion-item class="w-100 mb-3">
                   <ion-label position="floating"><ion-icon name="mail"></ion-icon> E-mail</ion-label>
                   <ion-input
                   [(ngModel)]="footer.email"
@@ -42,9 +42,9 @@
                   ></ion-input>
                 </ion-item>
                 
-              </ion-row>
-              <ion-row class="ion-padding-top">
-                <ion-item class="w-100 ion-margin-bottom">
+              </div>
+              <div class="row pt-3">
+                <ion-item class="w-100 mb-3">
                   <ion-label position="floating"><ion-icon name="logo-instagram"></ion-icon> Instagram</ion-label>
                   <ion-input
                   [(ngModel)]="footer.instagram"
@@ -53,9 +53,9 @@
                   ></ion-input>
                 </ion-item>
                 
-              </ion-row>
-              <ion-row class="ion-padding-top">
-                <ion-item class="w-100 ion-margin-bottom">
+              </div>
+              <div class="row pt-3">
+                <ion-item class="w-100 mb-3">
                   <ion-label position="floating"><ion-icon name="logo-youtube"></ion-icon> Youtube</ion-label>
                   <ion-input
                   [(ngModel)]="footer.youtube"
@@ -64,28 +64,24 @@
                   ></ion-input>
                 </ion-item>
                 
-              </ion-row>
+              </div>
               
 
-              <ion-row class="ion-justify-content-end">
-                <ion-col size="12">
-                  <ion-row class="ion-justify-content-end">
-                    <ion-col
-                      size="12"
-                      size-sm="3"
-                      class="ion-align-self-center"
+              <div class="row justify-content-end">
+                <div class="col-12">
+                  <div class="row justify-content-end">
+                    <div
+                      class="col-12 col-sm-3 align-self-center"
                     >
                       <app-btn-post
                         [posting]="posting"
                         [disabled]="!datosCargados()"
                         (post)="postFooter()"
                       ></app-btn-post>
-                    </ion-col>
+                    </div>
 
-                    <ion-col
-                      class="ion-align-self-center"
-                      size="12"
-                      size-sm="3"
+                    <div
+                      class="col-12 col-sm-3 align-self-center"
                     >
                       <ion-button
                         expand="block"
@@ -94,14 +90,14 @@
                       >
                         Cancelar</ion-button
                       >
-                    </ion-col>
-                  </ion-row>
-                </ion-col>
-              </ion-row>
-            </ion-col>
-          </ion-row>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

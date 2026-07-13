@@ -1,62 +1,42 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Volver" defaultHref="/concursos" class="ion-hide-md-up"></ion-back-button>
+      <ion-back-button text="Volver" defaultHref="/concursos" class="d-md-none"></ion-back-button>
     </ion-buttons>
     <ion-title>Notificaciones</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-md="10">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10">
         
         <ion-list>
-          <!-- <ion-item-divider>
-            <ion-label>Tienes una notificación</ion-label>
-          </ion-item-divider> -->
-        
           <ion-item>
             <ion-icon name="ellipse" size="small" color="primary"></ion-icon>
-            <ion-label class="ion-margin-start">
+            <ion-label class="ms-3">
               <h4>Lorem ipsum</h4>
               <small>Hace 5 minutos</small>
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-icon name="ellipse-outline" size="small" color="light"></ion-icon>
-            <ion-label class="ion-margin-start">
+            <ion-label class="ms-3">
               <h4>Lorem ipsum</h4>
               <small>Hace 5 minutos</small>
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-icon name="ellipse-outline" size="small" color="light"></ion-icon>
-            <ion-label class="ion-margin-start">
+            <ion-label class="ms-3">
               <h4>Lorem ipsum</h4>
               <small>Hace 5 minutos</small>
             </ion-label>
           </ion-item>
         </ion-list>
-        
-        <!-- <ion-item-group>
-          <ion-item-divider>
-            <ion-label>B</ion-label>
-          </ion-item-divider>
-        
-          <ion-item>
-            <ion-label>Bangladesh</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>Belarus</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>Belgium</ion-label>
-          </ion-item>
-        </ion-item-group> -->
 
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      </div>
+    </div>
+  </div>
 </ion-content>

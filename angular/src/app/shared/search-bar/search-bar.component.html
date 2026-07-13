@@ -1,6 +1,6 @@
 <ion-item class="search-bar">
-  <ion-col>
-    <ion-row>
+  <div class="col">
+    <div class="row">
       <ion-searchbar
         #queryInput
         placeholder="Buscar"
@@ -9,28 +9,20 @@
         [showCancelButton]="getCancelbuttonStatus()"
         cancel-button-icon="close-outline"
         ></ion-searchbar>
-        <!-- [showCancelButton]="cancelbuttonStatus" -->
-      <!-- #atributoSelect -->
       <ion-select
         *ngIf="innerSelect"
         (ionChange)="output()"
         interface="popover"
-        class="ion-margin-end"  okText="Aceptar" cancelText="Cancelar"
+        class="me-3" okText="Aceptar" cancelText="Cancelar"
         >
-        <!-- [(ngModel)]="atributoSelected" -->
-        <!-- no funciona ngModel -->
-        <!-- [value]="getAtributoValor(atributosPasados[0])" -->
         <ion-select-option
           *ngFor="let a of atributosPasados"
           [value]="getAtributoValor(a)"
           >{{ getAtributoValorMostrado(a) }}</ion-select-option
         >
-
-        <!-- <ion-select-option value="username">Username</ion-select-option>
-        <ion-select-option value="email">Email</ion-select-option> -->
       </ion-select>
-    </ion-row>
-    <ion-row *ngIf="!innerSelect && !hideFieldSelector && atributosPasados?.length > 1">
+    </div>
+    <div class="row" *ngIf="!innerSelect && !hideFieldSelector && atributosPasados?.length > 1">
       <ion-list>
         <ion-radio-group
           (ionChange)="changeRadio($event.target)"
@@ -38,7 +30,7 @@
           [allowEmptySelection]="true"
         >
           <ion-list-header>
-            <ion-row class="ion-align-items-center">
+            <div class="row align-items-center">
               <ion-label>Filtrar por:</ion-label>
               <ion-button
                 *ngIf="atributoSelected != ''"
@@ -48,7 +40,7 @@
               >
                 <ion-icon name="close-outline"></ion-icon>
               </ion-button>
-            </ion-row>
+            </div>
           </ion-list-header>
 
           <ion-item *ngFor="let a of atributosObj" lines="none">
@@ -57,6 +49,6 @@
           </ion-item>
         </ion-radio-group>
       </ion-list>
-    </ion-row>
-  </ion-col>
+    </div>
+  </div>
 </ion-item>

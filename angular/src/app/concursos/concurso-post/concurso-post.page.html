@@ -8,17 +8,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-md="10" >
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10">
         <form
           #f="ngForm"
           (ngSubmit)="postConcurso(f)"
           >
-          <!-- *ngIf="!loading; else spinner" -->
-          <!-- TODO: responsiveService.isDesktop class=" ion-padding"-->
-          <ion-row class="equal-height-row">
-            <ion-col size="12" size-md="4">
+          <div class="row equal-height-row">
+            <div class="col-12 col-md-4">
               <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Información</ion-card-title>
@@ -68,9 +66,9 @@
                   <ion-note *ngIf="descrChangeFocus">Máximo 250 caracteres</ion-note>
                 </ion-card-content>
               </ion-card>
-            </ion-col>
+            </div>
 
-            <ion-col size="12" size-md="4">
+            <div class="col-12 col-md-4">
               <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Fechas</ion-card-title>
@@ -80,100 +78,100 @@
                     <ion-label>Inicio</ion-label>
                   </ion-item>
                   <ion-item>
-                    <ion-row>
-                      <ion-col>
+                    <div class="row">
+                      <div class="col">
                         <ion-label>Día</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].day" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                           <option value="-1">Seleccione día</option>
                           <option *ngFor="let d of day_selects[0].days;" value="{{d.v}}">{{d.t}}</option>
                         </select>
-                      </ion-col>
-                      <ion-col>
+                      </div>
+                      <div class="col">
                         <ion-label>Mes</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                           <option value="-1">Seleccione Mes</option>
                           <option *ngFor="let d of day_selects[0].months;" value="{{d.v}}">{{d.t}}</option>
                         </select>
-                      </ion-col>
-                      <ion-col>
+                      </div>
+                      <div class="col">
                         <ion-label>Año</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                           <option value="-1">Seleccione Año</option>
                           <option *ngFor="let d of day_selects[0].years;" value="{{d.v}}">{{d.t}}</option>
                         </select>
-                      </ion-col>
-                    </ion-row>
+                      </div>
+                    </div>
                   </ion-item>
                   <ion-item>
-                    <ion-row>
-                      <ion-col>
+                    <div class="row">
+                      <div class="col">
                         <ion-label>Hora</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                           <option value="-1">Seleccione Hora</option>
                           <option *ngFor="let d of day_selects[0].hours;" value="{{d.v}}">{{d.t}}</option>
                         </select>
-                      </ion-col>
-                      <ion-col>
+                      </div>
+                      <div class="col">
                         <ion-label>Minutos</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[0].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                           <option value="-1">Seleccione Minutos</option>
                           <option *ngFor="let d of day_selects[0].minutes;" value="{{d.v}}">{{d.t}}</option>
                         </select>
-                      </ion-col>
-                    </ion-row>
+                      </div>
+                    </div>
                   </ion-item>
 
                   <ion-item>
                     <ion-label>Finalización</ion-label>
                   </ion-item>
                   <ion-item>
-                    <ion-row>
-                      <ion-col>
+                    <div class="row">
+                      <div class="col">
                         <ion-label>Día</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].day" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                           <option value="-1">Seleccione día</option>
                           <option *ngFor="let d of day_selects[1].days;" value="{{d.v}}">{{d.t}}</option>
                         </select>
-                      </ion-col>
-                      <ion-col>
+                      </div>
+                      <div class="col">
                         <ion-label>Mes</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                           <option value="-1">Seleccione Mes</option>
                           <option *ngFor="let d of day_selects[1].months;" value="{{d.v}}">{{d.t}}</option>
                         </select>
-                      </ion-col>
-                      <ion-col>
+                      </div>
+                      <div class="col">
                         <ion-label>Año</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                           <option value="-1">Seleccione Año</option>
                           <option *ngFor="let d of day_selects[1].years;" value="{{d.v}}">{{d.t}}</option>
                         </select>
-                      </ion-col>
-                    </ion-row>
+                      </div>
+                    </div>
                   </ion-item>
                   <ion-item>
-                    <ion-row>
-                      <ion-col>
+                    <div class="row">
+                      <div class="col">
                         <ion-label>Hora</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                           <option value="-1">Seleccione Hora</option>
                           <option *ngFor="let d of day_selects[1].hours;" value="{{d.v}}">{{d.t}}</option>
                         </select>
-                      </ion-col>
-                      <ion-col>
+                      </div>
+                      <div class="col">
                         <ion-label>Minutos</ion-label>
                         <select class="w-100" [(ngModel)]="day_selects[1].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                           <option value="-1">Seleccione Minuntos</option>
                           <option *ngFor="let d of day_selects[1].minutes;" value="{{d.v}}">{{d.t}}</option>
                         </select>
-                      </ion-col>
-                    </ion-row>
+                      </div>
+                    </div>
                   </ion-item>
                 </ion-card-content>
               </ion-card>
-            </ion-col>
+            </div>
 
-            <ion-col size="12" size-md="4">
+            <div class="col-12 col-md-4">
               <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Configuración</ion-card-title>
@@ -189,14 +187,14 @@
                     ></ion-input>
                   </ion-item>
 
-                  <ion-item class="ion-no-padding" lines="full"
+                  <ion-item class="p-0" lines="full"
                     button (click)="mostrarCategorias = !mostrarCategorias"
                     [disabled]="loadingCategorias"
                   >
-                    <ion-row class="ion-align-items-center ion-justify-content-between w-100">
+                    <div class="row align-items-center justify-content-between w-100">
                       <ion-list-header style="width: initial">Categorias</ion-list-header>
                       <ion-button
-                        class="ion-margin-start"
+                        class="ms-3"
                         size="small"
                         fill="clear"
                       >
@@ -204,7 +202,7 @@
                           name="chevron-{{mostrarCategorias ? 'up' : 'down'}}-outline"
                         ></ion-icon>
                       </ion-button>
-                    </ion-row>
+                    </div>
                   </ion-item>
                   <div *ngIf="mostrarCategorias">
                     <ion-item *ngFor="let c of categorias" lines="none">
@@ -217,14 +215,14 @@
                     </ion-item>
                   </div>
 
-                  <ion-item class="ion-no-padding" lines="full"
+                  <ion-item class="p-0" lines="full"
                     button (click)="mostrarSecciones = !mostrarSecciones"
                     [disabled]="loadingSecciones"
                   >
-                    <ion-row class="ion-align-items-center ion-justify-content-between w-100">
+                    <div class="row align-items-center justify-content-between w-100">
                       <ion-list-header style="width: initial">Secciones</ion-list-header>
                       <ion-button
-                        class="ion-margin-start"
+                        class="ms-3"
                         size="small"
                         fill="clear"
                       >
@@ -232,7 +230,7 @@
                           name="chevron-{{mostrarSecciones ? 'up' : 'down'}}-outline"
                         ></ion-icon>
                       </ion-button>
-                    </ion-row>
+                    </div>
                   </ion-item>
                   <div *ngIf="mostrarSecciones">
                     <ion-item *ngFor="let s of secciones" lines="none">
@@ -259,46 +257,46 @@
                   </ion-item>
                 </ion-card-content>
               </ion-card>
-            </ion-col>
-          </ion-row>
+            </div>
+          </div>
 
-          <ion-row class="w-100 equal-height-row">
-            <ion-col size="12" size-md="4">
+          <div class="row w-100 equal-height-row">
+            <div class="col-12 col-md-4">
               <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Imagen</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                  <ion-item class="w-100 ion-no-padding ion-margin-bottom">
+                  <ion-item class="w-100 p-0 mb-3">
                     <ion-label position="stacked">Archivo</ion-label>
                     <input type="file" (change)="imageUpload($event.target)" />
                   </ion-item>
-                  <ion-row *ngIf="img_url != ''" class="ion-justify-content-center">
+                  <div class="row" *ngIf="img_url != ''" class="justify-content-center">
                     <ion-img (ionError)="img_url=''" [src]="img_url" alt=""></ion-img>
-                  </ion-row>
+                  </div>
                 </ion-card-content>
               </ion-card>
-            </ion-col>
+            </div>
 
-            <ion-col size="12" size-md="4">
+            <div class="col-12 col-md-4">
               <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Reglamento</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                  <ion-item class="w-100 ion-no-padding ion-margin-bottom">
+                  <ion-item class="w-100 p-0 mb-3">
                     <ion-label position="stacked">Documento</ion-label>
                     <input type="file" accept=".pdf" (change)="fileUpload($event.target)" />
                   </ion-item>
                   <ion-note>La extensión de archivo aceptada es PDF</ion-note>
-                  <ion-row class="ion-justify-content-center ion-margin-top">
+                  <div class="row justify-content-center mt-3">
                     <iframe *ngIf="rules_url" [src]="rules_url" frameborder="0"></iframe>
-                  </ion-row>
+                  </div>
                 </ion-card-content>
               </ion-card>
-            </ion-col>
+            </div>
 
-            <ion-col size="12" size-md="4">
+            <div class="col-12 col-md-4">
               <ion-card class="equal-height-card">
                 <ion-card-header>
                   <ion-card-title>Grabaciones</ion-card-title>
@@ -307,32 +305,32 @@
                   <app-contest-records class="w-100" [concurso]="concurso"></app-contest-records>
                 </ion-card-content>
               </ion-card>
-            </ion-col>
-          </ion-row>
+            </div>
+          </div>
 
-          <ion-row class="ion-margin-top ion-justify-content-end">
-            <ion-col size="12">
-              <ion-row class="ion-justify-content-end">
+          <div class="row mt-3 justify-content-end">
+            <div class="col-12">
+              <div class="row justify-content-end">
 
-                <ion-col push-sm="3" size="12" size-sm="3"  class="ion-align-self-center">
+                <div class="col-12 col-sm-3 align-self-center">
                     <app-btn-post [posting]="posting" [disabled]="!f.valid || secycat"></app-btn-post>
-                </ion-col>
+                </div>
 
-                <ion-col class="ion-align-self-center" pull-sm="3" size="12" size-sm="3">
+                <div class="col-12 col-sm-3 align-self-center">
                   <ion-back-button text="Cancelar" icon="" [defaultHref]="backUrl"></ion-back-button>
-                </ion-col>
+                </div>
 
-              </ion-row>
-            </ion-col>
-          </ion-row>
+              </div>
+            </div>
+          </div>
 
         </form>
         <ng-template #spinner>
-          <ion-row class="ion-justify-content-center">
+          <div class="row justify-content-center">
             <ion-spinner></ion-spinner>
-          </ion-row>
+          </div>
         </ng-template>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      </div>
+    </div>
+  </div>
 </ion-content>
