@@ -9,17 +9,36 @@
   <base href="/" />
 
   <meta name="color-scheme" content="light dark" />
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
 
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+  <script nonce="gfc-diagnostic">
+    (function() {
+      var d = document.createElement('div');
+      d.id = 'gfc-diag';
+      d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;padding:8px 12px;font:12px/1.4 sans-serif;background:#ffc;color:#333;text-align:center;border-bottom:2px solid #e80;display:none';
+      d.textContent = 'GFC cargando...';
+      document.body && document.body.appendChild(d);
+      window.__gfcLoaded = false;
+      var s = document.createElement('script');
+      s.nonce = 'gfc-diagnostic';
+      s.textContent = 'setTimeout(function(){var e=document.getElementById("gfc-diag");if(e&&!window.__gfcLoaded){e.style.display="block";e.textContent="GFC no arrancó - Error en bootstrap. Revisá la consola.";}},8000)';
+      document.body && document.body.appendChild(s);
+    })();
+  </script>
 </head>
 
 <body>
   <app-root></app-root>
+
+  <script nomodule nonce="gfc-fallback">
+    document.getElementById('gfc-diag') && (document.getElementById('gfc-diag').style.display = 'block') && (document.getElementById('gfc-diag').textContent = 'Este navegador no soporta ES modules. Probá con Chrome o Safari actualizado.');
+  </script>
 </body>
 
 </html>
