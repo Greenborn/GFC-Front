@@ -37,6 +37,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Notificar que la app cargó (cancela watchdog de hidratación)
+    document.dispatchEvent(new CustomEvent('gfc-ready'));
+
     // Ocultar barra de diagnóstico
     if (!AppComponent.hasSetLoaded) {
       AppComponent.hasSetLoaded = true;
