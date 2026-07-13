@@ -2,6 +2,11 @@
   <ion-header>
     <ion-toolbar>
       <ion-row class="ion-align-items-center ion-margin-end ion-margin-start">
+        <ion-col size="auto" class="ion-hide-md-up">
+          <ion-button (click)="modalController.dismiss()" fill="clear">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
         <ion-col>
           <h5 class="ion-text-wrap">
             {{ categoriaNombre }} - {{ seccionNombre }} - Año {{ detalle?.year }}
@@ -17,9 +22,9 @@
   </ion-header>
 
   <div slot="start" class="w-100 inner-content ion-float-md-start">
-    <ion-grid>
+    <ion-grid class="ion-no-padding">
       <ion-row>
-        <ion-col>
+        <ion-col class="ion-no-padding">
           <ion-row class="ion-align-items-center ion-justify-content-between">
             <ion-col>
               <ion-card-subtitle *ngIf="!detalle?.items">
@@ -33,7 +38,7 @@
             </ion-col>
           </ion-row>
 
-          <ion-row class="card-row">
+          <ion-row class="card-row ion-margin-bottom">
             <ion-col size="12" size-md="6">
               <ion-card class="ion-margin-top ion-margin-bottom h-100">
                 <ion-card-content>
@@ -55,16 +60,8 @@
                   <ion-card-title>Sumatoria de puntajes</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                  <ion-row>
-                    <ion-col size="6">
-                      <b>Sumatoria Concursos:</b>
-                      <span class="ion-margin-start">{{ totalScoreAll() }}</span>
-                    </ion-col>
-                    <ion-col size="6" *ngIf="detalle?.items">
-                      <b>Concursos contabilizados:</b>
-                      <span class="ion-margin-start">{{ detalle.items.length }}</span>
-                    </ion-col>
-                  </ion-row>
+                  <div class="sumatoria-item"><b>Sumatoria Concursos:</b> {{ totalScoreAll() }}</div>
+                  <div class="sumatoria-item" *ngIf="detalle?.items"><b>Concursos contabilizados:</b> {{ detalle.items.length }}</div>
                 </ion-card-content>
               </ion-card>
             </ion-col>
@@ -127,64 +124,48 @@
           </ng-container>
 
           <ng-template #multiple>
-            <ng-container *ngFor="let it of detalle.items">
-              <ion-card class="ion-margin-top">
-                <ion-card-header>
-                  <ion-card-title>{{ it?.contest?.name }}</ion-card-title>
-                  <ion-card-subtitle>
-                    {{ formatDate(it?.contest?.start_date) }} - {{ formatDate(it?.contest?.end_date) }}
-                  </ion-card-subtitle>
-                </ion-card-header>
-                <ion-card-content>
-                  <ion-list>
-                    <ion-item color="dark">
-                      <ion-grid>
-                        <ion-row>
-                          <ion-col size="3">Categoría</ion-col>
-                          <ion-col size="3">Sección</ion-col>
-                          <ion-col size="2">Miniatura</ion-col>
-                          <ion-col size="2">Obra</ion-col>
-                          <ion-col size="2">Métrica</ion-col>
-                        </ion-row>
-                      </ion-grid>
-                    </ion-item>
-                    <ng-container *ngFor="let r of sortResults(it?.results)">
-                      <ion-item *ngFor="let img of sortImages(r.images)">
-                        <ion-grid>
-                          <ion-row class="ion-align-items-center">
-                            <ion-col size="3">{{ r.category }}</ion-col>
-                            <ion-col size="3">{{ r.section }}</ion-col>
-                            <ion-col size="2">
-                              <img class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" (click)="openPhotoModal(img, it.results)" />
-                            </ion-col>
-                            <ion-col size="2" class="cap">{{ img.title }}</ion-col>
-                            <ion-col size="2">
-                              <ion-badge>{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</ion-badge>
-                              <span class="ion-margin-start">{{ img.metric?.score }}</span>
-                            </ion-col>
-                          </ion-row>
-                        </ion-grid>
-                      </ion-item>
-                    </ng-container>
-                  </ion-list>
-                </ion-card-content>
-              </ion-card>
-
-              <ion-card class="ion-margin-top ion-margin-bottom">
-                <ion-card-content>
-                  <ion-row>
-                    <ion-col size="6">
-                      <b>Puntaje total:</b>
-                      <span class="ion-margin-start">{{ it?.ranking?.total_score }}</span>
-                    </ion-col>
-                    <ion-col size="6">
-                      <b>Posición:</b>
-                      <span class="ion-margin-start">{{ it?.ranking?.position }}</span>
-                    </ion-col>
-                  </ion-row>
-                </ion-card-content>
-              </ion-card>
-            </ng-container>
+            <div class="accordion">
+              <div *ngFor="let it of detalle.items; let i = index" class="accordion-item">
+                <div class="accordion-header" (click)="toggleContest(i)">
+                  <div>
+                    <div class="accordion-title">{{ it?.contest?.name }}</div>
+                    <div class="accordion-subtitle">{{ formatDate(it?.contest?.start_date) }} - {{ formatDate(it?.contest?.end_date) }}</div>
+                  </div>
+                  <span class="accordion-arrow" [class.open]="expandedContests[i]">&#9660;</span>
+                </div>
+                <div class="accordion-body" *ngIf="expandedContests[i]">
+                  <div class="rank-table">
+                    <div class="rank-table-header">
+                      <div class="rank-col rank-col-cat">Categoría</div>
+                      <div class="rank-col rank-col-sec">Sección</div>
+                      <div class="rank-col rank-col-thumb">Miniatura</div>
+                      <div class="rank-col rank-col-title">Obra</div>
+                      <div class="rank-col rank-col-metric">Premio / Puntaje</div>
+                    </div>
+                    <div class="rank-table-body">
+                      <ng-container *ngFor="let r of sortResults(it?.results)">
+                        <div class="rank-table-row" *ngFor="let img of sortImages(r.images)">
+                          <div class="rank-col rank-col-thumb">
+                            <img class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="border-radius:4px;" (click)="openPhotoModal(img, it.results)" />
+                          </div>
+                          <div class="rank-col rank-col-fields">
+                            <div class="row-field"><span class="field-label">Categoría</span><span class="field-value">{{ r.category }}</span></div>
+                            <div class="row-field"><span class="field-label">Sección</span><span class="field-value">{{ r.section }}</span></div>
+                            <div class="row-field"><span class="field-label">Obra</span><span class="field-value cap">{{ img.title }}</span></div>
+                            <div class="row-field"><span class="field-label">Premio</span><span class="field-value"><span class="prize-badge">{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</span></span></div>
+                            <div class="row-field"><span class="field-label">Puntaje</span><span class="field-value score-val">{{ img.metric?.score }}</span></div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="rank-summary">
+                    <div class="summary-item"><b>Puntaje total:</b> {{ it?.ranking?.total_score }}</div>
+                    <div class="summary-item"><b>Posición:</b> {{ it?.ranking?.position }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </ng-template>
           
         </ion-col>

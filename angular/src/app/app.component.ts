@@ -38,7 +38,7 @@ export class AppComponent implements OnDestroy {
     }); 
 
     // Interceptar todos los errores de consola
-    const originalConsoleError = console.error;
+    const originalConsoleError = console.error.bind(console);
     console.error = (...args: any[]) => {
       // Enviar al servicio de logs
       try {
@@ -54,7 +54,7 @@ export class AppComponent implements OnDestroy {
         // Si falla el envío, no romper el flujo
       }
       // Mostrar en consola como siempre
-      originalConsoleError.apply(console, args);
+      originalConsoleError(...args);
     };
   }
 

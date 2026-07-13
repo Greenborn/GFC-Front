@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConfigService } from 'src/app/services/config/config.service';
@@ -10,10 +10,12 @@ import { VerFotografiasComponent } from '../../concurso-detail/ver-fotografias/v
   templateUrl: './ranking-detalle-modal.component.html',
   styleUrls: ['./ranking-detalle-modal.component.scss']
 })
-export class RankingDetalleModalComponent {
+export class RankingDetalleModalComponent implements OnInit {
   @Input() detalle: any;
   @Input() categoriaNombre = '';
   @Input() seccionNombre = 'General';
+
+  expandedContests: boolean[] = [];
 
   constructor(
     public modalController: ModalController,
@@ -21,6 +23,14 @@ export class RankingDetalleModalComponent {
     public configService: ConfigService,
     private UIUtilsService: UiUtilsService
   ) {}
+
+  ngOnInit() {
+    this.expandedContests = this.detalle?.items?.map(() => true) ?? [];
+  }
+
+  toggleContest(i: number) {
+    this.expandedContests[i] = !this.expandedContests[i];
+  }
 
   cerrar() {
     this.modalController.dismiss();
@@ -76,14 +86,17 @@ export class RankingDetalleModalComponent {
   sortImages(images: any[]): any[] {
     if (!Array.isArray(images)) return [];
     return [...images].sort((a: any, b: any) => {
+      const pa = a?.metric?.prize;
+      const pb = b?.metric?.prize;
+      const va = (pa && pa != '0') ? pa.toString().toLowerCase().trim() : '';
+      const vb = (pb && pb != '0') ? pb.toString().toLowerCase().trim() : '';
+      if (va && !vb) return -1;
+      if (!va && vb) return 1;
+      if (va < vb) return -1;
+      if (va > vb) return 1;
       const sa = a?.metric?.score ?? 0;
       const sb = b?.metric?.score ?? 0;
-      if (sb !== sa) return sb - sa;
-      const pa = (a?.metric?.prize ?? '').toString().toLowerCase();
-      const pb = (b?.metric?.prize ?? '').toString().toLowerCase();
-      if (pa < pb) return -1;
-      if (pa > pb) return 1;
-      return 0;
+      return sb - sa;
     });
   }
 

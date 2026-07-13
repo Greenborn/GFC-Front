@@ -3,7 +3,7 @@
 
 export const environment = {
   production: true,
-  version: '1.17.44',
+  version: '1.17.42',
   // Configuración de la API
   apiBaseUrl: 'https://gfc.prod-api.greenborn.com.ar/',
   publicApi: 'https://gfc.api2.greenborn.com.ar/api/',

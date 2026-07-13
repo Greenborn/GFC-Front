@@ -22,19 +22,10 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     const s = this.router.events
     .pipe(filter(event => event instanceof NavigationEnd))
-    .subscribe(async (e) => this.menu.close());
-    // {
-      // if (e instanceof NavigationEnd) {
-        // if (this.popover != undefined) {
-        //   await this.popoverCtrl.dismiss(this.popover);
-        //   this.popover = undefined
-        // }
-        // s.unsubscribe();
-      // }
-    // });
+    .subscribe(async (e) => {
+      if (this.menu) {
+        await this.menu.close();
+      }
+    });
   }
-
-  // isLoggedIn(){ //agregado para no tener error al querer usar la funcion de auth desde la vista
-  //   return this.auth.loggedIn;
-  // }
 }
