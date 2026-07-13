@@ -2,6 +2,10 @@
     font-size: 1.5em;
 }
 
+ion-content {
+    --padding-top: 56px;
+}
+
 .logoEntrada{
     filter: invert(100%);
 }
