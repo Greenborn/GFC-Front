@@ -203,3 +203,8 @@ ion-note{
   margin: 0.25rem;
   box-sizing: border-box;
 }
+
+.modal-backdrop:not(.show),
+.offcanvas-backdrop:not(.show) {
+  pointer-events: none;
+}

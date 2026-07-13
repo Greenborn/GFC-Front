@@ -1,18 +1,14 @@
-ion-content {
-    --padding-top: 56px;
-}
-
 .accordion {
     margin-bottom: 1.5rem;
 }
 
 .accordion-item {
-    border: 1px solid var(--ion-color-step-200, #e0e0e0);
+    border: 1px solid #e0e0e0;
     border-radius: 10px;
     margin-bottom: 10px;
     overflow: hidden;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-    background: var(--ion-card-background, #fff);
+    background: #fff;
 }
 
 .accordion-header {
@@ -20,18 +16,18 @@ ion-content {
     justify-content: space-between;
     align-items: center;
     padding: 14px 20px;
-    background: var(--ion-card-background, #fff);
+    background: #fff;
     cursor: pointer;
     user-select: none;
     transition: background 0.15s;
 }
 
 .accordion-header:hover {
-    background: var(--ion-color-step-50, rgba(0, 0, 0, 0.02));
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .accordion-header.expanded {
-    border-bottom: 1px solid var(--ion-color-step-100, #f0f0f0);
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .accordion-header h1,
@@ -39,13 +35,13 @@ ion-content {
     margin: 0;
     font-weight: 700;
     font-size: 1.15rem;
-    color: var(--ion-text-color, #222);
+    color: #222;
 }
 
 .accordion-arrow {
     font-size: 13px;
     transition: transform 0.25s ease;
-    color: var(--ion-color-step-400, #777);
+    color: #777;
 }
 
 .accordion-arrow.open {
@@ -62,33 +58,33 @@ ion-content {
     flex-wrap: wrap;
     gap: 6px;
     padding: 12px 20px;
-    background: var(--ion-color-step-50, #f7f7f7);
-    border-bottom: 1px solid var(--ion-color-step-150, #e8e8e8);
+    background: #f7f7f7;
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .rank-pill {
     display: inline-block;
     padding: 5px 14px;
-    border: 1px solid var(--ion-color-step-250, #c8c8c8);
+    border: 1px solid #c8c8c8;
     border-radius: 999px;
     font-size: 0.78rem;
     font-weight: 500;
     cursor: pointer;
     user-select: none;
     transition: all 0.2s;
-    color: var(--ion-color-step-600, #444);
-    background: var(--ion-card-background, #fff);
+    color: #444;
+    background: #fff;
 }
 
 .rank-pill:hover {
-    border-color: var(--ion-color-primary, #3880ff);
-    color: var(--ion-color-primary, #3880ff);
+    border-color: #0d6efd;
+    color: #0d6efd;
 }
 
 .rank-pill.active {
-    background: var(--ion-color-primary, #3880ff);
+    background: #0d6efd;
     color: #fff;
-    border-color: var(--ion-color-primary, #3880ff);
+    border-color: #0d6efd;
 }
 
 /* Table */
@@ -101,13 +97,13 @@ ion-content {
     display: flex;
     align-items: center;
     padding: 10px 20px;
-    background: var(--ion-color-step-100, #ececec);
+    background: #ececec;
     font-size: 0.78rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: var(--ion-color-step-500, #555);
-    border-bottom: 1px solid var(--ion-color-step-200, #e0e0e0);
+    color: #555;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 @media (max-width: 767px) {
@@ -118,7 +114,7 @@ ion-content {
 
 .rank-table-row {
     padding: 12px 20px;
-    border-bottom: 1px solid var(--ion-color-step-100, #e8e8e8);
+    border-bottom: 1px solid #e8e8e8;
     transition: background 0.15s;
 }
 
@@ -142,7 +138,7 @@ ion-content {
 }
 
 .rank-table-row:hover {
-    background: var(--ion-color-step-50, rgba(0, 0, 0, 0.02));
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .rank-row-main {
@@ -180,7 +176,7 @@ ion-content {
     width: 9%;
     min-width: 60px;
     font-weight: 700;
-    color: var(--ion-text-color, #222);
+    color: #222;
     font-size: 0.9rem;
 }
 
@@ -208,7 +204,7 @@ ion-content {
 .rank-col-name {
     flex: 1;
     font-weight: 500;
-    color: var(--ion-text-color, #222);
+    color: #222;
 }
 
 .rank-col-name.rank-1 {
@@ -227,7 +223,7 @@ ion-content {
     width: 14%;
     min-width: 90px;
     font-weight: 700;
-    color: var(--ion-color-primary, #3880ff);
+    color: #0d6efd;
     font-size: 0.95rem;
 }
 
@@ -252,7 +248,7 @@ ion-content {
 .rank-col-eff {
     width: 14%;
     min-width: 90px;
-    color: var(--ion-color-step-600, #444);
+    color: #444;
     font-size: 0.85rem;
     font-weight: 500;
 }
@@ -287,16 +283,6 @@ ion-content {
     .rank-col-action {
         min-width: 60px;
     }
-}
-
-.rank-col-action ion-button {
-    --background: #222;
-    --color: #fff;
-    --border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.75rem;
-    --padding-top: 4px;
-    --padding-bottom: 4px;
 }
 
 /* Prize badges */
