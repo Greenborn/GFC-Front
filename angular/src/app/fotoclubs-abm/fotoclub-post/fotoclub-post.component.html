@@ -8,9 +8,9 @@
           </h5>
         </div>
         <div class="col-1 d-none d-md-block">
-          <ion-button (click)="modalController.dismiss()" fill="clear" class="">
-            <ion-icon name="close-outline"></ion-icon>
-          </ion-button>
+          <button (click)="modalController.dismiss()" class="btn btn-link">
+            <i class="bi bi-x-lg"></i>
+          </button>
         </div>
       </div>
     </ion-toolbar>
@@ -69,7 +69,7 @@
               </div>
               <div class="row pt-3">
                 <ion-item class="w-100 mb-3">
-                  <ion-label position="floating"><ion-icon name="logo-facebook"></ion-icon> Facebook</ion-label>
+                  <ion-label position="floating"><i class="bi bi-facebook"></i> Facebook</ion-label>
                   <ion-input
                   name="facebook"
                   [(ngModel)]="fotoclub.facebook"
@@ -82,7 +82,7 @@
               </div>
               <div class="row pt-3">
                 <ion-item class="w-100 mb-3">
-                  <ion-label position="floating"><ion-icon name="mail"></ion-icon> E-mail</ion-label>
+                  <ion-label position="floating"><i class="bi bi-envelope"></i> E-mail</ion-label>
                   <ion-input
                   name="email"
                   [(ngModel)]="fotoclub.email"
@@ -94,7 +94,7 @@
               </div>
               <div class="row pt-3">
                 <ion-item class="w-100 mb-3">
-                  <ion-label position="floating"><ion-icon name="logo-instagram"></ion-icon> Instagram</ion-label>
+                  <ion-label position="floating"><i class="bi bi-instagram"></i> Instagram</ion-label>
                   <ion-input
                   name="instagram"
                   [(ngModel)]="fotoclub.instagram"
@@ -157,12 +157,11 @@
                     </div>
 
                     <div class="col-12 col-sm-3 align-self-center">
-                      <ion-button
-                        expand="block"
+                      <button
+                        class="btn btn-link w-100"
                         (click)="modalController.dismiss()"
-                        fill="clear"
                       >
-                        Cancelar</ion-button
+                        Cancelar</button
                       >
                     </div>
                   </div>

@@ -16,14 +16,14 @@
               <div class="row">
                 <div class="col"><a href="{{grabacion.url}}" target="_blank">{{grabacion.object}}</a></div>
                 <div class="col-auto">
-                  <ion-buttons>
-                    <ion-button (click)="editarGrabacion(grabacion)">
+                  <div class="d-flex gap-1">
+                    <button class="btn btn-outline-primary" (click)="editarGrabacion(grabacion)">
                       <ion-icon name="create"></ion-icon>
-                    </ion-button>
-                    <ion-button (click)="eliminarGrabacion(grabacion)">
+                    </button>
+                    <button class="btn btn-outline-primary" (click)="eliminarGrabacion(grabacion)">
                       <ion-icon name="trash"></ion-icon>
-                    </ion-button>
-                  </ion-buttons>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

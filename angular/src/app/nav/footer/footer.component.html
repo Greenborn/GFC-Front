@@ -1,9 +1,9 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-auto align-self-center" *ngIf="auth.user | async as u">
-        <ion-button *ngIf="rolificador.isAdmin(u)" style="margin-bottom: 0;" (click)="editar($event)">
+        <button class="btn btn-outline-primary" *ngIf="rolificador.isAdmin(u)" style="margin-bottom: 0;" (click)="editar($event)">
           <ion-icon name="create"></ion-icon>
-        </ion-button>
+        </button>
       </div>
       <div class="col">
         <div class="row justify-content-center align-items-center h-100">

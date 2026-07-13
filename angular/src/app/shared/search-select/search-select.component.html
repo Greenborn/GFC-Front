@@ -12,11 +12,11 @@
       *ngIf="interface == 'popover'; else list"
     >
       <!-- <div class="col-2 p-0" *ngIf="atributoSelected != ''"> -->
-        <ion-button (click)="changeQuery()" fill="clear" class=""
+        <button (click)="changeQuery()" class="btn btn-link"
           *ngIf="atributoSelected != ''"
         >
           <ion-icon name="close-outline"></ion-icon>
-        </ion-button>
+        </button>
       <!-- </div> -->
       <!-- <div class="col p-0"> -->
         <ion-item >
@@ -46,28 +46,23 @@
           <ion-list-header>
             <div class="row align-items-center">
               <ion-label>{{ title }}</ion-label>
-              <ion-button
+              <button
                 *ngIf="atributoSelected != ''"
                 (click)="changeQuery()"
-                fill="clear"
-                class=""
+                class="btn btn-link"
               >
                 <ion-icon name="close-outline"></ion-icon>
-              </ion-button>
+              </button>
             </div>
           </ion-list-header>
           <ion-item *ngFor="let o of optionsData" lines="none">
-            <ion-button
+            <button
+              class="btn w-100"
+              [ngClass]="atributoSelected == o[optionsProps.valueProp] ? 'btn-primary' : 'btn-link'"
               (click)="changeQuery(o[optionsProps.valueProp])"
-              [fill]="
-                atributoSelected == o[optionsProps.valueProp]
-                  ? 'solid'
-                  : 'clear'
-              "
-              expand="block"
             >
               {{ getPropertyName(o) }}
-            </ion-button>
+            </button>
           </ion-item>
         </ion-list>
       </div>

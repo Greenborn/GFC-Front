@@ -33,10 +33,10 @@
               <div class="col-10 col-sm-11">
                 
                 <div class="row justify-content-end align-items-end">
-                  <ion-button *ngIf="categoriaSeleccionada != null" 
-                    (click)="categoriaSeleccionada = null" fill="clear" class="">
+                  <button class="btn btn-link" *ngIf="categoriaSeleccionada != null" 
+                    (click)="categoriaSeleccionada = null">
                     <ion-icon name="close-outline"></ion-icon>
-                  </ion-button>
+                  </button>
                   <ion-item>
                     <ion-label position="stacked">Categoría</ion-label>
                     <ion-select okText="Aceptar" cancelText="Cancelar"
@@ -51,11 +51,11 @@
               </div>
               <div class="col-2 col-sm-1">
                 <div class="row justify-content-center align-items-center align-self-center">
-                  <ion-button
-                    (click)="mostrarFiltro = !mostrarFiltro" color="medium" expand="block"
-                    class="justify-content-center align-items-center align-self-center">
+                  <button
+                    class="btn btn-secondary w-100 justify-content-center align-items-center align-self-center"
+                    (click)="mostrarFiltro = !mostrarFiltro">
                     <ion-icon name="funnel"></ion-icon>
-                  </ion-button>
+                  </button>
                 </div>
               </div>
             </div>
@@ -114,15 +114,15 @@
                             </div>
 
                             <div class="col-1 d-sm-none justify-content-center">
-                              <ion-buttons>
-                                <ion-button (click)="mostrarAcciones($event, m)">
+                              <div class="d-flex gap-1">
+                                <button class="btn btn-outline-primary" (click)="mostrarAcciones($event, m)">
                                   <ion-icon
-                                    slot="start"
+                                    class="me-1"
                                     ios="ellipsis-horizontal"
                                     md="ellipsis-vertical"
                                   ></ion-icon>
-                                </ion-button>
-                              </ion-buttons>
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -131,27 +131,27 @@
                         </div>
                         <div class="col-2 col-md-2 align-self-center d-none d-sm-block">
 
-                          <ion-buttons>
+                          <div class="d-flex gap-1">
 
-                            <ion-button *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)" [routerLink]="['../', 'fotografias']"
+                            <button class="btn btn-outline-primary" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)" [routerLink]="['../', 'fotografias']"
                               [queryParams]="{concursante_id: m.profile_id}"
                               title="Ver fotografías">
                               <ion-icon name="images-outline"></ion-icon>
-                            </ion-button>
+                            </button>
 
-                            <ion-button *ngIf="checkPermissions"
+                            <button class="btn btn-outline-primary" *ngIf="checkPermissions"
                               (click)="postImage(m.profile_id)"
                               title="Agregar fotografía">
                               <ion-icon name="camera-outline"></ion-icon>
-                            </ion-button>
+                            </button>
 
-                            <ion-button *ngIf="checkPermissions"
+                            <button class="btn btn-outline-primary" *ngIf="checkPermissions"
                               (click)="concursoDetailService.desinscribir.emit( m )"
                               title="Desinscribir">
                               <ion-icon name="trash"></ion-icon>
-                            </ion-button>
+                            </button>
                             
-                          </ion-buttons>
+                          </div>
                         </div>
                       </div>
                     </div>

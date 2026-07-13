@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <div class="d-flex gap-1">
       <ion-back-button text="Volver" defaultHref="/concursos"></ion-back-button>
-    </ion-buttons>
+    </div>
     <ion-title>{{formTitle}}</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -193,15 +193,14 @@
                   >
                     <div class="row align-items-center justify-content-between w-100">
                       <ion-list-header style="width: initial">Categorias</ion-list-header>
-                      <ion-button
-                        class="ms-3"
+                      <button
+                        class="ms-3 btn btn-link btn-sm"
                         size="small"
-                        fill="clear"
                       >
                         <ion-icon
                           name="chevron-{{mostrarCategorias ? 'up' : 'down'}}-outline"
                         ></ion-icon>
-                      </ion-button>
+                      </button>
                     </div>
                   </ion-item>
                   <div *ngIf="mostrarCategorias">
@@ -221,15 +220,14 @@
                   >
                     <div class="row align-items-center justify-content-between w-100">
                       <ion-list-header style="width: initial">Secciones</ion-list-header>
-                      <ion-button
-                        class="ms-3"
+                      <button
+                        class="ms-3 btn btn-link btn-sm"
                         size="small"
-                        fill="clear"
                       >
                         <ion-icon
                           name="chevron-{{mostrarSecciones ? 'up' : 'down'}}-outline"
                         ></ion-icon>
-                      </ion-button>
+                      </button>
                     </div>
                   </ion-item>
                   <div *ngIf="mostrarSecciones">

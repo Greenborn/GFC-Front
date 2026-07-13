@@ -8,9 +8,9 @@
         </div>
         
         <div class="col-1 d-none d-md-block">
-          <ion-button (click)="modalController.dismiss()" fill="clear" class="">
+          <button class="btn btn-link" (click)="modalController.dismiss()">
             <ion-icon name="close-outline"></ion-icon>
-          </ion-button>
+          </button>
         </div>
       
       </div>
@@ -72,15 +72,15 @@
 
               <div class="row justify-content-center pt-3">
                 <div class="col-auto">
-                  <ion-button color="danger" (click)="modalController.dismiss()">
+                  <button class="btn btn-danger" (click)="modalController.dismiss()">
                     Cancelar
-                  </ion-button>
+                  </button>
                 </div>
                 <div class="col-auto">
-                  <ion-button color="success" [disabled]="!datosCargados()" (click)="postImage()">
+                  <button class="btn btn-success" [disabled]="!datosCargados()" (click)="postImage()">
                     <ion-spinner *ngIf="posting" size="small"></ion-spinner>
                     <span *ngIf="!posting">Guardar</span>
-                  </ion-button>
+                  </button>
                 </div>
               </div>
             </div>

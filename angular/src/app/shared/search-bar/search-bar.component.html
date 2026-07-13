@@ -32,14 +32,13 @@
           <ion-list-header>
             <div class="row align-items-center">
               <ion-label>Filtrar por:</ion-label>
-              <ion-button
+              <button
                 *ngIf="atributoSelected != ''"
                 (click)="changeRadio()"
-                fill="clear"
-                class=""
+                class="btn btn-link"
               >
                 <ion-icon name="close-outline"></ion-icon>
-              </ion-button>
+              </button>
             </div>
           </ion-list-header>
 

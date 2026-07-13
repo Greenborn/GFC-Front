@@ -10,14 +10,10 @@
         </div>
 
         <div class="google-btn-wrapper">
-          <ion-button
-            fill="outline"
-            class="google-btn"
-            (click)="loginWithGoogle()"
-          >
-            <ion-icon slot="start" name="logo-google"></ion-icon>
+          <button class="btn btn-outline-primary google-btn" (click)="loginWithGoogle()">
+            <ion-icon name="logo-google" class="me-1"></ion-icon>
             Ingresar con Google
-          </ion-button>
+          </button>
         </div>
 
         <div class="separator">
@@ -66,19 +62,14 @@
                 <ion-label>{{ error }}</ion-label>
               </ion-item>
 
-              <ion-button
-                color="primary"
-                expand="block"
-                class="mt-3"
-                (click)="next()"
-              >
+              <button class="btn btn-primary w-100 mt-3" (click)="next()">
                 <ion-label *ngIf="!loading; else spinner">Ingresar</ion-label>
                 <ng-template #spinner>
                   <div class="row justify-content-center">
                     <ion-spinner></ion-spinner>
                   </div>
                 </ng-template>
-              </ion-button>
+              </button>
             </div>
           </ion-accordion>
         </ion-accordion-group>

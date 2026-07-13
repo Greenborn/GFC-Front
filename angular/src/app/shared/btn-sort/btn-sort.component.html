@@ -1,10 +1,11 @@
 
-<ion-button (click)="ordenar()"
-  size="small" [fill]="ordenamientoFill" color="light"
+<button (click)="ordenar()"
+  class="btn btn-sm"
+  [ngClass]="ordenamientoFill === 'fill' ? 'btn-light' : 'btn-link'"
   [title]="ordenamientoTitle"
   [disabled]="disabled"
 >
   <ion-icon name="swap-vertical-outline"
     [style]="ordenamientoStyle"
   ></ion-icon>
-</ion-button>
+</button>

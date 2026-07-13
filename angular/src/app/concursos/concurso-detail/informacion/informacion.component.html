@@ -13,12 +13,12 @@
         </div>
 
         <div *ngIf="(rolificador.esDelegado(u) || rolificador.isAdmin(u))" class="info-admin-col">
-          <ion-button (click)="deleteConcurso()" size="small">
+          <button class="btn btn-outline-primary btn-sm" (click)="deleteConcurso()">
             <ion-icon name="trash"></ion-icon>
-          </ion-button>
-          <ion-button [routerLink]="['/concursos/editar/' + concurso.id]" size="small">
+          </button>
+          <button class="btn btn-outline-primary btn-sm" [routerLink]="['/concursos/editar/' + concurso.id]">
             <ion-icon name="create"></ion-icon>
-          </ion-button>
+          </button>
         </div>
       </ion-card-header>
       
@@ -27,29 +27,29 @@
           <ion-text class="info-desc">{{ concurso.description }}</ion-text>
 
           <div class="info-actions">
-            <ion-button *ngIf="isContestNotFin && !isInscripto" size="small" (click)="inscribirConcursante()">
+            <button class="btn btn-outline-primary btn-sm" *ngIf="isContestNotFin && !isInscripto" (click)="inscribirConcursante()">
               Inscribirme!
-            </ion-button>
-            <ion-button *ngIf="isContestNotFin && isInscripto" color="danger" size="small" (click)="desinscribirme()">
+            </button>
+            <button class="btn btn-danger btn-sm" *ngIf="isContestNotFin && isInscripto" (click)="desinscribirme()">
               Desinscribirme!
-            </ion-button>
-            <ion-button size="small" [routerLink]="['/concursos', concurso.id, 'fotografias']">
+            </button>
+            <button class="btn btn-outline-primary btn-sm" [routerLink]="['/concursos', concurso.id, 'fotografias']">
               <ion-icon name="images-outline"></ion-icon>
               Ver Fotografías
-            </ion-button>
-            <ion-button size="small" (click)="descargarFotografias()">
+            </button>
+            <button class="btn btn-outline-primary btn-sm" (click)="descargarFotografias()">
               Descargar Fotografías
-            </ion-button>
-            <ion-button size="small" (click)="compartir()">
+            </button>
+            <button class="btn btn-outline-primary btn-sm" (click)="compartir()">
               <ion-icon name="share-social-outline"></ion-icon>
-            </ion-button>
+            </button>
           </div>
 
           <div class="info-rule-row">
             <b>Reglamento</b>
-            <ion-button (click)="openRules()" size="small">
+            <button class="btn btn-outline-primary btn-sm" (click)="openRules()">
               <ion-icon name="link-outline"></ion-icon>
-            </ion-button>
+            </button>
           </div>
 
           <div class="info-tags-row">

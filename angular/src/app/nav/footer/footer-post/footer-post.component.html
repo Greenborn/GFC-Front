@@ -6,9 +6,9 @@
           <h5 class="ion-text-wrap">Editar footer</h5>
         </div>
         <div class="col-1 d-none d-md-block">
-          <ion-button (click)="modalController.dismiss()" fill="clear" class="">
+          <button class="btn btn-link" (click)="modalController.dismiss()">
             <ion-icon name="close-outline"></ion-icon>
-          </ion-button>
+          </button>
         </div>
       </div>
     </ion-toolbar>
@@ -83,13 +83,9 @@
                     <div
                       class="col-12 col-sm-3 align-self-center"
                     >
-                      <ion-button
-                        expand="block"
-                        (click)="modalController.dismiss()"
-                        fill="clear"
-                      >
-                        Cancelar</ion-button
-                      >
+                      <button class="btn btn-link w-100" (click)="modalController.dismiss()">
+                        Cancelar
+                      </button>
                     </div>
                   </div>
                 </div>

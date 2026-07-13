@@ -37,9 +37,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   @ViewChild('sRol') selectRol: HTMLIonSelectElement;
   @ViewChild('f') formUsuario: HTMLFormElement;
 
-  public usuario: User = this.userService.template;
+  public usuario: User;
   public originalUsuario: User;
-  public profile: Profile = this.profileService.template;
+  public profile: Profile;
   public originalProfile: Profile;
   public fotoclubes: Fotoclub[] = []
   public roles: Role[] = []
@@ -109,6 +109,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
   form: FormGroup;
   async ngOnInit() {
+    this.usuario = this.userService.template;
+    this.profile = this.profileService.template;
+
     this.ImageChangeClick.subscribe({  next: ( response: any ) => {
       if (this.profileImageUpload && this.profileImageUpload.nativeElement) {
         this.profileImageUpload.nativeElement.click();

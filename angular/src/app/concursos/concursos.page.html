@@ -29,16 +29,18 @@
 
     <div class="row align-items-center pb-3">
               <div class="col p-0 col-10 col-sm-11">
-                <ion-button
+                <button
+                  class="btn btn-outline-primary"
                   [routerLink]="['secciones']"
                   *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
-                  >Administrar secciones</ion-button
+                  >Administrar secciones</button
                 >
 
-                <ion-button
+                <button
+                  class="btn btn-outline-primary"
                   [routerLink]="['metricas']"
                   *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
-                  >Administrar Puntajes</ion-button>
+                  >Administrar Puntajes</button>
               </div>
             </div>
             <ion-list
@@ -68,19 +70,19 @@
                       <span class="cc-tag" *ngFor="let s of item.concurso.sections">{{s.name}}</span>
                     </div>
                     <div class="cc-actions">
-                      <ion-button
-                        class="cc-btn"
+                      <button
+                        class="cc-btn btn btn-outline-primary btn-sm"
                         size="small"
                         [routerLink]="[item.concurso.id, 'fotografias']"
                       >
                         <ion-icon name="images-outline"></ion-icon>
                         Fotografías
-                      </ion-button>
-                      <ion-button
-                        class="cc-btn"
+                      </button>
+                      <button
+                        class="cc-btn btn btn-outline-primary btn-sm"
                         size="small"
                         [routerLink]="[item.concurso.id]"
-                      >Ver concurso</ion-button>
+                      >Ver concurso</button>
                     </div>
                   </div>
                 </ion-card>

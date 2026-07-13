@@ -1,56 +1,33 @@
-<!-- <ion-header> -->
-<ion-toolbar color="light">
-  <ion-buttons slot="start">
-    <ion-button [routerLink]="['/']" class="clickeable">
-      <ion-thumbnail>
-        <ion-img src="../../../assets/gfc-logo.png"></ion-img>
-      </ion-thumbnail>
-    </ion-button>
-  </ion-buttons>
-  <ion-title class="ion-hide-md-down ion-no-padding clickeable" [routerLink]="['/']"
-    >Grupo Fotográfico Centro</ion-title
-  >
-  <ion-buttons
-    slot="secondary"
-    class="ion-hide-md-down ion-padding-start"
-    *ngIf="auth.loggedIn && auth.user | async as u"
-  >
-    <!-- up para PC -->
-    <!-- <ion-button [routerLink]="['/']"> Home </ion-button> -->
-    <!-- <ion-button> Reglamento </ion-button> -->
-    <ion-button *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u)" [routerLink]="['/herramientas']"> Herramientas </ion-button>
-    <ion-button [routerLink]="['/concursos/ranking']"> Ranking </ion-button>
-    <ion-button [routerLink]="['/concursos']"> Concursos </ion-button>
-    <!-- <ion-button> Galería </ion-button> -->
-    <ion-button *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)"
-      [routerLink]="['/usuarios']"
-    >
-      {{ rolificador.getNombreUsuarios(u.role_id) }}
-    </ion-button>
-    <ion-button *ngIf="rolificador.isAdmin(u)"
-      [routerLink]="['/organizaciones']"
-    >
-      Organizaciones
-    </ion-button>
-  </ion-buttons>
-  <!-- <ion-buttons slot="secondary" *ngIf="auth.loggedIn; else login"> -->
-  <ion-buttons slot="end" *ngIf="auth.loggedIn; else login">
-    <!-- <ion-button (click)="mostrarNotificaciones($event)">
-      <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
-    </ion-button> -->
-    <ion-button (click)="mostrarPerfil($event)">
-      <!-- [routerLink]="['/perfil']"> -->
-      <ion-icon slot="icon-only" name="person-circle"></ion-icon>
-    </ion-button>
-    
-    <ion-buttons slot="end" class="ion-hide-md-up">
-      <ion-menu-button (click)="openMenu()" autoHide="false"></ion-menu-button>
-    </ion-buttons>
-  </ion-buttons>
-  
-  <ng-template #login>
-    <ion-button slot="end" *ngIf="router.url != '/login'" [routerLink]="['/login']"> Ingresar </ion-button>
-  </ng-template>
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3 fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center gap-2 clickeable" [routerLink]="['/']">
+      <img src="../../../assets/gfc-logo.png" alt="GFC" width="30" height="30" class="d-inline-block align-text-top">
+      <span class="d-none d-lg-inline">Grupo Fotográfico Centro</span>
+    </a>
 
-</ion-toolbar>
-<!-- </ion-header> -->
+    <div class="d-flex align-items-center gap-1 ms-auto">
+      <div class="d-none d-lg-flex gap-1" *ngIf="auth.loggedIn && auth.user | async as u">
+        <a class="btn btn-outline-dark btn-sm" [class.active-link]="isActive('/herramientas')" *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u)" [routerLink]="['/herramientas']">Herramientas</a>
+        <a class="btn btn-outline-dark btn-sm" [class.active-link]="isActive('/concursos/ranking')" [routerLink]="['/concursos/ranking']">Ranking</a>
+        <a class="btn btn-outline-dark btn-sm" [class.active-link]="isActive('/concursos')" [routerLink]="['/concursos']">Concursos</a>
+        <a class="btn btn-outline-dark btn-sm" [class.active-link]="isActive('/usuarios')" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)" [routerLink]="['/usuarios']">
+          {{ rolificador.getNombreUsuarios(u.role_id) }}
+        </a>
+        <a class="btn btn-outline-dark btn-sm" [class.active-link]="isActive('/organizaciones')" *ngIf="rolificador.isAdmin(u)" [routerLink]="['/organizaciones']">Organizaciones</a>
+      </div>
+
+      <ng-container *ngIf="auth.loggedIn; else login">
+        <button class="btn btn-outline-dark" (click)="mostrarPerfil($event)">
+          <i class="bi bi-person-circle fs-5"></i>
+        </button>
+        <button class="btn btn-outline-dark d-lg-none" (click)="toggleMenu()">
+          <i class="bi bi-list fs-5"></i>
+        </button>
+      </ng-container>
+
+      <ng-template #login>
+        <a class="btn btn-outline-dark" *ngIf="router.url != '/login'" [routerLink]="['/login']">Ingresar</a>
+      </ng-template>
+    </div>
+  </div>
+</nav>

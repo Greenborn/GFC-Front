@@ -14,12 +14,10 @@
                       </h2>
                     </div>
                     <div class="col-auto align-self-center">
-                      <ion-button class="ms-3" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
-                        [routerLink]="['nuevo']" size="default"
-                      >
-                        <ion-icon slot="start" name="add"></ion-icon>
+                      <button class="btn btn-outline-primary ms-3" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" [routerLink]="['nuevo']">
+                        <ion-icon name="add" class="me-1"></ion-icon>
                         Nuevo
-                      </ion-button>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -117,17 +115,14 @@
                           </ion-label>
                         </div>
                         <div class="col-1 d-sm-none justify-content-center">
-                          <ion-buttons>
-                            <ion-button *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
-                              (click)="mostrarAcciones($event, m)"
-                            >
+                          <div class="d-flex gap-1">
+                            <button class="btn btn-outline-primary" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" (click)="mostrarAcciones($event, m)">
                               <ion-icon
-                                slot="start"
                                 ios="ellipsis-horizontal"
                                 md="ellipsis-vertical"
-                              ></ion-icon>
-                            </ion-button>
-                          </ion-buttons>
+                               class="me-1"></ion-icon>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -153,14 +148,14 @@
                       </ion-text>
                     </div>
                     <div class="col-2 col-md-1 align-self-center d-none d-sm-block">
-                      <ion-buttons *ngIf="m.user != null && (rolificador.esDelegado(userLogged)  || rolificador.isAdmin(userLogged))">
-                        <ion-button [routerLink]="['editar/' + getUserId(m.user)]">
+                      <div class="d-flex gap-1" *ngIf="m.user != null && (rolificador.esDelegado(userLogged)  || rolificador.isAdmin(userLogged))">
+                        <button class="btn btn-outline-primary" [routerLink]="['editar/' + getUserId(m.user)]">
                           <ion-icon name="create"></ion-icon>
-                        </ion-button>
-                        <ion-button (click)="toggleUsuarioStatus(m)">
+                        </button>
+                        <button class="btn btn-outline-primary" (click)="toggleUsuarioStatus(m)">
                           <ion-icon [name]="m.user.status == 0 ? 'checkmark-circle' : 'remove-circle'"></ion-icon>
-                        </ion-button>
-                      </ion-buttons>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

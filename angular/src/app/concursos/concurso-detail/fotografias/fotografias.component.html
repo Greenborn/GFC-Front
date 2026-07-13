@@ -7,20 +7,20 @@
             <ion-searchbar [ngModel]="terminoBusqueda" (ionInput)="onSearchChange($event)" placeholder="Buscar fotografías..." debounce="1000"></ion-searchbar>
           </div>
           <div class="col-auto">
-            <ion-button (click)="toggleSidebar()" color="dark" expand="block">
-              <ion-icon name="options-outline" slot="start"></ion-icon>
+            <button class="btn btn-dark w-100" (click)="toggleSidebar()">
+              <ion-icon name="options-outline" class="me-1"></ion-icon>
               <span class="d-none d-sm-inline">Filtros</span>
               <ion-badge *ngIf="filtrosActivosCount > 0 || sortBy" color="primary" class="ms-3">
                 {{ filtrosActivosCount }}{{ sortLabel ? ' · ' + sortLabel : '' }}
               </ion-badge>
-            </ion-button>
+            </button>
           </div>
           <div class="col-auto" *ngIf="contestService.isActive(concurso) &&
                 (rolificador.esDelegado(u) || rolificador.isAdmin(u) || rolificador.esConcursante(u))">
-            <ion-button color="success" (click)="postImage()">
-              <ion-icon name="add" slot="start"></ion-icon>
+            <button class="btn btn-success" (click)="postImage()">
+              <ion-icon name="add" class="me-1"></ion-icon>
               Fotografía
-            </ion-button>
+            </button>
           </div>
         </div>
       </div>
@@ -119,22 +119,22 @@
                       />
                       <div class="foto-info-row">
                         <div class="foto-actions">
-                          <ion-buttons class="d-none d-md-inline">
-                            <ion-button *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar" size="small">
+                          <div class="d-flex gap-1 d-none d-md-inline">
+                            <button class="btn btn-outline-primary btn-sm" *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
                               <ion-icon name="star-outline"></ion-icon>
-                            </ion-button>
-                            <ion-button *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar" size="small">
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
                               <ion-icon name="create"></ion-icon>
-                            </ion-button>
-                            <ion-button *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar" size="small">
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
                               <ion-icon name="trash"></ion-icon>
-                            </ion-button>
-                          </ion-buttons>
-                          <ion-buttons class="d-md-none">
-                            <ion-button (click)="mostrarAcciones($event, r, i, propiasFotos)" size="small">
-                              <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-                            </ion-button>
-                          </ion-buttons>
+                            </button>
+                          </div>
+                          <div class="d-flex gap-1 d-md-none">
+                            <button class="btn btn-outline-primary btn-sm" (click)="mostrarAcciones($event, r, i, propiasFotos)">
+                              <ion-icon ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                            </button>
+                          </div>
                         </div>
                         <div class="foto-text">
                           <div class="cont-img-text">
@@ -172,22 +172,22 @@
                           />
                           <div class="foto-info-row">
                             <div class="foto-actions">
-                              <ion-buttons class="d-none d-md-inline">
-                                <ion-button *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar" size="small">
+                              <div class="d-flex gap-1 d-none d-md-inline">
+                                <button class="btn btn-outline-primary btn-sm" *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
                                   <ion-icon name="star-outline"></ion-icon>
-                                </ion-button>
-                                <ion-button *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar" size="small">
+                                </button>
+                                <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
                                   <ion-icon name="create"></ion-icon>
-                                </ion-button>
-                                <ion-button *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar" size="small">
+                                </button>
+                                <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
                                   <ion-icon name="trash"></ion-icon>
-                                </ion-button>
-                              </ion-buttons>
-                              <ion-buttons class="d-md-none">
-                                <ion-button (click)="mostrarAcciones($event, r, i)" size="small">
-                                  <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-                                </ion-button>
-                              </ion-buttons>
+                                </button>
+                              </div>
+                              <div class="d-flex gap-1 d-md-none">
+                                <button class="btn btn-outline-primary btn-sm" (click)="mostrarAcciones($event, r, i)">
+                                  <ion-icon ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                                </button>
+                              </div>
                             </div>
                             <div class="foto-text">
                               <div class="cont-img-text">

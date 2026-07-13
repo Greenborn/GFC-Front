@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <div class="d-flex gap-1">
       <ion-back-button text="Volver" defaultHref="/usuarios"></ion-back-button>
-    </ion-buttons>
+    </div>
 
     <ion-title *ngIf="isLogged(); else registroFuera">{{formTitle}}</ion-title>
     <ng-template #registroFuera>
@@ -25,9 +25,9 @@
                 <ion-card-content class="profile-image-card-content">
                   <app-usuario-img [src]="img_url" [imageChangeEnabled]="true" [imageChangeClick]="ImageChangeClick"></app-usuario-img>
                   <ion-item lines="none" class="upload-button-row">
-                    <ion-button expand="block" fill="outline" size="small" type="button" (click)="ProfileImageUpload.click()">
+                    <button class="btn btn-outline-primary w-100 btn-sm" type="button" (click)="ProfileImageUpload.click()">
                       Cambiar imagen
-                    </ion-button>
+                    </button>
                   </ion-item>
                   <input #ProfileImageUpload type="file" accept="image/*" style="display:none" (change)="fileUpload($event.target)" />
                 </ion-card-content>
@@ -179,7 +179,7 @@
                       </ion-note>
 
                       <ion-item class="expand-full" *ngIf="!isPost && isLogged()">
-                        <ion-button (click)="changePassword()">Cambiar contraseña</ion-button>
+                        <button class="btn btn-outline-primary" (click)="changePassword()">Cambiar contraseña</button>
                       </ion-item>
                     </ion-card-content>
                   </ion-card>

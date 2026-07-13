@@ -6,9 +6,9 @@
           <h5 class="ion-text-wrap">Puntuar imagen de {{ concurso }}</h5>
         </div>
         <div class="col-1 d-none d-md-block">
-          <ion-button (click)="dismiss()" fill="clear" class="">
+          <button class="btn btn-link" (click)="dismiss()">
             <ion-icon name="close-outline"></ion-icon>
-          </ion-button>
+          </button>
         </div>
       </div>
     </ion-toolbar>
@@ -51,10 +51,10 @@
                           </div>
 
                           <div class="col-12 col-sm-3 align-self-center">
-                            <ion-button
-                              expand="block" (click)="dismiss()" fill="clear">
+                            <button
+                              class="btn btn-link w-100" (click)="dismiss()">
                               Cancelar
-                            </ion-button>
+                            </button>
                           </div>
 
                         </div>

@@ -47,32 +47,22 @@
                 <ion-label>Premio:</ion-label>
               </ion-list-header>
               <ion-item
-                ><ion-button fill="clear" href="#"
-                  >Reprobado</ion-button
-                ></ion-item
+                ><button class="btn btn-link" href="#">Reprobado</button></ion-item
               >
               <ion-item
-                ><ion-button fill="clear" href="#"
-                  >Aprobado</ion-button
-                ></ion-item
+                ><button class="btn btn-link" href="#">Aprobado</button></ion-item
               >
               <ion-item>
-                <ion-button fill="clear" href="#">Mención</ion-button></ion-item
+                <button class="btn btn-link" href="#">Mención</button></ion-item
               >
               <ion-item>
-                <ion-button fill="clear" href="#"
-                  >Medalla Oro</ion-button
-                ></ion-item
+                <button class="btn btn-link" href="#">Medalla Oro</button></ion-item
               >
               <ion-item>
-                <ion-button fill="clear" href="#"
-                  >Medalla Plata</ion-button
-                ></ion-item
+                <button class="btn btn-link" href="#">Medalla Plata</button></ion-item
               >
               <ion-item>
-                <ion-button fill="clear" href="#"
-                  >Medalla Bronce</ion-button
-                ></ion-item
+                <button class="btn btn-link" href="#">Medalla Bronce</button></ion-item
               >
             </ion-list>
           </div>
@@ -97,9 +87,9 @@
                 </app-search-bar
               ></div>
               <div class="col-1">
-                <ion-button (click)="toggleFiltro()" color="medium">
+                <button class="btn btn-secondary" (click)="toggleFiltro()">
                   <ion-icon name="funnel"></ion-icon>
-                </ion-button></div
+                </button></div
               >
             </div>
             <div class="container-fluid">
@@ -147,26 +137,25 @@
                     
 
                     <div class="col-1 col-md-2 align-self-center">
-                      <ion-buttons class="d-none d-lg-block justify-content-end">
-                        <ion-button (click)="reviewImage(r)">
+                      <div class="d-flex gap-1 d-none d-lg-block justify-content-end">
+                        <button class="btn btn-outline-primary" (click)="reviewImage(r)">
                           <ion-icon name="star-outline"></ion-icon>
-                        </ion-button>
-                        <ion-button (click)="postImage(r.image)">
+                        </button>
+                        <button class="btn btn-outline-primary" (click)="postImage(r.image)">
                           <ion-icon name="create"></ion-icon>
-                        </ion-button>
-                        <ion-button (click)="deleteImage(r.image_id, r.id, r.metric_id)">
+                        </button>
+                        <button class="btn btn-outline-primary" (click)="deleteImage(r.image_id, r.id, r.metric_id)">
                           <ion-icon name="trash"></ion-icon>
-                        </ion-button>
-                      </ion-buttons>
-                      <ion-buttons class="d-lg-none">
-                        <ion-button (click)="mostrarAcciones($event, r)">
+                        </button>
+                      </div>
+                      <div class="d-flex gap-1 d-lg-none">
+                        <button class="btn btn-outline-primary" (click)="mostrarAcciones($event, r)">
                           <ion-icon
-                            slot="icon-only"
                             ios="ellipsis-horizontal"
                             md="ellipsis-vertical"
                           ></ion-icon>
-                        </ion-button>
-                      </ion-buttons>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

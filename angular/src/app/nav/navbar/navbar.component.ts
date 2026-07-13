@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 
-//componente que voy a mostrar
 import { UsuarioPage } from '../../usuario/usuario.page';
-import { NotificacionesPage } from '../../notificaciones/notificaciones.page';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -16,68 +15,57 @@ import { RolificadorService } from 'src/app/modules/auth/services/rolificador.se
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(    
+  currentUrl: string = '';
+
+  constructor(
     private menu: MenuController,
     public popoverController: PopoverController,
     public router: Router,
-    public auth: AuthService, //lo puse público!
+    public auth: AuthService,
     public rolificador: RolificadorService
-    ) { }
+  ) { }
 
-  ngOnInit() {}
-
-  // isLoggedIn(){ //agregado para no tener error al querer usar la funcion de auth desde la vista
-  //   return this.auth.loggedIn;
-  // }
-
-  async openPopover( ev:any, ctrl: any, url: string ){
-    //if (window.innerWidth > 767) {
-      const popover = await this.popoverController.create({
-        component: ctrl, //componente a mostrar
-        cssClass: 'my-custom-class',
-        event: ev,
-        translucent: true,
-        // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
+  ngOnInit() {
+    this.currentUrl = this.router.url;
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe((e) => {
+        this.currentUrl = this.router.url;
       });
-      await popover.present();
-      // this.router.events.subscribe() // dismiss popover cuando cambie de ruta
-      this.router.events
-      .pipe() // .pipe(filter(event => event instanceof NavigationEnd))
+  }
+
+  isActive(url: string): boolean {
+    if (this.currentUrl === url) return true;
+    if (url === '/concursos') {
+      return this.currentUrl.startsWith('/concursos/') && !this.currentUrl.startsWith('/concursos/ranking');
+    }
+    return this.currentUrl.startsWith(url + '/') || this.currentUrl.startsWith(url + '?');
+  }
+
+  async openPopover(ev: any, ctrl: any, url: string) {
+    const popover = await this.popoverController.create({
+      component: ctrl,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true,
+    });
+    await popover.present();
+    this.router.events
+      .pipe()
       .subscribe((e) => {
         if (e instanceof NavigationEnd) {
           popover.dismiss();
         }
       });
-      const { role } = await popover.onDidDismiss();
-      // console.log('onDidDismiss resolved with role', role);
-    /*}
-    else {
-      this.router.navigate([url]);
-    }*/
+    await popover.onDidDismiss();
   }
-  async mostrarPerfil( ev:any ){
+
+  async mostrarPerfil(ev: any) {
     this.openPopover(ev, UsuarioPage, '/perfil/editar');
   }
-  async mostrarNotificaciones( ev:any ) {
-    this.openPopover(ev, NotificacionesPage, '/notificaciones');
-  }
 
-  openMenu(){
+  toggleMenu() {
     this.menu.toggle();
   }
-
-  // openFirst() {
-  //   this.menu.enable(true, 'first');
-  //   this.menu.open('first');
-  // }
-
-  // openEnd() {
-  //   this.menu.open('end');
-  // }
-
-  // openCustom() {
-  //   this.menu.enable(true, 'custom');
-  //   this.menu.open('custom');
-  // }
 
 }

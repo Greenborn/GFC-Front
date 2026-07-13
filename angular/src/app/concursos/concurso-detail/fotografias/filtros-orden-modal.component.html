@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="dismiss()">
+    <div class="d-flex gap-1">
+      <button class="btn btn-outline-primary" (click)="dismiss()">
         <ion-icon name="arrow-back-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+      </button>
+    </div>
     <ion-title>Filtros y orden</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,10 +13,10 @@
   <ion-list>
     <ion-list-header>
       <ion-label>Ordenar por</ion-label>
-      <ion-button *ngIf="hasSort" (click)="toggleSortDir()" fill="clear" size="small">
-        <ion-icon [name]="localSortAsc ? 'arrow-up-outline' : 'arrow-down-outline'" slot="start"></ion-icon>
+      <button *ngIf="hasSort" (click)="toggleSortDir()" class="btn btn-link btn-sm">
+        <ion-icon [name]="localSortAsc ? 'arrow-up-outline' : 'arrow-down-outline'" class="me-1"></ion-icon>
         {{ localSortAsc ? 'Asc' : 'Desc' }}
-      </ion-button>
+      </button>
     </ion-list-header>
     <ion-radio-group [value]="localSortBy" (ionChange)="onSortChange($event)">
       <ion-item lines="none">
@@ -88,8 +88,8 @@
     </ion-item>
   </ion-list>
 
-  <ion-button expand="block" fill="clear" color="danger" (click)="resetAll()" class="ion-margin">
-    <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+  <button class="btn btn-danger w-100 ion-margin" (click)="resetAll()">
+    <ion-icon name="close-circle-outline" class="me-1"></ion-icon>
     Limpiar filtros
-  </ion-button>
+  </button>
 </ion-content>
