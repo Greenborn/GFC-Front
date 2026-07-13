@@ -1,9 +1,7 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Carga de Resultados</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content class="p-3">
+<div class="bg-light border-bottom p-3">
+  <h5 class="mb-0">Carga de Resultados</h5>
+</div>
+<div class="container-fluid py-3">
   <div class="container-fluid">
     <div class="row">
       <div class="col-12 col-md-6">
@@ -12,11 +10,11 @@
           <pre style="white-space: pre-wrap; font-size: 14px; background: #f8f8f8; padding: 12px; border-radius: 6px;">{{ estructura }}</pre>
         </ng-container>
         <ng-template #errorEstructura>
-          <ion-card color="danger">
-            <ion-card-content>
+          <div class="card border-danger">
+            <div class="card-body text-danger">
               Error: No se pudo procesar el archivo o está vacío.
-            </ion-card-content>
-          </ion-card>
+            </div>
+          </div>
         </ng-template>
         <button class="btn btn-primary w-100 mt-3" (click)="volver()">Volver</button>
       </div>
@@ -24,58 +22,58 @@
         <button class="btn btn-primary w-100 mb-3" [disabled]="!canCargarResultados()" (click)="cargarResultados()">
           Cargar Resultados
         </button>
-        <ion-card *ngIf="directorioBaseValido" color="success">
-          <ion-card-content>
+        <div class="card border-success" *ngIf="directorioBaseValido">
+          <div class="card-body text-success">
             Validación correcta: existe el directorio base <b>{{ directorioBase }}</b>
-          </ion-card-content>
-        </ion-card>
-        <ion-card *ngIf="!directorioBaseValido" color="warning">
-          <ion-card-content>
+          </div>
+        </div>
+        <div class="card border-warning" *ngIf="!directorioBaseValido">
+          <div class="card-body text-warning">
             No se pudo detectar un directorio base válido
-          </ion-card-content>
-        </ion-card>
+          </div>
+        </div>
         <ng-container *ngIf="directorioBaseValido && validacionesCategorias.length > 0">
           <h6>Validaciones de Categorías:</h6>
-          <ion-card *ngFor="let val of validacionesCategorias" [color]="val.color">
-            <ion-card-content>
+          <div class="card" [ngClass]="'border-' + val.color" *ngFor="let val of validacionesCategorias">
+            <div class="card-body">
               {{ val.mensaje }}
-            </ion-card-content>
-          </ion-card>
+            </div>
+          </div>
         </ng-container>
         
         <ng-container *ngIf="directorioBaseValido && validacionesSecciones.length > 0">
           <h6>Validaciones de Secciones ({{ validacionesSecciones.length }}):</h6>
-          <ion-card *ngFor="let val of validacionesSecciones" [color]="val.color">
-            <ion-card-content>
+          <div class="card" [ngClass]="'border-' + val.color" *ngFor="let val of validacionesSecciones">
+            <div class="card-body">
               {{ val.mensaje }}
-            </ion-card-content>
-          </ion-card>
+            </div>
+          </div>
         </ng-container>
         
-        <ion-card *ngIf="directorioBaseValido && validacionesSecciones.length === 0" color="medium">
-          <ion-card-content>
+        <div class="card border-secondary" *ngIf="directorioBaseValido && validacionesSecciones.length === 0">
+          <div class="card-body text-secondary">
             No se encontraron validaciones de secciones (array vacío)
-          </ion-card-content>
-        </ion-card>
+          </div>
+        </div>
         
         <ng-container *ngIf="directorioBaseValido && validacionesPremios.length > 0">
           <h6>Validaciones de Premios ({{ validacionesPremios.length }}):</h6>
-          <ion-card *ngFor="let val of validacionesPremios" [color]="val.color">
-            <ion-card-content>
+          <div class="card" [ngClass]="'border-' + val.color" *ngFor="let val of validacionesPremios">
+            <div class="card-body">
               {{ val.mensaje }}
-            </ion-card-content>
-          </ion-card>
+            </div>
+          </div>
         </ng-container>
         
         <ng-container *ngIf="directorioBaseValido && fotografiasSinCatalogar.length > 0">
           <h6>Fotografías Sin Catalogar ({{ fotografiasSinCatalogar.length }}):</h6>
-          <ion-card color="warning">
-            <ion-card-content>
+          <div class="card border-warning">
+            <div class="card-body">
               <p>Las siguientes fotografías no están en directorios de premios:</p>
               <div class="fotografias-badges">
-                <ion-badge *ngFor="let foto of fotografiasSinCatalogar; let i = index" color="warning" class="me-3 mb-3">
+                <span class="badge bg-warning text-dark me-3 mb-3" *ngFor="let foto of fotografiasSinCatalogar; let i = index">
                   {{ obtenerNombreArchivo(foto) }}
-                </ion-badge>
+                </span>
               </div>
               <details class="mt-3">
                 <summary>Ver rutas completas (debug)</summary>
@@ -85,19 +83,19 @@
                   </div>
                 </div>
               </details>
-            </ion-card-content>
-          </ion-card>
+            </div>
+          </div>
         </ng-container>
         
         <ng-container *ngIf="directorioBaseValido && validacionesFotografias.length > 0">
           <h6>Validaciones de Directorios de Premios ({{ validacionesFotografias.length }}):</h6>
-          <ion-card *ngFor="let val of validacionesFotografias" [color]="val.color">
-            <ion-card-content>
+          <div class="card" [ngClass]="'border-' + val.color" *ngFor="let val of validacionesFotografias">
+            <div class="card-body">
               {{ val.mensaje }}
-            </ion-card-content>
-          </ion-card>
+            </div>
+          </div>
         </ng-container>
       </div>
     </div>
   </div>
-</ion-content> 
+</div>

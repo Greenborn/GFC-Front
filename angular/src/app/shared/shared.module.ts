@@ -15,6 +15,7 @@ import { ContestStatusChipComponent } from './contest-status-chip/contest-status
 import { SearchSelectComponent } from './search-select/search-select.component';
 import { SearchableSelectComponent } from './searchable-select/searchable-select.component';
 import { SlidesComponent } from './slides/slides.component';
+import { InfiniteScrollDirective } from './infinite-scroll.directive';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { SlidesComponent } from './slides/slides.component';
     ThSortComponent,
     BtnPostComponent,
     ContestStatusChipComponent,
-    SlidesComponent
+    SlidesComponent,
+    InfiniteScrollDirective
   ],
   imports: [
     CommonModule,
@@ -57,6 +59,7 @@ import { SlidesComponent } from './slides/slides.component';
     BtnPostComponent,
     ContestStatusChipComponent,
     SlidesComponent,
+    InfiniteScrollDirective
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -1,13 +1,11 @@
-<ion-header>
-  <ion-toolbar>
-    <div class="d-flex gap-1">
-      <ion-back-button text="Volver" defaultHref="/concursos"></ion-back-button>
-    </div>
-    <ion-title>{{formTitle}}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="bg-light border-bottom p-3">
+  <div class="d-flex gap-1">
+    <button class="btn btn-outline-dark btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i></button>
+  </div>
+  <h5 class="mb-0">{{formTitle}}</h5>
+</div>
 
-<ion-content>
+<div class="container-fluid py-3">
   <div class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-12 col-md-10">
@@ -197,9 +195,7 @@
                         class="ms-3 btn btn-link btn-sm"
                         size="small"
                       >
-                        <ion-icon
-                          name="chevron-{{mostrarCategorias ? 'up' : 'down'}}-outline"
-                        ></ion-icon>
+                        <i class="bi" [ngClass]="mostrarCategorias ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
                       </button>
                     </div>
                   </ion-item>
@@ -224,9 +220,7 @@
                         class="ms-3 btn btn-link btn-sm"
                         size="small"
                       >
-                        <ion-icon
-                          name="chevron-{{mostrarSecciones ? 'up' : 'down'}}-outline"
-                        ></ion-icon>
+                        <i class="bi" [ngClass]="mostrarSecciones ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
                       </button>
                     </div>
                   </ion-item>
@@ -270,7 +264,7 @@
                     <input type="file" (change)="imageUpload($event.target)" />
                   </ion-item>
                   <div class="row" *ngIf="img_url != ''" class="justify-content-center">
-                    <ion-img (ionError)="img_url=''" [src]="img_url" alt=""></ion-img>
+                    <img (ionError)="img_url=''" [src]="img_url" alt="">
                   </div>
                 </ion-card-content>
               </ion-card>
@@ -315,7 +309,7 @@
                 </div>
 
                 <div class="col-12 col-sm-3 align-self-center">
-                  <ion-back-button text="Cancelar" icon="" [defaultHref]="backUrl"></ion-back-button>
+                  <button class="btn btn-link w-100" onclick="history.back()"><i class="bi bi-x me-1"></i>Cancelar</button>
                 </div>
 
               </div>
@@ -325,10 +319,10 @@
         </form>
         <ng-template #spinner>
           <div class="row justify-content-center">
-            <ion-spinner></ion-spinner>
+            <div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
           </div>
         </ng-template>
       </div>
     </div>
   </div>
-</ion-content>
+</div>

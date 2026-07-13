@@ -1,4 +1,4 @@
-<ion-content>
+<div class="container-fluid py-3">
   <div class="container" *ngIf="(auth.user | async) as userLogged">
     <div class="row">
       <div class="col">
@@ -15,163 +15,135 @@
                     </div>
                     <div class="col-auto align-self-center">
                       <button class="btn btn-outline-primary ms-3" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" [routerLink]="['nuevo']">
-                        <ion-icon name="add" class="me-1"></ion-icon>
+                        <i class="bi bi-plus me-1"></i>
                         Nuevo
                       </button>
                     </div>
                   </div>
                 </div>
                 <div class="col-12 col-md-5 text-end">
-                  <ion-searchbar
-                    [(ngModel)]="searchQuery"
-                    placeholder="Buscar usuarios"
-                    debounce="0"
-                    (keyup.enter)="buscarUsuarios()"
-                    (ionBlur)="buscarUsuarios()"
-                    showCancelButton="never"
-                  >
-                  </ion-searchbar>
+                  <div class="input-group">
+                    <input class="form-control" [(ngModel)]="searchQuery" placeholder="Buscar usuarios" (keyup.enter)="buscarUsuarios()" (blur)="buscarUsuarios()">
+                    <button class="btn btn-outline-secondary" (click)="buscarUsuarios()">
+                      <i class="bi bi-search"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-            <ion-list class="d-none d-sm-block cabecera">
-              <ion-item color="dark">
+            <div class="d-none d-sm-block">
+              <div class="bg-dark text-white py-2 px-3 rounded-top">
                 <div class="container-fluid">
-                  <div class="row">
-                    <div class="col">
-                      <div class="row">
-                      <div class="col-3 col-md-4">
-                        <div class="row">
-                          <app-th-sort
-                            [sortFn]="funcionesOrdenamiento['usuario']"
-                            [(data)]="miembros"
-                            [title]="rolificador.getNombreUsuarios(userLogged.role_id)"
-                          ></app-th-sort>
-                        </div>
-                      </div>
-                      <div class="col-3 col-md-2">
-                        <app-th-sort
-                          *ngIf="rolificador.isAdmin(userLogged)"
-                          [sortFn]="funcionesOrdenamiento['executive_rol']"
-                          [(data)]="miembros"
-                          title="Comisión directiva"
-                        ></app-th-sort>
-                      </div>
-                      <div class="col-3 col-md-2">
-                        <app-th-sort
-                          *ngIf="rolificador.isAdmin(userLogged)"
-                          [sortFn]="funcionesOrdenamiento['rol']"
-                          [(data)]="miembros"
-                          title="Rol"
-                        ></app-th-sort>
-                      </div>
-                      <div class="col-3 col-md-2">
-                        <div class="row">
-                          <app-th-sort
-                            *ngIf="rolificador.isAdmin(userLogged)"
-                            [sortFn]="funcionesOrdenamiento['fotoclub']"
-                            [(data)]="miembros"
-                            title="Fotoclub / Agrupación"
-                          ></app-th-sort>
-                        </div>
-                      </div>
-                      <div class="col-2 col-md-1">
-                        <app-th-sort
-                          *ngIf="rolificador.isAdmin(userLogged)"
-                          [sortFn]="funcionesOrdenamiento['estado']"
-                          [(data)]="miembros"
-                          title="Estado"
-                        ></app-th-sort>
-                      </div>
-                      <div class="col-1 col-md-1">
-                      </div>
+                  <div class="row align-items-center">
+                    <div class="col-3 col-md-4">
+                      <app-th-sort
+                        [sortFn]="funcionesOrdenamiento['usuario']"
+                        [(data)]="miembros"
+                        [title]="rolificador.getNombreUsuarios(userLogged.role_id)"
+                      ></app-th-sort>
                     </div>
+                    <div class="col-3 col-md-2">
+                      <app-th-sort
+                        *ngIf="rolificador.isAdmin(userLogged)"
+                        [sortFn]="funcionesOrdenamiento['executive_rol']"
+                        [(data)]="miembros"
+                        title="Comisión directiva"
+                      ></app-th-sort>
+                    </div>
+                    <div class="col-3 col-md-2">
+                      <app-th-sort
+                        *ngIf="rolificador.isAdmin(userLogged)"
+                        [sortFn]="funcionesOrdenamiento['rol']"
+                        [(data)]="miembros"
+                        title="Rol"
+                      ></app-th-sort>
+                    </div>
+                    <div class="col-3 col-md-2">
+                      <app-th-sort
+                        *ngIf="rolificador.isAdmin(userLogged)"
+                        [sortFn]="funcionesOrdenamiento['fotoclub']"
+                        [(data)]="miembros"
+                        title="Fotoclub / Agrupación"
+                      ></app-th-sort>
+                    </div>
+                    <div class="col-2 col-md-1">
+                      <app-th-sort
+                        *ngIf="rolificador.isAdmin(userLogged)"
+                        [sortFn]="funcionesOrdenamiento['estado']"
+                        [(data)]="miembros"
+                        title="Estado"
+                      ></app-th-sort>
+                    </div>
+                    <div class="col-1 col-md-1"></div>
                   </div>
                 </div>
-                </div>
-              </ion-item>
-            </ion-list>
+              </div>
+            </div>
 
-            <ion-list *ngIf="miembros.length > 0; else texto">
-              <ion-item *ngFor="let m of miembros">
+            <div class="list-group list-group-flush border-start border-end" *ngIf="miembros.length > 0; else texto">
+              <div class="list-group-item" *ngFor="let m of miembros">
                 <div class="container-fluid" *ngIf="m != undefined || m != null">
-                  <div class="row">
-                  <div class="col-12 col-md-4 col-sm-3">
-                    <div class="row align-items-center justify-content-between">
+                  <div class="row align-items-center">
+                    <div class="col-12 col-md-4 col-sm-3">
+                      <div class="row align-items-center">
                         <div class="col-3 col-sm-2">
                           <app-usuario-img [src]="m.img_url != null ? configService.imageUrl(m.img_url) : '' "></app-usuario-img>
                         </div>
-                          <div class="col-8 col-sm-10">
-                          <ion-label class="ms-3">
-                            <ion-card-subtitle title="Username" *ngIf="m.user != null"
-                              ><i>@{{m.user.username}}</i></ion-card-subtitle
-                            >
-                            <ion-text title="Nombre">
-                              <b>{{m.name}} {{m.last_name}}</b>
-                            </ion-text>
-                          </ion-label>
-                        </div>
-                        <div class="col-1 d-sm-none justify-content-center">
-                          <div class="d-flex gap-1">
-                            <button class="btn btn-outline-primary" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" (click)="mostrarAcciones($event, m)">
-                              <ion-icon
-                                ios="ellipsis-horizontal"
-                                md="ellipsis-vertical"
-                               class="me-1"></ion-icon>
-                            </button>
+                        <div class="col-8 col-sm-10">
+                          <small class="text-muted" *ngIf="m.user != null">
+                            <i>@{{m.user.username}}</i>
+                          </small>
+                          <div>
+                            <b>{{m.name}} {{m.last_name}}</b>
                           </div>
+                        </div>
+                        <div class="col-1 d-sm-none text-end">
+                          <button class="btn btn-outline-primary btn-sm" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" (click)="mostrarAcciones($event, m)">
+                            <i class="bi bi-three-dots-vertical"></i>
+                          </button>
                         </div>
                       </div>
                     </div>
 
-                    <div class="col-3 col-md-2 d-none d-sm-block align-self-center">
-                      <ion-text *ngIf="m.user != null && rolificador.isAdmin(userLogged)"
-                        >{{ m.executive_rol != null && m.executive_rol != '' ? m.executive_rol : 'No' }}</ion-text
-                      >
+                    <div class="col-3 col-md-2 d-none d-sm-block" *ngIf="m.user != null && rolificador.isAdmin(userLogged)">
+                      {{ m.executive_rol != null && m.executive_rol != '' ? m.executive_rol : 'No' }}
                     </div>
-                    <div class="col-3 col-md-2 d-none d-sm-block align-self-center">
-                      <ion-text *ngIf="m.user != null && rolificador.isAdmin(userLogged)"
-                        >{{ getRoleType(m.user.role_id) }}</ion-text
-                      >
+                    <div class="col-3 col-md-2 d-none d-sm-block" *ngIf="m.user != null && rolificador.isAdmin(userLogged)">
+                      {{ getRoleType(m.user.role_id) }}
                     </div>
-                    <div class="col-3 col-md-2 d-none d-sm-block align-self-center">
-                      <ion-text *ngIf="rolificador.isAdmin(userLogged)"
-                        >{{ m.fotoclub_id != null ?  getFotoclubName(m.fotoclub_id) : 'Ninguno'}}</ion-text
-                      >
+                    <div class="col-3 col-md-2 d-none d-sm-block" *ngIf="rolificador.isAdmin(userLogged)">
+                      {{ m.fotoclub_id != null ?  getFotoclubName(m.fotoclub_id) : 'Ninguno'}}
                     </div>
-                    <div class="col-2 col-md-1 d-none d-sm-block align-self-center">
-                      <ion-text *ngIf="m.user != null && rolificador.isAdmin(userLogged)" [color]="m.user.status == 1 ? 'success' : 'danger'">
+                    <div class="col-2 col-md-1 d-none d-sm-block" *ngIf="m.user != null && rolificador.isAdmin(userLogged)">
+                      <span class="badge" [ngClass]="m.user.status == 1 ? 'bg-success' : 'bg-danger'">
                         {{ m.user.status == 1 ? 'Habilitado' : 'Deshabilitado' }}
-                      </ion-text>
+                      </span>
                     </div>
-                    <div class="col-2 col-md-1 align-self-center d-none d-sm-block">
+                    <div class="col-2 col-md-1 d-none d-sm-block">
                       <div class="d-flex gap-1" *ngIf="m.user != null && (rolificador.esDelegado(userLogged)  || rolificador.isAdmin(userLogged))">
-                        <button class="btn btn-outline-primary" [routerLink]="['editar/' + getUserId(m.user)]">
-                          <ion-icon name="create"></ion-icon>
+                        <button class="btn btn-outline-primary btn-sm" [routerLink]="['editar/' + getUserId(m.user)]">
+                          <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-outline-primary" (click)="toggleUsuarioStatus(m)">
-                          <ion-icon [name]="m.user.status == 0 ? 'checkmark-circle' : 'remove-circle'"></ion-icon>
+                        <button class="btn btn-outline-primary btn-sm" (click)="toggleUsuarioStatus(m)">
+                          <i class="bi" [ngClass]="m.user.status == 0 ? 'bi-check-circle' : 'bi-remove-circle'"></i>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </ion-item>
-            </ion-list>
+              </div>
+            </div>
             <ng-template #texto>
-              <ion-item>
-                <ion-item *ngIf="!loading">No hay usuarios</ion-item>
-                <ion-item *ngIf="searchParams != undefined">
-                  con {{searchParams.atributo}} que empiece con '{{
-                  searchParams.query }}'</ion-item
-                >
-              </ion-item>
+              <div class="list-group-item" *ngIf="!loading">No hay usuarios</div>
+              <div class="list-group-item" *ngIf="searchParams != undefined">
+                con {{searchParams.atributo}} que empiece con '{{searchParams.query}}'
+              </div>
             </ng-template>
           </div>
         </div>
     </div>
 
-</ion-content>
+</div>

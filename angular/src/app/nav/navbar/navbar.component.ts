@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 import { UsuarioPage } from '../../usuario/usuario.page';
@@ -16,9 +15,9 @@ import { filter } from 'rxjs/operators';
 export class NavbarComponent implements OnInit {
 
   currentUrl: string = '';
+  @Output() toggleSidebar = new EventEmitter<void>();
 
   constructor(
-    private menu: MenuController,
     public popoverController: PopoverController,
     public router: Router,
     public auth: AuthService,
@@ -65,7 +64,7 @@ export class NavbarComponent implements OnInit {
   }
 
   toggleMenu() {
-    this.menu.toggle();
+    this.toggleSidebar.emit();
   }
 
 }

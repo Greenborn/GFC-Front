@@ -1,38 +1,30 @@
-<ion-menu type="reveal" side="end" menuId="first" content-id="main-content" #menu>
-  <!-- <ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>Start Menu</ion-title>
-    </ion-toolbar>
-  </ion-header> -->
-  <ion-content>
-    <!-- <ion-list *ngIf="auth.loggedIn"> -->
-    <!-- <ion-list *ngIf="isLoggedIn()"> -->
-    <ion-list *ngIf="(auth.user | async) as u">
-      <!-- <ion-item>Home</ion-item> -->
-      <!-- <ion-item>Reglamento</ion-item> -->
-      <ion-item [routerLink]="['/usuarios', 'editar', u.id]">
-        <ion-icon name="person-outline" slot="start"></ion-icon>
-        Editar perfil
-      </ion-item>
-      <ion-item [routerLink]="['/concursos/ranking']">Ranking</ion-item>
-      <ion-item [routerLink]="['/concursos']">Concursos</ion-item>
-      <!-- <ion-item>Galería</ion-item> -->
-      <!-- <ion-item [routerLink]="['/usuarios']" *ngIf="isLoggedIn()">Usuarios</ion-item> -->
-      <ion-item *ngIf="rolificador.esDelegado(u)"
-        [routerLink]="['/usuarios']"
-      >
-        {{ rolificador.getNombreUsuarios(u.role_id) }}
-      </ion-item>
-      <ion-item *ngIf="rolificador.isAdmin(u)"
-        [routerLink]="['/organizaciones']"
-      >
-        Organizaciones
-      </ion-item>
-      <ion-item *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u)"
-        [routerLink]="['/herramientas']"
-      >
-        Herramientas
-      </ion-item>
-    </ion-list>
-  </ion-content>
-</ion-menu>
+<div class="offcanvas offcanvas-end" [class.show]="open" tabindex="-1">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title">Menú</h5>
+    <button type="button" class="btn-close" (click)="closeSidebar.emit()"></button>
+  </div>
+  <div class="offcanvas-body p-0">
+    <ul class="list-group list-group-flush" *ngIf="(auth.user | async) as u">
+      <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/usuarios', 'editar', u.id]">
+        <i class="bi bi-person me-2"></i>Editar perfil
+      </li>
+      <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/concursos/ranking']">
+        <i class="bi bi-trophy me-2"></i>Ranking
+      </li>
+      <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/concursos']">
+        <i class="bi bi-images me-2"></i>Concursos
+      </li>
+      <li class="list-group-item list-group-item-action clickeable" *ngIf="rolificador.esDelegado(u)" [routerLink]="['/usuarios']">
+        <i class="bi bi-people me-2"></i>{{ rolificador.getNombreUsuarios(u.role_id) }}
+      </li>
+      <li class="list-group-item list-group-item-action clickeable" *ngIf="rolificador.isAdmin(u)" [routerLink]="['/organizaciones']">
+        <i class="bi bi-building me-2"></i>Organizaciones
+      </li>
+      <li class="list-group-item list-group-item-action clickeable" *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u)" [routerLink]="['/herramientas']">
+        <i class="bi bi-tools me-2"></i>Herramientas
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="offcanvas-backdrop fade" [class.show]="open" (click)="closeSidebar.emit()"></div>

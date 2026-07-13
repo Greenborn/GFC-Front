@@ -1,20 +1,16 @@
-<ion-header>
-  <ion-toolbar>
-    <div class="d-flex gap-1">
-      <button class="btn btn-outline-primary" (click)="dismiss()">
-        <ion-icon name="arrow-back-outline"></ion-icon>
-      </button>
-    </div>
-    <ion-title>Filtros y orden</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="bg-light border-bottom p-3 d-flex align-items-center gap-2">
+  <button class="btn btn-outline-primary" (click)="dismiss()">
+    <i class="bi bi-arrow-left"></i>
+  </button>
+  <h5 class="mb-0">Filtros y orden</h5>
+</div>
 
-<ion-content class="ion-padding">
+<div class="container-fluid py-3 ion-padding">
   <ion-list>
     <ion-list-header>
       <ion-label>Ordenar por</ion-label>
       <button *ngIf="hasSort" (click)="toggleSortDir()" class="btn btn-link btn-sm">
-        <ion-icon [name]="localSortAsc ? 'arrow-up-outline' : 'arrow-down-outline'" class="me-1"></ion-icon>
+        <i class="bi me-1" [ngClass]="localSortAsc ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
         {{ localSortAsc ? 'Asc' : 'Desc' }}
       </button>
     </ion-list-header>
@@ -89,7 +85,7 @@
   </ion-list>
 
   <button class="btn btn-danger w-100 ion-margin" (click)="resetAll()">
-    <ion-icon name="close-circle-outline" class="me-1"></ion-icon>
+    <i class="bi bi-x-circle me-1"></i>
     Limpiar filtros
   </button>
-</ion-content>
+</div>

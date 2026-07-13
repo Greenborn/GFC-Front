@@ -1,29 +1,29 @@
-<ion-content #pageContent id="concurso-content">
+<div class="container-fluid py-3" #pageContent id="concurso-content">
   
   <div class="row" id="concurso-tabs" #tabsContent>
       <div class="col">
           <div class="row" *ngIf="(auth.user | async) as u">
-              <ion-tabs>
-              <ion-tab-bar slot="top">
-                <ion-tab-button tab="informacion">
-                  <ion-icon name="information-circle-outline"></ion-icon>
+              <div>
+              <ul class="nav nav-pills mb-3">
+                <li class="nav-item"><a class="nav-link" tab="informacion">
+                  <i class="bi bi-info-circle"></i>
                   <ion-label>Información</ion-label>
-                </ion-tab-button>
+                </a></li>
                 
-                <ion-tab-button tab="concursantes" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || concurso.judged">
-                  <ion-icon name="people-outline"></ion-icon>
+                <li class="nav-item"><a class="nav-link" tab="concursantes" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || concurso.judged">
+                  <i class="bi bi-people"></i>
                   <ion-label>Concursantes</ion-label>
-                </ion-tab-button>
+                </a></li>
         
-                <ion-tab-button tab="fotografias" (click)="goToFotografias()">
-                  <ion-icon name="images-outline"></ion-icon>
+                <li class="nav-item"><a class="nav-link" tab="fotografias" (click)="goToFotografias()">
+                  <i class="bi bi-images"></i>
                   <ion-label>Fotografias</ion-label>
-                </ion-tab-button>
+                </a></li>
 
-              </ion-tab-bar>
-            </ion-tabs>
+              </ul>
+            </div>
         
           </div>
         </div>
       </div>
-</ion-content>
+</div>

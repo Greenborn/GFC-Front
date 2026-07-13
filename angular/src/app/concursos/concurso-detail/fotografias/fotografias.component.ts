@@ -143,11 +143,8 @@ export class FotografiasComponent implements OnInit {
     return items
   }
 
-  async loadPage(page: number = 1, reset: boolean = false, event?: any, showLoading: boolean = true) {
+  async loadPage(page: number = 1, reset: boolean = false, showLoading: boolean = true) {
     if (this.loadingPage || !this.concurso?.id) {
-      if (event?.target) {
-        event.target.complete();
-      }
       return;
     }
 
@@ -182,10 +179,6 @@ export class FotografiasComponent implements OnInit {
       skipPublish: true,
     });
 
-    if (event?.target) {
-      event.target.complete();
-    }
-
     if (!response || !Array.isArray(response.items)) {
       this.hasMorePages = false;
       this.finishLoading();
@@ -219,12 +212,11 @@ export class FotografiasComponent implements OnInit {
     }
   }
 
-  loadMoreImages(event: any) {
+  loadMoreImages() {
     if (!this.hasMorePages) {
-      event.target.complete();
       return;
     }
-    this.loadPage(this.pageNumber + 1, false, event);
+    this.loadPage(this.pageNumber + 1, false);
   }
 
   subscribes() {
@@ -240,7 +232,7 @@ export class FotografiasComponent implements OnInit {
       this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
         this.concurso = c
         if (this.concurso && this.concurso.id) {
-          await this.loadPage(1, true, null, true)
+          await this.loadPage(1, true, true)
           this.cargarPropiasFotos();
         }
       }))
@@ -333,24 +325,24 @@ export class FotografiasComponent implements OnInit {
     this.premiosSeleccionados = new Set(state.premiosSeleccionados || []);
     this.filtroAutor = state.filtroAutor || '';
     this.filtroCodigo = state.filtroCodigo || '';
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   onFilterInput() {
     if (this.filterTimeout) clearTimeout(this.filterTimeout);
     this.filterTimeout = setTimeout(() => {
-      this.loadPage(1, true, null, false);
+      this.loadPage(1, true, false);
     }, 1000);
   }
 
   onSearchChange(event: any) {
     this.terminoBusqueda = event.detail?.value || '';
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   onSortChange(event: any) {
     this.sortBy = event.detail?.value || '';
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   onSortChangeManual(value: string) {
@@ -360,7 +352,7 @@ export class FotografiasComponent implements OnInit {
       this.sortBy = value;
       this.sortAsc = true;
     }
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   setSortBy(value: string) {
@@ -370,12 +362,12 @@ export class FotografiasComponent implements OnInit {
       this.sortBy = value;
       this.sortAsc = true;
     }
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   toggleSortDir() {
     this.sortAsc = !this.sortAsc;
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   toggleSeccion(id: number) {
@@ -383,12 +375,12 @@ export class FotografiasComponent implements OnInit {
       this.seccionesSeleccionadas.delete(id);
     else
       this.seccionesSeleccionadas.add(id);
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   seccionAll() {
     this.seccionesSeleccionadas.clear();
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   get todasSecciones(): boolean {
@@ -400,12 +392,12 @@ export class FotografiasComponent implements OnInit {
       this.categoriasSeleccionadas.delete(id);
     else
       this.categoriasSeleccionadas.add(id);
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   categoriaAll() {
     this.categoriasSeleccionadas.clear();
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   get todasCategorias(): boolean {
@@ -417,12 +409,12 @@ export class FotografiasComponent implements OnInit {
       this.premiosSeleccionados.delete(prize);
     else
       this.premiosSeleccionados.add(prize);
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   premioAll() {
     this.premiosSeleccionados.clear();
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   get todosPremios(): boolean {
@@ -439,7 +431,7 @@ export class FotografiasComponent implements OnInit {
     this.premiosSeleccionados.clear();
     this.filtroAutor = '';
     this.filtroCodigo = '';
-    this.loadPage(1, true, null, false);
+    this.loadPage(1, true, false);
   }
 
   getThumbUrl(obj: any, thumb_id: number = 1) {

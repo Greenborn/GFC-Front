@@ -25,6 +25,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   
+  sidebarOpen = false;
+
   private routerSub: Subscription;
 
   constructor(
@@ -77,5 +79,9 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.routerSub) {
       this.routerSub.unsubscribe();
     }
+  }
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 }

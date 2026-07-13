@@ -1,4 +1,4 @@
-<ion-content [ngClass]="{'dark': responsiveService.darkMode}">
+<div class="container-fluid py-3" [ngClass]="{'dark': responsiveService.darkMode}">
   <div class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-12 col-md-4">
@@ -11,7 +11,7 @@
 
         <div class="google-btn-wrapper">
           <button class="btn btn-outline-primary google-btn" (click)="loginWithGoogle()">
-            <ion-icon name="logo-google" class="me-1"></ion-icon>
+            <i class="bi bi-google me-1"></i>
             Ingresar con Google
           </button>
         </div>
@@ -76,4 +76,4 @@
       </div>
     </div>
   </div>
-</ion-content>
+</div>

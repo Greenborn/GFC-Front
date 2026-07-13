@@ -1,24 +1,24 @@
-<ion-content>
+<div class="container-fluid py-3">
   <div class="container-fluid p-0 m-0" *ngIf="(auth.user | async) as u" #content>
     <div class="row justify-content-center">
       <div class="col-12 col-lg-6">
         <div class="row align-items-center pt-3 pb-3 ps-3 pe-3">
           <div class="col">
-            <ion-searchbar [ngModel]="terminoBusqueda" (ionInput)="onSearchChange($event)" placeholder="Buscar fotografías..." debounce="1000"></ion-searchbar>
+            <div class="input-group"><span class="input-group-text"><i class="bi bi-search"></i></span><input class="form-control" type="search" [ngModel]="terminoBusqueda" (input)="onSearchChange($event)" placeholder="Buscar fotografías..."></div>
           </div>
           <div class="col-auto">
             <button class="btn btn-dark w-100" (click)="toggleSidebar()">
-              <ion-icon name="options-outline" class="me-1"></ion-icon>
+              <i class="bi bi-gear me-1"></i>
               <span class="d-none d-sm-inline">Filtros</span>
-              <ion-badge *ngIf="filtrosActivosCount > 0 || sortBy" color="primary" class="ms-3">
+              <span class="badge bg-primary ms-3" *ngIf="filtrosActivosCount > 0 || sortBy">
                 {{ filtrosActivosCount }}{{ sortLabel ? ' · ' + sortLabel : '' }}
-              </ion-badge>
+              </span>
             </button>
           </div>
           <div class="col-auto" *ngIf="contestService.isActive(concurso) &&
                 (rolificador.esDelegado(u) || rolificador.isAdmin(u) || rolificador.esConcursante(u))">
             <button class="btn btn-success" (click)="postImage()">
-              <ion-icon name="add" class="me-1"></ion-icon>
+              <i class="bi bi-plus me-1"></i>
               Fotografía
             </button>
           </div>
@@ -108,7 +108,7 @@
               <div class="col">
                 <ion-item button (click)="propiasExpandidas = !propiasExpandidas" lines="none" detail="false">
                   <ion-label><strong>Mis fotografías</strong></ion-label>
-                  <ion-icon slot="end" [name]="propiasExpandidas ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+                  <i class="bi" slot="end" [ngClass]="propiasExpandidas ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
                 </ion-item>
                 <div *ngIf="propiasExpandidas">
                   <div class="row justify-content-center">
@@ -121,18 +121,18 @@
                         <div class="foto-actions">
                           <div class="d-flex gap-1 d-none d-md-inline">
                             <button class="btn btn-outline-primary btn-sm" *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
-                              <ion-icon name="star-outline"></ion-icon>
+                              <i class="bi bi-star"></i>
                             </button>
                             <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
-                              <ion-icon name="create"></ion-icon>
+                              <i class="bi bi-pencil"></i>
                             </button>
                             <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
-                              <ion-icon name="trash"></ion-icon>
+                              <i class="bi bi-trash"></i>
                             </button>
                           </div>
                           <div class="d-flex gap-1 d-md-none">
                             <button class="btn btn-outline-primary btn-sm" (click)="mostrarAcciones($event, r, i, propiasFotos)">
-                              <ion-icon ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                              <i class="bi bi-three-dots-vertical"></i>
                             </button>
                           </div>
                         </div>
@@ -174,18 +174,18 @@
                             <div class="foto-actions">
                               <div class="d-flex gap-1 d-none d-md-inline">
                                 <button class="btn btn-outline-primary btn-sm" *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
-                                  <ion-icon name="star-outline"></ion-icon>
+                                  <i class="bi bi-star"></i>
                                 </button>
                                 <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
-                                  <ion-icon name="create"></ion-icon>
+                                  <i class="bi bi-pencil"></i>
                                 </button>
                                 <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
-                                  <ion-icon name="trash"></ion-icon>
+                                  <i class="bi bi-trash"></i>
                                 </button>
                               </div>
                               <div class="d-flex gap-1 d-md-none">
                                 <button class="btn btn-outline-primary btn-sm" (click)="mostrarAcciones($event, r, i)">
-                                  <ion-icon ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                                  <i class="bi bi-three-dots-vertical"></i>
                                 </button>
                               </div>
                             </div>
@@ -211,22 +211,25 @@
                 </ion-list>
 
                 <div class="row justify-content-center p-3" *ngIf="loadingInitial && resultadosConcurso.length === 0">
-                  <ion-spinner name="crescent"></ion-spinner>
+                  <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
                 </div>
 
-                <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreImages($event)" [disabled]="!hasMorePages">
-                  <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más fotografías..."></ion-infinite-scroll-content>
-                </ion-infinite-scroll>
+                <div class="text-center py-3" *ngIf="hasMorePages">
+                  <div class="spinner-border text-primary" role="status" *ngIf="loadingPage">
+                    <span class="visually-hidden">Cargando más fotografías...</span>
+                  </div>
+                  <div appInfiniteScroll [appInfiniteScroll]="hasMorePages" (loadMore)="loadMoreImages()"></div>
+                </div>
               </div>
             </div>
 
             <ng-template #spinner>
               <div class="row justify-content-center">
-                <ion-spinner></ion-spinner>
+                <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
               </div>
             </ng-template>
           </div>
         </div>
     </div>
   </div>
-</ion-content>
+</div>

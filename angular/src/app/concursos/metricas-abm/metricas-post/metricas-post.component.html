@@ -1,25 +1,23 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
-  <ion-header>
-    <ion-toolbar>
-      <div class="row align-items-center me-3">
-        <div class="col-2 d-md-none">
-          <button class="btn btn-link" (click)="modalController.dismiss()">
-            <ion-icon name="arrow-back-outline"></ion-icon>
-          </button>
-        </div>
-        <div class="col" [ngClass]="{'ms-3': responsiveService.isDesktop}">
-          <h5 class="ion-text-wrap">
-            {{ formTitle }}
-          </h5>
-        </div>
-        <div class="col-1 d-none d-md-block">
-          <button class="btn btn-link" (click)="modalController.dismiss()">
-            <ion-icon name="close-outline"></ion-icon>
-          </button>
-        </div>
+  <div class="bg-light border-bottom p-3">
+    <div class="row align-items-center me-3">
+      <div class="col-2 d-md-none">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-arrow-left"></i>
+        </button>
       </div>
-    </ion-toolbar>
-  </ion-header>
+      <div class="col" [ngClass]="{'ms-3': responsiveService.isDesktop}">
+        <h5 class="mb-0">
+          {{ formTitle }}
+        </h5>
+      </div>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div slot="start" class="w-100 inner-content float-md-start">
     <div class="container-fluid">

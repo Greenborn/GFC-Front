@@ -1,16 +1,11 @@
-<ion-header>
-  <ion-toolbar>
-    <div class="d-flex gap-1">
-      <ion-back-button
-        defaultHref="/perfil/editar"
-        class="d-md-none"
-      ></ion-back-button>
-    </div>
-    <ion-title>Perfil</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="bg-light border-bottom p-3">
+  <div class="d-flex align-items-center gap-1">
+    <button class="btn btn-outline-dark btn-sm d-md-none" onclick="history.back()"><i class="bi bi-arrow-left"></i></button>
+    <h5 class="mb-0">Perfil</h5>
+  </div>
+</div>
 
-<ion-content>
+<div class="container-fluid py-3">
           <ion-item 
           
           lines="none"
@@ -36,28 +31,23 @@
             </div>
           </ion-item>
 
-</ion-content>
-          <ion-footer>
-            <ion-toolbar>
+</div>
+          <footer class="bg-light border-top p-2">
                 <ion-list>    
    
    
                   <ion-item 
                   lines="none"
                 >
-                  <ion-icon name="moon-outline" slot="start"></ion-icon>
-                  <ion-toggle color="dark" [(ngModel)]="darkMode" style="padding-inline: 0" ></ion-toggle>
+                  <i class="bi bi-moon-outline"></i>
+                  <div class="form-check form-switch"><input type="checkbox" class="form-check-input" [checked]="darkMode"></div>
    
                 </ion-item>
                 <ion-item
                   lines="none"
                   [routerLink]="['/usuarios', 'editar', authService.userId]"
                 >
-                  <ion-icon
-                    slot="start"
-                    ios="person-outline"
-                    md="person-sharp"
-                  ></ion-icon>
+                  <i class="bi bi-person"></i>
                   <ion-label>Editar perfil</ion-label>
                 </ion-item>
    
@@ -67,17 +57,12 @@
                     (click)="authService.logout()"
                     button="true"
                   >
-                    <ion-icon
-                      slot="start"
-                      ios="log-out-outline"
-                      md="log-out-sharp"
-                    ></ion-icon>
+                    <i class="bi bi-log-out-outline"></i>
                     <ion-label>Salir</ion-label>
                   </ion-item>
                 </ion-list>
 
                 <div class="version-text">v{{ version }}</div>
               
-            </ion-toolbar>
-          </ion-footer>
+          </footer>
         

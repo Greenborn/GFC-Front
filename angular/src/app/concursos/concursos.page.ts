@@ -353,11 +353,8 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     return `${item.tipo}-${index}`;
   }
 
-  loadMoreConcursos(event: any) {
+  loadMoreConcursos(event?: any) {
     if (this.loadingMore) {
-      if (event) {
-        event.target.complete();
-      }
       return;
     }
 
@@ -365,21 +362,14 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
 
     if (this.allItems.length > 0) {
       this.loadNextGroup();
-      if (event) {
-        event.target.complete();
-      }
-      if (!this.hasMoreConcursos && this.allItems.length === 0 && event) {
-        event.target.disabled = true;
+      if (!this.hasMoreConcursos && this.allItems.length === 0) {
+        // no more items
       }
       this.loadingMore = false;
       return;
     }
 
     if (!this.hasMoreConcursos) {
-      if (event) {
-        event.target.complete();
-        event.target.disabled = true;
-      }
       this.loadingMore = false;
       return;
     }
@@ -398,20 +388,10 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
         } else {
           this.hasMoreConcursos = false;
         }
-        if (event) {
-          event.target.complete();
-          if (!this.hasMoreConcursos && this.allItems.length === 0) {
-            event.target.disabled = true;
-          }
-        }
         this.loadingMore = false;
       },
       error: error => {
         console.error('Error al cargar más concursos:', error);
-        if (event) {
-          event.target.complete();
-          event.target.disabled = true;
-        }
         this.hasMoreConcursos = false;
         this.loadingMore = false;
       }

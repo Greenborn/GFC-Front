@@ -1,25 +1,23 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
-  <ion-header>
-    <ion-toolbar>
-      <div class="row align-items-center ms-3 me-3">
-        <div class="col-auto d-md-none">
-          <button class="btn btn-link" (click)="modalController.dismiss()">
-            <ion-icon name="arrow-back-outline"></ion-icon>
-          </button>
-        </div>
-        <div class="col">
-          <h5 class="ion-text-wrap">
-            {{ categoriaNombre }} - {{ seccionNombre }} - Año {{ detalle?.year }}
-          </h5>
-        </div>
-        <div class="col-1 d-none d-md-block">
-          <button class="btn btn-link" (click)="modalController.dismiss()">
-            <ion-icon name="close-outline"></ion-icon>
-          </button>
-        </div>
+  <div class="bg-light border-bottom p-3">
+    <div class="row align-items-center ms-3 me-3">
+      <div class="col-auto d-md-none">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-arrow-left"></i>
+        </button>
       </div>
-    </ion-toolbar>
-  </ion-header>
+      <div class="col">
+        <h5 class="mb-0">
+          {{ categoriaNombre }} - {{ seccionNombre }} - Año {{ detalle?.year }}
+        </h5>
+      </div>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div slot="start" class="w-100 inner-content float-md-start">
     <div class="container-fluid p-0">
@@ -96,7 +94,7 @@
                           </div>
                           <div class="col-2 cap">{{ img.title }}</div>
                           <div class="col-2">
-                            <ion-badge>{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</ion-badge>
+                            <span class="badge bg-secondary">{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</span>
                             <span class="ms-3">{{ img.metric?.score }}</span>
                           </div>
                         </div>

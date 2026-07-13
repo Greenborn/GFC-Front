@@ -1,34 +1,30 @@
-<ion-header>
-  <ion-toolbar>
-    <div class="d-flex gap-1">
-      <ion-back-button text="Volver" defaultHref="/concursos" class="d-md-none"></ion-back-button>
-    </div>
-    <ion-title>Notificaciones</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="bg-light border-bottom p-3 d-flex align-items-center gap-2">
+  <button class="btn btn-outline-dark btn-sm d-md-none" onclick="history.back()"><i class="bi bi-arrow-left"></i> Volver</button>
+  <h5 class="mb-0">Notificaciones</h5>
+</div>
 
-<ion-content>
+<div class="container-fluid py-3">
   <div class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-12 col-md-10">
         
         <ion-list>
           <ion-item>
-            <ion-icon name="ellipse" size="small" color="primary"></ion-icon>
+            <i class="bi bi-ellipse text-primary small"></i>
             <ion-label class="ms-3">
               <h4>Lorem ipsum</h4>
               <small>Hace 5 minutos</small>
             </ion-label>
           </ion-item>
           <ion-item>
-            <ion-icon name="ellipse-outline" size="small" color="light"></ion-icon>
+            <i class="bi bi-ellipse-outline text-light small"></i>
             <ion-label class="ms-3">
               <h4>Lorem ipsum</h4>
               <small>Hace 5 minutos</small>
             </ion-label>
           </ion-item>
           <ion-item>
-            <ion-icon name="ellipse-outline" size="small" color="light"></ion-icon>
+            <i class="bi bi-ellipse-outline text-light small"></i>
             <ion-label class="ms-3">
               <h4>Lorem ipsum</h4>
               <small>Hace 5 minutos</small>
@@ -39,4 +35,4 @@
       </div>
     </div>
   </div>
-</ion-content>
+</div>

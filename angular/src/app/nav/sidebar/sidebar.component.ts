@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
@@ -11,7 +11,8 @@ import { RolificadorService } from 'src/app/modules/auth/services/rolificador.se
 })
 export class SidebarComponent implements OnInit {
 
-  @ViewChild('menu') menu: HTMLIonMenuElement
+  @Input() open: boolean = false;
+  @Output() closeSidebar = new EventEmitter<void>();
 
   constructor(
     public auth: AuthService,
@@ -20,12 +21,10 @@ export class SidebarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const s = this.router.events
-    .pipe(filter(event => event instanceof NavigationEnd))
-    .subscribe(async (e) => {
-      if (this.menu) {
-        await this.menu.close();
-      }
-    });
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.closeSidebar.emit();
+      });
   }
 }

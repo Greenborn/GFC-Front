@@ -1,18 +1,16 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page': ''">
-  <ion-header>
-    <ion-toolbar>
-      <div class="row align-items-center ms-3 me-3">
-        <div class="col">
-          <h5 class="ion-text-wrap">Puntuar imagen de {{ concurso }}</h5>
-        </div>
-        <div class="col-1 d-none d-md-block">
-          <button class="btn btn-link" (click)="dismiss()">
-            <ion-icon name="close-outline"></ion-icon>
-          </button>
-        </div>
+  <div class="bg-light border-bottom p-3">
+    <div class="row align-items-center ms-3 me-3">
+      <div class="col">
+        <h5 class="mb-0">Puntuar imagen de {{ concurso }}</h5>
       </div>
-    </ion-toolbar>
-  </ion-header>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="dismiss()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div class="inner-content">
     <div class="container-fluid">

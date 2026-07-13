@@ -1,21 +1,11 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <div class="d-flex gap-1">
-      <ion-menu-button></ion-menu-button>
-    </div>
-    <ion-title>{{ folder }}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="bg-light border-bottom p-3 d-flex align-items-center gap-2">
+  <div class="d-flex gap-1">
+    <button class="btn btn-outline-dark btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i></button>
+  </div>
+  <h5 class="mb-0">{{ folder }}</h5>
+</div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">{{ folder }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
+<div class="container-fluid py-3">
     <strong class="capitalize">{{ folder }}</strong>
     <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
-</ion-content>
+</div>

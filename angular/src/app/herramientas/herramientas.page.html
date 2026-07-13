@@ -1,4 +1,4 @@
-<ion-content class="p-3">
+<div class="container-fluid py-3">
   <div class="container">
     <div class="row">
       <div class="col-12 col-sm-6 col-md-4 col-lg-3">
@@ -72,20 +72,18 @@
       </div>
     </div>
   </div>
-</ion-content>
+</div>
 
 <!-- Modal para Agregar Grabación -->
 <ion-modal #modalGrabacion [isOpen]="isModalGrabacionOpen" (didDismiss)="cerrarModalGrabacion()">
   <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Agregar Grabación</ion-title>
-        <div class="d-flex gap-1">
-          <button class="btn btn-outline-primary" (click)="cerrarModalGrabacion()">Cerrar</button>
-        </div>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="p-3">
+    <div class="bg-light border-bottom p-3 d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Agregar Grabación</h5>
+      <div class="d-flex gap-1">
+        <button class="btn btn-outline-primary" (click)="cerrarModalGrabacion()">Cerrar</button>
+      </div>
+    </div>
+    <div class="container-fluid py-3">
       <ion-item>
         <ion-label position="stacked">Temporada</ion-label>
         <ion-select [(ngModel)]="grabacionData.temporada" interface="popover">
@@ -113,6 +111,6 @@
         [disabled]="urlInvalida || !grabacionData.url">
         Agregar
       </button>
-    </ion-content>
+    </div>
   </ng-template>
 </ion-modal> 

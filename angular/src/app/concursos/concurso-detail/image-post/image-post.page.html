@@ -1,21 +1,16 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page': ''">
-  <ion-header>
-    <ion-toolbar>
-      <div class="row align-items-center ms-3 me-3">
-      
-        <div class="col">
-          <h5 class="ion-text-wrap">{{ formTitle }}</h5>
-        </div>
-        
-        <div class="col-1 d-none d-md-block">
-          <button class="btn btn-link" (click)="modalController.dismiss()">
-            <ion-icon name="close-outline"></ion-icon>
-          </button>
-        </div>
-      
+  <div class="bg-light border-bottom p-3">
+    <div class="row align-items-center ms-3 me-3">
+      <div class="col">
+        <h5 class="mb-0">{{ formTitle }}</h5>
       </div>
-    </ion-toolbar>
-  </ion-header>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div slot="start" class="inner-content float-md-start">
     <div class="container-fluid">
@@ -39,13 +34,13 @@
                     </ion-item>
                     
                     <ion-chip color="danger" *ngIf="texto_img != null">
-                      <ion-icon name="alert-outline"></ion-icon>
+                      <i class="bi bi-exclamation-triangle"></i>
                       <ion-label>{{texto_img}}</ion-label>
                     </ion-chip>
                     
                     <div>
                         <div class="row" *ngIf="img_url != '' || imageData != ''" class="justify-content-center">
-                          <ion-img (ionError)="img_url=''" [src]="imgSource" alt=""> </ion-img>
+                          <img (ionError)="img_url=''" [src]="imgSource" alt=""> 
                         </div>
                     </div>
                   </div>
@@ -64,7 +59,7 @@
                 </ion-item>
 
                 <ion-chip color="danger" *ngIf="texto_sec != null">
-                  <ion-icon name="alert-outline"></ion-icon>
+                  <i class="bi bi-exclamation-triangle"></i>
                   <ion-label>{{texto_sec}}</ion-label>
                 </ion-chip>
 
@@ -78,7 +73,7 @@
                 </div>
                 <div class="col-auto">
                   <button class="btn btn-success" [disabled]="!datosCargados()" (click)="postImage()">
-                    <ion-spinner *ngIf="posting" size="small"></ion-spinner>
+                    <div class="spinner-border spinner-border-sm text-primary" role="status" *ngIf="posting"><span class="visually-hidden">Loading...</span></div>
                     <span *ngIf="!posting">Guardar</span>
                   </button>
                 </div>

@@ -1,18 +1,16 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
-  <ion-header>
-    <ion-toolbar>
-      <div class="row align-items-center ms-3 me-3">
-        <div class="col">
-          <h5 class="ion-text-wrap">Editar footer</h5>
-        </div>
-        <div class="col-1 d-none d-md-block">
-          <button class="btn btn-link" (click)="modalController.dismiss()">
-            <ion-icon name="close-outline"></ion-icon>
-          </button>
-        </div>
+  <div class="bg-light border-bottom p-3">
+    <div class="row align-items-center ms-3 me-3">
+      <div class="col">
+        <h5 class="mb-0">Editar footer</h5>
       </div>
-    </ion-toolbar>
-  </ion-header>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div slot="start" class="inner-content float-md-start w-100">
     <div class="container-fluid">
@@ -22,7 +20,7 @@
             <div class="col">
               <div class="row pt-3">
                 <ion-item class="w-100 mb-3">
-                  <ion-label position="floating"><ion-icon name="logo-facebook"></ion-icon> Facebook</ion-label>
+                  <ion-label position="floating"><i class="bi bi-facebook"></i> Facebook</ion-label>
                   <ion-input
                   [(ngModel)]="footer.facebook"
                     autocapitalize="sentences"
@@ -34,7 +32,7 @@
               </div>
               <div class="row pt-3">
                 <ion-item class="w-100 mb-3">
-                  <ion-label position="floating"><ion-icon name="mail"></ion-icon> E-mail</ion-label>
+                  <ion-label position="floating"><i class="bi bi-envelope"></i> E-mail</ion-label>
                   <ion-input
                   [(ngModel)]="footer.email"
                   type="email"
@@ -45,7 +43,7 @@
               </div>
               <div class="row pt-3">
                 <ion-item class="w-100 mb-3">
-                  <ion-label position="floating"><ion-icon name="logo-instagram"></ion-icon> Instagram</ion-label>
+                  <ion-label position="floating"><i class="bi bi-instagram"></i> Instagram</ion-label>
                   <ion-input
                   [(ngModel)]="footer.instagram"
                     type="url"
@@ -56,7 +54,7 @@
               </div>
               <div class="row pt-3">
                 <ion-item class="w-100 mb-3">
-                  <ion-label position="floating"><ion-icon name="logo-youtube"></ion-icon> Youtube</ion-label>
+                  <ion-label position="floating"><i class="bi bi-youtube"></i> Youtube</ion-label>
                   <ion-input
                   [(ngModel)]="footer.youtube"
                     type="url"
