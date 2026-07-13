@@ -7,6 +7,8 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { SlidesComponent } from 'src/app/shared/slides/slides.component';
+import { timeout, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-presentacion-miembros',
@@ -15,16 +17,21 @@ import { SlidesComponent } from 'src/app/shared/slides/slides.component';
 })
 export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit {
 
-  async ngOnInit() {
-    this.fotoclubService.getAll<Fotoclub>('filter[organization_type]=INTERNO&filter[mostrar_en_ranking]=1').subscribe(
-        async  p => {
-          this.cantF = p.length
-          this.sliderOne =
-      {
-        isBeginningSlide: true,
-        isEndSlide: false,
-        slidesItems: p
-      };        
+  ngOnInit() {
+    this.fotoclubService.getAll<Fotoclub>('filter[organization_type]=INTERNO&filter[mostrar_en_ranking]=1').pipe(
+      timeout(8000),
+      catchError(err => {
+        console.warn('Error al cargar miembros:', err);
+        return of([]);
+      })
+    ).subscribe(
+        p => {
+          this.cantF = p?.length || 0
+          this.sliderOne = {
+            isBeginningSlide: true,
+            isEndSlide: false,
+            slidesItems: p || []
+          };        
         })
   }
 

@@ -4,12 +4,17 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ResponsiveService } from './services/ui/responsive.service';
 
+declare global {
+  interface Window { __gfcLoaded: boolean; }
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private static hasSetLoaded = false;
   public appPages = [
     { title: 'Inbox', url: '/folder/Inbox', icon: 'mail' },
     { title: 'Outbox', url: '/folder/Outbox', icon: 'paper-plane' },
@@ -32,6 +37,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Ocultar barra de diagnóstico
+    if (!AppComponent.hasSetLoaded) {
+      AppComponent.hasSetLoaded = true;
+      window.__gfcLoaded = true;
+      const diag = document.getElementById('gfc-diag');
+      if (diag) diag.style.display = 'none';
+    }
+
     this.routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
          this.router.navigated = false;

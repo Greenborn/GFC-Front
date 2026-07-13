@@ -1,6 +1,6 @@
-<div class="uc-hero" style="background-image: url({{bg_image}});">
+<div class="uc-hero" *ngIf="concurso != null" style="background-image: url({{bg_image}});">
   <div class="uc-overlay"></div>
-  <div class="uc-content" *ngIf="concurso != undefined">
+  <div class="uc-content">
     <span class="uc-badge">{{concurso.sub_title}}</span>
     <h1 class="uc-title">{{concurso.name}}</h1>
     <p class="uc-desc">Se encuentra abierta la inscripción para el próximo concurso del GFC.</p>

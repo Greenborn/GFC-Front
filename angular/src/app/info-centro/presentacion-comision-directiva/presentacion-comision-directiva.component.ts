@@ -6,6 +6,8 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { PublicProfileService } from 'src/app/services/public-profile.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { SlidesComponent } from 'src/app/shared/slides/slides.component';
+import { timeout, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-presentacion-comision-directiva',
@@ -14,26 +16,30 @@ import { SlidesComponent } from 'src/app/shared/slides/slides.component';
 })
 export class PresentacionComisionDirectivaComponent extends ApiConsumer implements OnInit {
   
-  async ngOnInit() {
+  ngOnInit() {
     this.publicProfileService.getAll<Profile>(
       'filter[executive]=true'
+    ).pipe(
+      timeout(8000),
+      catchError(err => {
+        console.warn('Error al cargar comisión directiva:', err);
+        return of([]);
+      })
     ).subscribe(
-        async  p => {
-          this.sliderOne =
-      {
-        isBeginningSlide: true,
-        isEndSlide: false,
-        slidesItems: p
-      };
-      this.slideOptions = {
-        initialSlide: 0,
-        slidesPerView: 1,
-        slidesPerViewTablet: 3,
-        slidesPerViewDesktop: 4,
-        autoplay: true,
-        navigation: true,
-      };
-          
+        p => {
+          this.sliderOne = {
+            isBeginningSlide: true,
+            isEndSlide: false,
+            slidesItems: p || []
+          };
+          this.slideOptions = {
+            initialSlide: 0,
+            slidesPerView: 1,
+            slidesPerViewTablet: 3,
+            slidesPerViewDesktop: 4,
+            autoplay: true,
+            navigation: true,
+          };
         })
   }
 

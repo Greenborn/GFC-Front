@@ -3,6 +3,8 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { PublicContestService } from 'src/app/services/public.contest.service';
+import { timeout, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-presentacion-ultimo-concurso',
@@ -10,6 +12,10 @@ import { PublicContestService } from 'src/app/services/public.contest.service';
   styleUrls: ['./presentacion-ultimo-concurso.component.scss'],
 })
 export class PresentacionUltimoConcursoComponent extends ApiConsumer implements OnInit {
+  public concurso: any = null;
+  public bg_image: string;
+  public cargando = true;
+  public error = false;
 
   constructor(
     private publicContestService: PublicContestService,
@@ -20,21 +26,34 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
     super(alertController);
   }
 
-  public concurso:any;
-  public bg_image:string;
-
   async ngOnInit() {
     const loading = await this.loadingController.create({ message: '' });
     await loading.present();
-    this.publicContestService.getAll('sort=-id').subscribe(
+
+    // Timeout de seguridad: fuerza cierre del loading tras 10s
+    const safetyTimeout = setTimeout(() => {
+      loading.dismiss().catch(() => {});
+      this.cargando = false;
+      this.error = true;
+    }, 10000);
+
+    this.publicContestService.getAll('sort=-id').pipe(
+      timeout(8000),
+      catchError(err => {
+        console.warn('Error al cargar concurso destacado:', err);
+        return of([]);
+      })
+    ).subscribe(
       ok => {
+        clearTimeout(safetyTimeout);
+        loading.dismiss().catch(() => {});
+        this.cargando = false;
+        if (ok && ok.length > 0) {
           this.concurso = ok[0];
           this.bg_image = this.configService.imageUrl(this.concurso.img_url);
-          loading.dismiss();
-      },
-      err => {
-          super.displayAlert('No se obtuvo información de concursos activos.');
-          loading.dismiss();
+        } else {
+          this.error = true;
+        }
       }
     );
   }
