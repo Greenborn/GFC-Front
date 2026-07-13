@@ -7,7 +7,7 @@ ion-content {
 }
 
 .accordion-item {
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--ion-color-step-200, #e0e0e0);
     border-radius: 10px;
     margin-bottom: 10px;
     overflow: hidden;
@@ -27,11 +27,11 @@ ion-content {
 }
 
 .accordion-header:hover {
-    background: rgba(0, 0, 0, 0.02);
+    background: var(--ion-color-step-50, rgba(0, 0, 0, 0.02));
 }
 
 .accordion-header.expanded {
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--ion-color-step-100, #f0f0f0);
 }
 
 .accordion-header h1,
@@ -45,7 +45,7 @@ ion-content {
 .accordion-arrow {
     font-size: 13px;
     transition: transform 0.25s ease;
-    color: #aaa;
+    color: var(--ion-color-step-400, #777);
 }
 
 .accordion-arrow.open {
@@ -62,22 +62,22 @@ ion-content {
     flex-wrap: wrap;
     gap: 6px;
     padding: 12px 20px;
-    background: #fafafa;
-    border-bottom: 1px solid #eee;
+    background: var(--ion-color-step-50, #f7f7f7);
+    border-bottom: 1px solid var(--ion-color-step-150, #e8e8e8);
 }
 
 .rank-pill {
     display: inline-block;
     padding: 5px 14px;
-    border: 1px solid #d0d0d0;
+    border: 1px solid var(--ion-color-step-250, #c8c8c8);
     border-radius: 999px;
     font-size: 0.78rem;
     font-weight: 500;
     cursor: pointer;
     user-select: none;
     transition: all 0.2s;
-    color: #666;
-    background: #fff;
+    color: var(--ion-color-step-600, #444);
+    background: var(--ion-card-background, #fff);
 }
 
 .rank-pill:hover {
@@ -101,20 +101,20 @@ ion-content {
     display: flex;
     align-items: center;
     padding: 10px 20px;
-    background: #f5f5f5;
+    background: var(--ion-color-step-100, #ececec);
     font-size: 0.78rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: #888;
-    border-bottom: 1px solid #e8e8e8;
+    color: var(--ion-color-step-500, #555);
+    border-bottom: 1px solid var(--ion-color-step-200, #e0e0e0);
 }
 
 .rank-table-row {
     display: flex;
     align-items: center;
     padding: 12px 20px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--ion-color-step-100, #e8e8e8);
     transition: background 0.15s;
 }
 
@@ -123,7 +123,7 @@ ion-content {
 }
 
 .rank-table-row:hover {
-    background: rgba(0, 0, 0, 0.02);
+    background: var(--ion-color-step-50, rgba(0, 0, 0, 0.02));
 }
 
 .rank-col {
@@ -133,9 +133,24 @@ ion-content {
 .rank-col-pos {
     width: 9%;
     min-width: 60px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--ion-text-color, #222);
     font-size: 0.9rem;
+}
+
+.rank-col-pos.rank-1 {
+    font-size: 1.25rem;
+    color: #d4a017;
+}
+
+.rank-col-pos.rank-2 {
+    font-size: 1.1rem;
+    color: #8a8a8a;
+}
+
+.rank-col-pos.rank-3 {
+    font-size: 1rem;
+    color: #a07040;
 }
 
 .rank-col-name {
@@ -144,19 +159,44 @@ ion-content {
     color: var(--ion-text-color, #222);
 }
 
+.rank-col-name.rank-1 {
+    font-size: 1.25rem;
+}
+
+.rank-col-name.rank-2 {
+    font-size: 1.1rem;
+}
+
+.rank-col-name.rank-3 {
+    font-size: 1rem;
+}
+
 .rank-col-score {
     width: 14%;
     min-width: 90px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--ion-color-primary, #3880ff);
     font-size: 0.95rem;
+}
+
+.rank-col-score.rank-1 {
+    font-size: 1.25rem;
+}
+
+.rank-col-score.rank-2 {
+    font-size: 1.1rem;
+}
+
+.rank-col-score.rank-3 {
+    font-size: 1rem;
 }
 
 .rank-col-eff {
     width: 14%;
     min-width: 90px;
-    color: #666;
+    color: var(--ion-color-step-600, #444);
     font-size: 0.85rem;
+    font-weight: 500;
 }
 
 .rank-col-prizes {
@@ -173,6 +213,16 @@ ion-content {
     text-align: right;
 }
 
+.rank-col-action ion-button {
+    --background: #222;
+    --color: #fff;
+    --border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    --padding-top: 4px;
+    --padding-bottom: 4px;
+}
+
 /* Prize badges */
 .prize-badge {
     display: inline-block;
@@ -180,9 +230,9 @@ ion-content {
     border-radius: 999px;
     font-size: 0.72rem;
     font-weight: 600;
-    background: #eef3ff;
-    color: #2a6eb0;
-    border: 1px solid #d6e2f5;
+    background: #222;
+    color: #ffd700;
+    border: 1px solid #444;
     white-space: nowrap;
 }
 
@@ -192,7 +242,7 @@ ion-content {
     padding: 2px 8px;
     border-radius: 999px;
     font-size: 0.65rem;
-    font-weight: 600;
+    font-weight: 700;
     background: #fff3cd;
     color: #856404;
     border: 1px solid #ffeeba;
