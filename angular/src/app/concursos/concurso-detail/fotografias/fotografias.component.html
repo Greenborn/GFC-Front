@@ -29,8 +29,8 @@
     <!-- Backdrop para mobile -->
     <div class="sidebar-backdrop" *ngIf="sidebarVisible && !responsiveService.isDesktop" (click)="toggleSidebar()"></div>
 
-    <!-- Sidebar panel -->
-    <div class="sidebar-panel" [class.show]="sidebarVisible" [class.desktop]="responsiveService.isDesktop">
+    <!-- Sidebar: col-md-3 en desktop cuando visible, overlay en mobile -->
+    <div class="sidebar-panel" [class.show]="sidebarVisible">
       <div class="sidebar-header">
         <h6 class="m-0">Filtros</h6>
         <button class="btn btn-sm btn-close" *ngIf="!responsiveService.isDesktop" (click)="toggleSidebar()"></button>
@@ -98,7 +98,7 @@
       </div>
     </div>
 
-    <div class="col" [ngStyle]="{'width': sidebarVisible && responsiveService.isDesktop ? '75%' : '100%'}">
+    <div class="col" [ngClass]="sidebarVisible && responsiveService.isDesktop ? 'col-md-9' : 'col-12'">
         <div class="row">
           <div class="col">
             <div class="row justify-content-start align-items-center mt-3 mb-3">
