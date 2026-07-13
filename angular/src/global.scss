@@ -29,6 +29,13 @@
   cursor: pointer;
 }
 
+ion-button ion-icon[slot="start"] {
+  margin-inline-end: 8px;
+}
+ion-button ion-icon[slot="end"] {
+  margin-inline-start: 8px;
+}
+
 .pagination-element{
   border:              1px solid #888;
   padding:             0.5rem;
