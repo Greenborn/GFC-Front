@@ -2,35 +2,35 @@
     <div class="row justify-content-center">
       <div class="col-3" *ngIf="mostrarFiltro">
         <div class="col">
-          <ion-title class="mt-3">Búsqueda</ion-title>
+          <h5 class="mt-3">Búsqueda</h5>
 
-          <ion-list>
-            <ion-radio-group value="biff">
-              <ion-list-header>
-                <ion-label>Filtrar por:</ion-label>
-              </ion-list-header>
+          <div class="list-group list-group-flush">
+            <div class="mb-3" value="biff">
+              <div class="list-group-item fw-bold bg-light">
+                <label class="form-label">Filtrar por:</label>
+              </div>
 
-              <ion-item lines="none">
-                <ion-label>Nombre</ion-label>
-                <ion-radio slot="start" value="nombre"></ion-radio>
-              </ion-item>
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="radio" class="form-check-input" value="nombre">
+              </div>
 
-              <ion-item lines="none">
-                <ion-label>Código</ion-label>
-                <ion-radio slot="start" value="codigo"></ion-radio>
-              </ion-item>
+              <div class="mb-3">
+                <label class="form-label">Código</label>
+                <input type="radio" class="form-check-input" value="codigo">
+              </div>
 
-              <ion-item lines="none">
-                <ion-label>Concursante</ion-label>
-                <ion-radio slot="start" value="concursante"></ion-radio>
-              </ion-item>
+              <div class="mb-3">
+                <label class="form-label">Concursante</label>
+                <input type="radio" class="form-check-input" value="concursante">
+              </div>
 
-              <ion-item lines="none" *ngIf="!isContestNotFin || !rolificador.esConcursante(u)">
-                <ion-label>Fotoclub/Agrupación/Institución</ion-label>
-                <ion-radio slot="start" value="fotoclub"></ion-radio>
-              </ion-item>
-            </ion-radio-group>
-          </ion-list>
+              <div class="mb-3" *ngIf="!isContestNotFin || !rolificador.esConcursante(u)">
+                <label class="form-label">Fotoclub/Agrupación/Institución</label>
+                <input type="radio" class="form-check-input" value="fotoclub">
+              </div>
+            </div>
+          </div>
 
           <div class="row">
             <div class="col">
@@ -42,29 +42,29 @@
 
           <div class="col">
             
-            <ion-list>
-              <ion-list-header>
-                <ion-label>Premio:</ion-label>
-              </ion-list-header>
-              <ion-item
+            <div class="list-group list-group-flush">
+              <div class="list-group-item fw-bold bg-light">
+                <label class="form-label">Premio:</label>
+              </div>
+              <div class="mb-3"
                 ><button class="btn btn-link" href="#">Reprobado</button></ion-item
               >
-              <ion-item
+              <div class="mb-3"
                 ><button class="btn btn-link" href="#">Aprobado</button></ion-item
               >
-              <ion-item>
+              <div class="mb-3">
                 <button class="btn btn-link" href="#">Mención</button></ion-item
               >
-              <ion-item>
+              <div class="mb-3">
                 <button class="btn btn-link" href="#">Medalla Oro</button></ion-item
               >
-              <ion-item>
+              <div class="mb-3">
                 <button class="btn btn-link" href="#">Medalla Plata</button></ion-item
               >
-              <ion-item>
+              <div class="mb-3">
                 <button class="btn btn-link" href="#">Medalla Bronce</button></ion-item
               >
-            </ion-list>
+            </div>
           </div>
         </div>
       </div>
@@ -105,34 +105,34 @@
                 <div class="col-2"></div>
               </div>
             </div>
-            <ion-list>
-              <ion-item class="p-0">
+            <div class="list-group list-group-flush">
+              <div class="mb-3" class="p-0">
                 <div class="container-fluid" *ngIf="resultadosConcurso.length > 0; else texto">
 
                   <div class="row" *ngFor="let r of resultadosConcurso">
                     <div class="col-6 col-md-3 align-self-center">
-                      <ion-card-subtitle title="Código de la obra"
-                      >{{ r.image.code }}</ion-card-subtitle>
+                      <h6 class="card-subtitle text-muted" title="Código de la obra"
+                      >{{ r.image.code }}</h6>
 
-                      <ion-text title="Nombre de la obra"
-                      ><b>{{ r.image.title }}</b></ion-text>
+                      <span title="Nombre de la obra"
+                      ><b>{{ r.image.title }}</b></span>
                       
                     </div>
                     <div class="d-none d-md-block text-center align-self-center col-4 col-md-3">
-                      <ion-item lines="none">
-                        <ion-label>
-                          <ion-card-subtitle title="Fotoclub/Agrupación del autor"
-                          >{{ getFotoclubName(r.image.profile_id) }}</ion-card-subtitle>
+                      <div class="mb-3">
+                        <label class="form-label">
+                          <h6 class="card-subtitle text-muted" title="Fotoclub/Agrupación del autor"
+                          >{{ getFotoclubName(r.image.profile_id) }}</h6>
                           
-                          <ion-text title="Autor de la obra">
+                          <span title="Autor de la obra">
                             <b>{{ getFullName(r.image.profile_id) }}</b>
-                          </ion-text>
+                          </span>
                           
-                        </ion-label>
-                      </ion-item>
+                        </label>
+                      </div>
                     </div>
                     <div class="text-center align-self-center col-3 col-md-2">
-                      <ion-text>{{ r.metric.prize }}</ion-text>
+                      <span>{{ r.metric.prize }}</span>
                     </div>
                     
 
@@ -157,8 +157,8 @@
                   </div>
                 </div>
                 <ng-template #texto>No hay fotografias</ng-template>
-              </ion-item>
-            </ion-list>
+              </div>
+            </div>
           </div>
         </div>
       </div>

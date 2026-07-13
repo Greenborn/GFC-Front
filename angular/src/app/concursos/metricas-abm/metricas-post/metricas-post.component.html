@@ -31,39 +31,39 @@
                     #metricForm="ngForm"
                     (ngSubmit)="post(metricForm)"
                   >
-                    <ion-item class="w-100">
-                      <ion-label position="floating">Premio</ion-label>
-                      <ion-input
+                    <div class="mb-3" class="w-100">
+                      <label class="form-label">Premio</label>
+                      <input class="form-control"
                         [ngModel]="metric.prize"
                         name="prize"
                         required
-                      ></ion-input>
-                    </ion-item>
+                      >
+                    </div>
 
-                    <ion-item class="w-100">
-                      <ion-label position="floating">Puntaje</ion-label>
-                      <ion-input
+                    <div class="mb-3" class="w-100">
+                      <label class="form-label">Puntaje</label>
+                      <input class="form-control"
                         [ngModel]="metric.score"
                         name="score"
                         required
-                      ></ion-input>
-                    </ion-item>
+                      >
+                    </div>
 
-                    <ion-item class="w-100">
-                      <ion-label>Tipo de organización</ion-label>
-                      <ion-select
+                    <div class="mb-3" class="w-100">
+                      <label class="form-label">Tipo de organización</label>
+                      <select class="form-select"
                         [ngModel]="metric.organization_type"
                         name="organization_type"
                         required
-                        okText="Aceptar"
-                        cancelText="Cancelar"
+                       
+                       
                       >
-                        <ion-select-option value="INTERNO">Interno</ion-select-option>
-                        <ion-select-option value="EXTERNO">Externo</ion-select-option>
-                        <ion-select-option value="EXTERNO_0">Externo 0</ion-select-option>
-                        <ion-select-option value="EXTERNO_UNICEN">Externo UNICEN</ion-select-option>
-                      </ion-select>
-                    </ion-item>
+                        <option value="INTERNO">Interno</option>
+                        <option value="EXTERNO">Externo</option>
+                        <option value="EXTERNO_0">Externo 0</option>
+                        <option value="EXTERNO_UNICEN">Externo UNICEN</option>
+                      </select>
+                    </div>
 
                     <div class="row justify-content-end">
                       <div class="col-12">

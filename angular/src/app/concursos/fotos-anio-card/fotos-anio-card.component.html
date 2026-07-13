@@ -1,20 +1,20 @@
-<ion-card class="fotos-anio-card">
-  <ion-card-header>
-    <ion-card-title>
-      <ion-icon name="trophy"></ion-icon>
+<div class="card mb-3 fotos-anio-card">
+  <div class="card-header">
+    <h5 class="card-title">
+      <i class="bi bi-trophy"></i>
       Fotografías del Año {{ temporada }}
-    </ion-card-title>
-    <ion-card-subtitle>
+    </h5>
+    <h6 class="card-subtitle text-muted">
       {{ fotos?.length || 0 }} fotografías
       <span *ngIf="url_grabacion">
         | <a [href]="url_grabacion" target="_blank" rel="noopener noreferrer">
-          <ion-icon name="videocam"></ion-icon> Ver grabación
+          <i class="bi bi-camera-video"></i> Ver grabación
         </a>
       </span>
-    </ion-card-subtitle>
-  </ion-card-header>
+    </h6>
+  </div>
   
-  <ion-card-content>
+  <div class="card-body">
     <div *ngIf="fotos && fotos.length > 0; else noFotos">
       <div class="slides-container">
         <app-slides [options]="slideOpts" #slides>
@@ -29,14 +29,14 @@
               </div>
               <div class="info-container">
                 <div class="puesto">
-                  <ion-badge color="warning">
-                    <ion-icon name="medal"></ion-icon>
+                  <span class="badge bg-warning">
+                    <i class="bi bi-award"></i>
                     {{ foto.puesto }}
-                  </ion-badge>
+                  </span>
                 </div>
                 <h3 class="obra-titulo">{{ foto.nombre_obra }}</h3>
                 <p class="autor-nombre">
-                  <ion-icon name="person"></ion-icon>
+                  <i class="bi bi-person"></i>
                   {{ foto.nombre_autor }}
                 </p>
               </div>
@@ -51,5 +51,5 @@
         <p>No hay fotografías del año disponibles para esta temporada.</p>
       </div>
     </ng-template>
-  </ion-card-content>
-</ion-card>
+  </div>
+</div>

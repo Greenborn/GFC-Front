@@ -106,10 +106,10 @@
 
             <div class="row" *ngIf="propiasFotos.length > 0">
               <div class="col">
-                <ion-item button (click)="propiasExpandidas = !propiasExpandidas" lines="none" detail="false">
-                  <ion-label><strong>Mis fotografías</strong></ion-label>
-                  <i class="bi" slot="end" [ngClass]="propiasExpandidas ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
-                </ion-item>
+                <div class="mb-3" (click)="propiasExpandidas = !propiasExpandidas">
+                  <label class="form-label">><strong>Mis fotografías</strong></label>
+                  <i class="bi" [ngClass]="propiasExpandidas ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                </div>
                 <div *ngIf="propiasExpandidas">
                   <div class="row justify-content-center">
                     <div class="col p-3 foto-card-col col-12 col-sm-6 col-md-auto" *ngFor="let r of propiasFotos; index as i">
@@ -153,16 +153,16 @@
 
             <div class="row" *ngIf="propiasFotos.length > 0 && resultadosConcursoFiltrados.length > 0">
               <div class="col">
-                <ion-list-header>
-                  <ion-label>Todas las fotografías</ion-label>
-                </ion-list-header>
+                <div class="list-group-item fw-bold bg-light">
+                  <label class="form-label">>Todas las fotografías</label>
+                </div>
               </div>
             </div>
 
             <div class="row">
               <div class="col">
-                <ion-list>
-                  <ion-item lines="none" class="p-0 lista-elem" *ngIf="resultadosConcursoFiltrados.length > 0">
+                <div class="list-group list-group-flush">
+                  <div class="mb-3" class="p-0 lista-elem" *ngIf="resultadosConcursoFiltrados.length > 0">
                     <div class="container-fluid p-0">
                       <div class="row justify-content-center">
                         <div class="col p-3 foto-card-col col-12 col-sm-6 col-md-auto" *ngFor="let r of resultadosConcursoFiltrados; index as i">
@@ -201,14 +201,14 @@
                         </div>
                       </div>
                     </div>
-                  </ion-item>
+                  </div>
 
-                  <ion-item lines="none" class="p-0 lista-elem" *ngIf="resultadosConcursoFiltrados.length == 0">
+                  <div class="mb-3" class="p-0 lista-elem" *ngIf="resultadosConcursoFiltrados.length == 0">
                     <div class="container-fluid p-0">
                       <ng-template #texto>No hay fotografias</ng-template>
                     </div>
-                  </ion-item>
-                </ion-list>
+                  </div>
+                </div>
 
                 <div class="row justify-content-center p-3" *ngIf="loadingInitial && resultadosConcurso.length === 0">
                   <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>

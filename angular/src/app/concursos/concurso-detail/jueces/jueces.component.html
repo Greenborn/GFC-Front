@@ -4,7 +4,7 @@
       <div class="col-12 col-md-3" *ngIf="mostrarFiltro">
         <div class="row">
           <div class="col">
-            <ion-title class="mt-3">Búsqueda</ion-title>
+            <h5 class="mt-3">Búsqueda</h5>
     
             <app-search-bar
               [(data)]="inscriptos"
@@ -51,17 +51,17 @@
             <div class="container-fluid p-0">
               <div class="row" *ngIf="inscriptos.length > 0; else texto">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let m of inscriptos">
-                  <ion-card class="juez-card">
-                    <ion-card-content>
+                  <div class="card mb-3" class="juez-card">
+                    <div class="card-body">
                       <div class="row align-items-center">
                         <div class="col-4">
                           <app-usuario-img [src]="m.profile.img_url != null ? configService.imageUrl(m.profile.img_url) : ''"></app-usuario-img>
                         </div>
                         <div class="col-8 ps-3">
-                          <ion-label>
+                          <label class="form-label">
                             <b>{{ m.profile.name }} {{ m.profile.last_name }}</b>
                             <p><i>@{{ m.profile.user.username }}</i></p>
-                          </ion-label>
+                          </label>
                         </div>
                       </div>
                       <div class="row" *ngIf="checkPermissions">
@@ -71,8 +71,8 @@
                           </button>
                         </div>
                       </div>
-                    </ion-card-content>
-                  </ion-card>
+                    </div>
+                  </div>
                 </div>
               </div>
               <ng-template #texto>

@@ -14,23 +14,22 @@
     </div>
   </div>
 
-  <div slot="start" class="w-100 inner-content float-md-start">
+  <div class="w-100 inner-content float-md-start">
     <div class="container-fluid">
       <div class="row justify-content-center align-self-center">
         <div class="col">
           <div class="row">
             <div class="col">
               <div class="row pt-3">
-                <ion-item class="w-100 mb-3">
-                  <ion-label position="floating">Juez</ion-label>
-                  <ion-select [(ngModel)]="profileContest.profile_id" okText="Aceptar" cancelText="Cancelar" ngDefaultControl>
-                    <ion-select-option
+                <div class="mb-3" class="w-100 mb-3">
+                  <label class="form-label">Juez</label>
+                  <select class="form-select" [(ngModel)]="profileContest.profile_id">
+                    <option
                       *ngFor="let p of jueces"
                       [value]="p.id"
-                      >{{ p.name + " " + p.last_name }}</ion-select-option
-                    >
-                  </ion-select>
-                </ion-item>
+                      >{{ p.name + " " + p.last_name }}</option>
+                  </select>
+                </div>
               </div>
 
               <div class="row justify-content-end">

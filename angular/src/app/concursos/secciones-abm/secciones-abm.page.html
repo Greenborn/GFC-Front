@@ -14,7 +14,7 @@
       <div class="col-3" *ngIf="mostrarFiltro">
         <div class="row">
           <div class="col">
-            <ion-title class="mt-3">Búsqueda</ion-title>
+            <h5 class="mt-3">Búsqueda</h5>
 
             <app-search-bar
               [(data)]="sections"
@@ -35,8 +35,8 @@
                 <i class="bi bi-plus"></i>
               </button>
             </div>
-            <ion-list class="p-0">
-              <ion-item color="dark">
+            <div class="list-group list-group-flush" class="p-0">
+              <div class="mb-3" bg-dark text-white>
                 <div class="container-fluid">
                   <div class="row pe-3">
                     <div class="col">
@@ -50,16 +50,16 @@
                     </div>
                   </div>
                 </div>
-              </ion-item>
-            </ion-list>
-            <ion-list class="p-0">
-              <ion-item lines="none" class="p-0 lista-elem">
+              </div>
+            </div>
+            <div class="list-group list-group-flush" class="p-0">
+              <div class="mb-3" class="p-0 lista-elem">
                 <div class="container-fluid p-0" *ngIf="sections.length > 0; else texto">
                   <div class="container-fluid p-0">
                     <div class="row">
                       <div class="col align-self-start">
-                        <ion-item-group *ngFor="let s of sections">
-                          <ion-item-divider lines="full" mode="ios" style="--inner-padding-end: 16px">
+                        <div *ngFor="let s of sections">
+                          <div class="list-group-item border-top fw-bold bg-light" style="--inner-padding-end: 16px">
                             <div class="row w-100">
                               <div class="col">
                                 <h4 class="mt-3 mb-3"> <b>{{ s.name }}</b></h4>
@@ -82,15 +82,15 @@
                                 </div>
                               </div>
                             </div>
-                          </ion-item-divider>
-                        </ion-item-group>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <ng-template #texto>No hay secciones</ng-template>
-              </ion-item>
-            </ion-list>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -5,86 +5,86 @@
   <h5 class="mb-0">Filtros y orden</h5>
 </div>
 
-<div class="container-fluid py-3 ion-padding">
-  <ion-list>
-    <ion-list-header>
-      <ion-label>Ordenar por</ion-label>
+<div class="container-fluid py-3">
+  <div class="list-group list-group-flush mb-3">
+    <div class="list-group-item fw-bold bg-light">
+      <label class="form-label">Ordenar por</label>
       <button *ngIf="hasSort" (click)="toggleSortDir()" class="btn btn-link btn-sm">
         <i class="bi me-1" [ngClass]="localSortAsc ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
         {{ localSortAsc ? 'Asc' : 'Desc' }}
       </button>
-    </ion-list-header>
-    <ion-radio-group [value]="localSortBy" (ionChange)="onSortChange($event)">
-      <ion-item lines="none">
-        <ion-label>Sin ordenar</ion-label>
-        <ion-radio value=""></ion-radio>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-label>Título</ion-label>
-        <ion-radio value="title"></ion-radio>
-      </ion-item>
-      <ion-item lines="none" *ngIf="canFilterByAuthor">
-        <ion-label>Autor</ion-label>
-        <ion-radio value="author"></ion-radio>
-      </ion-item>
-      <ion-item lines="none" [disabled]="!isContestJudged">
-        <ion-label>Premio</ion-label>
-        <ion-radio value="prize"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
+    </div>
+    <div class="d-flex flex-column gap-2 p-3">
+      <div class="form-check" (click)="onSortChange('')">
+        <input class="form-check-input" type="radio" name="sortBy" value="" [checked]="localSortBy === ''" (change)="onSortChange('')">
+        <label class="form-check-label">Sin ordenar</label>
+      </div>
+      <div class="form-check" (click)="onSortChange('title')">
+        <input class="form-check-input" type="radio" name="sortBy" value="title" [checked]="localSortBy === 'title'" (change)="onSortChange('title')">
+        <label class="form-check-label">Título</label>
+      </div>
+      <div class="form-check" *ngIf="canFilterByAuthor" (click)="onSortChange('author')">
+        <input class="form-check-input" type="radio" name="sortBy" value="author" [checked]="localSortBy === 'author'" (change)="onSortChange('author')">
+        <label class="form-check-label">Autor</label>
+      </div>
+      <div class="form-check" [class.text-muted]="!isContestJudged" (click)="isContestJudged && onSortChange('prize')">
+        <input class="form-check-input" type="radio" name="sortBy" value="prize" [checked]="localSortBy === 'prize'" [disabled]="!isContestJudged" (change)="isContestJudged && onSortChange('prize')">
+        <label class="form-check-label">Premio</label>
+      </div>
+    </div>
+  </div>
 
-  <ion-list>
-    <ion-list-header>Secciones</ion-list-header>
-    <ion-chip (click)="seccionAll()" [color]="todasSecciones ? 'primary' : 'medium'">
-      <ion-label>Todas</ion-label>
-    </ion-chip>
-    <ion-chip *ngFor="let s of seccionesInscriptas"
-      (click)="toggleSeccion(s.section.id)"
-      [color]="localSecciones.has(s.section.id) ? 'primary' : 'medium'">
-      <ion-label>{{ s.section.name }}</ion-label>
-    </ion-chip>
-  </ion-list>
+  <div class="list-group list-group-flush mb-3">
+    <div class="list-group-item fw-bold bg-light">Secciones</div>
+    <div class="p-3 d-flex flex-wrap gap-2">
+      <span class="badge rounded-pill clickeable" [ngClass]="todasSecciones ? 'bg-primary' : 'bg-secondary'" (click)="seccionAll()">Todas</span>
+      <span class="badge rounded-pill clickeable" *ngFor="let s of seccionesInscriptas"
+        (click)="toggleSeccion(s.section.id)"
+        [ngClass]="localSecciones.has(s.section.id) ? 'bg-primary' : 'bg-secondary'">
+        {{ s.section.name }}
+      </span>
+    </div>
+  </div>
 
-  <ion-list>
-    <ion-list-header>Categorías</ion-list-header>
-    <ion-chip (click)="categoriaAll()" [color]="todasCategorias ? 'primary' : 'medium'">
-      <ion-label>Todos</ion-label>
-    </ion-chip>
-    <ion-chip *ngFor="let c of categoriasInscriptas"
-      (click)="toggleCategoria(c.category.id)"
-      [color]="localCategorias.has(c.category.id) ? 'primary' : 'medium'">
-      <ion-label>{{ c.category.name }}</ion-label>
-    </ion-chip>
-  </ion-list>
+  <div class="list-group list-group-flush mb-3">
+    <div class="list-group-item fw-bold bg-light">Categorías</div>
+    <div class="p-3 d-flex flex-wrap gap-2">
+      <span class="badge rounded-pill clickeable" [ngClass]="todasCategorias ? 'bg-primary' : 'bg-secondary'" (click)="categoriaAll()">Todos</span>
+      <span class="badge rounded-pill clickeable" *ngFor="let c of categoriasInscriptas"
+        (click)="toggleCategoria(c.category.id)"
+        [ngClass]="localCategorias.has(c.category.id) ? 'bg-primary' : 'bg-secondary'">
+        {{ c.category.name }}
+      </span>
+    </div>
+  </div>
 
-  <ion-list *ngIf="isContestJudged">
-    <ion-list-header>Premios</ion-list-header>
-    <ion-chip (click)="premioAll()" [color]="todosPremios ? 'primary' : 'medium'">
-      <ion-label>Todos</ion-label>
-    </ion-chip>
-    <ion-chip *ngFor="let p of puntajes"
-      (click)="togglePremio(p.prize)"
-      [color]="localPremios.has(p.prize) ? 'primary' : 'medium'">
-      <ion-label>{{ p.prize }}</ion-label>
-    </ion-chip>
-  </ion-list>
+  <div class="list-group list-group-flush mb-3" *ngIf="isContestJudged">
+    <div class="list-group-item fw-bold bg-light">Premios</div>
+    <div class="p-3 d-flex flex-wrap gap-2">
+      <span class="badge rounded-pill clickeable" [ngClass]="todosPremios ? 'bg-primary' : 'bg-secondary'" (click)="premioAll()">Todos</span>
+      <span class="badge rounded-pill clickeable" *ngFor="let p of puntajes"
+        (click)="togglePremio(p.prize)"
+        [ngClass]="localPremios.has(p.prize) ? 'bg-primary' : 'bg-secondary'">
+        {{ p.prize }}
+      </span>
+    </div>
+  </div>
 
-  <ion-list *ngIf="canFilterByAuthor">
-    <ion-list-header>Filtrar por autor</ion-list-header>
-    <ion-item>
-      <ion-input [(ngModel)]="localFiltroAutor" placeholder="Nombre del autor"></ion-input>
-    </ion-item>
-  </ion-list>
+  <div class="list-group list-group-flush mb-3" *ngIf="canFilterByAuthor">
+    <div class="list-group-item fw-bold bg-light">Filtrar por autor</div>
+    <div class="p-3">
+      <input class="form-control" [(ngModel)]="localFiltroAutor" placeholder="Nombre del autor">
+    </div>
+  </div>
 
-  <ion-list *ngIf="isContestJudged">
-    <ion-list-header>Filtrar por código</ion-list-header>
-    <ion-item>
-      <ion-input [(ngModel)]="localFiltroCodigo" placeholder="Código de fotografía"></ion-input>
-    </ion-item>
-  </ion-list>
+  <div class="list-group list-group-flush mb-3" *ngIf="isContestJudged">
+    <div class="list-group-item fw-bold bg-light">Filtrar por código</div>
+    <div class="p-3">
+      <input class="form-control" [(ngModel)]="localFiltroCodigo" placeholder="Código de fotografía">
+    </div>
+  </div>
 
-  <button class="btn btn-danger w-100 ion-margin" (click)="resetAll()">
+  <button class="btn btn-danger w-100 mt-3" (click)="resetAll()">
     <i class="bi bi-x-circle me-1"></i>
     Limpiar filtros
   </button>

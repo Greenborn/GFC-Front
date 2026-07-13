@@ -6,63 +6,38 @@
 </div>
 
 <div class="container-fluid py-3">
-          <ion-item 
-          
-          lines="none"
-            *ngIf="authUser as u">
-            <div class="col">
-              <div class="row justify-content-center align-items-center">
-                <div class="col-11 align-items-center"> 
-                  <app-usuario-img [src]="userProfile?.img_url ? configService.imageUrl(userProfile.img_url) : ''"></app-usuario-img>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col justify-content-center">
-                  <ion-card-title class="text-center"
-                    >{{ u.username }}</ion-card-title
-                  >
+  <div class="mb-3" *ngIf="authUser as u">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-11 align-items-center">
+        <app-usuario-img [src]="userProfile?.img_url ? configService.imageUrl(userProfile.img_url) : ''"></app-usuario-img>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col justify-content-center">
+        <h5 class="card-title text-center">{{ u.username }}</h5>
+        <h6 class="card-subtitle text-muted text-center">{{userProfile?.name || ''}} {{userProfile?.last_name || ''}}</h6>
+      </div>
+    </div>
+  </div>
 
-                  <ion-card-subtitle class="text-center"
-                    >{{userProfile?.name || ''}}
-                    {{userProfile?.last_name || ''}}</ion-card-subtitle
-                  >
-                </div>
-              </div>
-            </div>
-          </ion-item>
+  <footer class="bg-light border-top p-2 mt-3">
+    <div class="list-group list-group-flush">
+      <div class="mb-3">
+        <i class="bi bi-moon-outline"></i>
+        <div class="form-check form-switch"><input type="checkbox" class="form-check-input" [checked]="darkMode"></div>
+      </div>
 
+      <div class="mb-3" [routerLink]="['/usuarios', 'editar', authService.userId]">
+        <i class="bi bi-person"></i>
+        <label class="form-label">Editar perfil</label>
+      </div>
+
+      <div class="mb-3" (click)="authService.logout()">
+        <i class="bi bi-box-arrow-right"></i>
+        <label class="form-label">Salir</label>
+      </div>
+    </div>
+
+    <div class="version-text">v{{ version }}</div>
+  </footer>
 </div>
-          <footer class="bg-light border-top p-2">
-                <ion-list>    
-   
-   
-                  <ion-item 
-                  lines="none"
-                >
-                  <i class="bi bi-moon-outline"></i>
-                  <div class="form-check form-switch"><input type="checkbox" class="form-check-input" [checked]="darkMode"></div>
-   
-                </ion-item>
-                <ion-item
-                  lines="none"
-                  [routerLink]="['/usuarios', 'editar', authService.userId]"
-                >
-                  <i class="bi bi-person"></i>
-                  <ion-label>Editar perfil</ion-label>
-                </ion-item>
-   
-   
-                  <ion-item
-                    lines="none"
-                    (click)="authService.logout()"
-                    button="true"
-                  >
-                    <i class="bi bi-log-out-outline"></i>
-                    <ion-label>Salir</ion-label>
-                  </ion-item>
-                </ion-list>
-
-                <div class="version-text">v{{ version }}</div>
-              
-          </footer>
-        

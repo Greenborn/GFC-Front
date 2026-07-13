@@ -2,73 +2,73 @@
   <div class="container">
     <div class="row">
       <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Fotografías</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="card-title">Fotografías</h5>
+          </div>
+          <div class="card-body">
             <button class="btn btn-outline-primary w-100" (click)="abrirBusquedaFotografias()">Búsqueda de Fotografías</button>
-          </ion-card-content>
-        </ion-card>
+          </div>
+        </div>
       </div>
       <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Concursos</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-item>
-              <ion-label>Seleccionar concurso</ion-label>
-              <ion-select [(ngModel)]="concursoSeleccionado" interface="popover" placeholder="Elige un concurso">
-                <ion-select-option *ngFor="let c of concursos" [value]="c">{{c.name}}</ion-select-option>
-              </ion-select>
-            </ion-item>
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="card-title">Concursos</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label">Seleccionar concurso</label>
+              <select class="form-select" [(ngModel)]="concursoSeleccionado" placeholder="Elige un concurso">
+                <option *ngFor="let c of concursos" [value]="c">{{c.name}}</option>
+              </select>
+            </div>
             <button class="btn btn-primary w-100" [disabled]="!concursoSeleccionado" (click)="descargarListado()">Listado Inscriptos</button>
-          </ion-card-content>
-        </ion-card>
+          </div>
+        </div>
       </div>
       <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Juzgamiento</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="card-title">Juzgamiento</h5>
+          </div>
+          <div class="card-body">
             <input #fileInput type="file" webkitdirectory directory multiple (change)="onFileSelected($event)" style="display: none;" />
             <button class="btn btn-secondary w-100" (click)="fileInput.click()">Cargar Resultados</button>
-          </ion-card-content>
-        </ion-card>
+          </div>
+        </div>
       </div>
       <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Ranking</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="card-title">Ranking</h5>
+          </div>
+          <div class="card-body">
             <button class="btn btn-primary w-100" (click)="recalcularRanking()">Recalcular Ranking</button>
-          </ion-card-content>
-        </ion-card>
+          </div>
+        </div>
       </div>
       <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Premiadas Temporada</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="card-title">Premiadas Temporada</h5>
+          </div>
+          <div class="card-body">
             <button class="btn btn-info w-100" (click)="descargarCompiladoGanadoras()">Descargar Compilado</button>
-          </ion-card-content>
-        </ion-card>
+          </div>
+        </div>
       </div>
       <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Fotografías del Año</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
+        <div class="card mb-3">
+          <div class="card-header">
+            <h5 class="card-title">Fotografías del Año</h5>
+          </div>
+          <div class="card-body">
             <input #folderInput type="file" webkitdirectory directory multiple (change)="onFolderSelected($event)" style="display: none;" />
             <button class="btn btn-success w-100" (click)="folderInput.click()">Seleccionar Carpeta</button>
             <button class="btn btn-primary w-100" (click)="abrirModalAgregarGrabacion()">Agregar Grabación</button>
-          </ion-card-content>
-        </ion-card>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -84,26 +84,25 @@
       </div>
     </div>
     <div class="container-fluid py-3">
-      <ion-item>
-        <ion-label position="stacked">Temporada</ion-label>
-        <ion-select [(ngModel)]="grabacionData.temporada" interface="popover">
-          <ion-select-option [value]="anioActual">{{anioActual}}</ion-select-option>
-          <ion-select-option [value]="anioAnterior">{{anioAnterior}}</ion-select-option>
-        </ion-select>
-      </ion-item>
+      <div class="mb-3">
+        <label class="form-label" position="stacked">Temporada</label>
+        <select class="form-select" [(ngModel)]="grabacionData.temporada">
+          <option [value]="anioActual">{{anioActual}}</option>
+          <option [value]="anioAnterior">{{anioAnterior}}</option>
+        </select>
+      </div>
       
-      <ion-item [class.ion-invalid]="urlInvalida && grabacionData.url.length > 0">
-        <ion-label position="stacked">URL</ion-label>
-        <ion-input 
+      <div class="mb-3" [class.ion-invalid]="urlInvalida && grabacionData.url.length > 0">
+        <label class="form-label" position="stacked">URL</label>
+        <input class="form-control" 
           [(ngModel)]="grabacionData.url" 
-          (ionChange)="validarUrl()" 
+          (change)="validarUrl()" 
           placeholder="https://ejemplo.com/grabacion.json"
           type="url">
-        </ion-input>
-      </ion-item>
-      <ion-note color="danger" *ngIf="urlInvalida && grabacionData.url.length > 0">
+      </div>
+      <small class="text-muted" color="danger" *ngIf="urlInvalida && grabacionData.url.length > 0">
         Por favor, ingrese una URL válida
-      </ion-note>
+      </small>
       
       <button 
         class="btn btn-outline-primary w-100 mt-3" 

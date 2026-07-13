@@ -4,7 +4,7 @@
       <div class="col-12 col-md-3" *ngIf="mostrarFiltro">
         <div class="row">
           <div class="col">
-            <ion-title class="mt-3">Búsqueda</ion-title>
+            <h5 class="mt-3">Búsqueda</h5>
     
             <app-search-bar
               [(data)]="inscriptos"
@@ -37,16 +37,16 @@
                     (click)="categoriaSeleccionada = null">
                     <i class="bi bi-x-lg"></i>
                   </button>
-                  <ion-item>
-                    <ion-label position="stacked">Categoría</ion-label>
-                    <ion-select okText="Aceptar" cancelText="Cancelar"
+                  <div class="mb-3">
+                    <label class="form-label">Categoría</label>
+                    <select class="form-select"
                       [(ngModel)]="categoriaSeleccionada"
-                      interface="popover">
-                      <ion-select-option
+                     >
+                      <option
                         *ngFor="let c of categoriasInscriptas"
-                        [value]="c.category">{{ c.category.name }}</ion-select-option>
-                    </ion-select>
-                  </ion-item>
+                        [value]="c.category">{{ c.category.name }}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="col-2 col-sm-1">
@@ -60,8 +60,8 @@
               </div>
             </div>
 
-            <ion-list>
-              <ion-item color="dark">
+            <div class="list-group list-group-flush">
+              <div class="mb-3" bg-dark text-white>
                 <div class="container-fluid">
                   <div class="row">
                     <div class="col">
@@ -81,15 +81,15 @@
                     <div class="col-2 col-md-2"><b></b></div>
                   </div>
                 </div>
-              </ion-item>
-            </ion-list>
+              </div>
+            </div>
 
-            <ion-list> 
-              <ion-item lines="none">
+            <div class="list-group list-group-flush"> 
+              <div class="mb-3">
                 
                 <div class="container-fluid" *ngIf="inscriptosFiltrados.length > 0; else texto">
                   
-                  <ion-item
+                  <div class="mb-3"
                     class="p-0 lista-elem"
                     *ngFor="let m of inscriptosFiltrados">
 
@@ -102,15 +102,15 @@
                             </div>
 
                             <div class="col-8 col-sm-8">
-                              <ion-label class="ms-3">
-                                <ion-card-subtitle title="Username">
+                              <label class="form-label" class="ms-3">
+                                <h6 class="card-subtitle text-muted" title="Username">
                                   <i>@{{ m.profile?.user?.username || '' }}&nbsp;</i>
-                                  <ion-text title="Nombre">
+                                  <span title="Nombre">
                                     <b>{{ m.profile?.name || '' }} {{ m.profile?.last_name || '' }}</b>
-                                  </ion-text>
-                                </ion-card-subtitle>
-                                <ion-card-subtitle title="Username">{{ m.photo_count ?? 0 }} fotos cargadas</ion-card-subtitle>
-                              </ion-label>
+                                  </span>
+                                </h6>
+                                <h6 class="card-subtitle text-muted" title="Username">{{ m.photo_count ?? 0 }} fotos cargadas</h6>
+                              </label>
                             </div>
 
                             <div class="col-1 d-sm-none justify-content-center">
@@ -123,7 +123,7 @@
                           </div>
                         </div>
                         <div class="col-4 col-md-4 d-none d-sm-block align-self-center" *ngIf="checkPermissions">
-                          <ion-text title="Fotoclub/Agrupación">{{getFotoclubName(m.profile_id)}}</ion-text>
+                          <span title="Fotoclub/Agrupación">{{getFotoclubName(m.profile_id)}}</span>
                         </div>
                         <div class="col-2 col-md-2 align-self-center d-none d-sm-block">
 
@@ -152,12 +152,12 @@
                       </div>
                     </div>
 
-                  </ion-item>
+                  </div>
                 </div>
 
                 <ng-template #texto>No hay inscriptos</ng-template>
-              </ion-item>
-            </ion-list>
+              </div>
+            </div>
             <ng-template #spinner>
               <div class="row justify-content-center">
                 <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>

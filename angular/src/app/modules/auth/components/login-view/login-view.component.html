@@ -3,10 +3,10 @@
     <div class="row justify-content-center">
       <div class="col-12 col-md-4">
         <div class="logo-container">
-          <ion-img
+          <img
             class="logoEntrada"
             src="../../assets/portadaGFC.png"
-          ></ion-img>
+          >
         </div>
 
         <div class="google-btn-wrapper">
@@ -24,49 +24,47 @@
 
         <ion-accordion-group class="login-accordion-group">
           <ion-accordion class="login-accordion" value="credentials">
-            <ion-item slot="header" class="accordion-header" lines="none">
-              <ion-label>Usuario y Contraseña</ion-label>
-            </ion-item>
+            <div class="mb-3 accordion-header">
+              <label class="form-label">Usuario y Contraseña</label>
+            </div>
             <div slot="content" class="accordion-content p-3">
               <div class="credential-fields">
-                <ion-item class="expand-full input-bordered">
-                  <ion-label position="stacked">Usuario</ion-label>
-                  <ion-input
+                <div class="mb-3 expand-full input-bordered">
+                  <label class="form-label" position="stacked">Usuario</label>
+                  <input class="form-control"
                     placeholder="Ingresá tu usuario"
                     (keypress)="keyPress($event)"
                     [(ngModel)]="login.username"
-                    ngDefaultControl
-                  ></ion-input>
-                </ion-item>
+                  >
+                </div>
 
-                <ion-item class="expand-full input-bordered">
-                  <ion-label position="stacked">Contraseña</ion-label>
-                  <ion-input
+                <div class="mb-3 expand-full input-bordered">
+                  <label class="form-label" position="stacked">Contraseña</label>
+                  <input class="form-control"
                     #passInput
                     id="ctr-1"
                     type="password"
                     placeholder="Ingresá tu contraseña"
                     (keypress)="keyPress($event, 'next')"
                     [(ngModel)]="login.password"
-                    ngDefaultControl
-                  ></ion-input>
-                  <app-ojo slot="end" inputId="ctr-1"></app-ojo>
-                </ion-item>
+                  >
+                  <app-ojo inputId="ctr-1"></app-ojo>
+                </div>
               </div>
 
-              <ion-item class="expand-full" lines="none">
+              <div class="mb-3 expand-full">
                 <a href="/#/recuperar-password" class="enlace-recuperar-pass">¿Olvidaste tu contraseña?</a>
-              </ion-item>
+              </div>
 
-              <ion-item color="danger" *ngIf="error != undefined" lines="none" class="p-0">
-                <ion-label>{{ error }}</ion-label>
-              </ion-item>
+              <div class="mb-3" color="danger" *ngIf="error != undefined" class="p-0">
+                <label class="form-label">{{ error }}</label>
+              </div>
 
               <button class="btn btn-primary w-100 mt-3" (click)="next()">
-                <ion-label *ngIf="!loading; else spinner">Ingresar</ion-label>
+                <label class="form-label" *ngIf="!loading; else spinner">Ingresar</label>
                 <ng-template #spinner>
                   <div class="row justify-content-center">
-                    <ion-spinner></ion-spinner>
+                    <div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
                   </div>
                 </ng-template>
               </button>

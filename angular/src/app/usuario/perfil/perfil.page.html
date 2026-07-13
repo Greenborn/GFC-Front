@@ -6,9 +6,8 @@
 </div>
 
 <div class="container-fluid py-3" *ngIf="isActive">
-  <ion-card
+  <div class="card mb-3 restrict-height"
     color="white"
-    class="restrict-height"
     *ngIf="(authService.user | async) as u"
   >
     <div class="col">
@@ -24,17 +23,17 @@
         </div>
         <div class="col">
           <div class="row">
-            <ion-text>
-              <h2>{{ this.name }}</h2></ion-text>
-            <ion-text class="ion-no-padding" color="medium">
-              <p class="text-username">@{{ this.username }}</p></ion-text>
+            <span>
+              <h2>{{ this.name }}</h2></span>
+            <span class="ion-no-padding" color="medium">
+              <p class="text-username">@{{ this.username }}</p></span>
           </div>
           <div class="row">
-            <ion-text>Rol: {{ this.role }}</ion-text>
+            <span>Rol: {{ this.role }}</span>
           </div>
           <div class="row">
-            <ion-text
-              >Fotoclub/Entidad: {{ this.fotoclub }}</ion-text
+            <span
+              >Fotoclub/Entidad: {{ this.fotoclub }}</span
             >
           </div>
         </div>
@@ -49,33 +48,33 @@
         </div>
         <div class="col">
           <div class="row">
-            <ion-item class="m-3 text-center sombra" lines="none">
+            <div class="mb-3 m-3 text-center sombra">
               <div class="col">
-                <ion-text>Concursos</ion-text>
+                <span>Concursos</span>
                 <ion-title>{{this.estadisticas != undefined ? this.estadisticas.concursos : "0"}}</ion-title>
               </div>
-            </ion-item>
-            <ion-item class="m-3 text-center sombra" lines="none">
+            
+            <div class="mb-3 m-3 text-center sombra">
               <div class="col">
-                <ion-text>Fotografías</ion-text>
+                <span>Fotografías</span>
                 <ion-title>{{this.estadisticas != undefined ? this.estadisticas.fotografias : "0"}}</ion-title>
               </div>
-            </ion-item>
-            <ion-item class="m-3 text-center sombra" lines="none">
+            
+            <div class="mb-3 m-3 text-center sombra">
               <div class="col">
-                <ion-text>1° Puesto</ion-text>
+                <span>1° Puesto</span>
                 <ion-title>{{this.estadisticas != undefined ? this.estadisticas.primer_puesto : "0"}}</ion-title>
               </div>
-            </ion-item>
-            <ion-item class="m-3 text-center sombra" lines="none">
+            
+            <div class="mb-3 m-3 text-center sombra">
               <div class="col">
-                <ion-text>Mención</ion-text>
+                <span>Mención</span>
                 <ion-title>{{this.estadisticas != undefined ? this.estadisticas.mencion : "0"}}</ion-title>
               </div>
-            </ion-item>
+            
           </div>
         </div>
       </div>
     </div>
-  </ion-card>
+  </div>
 </div>

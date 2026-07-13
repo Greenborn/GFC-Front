@@ -1,53 +1,49 @@
-<ion-item class="search-bar">
+<div class="mb-3 search-bar">
   <div class="col">
     <div class="row">
-      <ion-searchbar
+      <div class="input-group">
+        <input class="form-control" type="search"
         #queryInput
         placeholder="Buscar"
-        (ionInput)="output()"
-        show-clear-button="never"
-        [showCancelButton]="getCancelbuttonStatus()"
-        cancel-button-icon="close-outline"
-        ></ion-searchbar>
-      <ion-select
+        (input)="output()"
+        ></div>
+      <select class="form-select me-3"
         *ngIf="innerSelect"
-        (ionChange)="output()"
-        interface="popover"
-        class="me-3" okText="Aceptar" cancelText="Cancelar"
+        (change)="output()"
         >
-        <ion-select-option
+        <option
           *ngFor="let a of atributosPasados"
           [value]="getAtributoValor(a)"
-          >{{ getAtributoValorMostrado(a) }}</ion-select-option
+          >{{ getAtributoValorMostrado(a) }}</option
         >
-      </ion-select>
+      </select>
     </div>
     <div class="row" *ngIf="!innerSelect && !hideFieldSelector && atributosPasados?.length > 1">
-      <ion-list>
-        <ion-radio-group
-          (ionChange)="changeRadio($event.target)"
-          [value]="atributoSelected"
-          [allowEmptySelection]="true"
+      <div class="list-group list-group-flush">
+        <div class="d-flex flex-column gap-2"
+          (change)="changeRadio($event.target)"
         >
-          <ion-list-header>
+          <div class="list-group-item fw-bold bg-light">
             <div class="row align-items-center">
-              <ion-label>Filtrar por:</ion-label>
+              <label class="form-label">Filtrar por:</label>
               <button
                 *ngIf="atributoSelected != ''"
                 (click)="changeRadio()"
                 class="btn btn-link"
               >
-                <ion-icon name="close-outline"></ion-icon>
+                <i class="bi bi-x-lg"></i>
               </button>
             </div>
-          </ion-list-header>
+          </div>
 
-          <ion-item *ngFor="let a of atributosObj" lines="none">
-            <ion-label>{{ a.valorMostrado }}</ion-label>
-            <ion-radio slot="start" [value]="a.valor"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
-      </ion-list>
+          <div class="mb-3" *ngFor="let a of atributosObj">
+            <label class="form-label">{{ a.valorMostrado }}</label>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" [value]="a.valor">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</ion-item>
+</div>

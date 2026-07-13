@@ -1,12 +1,9 @@
-<!-- <ion-item class="search-select"> -->
+<!-- <div class="mb-3 search-select"> -->
   <!-- <div class="col"> -->
     <!-- <div class="row">
-      <ion-searchbar #queryInput
-        (ionInput)="output()"
-        show-clear-button="never"
-        [showCancelButton]="cancelbuttonStatus"
-        cancel-button-icon="close-outline"
-      ></ion-searchbar>
+      <div class="input-group"><input class="form-control" type="search" #queryInput
+        (input)="output()"
+      ></div>
     </div> -->
     <div class="row align-items-center me-3"
       *ngIf="interface == 'popover'; else list"
@@ -15,47 +12,46 @@
         <button (click)="changeQuery()" class="btn btn-link"
           *ngIf="atributoSelected != ''"
         >
-          <ion-icon name="close-outline"></ion-icon>
+          <i class="bi bi-x-lg"></i>
         </button>
       <!-- </div> -->
       <!-- <div class="col p-0"> -->
-        <ion-item >
-          <ion-label
+        <div class="mb-3">
+          <label class="form-label"
             position="stacked"
-            >{{ title }}</ion-label
+            >{{ title }}</label
           >
-          <ion-select #atributoSelect
-            *ngIf="!updatingSelect"  okText="Aceptar" cancelText="Cancelar"
-            (ionChange)="changeQuery($event.target)"
-            interface="popover"
+          <select class="form-select" #atributoSelect
+            *ngIf="!updatingSelect"
+            (change)="changeQuery($event.target)"
             [value]="atributoSelectedAsInt"
           >
-            <ion-select-option 
+            <option 
               *ngFor="let o of optionsData"
               [value]="o[optionsProps.valueProp]"
-              >{{ getPropertyName(o) }}</ion-select-option
+              >{{ getPropertyName(o) }}</option
             >
-          </ion-select>
-        </ion-item>
+          </select>
+        </div>
       <!-- </div> -->
     </div>
 
     <ng-template #list>
       <div class="row">
-        <ion-list>
-          <ion-list-header>
+        <div class="list-group list-group-flush">
+          <div class="list-group-item fw-bold bg-light">
             <div class="row align-items-center">
-              <ion-label>{{ title }}</ion-label>
+              <label class="form-label">{{ title }}</label>
               <button
                 *ngIf="atributoSelected != ''"
                 (click)="changeQuery()"
                 class="btn btn-link"
               >
-                <ion-icon name="close-outline"></ion-icon>
+                <i class="bi bi-x-lg"></i>
               </button>
             </div>
-          </ion-list-header>
-          <ion-item *ngFor="let o of optionsData" lines="none">
+          </div>
+          <div class="mb-3" *ngFor="let o of optionsData">
             <button
               class="btn w-100"
               [ngClass]="atributoSelected == o[optionsProps.valueProp] ? 'btn-primary' : 'btn-link'"
@@ -63,9 +59,9 @@
             >
               {{ getPropertyName(o) }}
             </button>
-          </ion-item>
-        </ion-list>
+          </div>
+        </div>
       </div>
     </ng-template>
   <!-- </div> -->
-<!-- </ion-item> -->
+<!-- </div> -->

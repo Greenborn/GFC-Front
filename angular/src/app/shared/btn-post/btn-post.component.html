@@ -4,11 +4,10 @@
   [disabled]="disabled"
   (click)="post.emit()"
 >
-  <ion-spinner 
+  <div class="spinner-border spinner-border-sm text-primary" role="status"
     *ngIf="posting; else texto"
-    size="small"
-  ></ion-spinner>
+  ><span class="visually-hidden">Loading...</span></div>
   <ng-template #texto>
-    <ion-text>{{text}}</ion-text>
+    <span>{{text}}</span>
   </ng-template>
 </button>

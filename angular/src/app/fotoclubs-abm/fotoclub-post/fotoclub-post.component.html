@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <div slot="start" class="w-100 inner-content float-md-start">
+  <div class="w-100 inner-content float-md-start">
     <form
     #f="ngForm"
     (ngSubmit)="postFotoclub(f)"
@@ -26,122 +26,114 @@
             <div class="col">
 
               <div class="row">
-                <ion-item class="w-100 mb-3" *ngIf="fotoclub != undefined">
-                  <ion-label position="floating">Nombre</ion-label>
-                  <ion-input
+                <div class="mb-3 w-100 mb-3" *ngIf="fotoclub != undefined">
+                  <label class="form-label" position="floating">Nombre</label>
+                  <input class="form-control"
                     name="name"
-                    ngDefaultControl
                     [(ngModel)]="fotoclub.name"
                     autocapitalize="sentences"
                     required
-                  ></ion-input>
-                </ion-item>
+                  >
+                </div>
               </div>
               <div class="row pt-3">
-                <ion-item class="w-100">
-                  <ion-label position="floating">Descripción</ion-label>
-                  <ion-textarea
-                    (ionFocus)="descrChangeFocus = true"
-                    (ionBlur)="descrChangeFocus = false"
+                <div class="mb-3 w-100">
+                  <label class="form-label" position="floating">Descripción</label>
+                  <textarea class="form-control"
+                    (focus)="descrChangeFocus = true"
+                    (blur)="descrChangeFocus = false"
                     maxlength= "250"
                     autocapitalize="sentences"
-                    auto-grow="true"
                     name="description"
                     [ngModel]="fotoclub.description"
-                  ></ion-textarea>
-                </ion-item>
-                <ion-note *ngIf="descrChangeFocus">Máximo 250 caracteres</ion-note>
+                  ></textarea>
+                </div>
+                <small class="text-muted" *ngIf="descrChangeFocus">Máximo 250 caracteres</small>
               </div>
               <div class="row w-100">
                 <div class="col p-0">
-                  <ion-item class="w-100 p-0 mb-3">
-                    <ion-label position="stacked">Imágen</ion-label>
+                  <div class="mb-3 w-100 p-0 mb-3">
+                    <label class="form-label" position="stacked">Imágen</label>
                     <input type="file" (change)="handleFileInput($event.target['files'])" />
-                  </ion-item>
+                  </div>
                   <div>
                     <div class="row justify-content-center">
-                      <ion-img (ionError)="img_url=''" [src]="img_url || (fotoclub.photo_url ? configService.imageUrl(fotoclub.photo_url) : '')" alt=""></ion-img>
+                      <img (error)="img_url=''" [src]="img_url || (fotoclub.photo_url ? configService.imageUrl(fotoclub.photo_url) : '')" alt="">
                     </div>
                   </div>
                 </div>
               </div>
               <div class="row pt-3">
-                <ion-item class="w-100 mb-3">
-                  <ion-label position="floating"><i class="bi bi-facebook"></i> Facebook</ion-label>
-                  <ion-input
+                <div class="mb-3 w-100 mb-3">
+                  <label class="form-label" position="floating"><i class="bi bi-facebook"></i> Facebook</label>
+                  <input class="form-control"
                   name="facebook"
                   [(ngModel)]="fotoclub.facebook"
                     autocapitalize="sentences"
-                    ngDefaultControl
                     type="url"
-                  ></ion-input>
-                </ion-item>
+                  >
+                </div>
                 
               </div>
               <div class="row pt-3">
-                <ion-item class="w-100 mb-3">
-                  <ion-label position="floating"><i class="bi bi-envelope"></i> E-mail</ion-label>
-                  <ion-input
+                <div class="mb-3 w-100 mb-3">
+                  <label class="form-label" position="floating"><i class="bi bi-envelope"></i> E-mail</label>
+                  <input class="form-control"
                   name="email"
                   [(ngModel)]="fotoclub.email"
                   type="email"
-                    ngDefaultControl
-                  ></ion-input>
-                </ion-item>
+                  >
+                </div>
                 
               </div>
               <div class="row pt-3">
-                <ion-item class="w-100 mb-3">
-                  <ion-label position="floating"><i class="bi bi-instagram"></i> Instagram</ion-label>
-                  <ion-input
+                <div class="mb-3 w-100 mb-3">
+                  <label class="form-label" position="floating"><i class="bi bi-instagram"></i> Instagram</label>
+                  <input class="form-control"
                   name="instagram"
                   [(ngModel)]="fotoclub.instagram"
                     type="url"
-                    ngDefaultControl
-                  ></ion-input>
-                </ion-item>
+                  >
+                </div>
               </div>
 
               <div class="row pt-3">
-                <ion-item class="w-100 mb-3">
-                  <ion-label position="floating">Habilitado</ion-label>
-                  <ion-select
+                <div class="mb-3 w-100 mb-3">
+                  <label class="form-label" position="floating">Habilitado</label>
+                  <select class="form-select"
                     name="enabled"
                     [(ngModel)]="fotoclub.enabled"
-                    ngDefaultControl
                     required
                   >
-                    <ion-select-option [value]="true">Si</ion-select-option>
-                    <ion-select-option [value]="false">No</ion-select-option>
-                  </ion-select>
-                </ion-item>
+                    <option [value]="true">Si</option>
+                    <option [value]="false">No</option>
+                  </select>
+                </div>
               </div>
 
               <div class="row pt-3">
-                <ion-item class="w-100 mb-3">
-                  <ion-label position="floating">Tipo de Organización</ion-label>
-                  <ion-select
+                <div class="mb-3 w-100 mb-3">
+                  <label class="form-label" position="floating">Tipo de Organización</label>
+                  <select class="form-select"
                     name="organization_type"
                     [(ngModel)]="fotoclub.organization_type"
-                    ngDefaultControl
                     required
                   >
-                    <ion-select-option value="INTERNO">Interno</ion-select-option>
-                    <ion-select-option value="EXTERNO_0">Externo</ion-select-option>
-                    <ion-select-option value="EXTERNO_UNICEN">UNICEN</ion-select-option>
-                  </ion-select>
-                </ion-item>
+                    <option value="INTERNO">Interno</option>
+                    <option value="EXTERNO_0">Externo</option>
+                    <option value="EXTERNO_UNICEN">UNICEN</option>
+                  </select>
+                </div>
               </div>
 
               <div class="row pt-3">
-                <ion-item class="w-100 mb-3">
-                  <ion-label>Mostrar en Ranking</ion-label>
-                  <ion-checkbox
+                <div class="mb-3 w-100 mb-3">
+                  <label class="form-label">Mostrar en Ranking</label>
+                  <input type="checkbox" class="form-check-input"
                     name="mostrar_en_ranking"
                     [(ngModel)]="fotoclub.mostrar_en_ranking"
-                    ngDefaultControl
-                  ></ion-checkbox>
-                </ion-item>
+                  >
+                </div>
               </div>
 
               <div class="row justify-content-end">

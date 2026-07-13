@@ -1,30 +1,30 @@
 <div class="row" *ngIf="auth.user | async as u">
   <div class="col info-col">
     
-    <ion-card class="ion-no-margin info-card">
+    <div class="card mb-3 ion-no-margin info-card">
       
-      <ion-card-header class="ion-no-padding info-header">
+      <div class="card-header ion-no-padding info-header">
         <div class="info-header-main">
-          <ion-card-title class="info-title">{{ concurso.name }}</ion-card-title>
-          <ion-card-subtitle>
+          <h5 class="card-title info-title">{{ concurso.name }}</h5>
+          <h6 class="card-subtitle text-muted">
             Desde: {{ fechaInicio | date: "dd/MM/yyyy HH:mm" }} - Hasta:
             {{ fechaFin | date: "dd/MM/yyyy HH:mm" }}
-          </ion-card-subtitle>
+          </h6>
         </div>
 
         <div *ngIf="(rolificador.esDelegado(u) || rolificador.isAdmin(u))" class="info-admin-col">
           <button class="btn btn-outline-primary btn-sm" (click)="deleteConcurso()">
-            <ion-icon name="trash"></ion-icon>
+            <i class="bi bi-trash"></i>
           </button>
           <button class="btn btn-outline-primary btn-sm" [routerLink]="['/concursos/editar/' + concurso.id]">
-            <ion-icon name="create"></ion-icon>
+            <i class="bi bi-pencil"></i>
           </button>
         </div>
-      </ion-card-header>
+      </div>
       
-      <ion-card-content class="ion-no-padding">
+      <div class="card-body ion-no-padding">
         <div class="info-body">
-          <ion-text class="info-desc">{{ concurso.description }}</ion-text>
+          <span class="info-desc">{{ concurso.description }}</span>
 
           <div class="info-actions">
             <button class="btn btn-outline-primary btn-sm" *ngIf="isContestNotFin && !isInscripto" (click)="inscribirConcursante()">
@@ -34,54 +34,54 @@
               Desinscribirme!
             </button>
             <button class="btn btn-outline-primary btn-sm" [routerLink]="['/concursos', concurso.id, 'fotografias']">
-              <ion-icon name="images-outline"></ion-icon>
+              <i class="bi bi-images"></i>
               Ver Fotografías
             </button>
             <button class="btn btn-outline-primary btn-sm" (click)="descargarFotografias()">
               Descargar Fotografías
             </button>
             <button class="btn btn-outline-primary btn-sm" (click)="compartir()">
-              <ion-icon name="share-social-outline"></ion-icon>
+              <i class="bi bi-share"></i>
             </button>
           </div>
 
           <div class="info-rule-row">
             <b>Reglamento</b>
             <button class="btn btn-outline-primary btn-sm" (click)="openRules()">
-              <ion-icon name="link-outline"></ion-icon>
+              <i class="bi bi-link-45deg"></i>
             </button>
           </div>
 
           <div class="info-tags-row">
             <b>Categorias:</b>
             <div class="info-tags">
-              <ion-badge color="light" *ngFor="let c of categoriasInscriptasAsc">
+              <span class="badge bg-light text-dark" *ngFor="let c of categoriasInscriptasAsc">
                 {{ c.category.name }}
-              </ion-badge>
+              </span>
             </div>
           </div>
 
           <div class="info-tags-row">
             <b>Secciones:</b>
             <div class="info-tags">
-              <ion-badge color="light" *ngFor="let s of seccionesInscriptasAsc">
+              <span class="badge bg-light text-dark" *ngFor="let s of seccionesInscriptasAsc">
                 {{ s.section.name }}
-              </ion-badge>
+              </span>
             </div>
           </div>
 
           <div class="info-tags-row" *ngIf="concurso.contestRecords?.length">
             <b>Grabaciones:</b>
             <div class="info-tags">
-              <ion-badge color="light" *ngFor="let s of concurso.contestRecords">
+              <span class="badge bg-light text-dark" *ngFor="let s of concurso.contestRecords">
                 <a href="{{s.url}}" target="_blank">{{ s.object }}</a>
-              </ion-badge>
+              </span>
             </div>
           </div>
         </div>
-      </ion-card-content>
+      </div>
 
-    </ion-card>
+    </div>
     
   </div>
 </div>

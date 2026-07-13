@@ -20,8 +20,8 @@
             <div class="col">
               <div class="row">
                 <div class="col align-self-center">
-                  <ion-card-subtitle title="Código de la obra">{{ image.code }}</ion-card-subtitle>
-                  <ion-card-title title="Nombre de la obra"><b>{{image.title}}</b></ion-card-title>
+                  <h6 class="card-subtitle text-muted" title="Código de la obra">{{ image.code }}</h6>
+                  <h5 class="card-title" title="Nombre de la obra"><b>{{image.title}}</b></h5>
                   <div> <img [src]="imgSource" alt=""> </div>
                 </div>
               </div>
@@ -32,13 +32,13 @@
                     #formReview="ngForm"
                     (ngSubmit)="postReview(formReview)">
 
-                    <ion-item class="w-100 mb-3">
-                      <ion-label position="floating">Premio</ion-label>
+                    <div class="mb-3" class="w-100 mb-3">
+                      <label class="form-label">Premio</label>
                      
-                      <ion-select name="elegida" [(ngModel)]="elegida" okText="Aceptar" cancelText="Cancelar" ngDefaultControl>
-                        <ion-select-option *ngFor="let met of metricas" [value]="met">{{ met.prize }}</ion-select-option>
-                      </ion-select>
-                    </ion-item>
+                      <select class="form-select" name="elegida" [(ngModel)]="elegida">
+                        <option *ngFor="let met of metricas" [value]="met">{{ met.prize }}</option>
+                      </select>
+                    </div>
 
                     <div class="row justify-content-end">
                       <div class="col-12">

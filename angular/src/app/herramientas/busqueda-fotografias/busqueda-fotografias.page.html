@@ -7,24 +7,24 @@
 
 <div class="container-fluid py-3">
   <!-- Nota de ayuda -->
-  <ion-card *ngIf="mostrarNota" class="nota-ayuda">
-    <ion-card-header>
-      <ion-card-title>
+  <div class="card mb-3 nota-ayuda" *ngIf="mostrarNota">
+    <div class="card-header">
+      <h5 class="card-title">
         <i class="bi bi-info-circle"></i>
         Cómo usar la búsqueda
         <button class="btn btn-link btn-sm cerrar-nota" (click)="cerrarNota()">
           <i class="bi bi-x"></i>
         </button>
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
+      </h5>
+    </div>
+    <div class="card-body">
       <ul>
         <li><strong>Buscar por:</strong> Título de la obra o código asociado a la misma</li>
         <li><strong>Para buscar:</strong> Escribe el término y presiona Enter</li>
         <li><strong>Ver imagen completa:</strong> Haz click sobre la imagen para abrirla en tamaño completo en una nueva pestaña</li>
       </ul>
-    </ion-card-content>
-  </ion-card>
+    </div>
+  </div>
   
   <!-- Cuadro de búsqueda -->
   <div class="input-group mb-3">
@@ -38,44 +38,44 @@
     <div class="container-fluid" [class.centrado-un-resultado]="resultados.length === 1">
       <div class="row" *ngIf="resultados.length > 1">
         <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let imagen of resultados">
-          <ion-card>
+          <div class="card mb-3">
             <img [src]="imagen.thumbnail_url || imagen.url" 
                  alt="{{ imagen.title }}" 
                  (click)="abrirImagen(imagen.thumbnail_url || imagen.url)"
                  style="cursor: pointer;" />
-            <ion-card-header>
-              <ion-card-title>{{ imagen.title }}</ion-card-title>
-              <ion-card-subtitle>Código: {{ imagen.code }}</ion-card-subtitle>
-              <ion-card-subtitle *ngIf="imagen.author">Autor: <strong>{{ imagen.author | titlecase }}</strong></ion-card-subtitle>
-              <ion-card-subtitle *ngIf="imagen.section">Sección: <strong>{{ imagen.section }}</strong></ion-card-subtitle>
-              <ion-card-subtitle *ngIf="imagen.contest?.name">Concurso: <strong>{{ imagen.contest.name }}</strong></ion-card-subtitle>
-              <ion-card-subtitle *ngIf="imagen.category?.name">Categoría: <strong>{{ imagen.category.name }}</strong></ion-card-subtitle>
-            </ion-card-header>
-            <ion-card-content>
+            <div class="card-header">
+              <h5 class="card-title">{{ imagen.title }}</h5>
+              <h6 class="card-subtitle text-muted">Código: {{ imagen.code }}</h6>
+              <h6 class="card-subtitle text-muted" *ngIf="imagen.author">Autor: <strong>{{ imagen.author | titlecase }}</strong></h6>
+              <h6 class="card-subtitle text-muted" *ngIf="imagen.section">Sección: <strong>{{ imagen.section }}</strong></h6>
+              <h6 class="card-subtitle text-muted" *ngIf="imagen.contest?.name">Concurso: <strong>{{ imagen.contest.name }}</strong></h6>
+              <h6 class="card-subtitle text-muted" *ngIf="imagen.category?.name">Categoría: <strong>{{ imagen.category.name }}</strong></h6>
+            </div>
+            <div class="card-body">
               <p *ngIf="imagen.description">{{ imagen.description }}</p>
-            </ion-card-content>
-          </ion-card>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row" *ngIf="resultados.length === 1" class="justify-content-center">
         <div style="max-width: 400px; flex: 1 1 400px;">
-          <ion-card>
+          <div class="card mb-3">
             <img [src]="resultados[0].thumbnail_url || resultados[0].url" 
                  alt="{{ resultados[0].title }}" 
                  (click)="abrirImagen(resultados[0].thumbnail_url || resultados[0].url)"
                  style="cursor: pointer;" />
-            <ion-card-header>
-              <ion-card-title>{{ resultados[0].title }}</ion-card-title>
-              <ion-card-subtitle>Código: {{ resultados[0].code }}</ion-card-subtitle>
-              <ion-card-subtitle *ngIf="resultados[0].author">Autor: <strong>{{ resultados[0].author | titlecase }}</strong></ion-card-subtitle>
-              <ion-card-subtitle *ngIf="resultados[0].section">Sección: <strong>{{ resultados[0].section }}</strong></ion-card-subtitle>
-              <ion-card-subtitle *ngIf="resultados[0].contest?.name">Concurso: <strong>{{ resultados[0].contest.name }}</strong></ion-card-subtitle>
-              <ion-card-subtitle *ngIf="resultados[0].category?.name">Categoría: <strong>{{ resultados[0].category.name }}</strong></ion-card-subtitle>
-            </ion-card-header>
-            <ion-card-content>
+            <div class="card-header">
+              <h5 class="card-title">{{ resultados[0].title }}</h5>
+              <h6 class="card-subtitle text-muted">Código: {{ resultados[0].code }}</h6>
+              <h6 class="card-subtitle text-muted" *ngIf="resultados[0].author">Autor: <strong>{{ resultados[0].author | titlecase }}</strong></h6>
+              <h6 class="card-subtitle text-muted" *ngIf="resultados[0].section">Sección: <strong>{{ resultados[0].section }}</strong></h6>
+              <h6 class="card-subtitle text-muted" *ngIf="resultados[0].contest?.name">Concurso: <strong>{{ resultados[0].contest.name }}</strong></h6>
+              <h6 class="card-subtitle text-muted" *ngIf="resultados[0].category?.name">Categoría: <strong>{{ resultados[0].category.name }}</strong></h6>
+            </div>
+            <div class="card-body">
               <p *ngIf="resultados[0].description">{{ resultados[0].description }}</p>
-            </ion-card-content>
-          </ion-card>
+            </div>
+          </div>
         </div>
       </div>
     </div>

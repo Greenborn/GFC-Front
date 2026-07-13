@@ -27,22 +27,22 @@
             <div class="col">
               <div class="row">
                 <div class="col">
-                  <ion-chip color="danger" *ngIf="formTitle.includes('Editar')">
+                  <span class="badge bg-danger d-inline-flex align-items-center gap-1" color="danger" *ngIf="formTitle.includes('Editar')">
                     <i class="bi bi-exclamation-triangle"></i>
-                    <ion-label>CUIDADO: la modificación de este elemento repercutirá en concursos que lo utilicen, se recomienda la edición para correcciones ortográficas</ion-label>
-                  </ion-chip>
+                    <label class="form-label">CUIDADO: la modificación de este elemento repercutirá en concursos que lo utilicen, se recomienda la edición para correcciones ortográficas</label>
+                  </span>
                   <form
                     #sectionForm="ngForm"
                     (ngSubmit)="postSection(sectionForm)"
                   >
-                    <ion-item class="w-100">
-                      <ion-label position="floating">Nombre</ion-label>
-                      <ion-input
+                    <div class="mb-3" class="w-100">
+                      <label class="form-label">Nombre</label>
+                      <input class="form-control"
                         [ngModel]="section.name"
                         name="name"
                         required
-                      ></ion-input>
-                    </ion-item>
+                      >
+                    </div>
 
                     <div class="row justify-content-end">
                       <div class="col-12">

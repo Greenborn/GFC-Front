@@ -15,95 +15,91 @@
         <form class="w-100" [formGroup]="form" (ngSubmit)="postUsuario()">
           <div class="row">
             <div class="col-12 col-md-4">
-              <ion-card class="profile-image-card">
-                <ion-card-header>
-                  <ion-card-title>Foto de perfil</ion-card-title>
-                </ion-card-header>
-                <ion-card-content class="profile-image-card-content">
+              <div class="card mb-3 profile-image-card">
+                <div class="card-header">
+                  <h5 class="card-title">Foto de perfil</h5>
+                </div>
+                <div class="card-body profile-image-card-content">
                   <app-usuario-img [src]="img_url" [imageChangeEnabled]="true" [imageChangeClick]="ImageChangeClick"></app-usuario-img>
-                  <ion-item lines="none" class="upload-button-row">
+                  <div class="mb-3 upload-button-row">
                     <button class="btn btn-outline-primary w-100 btn-sm" type="button" (click)="ProfileImageUpload.click()">
                       Cambiar imagen
                     </button>
-                  </ion-item>
+                  
                   <input #ProfileImageUpload type="file" accept="image/*" style="display:none" (change)="fileUpload($event.target)" />
-                </ion-card-content>
-              </ion-card>
+                </div>
+              </div>
             </div>
 
             <div class="col-12 col-md-8">
-              <ion-card>
-                <ion-card-header>
-                  <ion-card-title>Datos del perfil</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                  <ion-item class="expand-full">
-                        <ion-label position="floating">Nombre</ion-label>
-                        <ion-input
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h5 class="card-title">Datos del perfil</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3 expand-full">
+                        <label class="form-label">Nombre</label>
+                        <input class="form-control"
                             formControlName="name" name="name"
                             autocapitalize="words" required>
-                        </ion-input>
-                      </ion-item>
+                        
                       
-                      <ion-item class="expand-full">
-                        <ion-label position="floating">Apellido</ion-label>
-                        <ion-input
+                      
+                      <div class="mb-3 expand-full">
+                        <label class="form-label">Apellido</label>
+                        <input class="form-control"
                             formControlName="last_name" name="last_name"
-                            autocapitalize="words" required></ion-input>
-                      </ion-item>
+                            autocapitalize="words" required>
+                      
 
-                      <ion-item class="expand-full">
-                        <ion-label position="floating">DNI</ion-label>
-                        <ion-input
-                            formControlName="dni" name="dni" required></ion-input>
-                      </ion-item>
+                      <div class="mb-3 expand-full">
+                        <label class="form-label">DNI</label>
+                        <input class="form-control"
+                            formControlName="dni" name="dni" required>
+                      
 
-                      <ion-item class="expand-full fotoclub-select-item">
-                        <ion-label [position]="(form.get('fotoclub_id').value != undefined) ? 'stacked' : 'floating'">Fotoclub/Agrupación/Institución</ion-label>
-                        <ion-select
-                            #sFotoclub okText="Aceptar" cancelText="Cancelar"
+                      <div class="mb-3 expand-full fotoclub-select-item">
+                        <label class="form-label">Fotoclub/Agrupación/Institución</label>
+                        <select class="form-select"
+                            #sFotoclub
                             formControlName="fotoclub_id" name="fotoclub_id"
-                            [interfaceOptions]="{ cssClass: 'fotoclub-select-modal' }"
                             required>
-                          <ion-select-option *ngFor="let f of fotoclubes" [value]="f.id">{{f.name}}</ion-select-option>
-                        </ion-select>
-                      </ion-item>
+                          <option *ngFor="let f of fotoclubes" [value]="f.id">{{f.name}}</option>
+                        </select>
+                      
 
                       <div *ngIf="isAdmin">
-                        <ion-item class="expand-full">
-                          <ion-label> Es miembro de la comisión directiva</ion-label>
-                          <ion-checkbox 
-                              slot="start"
-                              color="primary"
+                        <div class="mb-3 expand-full">
+                          <label class="form-label"> Es miembro de la comisión directiva</label>
+                          <input type="checkbox" class="form-check-input" 
                               name="executive" formControlName="executive">
-                          </ion-checkbox>
-                        </ion-item>
+                          
+                        
 
-                        <ion-item
-                            *ngIf="profileExecutive()" 
-                            class="expand-full">
-                          <ion-label position="floating">Rol en la comisión</ion-label>
-                          <ion-input
+                        <div class="mb-3 expand-full"
+                            *ngIf="profileExecutive()">
+                          <label class="form-label">Rol en la comisión</label>
+                          <input class="form-control"
                               formControlName="executive_rol" name="executive_rol"
                               autocapitalize="words"
-                              required></ion-input>
-                        </ion-item>
+                              required>
+                        
                       </div>
 
-                    </ion-card-content>
-                  </ion-card>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="col-12">
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Datos del usuario</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      <ion-item class="expand-full">
-                        <ion-label position="floating">Nombre de Usuario</ion-label>
-                        <ion-input
-                            (ionFocus)="usernameFocus=true" (ionBlur)="usernameFocus=false"
+                  <div class="card mb-3">
+                    <div class="card-header">
+                      <h5 class="card-title">Datos del usuario</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="mb-3 expand-full">
+                        <label class="form-label">Nombre de Usuario</label>
+                        <input class="form-control"
+                            (focus)="usernameFocus=true" (blur)="usernameFocus=false"
                             autocapitalize="off"
                             pattern="[a-zA-Z0-9]{1,20}"
                             formControlName="username" name="username"
@@ -111,33 +107,33 @@
                             <i
                             *ngIf="usernameFocus"
                             class="bi bi-at-outline"></i>
-                        </ion-input>
-                      </ion-item>
-                      <ion-note *ngIf="usernameFocus" [ngStyle]="{ color: form.get('username').dirty && form.get('username').errors !== null ? 'red': '#000' }">
+                        
+                      
+                      <small class="text-muted" *ngIf="usernameFocus" [ngStyle]="{ color: form.get('username').dirty && form.get('username').errors !== null ? 'red': '#000' }">
                         Máximo 20 caracteres alfanuméricos sin símbolos ni espacios
-                      </ion-note>
+                      </small>
 
-                      <ion-item class="expand-full">
-                        <ion-label position="floating">E-Mail</ion-label>
-                        <ion-input
+                      <div class="mb-3 expand-full">
+                        <label class="form-label">E-Mail</label>
+                        <input class="form-control"
                             autocapitalize="off"
                             pattern="[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+(\.[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+)*@[a-zA-Z0-9_][\-a-zA-Z0-9_]*(\.[\-a-zA-Z0-9_]+)*\.[cC][oO][mM](:[0-9]{1,5})?"
                             name="email" formControlName="email"
                             required>
-                        </ion-input>
-                      </ion-item>
+                        
+                      
 
-                      <ion-item class="expand-full" *ngIf="isPost && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)">
+                      <div class="mb-3 expand-full" *ngIf="isPost && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)">
                         <div class="col p-0">
                           <div class="row">
                             <div class="col p-0 col-10">
-                              <ion-label position="floating">Contraseña </ion-label>
-                              <ion-input
+                              <label class="form-label">Contraseña </label>
+                              <input class="form-control text-right"
                                   tabindex="0"
-                                  id="ctr-1" class="text-right"
+                                  id="ctr-1"
                                   pattern=".{8,}"
                                   type="password" 
-                                  formControlName="password" name="password"></ion-input>
+                                  formControlName="password" name="password">
                             </div>
 
                             <div class="col p-0 align-self-center col-2">
@@ -145,59 +141,58 @@
                             </div>
                           </div>
                         </div>
-                      </ion-item>
+                      
 
-                      <ion-note [ngStyle]="{ color: (form.get('passwordRepeat').dirty || form.get('password').dirty) && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">
+                      <small class="text-muted" [ngStyle]="{ color: (form.get('passwordRepeat').dirty || form.get('password').dirty) && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">
                         <p *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null && form.get('passwordRepeat').errors.hasOwnProperty('mustMatch')"> - Atención: Las contraseñas no coinciden</p>
                         <p *ngIf="form.get('password').dirty && form.get('password').errors !== null       && form.get('password').errors.hasOwnProperty('pattern')"> - Atención: Longitud mínima 8 cáracteres</p>
-                      </ion-note>
+                      </small>
 
-                      <ion-item class="expand-full" *ngIf="!isUserProfile && isUserSignUp">
+                      <div class="mb-3 expand-full" *ngIf="!isUserProfile && isUserSignUp">
                         <div class="col p-0">
                           <div class="row">
                             <div class="col p-0 col-10">
-                              <ion-label position="floating">Repetir Contraseña</ion-label>
-                              <ion-input
+                              <label class="form-label">Repetir Contraseña</label>
+                              <input class="form-control text-right"
                                   tabindex="0"
                                   id="ctr-1"
                                   type="password"
-                                  class="text-right"
-                                  name="passwordRepeat" formControlName="passwordRepeat"></ion-input>
+                                  name="passwordRepeat" formControlName="passwordRepeat">
                             </div>
                             <div class="col p-0 align-self-center col-2">
                             </div>
                           </div>
                         </div>
-                      </ion-item>
+                      
 
-                      <ion-note [ngStyle]="{ color: form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">
+                      <small class="text-muted" [ngStyle]="{ color: form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">
                         <p *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null"> - Atención: Las contraseñas no coinciden</p>
-                      </ion-note>
+                      </small>
 
-                      <ion-item class="expand-full" *ngIf="!isPost && isLogged()">
+                      <div class="mb-3 expand-full" *ngIf="!isPost && isLogged()">
                         <button class="btn btn-outline-primary" (click)="changePassword()">Cambiar contraseña</button>
-                      </ion-item>
-                    </ion-card-content>
-                  </ion-card>
+                      
+                    </div>
+                  </div>
                 </div>
 
                 <div class="col-12" *ngIf="!isUserProfile && isLogged() && !updatingSelect">
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Configuración</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      <ion-item class="expand-full">
-                        <ion-label [position]="'stacked'">Rol</ion-label>
-                        <ion-select
-                            #sRol okText="Aceptar" cancelText="Cancelar"
+                  <div class="card mb-3">
+                    <div class="card-header">
+                      <h5 class="card-title">Configuración</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="mb-3 expand-full">
+                        <label class="form-label">Rol</label>
+                        <select class="form-select"
+                            #sRol
                             name="role_id" formControlName="role_id"
                             required>
-                          <ion-select-option *ngFor="let r of roles" [value]="r.id">{{r.type}}</ion-select-option>
-                        </ion-select>
-                      </ion-item>
-                    </ion-card-content>
-                  </ion-card>
+                          <option *ngFor="let r of roles" [value]="r.id">{{r.type}}</option>
+                        </select>
+                      
+                    </div>
+                  </div>
                 </div>
 
                 <div class="col-12 justify-content-end">
@@ -212,17 +207,18 @@
                     <div class="col-12 col-sm-3 align-self-center">
                       <button class="btn btn-outline-dark btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i> Cancelar</button>
                     </div>
-                  </div>
                 </div>
               </div>
-            </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
   
   <ng-template #spinner>
     <div class="row justify-content-center" *ngIf="(usuario.role_id == 3 || usuario.role_id == 2)">
-      <ion-spinner></ion-spinner>
+      <div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
     </div>
   </ng-template>
 </div>

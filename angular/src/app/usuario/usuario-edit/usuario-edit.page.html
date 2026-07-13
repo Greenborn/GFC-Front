@@ -13,35 +13,32 @@
           <div class="row justify-content-center">
             <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
           </div>
-          <ion-item class="pt-3">
-            <ion-label position="floating">Nombre</ion-label>
-            <ion-input
-              class="expand-full"
+          <div class="mb-3 pt-3">
+            <label class="form-label">Nombre</label>
+            <input class="form-control expand-full"
               name="username"
               [ngModel]="usuario.username"
               autocapitalize="words"
               required
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Email</ion-label>
-            <ion-input
-              class="expand-full"
+            >
+          
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input class="form-control expand-full"
               name="email"
               type="email"
               [ngModel]="usuario.email"
               required
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Imagen(url)</ion-label>
-            <ion-input
-              class="expand-full"
+            >
+          
+          <div class="mb-3">
+            <label class="form-label">Imagen(url)</label>
+            <input class="form-control expand-full"
               name="img_url"
               [(ngModel)]="usuario.img_url"
               required
-            ></ion-input>
-          </ion-item>
+            >
+          
           <button class="btn btn-outline-primary w-100" type="submit" [disabled]="!f.valid">Guardar</button>
         </form>
       </div>

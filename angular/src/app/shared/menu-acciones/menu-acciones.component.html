@@ -9,14 +9,14 @@
   </ion-button>
 </ion-buttons> -->
 
-<ion-list>  
-  <ion-item 
+<div class="list-group list-group-flush">  
+  <div class="mb-3" 
     *ngFor="let a of acciones"
     (click)="action(a.accion, a.params)"
   >
-    <ion-icon [name]="a.icon"></ion-icon>
-    <ion-label class="ion-margin-start">{{a.label}}</ion-label>
-  </ion-item>
+    <i class="bi" [ngClass]="'bi-' + a.icon"></i>
+    <label class="form-label ion-margin-start">{{a.label}}</label>
+  </div>
   <!-- <ion-item (click)="router.navigate(['/usuarios/editar/', id])">
     <ion-icon name="create"></ion-icon>
     <ion-label class="ion-margin-start">Editar</ion-label>
@@ -27,4 +27,4 @@
   </ion-item> -->
 
 
-</ion-list>
+</div>

@@ -5,13 +5,11 @@
   class="btn btn-link"
   [disabled]="passwordInput.value == ''"
 >
-  <ion-icon
+  <i class="bi bi-eye-slash"
     *ngIf="visibility == true; else noVisible"
-    size="large"
-    name="eye-off-outline"
-  ></ion-icon>
+  ></i>
   <ng-template #noVisible>
-    <ion-icon size="large" name="eye-outline"></ion-icon>
+    <i class="bi bi-eye"></i>
   </ng-template>
 </button>
 <!-- </ion-col> -->

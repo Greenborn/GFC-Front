@@ -14,15 +14,15 @@
     </div>
   </div>
 
-  <div slot="start" class="w-100 inner-content float-md-start">
+  <div class="w-100 inner-content float-md-start">
     <div class="container-fluid">
       <div class="row justify-content-center align-self-center">
         <div class="col">
           <div class="row">
             <div class="col">
               <div class="row pt-3">
-                <ion-item *ngIf="concursantes.length > 1; else unicoElemento" class="w-100 mb-3">
-                    <ion-label position="floating">Concursante</ion-label>
+                <div class="mb-3" *ngIf="concursantes.length > 1; else unicoElemento" class="w-100 mb-3">
+                    <label class="form-label">Concursante</label>
                     <app-searchable-select
                       [(ngModel)]="profileContest.profile_id"
                       [items]="concursantes"
@@ -31,30 +31,29 @@
                       placeholder="Seleccionar concursante"
                     ></app-searchable-select>
                   
-                </ion-item>
+                </div>
                 <ng-template #unicoElemento>
                 
-                <ion-item class="w-100 mb-3">
-                <ion-label position="floating">Concursante</ion-label>
-                <ion-input color="dark"
+                <div class="mb-3" class="w-100 mb-3">
+                <label class="form-label">Concursante</label>
+                <input class="form-control" bg-dark text-white
                 [(ngModel)]="concursantes[0].name"
                 disabled>
                   
-                </ion-input>
-              </ion-item>
+                
+              </div>
                 </ng-template>
               </div>
               <div class="row pt-3">
-                <ion-item class="w-100 mb-3">
-                  <ion-label position="floating">Categoría</ion-label>
-                  <ion-select [(ngModel)]="profileContest.category_id" okText="Aceptar" cancelText="Cancelar" ngDefaultControl>
-                    <ion-select-option
+                <div class="mb-3" class="w-100 mb-3">
+                  <label class="form-label">Categoría</label>
+                  <select class="form-select" [(ngModel)]="profileContest.category_id">
+                    <option
                       *ngFor="let c of categorias"
                       [value]="c.id"
-                      >{{ c.name }}</ion-select-option
-                    >
-                  </ion-select>
-                </ion-item>
+                      >{{ c.name }}</option>
+                  </select>
+                </div>
               </div>
 
               <div class="row justify-content-center pt-3">

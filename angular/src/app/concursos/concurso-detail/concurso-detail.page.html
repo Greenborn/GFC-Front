@@ -7,17 +7,17 @@
               <ul class="nav nav-pills mb-3">
                 <li class="nav-item"><a class="nav-link" tab="informacion">
                   <i class="bi bi-info-circle"></i>
-                  <ion-label>Información</ion-label>
+                  <label class="form-label">Información</label>
                 </a></li>
                 
                 <li class="nav-item"><a class="nav-link" tab="concursantes" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || concurso.judged">
                   <i class="bi bi-people"></i>
-                  <ion-label>Concursantes</ion-label>
+                  <label class="form-label">Concursantes</label>
                 </a></li>
         
                 <li class="nav-item"><a class="nav-link" tab="fotografias" (click)="goToFotografias()">
                   <i class="bi bi-images"></i>
-                  <ion-label>Fotografias</ion-label>
+                  <label class="form-label">Fotografias</label>
                 </a></li>
 
               </ul>

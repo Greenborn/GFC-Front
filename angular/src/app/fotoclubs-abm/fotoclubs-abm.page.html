@@ -47,8 +47,8 @@
               </div>
             </div>
 
-            <ion-list class="d-none d-sm-block cabecera">
-              <ion-item color="dark">
+            <div class="list-group list-group-flush d-none d-sm-block cabecera">
+              <div class="mb-3" color="dark">
                 <div class="container-fluid">
                   <div class="col">
                     <div class="row">
@@ -72,11 +72,11 @@
                     </div>
                   </div>
                 </div>
-              </ion-item>
-            </ion-list>
+              </div>
+            </div>
             
-            <ion-list *ngIf="fotoclubs.length > 0; else texto">
-              <ion-item *ngFor="let f of fotoclubs">
+            <div class="list-group list-group-flush" *ngIf="fotoclubs.length > 0; else texto">
+              <div class="mb-3" *ngFor="let f of fotoclubs">
                 <div class="container-fluid">
                   <div class="row">
                     <div class="col-12 col-sm-9 col-md-10">
@@ -85,19 +85,17 @@
                           <div class="row">
                             <div class="col-12">
                               <div class="row">
-                                <ion-thumbnail class="h-100">
-                                  <ion-img
-                                    class="imgFotoclub"
-                                    [ngStyle]="aspecto && (f.photo_url == null || f.photo_url == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
-                                    [src]="f.photo_url != null && f.photo_url != ''  ? configService.imageUrl(f.photo_url) : './assets/no-pictures.png' "
-                                  ></ion-img>
-                                </ion-thumbnail>
+                                <img
+                                  class="imgFotoclub h-100"
+                                  [ngStyle]="aspecto && (f.photo_url == null || f.photo_url == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
+                                  [src]="f.photo_url != null && f.photo_url != ''  ? configService.imageUrl(f.photo_url) : './assets/no-pictures.png' "
+                                >
 
-                                <ion-label class="ms-3">
-                                  <ion-text title="Nombre">
+                                <label class="form-label ms-3">
+                                  <span title="Nombre">
                                     <b>{{f.name}}</b>
-                                  </ion-text>
-                                </ion-label>
+                                  </span>
+                                </label>
                               </div>
                             </div>
                           </div>
@@ -128,11 +126,11 @@
                     </div>
                   </div>
                 </div>
-              </ion-item>
-            </ion-list>
+              </div>
+            </div>
 
             <ng-template #texto>
-                <ion-item>No hay fotoclubs</ion-item>
+                <div class="mb-3">No hay fotoclubs</div>
             </ng-template>
 
           </div>
