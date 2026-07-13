@@ -63,7 +63,7 @@
                 >
                   <div class="cc-overlay"></div>
                   <div class="cc-body">
-                    <span class="cc-badge">{{ item.concurso.active ? 'Abierto' : 'Cerrado' }}</span>
+                    <span class="cc-badge" [class.cc-badge--open]="item.concurso.active" [class.cc-badge--closed]="!item.concurso.active">{{ item.concurso.active ? 'Abierto' : 'Cerrado' }}</span>
                     <h2 class="cc-title">{{item.concurso.name}}</h2>
                     <p class="cc-meta">
                       Desde: {{get_fecha_formateada(item.concurso.start_date) }} - Hasta:
