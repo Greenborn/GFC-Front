@@ -81,7 +81,7 @@
                         <ion-col size="3">Sección</ion-col>
                         <ion-col size="2">Miniatura</ion-col>
                         <ion-col size="2">Obra</ion-col>
-                        <ion-col size="2">Métrica</ion-col>
+                        <ion-col size="2">Premio / Puntaje</ion-col>
                       </ion-row>
                     </ion-grid>
                   </ion-item>
@@ -136,11 +136,14 @@
                 <div class="accordion-body" *ngIf="expandedContests[i]">
                   <div class="rank-table">
                     <div class="rank-table-header">
-                      <div class="rank-col rank-col-cat">Categoría</div>
-                      <div class="rank-col rank-col-sec">Sección</div>
                       <div class="rank-col rank-col-thumb">Miniatura</div>
-                      <div class="rank-col rank-col-title">Obra</div>
-                      <div class="rank-col rank-col-metric">Premio / Puntaje</div>
+                      <div class="rank-col rank-col-fields">
+                        <div class="row-field">Categoría</div>
+                        <div class="row-field">Sección</div>
+                        <div class="row-field">Obra</div>
+                        <div class="row-field">Premio</div>
+                        <div class="row-field">Puntaje</div>
+                      </div>
                     </div>
                     <div class="rank-table-body">
                       <ng-container *ngFor="let r of sortResults(it?.results)">
