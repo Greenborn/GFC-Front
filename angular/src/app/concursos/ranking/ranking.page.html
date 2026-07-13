@@ -27,17 +27,21 @@
 
                 <div class="rank-table-body">
                   <div class="rank-table-row" *ngFor="let rg of obtener_filas(r)">
-                    <div class="rank-col rank-col-pos" [class.rank-1]="rg.posicion_temporada == 1" [class.rank-2]="rg.posicion_temporada == 2" [class.rank-3]="rg.posicion_temporada == 3">#{{rg.posicion_temporada}}</div>
-                    <div class="rank-col rank-col-name cap" [class.rank-1]="rg.posicion_temporada == 1" [class.rank-2]="rg.posicion_temporada == 2" [class.rank-3]="rg.posicion_temporada == 3">{{rg.name}}</div>
-                    <div class="rank-col rank-col-score" [class.rank-1]="rg.posicion_temporada == 1" [class.rank-2]="rg.posicion_temporada == 2" [class.rank-3]="rg.posicion_temporada == 3">
-                      {{rg.puntaje_temporada}}
-                      <span class="habilitado-badge" *ngIf="isHabilitado(rg, r)">Habilitado</span>
+                    <div class="rank-row-main">
+                      <div class="rank-col rank-col-pos" [class.rank-1]="rg.posicion_temporada == 1" [class.rank-2]="rg.posicion_temporada == 2" [class.rank-3]="rg.posicion_temporada == 3">#{{rg.posicion_temporada}}</div>
+                      <div class="rank-col rank-col-name cap" [class.rank-1]="rg.posicion_temporada == 1" [class.rank-2]="rg.posicion_temporada == 2" [class.rank-3]="rg.posicion_temporada == 3">{{rg.name}}</div>
+                      <div class="rank-col rank-col-score" [class.rank-1]="rg.posicion_temporada == 1" [class.rank-2]="rg.posicion_temporada == 2" [class.rank-3]="rg.posicion_temporada == 3">
+                        {{rg.puntaje_temporada}}
+                        <span class="habilitado-badge" *ngIf="isHabilitado(rg, r)">Habilitado</span>
+                      </div>
                     </div>
-                    <div class="rank-col rank-col-prizes">
-                      <span class="prize-badge" *ngFor="let premio of rg.premios_temporada">{{premio.cantidad}} - {{premio.nombre}}</span>
-                    </div>
-                    <div class="rank-col rank-col-action">
-                      <ion-button size="small" fill="clear" (click)="verDetalle(rg, r)">Detalles</ion-button>
+                    <div class="rank-row-sub">
+                      <div class="rank-col rank-col-prizes">
+                        <span class="prize-badge" *ngFor="let premio of rg.premios_temporada">{{premio.cantidad}} - {{premio.nombre}}</span>
+                      </div>
+                      <div class="rank-col rank-col-action">
+                        <ion-button size="small" fill="clear" (click)="verDetalle(rg, r)">Detalles</ion-button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -65,12 +69,16 @@
 
                 <div class="rank-table-body">
                   <div class="rank-table-row" *ngFor="let r of ranking.fotoclubs">
-                    <div class="rank-col rank-col-pos" [class.rank-1]="r.posicion_temporada == 1" [class.rank-2]="r.posicion_temporada == 2" [class.rank-3]="r.posicion_temporada == 3">#{{r.posicion_temporada}}</div>
-                    <div class="rank-col rank-col-name cap" [class.rank-1]="r.posicion_temporada == 1" [class.rank-2]="r.posicion_temporada == 2" [class.rank-3]="r.posicion_temporada == 3">{{r.name}}</div>
-                    <div class="rank-col rank-col-score" [class.rank-1]="r.posicion_temporada == 1" [class.rank-2]="r.posicion_temporada == 2" [class.rank-3]="r.posicion_temporada == 3">{{r.puntaje_temporada}}</div>
-                    <div class="rank-col rank-col-eff">{{r.porc_efectividad_anual.porcentaje | number: '1.1'}}%</div>
-                    <div class="rank-col rank-col-prizes">
-                      <span class="prize-badge" *ngFor="let premio of r.premios_temporada">{{premio.cantidad}} - {{premio.nombre}}</span>
+                    <div class="rank-row-main">
+                      <div class="rank-col rank-col-pos" [class.rank-1]="r.posicion_temporada == 1" [class.rank-2]="r.posicion_temporada == 2" [class.rank-3]="r.posicion_temporada == 3">#{{r.posicion_temporada}}</div>
+                      <div class="rank-col rank-col-name cap" [class.rank-1]="r.posicion_temporada == 1" [class.rank-2]="r.posicion_temporada == 2" [class.rank-3]="r.posicion_temporada == 3">{{r.name}}</div>
+                      <div class="rank-col rank-col-score" [class.rank-1]="r.posicion_temporada == 1" [class.rank-2]="r.posicion_temporada == 2" [class.rank-3]="r.posicion_temporada == 3">{{r.puntaje_temporada}}</div>
+                      <div class="rank-col rank-col-eff">{{r.porc_efectividad_anual.porcentaje | number: '1.1'}}%</div>
+                    </div>
+                    <div class="rank-row-sub">
+                      <div class="rank-col rank-col-prizes">
+                        <span class="prize-badge" *ngFor="let premio of r.premios_temporada">{{premio.cantidad}} - {{premio.nombre}}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
