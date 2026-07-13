@@ -184,6 +184,12 @@ ion-content {
     font-size: 0.9rem;
 }
 
+@media (max-width: 767px) {
+    .rank-col-pos {
+        min-width: 40px;
+    }
+}
+
 .rank-col-pos.rank-1 {
     font-size: 1.25rem;
     color: #d4a017;
@@ -225,6 +231,12 @@ ion-content {
     font-size: 0.95rem;
 }
 
+@media (max-width: 767px) {
+    .rank-col-score {
+        min-width: 60px;
+    }
+}
+
 .rank-col-score.rank-1 {
     font-size: 1.25rem;
 }
@@ -245,6 +257,12 @@ ion-content {
     font-weight: 500;
 }
 
+@media (max-width: 767px) {
+    .rank-col-eff {
+        min-width: 60px;
+    }
+}
+
 .rank-col-prizes {
     width: 30%;
     min-width: 130px;
@@ -253,10 +271,22 @@ ion-content {
     gap: 4px;
 }
 
+@media (max-width: 767px) {
+    .rank-col-prizes {
+        min-width: 80px;
+    }
+}
+
 .rank-col-action {
     width: 10%;
     min-width: 80px;
     text-align: right;
+}
+
+@media (max-width: 767px) {
+    .rank-col-action {
+        min-width: 60px;
+    }
 }
 
 .rank-col-action ion-button {

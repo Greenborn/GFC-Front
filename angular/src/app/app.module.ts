@@ -6,8 +6,6 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { CommonModule } from '@angular/common'
-
 import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 import { CondicionesServicioComponent } from './condiciones-servicio/condiciones-servicio.component';
 import { NavbarComponent } from './nav/navbar/navbar.component';
@@ -50,12 +48,10 @@ import { IonicSelectableModule } from 'ionic-selectable';
     SharedModule,
     AppRoutingModule,
     ConcursosPageModule,
-    CommonModule,
     IonicSelectableModule,
     AuthModule
   ],
   providers: [
-    FooterPostComponent,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: ErrorHandler,

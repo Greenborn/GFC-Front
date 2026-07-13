@@ -76,15 +76,21 @@
 }
 
 .cc-desc {
-  font-size: 0.85rem;
-  line-height: 1.5;
-  opacity: 0.85;
-  margin: 0 auto 0.5rem;
-  max-width: 320px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    opacity: 0.85;
+    margin: 0 auto 0.5rem;
+    max-width: 320px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+@media (max-width: 360px) {
+    .cc-desc {
+        max-width: 100%;
+    }
 }
 
 .cc-tags {

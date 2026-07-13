@@ -60,6 +60,12 @@
     max-width: 320px;
 }
 
+@media (max-width: 360px) {
+    .uc-desc {
+        max-width: 100%;
+    }
+}
+
 .uc-btn {
     --border-radius: 999px;
     font-weight: 600;

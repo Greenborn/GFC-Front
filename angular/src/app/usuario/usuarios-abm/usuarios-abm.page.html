@@ -3,7 +3,7 @@
     <ion-row>
       <ion-col>
         <ion-row>
-          <ion-col size="11.5" push="0.25">
+          <ion-col size="12" push="0">
             <!-- usuario, email, Fotoclub/Agrupación -->
             <ion-grid class="ion-no-padding ion-padding-bottom">
               <ion-row
@@ -64,7 +64,7 @@
                         <!-- <b>{{rolificador.getNombreUsuarios(userLogged.role_id)}}</b> -->
                       </ion-col>
                       <!-- <ion-col size="2">Email</ion-col> -->
-                      <ion-col size="2.5" size-md="2">
+                      <ion-col size="3" size-md="2">
                         <app-th-sort
                           *ngIf="rolificador.isAdmin(userLogged)"
                           [sortFn]="funcionesOrdenamiento['executive_rol']"
@@ -75,7 +75,7 @@
                           <b>Rol</b>
                         </ion-text> -->
                       </ion-col>
-                      <ion-col size="2.5" size-md="2">
+                      <ion-col size="3" size-md="2">
                         <app-th-sort
                           *ngIf="rolificador.isAdmin(userLogged)"
                           [sortFn]="funcionesOrdenamiento['rol']"
@@ -86,7 +86,7 @@
                           <b>Rol</b>
                         </ion-text> -->
                       </ion-col>
-                      <ion-col size="2.5" size-md="2">
+                      <ion-col size="3" size-md="2">
                         <ion-row>
                           <app-th-sort
                             *ngIf="rolificador.isAdmin(userLogged)"
@@ -107,7 +107,7 @@
                           title="Estado"
                         ></app-th-sort>
                       </ion-col>
-                      <ion-col size="1.5" size-md="1">
+                      <ion-col size="1" size-md="1">
                         <!-- <b>Acciones</b> -->
                       </ion-col>
                     </ion-row>
@@ -122,7 +122,7 @@
             <ion-list *ngIf="miembros.length > 0; else texto">
               <ion-item *ngFor="let m of miembros">
                 <ion-grid *ngIf="m != undefined || m != null">
-                  <ion-row size="12">
+                  <ion-row>
                   <ion-col size="12" size-md="4" size-sm="3">
                     <ion-row
                       class="
@@ -130,10 +130,10 @@
                       "
                     >
                         <!-- user card -->
-                        <ion-col size="3" size-sm="1.3">
+                        <ion-col size="3" size-sm="2">
                           <app-usuario-img [src]="m.img_url != null ? configService.imageUrl(m.img_url) : '' "></app-usuario-img>
                         </ion-col>
-                        <ion-col size="8" size-sm="10.7">
+                          <ion-col size="8" size-sm="10">
                           <ion-label class="ion-margin-start">
                             <ion-card-subtitle title="Username" *ngIf="m.user != null"
                               ><i>@{{m.user.username}}</i></ion-card-subtitle
@@ -164,7 +164,7 @@
                     </ion-col>
 
                     <ion-col
-                    size="2.5"
+                    size="3"
                     size-md="2"
                     class="ion-hide-sm-down ion-align-self-center"
                   >
@@ -173,7 +173,7 @@
                     >
                   </ion-col>
                     <ion-col
-                      size="2.5"
+                      size="3"
                       size-md="2"
                       class="ion-hide-sm-down ion-align-self-center"
                     >
@@ -182,7 +182,7 @@
                       >
                     </ion-col>
                     <ion-col
-                      size="2.5"
+                      size="3"
                       size-md="2"
                       class="ion-hide-sm-down ion-align-self-center"
                     >
@@ -200,7 +200,7 @@
                       </ion-text>
                     </ion-col>
                     <ion-col
-                      size="1.5"
+                      size="2"
                       size-md="1"
                       class="ion-align-self-center ion-hide-sm-down"
                     >

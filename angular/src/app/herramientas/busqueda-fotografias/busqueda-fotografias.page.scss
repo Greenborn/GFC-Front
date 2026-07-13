@@ -103,4 +103,11 @@ ion-card-subtitle strong {
 .centrado-un-resultado ion-col {
   max-width: 400px;
   flex: 1 1 400px;
+}
+
+@media (max-width: 420px) {
+  .centrado-un-resultado ion-col {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
 } 

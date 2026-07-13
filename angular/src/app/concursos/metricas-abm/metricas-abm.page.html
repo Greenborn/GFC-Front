@@ -26,19 +26,21 @@
     <ion-row class="ion-justify-content-center">
       <!-- filtro -->
       <ion-col size="3" *ngIf="mostrarFiltro">
-        <ion-col>
-          <ion-title class="ion-margin-top">Búsqueda</ion-title>
+        <ion-row>
+          <ion-col>
+            <ion-title class="ion-margin-top">Búsqueda</ion-title>
 
-          <app-search-bar
-            [(data)]="metricas"
-            [atributosObj]="atributosBusqueda"
-          ></app-search-bar>
-        </ion-col>
+            <app-search-bar
+              [(data)]="metricas"
+              [atributosObj]="atributosBusqueda"
+            ></app-search-bar>
+          </ion-col>
+        </ion-row>
       </ion-col>
 
       <ion-col>
         <ion-row>
-          <ion-col size="11.5" push="0.25">
+          <ion-col size="12" push="0">
             <ion-row
               class="
                 ion-justify-content-start
@@ -109,7 +111,7 @@
                 >
                   <!-- <ion-grid *ngIf="(resultadosConcurso | async) as contestResults"> -->
                   <ion-grid class="ion-no-padding">
-                    <ion-row size="12">
+                    <ion-row>
                       <ion-col class="ion-align-self-start">
                         <ion-item-group *ngFor="let s of metricas">
                           <ion-item-divider lines="full" mode="ios" style="--inner-padding-end: 16px">

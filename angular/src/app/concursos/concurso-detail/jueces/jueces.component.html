@@ -7,21 +7,23 @@
     <ion-row class="ion-justify-content-center">
       <!-- filtro -->
       <ion-col size="12" size-md="3" *ngIf="mostrarFiltro">
-        <ion-col>
-          <ion-title class="ion-margin-top">Búsqueda</ion-title>
-  
-          <app-search-bar
-            [(data)]="inscriptos"
-            [atributosObj]="atributosBusqueda"
-          ></app-search-bar>
-  
-  
-        </ion-col>
+        <ion-row>
+          <ion-col>
+            <ion-title class="ion-margin-top">Búsqueda</ion-title>
+    
+            <app-search-bar
+              [(data)]="inscriptos"
+              [atributosObj]="atributosBusqueda"
+            ></app-search-bar>
+    
+    
+          </ion-col>
+        </ion-row>
       </ion-col>
   
       <ion-col>
         <ion-row *ngIf="(auth.user | async) as u">
-          <ion-col size="11.5" push="0.25">
+          <ion-col size="12" push="0">
             <ion-row
               class="
                 ion-justify-content-start
