@@ -27,6 +27,8 @@ export class RankingPage implements OnInit {
   public ranking:any = {}
   public sentido_orden:number = -1
   public anio:number = new Date().getFullYear()
+  public expandedCategories: boolean[] = []
+  public fotoclubExpanded: boolean = true
 
   async ngOnInit() {
     
@@ -44,6 +46,14 @@ export class RankingPage implements OnInit {
     if (r.nombre_categoria !== 'Estímulo' || r.pestania_seccion != -1) return false;
     const generalProfile = r.profiles.find(p => p.profile_id === rg.profile_id);
     return generalProfile && generalProfile.score_total >= 240;
+  }
+
+  toggleCategory(i: number) {
+    this.expandedCategories[i] = !this.expandedCategories[i];
+  }
+
+  toggleFotoclub() {
+    this.fotoclubExpanded = !this.fotoclubExpanded;
   }
 
   procesar_ranking( r ){
@@ -270,6 +280,7 @@ export class RankingPage implements OnInit {
     await loading.present()
     this.rankingService.getAll(`year=${this.anio}`).subscribe(r => {
       this.ranking = this.procesar_ranking( r )
+      this.expandedCategories = this.ranking.profiles?.map(() => true) ?? []
 
       // Collect unique profile IDs from the general ranking
       const profileIdSet: Set<number> = new Set()
