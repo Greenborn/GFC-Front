@@ -99,7 +99,7 @@
                           </ion-col>
                           <ion-col size="2" class="cap">{{ img.title }}</ion-col>
                           <ion-col size="2">
-                            <ion-badge>{{ img.metric?.prize }}</ion-badge>
+                            <ion-badge>{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</ion-badge>
                             <span class="ion-margin-start">{{ img.metric?.score }}</span>
                           </ion-col>
                         </ion-row>
@@ -159,7 +159,7 @@
                             </ion-col>
                             <ion-col size="2" class="cap">{{ img.title }}</ion-col>
                             <ion-col size="2">
-                              <ion-badge>{{ img.metric?.prize }}</ion-badge>
+                              <ion-badge>{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</ion-badge>
                               <span class="ion-margin-start">{{ img.metric?.score }}</span>
                             </ion-col>
                           </ion-row>

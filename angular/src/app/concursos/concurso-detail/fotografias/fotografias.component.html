@@ -158,7 +158,7 @@
                             <p><b>{{r.image.title}}</b></p>
                             <p><i>{{r.section?.name}}</i></p>
                             <p *ngIf="concurso?.judged || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ r.image.profile?.name }} {{ r.image.profile?.last_name }}</p>
-                            <p *ngIf="!isContestNotFin"><b>{{ r.metric?.prize ? r.metric.prize : '-' }}</b></p>
+                            <p *ngIf="!isContestNotFin"><b>{{ (r.metric?.prize && r.metric?.prize != '0') ? r.metric.prize : '-' }}</b></p>
                           </div>
                         </div>
                       </div>
@@ -211,7 +211,7 @@
                                 <p><b>{{r.image.title}}</b></p>
                                 <p><i>{{r.section?.name}}</i></p>
                                 <p *ngIf="concurso?.judged || rolificador.esDelegado(u) || rolificador.isAdmin(u)">{{ r.image.profile?.name }} {{ r.image.profile?.last_name }}</p>
-                                <p *ngIf="!isContestNotFin"><b>{{ r.metric?.prize ? r.metric.prize : '-' }}</b></p>
+                                <p *ngIf="!isContestNotFin"><b>{{ (r.metric?.prize && r.metric?.prize != '0') ? r.metric.prize : '-' }}</b></p>
                               </div>
                             </div>
                           </div>
