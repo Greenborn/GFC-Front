@@ -12,15 +12,15 @@
               <div #slide class="app-slide" *ngFor="let s of sliderOne.slidesItems">
                 <div class="app-slide-card member-card">
                   <div class="member-photo">
-                    <ion-img [src]="s.photo_url != null && s.photo_url != '' ? configService.imageUrl(s.photo_url) : './assets/no-pictures.png'"></ion-img>
+                    <img [src]="s.photo_url != null && s.photo_url != '' ? configService.imageUrl(s.photo_url) : './assets/no-pictures.png'" style="width:100%;border-radius:12px;">
                   </div>
                   <div class="member-info">
                     <h3 class="colorTarget">{{s.name}}</h3>
 
                     <div class="member-links">
-                      <a *ngIf="instagramUrl(s.instagram) != null" [href]="instagramUrl(s.instagram)" target="_blank" class="me-3"><ion-icon [color]="aspecto == false ? 'dark' : 'light'" name="logo-instagram"></ion-icon></a>
-                      <a *ngIf="faceUrl(s.facebook) != null" [href]="faceUrl(s.facebook)" target="_blank" class="me-3"><ion-icon [color]="aspecto == false ? 'dark' : 'light'" name="logo-facebook"></ion-icon></a>
-                      <a *ngIf="mailUrl(s.email) != null" href="mailto:{{mailUrl(s.email)}}" target="_blank" class="me-3"><ion-icon [color]="aspecto == false ? 'dark' : 'light'" name="mail"></ion-icon></a>
+                      <a *ngIf="instagramUrl(s.instagram) != null" [href]="instagramUrl(s.instagram)" target="_blank" class="me-3"><i class="bi bi-instagram" [style.color]="aspecto == false ? '#000' : '#fff'"></i></a>
+                      <a *ngIf="faceUrl(s.facebook) != null" [href]="faceUrl(s.facebook)" target="_blank" class="me-3"><i class="bi bi-facebook" [style.color]="aspecto == false ? '#000' : '#fff'"></i></a>
+                      <a *ngIf="mailUrl(s.email) != null" href="mailto:{{mailUrl(s.email)}}" target="_blank" class="me-3"><i class="bi bi-envelope" [style.color]="aspecto == false ? '#000' : '#fff'"></i></a>
                     </div>
                   </div>
                 </div>

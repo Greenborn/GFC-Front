@@ -1,6 +1,6 @@
 <div class="img-thumb">
   <div class="cont">
-    <ion-icon *ngIf="!src || imgError" size="large" name="person-circle-outline"></ion-icon>
+    <i class="bi bi-person-circle fs-1" *ngIf="!src || imgError"></i>
     <span *ngIf="src && !imgError"><img src="{{src}}" (error)="imgError = true" /></span>
   </div>
 </div>

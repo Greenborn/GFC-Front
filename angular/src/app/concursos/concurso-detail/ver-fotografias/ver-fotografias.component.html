@@ -5,11 +5,11 @@
     <div class="image-section">
 
       <button class="btn-close" (click)="modalController.dismiss()">
-        <ion-icon name="close-outline"></ion-icon>
+        <i class="bi bi-x-lg"></i>
       </button>
 
       <button class="btn-nav btn-prev" (click)="anterior()">
-        <ion-icon name="chevron-back-outline"></ion-icon>
+        <i class="bi bi-chevron-left"></i>
       </button>
 
       <div class="image-wrapper"
@@ -39,28 +39,28 @@
       </div>
 
       <button class="btn-nav btn-next" (click)="siguiente()">
-        <ion-icon name="chevron-forward-outline"></ion-icon>
+        <i class="bi bi-chevron-right"></i>
       </button>
 
       <div class="zoom-controls">
         <button class="zoom-btn" (click)="zoomOut()" [disabled]="scale <= minScale">
-          <ion-icon name="remove-outline"></ion-icon>
+          <i class="bi bi-dash-lg"></i>
         </button>
         <span class="zoom-level">{{ scale | number:'1.1-1' }}x</span>
         <button class="zoom-btn" (click)="zoomIn()" [disabled]="scale >= maxScale">
-          <ion-icon name="add-outline"></ion-icon>
+          <i class="bi bi-plus-lg"></i>
         </button>
         <span class="zoom-divider"></span>
         <button class="zoom-btn" (click)="fit()" title="Ajustar">
-          <ion-icon name="scan-outline"></ion-icon>
+          <i class="bi bi-arrows-fullscreen"></i>
         </button>
         <span class="zoom-divider"></span>
         <button class="zoom-btn" (click)="toggleFullscreen()" [title]="isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'">
-          <ion-icon [name]="isFullscreen ? 'contract-outline' : 'expand-outline'"></ion-icon>
+          <i class="bi" [ngClass]="isFullscreen ? 'bi-fullscreen-exit' : 'bi-fullscreen'"></i>
         </button>
         <span class="zoom-divider" *ngIf="canDownload"></span>
         <button class="zoom-btn" *ngIf="canDownload" (click)="downloadImage()" title="Descargar imagen">
-          <ion-icon name="download-outline"></ion-icon>
+          <i class="bi bi-download"></i>
         </button>
       </div>
 
@@ -93,7 +93,7 @@
   <div class="mobile-info" *ngIf="!responsiveService.isDesktop" [class.expanded]="metadataOpen">
     <div class="mobile-info-bar" (click)="toggleMetadata()">
       <span class="mobile-info-title">{{all_data[index].image.title}}</span>
-      <ion-icon [name]="metadataOpen ? 'chevron-down-outline' : 'chevron-up-outline'"></ion-icon>
+      <i class="bi" [ngClass]="metadataOpen ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
     </div>
     <div class="mobile-info-body" *ngIf="metadataOpen">
       <div class="info-item" *ngIf="all_data[index]?.section">
