@@ -30,14 +30,13 @@
                   
 
                     <ion-label position="floating">Concursante</ion-label>
-                    <ionic-selectable  item-content
+                    <app-searchable-select
                       [(ngModel)]="profileContest.profile_id"
                       [items]="concursantes"
                       itemValueField="id"
                       itemTextField="name"
-                      [canSearch]="true"
-                      >
-                    </ionic-selectable>
+                      placeholder="Seleccionar concursante"
+                    ></app-searchable-select>
                  
                 </ion-item>
                 <ng-template #unicoElemento 

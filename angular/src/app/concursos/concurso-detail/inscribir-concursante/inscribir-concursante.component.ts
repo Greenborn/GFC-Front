@@ -7,7 +7,7 @@ import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContest, ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
-// import { IonicSelectableComponent } from 'ionic-selectable';
+
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
@@ -58,7 +58,6 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
     if (this.datosCargados()) {
       // console.log("concursantes: ", this.concursantes[0].id)
       if(!this.rolificador.esConcursante(await this.authService.user) ){
-        this.profileContest.profile_id = Number(this.profileContest.profile_id['id']); // Agregado por cambio en select
       } else {
         this.profileContest.profile_id = this.concursantes[0].id
       }

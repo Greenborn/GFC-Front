@@ -1,0 +1,109 @@
+.searchable-select {
+  position: relative;
+  width: 100%;
+  font-family: inherit;
+}
+
+.select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border: 1px solid var(--ion-color-light-shade, #ccc);
+  border-radius: 6px;
+  background: var(--ion-item-background, #fff);
+  cursor: pointer;
+  min-height: 44px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.select-trigger:hover {
+  border-color: var(--ion-color-primary, #3880ff);
+}
+
+.select-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ion-text-color, #000);
+}
+
+.select-text.placeholder {
+  color: var(--ion-color-medium, #92949c);
+}
+
+.select-arrow {
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--ion-color-medium, #92949c);
+  transition: transform 0.2s;
+}
+
+.select-arrow.open {
+  transform: rotate(180deg);
+}
+
+.select-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--ion-item-background, #fff);
+  border: 1px solid var(--ion-color-light-shade, #ccc);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  max-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-wrapper {
+  padding: 8px;
+  border-bottom: 1px solid var(--ion-color-light-shade, #eee);
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--ion-color-light-shade, #ccc);
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  background: var(--ion-background-color, #fff);
+  color: var(--ion-text-color, #000);
+}
+
+.search-input:focus {
+  border-color: var(--ion-color-primary, #3880ff);
+}
+
+.options-list {
+  overflow-y: auto;
+  max-height: 240px;
+}
+
+.option-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  color: var(--ion-text-color, #000);
+}
+
+.option-item:hover {
+  background: var(--ion-color-light, #f4f5f8);
+}
+
+.option-item.selected {
+  background: var(--ion-color-primary-tint, #d7e6ff);
+  font-weight: 500;
+}
+
+.option-empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--ion-color-medium, #92949c);
+}

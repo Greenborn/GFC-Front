@@ -22,9 +22,6 @@ import { GlobalErrorHandler } from './services/global-error-handler';
 import { FooterPostComponent } from './nav/footer/footer-post/footer-post.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IonicSelectableModule } from 'ionic-selectable';
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +45,6 @@ import { IonicSelectableModule } from 'ionic-selectable';
     SharedModule,
     AppRoutingModule,
     ConcursosPageModule,
-    IonicSelectableModule,
     AuthModule
   ],
   providers: [

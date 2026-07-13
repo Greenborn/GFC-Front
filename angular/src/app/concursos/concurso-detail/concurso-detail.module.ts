@@ -22,14 +22,12 @@ import { InscribirJuecesComponent } from './inscribir-jueces/inscribir-jueces.co
 import { VerFotografiasComponent } from './ver-fotografias/ver-fotografias.component';
 import { FiltrosOrdenModalComponent } from './fotografias/filtros-orden-modal.component';
 
-import { IonicSelectableModule } from 'ionic-selectable';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     ConcursoDetailPageRoutingModule,
-    IonicSelectableModule,
     SharedModule 
   ],
   declarations: [

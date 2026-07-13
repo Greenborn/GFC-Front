@@ -13,6 +13,7 @@ import { ThSortComponent } from './th-sort/th-sort.component';
 import { BtnPostComponent } from './btn-post/btn-post.component';
 import { ContestStatusChipComponent } from './contest-status-chip/contest-status-chip.component';
 import { SearchSelectComponent } from './search-select/search-select.component';
+import { SearchableSelectComponent } from './searchable-select/searchable-select.component';
 import { SlidesComponent } from './slides/slides.component';
 
 
@@ -22,6 +23,7 @@ import { SlidesComponent } from './slides/slides.component';
     UsuarioImgComponent,
     SearchBarComponent,
     SearchSelectComponent,
+    SearchableSelectComponent,
     MenuAccionesComponent,
     InputOjoComponent,
     BtnSortComponent,
@@ -47,6 +49,7 @@ import { SlidesComponent } from './slides/slides.component';
     UsuarioImgComponent, 
     SearchBarComponent, 
     SearchSelectComponent,
+    SearchableSelectComponent,
     MenuAccionesComponent, 
     InputOjoComponent,
     BtnSortComponent,
