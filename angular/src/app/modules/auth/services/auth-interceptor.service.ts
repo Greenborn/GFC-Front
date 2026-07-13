@@ -28,7 +28,8 @@ export class AuthInterceptorService implements HttpInterceptor {
 
     const LOG_URL = 'https://debug.greenborn.com.ar/api/console-log';
 
-    const uniqueId = this.ssoAuth.getUniqueId();
+    let uniqueId: string | null = null;
+    try { uniqueId = this.ssoAuth.getUniqueId(); } catch {}
     if (uniqueId) {
       request = request.clone({
         params: request.params.set('unique_id', uniqueId)

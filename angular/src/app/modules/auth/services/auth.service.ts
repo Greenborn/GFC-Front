@@ -30,8 +30,13 @@ export class AuthService {
     // this.updateUser()
   }
 
-  get token(): string{ 
-    return localStorage.getItem(this.config.tokenKey)
+  get token(): string {
+    try {
+      return localStorage.getItem(this.config.tokenKey)
+    } catch (e) {
+      console.warn('localStorage no disponible (token)');
+      return null;
+    }
   }
   set token(t: string) { 
     this.config.setLocalStorage('token', t)

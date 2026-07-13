@@ -48,15 +48,14 @@
     }
   </style>
 
-  <!-- Watchdog: si Ionic no se hidrata en 12s, fuerza visibilidad -->
+  <!-- Watchdog: si Ionic no se hidrata en 8s, fuerza visibilidad -->
   <script nonce="gfc-watchdog">
     (function() {
-      var GFC_WATCHDOG_DELAY = 12000;
+      var GFC_WATCHDOG_DELAY = 8000;
       var gfcTimer = setTimeout(function gfcWatchdog() {
         var html = document.documentElement;
-        if (html.classList.contains('hydrated') || html.classList.contains('ion-ce')) return;
+        if (html.classList.contains('hydrated') || html.classList.contains('ion-ce') || html.classList.contains('gfc-force-visible')) return;
         html.classList.add('ion-ce');
-        // Mostrar diagnóstico si el app no cargó
         var d = document.getElementById('gfc-diag');
         if (d) {
           d.style.display = 'block';
@@ -64,8 +63,7 @@
           d.textContent = 'La aplicaci\u00f3n est\u00e1 demorando. Si ves esto por m\u00e1s de 30s, recarg\u00e1 la p\u00e1gina.';
         }
       }, GFC_WATCHDOG_DELAY);
-      // Si el app carga exitosamente, limpiar el timer
-      document.addEventListener('gfc-ready', function() { clearTimeout(gfcTimer); });
+      // No cancelar el watchdog con gfc-ready; el loader CSS se oculta con hydrated o ion-ce
     })();
   </script>
 

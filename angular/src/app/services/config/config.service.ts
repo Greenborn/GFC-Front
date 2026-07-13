@@ -58,15 +58,23 @@ export class ConfigService {
   }
 
   setLocalStorage(r: string, v: any): void {
-    if (v == null) {
-      localStorage.removeItem(this.data.appName + r)
-    } else {
-      localStorage.setItem(this.data.appName + r, v .toString())
+    try {
+      if (v == null) {
+        localStorage.removeItem(this.data.appName + r)
+      } else {
+        localStorage.setItem(this.data.appName + r, v .toString())
+      }
+    } catch (e) {
+      console.warn('localStorage no disponible (set)', e);
     }
-
   }
   getLocalStorage(r: string): string {
-    return localStorage.getItem(this.data.appName + r)
+    try {
+      return localStorage.getItem(this.data.appName + r)
+    } catch (e) {
+      console.warn('localStorage no disponible (get)', e);
+      return null;
+    }
   }
 
   get imagesBaseUrl() {

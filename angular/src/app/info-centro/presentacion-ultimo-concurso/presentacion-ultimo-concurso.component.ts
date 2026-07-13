@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { ConsoleLogService } from 'src/app/services/console-log.service';
 import { PublicContestService } from 'src/app/services/public.contest.service';
 import { timeout, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -21,7 +22,8 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
     private publicContestService: PublicContestService,
     public  alertController:      AlertController,
     private loadingController:    LoadingController,
-    private configService:        ConfigService
+    private configService:        ConfigService,
+    private consoleLogService:    ConsoleLogService
   ) {
     super(alertController);
   }
@@ -40,7 +42,7 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
     this.publicContestService.getAll('sort=-id').pipe(
       timeout(8000),
       catchError(err => {
-        console.warn('Error al cargar concurso destacado:', err);
+        this.consoleLogService.sendLog('warn', 'Error al cargar concurso destacado', { error: err?.message || err?.toString() });
         return of([]);
       })
     ).subscribe(

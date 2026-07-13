@@ -26,7 +26,7 @@ export class SSOAuthService {
     const uniqueId = this.getUniqueId();
     const currentUrl = this.router.url;
     if (currentUrl && currentUrl !== '/login' && currentUrl !== '/login-redirect') {
-      localStorage.setItem(SSO_REDIRECT_URL_KEY, currentUrl);
+      try { localStorage.setItem(SSO_REDIRECT_URL_KEY, currentUrl); } catch {}
     }
 
     const params = new URLSearchParams({
@@ -56,8 +56,8 @@ export class SSOAuthService {
     const bearerToken = data.data.bearer_token;
     const ssoEmail = data.data.user.email;
 
-    localStorage.setItem(SSO_TOKEN_KEY, bearerToken);
-    localStorage.setItem(SSO_USER_KEY, JSON.stringify(data.data.user));
+    try { localStorage.setItem(SSO_TOKEN_KEY, bearerToken); } catch {}
+    try { localStorage.setItem(SSO_USER_KEY, JSON.stringify(data.data.user)); } catch {}
 
     const profileResponse = await fetch(
       `${this.config.nodeApiBaseUrl}user/sso-profile?unique_id=${uniqueId}`,
@@ -120,7 +120,7 @@ export class SSOAuthService {
 
       const result: { data: SSOVerifyResponse['data'] } = await response.json();
 
-      localStorage.setItem(SSO_USER_KEY, JSON.stringify(result.data.user));
+      try { localStorage.setItem(SSO_USER_KEY, JSON.stringify(result.data.user)); } catch {}
 
       return {
         authenticated: true,
@@ -134,7 +134,7 @@ export class SSOAuthService {
     }
   }
 
-  async logout(): Promise<void> {
+  async   logout(): Promise<void> {
     const token = this.getToken();
     if (token) {
       try {
@@ -151,38 +151,60 @@ export class SSOAuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem(SSO_TOKEN_KEY);
+    try {
+      return localStorage.getItem(SSO_TOKEN_KEY);
+    } catch {
+      return null;
+    }
   }
 
   getUser(): any | null {
-    const userData = localStorage.getItem(SSO_USER_KEY);
-    return userData ? JSON.parse(userData) : null;
+    try {
+      const userData = localStorage.getItem(SSO_USER_KEY);
+      return userData ? JSON.parse(userData) : null;
+    } catch {
+      return null;
+    }
   }
 
   isSSOSession(): boolean {
-    return localStorage.getItem(SSO_TOKEN_KEY) !== null;
+    try {
+      return localStorage.getItem(SSO_TOKEN_KEY) !== null;
+    } catch {
+      return false;
+    }
   }
 
   getUniqueId(): string {
-    let id = localStorage.getItem(SSO_CLIENT_UNIQUE_ID);
-    if (!id) {
-      id = this.generateUniqueId();
-      localStorage.setItem(SSO_CLIENT_UNIQUE_ID, id);
+    try {
+      let id = localStorage.getItem(SSO_CLIENT_UNIQUE_ID);
+      if (!id) {
+        id = this.generateUniqueId();
+        localStorage.setItem(SSO_CLIENT_UNIQUE_ID, id);
+      }
+      return id;
+    } catch {
+      return this.generateUniqueId();
     }
-    return id;
   }
 
   getAndClearRedirectUrl(): string | null {
-    const url = localStorage.getItem(SSO_REDIRECT_URL_KEY);
-    localStorage.removeItem(SSO_REDIRECT_URL_KEY);
-    return url;
+    try {
+      const url = localStorage.getItem(SSO_REDIRECT_URL_KEY);
+      localStorage.removeItem(SSO_REDIRECT_URL_KEY);
+      return url;
+    } catch {
+      return null;
+    }
   }
 
   private clearSession(): void {
-    localStorage.removeItem(SSO_TOKEN_KEY);
-    localStorage.removeItem(SSO_USER_KEY);
-    localStorage.removeItem(SSO_REDIRECT_URL_KEY);
-    localStorage.removeItem(SSO_CLIENT_UNIQUE_ID);
+    try {
+      localStorage.removeItem(SSO_TOKEN_KEY);
+      localStorage.removeItem(SSO_USER_KEY);
+      localStorage.removeItem(SSO_REDIRECT_URL_KEY);
+      localStorage.removeItem(SSO_CLIENT_UNIQUE_ID);
+    } catch {}
   }
 
   private generateUniqueId(): string {

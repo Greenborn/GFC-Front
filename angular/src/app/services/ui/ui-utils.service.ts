@@ -180,14 +180,23 @@ export class UiUtilsService {
     cssClass: 'my-custom-class',
     message: 'Cargando...'
   }) {
-    const loading = await this.loadingController.create(options)
-    this.loading = loading
-    return loading.present()
+    try {
+      const loading = await this.loadingController.create(options)
+      this.loading = loading
+      return loading.present()
+    } catch (e) {
+      console.warn('Error al presentar loading', e);
+      return Promise.resolve();
+    }
   }
 
   dismissLoading() {
     if (this.loading != undefined) {
-      this.loading.dismiss()
+      try {
+        this.loading.dismiss()
+      } catch (e) {
+        console.warn('Error al dismiss loading', e);
+      }
       this.loading = undefined
     }
   }
