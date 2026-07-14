@@ -1,6 +1,6 @@
 <div class="img-thumb">
   <div class="cont">
-    <i class="bi bi-person-circle fs-1" *ngIf="!src || imgError"></i>
+    <i class="bi bi-person-circle placeholder-icon" *ngIf="!src || imgError"></i>
     <span *ngIf="src && !imgError"><img src="{{src}}" (error)="imgError = true" /></span>
   </div>
 </div>

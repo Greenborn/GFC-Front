@@ -26,7 +26,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 })
 export class ConcursoPostPage extends ApiConsumer implements OnInit {
 
-  concurso: Contest = this.contestService.template;
+  concurso: Contest;
   categorias: Category[] = [];
   categoriasInscriptas: ContestCategory[] = [];
   categoriasSeleccionadas: { id: number; seleccionada: boolean; }[] = [];
@@ -66,6 +66,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     private sanitizer: DomSanitizer
   ) { 
     super(alertCtrl)
+    this.concurso = this.contestService.template
   }
 
 get secycat(){

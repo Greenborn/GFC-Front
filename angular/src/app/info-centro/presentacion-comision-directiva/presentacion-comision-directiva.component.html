@@ -10,28 +10,18 @@
           <div class="col-12">
             <app-slides [options]="slideOptions" #slideWithNav>
               <div #slide class="app-slide" *ngFor="let s of sliderOne.slidesItems">
-                <div class="app-slide-card">
-                  <div class="row w-100">
-                    <div class="col">
-                        <app-usuario-img [src]="s.img_url != null ? configService.imageUrl(s.img_url) : '' "></app-usuario-img>
-                    </div>
+                <div class="app-slide-card dir-card">
+                  <div class="dir-photo">
+                    <app-usuario-img [src]="s.img_url != null ? configService.imageUrl(s.img_url) : ''"></app-usuario-img>
                   </div>
-                  <div class="row text-center">
-                    <div class="col">
-
-                      <span>
-                        <span title="Nombre">
-                          <b>{{s.name}} {{s.last_name}}</b>
-                        </span>
-                      </span>
-                      <small class="text-muted">{{s.executive_rol}}</small>
-                    </div>
+                  <div class="dir-info">
+                    <h3 class="dir-name">{{s.name}} {{s.last_name}}</h3>
+                    <span class="dir-role">{{s.executive_rol}}</span>
                   </div>
                 </div>
               </div>
             </app-slides>
-            </div
-          >
+          </div>
 
           <a *ngIf="slideOptions.slidesPerViewDesktop && responsiveService.isDesktop" (click)="swipePrev()"> <div class="swiper-button-prev" ></div> </a>
           <a *ngIf="slideOptions.slidesPerViewDesktop && responsiveService.isDesktop" (click)="swipeNext()"><div class="swiper-button-next" ></div></a>
