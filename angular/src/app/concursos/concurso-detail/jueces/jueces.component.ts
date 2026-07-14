@@ -23,7 +23,7 @@ export class JuecesComponent implements OnInit {
   
   mostrarFiltro: boolean = false
   inscriptos: ProfileContestExpanded[] = [];
-  concurso: Contest = this.contestService.template;
+  concurso: Contest;
   user: UserLogged;
   jueces: ProfileExpanded[] = [];
   
@@ -46,6 +46,7 @@ export class JuecesComponent implements OnInit {
     public configService: ConfigService, private router: Router,) { }
 
   async ngOnInit() {
+    this.concurso = this.contestService.template;
     if (this.concurso.id == undefined) {
       await this.UIUtilsService.presentLoading()
     }

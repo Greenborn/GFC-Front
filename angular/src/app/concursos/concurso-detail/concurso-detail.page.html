@@ -1,29 +1,26 @@
-<div class="container-fluid py-3" #pageContent id="concurso-content">
-  
-  <div class="row" id="concurso-tabs" #tabsContent>
+<div class="container-fluid py-3">
+  <ng-container *ngIf="auth.user | async as u">
+    <div class="row" *ngIf="!hideTabs">
       <div class="col">
-          <div class="row" *ngIf="(auth.user | async) as u">
-              <div>
-              <ul class="nav nav-pills mb-3">
-                <li class="nav-item"><a class="nav-link" tab="informacion">
-                  <i class="bi bi-info-circle"></i>
-                  <label class="form-label">Información</label>
-                </a></li>
-                
-                <li class="nav-item"><a class="nav-link" tab="concursantes" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || concurso.judged">
-                  <i class="bi bi-people"></i>
-                  <label class="form-label">Concursantes</label>
-                </a></li>
-        
-                <li class="nav-item"><a class="nav-link" tab="fotografias" (click)="goToFotografias()">
-                  <i class="bi bi-images"></i>
-                  <label class="form-label">Fotografias</label>
-                </a></li>
-
-              </ul>
-            </div>
-        
-          </div>
-        </div>
+        <ul class="nav nav-pills mb-3">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['./informacion']" routerLinkActive="active">
+              <i class="bi bi-info-circle me-1"></i> Información
+            </a>
+          </li>
+          <li class="nav-item" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || concurso?.judged">
+            <a class="nav-link" [routerLink]="['./concursantes']" routerLinkActive="active">
+              <i class="bi bi-people me-1"></i> Concursantes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['./fotografias']" routerLinkActive="active">
+              <i class="bi bi-images me-1"></i> Fotografías
+            </a>
+          </li>
+        </ul>
       </div>
+    </div>
+  </ng-container>
+  <router-outlet></router-outlet>
 </div>

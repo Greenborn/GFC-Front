@@ -5,42 +5,48 @@
   </div>
 </div>
 
-<div class="container-fluid py-3"
-  <div class="container-fluid">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-10">
-        <form #f="ngForm" (ngSubmit)="editUsuario(f)">
-          <div class="row justify-content-center">
-            <app-usuario-img [src]="usuario.img_url"></app-usuario-img>
-          </div>
-          <div class="mb-3 pt-3">
-            <label class="form-label">Nombre</label>
-            <input class="form-control expand-full"
-              name="username"
-              [ngModel]="usuario.username"
-              autocapitalize="words"
-              required
-            >
-          
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input class="form-control expand-full"
-              name="email"
-              type="email"
-              [ngModel]="usuario.email"
-              required
-            >
-          
-          <div class="mb-3">
-            <label class="form-label">Imagen(url)</label>
-            <input class="form-control expand-full"
-              name="img_url"
-              [(ngModel)]="usuario.img_url"
-              required
-            >
-          
-          <button class="btn btn-success w-100" type="submit" [disabled]="!f.valid">Guardar</button>
-        </form>
+<div class="container-fluid py-3">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <form #f="ngForm" (ngSubmit)="editUsuario(f)">
+            <div class="text-center mb-4">
+              <app-usuario-img [src]="usuario.img_url" style="max-width:120px;display:inline-block"></app-usuario-img>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-medium">Nombre</label>
+              <input class="form-control"
+                name="username"
+                [ngModel]="usuario.username"
+                autocapitalize="words"
+                required
+              >
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-medium">Email</label>
+              <input class="form-control"
+                name="email"
+                type="email"
+                [ngModel]="usuario.email"
+                required
+              >
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-medium">Imagen (URL)</label>
+              <input class="form-control"
+                name="img_url"
+                [(ngModel)]="usuario.img_url"
+                required
+              >
+            </div>
+
+            <button class="btn btn-success w-100" type="submit" [disabled]="!f.valid">Guardar</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>

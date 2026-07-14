@@ -37,7 +37,7 @@ import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src
 export class InformacionComponent extends ApiConsumer implements OnInit, OnDestroy {
 
   mostrarFiltro: boolean = false;
-  concurso: Contest = this.contestService.template;
+  concurso: Contest;
   contestResults: ContestResult[] = [];
   images: Image[] = [];
   // profiles: Profile[] = [];
@@ -87,7 +87,8 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     this.desubsc();  
   }
 
-  ngOnInit() { 
+  ngOnInit() {
+    this.concurso = this.contestService.template;
     this.subsc();
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
 }

@@ -1,5 +1,15 @@
 <div class="container-fluid py-3">
-  <div class="container-fluid p-0 m-0" #concursantesContent id="concursantesContent">
+  <div class="container-fluid p-0 m-0" *ngIf="(auth.user | async) as u">
+    <div class="row g-2 align-items-center mb-3">
+      <div class="col-auto">
+        <div class="nav nav-pills">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['../informacion']"><i class="bi bi-info-circle me-1"></i>Información</a>
+          <a class="nav-link" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || concurso?.judged" routerLinkActive="active" [routerLink]="['../concursantes']"><i class="bi bi-people me-1"></i>Concursantes</a>
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['../fotografias']"><i class="bi bi-images me-1"></i>Fotografías</a>
+        </div>
+      </div>
+    </div>
+
     <div class="row justify-content-center">
       <div class="col-12 col-md-3" *ngIf="mostrarFiltro">
         <div class="row">

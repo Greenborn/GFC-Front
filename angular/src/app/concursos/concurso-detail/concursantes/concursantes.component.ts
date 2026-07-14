@@ -29,7 +29,7 @@ export class ConcursantesComponent implements OnInit {
 
   @ViewChild('concursantesContent') content: HTMLElement;
 
-  concurso: Contest = this.contestService.template;
+  concurso: Contest;
   concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
@@ -78,6 +78,7 @@ export class ConcursantesComponent implements OnInit {
 
   
   async ngOnInit() {
+    this.concurso = this.contestService.template;
     if (this.concurso.id == undefined) {
       await this.UIUtilsService.presentLoading()
     }
