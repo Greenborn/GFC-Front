@@ -1,7 +1,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-auto align-self-center" *ngIf="auth.user | async as u">
-        <button class="btn btn-outline-primary" *ngIf="rolificador.isAdmin(u)" style="margin-bottom: 0;" (click)="editar($event)">
+        <button class="btn btn-warning" *ngIf="rolificador.isAdmin(u)" style="margin-bottom: 0;" (click)="editar($event)">
           <i class="bi bi-pencil"></i>
         </button>
       </div>

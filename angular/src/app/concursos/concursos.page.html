@@ -8,7 +8,7 @@
           </h1>
 
           <button
-            class="btn btn-primary"
+            class="btn btn-success"
             *ngIf="(rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged))"
             [routerLink]="['nuevo']"
           >
@@ -30,14 +30,14 @@
     <div class="row align-items-center pb-3">
               <div class="col p-0 col-10 col-sm-11">
                 <button
-                  class="btn btn-outline-primary"
+                  class="btn btn-primary"
                   [routerLink]="['secciones']"
                   *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
                   >Administrar secciones</button
                 >
 
                 <button
-                  class="btn btn-outline-primary"
+                  class="btn btn-primary ms-2"
                   [routerLink]="['metricas']"
                   *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
                   >Administrar Puntajes</button>
@@ -72,7 +72,7 @@
                     <div class="cc-actions">
                       <button
                         type="button"
-                        class="cc-btn btn btn-outline-primary btn-sm"
+                        class="cc-btn btn btn-primary btn-sm"
                         size="small"
                         [routerLink]="['/concursos', item.concurso.id, 'fotografias']"
                       >
@@ -81,7 +81,7 @@
                       </button>
                       <button
                         type="button"
-                        class="cc-btn btn btn-outline-primary btn-sm"
+                        class="cc-btn btn btn-primary btn-sm"
                         size="small"
                         [routerLink]="['/concursos', item.concurso.id]"
                       >Ver concurso</button>

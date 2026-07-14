@@ -92,7 +92,7 @@
           <input class="form-control form-control-sm" [(ngModel)]="filtroCodigo" (input)="onFilterInput()" placeholder="Código de fotografía">
         </div>
 
-        <button class="btn btn-outline-danger btn-sm w-100 mt-2" (click)="limpiarFiltros()">
+        <button class="btn btn-danger btn-sm w-100 mt-2" (click)="limpiarFiltros()">
           Limpiar filtros
         </button>
       </div>
@@ -120,18 +120,18 @@
                       <div class="foto-info-row">
                         <div class="foto-actions">
                           <div class="d-flex gap-1 d-none d-md-inline">
-                            <button class="btn btn-outline-primary btn-sm" *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
+                            <button class="btn btn-primary btn-sm" *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
                               <i class="bi bi-star"></i>
                             </button>
-                            <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
+                            <button class="btn btn-warning btn-sm" *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
                               <i class="bi bi-pencil"></i>
                             </button>
-                            <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
+                            <button class="btn btn-danger btn-sm" *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
                               <i class="bi bi-trash"></i>
                             </button>
                           </div>
                           <div class="d-flex gap-1 d-md-none">
-                            <button class="btn btn-outline-primary btn-sm" (click)="mostrarAcciones($event, r, i, propiasFotos)">
+                            <button class="btn btn-outline-dark btn-sm" (click)="mostrarAcciones($event, r, i, propiasFotos)">
                               <i class="bi bi-three-dots-vertical"></i>
                             </button>
                           </div>
@@ -173,18 +173,18 @@
                           <div class="foto-info-row">
                             <div class="foto-actions">
                               <div class="d-flex gap-1 d-none d-md-inline">
-                                <button class="btn btn-outline-primary btn-sm" *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
+                                <button class="btn btn-primary btn-sm" *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar">
                                   <i class="bi bi-star"></i>
                                 </button>
-                                <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
+                                <button class="btn btn-warning btn-sm" *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar">
                                   <i class="bi bi-pencil"></i>
                                 </button>
-                                <button class="btn btn-outline-primary btn-sm" *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
+                                <button class="btn btn-danger btn-sm" *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar">
                                   <i class="bi bi-trash"></i>
                                 </button>
                               </div>
                               <div class="d-flex gap-1 d-md-none">
-                                <button class="btn btn-outline-primary btn-sm" (click)="mostrarAcciones($event, r, i)">
+                                <button class="btn btn-outline-dark btn-sm" (click)="mostrarAcciones($event, r, i)">
                                   <i class="bi bi-three-dots-vertical"></i>
                                 </button>
                               </div>

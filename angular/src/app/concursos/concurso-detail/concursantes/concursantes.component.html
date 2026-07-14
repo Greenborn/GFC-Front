@@ -22,7 +22,7 @@
                 Inscriptos
               </h1>
             
-              <button class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center"
+              <button class="btn btn-success rounded-circle d-flex align-items-center justify-content-center"
               style="width:36px;height:36px" size="small" *ngIf="contestService.isActive(concurso) && checkPermissions "
               (click)="inscribirConcursante()">
                 <i class="bi bi-plus"></i>
@@ -115,7 +115,7 @@
 
                             <div class="col-1 d-sm-none justify-content-center">
                               <div class="d-flex gap-1">
-                                <button class="btn btn-outline-primary" (click)="mostrarAcciones($event, m)">
+                                <button class="btn btn-outline-dark" (click)="mostrarAcciones($event, m)">
                                   <i class="bi bi-three-dots-vertical me-1"></i>
                                 </button>
                               </div>
@@ -129,19 +129,19 @@
 
                           <div class="d-flex gap-1">
 
-                            <button class="btn btn-outline-primary" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)" [routerLink]="['../', 'fotografias']"
+                            <button class="btn btn-primary" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)" [routerLink]="['../', 'fotografias']"
                               [queryParams]="{concursante_id: m.profile_id}"
                               title="Ver fotografías">
                               <i class="bi bi-images"></i>
                             </button>
 
-                            <button class="btn btn-outline-primary" *ngIf="checkPermissions"
+                            <button class="btn btn-success" *ngIf="checkPermissions"
                               (click)="postImage(m.profile_id)"
                               title="Agregar fotografía">
                               <i class="bi bi-camera"></i>
                             </button>
 
-                            <button class="btn btn-outline-primary" *ngIf="checkPermissions"
+                            <button class="btn btn-danger" *ngIf="checkPermissions"
                               (click)="concursoDetailService.desinscribir.emit( m )"
                               title="Desinscribir">
                               <i class="bi bi-trash"></i>

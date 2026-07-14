@@ -1,6 +1,6 @@
 <div class="bg-light border-bottom p-3">
   <div class="d-flex align-items-center gap-1">
-    <button class="btn btn-outline-dark btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i> Volver</button>
+    <button class="btn btn-dark btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i> Volver</button>
     <h5 class="mb-0" *ngIf="isLogged(); else registroFuera">{{formTitle}}</h5>
     <ng-template #registroFuera>
       <h5 class="mb-0">Registrarme</h5>
@@ -22,7 +22,7 @@
                 <div class="card-body profile-image-card-content">
                   <app-usuario-img [src]="img_url" [imageChangeEnabled]="true" [imageChangeClick]="ImageChangeClick"></app-usuario-img>
                   <div class="mb-3 upload-button-row">
-                    <button class="btn btn-outline-primary w-100 btn-sm" type="button" (click)="ProfileImageUpload.click()">
+                    <button class="btn btn-warning w-100 btn-sm" type="button" (click)="ProfileImageUpload.click()">
                       Cambiar imagen
                     </button>
                   
@@ -170,7 +170,7 @@
                       </small>
 
                       <div class="mb-3 expand-full" *ngIf="!isPost && isLogged()">
-                        <button class="btn btn-outline-primary" (click)="changePassword()">Cambiar contraseña</button>
+                        <button class="btn btn-warning" (click)="changePassword()">Cambiar contraseña</button>
                       
                     </div>
                   </div>
@@ -205,7 +205,7 @@
                     </div>
 
                     <div class="col-12 col-sm-3 align-self-center">
-                      <button class="btn btn-outline-dark btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i> Cancelar</button>
+                      <button class="btn btn-dark btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i> Cancelar</button>
                     </div>
                 </div>
               </div>

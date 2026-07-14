@@ -14,7 +14,7 @@
                       </h2>
                     </div>
                     <div class="col-auto align-self-center">
-                      <button class="btn btn-outline-primary ms-3" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" [routerLink]="['nuevo']">
+                      <button class="btn btn-success ms-3" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" [routerLink]="['nuevo']">
                         <i class="bi bi-plus me-1"></i>
                         Nuevo
                       </button>
@@ -24,7 +24,7 @@
                 <div class="col-12 col-md-5 text-end">
                   <div class="input-group">
                     <input class="form-control" [(ngModel)]="searchQuery" placeholder="Buscar usuarios" (keyup.enter)="buscarUsuarios()" (blur)="buscarUsuarios()">
-                    <button class="btn btn-outline-secondary" (click)="buscarUsuarios()">
+                    <button class="btn btn-primary" (click)="buscarUsuarios()">
                       <i class="bi bi-search"></i>
                     </button>
                   </div>
@@ -101,7 +101,7 @@
                           </div>
                         </div>
                         <div class="col-1 d-sm-none text-end">
-                          <button class="btn btn-outline-primary btn-sm" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" (click)="mostrarAcciones($event, m)">
+                          <button class="btn btn-outline-dark btn-sm" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" (click)="mostrarAcciones($event, m)">
                             <i class="bi bi-three-dots-vertical"></i>
                           </button>
                         </div>
@@ -124,10 +124,10 @@
                     </div>
                     <div class="col-2 col-md-1 d-none d-sm-block">
                       <div class="d-flex gap-1" *ngIf="m.user != null && (rolificador.esDelegado(userLogged)  || rolificador.isAdmin(userLogged))">
-                        <button class="btn btn-outline-primary btn-sm" [routerLink]="['editar/' + getUserId(m.user)]">
+                        <button class="btn btn-warning btn-sm" [routerLink]="['editar/' + getUserId(m.user)]">
                           <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-outline-primary btn-sm" (click)="toggleUsuarioStatus(m)">
+                        <button class="btn btn-danger btn-sm" (click)="toggleUsuarioStatus(m)">
                           <i class="bi" [ngClass]="m.user.status == 0 ? 'bi-check-circle' : 'bi-remove-circle'"></i>
                         </button>
                       </div>

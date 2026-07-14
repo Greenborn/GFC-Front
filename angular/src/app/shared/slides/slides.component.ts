@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, HostListener, Input, OnChanges, OnDestroy, QueryList, Renderer2, SimpleChanges } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, Component, ContentChildren, ElementRef, HostListener, Input, OnChanges, OnDestroy, QueryList, Renderer2, SimpleChanges } from '@angular/core';
 
 const TABLET_BREAKPOINT = 768;
 const DESKTOP_BREAKPOINT = 1200;
@@ -19,7 +19,6 @@ export interface SlidesOptions {
   selector: 'app-slides',
   templateUrl: './slides.component.html',
   styleUrls: ['./slides.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SlidesComponent implements AfterContentInit, AfterContentChecked, OnChanges, OnDestroy {
   @Input() options: SlidesOptions = {};
@@ -44,8 +43,7 @@ export class SlidesComponent implements AfterContentInit, AfterContentChecked, O
 
   constructor(
     private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef
+    private renderer: Renderer2
   ) {
     this.currentWidth = window.innerWidth;
   }
@@ -98,8 +96,7 @@ export class SlidesComponent implements AfterContentInit, AfterContentChecked, O
     this.resizeTimer = setTimeout(() => {
       this.currentWidth = window.innerWidth;
       this.layout();
-      this.cdr.markForCheck();
-    }, RESIZE_DEBOUNCE);
+      }, RESIZE_DEBOUNCE);
   }
 
   ngAfterContentInit(): void {
@@ -164,7 +161,6 @@ export class SlidesComponent implements AfterContentInit, AfterContentChecked, O
     } else if (this.currentIndex > Math.max(0, this.totalSlides - this.slidesPerView)) {
       this.currentIndex = Math.max(0, this.totalSlides - this.slidesPerView);
     }
-    this.cdr.markForCheck();
   }
 
   slideNext(): void {
@@ -174,7 +170,6 @@ export class SlidesComponent implements AfterContentInit, AfterContentChecked, O
     } else {
       this.currentIndex = 0;
     }
-    this.cdr.markForCheck();
   }
 
   slidePrev(): void {
@@ -184,14 +179,12 @@ export class SlidesComponent implements AfterContentInit, AfterContentChecked, O
     } else {
       this.currentIndex = max;
     }
-    this.cdr.markForCheck();
   }
 
   slideTo(index: number): void {
     const max = Math.max(0, this.totalSlides - this.slidesPerView);
     if (index >= 0 && index <= max) {
       this.currentIndex = index;
-      this.cdr.markForCheck();
     }
   }
 

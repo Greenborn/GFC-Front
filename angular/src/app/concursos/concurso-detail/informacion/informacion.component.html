@@ -13,10 +13,10 @@
         </div>
 
         <div *ngIf="(rolificador.esDelegado(u) || rolificador.isAdmin(u))" class="info-admin-col">
-          <button class="btn btn-outline-primary btn-sm" (click)="deleteConcurso()">
+          <button class="btn btn-danger btn-sm" (click)="deleteConcurso()">
             <i class="bi bi-trash"></i>
           </button>
-          <button class="btn btn-outline-primary btn-sm" [routerLink]="['/concursos/editar/' + concurso.id]">
+          <button class="btn btn-warning btn-sm" [routerLink]="['/concursos/editar/' + concurso.id]">
             <i class="bi bi-pencil"></i>
           </button>
         </div>
@@ -27,27 +27,27 @@
           <span class="info-desc">{{ concurso.description }}</span>
 
           <div class="info-actions">
-            <button class="btn btn-outline-primary btn-sm" *ngIf="isContestNotFin && !isInscripto" (click)="inscribirConcursante()">
+            <button class="btn btn-success btn-sm" *ngIf="isContestNotFin && !isInscripto" (click)="inscribirConcursante()">
               Inscribirme!
             </button>
             <button class="btn btn-danger btn-sm" *ngIf="isContestNotFin && isInscripto" (click)="desinscribirme()">
               Desinscribirme!
             </button>
-            <button class="btn btn-outline-primary btn-sm" [routerLink]="['/concursos', concurso.id, 'fotografias']">
+            <button class="btn btn-primary btn-sm" [routerLink]="['/concursos', concurso.id, 'fotografias']">
               <i class="bi bi-images"></i>
               Ver Fotografías
             </button>
-            <button class="btn btn-outline-primary btn-sm" (click)="descargarFotografias()">
+            <button class="btn btn-primary btn-sm" (click)="descargarFotografias()">
               Descargar Fotografías
             </button>
-            <button class="btn btn-outline-primary btn-sm" (click)="compartir()">
+            <button class="btn btn-primary btn-sm" (click)="compartir()">
               <i class="bi bi-share"></i>
             </button>
           </div>
 
           <div class="info-rule-row">
             <b>Reglamento</b>
-            <button class="btn btn-outline-primary btn-sm" (click)="openRules()">
+            <button class="btn btn-primary btn-sm" (click)="openRules()">
               <i class="bi bi-link-45deg"></i>
             </button>
           </div>
