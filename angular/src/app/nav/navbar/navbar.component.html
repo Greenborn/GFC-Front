@@ -5,16 +5,24 @@
       <span class="d-none d-lg-inline">Grupo Fotográfico Centro</span>
     </a>
 
-    <div class="d-flex align-items-center gap-1 ms-auto">
-      <div class="d-none d-lg-flex gap-1" *ngIf="auth.loggedIn && auth.user | async as u">
-        <a class="btn btn-outline-dark btn-sm" [class.active-link]="isActive('/herramientas')" *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u)" [routerLink]="['/herramientas']">Herramientas</a>
-        <a class="btn btn-outline-dark btn-sm" [class.active-link]="isActive('/concursos/ranking')" [routerLink]="['/concursos/ranking']">Ranking</a>
-        <a class="btn btn-outline-dark btn-sm" [class.active-link]="isActive('/concursos')" [routerLink]="['/concursos']">Concursos</a>
-        <a class="btn btn-outline-dark btn-sm" [class.active-link]="isActive('/usuarios')" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)" [routerLink]="['/usuarios']">
-          {{ rolificador.getNombreUsuarios(u.role_id) }}
-        </a>
-        <a class="btn btn-outline-dark btn-sm" [class.active-link]="isActive('/organizaciones')" *ngIf="rolificador.isAdmin(u)" [routerLink]="['/organizaciones']">Organizaciones</a>
-      </div>
+    <div class="d-flex align-items-center ms-auto gap-2">
+      <ul class="navbar-nav d-none d-lg-flex flex-row align-items-center gap-1" *ngIf="auth.loggedIn && auth.user | async as u">
+        <li class="nav-item" *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u)">
+          <a class="nav-link" [class.active]="isActive('/herramientas')" [routerLink]="['/herramientas']">Herramientas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="isActive('/concursos/ranking')" [routerLink]="['/concursos/ranking']">Ranking</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="isActive('/concursos')" [routerLink]="['/concursos']">Concursos</a>
+        </li>
+        <li class="nav-item" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u)">
+          <a class="nav-link" [class.active]="isActive('/usuarios')" [routerLink]="['/usuarios']">{{ rolificador.getNombreUsuarios(u.role_id) }}</a>
+        </li>
+        <li class="nav-item" *ngIf="rolificador.isAdmin(u)">
+          <a class="nav-link" [class.active]="isActive('/organizaciones')" [routerLink]="['/organizaciones']">Organizaciones</a>
+        </li>
+      </ul>
 
       <ng-container *ngIf="auth.loggedIn; else login">
         <button class="btn btn-outline-dark" (click)="mostrarPerfil($event)">

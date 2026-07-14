@@ -367,26 +367,25 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     // });
 
     super.fetch<Role[]>( () => this.roleService.getAll()).subscribe(r => this.roles = r)
-    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => this.fotoclubs = r)
+    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => {
+      this.fotoclubs = r
+      this.cargarMiembros()
+    })
   }
 
-  async ionViewWillEnter() {
-    // super.fetch<User[]>(() => this.userService.getAll()).subscribe(r => this.users = r)
-    // this.loading = true
-    // this.profiles = []
-    const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Cargando...'
-    })
-    await loading.present()
+  private async cargarMiembros() {
     this.auth.user.then(u => {
+      if (!u) return
       this.user = u
       super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u, this.sanitizeSearchQuery(this.searchQuery))).subscribe(m => {
         this.miembros = m
         this.miembrosOrig = [...m]
-        loading.dismiss();
       })
     })
+  }
+
+  async ionViewWillEnter() {
+    this.cargarMiembros()
   }
 
   // para implementar busqueda con la api (sobrescribe variable de usuarios)

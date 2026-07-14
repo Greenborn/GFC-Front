@@ -1,48 +1,29 @@
 <div class="container-fluid py-3">
   <div class="container concursos-grid" *ngIf=" (auth.user | async) as userLogged">
-    <div class="row align-items-center mt-3 mb-3">
-      <div class="col-auto" *ngIf="isLogedIn()">
-        <div class="d-flex align-items-center gap-2">
-          <h1 class="m-0">
-            Concursos
-          </h1>
+    <div class="row align-items-center g-2 mb-3">
+      <div class="col-auto" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)">
+        <button class="btn btn-success" [routerLink]="['nuevo']">
+          <i class="bi bi-plus me-1"></i> Concurso
+        </button>
+      </div>
 
-          <button
-            class="btn btn-success"
-            *ngIf="(rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged))"
-            [routerLink]="['nuevo']"
-          >
-            <i class="bi bi-plus me-1"></i> Nuevo
-          </button>
-        </div>
+      <div class="col-auto" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)">
+        <button class="btn btn-primary" [routerLink]="['secciones']">Administrar secciones</button>
+      </div>
+
+      <div class="col-auto" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)">
+        <button class="btn btn-primary" [routerLink]="['metricas']">Administrar Puntajes</button>
       </div>
 
       <div class="col">
-        <app-search-bar
-          (buscar)="buscarConcursos($event)"
-          [atributosObj]="atributosBusqueda"
-          [hideFieldSelector]="true"
-        >
-        </app-search-bar>
+        <div class="input-group">
+          <input class="form-control" [(ngModel)]="searchQuery" placeholder="Buscar concursos" (keyup.enter)="onSearch()" (blur)="onSearch()">
+          <button class="btn btn-primary" (click)="onSearch()">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
       </div>
     </div>
-
-    <div class="row align-items-center pb-3">
-              <div class="col p-0 col-10 col-sm-11">
-                <button
-                  class="btn btn-primary"
-                  [routerLink]="['secciones']"
-                  *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
-                  >Administrar secciones</button
-                >
-
-                <button
-                  class="btn btn-primary ms-2"
-                  [routerLink]="['metricas']"
-                  *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)"
-                  >Administrar Puntajes</button>
-              </div>
-            </div>
             <div
               *ngIf="itemGroups.length > 0; else (loading ? spinner : texto)"
             >
@@ -102,7 +83,7 @@
               <div class="spinner-border text-primary" role="status" *ngIf="loadingMore">
                 <span class="visually-hidden">Cargando más concursos...</span>
               </div>
-              <div appInfiniteScroll [appInfiniteScroll]="hasMoreConcursos || allItems.length > 0" (loadMore)="loadMoreConcursos()"></div>
+              <div class="infinite-scroll-sentinel" appInfiniteScroll [appInfiniteScroll]="hasMoreConcursos || allItems.length > 0" (loadMore)="loadMoreConcursos()"></div>
             </div>
             <ng-template #texto>
               <div class="alert alert-info">No se encontraron concursos</div>

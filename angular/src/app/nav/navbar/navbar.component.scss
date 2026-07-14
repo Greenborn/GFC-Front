@@ -2,8 +2,20 @@
   z-index: 1050;
 }
 
-.active-link {
+.navbar .nav-link {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.875rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.navbar .nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.navbar .nav-link.active {
   background-color: #212529 !important;
   color: #fff !important;
-  border-color: #212529 !important;
 }

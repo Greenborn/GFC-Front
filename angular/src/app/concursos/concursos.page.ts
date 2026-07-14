@@ -104,21 +104,39 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     return aux
   }
 
-  ngOnInit() {}
-
-  isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
-    return this.auth.loggedIn;
+  ngOnInit() {
+    this.cargarConcursosInicial();
   }
 
-  // get concursosFiltrados(): Concurso[] {
-  //   const q = this.searchQuery;
-  //   return this.concursos.filter(c => c.name.substr(0, q.length) == q)
-  // }
-  buscarConcursos(output: SearchBarComponentParams) {
-    this.searchQuery = output?.query?.trim() ?? '';
-    this.searchAttribute = output?.atributo ?? '';
+  private cargarConcursosInicial() {
+    this.loading = true;
+    this.concursoPage = 1;
+    this.hasMoreConcursos = true;
+    this.concursos = [];
+    this.allItems = [];
+    this.itemGroups = [];
+    this.fotosDelAnioPorTemporada.clear();
+    this.currentSearchQuery = '';
+    this.currentSearchAttribute = undefined;
+    this.loadConcursos();
+  }
+
+  ionViewWillEnter() {
+    this.loading = true;
+    this.concursoPage = 1;
+    this.hasMoreConcursos = true;
+    this.concursos = [];
+    this.allItems = [];
+    this.itemGroups = [];
+    this.fotosDelAnioPorTemporada.clear();
+    this.currentSearchQuery = '';
+    this.currentSearchAttribute = undefined;
+    this.loadConcursos();
+  }
+
+  onSearch() {
+    this.searchQuery = this.searchQuery?.trim() ?? '';
     this.currentSearchQuery = this.searchQuery;
-    this.currentSearchAttribute = this.searchAttribute;
     this.concursoPage = 1;
     this.hasMoreConcursos = true;
     this.concursos = [];
@@ -137,62 +155,26 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   }
 
   private loadConcursos(page: number = 1) {
-    this.concursoPage = page;
     const pageParams = this.getPageParams(page);
-    const concursos$ = this.contestService.getAll(pageParams);
-    const url = `${this.configService.nodeApiBaseUrl}foto-del-anio`;
-    const token = localStorage.getItem(this.configService.tokenKey);
-    const headers = token ? new HttpHeaders({ Authorization: 'Bearer ' + token }) : undefined;
-    const fotosAnio$ = this.http.get<any>(url, { headers });
-
-    forkJoin({
-      concursos: concursos$,
-      fotosAnio: fotosAnio$
-    }).subscribe({
-      next: ({ concursos, fotosAnio }) => {
-        this.concursos = concursos;
-        this.procesarFotosDelAnio(fotosAnio);
-        this.actualizarEstadoPaginacion(concursos);
-        this.allItems = this.mezclarConcursosYFotos();
-        this.itemGroups = [];
-        this.loadNextGroup();
-        if (this.allItems.length > 0) {
-          this.loadNextGroup();
-        }
+    this.contestService.getAll(pageParams).subscribe({
+      next: concursos => {
         this.loading = false;
-      },
-      error: error => {
-        console.error('Error al cargar datos:', error);
-        super.fetch<Contest[]>(() =>
-          this.contestService.getAll(pageParams)
-        ).subscribe(r => {
-          this.concursos = r;
-          this.allItems = this.mezclarConcursosYFotos();
-          this.itemGroups = [];
+        if (concursos && concursos.length > 0) {
+          this.concursos.push(...concursos);
+          const nuevosItems = this.mezclarConcursosPorPagina(concursos);
+          this.allItems.push(...nuevosItems);
+          this.actualizarEstadoPaginacion(concursos);
           this.loadNextGroup();
-          if (this.allItems.length > 0) {
-            this.loadNextGroup();
-          }
-          this.loading = false;
-        });
+        } else {
+          this.hasMoreConcursos = false;
+        }
+      },
+      error: err => {
+        this.loading = false;
+        console.error('Error al cargar concursos:', err);
+        this.hasMoreConcursos = false;
       }
     });
-  }
-  toggleChipMark() {
-    this.markChip = !this.markChip;
-  }
-
-  ionViewWillEnter() {
-    this.loading = true;
-    this.concursoPage = 1;
-    this.hasMoreConcursos = true;
-    this.concursos = [];
-    this.allItems = [];
-    this.itemGroups = [];
-    this.fotosDelAnioPorTemporada.clear();
-    this.currentSearchQuery = '';
-    this.currentSearchAttribute = undefined;
-    this.loadConcursos();
   }
 
   private mezclarConcursosYFotos(): ItemConcursoOFoto[] {
