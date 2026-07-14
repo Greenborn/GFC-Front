@@ -9,43 +9,92 @@
 
 .member-card {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     height: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0.75rem;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.member-photo {
-    width: 100%;
-    aspect-ratio: 1;
-    overflow: hidden;
-
-    ion-img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover;
-    }
+.member-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .member-info {
-    padding: 0.75rem;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    flex: 1;
+    align-items: center;
+    text-align: center;
+}
+
+.member-name {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin: 0;
+    color: #222;
+    line-height: 1.2;
 }
 
 .member-links {
     display: flex;
-    gap: 0.5rem;
-    margin-top: auto;
+    gap: 0.35rem;
+}
 
-    a {
-        font-size: 1.2rem;
-        text-decoration: none;
-    }
+.member-link {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 0.8rem;
+    color: #555;
+    background: #f0f0f0;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.member-link:hover {
+    transform: scale(1.15);
+}
+
+.member-link.instagram:hover {
+    background: #e4405f;
+    color: #fff;
+}
+
+.member-link.facebook:hover {
+    background: #1877f2;
+    color: #fff;
+}
+
+.member-link.email:hover {
+    background: #333;
+    color: #fff;
+}
+
+:host-context(.dark) .member-link {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ccc;
+}
+
+:host-context(.dark) .member-link:hover {
+    color: #fff;
+}
+
+:host-context(.dark) .member-name {
+    color: #eee;
+}
+
+:host-context(.dark) .colorTarget {
+    color: #eee;
 }
 
 @media (max-width: 767px) {

@@ -2,37 +2,32 @@
   <div class="col">
     <div class="row justify-content-center">
       <div class="col-10">
-        <div class="row">
+        <div class="row pt-4 pb-4">
           <div class="col"><h2 class="colorTarget">Miembros</h2></div>
         </div>
 
-        <div class="row">
-          <div class="col-12">
-            <app-slides [options]="slideOptions" #slideWithNav>
-              <div #slide class="app-slide" *ngFor="let s of sliderOne.slidesItems">
-                <div class="app-slide-card member-card">
-                  <div class="member-photo">
-                    <img [src]="s.photo_url != null && s.photo_url != '' ? configService.imageUrl(s.photo_url) : './assets/no-pictures.png'" style="width:100%;border-radius:12px;">
-                  </div>
-                  <div class="member-info">
-                    <h3 class="colorTarget">{{s.name}}</h3>
+        <div class="row members-grid g-4">
+          <div class="col-12 col-md-8 col-lg-6" *ngFor="let s of members">
+            <div class="member-card">
+              <div class="member-info">
+                <h3 class="member-name">{{s.name}}</h3>
 
-                    <div class="member-links">
-                      <a *ngIf="instagramUrl(s.instagram) != null" [href]="instagramUrl(s.instagram)" target="_blank" class="me-3"><i class="bi bi-instagram" [style.color]="aspecto == false ? '#000' : '#fff'"></i></a>
-                      <a *ngIf="faceUrl(s.facebook) != null" [href]="faceUrl(s.facebook)" target="_blank" class="me-3"><i class="bi bi-facebook" [style.color]="aspecto == false ? '#000' : '#fff'"></i></a>
-                      <a *ngIf="mailUrl(s.email) != null" href="mailto:{{mailUrl(s.email)}}" target="_blank" class="me-3"><i class="bi bi-envelope" [style.color]="aspecto == false ? '#000' : '#fff'"></i></a>
-                    </div>
-                  </div>
+                <div class="member-links" *ngIf="instagramUrl(s.instagram) != null || faceUrl(s.facebook) != null || mailUrl(s.email) != null">
+                  <a *ngIf="instagramUrl(s.instagram) != null" [href]="instagramUrl(s.instagram)" target="_blank" class="member-link instagram" aria-label="Instagram">
+                    <i class="bi bi-instagram"></i>
+                  </a>
+                  <a *ngIf="faceUrl(s.facebook) != null" [href]="faceUrl(s.facebook)" target="_blank" class="member-link facebook" aria-label="Facebook">
+                    <i class="bi bi-facebook"></i>
+                  </a>
+                  <a *ngIf="mailUrl(s.email) != null" href="mailto:{{mailUrl(s.email)}}" target="_blank" class="member-link email" aria-label="Email">
+                    <i class="bi bi-envelope"></i>
+                  </a>
                 </div>
-               </div>
-            </app-slides>
-            </div
-          >
-
-          <a *ngIf="cantF > 1 && responsiveService.isDesktop" (click)="swipePrev()"> <div class="swiper-button-prev" ></div> </a>
-          <a *ngIf="cantF > 1 && responsiveService.isDesktop" (click)="swipeNext()"><div class="swiper-button-next" ></div></a>
-          
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   </div>

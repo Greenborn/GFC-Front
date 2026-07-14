@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
-import { ResponsiveService } from 'src/app/services/ui/responsive.service';
-import { SlidesComponent } from 'src/app/shared/slides/slides.component';
 import { timeout, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -26,35 +24,14 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
       })
     ).subscribe(
         p => {
-          this.cantF = p?.length || 0
-          this.sliderOne = {
-            isBeginningSlide: true,
-            isEndSlide: false,
-            slidesItems: p || []
-          };        
+          const items = (p || []).filter(m => m.organization_type === 'INTERNO');
+          items.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+          this.members = items;
         })
   }
 
-  @ViewChild('slideWithNav', { static: false }) slideWithNav: SlidesComponent;
+  members: Fotoclub[] = [];
 
-  cantF: number = 1;
-  sliderOne: any = {
-    isBeginningSlide: true,
-    isEndSlide: false,
-    slidesItems: []
-  };
-  slideOptions: any = {
-    initialSlide: 0,
-    slidesPerView: 1,
-    slidesPerViewTablet: 3,
-    slidesPerViewDesktop: 4,
-    autoplay: true,
-  };
-
-  get aspecto() {
-    return document.body.classList.contains("dark")
-   }
-   
   faceUrl(f){
     if (f != null && f != '' && f != undefined){
         return this.sanitizer.bypassSecurityTrustUrl(f);
@@ -67,7 +44,6 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
     if (f != null && f != '' && f != undefined){
       return this.sanitizer.bypassSecurityTrustUrl(f);
     } else {
-
       return null
     }
   }
@@ -77,7 +53,6 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
     if (f != null && f != '' && f != undefined){
       return this.sanitizer.bypassSecurityTrustUrl(f);
     } else {
-
       return null
     }
   }
@@ -87,27 +62,9 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
     public configService: ConfigService,
     public fotoclubService: FotoclubService,
     private sanitizer: DomSanitizer,
-    public responsiveService: ResponsiveService
   ) {
     
     super(alertController);
   }
-
-  swipeNext(){
-    if (!this.slideWithNav.isEnd()){
-      this.slideWithNav.slideNext()
-    } else {
-      this.slideWithNav.slideTo(0)
-    }
-  }
-
-  swipePrev(){
-    if (!this.slideWithNav.isBeginning()){
-      this.slideWithNav.slidePrev()
-    } else {
-      this.slideWithNav.slideTo(this.slideWithNav.length() - 1)
-    }
-  }
-
 
 }
