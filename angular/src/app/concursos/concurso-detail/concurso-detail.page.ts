@@ -94,9 +94,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     this.desubsc();
   }
 
-  get hideTabs(): boolean {
-    return this.router.url.includes('/fotografias') || this.router.url.includes('/concursantes');
-  }
+
 
   async ngOnInit() {
     const tabsContent: HTMLElement = document.querySelector('#concurso-tabs')

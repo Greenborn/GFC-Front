@@ -144,6 +144,11 @@ export class ConcursantesComponent implements OnInit {
     return profile?.profile?.fotoclub?.name ?? ''
   }
 
+  getCategoryName(category_id: number): string {
+    const cc = this.categoriasInscriptas.find(c => c.category_id == category_id)
+    return cc?.category?.name ?? ''
+  }
+
   getFullName(profile_id: number) {
     const p = this.inscriptos.find(p => p.profile_id == profile_id)
     return p?.profile ? `${p.profile.name ?? ''} ${p.profile.last_name ?? ''}`.trim() : ''
