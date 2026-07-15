@@ -34,50 +34,52 @@
           @for (group of itemGroups; track group; let gi = $index) {
             @for (item of group; track trackByItem(i, item); let i = $index) {
               @if (item.tipo === 'concurso') {
-                <div
-                  class="cc-card clickeable"
-                  [ngStyle]="{'background-image': 'url(' + getImg(item.concurso.img_url) + ')'}"
-                  >
-                  <div class="cc-overlay"></div>
-                  <img class="cc-img d-md-none" [src]="getImg(item.concurso.img_url)" alt="{{item.concurso.name}}">
+                <div class="cc-card clickeable">
+                  <img class="cc-img" [src]="getImg(item.concurso.img_url)" alt="{{item.concurso.name}}">
                   <div class="cc-body">
-                    <span class="cc-badge" [class.cc-badge--open]="item.concurso.active" [class.cc-badge--closed]="!item.concurso.active">{{ item.concurso.active ? 'Abierto' : 'Cerrado' }}</span>
-                    <h2 class="cc-title">{{item.concurso.name}}</h2>
-                    <p class="cc-meta">
-                      Desde: {{get_fecha_formateada(item.concurso.start_date) }} - Hasta:
-                      {{get_fecha_formateada(item.concurso.end_date)}}
-                    </p>
-                    <p class="cc-desc">{{item.concurso.description}}</p>
-                    @if (item.concurso.categories?.length) {
-                      <div class="cc-tags">
-                        @for (c of item.concurso.categories; track c) {
-                          <span class="cc-tag">{{c.name}}</span>
-                        }
+                    <div class="cc-body-col cc-body-col--header">
+                      <span class="cc-badge" [class.cc-badge--open]="item.concurso.active" [class.cc-badge--closed]="!item.concurso.active">{{ item.concurso.active ? 'Abierto' : 'Cerrado' }}</span>
+                      <h2 class="cc-title">{{item.concurso.name}}</h2>
+                    </div>
+                    <div class="cc-body-col cc-body-col--content">
+                      <p class="cc-meta">
+                        Desde: {{get_fecha_formateada(item.concurso.start_date) }} - Hasta:
+                        {{get_fecha_formateada(item.concurso.end_date)}}
+                      </p>
+                      <p class="cc-desc">{{item.concurso.description}}</p>
+                      @if (item.concurso.categories?.length) {
+                        <div class="cc-tags">
+                          @for (c of item.concurso.categories; track c) {
+                            <span class="cc-tag">{{c.name}}</span>
+                          }
+                        </div>
+                      }
+                      @if (item.concurso.sections?.length) {
+                        <div class="cc-tags">
+                          @for (s of item.concurso.sections; track s) {
+                            <span class="cc-tag">{{s.name}}</span>
+                          }
+                        </div>
+                      }
+                    </div>
+                    <div class="cc-body-col cc-body-col--actions">
+                      <div class="cc-actions">
+                        <button
+                          type="button"
+                          class="cc-btn btn btn-primary btn-sm"
+                          size="small"
+                          [routerLink]="['/concursos', item.concurso.id, 'fotografias']"
+                          >
+                          <i class="bi bi-images"></i>
+                          Fotografías
+                        </button>
+                        <button
+                          type="button"
+                          class="cc-btn btn btn-primary btn-sm"
+                          size="small"
+                          [routerLink]="['/concursos', item.concurso.id]"
+                        >Ver concurso</button>
                       </div>
-                    }
-                    @if (item.concurso.sections?.length) {
-                      <div class="cc-tags">
-                        @for (s of item.concurso.sections; track s) {
-                          <span class="cc-tag">{{s.name}}</span>
-                        }
-                      </div>
-                    }
-                    <div class="cc-actions">
-                      <button
-                        type="button"
-                        class="cc-btn btn btn-primary btn-sm"
-                        size="small"
-                        [routerLink]="['/concursos', item.concurso.id, 'fotografias']"
-                        >
-                        <i class="bi bi-images"></i>
-                        Fotografías
-                      </button>
-                      <button
-                        type="button"
-                        class="cc-btn btn btn-primary btn-sm"
-                        size="small"
-                        [routerLink]="['/concursos', item.concurso.id]"
-                      >Ver concurso</button>
                     </div>
                   </div>
                 </div>
