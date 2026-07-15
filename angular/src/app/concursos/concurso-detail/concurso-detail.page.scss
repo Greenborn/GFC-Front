@@ -2,12 +2,43 @@
     display: flex;
     border-bottom: 2px solid #e8ecf0;
     gap: 0;
-    padding: 0 0.75rem;
-    position: relative;
-    z-index: 5;
+    padding: 0 calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    width: 100%;
+    margin: 0 auto;
+}
 
-    body.dark & {
-        border-bottom-color: #2a2a3a;
+:host-context(body.dark) .concurso-tabs {
+    border-bottom-color: #2a2a3a;
+    background: #1a1a2e;
+}
+
+@media (min-width: 576px) {
+    .concurso-tabs {
+        max-width: 540px;
+    }
+}
+@media (min-width: 768px) {
+    .concurso-tabs {
+        max-width: 720px;
+    }
+}
+@media (min-width: 992px) {
+    .concurso-tabs {
+        max-width: 960px;
+    }
+}
+@media (min-width: 1200px) {
+    .concurso-tabs {
+        max-width: 1140px;
+    }
+}
+@media (min-width: 1400px) {
+    .concurso-tabs {
+        max-width: 1320px;
     }
 }
 
@@ -26,27 +57,27 @@
     transition: color 0.2s, border-color 0.2s;
     white-space: nowrap;
     cursor: pointer;
-    position: relative;
 
     &:hover {
         color: #555;
     }
+}
 
-    body.dark & {
-        color: #999;
-        &:hover { color: #ccc; }
-    }
+:host-context(body.dark) .concurso-tabs .nav-link {
+    color: #999;
+
+    &:hover { color: #ccc; }
 }
 
 .concurso-tabs .nav-link.active {
     color: #212529;
     border-bottom-color: #212529;
     background: transparent;
+}
 
-    body.dark & {
-        color: #fff;
-        border-bottom-color: #fff;
-    }
+:host-context(body.dark) .concurso-tabs .nav-link.active {
+    color: #fff;
+    border-bottom-color: #fff;
 }
 
 .container {
