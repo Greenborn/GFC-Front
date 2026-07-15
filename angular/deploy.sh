@@ -14,7 +14,9 @@ PASS="$4"
 
 sshpass -p "$PASS" ssh -o StrictHostKeyChecking=no -p "$PUERTO" "$USUARIO@$IP" "
   cd /var/www/GFC-Front-PRD/angular
+  git stash
   git pull
   npm i
+  npm run prebuild
   npm run build
 "
