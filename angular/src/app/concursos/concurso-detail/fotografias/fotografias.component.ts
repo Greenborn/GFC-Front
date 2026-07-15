@@ -507,9 +507,49 @@ export class FotografiasComponent implements OnInit {
     });
   }
 
+  private viewerData: any[] = [];
+
   openImage(index: any, data?: any[]) {
-    const all_data = data || this.resultadosConcursoFiltrados;
-    this.UIUtilsService.mostrarModal(VerFotografiasComponent, { index, all_data, open: this.isContestNotFin }, true);
+    this.viewerData = data ? [...data] : [...this.resultadosConcursoFiltrados];
+
+    this.UIUtilsService.mostrarModal(VerFotografiasComponent, {
+      index,
+      all_data: this.viewerData,
+      open: this.isContestNotFin,
+      hasMore: this.hasMorePages,
+      loadMoreImages: async () => {
+        if (!this.hasMorePages || this.loadingPage) return;
+        this.loadingPage = true;
+        const page = this.pageNumber + 1;
+        const response: any = await get_all({
+          contest_id: this.concurso.id,
+          page,
+          perPage: this.pageSize,
+          present_loading: false,
+          search: this.terminoBusqueda || undefined,
+          sort: this.sortBy || undefined,
+          sort_dir: this.sortBy ? (this.sortAsc ? 'asc' : 'desc') : undefined,
+          section_ids: this.seccionesSeleccionadas.size > 0 ? [...this.seccionesSeleccionadas] : undefined,
+          category_ids: this.categoriasSeleccionadas.size > 0 ? [...this.categoriasSeleccionadas] : undefined,
+          prizes: this.premiosSeleccionados.size > 0 ? [...this.premiosSeleccionados] : undefined,
+          author: this.filtroAutor || undefined,
+          code: this.filtroCodigo || undefined,
+          skipPublish: true,
+        });
+        const items = response?.items || [];
+        if (items.length > 0) {
+          items.forEach(e => {
+            e.section = this.seccionesInscriptas.find(s => s.section.id === e.section_id)?.section;
+          });
+          this.viewerData.push(...items);
+          this.resultadosConcurso.push(...items);
+          this.resultadosConcursoOrig.push(...items);
+          this.pageNumber = page;
+        }
+        this.hasMorePages = items.length >= this.pageSize;
+        this.loadingPage = false;
+      }
+    }, true);
   }
 
   can_delete(r: any) {

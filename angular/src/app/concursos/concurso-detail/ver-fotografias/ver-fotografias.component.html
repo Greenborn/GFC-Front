@@ -12,23 +12,31 @@
         <i class="bi bi-chevron-left"></i>
       </button>
 
-      <div class="image-wrapper"
-        [class.grabbable]="scale > 1 && !isDragging"
-        [class.grabbing]="isDragging"
-        (mousedown)="onDragStart($event)"
-        (mousemove)="onDragMove($event)"
-        (mouseup)="onDragEnd($event)"
-        (mouseleave)="onDragEnd($event)"
-        (touchstart)="onTouchStart($event)"
-        (touchmove)="onTouchMove($event)"
-        (touchend)="onTouchEnd($event)"
-        (wheel)="onWheel($event)">
+        @if (imageLoading) {
+          <div class="image-loader">
+            <div class="spinner-border text-light" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        }
+
+        <div class="image-wrapper"
+          [class.grabbable]="scale > 1 && !isDragging"
+          [class.grabbing]="isDragging"
+          (mousedown)="onDragStart($event)"
+          (mousemove)="onDragMove($event)"
+          (mouseup)="onDragEnd($event)"
+          (mouseleave)="onDragEnd($event)"
+          (touchstart)="onTouchStart($event)"
+          (touchmove)="onTouchMove($event)"
+          (touchend)="onTouchEnd($event)"
+          (wheel)="onWheel($event)">
 
         <div class="image-transform"
           [style.transform]="imageTransform">
           @if (yepImg) {
             <img loading="lazy"
-              (error)="yepImg = false"
+              (error)="onImageError()"
               (load)="onImageLoad($event)"
               [src]="all_data[index].image.url != null ? configService.imageUrl(all_data[index].image.url) : ''"
               class="img-det-modal"

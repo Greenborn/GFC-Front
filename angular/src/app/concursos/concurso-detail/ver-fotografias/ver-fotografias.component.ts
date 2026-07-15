@@ -18,7 +18,11 @@ export class VerFotografiasComponent implements OnInit {
   @Input() index: any;
   @Input() all_data: any;
   @Input() open: any;
+  @Input() hasMore: boolean = false;
+  @Input() loadMoreImages: (() => Promise<void>) | null = null;
   public yepImg: boolean = true;
+  public imageLoading: boolean = true;
+  public loadingMore: boolean = false;
   public metadataOpen: boolean = false;
   public inscriptos: any[] = [];
   public user: UserLogged | null = null;
@@ -71,18 +75,44 @@ export class VerFotografiasComponent implements OnInit {
   }
 
   anterior(){
-    this.index --;
+    this.index--;
     if (this.index < 0) this.index = this.all_data.length - 1
+    this.yepImg = true;
+    this.imageLoading = true;
     this.resetZoom();
   }
 
-  siguiente(){
-    if (this.index >= this.all_data.length) this.index = 0
+  async siguiente(){
+    if (this.loadingMore) return;
+    this.index++;
+    if (this.index >= this.all_data.length) {
+      if (this.hasMore && this.loadMoreImages) {
+        this.loadingMore = true;
+        this.imageLoading = true;
+        await this.loadMoreImages();
+        this.loadingMore = false;
+        if (this.index < this.all_data.length) {
+          this.yepImg = true;
+          this.imageLoading = true;
+          this.resetZoom();
+          return;
+        }
+      }
+      this.index = 0;
+    }
+    this.yepImg = true;
+    this.imageLoading = true;
     this.resetZoom();
   }
 
   onImageLoad(event: Event) {
+    this.imageLoading = false;
     this.resetZoom();
+  }
+
+  onImageError() {
+    this.yepImg = false;
+    this.imageLoading = false;
   }
 
   resetZoom() {
