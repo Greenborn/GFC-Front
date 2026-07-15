@@ -16,7 +16,7 @@ export class SeccionPostComponent extends ApiConsumer implements OnInit {
 
   @Input() modalController: ModalController;
   @Input() parentSections: Section[]
-  @Input() section: Section = this.sectionService.template
+  @Input() section: Section
   // @Input() typeSubsection: boolean;
 
   public posting: boolean = false;
@@ -28,6 +28,7 @@ export class SeccionPostComponent extends ApiConsumer implements OnInit {
     private UIUtilsService: UiUtilsService
   ) { 
     super(alertCtrl)
+    this.section = this.sectionService.template
   }
 
   get formTitle(): string {
@@ -53,9 +54,9 @@ export class SeccionPostComponent extends ApiConsumer implements OnInit {
       console.log('posting', model)
       this.posting = true
       super.fetch<Section>(() => this.sectionService.post(model, this.section.id)).subscribe(
-        section => {
+        async section => {
           this.posting = false
-          this.modalController.dismiss({ section })
+          try { await this.modalController.dismiss({ section }); } catch {}
         },
         err => {
           console.log('error post seccion', err)

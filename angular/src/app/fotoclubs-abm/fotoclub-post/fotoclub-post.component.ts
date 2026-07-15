@@ -65,7 +65,9 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
         this.fotoclubService.post(data, this.fotoclub.id).subscribe(
           async fotoclub => {
             this.posting = false;
-            this.modalController.dismiss({ fotoclub });
+            try {
+              await this.modalController.dismiss({ fotoclub });
+            } catch {}
           },
           err => {
             this.posting = false;

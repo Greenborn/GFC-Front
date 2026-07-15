@@ -17,7 +17,7 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
 
   @Input() modalController: ModalController;
   @Input() parentSections: Metric[]
-  @Input() metric: Metric = this.metricAbmService.template
+  @Input() metric: Metric
   // @Input() typeSubsection: boolean;
 
   public posting: boolean = false;
@@ -29,6 +29,7 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
     private UIUtilsService: UiUtilsService
   ) { 
     super(alertCtrl)
+    this.metric = this.metricAbmService.template
   }
 
   get formTitle(): string {
@@ -54,9 +55,9 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
       console.log('posting', model)
       this.posting = true
       super.fetch<Metric>(() => this. metricAbmService.post(model, this.metric.id)).subscribe(
-        metric => {
+        async metric => {
           this.posting = false
-          this.modalController.dismiss({ metric })
+          try { await this.modalController.dismiss({ metric }); } catch {}
         },
         err => {
           console.log('error post metric', err)

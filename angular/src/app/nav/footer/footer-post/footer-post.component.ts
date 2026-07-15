@@ -13,7 +13,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 export class FooterPostComponent extends ApiConsumer implements OnInit {
   
   @Input() modalController: ModalController;
-  @Input() footer: Footer = this.footerService.template;
+  @Input() footer: Footer;
   
   public facebook: string;
   public instagram: string;
@@ -28,6 +28,7 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
     private footerService: FooterService,
     ) { 
     super(alertCtrl)
+    this.footer = this.footerService.template
   }
 
   ngOnInit() {
@@ -57,10 +58,10 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
       super.fetch<Footer>(
         () => this.footerService.post(model, model.id)
       ).subscribe(
-        footer => {
+        async footer => {
           console.log('posted ', footer)
           this.posting = false
-          this.modalController.dismiss({ footer })
+          try { await this.modalController.dismiss({ footer }); } catch {}
         },
         async err => {
           const message = err?.error?.text || err?.error?.message || err?.message || 'Error al actualizar footer';
@@ -72,11 +73,7 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
   }
     
   dismiss() {
-    // using the injected ModalController this page
-    // can "dismiss" itself and optionally pass back data
-    this.modalController.dismiss({
-     
-    });
+    try { this.modalController.dismiss(); } catch {}
   }
   datosCargados() {
     //return this.image.code !=  undefined 

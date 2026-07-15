@@ -49,10 +49,10 @@ export class ContestRecordFormComponent extends ApiConsumer implements OnInit {
     if (this.grabacion.id === undefined) {
       // Crear nuevo registro
       this.contestRecordService.post(this.grabacion).subscribe({
-        next: response => { 
+        next: async response => { 
           super.displayAlert('Enlace de grabación guardado');
           this.UIUtilsService.dismissLoading();
-          this.modalController.dismiss({ grabacion: response.data });
+          try { await this.modalController.dismiss({ grabacion: response.data }); } catch {}
         },
         error: err => {
           this.UIUtilsService.dismissLoading();
@@ -63,10 +63,10 @@ export class ContestRecordFormComponent extends ApiConsumer implements OnInit {
     } else {
       // Actualizar registro existente
       this.contestRecordService.put(this.grabacion, this.grabacion.id).subscribe({
-        next: response => { 
+        next: async response => { 
           super.displayAlert('Enlace de grabación guardado');
           this.UIUtilsService.dismissLoading();
-          this.modalController.dismiss({ grabacion: response.data });
+          try { await this.modalController.dismiss({ grabacion: response.data }); } catch {}
         },
         error: err => {
           this.UIUtilsService.dismissLoading();

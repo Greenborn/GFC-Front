@@ -17,7 +17,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-  <!-- Loading indicator visible mientras Ionic no se haya hidratado -->
   <style nonce="gfc-loader-style">
     @keyframes gfc-loader-bar {
       0%, 100% { width: 40px; opacity: 0.3; }
@@ -33,6 +32,17 @@
     <span class="gfc-loader-text">Cargando\u2026</span>
     <span class="gfc-loader-bar"></span>
   </div>
+
+  <script nonce="gfc-dark-reader">
+    (function() {
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+        document.body.classList.add('dark');
+        var loader = document.getElementById('gfc-loader');
+        if (loader) loader.style.background = '#121212';
+      }
+    })();
+  </script>
 
   <div id="gfc-diag" style="position:fixed;top:0;left:0;right:0;z-index:99999;padding:8px 12px;font:12px/1.4 sans-serif;background:#ffc;color:#333;text-align:center;border-bottom:2px solid #e80;display:none">GFC cargando...</div>
 
@@ -58,6 +68,12 @@
       background: #3880ff;
       border-radius: 2px;
       animation: gfc-loader-bar 1.2s ease-in-out infinite;
+    }
+    html.dark .gfc-loader {
+      background: #121212;
+    }
+    html.dark .gfc-loader-text {
+      color: #ccc;
     }
     html.hydrated .gfc-loader,
     html.ion-ce .gfc-loader,

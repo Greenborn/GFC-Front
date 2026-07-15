@@ -41,15 +41,10 @@ export class UsuarioPage extends ApiConsumer implements OnInit {
     return document.body.classList.contains('dark')
   }
   set darkMode(l: boolean) {
-    if (l) {
-      document.body.classList.add('dark')
-      // document.body.classList.add('')
-    } else {
-      document.body.classList.remove('dark')
-      // document.body.classList.remove('')
-
-    }
-    this._dark = l
+    document.body.classList.toggle('dark', l);
+    document.documentElement.setAttribute('data-bs-theme', l ? 'dark' : 'light');
+    localStorage.setItem('darkMode', String(l));
+    this._dark = l;
   }
 
   ngOnInit() {

@@ -1,224 +1,155 @@
-<div class="bg-light border-bottom p-3">
-  <div class="d-flex align-items-center gap-1">
-    <button class="btn btn-dark btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i> Volver</button>
-    <h5 class="mb-0" *ngIf="isLogged(); else registroFuera">{{formTitle}}</h5>
-    <ng-template #registroFuera>
-      <h5 class="mb-0">Registrarme</h5>
-    </ng-template>
-  </div>
-</div>
-
 <div class="container-fluid py-3">
-  <div class="container-fluid">
-    <div class="row justify-content-center">
-      <div class="col-sm-12 col-md-9 col-lg-7">
-        <form class="w-100" [formGroup]="form" (ngSubmit)="postUsuario()">
-          <div class="row">
-            <div class="col-12 col-md-4">
-              <div class="card mb-3 profile-image-card">
-                <div class="card-header">
-                  <h5 class="card-title">Foto de perfil</h5>
-                </div>
-                <div class="card-body profile-image-card-content">
-                  <app-usuario-img [src]="img_url" [imageChangeEnabled]="true" [imageChangeClick]="ImageChangeClick"></app-usuario-img>
-                  <div class="mb-3 upload-button-row">
-                    <button class="btn btn-warning w-100 btn-sm" type="button" (click)="ProfileImageUpload.click()">
-                      Cambiar imagen
-                    </button>
-                  
-                  <input #ProfileImageUpload type="file" accept="image/*" style="display:none" (change)="fileUpload($event.target)" />
-                </div>
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-9">
+      <form class="w-100" [formGroup]="form" (ngSubmit)="postUsuario()">
+        <div class="row g-4">
+          <div class="col-12 col-md-4">
+            <div class="card h-100">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Foto de perfil</h5>
               </div>
-            </div>
-
-            <div class="col-12 col-md-8">
-              <div class="card mb-3">
-                <div class="card-header">
-                  <h5 class="card-title">Datos del perfil</h5>
-                </div>
-                <div class="card-body">
-                  <div class="mb-3 expand-full">
-                        <label class="form-label">Nombre</label>
-                        <input class="form-control"
-                            formControlName="name" name="name"
-                            autocapitalize="words" required>
-                        
-                      
-                      
-                      <div class="mb-3 expand-full">
-                        <label class="form-label">Apellido</label>
-                        <input class="form-control"
-                            formControlName="last_name" name="last_name"
-                            autocapitalize="words" required>
-                      
-
-                      <div class="mb-3 expand-full">
-                        <label class="form-label">DNI</label>
-                        <input class="form-control"
-                            formControlName="dni" name="dni" required>
-                      
-
-                      <div class="mb-3 expand-full fotoclub-select-item">
-                        <label class="form-label">Fotoclub/Agrupación/Institución</label>
-                        <select class="form-select"
-                            #sFotoclub
-                            formControlName="fotoclub_id" name="fotoclub_id"
-                            required>
-                          <option *ngFor="let f of fotoclubes" [value]="f.id">{{f.name}}</option>
-                        </select>
-                      
-
-                      <div *ngIf="isAdmin">
-                        <div class="mb-3 expand-full">
-                          <label class="form-label"> Es miembro de la comisión directiva</label>
-                          <input type="checkbox" class="form-check-input" 
-                              name="executive" formControlName="executive">
-                          
-                        
-
-                        <div class="mb-3 expand-full"
-                            *ngIf="profileExecutive()">
-                          <label class="form-label">Rol en la comisión</label>
-                          <input class="form-control"
-                              formControlName="executive_rol" name="executive_rol"
-                              autocapitalize="words"
-                              required>
-                        
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12">
-                  <div class="card mb-3">
-                    <div class="card-header">
-                      <h5 class="card-title">Datos del usuario</h5>
-                    </div>
-                    <div class="card-body">
-                      <div class="mb-3 expand-full">
-                        <label class="form-label">Nombre de Usuario</label>
-                        <input class="form-control"
-                            (focus)="usernameFocus=true" (blur)="usernameFocus=false"
-                            autocapitalize="off"
-                            pattern="[a-zA-Z0-9]{1,20}"
-                            formControlName="username" name="username"
-                            required>
-                            <i
-                            *ngIf="usernameFocus"
-                            class="bi bi-at-outline"></i>
-                        
-                      
-                      <small class="text-muted" *ngIf="usernameFocus" [ngStyle]="{ color: form.get('username').dirty && form.get('username').errors !== null ? 'red': '#000' }">
-                        Máximo 20 caracteres alfanuméricos sin símbolos ni espacios
-                      </small>
-
-                      <div class="mb-3 expand-full">
-                        <label class="form-label">E-Mail</label>
-                        <input class="form-control"
-                            autocapitalize="off"
-                            pattern="[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+(\.[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+)*@[a-zA-Z0-9_][\-a-zA-Z0-9_]*(\.[\-a-zA-Z0-9_]+)*\.[cC][oO][mM](:[0-9]{1,5})?"
-                            name="email" formControlName="email"
-                            required>
-                        
-                      
-
-                      <div class="mb-3 expand-full" *ngIf="isPost && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)">
-                        <div class="col p-0">
-                          <div class="row">
-                            <div class="col p-0 col-10">
-                              <label class="form-label">Contraseña </label>
-                              <input class="form-control text-right"
-                                  tabindex="0"
-                                  id="ctr-1"
-                                  pattern=".{8,}"
-                                  type="password" 
-                                  formControlName="password" name="password">
-                            </div>
-
-                            <div class="col p-0 align-self-center col-2">
-                              <app-ojo inputId="ctr-1"></app-ojo>
-                            </div>
-                          </div>
-                        </div>
-                      
-
-                      <small class="text-muted" [ngStyle]="{ color: (form.get('passwordRepeat').dirty || form.get('password').dirty) && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">
-                        <p *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null && form.get('passwordRepeat').errors.hasOwnProperty('mustMatch')"> - Atención: Las contraseñas no coinciden</p>
-                        <p *ngIf="form.get('password').dirty && form.get('password').errors !== null       && form.get('password').errors.hasOwnProperty('pattern')"> - Atención: Longitud mínima 8 cáracteres</p>
-                      </small>
-
-                      <div class="mb-3 expand-full" *ngIf="!isUserProfile && isUserSignUp">
-                        <div class="col p-0">
-                          <div class="row">
-                            <div class="col p-0 col-10">
-                              <label class="form-label">Repetir Contraseña</label>
-                              <input class="form-control text-right"
-                                  tabindex="0"
-                                  id="ctr-1"
-                                  type="password"
-                                  name="passwordRepeat" formControlName="passwordRepeat">
-                            </div>
-                            <div class="col p-0 align-self-center col-2">
-                            </div>
-                          </div>
-                        </div>
-                      
-
-                      <small class="text-muted" [ngStyle]="{ color: form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null ? 'red': '#000' }">
-                        <p *ngIf="form.get('passwordRepeat').dirty && form.get('passwordRepeat').errors !== null"> - Atención: Las contraseñas no coinciden</p>
-                      </small>
-
-                      <div class="mb-3 expand-full" *ngIf="!isPost && isLogged()">
-                        <button class="btn btn-warning" (click)="changePassword()">Cambiar contraseña</button>
-                      
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12" *ngIf="!isUserProfile && isLogged() && !updatingSelect">
-                  <div class="card mb-3">
-                    <div class="card-header">
-                      <h5 class="card-title">Configuración</h5>
-                    </div>
-                    <div class="card-body">
-                      <div class="mb-3 expand-full">
-                        <label class="form-label">Rol</label>
-                        <select class="form-select"
-                            #sRol
-                            name="role_id" formControlName="role_id"
-                            required>
-                          <option *ngFor="let r of roles" [value]="r.id">{{r.type}}</option>
-                        </select>
-                      
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 justify-content-end">
-                  <div class="row justify-content-end">
-                    <div class="col-12 col-sm-3 align-self-center">
-                      <app-btn-post
-                          [posting]="posting"
-                          [text]="submitBtnText"
-                      ></app-btn-post>
-                    </div>
-
-                    <div class="col-12 col-sm-3 align-self-center">
-                      <button class="btn btn-dark btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i> Cancelar</button>
-                    </div>
+              <div class="card-body d-flex flex-column align-items-center">
+                <app-usuario-img [src]="img_url" [imageChangeEnabled]="true" [imageChangeClick]="ImageChangeClick"></app-usuario-img>
+                <div class="mt-3 w-100">
+                  <button class="btn btn-warning w-100 btn-sm" type="button" (click)="ProfileImageUpload.click()">
+                    Cambiar imagen
+                  </button>
+                  <input #ProfileImageUpload type="file" accept="image/*" style="display:none" (change)="fileUpload($event.target)">
                 </div>
               </div>
             </div>
           </div>
+
+          <div class="col-12 col-md-8">
+            <div class="card h-100">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Datos del perfil</h5>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-12 col-sm-6">
+                    <label class="form-label">Nombre</label>
+                    <input class="form-control" formControlName="name" autocapitalize="words" required>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <label class="form-label">Apellido</label>
+                    <input class="form-control" formControlName="last_name" autocapitalize="words" required>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <label class="form-label">DNI</label>
+                    <input class="form-control" formControlName="dni" required>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <label class="form-label">Fotoclub/Agrupación/Institución</label>
+                    <select class="form-select" #sFotoclub formControlName="fotoclub_id" required>
+                      <option *ngFor="let f of fotoclubes" [value]="f.id">{{f.name}}</option>
+                    </select>
+                  </div>
+                  <div class="col-12" *ngIf="isAdmin">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" id="executive" formControlName="executive">
+                      <label class="form-check-label" for="executive">Es miembro de la comisión directiva</label>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6" *ngIf="isAdmin && profileExecutive()">
+                    <label class="form-label">Rol en la comisión</label>
+                    <input class="form-control" formControlName="executive_rol" autocapitalize="words" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Datos del usuario</h5>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-12 col-sm-6">
+                    <label class="form-label">Nombre de Usuario</label>
+                    <input class="form-control" (focus)="usernameFocus=true" (blur)="usernameFocus=false"
+                      autocapitalize="off" pattern="[a-zA-Z0-9]{1,20}"
+                      formControlName="username" required>
+                    <small class="text-muted" *ngIf="usernameFocus">
+                      Máximo 20 caracteres alfanuméricos sin símbolos ni espacios
+                    </small>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <label class="form-label">E-Mail</label>
+                    <input class="form-control" autocapitalize="off"
+                      pattern="[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+(\.[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+)*@[a-zA-Z0-9_][\-a-zA-Z0-9_]*(\.[\-a-zA-Z0-9_]+)*\.[cC][oO][mM](:[0-9]{1,5})?"
+                      formControlName="email" required>
+                  </div>
+
+                  <ng-container *ngIf="isPost && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)">
+                    <div class="col-12 col-sm-6">
+                      <label class="form-label">Contraseña</label>
+                      <div class="input-group">
+                        <input class="form-control" id="ctr-1" pattern=".{8,}" type="password"
+                          formControlName="password">
+                        <app-ojo inputId="ctr-1"></app-ojo>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="!isUserProfile && isUserSignUp">
+                    <div class="col-12 col-sm-6">
+                      <label class="form-label">Repetir Contraseña</label>
+                      <input class="form-control" type="password" formControlName="passwordRepeat">
+                    </div>
+                  </ng-container>
+
+                  <div class="col-12">
+                    <small class="text-muted" *ngIf="form.get('passwordRepeat')?.dirty || form.get('password')?.dirty">
+                      <p *ngIf="form.get('passwordRepeat')?.errors?.['mustMatch']">- Atención: Las contraseñas no coinciden</p>
+                      <p *ngIf="form.get('password')?.errors?.['pattern']">- Atención: Longitud mínima 8 caracteres</p>
+                    </small>
+                  </div>
+
+                  <div class="col-12" *ngIf="!isPost && isLogged()">
+                    <button class="btn btn-warning" type="button" (click)="changePassword()">Cambiar contraseña</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12" *ngIf="!isUserProfile && isLogged() && !updatingSelect">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Configuración</h5>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-12 col-sm-6">
+                    <label class="form-label">Rol</label>
+                    <select class="form-select" #sRol formControlName="role_id" required>
+                      <option *ngFor="let r of roles" [value]="r.id">{{r.type}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="d-flex justify-content-center justify-content-md-between gap-2">
+              <button class="btn btn-outline-dark" type="button" onclick="history.back()">Cancelar</button>
+              <app-btn-post [posting]="posting" [text]="submitBtnText"></app-btn-post>
+            </div>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
-  
-  <ng-template #spinner>
-    <div class="row justify-content-center" *ngIf="(usuario.role_id == 3 || usuario.role_id == 2)">
-      <div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
-    </div>
-  </ng-template>
 </div>
+
+<ng-template #spinner>
+  <div class="row justify-content-center" *ngIf="(usuario.role_id == 3 || usuario.role_id == 2)">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+</ng-template>

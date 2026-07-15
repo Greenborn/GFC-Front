@@ -27,9 +27,18 @@ export class SidebarComponent implements OnInit {
   }
   set darkMode(l: boolean) {
     document.body.classList.toggle('dark', l);
+    document.documentElement.setAttribute('data-bs-theme', l ? 'dark' : 'light');
+    localStorage.setItem('darkMode', String(l));
+  }
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
   }
 
   ngOnInit() {
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark');
+      document.documentElement.setAttribute('data-bs-theme', 'dark');
+    }
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {

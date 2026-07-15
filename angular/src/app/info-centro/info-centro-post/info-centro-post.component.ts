@@ -88,9 +88,9 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
       super.fetch<any>(
         () => this.infoCentroService.postFormData<any>(p, this.parrafo.id)
       ).subscribe(
-        parrafo => {
+        async parrafo => {
           this.posting = false
-          this.modalController.dismiss({ parrafo })
+          try { await this.modalController.dismiss({ parrafo }); } catch {}
           console.log('posted parrafo', parrafo)
         },
         err => {

@@ -20,7 +20,7 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
   @Input() jueces: ProfileExpanded[];
   @Input() categorias: Category[];
 
-  @Input() profileContest: ProfileContest = this.profileContestService.template;
+  @Input() profileContest: ProfileContest;
   public posting: boolean = false;
 
   constructor(
@@ -29,6 +29,7 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
     public responsiveService: ResponsiveService
   ) { 
     super(alertCtrl)
+    this.profileContest = this.profileContestService.template
   }
 
   ngOnInit() {}
@@ -48,9 +49,9 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
             // category_id: null
           }, undefined, 'expand=profile,profile.user,profile.fotoclub,category'
         ).subscribe(
-          profileContest => {
+          async profileContest => {
             this.posting = false
-            this.modalController.dismiss({ profileContest })
+            try { await this.modalController.dismiss({ profileContest }); } catch {}
           },
           err => {
             console.log('error inscripcion juez', err)

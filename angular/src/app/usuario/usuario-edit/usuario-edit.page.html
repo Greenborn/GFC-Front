@@ -1,20 +1,14 @@
-<div class="bg-light border-bottom p-3">
-  <div class="d-flex align-items-center gap-1">
-    <button class="btn btn-dark btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i> Volver</button>
-    <h5 class="mb-0">Editar Perfil</h5>
-  </div>
-</div>
-
 <div class="container-fluid py-3">
   <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-6">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-          <form #f="ngForm" (ngSubmit)="editUsuario(f)">
-            <div class="text-center mb-4">
-              <app-usuario-img [src]="usuario.img_url" style="max-width:120px;display:inline-block"></app-usuario-img>
-            </div>
+    <div class="col-12 col-lg-8 col-xl-6">
+      <h5 class="mb-4">Editar Perfil</h5>
+      <form #f="ngForm" (ngSubmit)="editUsuario(f)">
+        <div class="row g-4">
+          <div class="col-12 col-md-4 col-lg-3 text-center">
+            <app-usuario-img [src]="usuario.img_url" style="max-width:100px;display:inline-block"></app-usuario-img>
+          </div>
 
+          <div class="col-12 col-md-8 col-lg-9">
             <div class="mb-3">
               <label class="form-label fw-medium">Nombre</label>
               <input class="form-control"
@@ -35,7 +29,7 @@
               >
             </div>
 
-            <div class="mb-4">
+            <div class="mb-3">
               <label class="form-label fw-medium">Imagen (URL)</label>
               <input class="form-control"
                 name="img_url"
@@ -45,9 +39,9 @@
             </div>
 
             <button class="btn btn-success w-100" type="submit" [disabled]="!f.valid">Guardar</button>
-          </form>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>

@@ -36,11 +36,11 @@
           <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/usuarios', 'editar', u.id]">
             <i class="bi bi-person me-2"></i>Editar perfil
           </li>
-          <li class="list-group-item list-group-item-action">
+          <li class="list-group-item clickeable" (click)="toggleDarkMode()">
             <div class="d-flex align-items-center justify-content-between">
               <span><i class="bi bi-moon me-2"></i>Modo oscuro</span>
               <div class="form-check form-switch mb-0">
-                <input type="checkbox" class="form-check-input" [checked]="darkMode" (change)="darkMode = !darkMode">
+                <input type="checkbox" class="form-check-input" [checked]="darkMode" (click)="$event.stopPropagation()">
               </div>
             </div>
           </li>

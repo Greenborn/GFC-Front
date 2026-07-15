@@ -444,7 +444,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         this.location.back()
       } catch (err: any) {
         this.posting = false
-        console.log('error updating user/profile', err)
+        if (err?.name === 'EmptyError') return;
         if (err?.error?.message) {
           super.displayAlert(this.errorFilter(err.error.message))
         } else if (Array.isArray(err?.error) && err.error[0]?.message) {

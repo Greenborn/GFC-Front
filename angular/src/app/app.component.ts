@@ -33,7 +33,10 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // Notificar que la app cargó (cancela watchdog de hidratación)
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark');
+      document.documentElement.setAttribute('data-bs-theme', 'dark');
+    }
     document.dispatchEvent(new CustomEvent('gfc-ready'));
 
     // Ocultar barra de diagnóstico
