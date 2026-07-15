@@ -236,38 +236,85 @@
   }
 
   .fotoclub-rank-eff {
-    order: 2;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #6c757d;
-    min-width: auto;
-    text-align: left;
-    padding-left: 4px;
-  }
-
-  .rank-col-name.fotoclub-rank-name {
     order: 3;
     width: 100%;
     flex: none;
-    padding-left: 0;
-    padding-top: 2px;
+    padding: 4px 0 0 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #495057;
+    text-align: left;
+    display: flex;
+    gap: 4px;
   }
 
-  .fotoclub-mobile-eff {
-    display: block;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #6c757d;
-    margin-top: 2px;
+  .rank-col-name.fotoclub-rank-name {
+    order: 2;
+    flex: 1;
+    padding-left: 0;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #212529;
+  }
+
+  .rank-col-name.fotoclub-rank-name.rank-1,
+  .rank-col-name.fotoclub-rank-name.rank-2,
+  .rank-col-name.fotoclub-rank-name.rank-3 {
+    font-weight: 800;
   }
 
   .rank-table-row .rank-row-main {
     flex-wrap: wrap;
   }
+
+  .rank-table-body .rank-table-row {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .rank-table-body .rank-table-row:nth-child(even) {
+    background: #fff;
+  }
+
+  .rank-table-body .rank-table-row:last-child {
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 0;
+  }
+
+  .rank-row-sub {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .prize-badge {
+    font-size: 0.68rem;
+    padding: 2px 8px;
+  }
 }
 
-.fotoclub-mobile-eff {
+.fotoclub-eff-mobile {
   display: none;
+}
+
+@media (max-width: 767.98px) {
+  .fotoclub-eff-desktop {
+    display: none;
+  }
+
+  .fotoclub-eff-mobile {
+    display: inline;
+  }
+}
+
+@media (min-width: 768px) {
+  .fotoclub-eff-desktop {
+    display: inline;
+  }
 }
 
 .rank-col-pos.rank-1,

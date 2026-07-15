@@ -111,8 +111,7 @@
                           [class.rank-1]="r.posicion_temporada == 1"
                           [class.rank-2]="r.posicion_temporada == 2"
                           [class.rank-3]="r.posicion_temporada == 3">
-                          <span class="mobile-label">Fotoclub:</span>{{r.name}}
-                          <span class="fotoclub-mobile-eff">{{r.porc_efectividad_anual.porcentaje | number: '1.1'}}% efectividad</span>
+                          {{r.name}}
                         </div>
                         <div class="rank-col rank-col-score fotoclub-hide-mobile"
                           [class.rank-1]="r.posicion_temporada == 1"
@@ -124,7 +123,8 @@
                           [class.rank-1]="r.posicion_temporada == 1"
                           [class.rank-2]="r.posicion_temporada == 2"
                           [class.rank-3]="r.posicion_temporada == 3">
-                          {{r.puntaje_temporada}} pts
+                          <span class="fotoclub-eff-desktop">{{r.porc_efectividad_anual.porcentaje | number: '1.1'}}%</span>
+                          <span class="fotoclub-eff-mobile">{{r.puntaje_temporada}} pts · {{r.porc_efectividad_anual.porcentaje | number: '1.1'}}% efectividad</span>
                         </div>
                     </div>
                     <div class="rank-row-sub">
