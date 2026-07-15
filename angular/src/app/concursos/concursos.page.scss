@@ -27,8 +27,8 @@
   background: radial-gradient(
     ellipse at center,
     rgba(0, 0, 0, 0.0) 0%,
-    rgba(0, 0, 0, 0.15) 50%,
-    rgba(0, 0, 0, 0.35) 100%
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.25) 100%
   );
   pointer-events: none;
 }
@@ -42,9 +42,9 @@
   align-items: center;
   padding: 1.25rem 1.5rem;
   text-align: center;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.75);
   border-radius: 12px;
-  max-width: 50%;
+  max-width: 40%;
 }
 
 .cc-badge {
@@ -143,8 +143,25 @@
     margin-left: 0;
     margin-right: 0;
     border-radius: 0;
+    flex-direction: column;
+    min-height: auto;
+    background-image: none !important;
+    align-items: stretch;
+    justify-content: flex-start;
   }
   .cc-overlay {
+    display: none;
+  }
+  .cc-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+  .cc-body {
+    width: 100%;
+    max-width: 100%;
+    background: rgba(0, 0, 0, 0.7);
     border-radius: 0;
   }
 }

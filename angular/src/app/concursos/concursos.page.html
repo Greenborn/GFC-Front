@@ -39,6 +39,7 @@
                   [ngStyle]="{'background-image': 'url(' + getImg(item.concurso.img_url) + ')'}"
                   >
                   <div class="cc-overlay"></div>
+                  <img class="cc-img d-md-none" [src]="getImg(item.concurso.img_url)" alt="{{item.concurso.name}}">
                   <div class="cc-body">
                     <span class="cc-badge" [class.cc-badge--open]="item.concurso.active" [class.cc-badge--closed]="!item.concurso.active">{{ item.concurso.active ? 'Abierto' : 'Cerrado' }}</span>
                     <h2 class="cc-title">{{item.concurso.name}}</h2>
