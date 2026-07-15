@@ -1,35 +1,23 @@
-<div class="col">
-  <div class="row">
-    <h2 class="mt-3 mb-3 me-3">
-        Grabaciones
-    </h2>
-    <button class="btn btn-success btn-sm rounded-circle" (click)="addGrabacion()">
-        <i class="bi bi-plus"></i>
-    </button>
-  </div>
+<div class="d-flex align-items-center gap-2 mb-2">
+  <button class="btn btn-sm btn-outline-primary" (click)="addGrabacion()">
+    <i class="bi bi-plus-lg me-1"></i>Agregar grabación
+  </button>
+</div>
 
-  <div class="row">
-      <div class="list-group list-group-flush w-100">
+<div *ngIf="!concurso.contestRecords || concurso.contestRecords.length === 0" class="text-muted small text-center py-3">
+  No hay grabaciones
+</div>
 
-        <div class="mb-3" *ngFor="let grabacion of concurso.contestRecords">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col"><a href="{{grabacion.url}}" target="_blank">{{grabacion.object}}</a></div>
-                <div class="col-auto">
-                  <div class="d-flex gap-1">
-                    <button class="btn btn-warning" (click)="editarGrabacion(grabacion)">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-danger" (click)="eliminarGrabacion(grabacion)">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
-
-        
-      </div>
+<div class="list-group list-group-flush w-100" *ngIf="concurso.contestRecords?.length > 0">
+  <div class="list-group-item px-0 d-flex justify-content-between align-items-center gap-2" *ngFor="let grabacion of concurso.contestRecords">
+    <a href="{{grabacion.url}}" target="_blank" class="text-truncate">{{grabacion.object}}</a>
+    <div class="d-flex gap-1 flex-shrink-0">
+      <button class="btn btn-sm btn-outline-warning" (click)="editarGrabacion(grabacion)" title="Editar">
+        <i class="bi bi-pencil"></i>
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="eliminarGrabacion(grabacion)" title="Eliminar">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
   </div>
 </div>
