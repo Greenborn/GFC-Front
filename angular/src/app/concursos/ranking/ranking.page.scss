@@ -226,6 +226,48 @@
     min-width: 40px;
     width: auto;
   }
+
+  .fotoclub-hide-mobile {
+    display: none;
+  }
+
+  .fotoclub-rank-pos {
+    order: 1;
+  }
+
+  .fotoclub-rank-eff {
+    order: 2;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6c757d;
+    min-width: auto;
+    text-align: left;
+    padding-left: 4px;
+  }
+
+  .rank-col-name.fotoclub-rank-name {
+    order: 3;
+    width: 100%;
+    flex: none;
+    padding-left: 0;
+    padding-top: 2px;
+  }
+
+  .fotoclub-mobile-eff {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #6c757d;
+    margin-top: 2px;
+  }
+
+  .rank-table-row .rank-row-main {
+    flex-wrap: wrap;
+  }
+}
+
+.fotoclub-mobile-eff {
+  display: none;
 }
 
 .rank-col-pos.rank-1,

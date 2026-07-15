@@ -98,30 +98,34 @@
                   @for (r of ranking.fotoclubs; track r) {
                     <div class="rank-table-row">
                       <div class="rank-row-main">
-                        <div class="rank-col rank-col-pos"
+                        <div class="rank-col rank-col-pos fotoclub-rank-pos"
                           [class.rank-1]="r.posicion_temporada == 1"
                           [class.rank-2]="r.posicion_temporada == 2"
                           [class.rank-3]="r.posicion_temporada == 3"
                           [attr.data-rank]="(r.posicion_temporada == 1 || r.posicion_temporada == 2 || r.posicion_temporada == 3) ? '#' + r.posicion_temporada : null">
-                          <span class="mobile-label">#</span>@if (r.posicion_temporada > 3) {
+                          @if (r.posicion_temporada > 3) {
                           {{r.posicion_temporada}}
                         }
-                      </div>
-                      <div class="rank-col rank-col-name cap"
-                        [class.rank-1]="r.posicion_temporada == 1"
-                        [class.rank-2]="r.posicion_temporada == 2"
-                        [class.rank-3]="r.posicion_temporada == 3">
-                        <span class="mobile-label">Fotoclub:</span>{{r.name}}
-                      </div>
-                      <div class="rank-col rank-col-score"
-                        [class.rank-1]="r.posicion_temporada == 1"
-                        [class.rank-2]="r.posicion_temporada == 2"
-                        [class.rank-3]="r.posicion_temporada == 3">
-                        {{r.puntaje_temporada}}
-                      </div>
-                      <div class="rank-col rank-col-eff">
-                        <span class="mobile-label">Efectividad:</span>{{r.porc_efectividad_anual.porcentaje | number: '1.1'}}%
-                      </div>
+                        </div>
+                      <div class="rank-col rank-col-name cap fotoclub-rank-name"
+                          [class.rank-1]="r.posicion_temporada == 1"
+                          [class.rank-2]="r.posicion_temporada == 2"
+                          [class.rank-3]="r.posicion_temporada == 3">
+                          <span class="mobile-label">Fotoclub:</span>{{r.name}}
+                          <span class="fotoclub-mobile-eff">{{r.porc_efectividad_anual.porcentaje | number: '1.1'}}% efectividad</span>
+                        </div>
+                        <div class="rank-col rank-col-score fotoclub-hide-mobile"
+                          [class.rank-1]="r.posicion_temporada == 1"
+                          [class.rank-2]="r.posicion_temporada == 2"
+                          [class.rank-3]="r.posicion_temporada == 3">
+                          {{r.puntaje_temporada}}
+                        </div>
+                        <div class="rank-col rank-col-eff fotoclub-rank-eff"
+                          [class.rank-1]="r.posicion_temporada == 1"
+                          [class.rank-2]="r.posicion_temporada == 2"
+                          [class.rank-3]="r.posicion_temporada == 3">
+                          {{r.puntaje_temporada}} pts
+                        </div>
                     </div>
                     <div class="rank-row-sub">
                       <div class="rank-col rank-col-prizes">
