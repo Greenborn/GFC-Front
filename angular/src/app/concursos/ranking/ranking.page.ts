@@ -10,6 +10,7 @@ import { AlertService } from '../../services/ui/alert.service';
 import { UiUtilsService } from '../../services/ui/ui-utils.service';
 
 @Component({
+  standalone: false,
   selector: 'app-ranking',
   templateUrl: './ranking.page.html',
   styleUrls: ['./ranking.page.scss'],

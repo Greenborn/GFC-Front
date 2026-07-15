@@ -15,6 +15,7 @@ export interface SearchSelectOptions {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-search-select',
   templateUrl: './search-select.component.html',
   styleUrls: ['./search-select.component.scss'],

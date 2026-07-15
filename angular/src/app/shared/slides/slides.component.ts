@@ -16,6 +16,7 @@ export interface SlidesOptions {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-slides',
   templateUrl: './slides.component.html',
   styleUrls: ['./slides.component.scss'],

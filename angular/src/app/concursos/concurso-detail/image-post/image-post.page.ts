@@ -23,6 +23,7 @@ export interface ImagePostParams {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-image-post',
   templateUrl: './image-post.page.html',
   styleUrls: ['./image-post.page.scss'],

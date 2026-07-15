@@ -8,6 +8,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
+  standalone: false,
   selector: 'app-metricas-post',
   templateUrl: './metricas-post.component.html',
   styleUrls: ['./metricas-post.component.scss'],

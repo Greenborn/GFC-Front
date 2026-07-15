@@ -26,6 +26,7 @@ function normalizarNombre(nombre: string): string {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-carga-resultados',
   templateUrl: './carga-resultados.page.html',
   styleUrls: ['./carga-resultados.page.scss']

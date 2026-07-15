@@ -21,6 +21,7 @@ import { ConcursoDetailService } from '../concurso-detail.service';
 import { resultadosConcursoGeted } from 'src/app/services/contest-results.service'
 
 @Component({
+  standalone: false,
   selector: 'app-concursantes',
   templateUrl: './concursantes.component.html',
   styleUrls: ['./concursantes.component.scss'],

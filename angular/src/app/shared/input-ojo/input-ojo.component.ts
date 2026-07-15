@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-ojo',
   templateUrl: './input-ojo.component.html',
   styleUrls: ['./input-ojo.component.scss'],

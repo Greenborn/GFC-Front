@@ -8,6 +8,7 @@ import { ContestRecordFormComponent } from './contest-record-form/contest-record
 import { ContestRecord } from './models/contest.record';
 
 @Component({
+  standalone: false,
   selector: 'app-contest-records',
   templateUrl: './contest-records.component.html',
   styleUrls: ['./contest-records.component.scss'],

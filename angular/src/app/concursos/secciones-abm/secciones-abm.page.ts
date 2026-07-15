@@ -8,6 +8,7 @@ import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar
 import { SeccionPostComponent } from './seccion-post/seccion-post.component';
 
 @Component({
+  standalone: false,
   selector: 'app-secciones-abm',
   templateUrl: './secciones-abm.page.html',
   styleUrls: ['./secciones-abm.page.scss'],

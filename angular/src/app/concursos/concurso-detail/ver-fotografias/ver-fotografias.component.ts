@@ -7,6 +7,7 @@ import { RolificadorService } from 'src/app/modules/auth/services/rolificador.se
 import { UserLogged } from 'src/app/models/user.model';
 
 @Component({
+  standalone: false,
   selector: 'app-ver-fotografias',
   templateUrl: './ver-fotografias.component.html',
   styleUrls: ['./ver-fotografias.component.scss'],

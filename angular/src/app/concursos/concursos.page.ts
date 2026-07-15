@@ -23,6 +23,7 @@ import { ResponsiveService } from '../services/ui/responsive.service';
 import { FotosDelAnioResponse, ItemConcursoOFoto } from '../models/foto-del-anio.model';
 import { forkJoin } from 'rxjs';
 @Component({
+  standalone: false,
   selector: 'app-concursos',
   templateUrl: './concursos.page.html',
   styleUrls: ['./concursos.page.scss'],

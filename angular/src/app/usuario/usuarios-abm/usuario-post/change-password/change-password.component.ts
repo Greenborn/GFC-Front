@@ -7,6 +7,7 @@ import { ApiAdminChangePasswordBody, ApiChangePasswordBody } from 'src/app/model
 import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
+  standalone: false,
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss'],

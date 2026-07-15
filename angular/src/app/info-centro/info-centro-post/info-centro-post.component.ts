@@ -8,6 +8,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
+  standalone: false,
   selector: 'app-info-centro-post',
   templateUrl: './info-centro-post.component.html',
   styleUrls: ['./info-centro-post.component.scss'],

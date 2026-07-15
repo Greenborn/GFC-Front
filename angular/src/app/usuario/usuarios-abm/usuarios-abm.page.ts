@@ -24,6 +24,7 @@ import { LoadingService } from 'src/app/services/ui/loading.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
+  standalone: false,
   selector: 'app-usuarios-abm',
   templateUrl: './usuarios-abm.page.html',
   styleUrls: ['./usuarios-abm.page.scss'],

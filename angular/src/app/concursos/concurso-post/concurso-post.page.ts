@@ -20,6 +20,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
+  standalone: false,
   selector: 'app-concurso-post',
   templateUrl: './concurso-post.page.html',
   styleUrls: ['./concurso-post.page.scss'],

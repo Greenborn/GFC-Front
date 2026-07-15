@@ -10,6 +10,7 @@ import { UserService } from '../services/user.service';
 import { environment } from '../../environments/environment';
 
 @Component({
+  standalone: false,
   selector: 'app-usuario',
   templateUrl: './usuario.page.html',
   styleUrls: ['./usuario.page.scss'],

@@ -4,6 +4,7 @@ import { first, takeUntil } from "rxjs/operators";
 import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
+  standalone: false,
   template: ''
 })
 export abstract class ApiConsumer implements OnDestroy {

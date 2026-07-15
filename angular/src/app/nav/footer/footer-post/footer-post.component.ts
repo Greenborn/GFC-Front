@@ -6,6 +6,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
+  standalone: false,
   selector: 'app-footer-post',
   templateUrl: './footer-post.component.html',
   styleUrls: ['./footer-post.component.scss'],

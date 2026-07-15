@@ -37,6 +37,7 @@ import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src
 
 // TODO: sacar el contenido extra que se repite en informacion-component
 @Component({
+  standalone: false,
   selector: 'app-concurso-detail',
   templateUrl: './concurso-detail.page.html',
   styleUrls: ['./concurso-detail.page.scss'],

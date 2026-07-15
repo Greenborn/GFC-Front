@@ -5,6 +5,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { VerFotografiasComponent } from '../concurso-detail/ver-fotografias/ver-fotografias.component';
 
 @Component({
+  standalone: false,
   selector: 'app-fotos-anio-card',
   templateUrl: './fotos-anio-card.component.html',
   styleUrls: ['./fotos-anio-card.component.scss']

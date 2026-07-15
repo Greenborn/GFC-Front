@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { SSOAuthService } from '../../services/sso-auth.service';
 
 @Component({
+  standalone: false,
   selector: 'app-login-view',
   templateUrl: './login-view.component.html',
   styleUrls: ['./login-view.component.scss'],

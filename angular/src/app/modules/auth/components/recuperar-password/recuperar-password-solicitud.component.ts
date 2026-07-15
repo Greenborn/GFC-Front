@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
+  standalone: false,
   selector: 'app-recuperar-password-solicitud',
   templateUrl: './recuperar-password-solicitud.component.html',
   styleUrls: ['./recuperar-password-solicitud.component.scss']

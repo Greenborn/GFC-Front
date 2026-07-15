@@ -10,6 +10,7 @@ import { SearchBarComponentAtributo } from '../shared/search-bar/search-bar.comp
 import { FotoclubPostComponent } from './fotoclub-post/fotoclub-post.component';
 
 @Component({
+  standalone: false,
   selector: 'app-fotoclubs-abm',
   templateUrl: './fotoclubs-abm.page.html',
   styleUrls: ['./fotoclubs-abm.page.scss'],

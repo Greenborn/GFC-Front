@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { filter } from 'rxjs/operators';
 
 @Component({
+  standalone: false,
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],

@@ -27,6 +27,7 @@ import { firstValueFrom } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 @Component({
+  standalone: false,
   selector: 'app-fotografias',
   templateUrl: './fotografias.component.html',
   styleUrls: ['./fotografias.component.scss'],

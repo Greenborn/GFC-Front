@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-condiciones-servicio',
   templateUrl: './condiciones-servicio.component.html',
   styleUrls: ['./condiciones-servicio.component.scss'],

@@ -13,6 +13,7 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 
 @Component({
+  standalone: false,
   selector: 'app-image-review',
   templateUrl: './image-review.page.html',
   styleUrls: ['./image-review.page.scss'],

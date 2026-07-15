@@ -9,6 +9,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
+  standalone: false,
   selector: 'app-inscribir-jueces',
   templateUrl: './inscribir-jueces.component.html',
   styleUrls: ['./inscribir-jueces.component.scss'],

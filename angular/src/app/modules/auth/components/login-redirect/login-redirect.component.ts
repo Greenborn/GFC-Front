@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { SSOAuthService } from '../../services/sso-auth.service';
 
 @Component({
+  standalone: false,
   selector: 'app-login-redirect',
   templateUrl: './login-redirect.component.html',
   styleUrls: ['./login-redirect.component.scss'],
