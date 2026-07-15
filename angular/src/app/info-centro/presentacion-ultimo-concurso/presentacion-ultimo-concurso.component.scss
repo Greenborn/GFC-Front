@@ -95,7 +95,15 @@
 }
 
 @media (max-width: 767px) {
-    .uc-hero {
+.uc-placeholder {
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+}
+
+.uc-hero {
         height: 100vh;
         align-items: flex-end;
     }

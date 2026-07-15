@@ -18,17 +18,13 @@ const SSO_CLIENT_UNIQUE_ID = 'sso_client_unique_id';
 })
 export class AuthService {
 
-  // private _user: User;
-  private _user: Promise<UserLogged>;
+  private _user: Promise<UserLogged | null> | null = null;
 
   constructor(
     private  router: Router,
     private  http: HttpClient,
     private  config: ConfigService,
-    // private  gral:        AppUIUtilsService
-  ) { 
-    // this.updateUser()
-  }
+  ) { }
 
   get token(): string {
     try {
@@ -53,7 +49,10 @@ export class AuthService {
 
   get user(): Promise<UserLogged|null> {
     if (!this.userId || isNaN(this.userId)) {
-      return Promise.resolve(null);
+      if (!this._user) {
+        this._user = Promise.resolve(null);
+      }
+      return this._user;
     }
 
     if (this._user == undefined && this.loggedIn) {

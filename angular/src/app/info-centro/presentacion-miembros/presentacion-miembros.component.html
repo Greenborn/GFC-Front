@@ -7,19 +7,19 @@
         </div>
 
         <div class="row members-grid g-4">
-          <div class="col-12 col-md-8 col-lg-6" *ngFor="let s of members">
+          <div class="col-12 col-md-8 col-lg-6" *ngFor="let s of members; trackBy: trackByFn">
             <div class="member-card">
               <div class="member-info">
                 <h3 class="member-name">{{s.name}}</h3>
 
-                <div class="member-links" *ngIf="instagramUrl(s.instagram) != null || faceUrl(s.facebook) != null || mailUrl(s.email) != null">
-                  <a *ngIf="instagramUrl(s.instagram) != null" [href]="instagramUrl(s.instagram)" target="_blank" class="member-link instagram" aria-label="Instagram">
+                <div class="member-links" *ngIf="s.instagramSafe || s.facebookSafe || s.mailSafe">
+                  <a *ngIf="s.instagramSafe" [href]="s.instagramSafe" target="_blank" class="member-link instagram" aria-label="Instagram">
                     <i class="bi bi-instagram"></i>
                   </a>
-                  <a *ngIf="faceUrl(s.facebook) != null" [href]="faceUrl(s.facebook)" target="_blank" class="member-link facebook" aria-label="Facebook">
+                  <a *ngIf="s.facebookSafe" [href]="s.facebookSafe" target="_blank" class="member-link facebook" aria-label="Facebook">
                     <i class="bi bi-facebook"></i>
                   </a>
-                  <a *ngIf="mailUrl(s.email) != null" href="mailto:{{mailUrl(s.email)}}" target="_blank" class="member-link email" aria-label="Email">
+                  <a *ngIf="s.mailSafe" [href]="s.mailSafe" target="_blank" class="member-link email" aria-label="Email">
                     <i class="bi bi-envelope"></i>
                   </a>
                 </div>

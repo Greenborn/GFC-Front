@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService } from '../../modules/auth/services/auth.service';
 import { Usuario } from '../usuario.model';
 
 @Component({
@@ -20,11 +20,11 @@ export class UsuarioEditPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.usuario = AuthService.getUsuario();
+    this.usuario = (AuthService as any).getUsuario();
     // this.usuario = this.db.getUsuario();
   }
   ionViewWillEnter() {
-    this.usuario = AuthService.getUsuario();
+    this.usuario = (AuthService as any).getUsuario();
     // this.usuario = this.db.getUsuario();
   }
   

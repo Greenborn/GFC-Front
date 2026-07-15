@@ -2,14 +2,14 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 
-import { ImagePostPage, ImagePostParams } from './image-post/image-post.page';
+import { ImagePostPage, ImagePostParams } from '../concurso-detail/image-post/image-post.page';
 
 import { Image } from 'src/app/models/image.model';
 import { ContestResult, ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
-import { ImageReviewPage } from './image-review/image-review.page';
+import { ImageReviewPage } from '../concurso-detail/image-review/image-review.page';
 import { Metric } from 'src/app/models/metric.model';
 import { ContestService } from 'src/app/services/contest.service';
 import { Contest, ContestExpanded } from 'src/app/models/contest.model';
@@ -22,7 +22,7 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { Observable, Subscription } from 'rxjs';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 
-import { ConcursoDetailService } from './concurso-detail.service';
+import { ConcursoDetailService } from '../concurso-detail/concurso-detail.service';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 
 import { ProfileContestService } from 'src/app/services/profile-contest.service';

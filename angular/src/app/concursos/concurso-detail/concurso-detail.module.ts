@@ -37,7 +37,7 @@ import { FiltrosOrdenModalComponent } from './fotografias/filtros-orden-modal.co
     JuzgamientoComponent,
     FotografiasComponent, 
     InformacionComponent,
-    ImagePostPage, 
+    ImagePostPage,
     ImageReviewPage,
     InscribirConcursanteComponent,
     InscribirJuecesComponent,

@@ -387,7 +387,9 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   }
 
   async desinscribirme(){
-    let yo = ((await this.auth.user).profile)
+    const user = await this.auth.user;
+    if (!user?.profile) return;
+    const yo = user.profile;
     const prl = this.inscriptos.find(p => p.profile_id == yo.id)
     this.concursoDetailService.desinscribir.emit(
       prl
@@ -395,10 +397,14 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   }
 
   async estaInscripto(){
-    let yo = ((await this.auth.user).profile)
+    const user = await this.auth.user;
+    if (!user?.profile) {
+      this.isInscripto = false;
+      return;
+    }
+    const yo = user.profile;
     const prl = this.inscriptos.find(p => p.profile_id == yo.id)
     this.isInscripto =  prl != undefined ? true : false
-    // return p != undefined ? true : false
     console.log("inscripto yo : ", this.isInscripto)
   }
 

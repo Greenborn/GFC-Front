@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConsoleLogService } from './services/console-log.service';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import { ResponsiveService } from './services/ui/responsive.service';
 
 declare global {
@@ -13,7 +12,7 @@ declare global {
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   private static hasSetLoaded = false;
   public appPages = [
     { title: 'Inbox', url: '/folder/Inbox', icon: 'mail' },
@@ -27,16 +26,11 @@ export class AppComponent implements OnInit, OnDestroy {
   
   sidebarOpen = false;
 
-  private routerSub: Subscription;
-
   constructor(
     public router: Router,
-    private activatedRoute: ActivatedRoute,
     public responsiveService: ResponsiveService,
     private consoleLogService: ConsoleLogService
-  ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-  }
+  ) { }
 
   ngOnInit() {
     // Notificar que la app cargó (cancela watchdog de hidratación)
@@ -50,11 +44,6 @@ export class AppComponent implements OnInit, OnDestroy {
       if (diag) diag.style.display = 'none';
     }
 
-    this.routerSub = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-         this.router.navigated = false;
-      }
-    });
 
     // Interceptar errores de consola después del bootstrap
     const originalConsoleError = console.error.bind(console);
@@ -73,12 +62,6 @@ export class AppComponent implements OnInit, OnDestroy {
       }
       originalConsoleError(...args);
     };
-  }
-
-  ngOnDestroy(){
-    if (this.routerSub) {
-      this.routerSub.unsubscribe();
-    }
   }
 
   toggleSidebar() {

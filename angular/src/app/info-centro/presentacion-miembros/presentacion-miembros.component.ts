@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
@@ -7,6 +7,12 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { timeout, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+
+interface MemberItem extends Fotoclub {
+  instagramSafe?: SafeUrl | null;
+  facebookSafe?: SafeUrl | null;
+  mailSafe?: SafeUrl | null;
+}
 
 @Component({
   selector: 'app-presentacion-miembros',
@@ -24,37 +30,28 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
       })
     ).subscribe(
         p => {
-          const items = (p || []).filter(m => m.organization_type === 'INTERNO');
+          const items: MemberItem[] = (p || []).filter(m => m.organization_type === 'INTERNO');
           items.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+          items.forEach(m => {
+            m.instagramSafe = this.sanitizeUrl(m.instagram);
+            m.facebookSafe = this.sanitizeUrl(m.facebook);
+            m.mailSafe = m.email ? this.sanitizer.bypassSecurityTrustUrl('mailto:' + m.email) : null;
+          });
           this.members = items;
         })
   }
 
-  members: Fotoclub[] = [];
+  members: MemberItem[] = [];
 
-  faceUrl(f){
-    if (f != null && f != '' && f != undefined){
-        return this.sanitizer.bypassSecurityTrustUrl(f);
-      } else {
-        return null
-      }
+  trackByFn(_index: number, item: MemberItem): number {
+    return item.id ?? _index;
   }
 
-  instagramUrl(f){
-    if (f != null && f != '' && f != undefined){
-      return this.sanitizer.bypassSecurityTrustUrl(f);
-    } else {
-      return null
+  private sanitizeUrl(url: string | undefined | null): SafeUrl | null {
+    if (url != null && url !== '') {
+      return this.sanitizer.bypassSecurityTrustUrl(url);
     }
-  }
-
-  
-  mailUrl(f){
-    if (f != null && f != '' && f != undefined){
-      return this.sanitizer.bypassSecurityTrustUrl(f);
-    } else {
-      return null
-    }
+    return null;
   }
 
   constructor(
@@ -63,7 +60,6 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
     public fotoclubService: FotoclubService,
     private sanitizer: DomSanitizer,
   ) {
-    
     super(alertController);
   }
 

@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ImageReviewPageRoutingModule } from './image-review-routing.module';
-
-import { ImageReviewPage } from './image-review.page';
+import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     ImageReviewPageRoutingModule
   ],
-  declarations: [ImageReviewPage]
+  declarations: []
 })
 export class ImageReviewPageModule {}

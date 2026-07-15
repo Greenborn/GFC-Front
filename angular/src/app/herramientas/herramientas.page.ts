@@ -254,7 +254,7 @@ export class HerramientasPage implements OnInit {
       }
     } catch (err) {
       await loading.dismiss();
-      const msg = err && err.error && err.error.message ? err.error.message : 'Error al generar el compilado.';
+      const msg = err && (err as any).error && (err as any).error.message ? (err as any).error.message : 'Error al generar el compilado.';
       const alert = await this.alertController.create({
         header: 'Error',
         message: msg,
@@ -368,8 +368,8 @@ export class HerramientasPage implements OnInit {
       
       console.error('Error al procesar/enviar fotos del año:', error);
       
-      const errorMessage = error && error.error && error.error.message 
-        ? error.error.message 
+      const errorMessage = error && (error as any).error && (error as any).error.message 
+        ? (error as any).error.message 
         : 'Error al procesar o enviar la estructura de fotos del año.';
       
       const alert = await this.alertController.create({
@@ -470,8 +470,8 @@ export class HerramientasPage implements OnInit {
       
       console.error('Error al agregar grabación:', error);
       
-      const errorMessage = error && error.error && error.error.message 
-        ? error.error.message 
+      const errorMessage = error && (error as any).error && (error as any).error.message 
+        ? (error as any).error.message 
         : 'Error al agregar la grabación.';
       
       const alert = await this.alertController.create({

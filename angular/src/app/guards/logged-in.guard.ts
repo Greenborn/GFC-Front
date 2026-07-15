@@ -6,7 +6,7 @@ import {
   UrlTree
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth/auth.service';
+import { AuthService } from '../modules/auth/services/auth.service';
 
 // https://www.digitalocean.com/community/tutorials/angular-route-guards
 @Injectable()
@@ -15,7 +15,7 @@ export class LoggedInGuard implements CanActivate {
   constructor(private auth: AuthService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return AuthService.loggedIn();
+    return this.auth.loggedIn;
   }
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ConsoleLogService } from 'src/app/services/console-log.service';
@@ -21,24 +21,13 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
   constructor(
     private publicContestService: PublicContestService,
     public  alertController:      AlertController,
-    private loadingController:    LoadingController,
     private configService:        ConfigService,
     private consoleLogService:    ConsoleLogService
   ) {
     super(alertController);
   }
 
-  async ngOnInit() {
-    const loading = await this.loadingController.create({ message: '' });
-    await loading.present();
-
-    // Timeout de seguridad: fuerza cierre del loading tras 10s
-    const safetyTimeout = setTimeout(() => {
-      loading.dismiss().catch(() => {});
-      this.cargando = false;
-      this.error = true;
-    }, 10000);
-
+  ngOnInit() {
     this.publicContestService.getAll('sort=-id').pipe(
       timeout(8000),
       catchError(err => {
@@ -47,8 +36,6 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
       })
     ).subscribe(
       ok => {
-        clearTimeout(safetyTimeout);
-        loading.dismiss().catch(() => {});
         this.cargando = false;
         if (ok && ok.length > 0) {
           this.concurso = ok[0];
