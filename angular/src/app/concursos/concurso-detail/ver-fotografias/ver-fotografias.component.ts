@@ -120,11 +120,24 @@ export class VerFotografiasComponent implements OnInit {
     this.panY = 0;
   }
 
-  downloadImage() {
+  async downloadImage() {
     const img = this.all_data[this.index];
     if (!img?.image?.url) return;
     const url = this.configService.imageUrl(img.image.url);
-    window.open(url, '_blank');
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = img.image.title || 'imagen';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(blobUrl);
+    } catch {
+      window.open(url, '_blank');
+    }
   }
 
   onDragStart(event: MouseEvent) {
