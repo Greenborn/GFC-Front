@@ -75,7 +75,6 @@ get secycat(){
     return c.seleccionada !== false}).length; 
   let sec = this.seccionesSeleccionadas.filter(function(c) {
     return c.seleccionada !== false}).length; 
-    console.log("cantidades actuales: ", cat, sec)
   return cat == 0 || sec == 0
 }
 
@@ -260,7 +259,6 @@ get secycat(){
       this.day_selects[1].selected_str = "-1"
     }
     
-    console.log('date slect', this.concurso, this.day_selects)
   }
   
   getCategoriaSeleccionada(id: number) {
@@ -314,7 +312,6 @@ get secycat(){
       let fecha_fin = new Date(this.concurso.end_date)
       fecha_fin.setUTCHours( fecha_fin.getUTCHours() - 3 )
 
-      console.log("secycat: ", this.secycat)
       const model = {
         ...f.value,
         start_date: fecha_ini.toISOString(),
@@ -375,7 +372,6 @@ get secycat(){
           // // TODO: eliminar desinscripciones
 
           this.posting = false
-          console.log('posteado', contest)
           if (resDesinscripcionesCategorias.find(r => r === false) == undefined && resDesinscripcionesSecciones.find(r => r === false) == undefined)
             this.router.navigate(['/concursos/', contest.id]);
         },
@@ -390,7 +386,6 @@ get secycat(){
       // this.router.navigate(['/concursos/' + id]);
     }
     else {
-      console.log('Form concurso no valido:', f.value);
     }
   }
 
@@ -439,7 +434,6 @@ get secycat(){
         contest_id,
         category_id
       }
-      console.log('agregando categoria', model)
       super.fetch<ContestCategory>(() => this.contestCategoryService.post(model)).subscribe({
         next: cc => {
           this.categoriasInscriptas.push(cc)
@@ -447,7 +441,6 @@ get secycat(){
         },
         error: err => {
           reject(err)
-          console.log('Error post contest category', err)
           this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
         }
       })
@@ -467,7 +460,6 @@ get secycat(){
             this.contestCategoryService.delete(contestCategory.id)
           ).subscribe({
             next: _ => {
-              console.log('deleted contest category', contestCategory, _)
               // this.updatingSelect = true
               this.categoriasInscriptas.splice(this.categoriasInscriptas.findIndex(c => c.id == contestCategory.id), 1)
               resolve(true)
@@ -491,7 +483,6 @@ get secycat(){
         contest_id,
         section_id
       }
-      console.log('agregando seccion', model)
       super.fetch<ContestSection>(() => this.contestSectionService.post(model)).subscribe({
         next: cc => {
           this.seccionesInscriptas.push(cc)
@@ -499,7 +490,6 @@ get secycat(){
         },
         error: err => {
           reject(err)
-          console.log('Error post contest section', err)
           this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
         }
       })
@@ -519,7 +509,6 @@ get secycat(){
             this.contestSectionService.delete(contestSection.id)
           ).subscribe({
             next: _ => {
-              console.log('deleted contest section', contestSection, _)
               // this.updatingSelect = true
               this.seccionesInscriptas.splice(this.seccionesInscriptas.findIndex(c => c.id == contestSection.id), 1)
               resolve(true)
@@ -547,7 +536,6 @@ get secycat(){
         if (!file) return;
     
         if (file.type.split('/')[0] !== 'image') { 
-          console.log('File type is not supported!')
           return;
         }
     
@@ -555,7 +543,6 @@ get secycat(){
         // this.isImgUploaded = false;
     
         // this.FileName = file.name;
-        // console.log('uploaded', file)
         this.image_file = file
     
         const fileReader = new FileReader();
@@ -587,7 +574,6 @@ get secycat(){
         if (!file) return;
     
         if (file.type.split('/')[1] !== 'pdf') { 
-          console.log('File type is not supported!')
           return;
         }
     
@@ -595,12 +581,10 @@ get secycat(){
         // this.isImgUploaded = false;
     
         // this.FileName = file.name;
-        // console.log('uploaded', file)
         this.rules_file = file
     
         const fileReader = new FileReader();
         const { type, name } = file;
-        // console.log('file type', type)
         // return new Observable((observer: Observer<IUploadedFile>) => {
           // this.validateSize(file, observer);
           fileReader.readAsDataURL(file);
@@ -616,7 +600,6 @@ get secycat(){
               // image.onerror = () => {
               // };
               this.rules_url = this.sanitizer.bypassSecurityTrustResourceUrl(fileReader.result as string);
-              // console.log(this.rules_url)
             }
     
       }

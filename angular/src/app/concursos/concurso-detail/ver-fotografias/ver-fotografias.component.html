@@ -27,7 +27,7 @@
         <div class="image-transform"
           [style.transform]="imageTransform">
           @if (yepImg) {
-            <img
+            <img loading="lazy"
               (error)="yepImg = false"
               (load)="onImageLoad($event)"
               [src]="all_data[index].image.url != null ? configService.imageUrl(all_data[index].image.url) : ''"

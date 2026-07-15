@@ -10,7 +10,7 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 export abstract class ApiConsumer implements OnDestroy {
 
   // // https://dev.to/re4388/use-rxjs-takeuntil-to-unsubscribe-1ffj
-  private readonly unsubscribe$: Subject<void> = new Subject();
+  protected readonly unsubscribe$: Subject<void> = new Subject();
 
   constructor(
     protected alertService: AlertService

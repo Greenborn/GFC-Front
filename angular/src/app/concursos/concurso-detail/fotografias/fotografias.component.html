@@ -200,7 +200,7 @@
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
                           <div class="foto-card w-100">
                             <div class="img-wrap" (click)="openImage(i, propiasFotos)">
-                              <img
+                              <img loading="lazy"
                                 [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
                                 [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
                                 alt=""
@@ -250,7 +250,7 @@
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
                   <div class="foto-card w-100">
                     <div class="img-wrap" (click)="openImage(i)">
-                      <img
+                      <img loading="lazy"
                         [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
                         [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
                         alt=""

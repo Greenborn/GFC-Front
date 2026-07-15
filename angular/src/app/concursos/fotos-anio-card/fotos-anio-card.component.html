@@ -22,7 +22,7 @@
             <div #slide class="app-slide">
               <div class="slide-content" (click)="abrirFotoDetalle(i)">
                 <div class="fac-image-wrapper">
-                  <img [src]="getImageUrl(foto.url_imagen)" [alt]="foto.nombre_obra" (error)="onImageError($event)" />
+                  <img loading="lazy" [src]="getImageUrl(foto.url_imagen)" [alt]="foto.nombre_obra" (error)="onImageError($event)" />
                   <div class="fac-overlay"></div>
                 </div>
                 <div class="fac-info">

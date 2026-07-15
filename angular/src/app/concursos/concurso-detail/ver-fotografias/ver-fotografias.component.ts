@@ -77,7 +77,6 @@ export class VerFotografiasComponent implements OnInit {
   }
 
   siguiente(){
-    this.index ++;console.log(this.all_data);
     if (this.index >= this.all_data.length) this.index = 0
     this.resetZoom();
   }

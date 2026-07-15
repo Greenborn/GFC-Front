@@ -63,7 +63,6 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
       }
       metric.id = this.review.id
       
-      console.log("metric n:",metric, f.value )
       super.fetch<Metric>(() => this.metricService.post(metric, this.review.id)).subscribe(
         m => this.dismiss(m),
         err => {

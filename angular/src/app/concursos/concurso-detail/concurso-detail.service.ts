@@ -65,10 +65,6 @@ export class ConcursoDetailService implements OnInit {
     this.refreshPhotos = new EventEmitter<void>();
     
     
-    this.loadConcursantes()
-    this.loadJueces()
-    this.loadProfileContests()
-    this.loadProfileContestsJueces()
   }
 
   ngOnInit() {
@@ -79,7 +75,6 @@ export class ConcursoDetailService implements OnInit {
 
     all.push(new Promise(resolve => {
       const s = this.contestService.get(id, 'expand=countContestResults,countProfileContests,contestRecords').subscribe(c => {
-        console.log('got', c, id)
         this.concurso.next(c)
         s.unsubscribe()
         resolve()
@@ -129,7 +124,6 @@ export class ConcursoDetailService implements OnInit {
     ).subscribe(c => {
       // const s = this.rolificador.getConcursantesInscriptos(u, c.id).subscribe(is => {
       const s = this.profileContestService.getAll<ProfileContestExpanded>(`role=4&expand=profile,profile.user,profile.fotoclub&filter[contest_id]=${c.id}`).subscribe(is => {
-        // console.log('updated inscriptos', is)
         this.inscriptosJueces.next(is)
         s.unsubscribe()
       })
@@ -142,7 +136,6 @@ export class ConcursoDetailService implements OnInit {
       filter(c => c.id != undefined)
     ).subscribe(c => {
       const s = this.profileContestService.getAll<ProfileExpanded>(`contest_id=${c.id}&expand=fotoclub&role=3`, 'profile-registrable').subscribe(cs => {
-        // console.log('updated inscriptos', is)
         this.concursantes.next(cs)
         s.unsubscribe()
       })
@@ -155,7 +148,6 @@ export class ConcursoDetailService implements OnInit {
       filter(c => c.id != undefined)
     ).subscribe(c => {
       const s = this.profileContestService.getAll<ProfileExpanded>(`contest_id=${c.id}&role=4`, 'profile-registrable').subscribe(cs => {
-        // console.log('updated inscriptos', is)
         this.jueces.next(cs)
         s.unsubscribe()
       })
@@ -164,7 +156,6 @@ export class ConcursoDetailService implements OnInit {
   /*async loadContestResults(attr:any = {}) {
    
 
-    console.log(attr)
     this.concurso.pipe(
       filter(c => c.id != undefined)
     ).subscribe(c => { 
@@ -191,7 +182,6 @@ export class ConcursoDetailService implements OnInit {
 
     if(this.rolificador.esConcursante(user) ){
       
-      console.log("inscripcion yo", this.rolificador.esConcursante(user) )
       const { profileContest } = await this.UIUtilsService.mostrarModal(InscribirConcursanteComponent, {
         "concursantes": [ user.profile],
         "contest": this.concurso.getValue(),

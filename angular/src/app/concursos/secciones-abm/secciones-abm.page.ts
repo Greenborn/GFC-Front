@@ -63,12 +63,10 @@ export class SeccionesAbmPage extends ApiConsumer implements OnInit {
     // componentProps.parentSections = this.sections.filter(s => s.parent_id == null && (section ? s.id != section.id : true))
     // componentProps.parentSections = this.getParentSections(section ? section.id : undefined)
     componentProps.parentSections = this.sections
-    console.log('post section props', componentProps)
     // const data = await this.UIUtilsService.mostrarModal(SeccionPostComponent, componentProps)
     // if (data != undefined) {
       // const { s } = data
     const { section: s } = await this.UIUtilsService.mostrarModal(SeccionPostComponent, componentProps)
-    console.log('received', section)
     if (s) {
       const i = this.sections.findIndex(s1 => s1.id == s.id)
       if (i > -1) {
@@ -89,7 +87,6 @@ export class SeccionesAbmPage extends ApiConsumer implements OnInit {
             this.sectionService.delete(section.id)
           ).subscribe(
             _ => {
-              console.log('deleted section', section.id, _)
               this.sections.splice(this.sections.findIndex(s => s.id == section.id), 1)
               // this.router.navigate(['/concursos']);
             }, 

@@ -95,7 +95,7 @@
                             <div class="col-3">{{ r.category }}</div>
                             <div class="col-3">{{ r.section }}</div>
                             <div class="col-2">
-                              <img class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" (click)="openPhotoModal(img)" />
+                               <img loading="lazy" class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" (click)="openPhotoModal(img)" />
                             </div>
                             <div class="col-2 cap">{{ img.title }}</div>
                             <div class="col-2">
@@ -153,7 +153,7 @@
                             @for (img of sortImages(r.images); track img) {
                               <div class="rank-table-row">
                                 <div class="rank-col rank-col-thumb">
-                                  <img class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="border-radius:4px;" (click)="openPhotoModal(img, it.results)" />
+                                   <img loading="lazy" class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="border-radius:4px;" (click)="openPhotoModal(img, it.results)" />
                                 </div>
                                 <div class="rank-col rank-col-fields">
                                   <div class="row-field"><span class="field-label">Categoría</span><span class="field-value">{{ r.category }}</span></div>

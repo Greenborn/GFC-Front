@@ -169,6 +169,10 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       })
 
       await this.concursoDetailService.loadContest(id)
+      this.concursoDetailService.loadConcursantes()
+      this.concursoDetailService.loadJueces()
+      this.concursoDetailService.loadProfileContests()
+      this.concursoDetailService.loadProfileContestsJueces()
       
     });
   }
@@ -238,7 +242,6 @@ obtenerPx() {
             this.profileContestService.delete(profileContest.id)
           ).subscribe({
             next: _ => {
-              console.log('deleted', _)
               this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
               this.inscriptosJueces.splice(this.inscriptosJueces.findIndex(i => i.id == profileContest.id), 1)
               this.concursoDetailService.loadProfileContests()
@@ -264,7 +267,6 @@ obtenerPx() {
       "review": r.metric
     });
 
-    console.log('punteado imagen', data)
     const { metric } = data ?? {}
     if (metric != undefined) {
       // const i = this.metrics.findIndex(m => m.id == metric.id)
@@ -272,9 +274,7 @@ obtenerPx() {
       // if (i != -1) {
         // this.metrics[i] = metric
       if (r != undefined) {
-        console.log('udpating metric', r, metric)
         r.metric = metric
-        console.log('udpated metric', r)
         // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
         await get_all_contest_results( { "contest_id" : this.concurso.id} )
         this.concursoDetailService.refreshPhotos.emit()
@@ -316,17 +316,14 @@ obtenerPx() {
       componentProps.section_id = s
     }
 
-    console.log('props post image', componentProps)
 
     const data = await this.UIUtilsService.mostrarModal(ImagePostPage, componentProps);
-    console.log('dismiss image post popup con data', data);
     const { image, section_id } = data ?? {}
     if (image != undefined && section_id != undefined) {
       // this.loading = true
       // const i_index = this.images.findIndex(e => e.id == image.id)
       const r_updated = this.resultadosConcurso.find(e => e.image_id == image.id)
       if (r_updated == undefined) {
-        console.log('posted new image ', image, 'posting metric')
         // this.images.push(image)
         super.fetch<Metric>(() =>
           this.metricService.post({
@@ -344,7 +341,6 @@ obtenerPx() {
               section_id
             })
           ).subscribe({
-            // console.log('posted new result', cr)
             next: async cr => {
               this.resultadosConcurso.push({
                 ...cr,
@@ -358,13 +354,10 @@ obtenerPx() {
             error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
           })
         })
-        // console.log('posted image', image, 'index', i)
       } else {
         // this.images.splice(i_index, 1, image)
-        console.log('updated image. updating result', r_updated)
         r_updated.image = image
         if (section_id != r_updated.section_id) {
-          console.log('updated section. updating result', r_updated)
           const model = {
             ...r_updated,
             section_id
@@ -374,7 +367,6 @@ obtenerPx() {
             this.contestResultService.post(model, r_updated.id)
           ).subscribe({
             next: async cr => {
-              console.log('updated result', cr)
               r_updated.section_id = section_id
               // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
               
@@ -389,11 +381,9 @@ obtenerPx() {
             },
           })  
         } else {
-          console.log('updated result', this.resultadosConcurso.find(e => e.image_id == image.id))
           await get_all_contest_results( { "contest_id" : this.concurso.id} )
           this.concursoDetailService.refreshPhotos.emit()
         }
-        // console.log('replaced image', image, 'index', i)
       }
     }
   }
@@ -430,7 +420,6 @@ obtenerPx() {
       async () => {
         this.contestService.deleteContest(this.concurso.id).subscribe({
           next: response => {
-            console.log('Concurso eliminado', response)
             this.router.navigate(['/concursos']);
           }, 
           error: async err => {

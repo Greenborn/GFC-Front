@@ -67,7 +67,6 @@ export class JuecesComponent implements OnInit {
         setTimeout(() => {
   
         }, 500)
-        console.log("jueces ionscriptos: ", this.inscriptos);
       })
     )
     this.subs.push(

@@ -1,27 +1,21 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild ,AfterViewInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-// import { ConcursoService } from '../services/concurso.service';
 import { NotificacionesPage } from '../notificaciones/notificaciones.page';
 import { UsuarioPage } from '../usuario/usuario.page';
-// import { AuthService } from '../services/auth/auth.service';
-import { SearchBarComponentAtributo, SearchBarComponentParams } from '../shared/search-bar/search-bar.component';
-// import { ApiService } from '../services/api.service';
+import { SearchBarComponentAtributo } from '../shared/search-bar/search-bar.component';
 import { ContestService } from '../services/contest.service';
 import { ApiConsumer } from '../models/ApiConsumer';
-// import { ConfigService } from "../services/config/config.service";
 import { Contest } from '../models/contest.model';
 import { AuthService } from '../modules/auth/services/auth.service';
 import { ConfigService } from '../services/config/config.service';
 import { RolificadorService } from '../modules/auth/services/rolificador.service';
 import { AlertService } from '../services/ui/alert.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
-
-import { User, UserLogged } from '../../app/models/user.model';
 import { ResponsiveService } from '../services/ui/responsive.service';
 import { FotosDelAnioResponse, ItemConcursoOFoto } from '../models/foto-del-anio.model';
-import { forkJoin } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   standalone: false,
   selector: 'app-concursos',
@@ -82,7 +76,6 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   }
     
   obtenerTamanio(event: any) {
-    // console.log(event.srcElement.offsetWidth)
     this.anchoImg = event.srcElement.offsetWidth > event.srcElement.offsetEight;
   }
 
@@ -168,7 +161,9 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
 
   private loadConcursos(page: number = 1) {
     const pageParams = this.getPageParams(page);
-    this.contestService.getAll(pageParams).subscribe({
+    this.contestService.getAll(pageParams).pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe({
       next: concursos => {
         this.loading = false;
         if (concursos && concursos.length > 0) {
@@ -183,21 +178,14 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
       },
       error: err => {
         this.loading = false;
-        console.error('Error al cargar concursos:', err);
         this.hasMoreConcursos = false;
       }
     });
   }
 
   private mezclarConcursosYFotos(): ItemConcursoOFoto[] {
-    console.log('=== INICIANDO MEZCLA ===');
-    console.log('Concursos totales:', this.concursos.length);
-    console.log('Temporadas con fotos:', this.fotosDelAnioPorTemporada.size);
-    
     const itemsMezclados: ItemConcursoOFoto[] = [];
     
-    // Los concursos están ordenados del más reciente al más viejo
-    // Agrupar concursos por año
     const concursosPorAnio: Map<number, Contest[]> = new Map();
     
     this.concursos.forEach(concurso => {
@@ -208,32 +196,21 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
       concursosPorAnio.get(anio)!.push(concurso);
     });
     
-    console.log('Concursos por año:', concursosPorAnio);
-    
-    // Obtener todos los años (de concursos y fotos del año)
     const aniosConcursos = Array.from(concursosPorAnio.keys());
     const aniosFotos = Array.from(this.fotosDelAnioPorTemporada.keys());
     const todosLosAnios = [...new Set([...aniosConcursos, ...aniosFotos])];
     
-    // Ordenar del más reciente al más viejo
     const anios = todosLosAnios.sort((a, b) => b - a);
     
-    console.log('Años a procesar:', anios);
-    
     anios.forEach(anio => {
-      console.log(`Procesando año ${anio}`);
-      
       if (this.fotosDelAnioPorTemporada.has(anio)) {
         const fotosData = this.fotosDelAnioPorTemporada.get(anio)!;
-        console.log(`  - Agregando fotos del año: ${fotosData.items.length} fotos`);
         itemsMezclados.push({
           tipo: 'fotos-anio',
           fotosAnio: fotosData.items,
           temporada: fotosData.temporada,
           url_grabacion: fotosData.url_grabacion
         });
-      } else {
-        console.log(`  - No hay fotos del año para ${anio}`);
       }
       
       const concursosDelAnio = concursosPorAnio.get(anio) || [];
@@ -249,12 +226,8 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
           concurso: concurso
         });
       });
-      
-      console.log(`  - Concursos agregados: ${concursosDelAnio.length}`);
     });
     
-    console.log('=== MEZCLA COMPLETADA ===');
-    console.log('Items mezclados total:', itemsMezclados.length);
     return itemsMezclados;
   }
 
@@ -314,23 +287,22 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
       if (fotoData && fotoData.temporada && fotoData.items && fotoData.items.length > 0) {
         fotoData.items.sort((a: any, b: any) => a.orden - b.orden);
         this.fotosDelAnioPorTemporada.set(fotoData.temporada, fotoData);
-        console.log(`Temporada ${fotoData.temporada} agregada con ${fotoData.items.length} fotos`);
       }
     });
   }
 
   private cargarFotosDelAnio() {
     const url = `${this.configService.nodeApiBaseUrl}foto-del-anio`;
-    this.http.get<any>(url).subscribe({
+    this.http.get<any>(url).pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe({
       next: data => {
         this.procesarFotosDelAnio(data);
         if (this.concursos.length > 0) {
           this.reconstruirItems();
         }
       },
-      error: err => {
-        console.warn('Error al cargar fotos del año:', err);
-      }
+      error: () => {}
     });
   }
 
@@ -403,7 +375,9 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     this.concursoPage += 1;
     const pageParams = this.getPageParams(this.concursoPage);
 
-    this.contestService.getAll(pageParams).subscribe({
+    this.contestService.getAll(pageParams).pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe({
       next: concursos => {
         if (concursos && concursos.length > 0) {
           this.concursos.push(...concursos);
@@ -416,19 +390,14 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
         }
         this.loadingMore = false;
       },
-      error: error => {
-        console.error('Error al cargar más concursos:', error);
+      error: () => {
         this.hasMoreConcursos = false;
         this.loadingMore = false;
       }
     });
   }
 
-  // para implementar busqueda con la api (sobrescribe variable de concursos)
-  // async buscarConcursos(searchQuery) {
-  //   console.log(searchQuery)
-  // }
-
+  
   errorImg(e: any) {
     e.currentTarget.src='../../../assets/no-pictures.png';
     e.currentTarget.style='width: 25%; height: 25%; object-fit: contain;';

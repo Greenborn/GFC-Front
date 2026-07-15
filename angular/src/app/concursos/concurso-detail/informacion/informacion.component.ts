@@ -95,7 +95,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       this.activatedRoute.paramMap.subscribe(async paramMap => {
       
         const id = parseInt(paramMap.get('id'))
-        console.log("id algo: ", id)
   
         this.subs.push(this.concursoDetailService.concurso.subscribe({
           next: c => {
@@ -140,7 +139,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       }
       this.subs = undefined
       this.subs = []
-      console.log('subscriptions deleted', [...this.subs])
   }
   
     isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
@@ -196,7 +194,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                   this.profileContestService.delete(profileContest.id)
                 ).subscribe({
                   next: _ => {
-                    console.log('deleted', _)
                     this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
                     this.concursoDetailService.loadProfileContests();
                   }, 
@@ -220,15 +217,12 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
         "review": r.metric
       });
   
-      console.log('punteado imagen', data)
       const { metric } = data ?? {}
       if (metric != undefined) {
         const r = this.resultadosConcurso.find(e => e.metric_id == metric.id)
   
         if (r != undefined) {
-          console.log('udpating metric', r, metric)
           r.metric = metric
-          console.log('udpated metric', r);
           await get_all_contest_results( { "contest_id" : this.concurso.id} )
         } 
       }
@@ -271,7 +265,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
             handler: () => {
               this.contestService.deleteContest(this.concurso.id).subscribe({
                 next: response => {
-                  console.log('Concurso eliminado', response)
                   this.router.navigate(['/concursos']);
                 }, 
                 error: err => {
@@ -329,7 +322,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     }
 
   inscribirConcursante(){
-    console.log("INSCRIPCION concursante yo")
     this.concursoDetailService.inscribirConcursante(undefined)
   }
 
@@ -352,7 +344,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     const yo = user.profile;
     const prl = this.inscriptos.find(p => p.profile_id == yo.id)
     this.isInscripto =  prl != undefined ? true : false
-    console.log("inscripto yo : ", this.isInscripto)
   }
 
   compartir() {
@@ -369,7 +360,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
             )
         })
     } else {
-        console.log('Browser Not compatible')
     }
   }
 

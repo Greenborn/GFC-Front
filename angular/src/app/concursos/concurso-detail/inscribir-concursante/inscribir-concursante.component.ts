@@ -39,7 +39,6 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
   }
 
   ngOnInit() {
-    console.log("inicio modal", this.concursantes)
     //modificacion datos de concursantes para concatenar nombre y apellido
     for (let c=0; c<this.concursantes.length; c++){
       this.concursantes[c].name = this.concursantes[c].name + ' ' + this.concursantes[c].last_name;
@@ -51,20 +50,17 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
   }
 
   datosCargados() {
-    // console.log("completado form: ", this.profileContest.profile_id, this.profileContest.profile_id != undefined,  this.profileContest.category_id)
     return this.profileContest.profile_id != undefined && 
               this.profileContest.category_id != undefined
   }
 
   async inscribirConcursante() {
     if (this.datosCargados()) {
-      // console.log("concursantes: ", this.concursantes[0].id)
       if(!this.rolificador.esConcursante(await this.authService.user) ){
       } else {
         this.profileContest.profile_id = this.concursantes[0].id
       }
 
-        console.log('inscribiendo', this.profileContest.profile_id, ' a ', this.contest.id)
         this.posting = true
         const s = this.profileContestService.post({
             profile_id: this.profileContest.profile_id,
@@ -77,11 +73,9 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
             try { await this.modalController.dismiss({ profileContest }); } catch {}
           },
           err => {
-            console.log('error inscripcion concursante', err)
             super.displayAlert(this.errorFilter(err.error.message))
           },
           () => {
-            // console.log('unsubsssss')
             s.unsubscribe()
           }
         )

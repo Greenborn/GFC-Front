@@ -42,7 +42,6 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
   inscribirJuez() {
     if (this.datosCargados()) {
       
-        console.log('inscribiendo', this.profileContest.profile_id, ' a ', this.contest.id)
         this.posting = true
         const s = this.profileContestService.post({
             profile_id: this.profileContest.profile_id,
@@ -55,11 +54,9 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
             try { await this.modalController.dismiss({ profileContest }); } catch {}
           },
           err => {
-            console.log('error inscripcion juez', err)
             super.displayAlert(this.errorFilter(err.error['error-info']))
           },
           () => {
-            // console.log('unsubsssss')
             s.unsubscribe()
           }
         );
