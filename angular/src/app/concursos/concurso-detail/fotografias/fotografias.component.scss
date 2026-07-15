@@ -116,6 +116,23 @@ ion-chip {
     height: 1.5rem;
 }
 
+.sticky-search {
+    background: var(--ion-background-color, #fff);
+    z-index: 10;
+}
+
+@media (max-width: 767px) {
+    .sticky-search {
+        position: sticky;
+        top: 0;
+    }
+
+    .sticky-search .filter-panel {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+}
+
 .sidebar-backdrop {
     display: none;
     position: fixed;

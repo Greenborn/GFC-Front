@@ -1,37 +1,100 @@
 <div class="py-3">
   <div class="p-0 m-0" *ngIf="(auth.user | async) as u">
-    <div class="row g-2 align-items-center mb-3">
-      <div class="col">
-        <div class="input-group">
-          <span class="input-group-text"><i class="bi bi-search"></i></span>
-          <input class="form-control" type="search" [ngModel]="terminoBusqueda" (input)="onSearchChange($event)" placeholder="Buscar fotografías...">
+    <div class="sticky-search">
+      <div class="row g-2 align-items-center mb-2">
+        <div class="col">
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input class="form-control" type="search" [ngModel]="terminoBusqueda" (input)="onSearchChange($event)" placeholder="Buscar fotografías...">
+          </div>
+        </div>
+        <div class="col-auto">
+          <button class="btn gfc-btn-back w-100" (click)="toggleSidebar()">
+            <i class="bi bi-gear me-1"></i>
+            <span class="d-none d-sm-inline">Filtros</span>
+            <span class="badge bg-primary ms-3" *ngIf="filtrosActivosCount > 0 || sortBy">
+              {{ filtrosActivosCount }}{{ sortLabel ? ' · ' + sortLabel : '' }}
+            </span>
+          </button>
+        </div>
+        <div class="col-auto" *ngIf="contestService.isActive(concurso) &&
+              (rolificador.esDelegado(u) || rolificador.isAdmin(u) || rolificador.esConcursante(u))">
+          <button class="btn btn-success" (click)="postImage()">
+            <i class="bi bi-plus me-1"></i> Fotografía
+          </button>
         </div>
       </div>
-      <div class="col-auto">
-        <button class="btn gfc-btn-back w-100" (click)="toggleSidebar()">
-          <i class="bi bi-gear me-1"></i>
-          <span class="d-none d-sm-inline">Filtros</span>
-          <span class="badge bg-primary ms-3" *ngIf="filtrosActivosCount > 0 || sortBy">
-            {{ filtrosActivosCount }}{{ sortLabel ? ' · ' + sortLabel : '' }}
-          </span>
-        </button>
-      </div>
-      <div class="col-auto" *ngIf="contestService.isActive(concurso) &&
-            (rolificador.esDelegado(u) || rolificador.isAdmin(u) || rolificador.esConcursante(u))">
-        <button class="btn btn-success" (click)="postImage()">
-          <i class="bi bi-plus me-1"></i> Fotografía
-        </button>
+
+      <div class="row" *ngIf="sidebarVisible && !responsiveService.isDesktop">
+        <div class="col-12">
+          <div class="filter-panel">
+            <div class="d-flex align-items-center justify-content-between d-md-none p-3 border-bottom">
+              <h6 class="m-0">Filtros</h6>
+              <button class="btn btn-sm btn-outline-secondary" (click)="toggleSidebar()"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="p-3">
+              <div class="filter-section">
+                <div class="filter-section-title">Ordenar por</div>
+                <div class="filter-options">
+                  <button class="btn btn-sm" [class.btn-primary]="sortBy === ''" (click)="onSortChangeManual('')">Sin ordenar</button>
+                  <button class="btn btn-sm" [class.btn-primary]="sortBy === 'title'" (click)="onSortChangeManual('title')">
+                    Título {{ sortBy === 'title' ? (sortAsc ? '↑' : '↓') : '' }}
+                  </button>
+                  <button class="btn btn-sm" *ngIf="canFilterByAuthor" [class.btn-primary]="sortBy === 'author'" (click)="onSortChangeManual('author')">
+                    Autor {{ sortBy === 'author' ? (sortAsc ? '↑' : '↓') : '' }}
+                  </button>
+                  <button class="btn btn-sm" [class.btn-primary]="sortBy === 'prize'" [disabled]="!isContestJudged" (click)="onSortChangeManual('prize')">
+                    Premio {{ sortBy === 'prize' ? (sortAsc ? '↑' : '↓') : '' }}
+                  </button>
+                </div>
+              </div>
+              <div class="filter-section">
+                <div class="filter-section-title">Secciones</div>
+                <div class="filter-options">
+                  <button class="btn btn-sm" [class.btn-primary]="todasSecciones" (click)="seccionAll()">Todas</button>
+                  <button class="btn btn-sm" *ngFor="let s of seccionesInscriptas"
+                    [class.btn-primary]="seccionesSeleccionadas.has(s.section.id)"
+                    (click)="toggleSeccion(s.section.id)">{{ s.section.name }}</button>
+                </div>
+              </div>
+              <div class="filter-section">
+                <div class="filter-section-title">Categorías</div>
+                <div class="filter-options">
+                  <button class="btn btn-sm" [class.btn-primary]="todasCategorias" (click)="categoriaAll()">Todos</button>
+                  <button class="btn btn-sm" *ngFor="let c of categoriasInscriptas"
+                    [class.btn-primary]="categoriasSeleccionadas.has(c.category.id)"
+                    (click)="toggleCategoria(c.category.id)">{{ c.category.name }}</button>
+                </div>
+              </div>
+              <div class="filter-section" *ngIf="isContestJudged">
+                <div class="filter-section-title">Premios</div>
+                <div class="filter-options">
+                  <button class="btn btn-sm" [class.btn-primary]="todosPremios" (click)="premioAll()">Todos</button>
+                  <button class="btn btn-sm" *ngFor="let p of puntajes"
+                    [class.btn-primary]="premiosSeleccionados.has(p.prize)"
+                    (click)="togglePremio(p.prize)">{{ p.prize }}</button>
+                </div>
+              </div>
+              <div class="filter-section" *ngIf="canFilterByAuthor">
+                <div class="filter-section-title">Filtrar por autor</div>
+                <input class="form-control form-control-sm" [(ngModel)]="filtroAutor" (input)="onFilterInput()" placeholder="Nombre del autor">
+              </div>
+              <div class="filter-section" *ngIf="isContestJudged">
+                <div class="filter-section-title">Filtrar por código</div>
+                <input class="form-control form-control-sm" [(ngModel)]="filtroCodigo" (input)="onFilterInput()" placeholder="Código de fotografía">
+              </div>
+              <button class="btn btn-danger btn-sm w-100 mt-2" (click)="limpiarFiltros()">Limpiar filtros</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
+    <div class="filter-backdrop" *ngIf="sidebarVisible && !responsiveService.isDesktop" (click)="toggleSidebar()"></div>
+
     <div class="row">
-      <!-- Sidebar / Filter column -->
-      <div class="col-12 col-md-3" [class.d-none]="!sidebarVisible" [class.d-md-block]="sidebarVisible">
+      <div class="col-md-3" *ngIf="responsiveService.isDesktop && sidebarVisible">
         <div class="filter-panel">
-          <div class="d-flex align-items-center justify-content-between d-md-none p-3 border-bottom">
-            <h6 class="m-0">Filtros</h6>
-            <button class="btn btn-sm btn-outline-secondary" (click)="toggleSidebar()"><i class="bi bi-x-lg"></i></button>
-          </div>
           <div class="p-3">
             <div class="filter-section">
               <div class="filter-section-title">Ordenar por</div>
@@ -48,7 +111,6 @@
                 </button>
               </div>
             </div>
-
             <div class="filter-section">
               <div class="filter-section-title">Secciones</div>
               <div class="filter-options">
@@ -58,7 +120,6 @@
                   (click)="toggleSeccion(s.section.id)">{{ s.section.name }}</button>
               </div>
             </div>
-
             <div class="filter-section">
               <div class="filter-section-title">Categorías</div>
               <div class="filter-options">
@@ -68,7 +129,6 @@
                   (click)="toggleCategoria(c.category.id)">{{ c.category.name }}</button>
               </div>
             </div>
-
             <div class="filter-section" *ngIf="isContestJudged">
               <div class="filter-section-title">Premios</div>
               <div class="filter-options">
@@ -78,26 +138,19 @@
                   (click)="togglePremio(p.prize)">{{ p.prize }}</button>
               </div>
             </div>
-
             <div class="filter-section" *ngIf="canFilterByAuthor">
               <div class="filter-section-title">Filtrar por autor</div>
               <input class="form-control form-control-sm" [(ngModel)]="filtroAutor" (input)="onFilterInput()" placeholder="Nombre del autor">
             </div>
-
             <div class="filter-section" *ngIf="isContestJudged">
               <div class="filter-section-title">Filtrar por código</div>
               <input class="form-control form-control-sm" [(ngModel)]="filtroCodigo" (input)="onFilterInput()" placeholder="Código de fotografía">
             </div>
-
             <button class="btn btn-danger btn-sm w-100 mt-2" (click)="limpiarFiltros()">Limpiar filtros</button>
           </div>
         </div>
       </div>
 
-      <!-- Backdrop for mobile -->
-      <div class="filter-backdrop" *ngIf="sidebarVisible && !responsiveService.isDesktop" (click)="toggleSidebar()"></div>
-
-      <!-- Results column -->
       <div class="col-12" [ngClass]="sidebarVisible && responsiveService.isDesktop ? 'col-md-9' : 'col-12'">
         <div class="row" *ngIf="propiasFotos.length > 0">
           <div class="col">
