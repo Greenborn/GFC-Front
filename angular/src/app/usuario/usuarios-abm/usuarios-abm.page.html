@@ -75,7 +75,7 @@
                       <app-usuario-img [src]="m.img_url != null ? configService.imageUrl(m.img_url) : '' "></app-usuario-img>
                       <div>
                         <small class="text-muted" *ngIf="m.user != null">
-                          <i>@{{m.user.username}}</i>
+                          <i>&#64;{{m.user.username}}</i>
                         </small>
                         <div><b>{{m.name}} {{m.last_name}}</b></div>
                       </div>
