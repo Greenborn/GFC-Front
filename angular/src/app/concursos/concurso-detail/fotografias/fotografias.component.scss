@@ -81,6 +81,25 @@
     align-items: center;
 }
 
+@media (max-width: 767px) {
+  .row.g-2 {
+    --bs-gutter-x: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .row.g-2 > [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .foto-card {
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .foto-card .foto-info {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
 .foto-text {
     flex: 1;
     min-width: 0;

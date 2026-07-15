@@ -20,3 +20,10 @@
 .concurso-tabs .nav-link:hover:not(.active) {
     background: #f8f9fa;
 }
+
+@media (max-width: 767px) {
+  .container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
