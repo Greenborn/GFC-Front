@@ -26,9 +26,11 @@ ion-content {
 }
 
 .input-bordered {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    background: #fafafa;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     --padding-start: 12px;
     --padding-end: 12px;
     --inner-padding-end: 0px;
@@ -38,6 +40,77 @@ ion-content {
     --highlight-color-focused: transparent;
     --highlight-color-valid: transparent;
     --highlight-color-invalid: transparent;
+}
+
+.input-bordered:focus-within {
+    border-color: #4a90d9;
+    box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.12);
+    background: #fff;
+}
+
+.input-bordered .input-group-text {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    padding-left: 16px;
+    padding-right: 6px;
+    transition: color 0.25s ease;
+}
+
+.input-bordered:focus-within .input-group-text {
+    color: #4a90d9;
+}
+
+.input-bordered .input-group .form-control {
+    border: none;
+    box-shadow: none;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background: transparent;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.input-bordered .input-group .form-control::placeholder {
+    color: #bbb;
+    font-weight: 300;
+    transition: color 0.25s ease;
+}
+
+.input-bordered:focus-within .input-group .form-control::placeholder {
+    color: #999;
+}
+
+.input-bordered .input-group {
+    flex-wrap: nowrap;
+}
+
+.input-bordered .input-group app-ojo {
+    display: flex;
+    align-items: center;
+}
+
+.input-bordered .input-group app-ojo .btn {
+    border: none;
+    background: transparent;
+    color: #aaa;
+    padding: 0 14px;
+    font-size: 1.2rem;
+    transition: color 0.25s ease;
+}
+
+.input-bordered:focus-within .input-group app-ojo .btn {
+    color: #4a90d9;
+}
+
+.form-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+    padding-left: 2px;
 }
 
 ion-item {

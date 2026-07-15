@@ -16,6 +16,7 @@ export class LoginViewComponent implements OnInit {
   @ViewChild('passInput') passInput: ElementRef
   public visibility: boolean = false;
   public loading: boolean;
+  public credentialsOpen: boolean = true;
   public error: string;
   public login: Login = {
     username: '',
@@ -71,7 +72,5 @@ export class LoginViewComponent implements OnInit {
     this.ssoAuth.login();
   }
 
-  recordarPass(){
-      alert();
-  }
+
 }

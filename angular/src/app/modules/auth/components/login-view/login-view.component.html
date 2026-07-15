@@ -22,59 +22,64 @@
           <span class="separator-line"></span>
         </div>
 
-        <div class="accordion" id="loginAccordion">
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCredentials">
-                Usuario y Contraseña
-              </button>
-            </div>
-            <div id="collapseCredentials" class="accordion-collapse collapse" data-bs-parent="#loginAccordion">
-              <div class="accordion-body">
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <button class="accordion-button" [class.collapsed]="!credentialsOpen" type="button" (click)="credentialsOpen = !credentialsOpen">
+              <i class="bi me-2" [ngClass]="credentialsOpen ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
+              Usuario y Contraseña
+            </button>
+          </div>
+          <div class="accordion-collapse collapse" [class.show]="credentialsOpen">
+            <div class="accordion-body">
                 <div class="credential-fields">
                   <div class="mb-3 expand-full input-bordered">
                     <label class="form-label">Usuario</label>
-                    <input class="form-control"
-                      placeholder="Ingresá tu usuario"
-                      (keypress)="keyPress($event)"
-                      [(ngModel)]="login.username"
-                    >
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="bi bi-person"></i></span>
+                      <input class="form-control"
+                        type="text"
+                        placeholder="Ingresá tu usuario"
+                        autocomplete="username"
+                        (keypress)="keyPress($event)"
+                        [(ngModel)]="login.username"
+                      >
+                    </div>
                   </div>
 
                   <div class="mb-3 expand-full input-bordered">
                     <label class="form-label">Contraseña</label>
-                    <input class="form-control"
-                      #passInput
-                      id="ctr-1"
-                      type="password"
-                      placeholder="Ingresá tu contraseña"
-                      (keypress)="keyPress($event, 'next')"
-                      [(ngModel)]="login.password"
-                    >
-                    <app-ojo inputId="ctr-1"></app-ojo>
-                  </div>
-                </div>
-
-                <div class="mb-3 expand-full">
-                  <a href="/#/recuperar-password" class="enlace-recuperar-pass">¿Olvidaste tu contraseña?</a>
-                </div>
-
-                <div class="mb-3 text-danger" *ngIf="error != undefined" class="p-0">
-                  <label class="form-label">{{ error }}</label>
-                </div>
-
-                <button class="btn btn-primary w-100 mt-3" (click)="next()">
-                  <label class="form-label" *ngIf="!loading; else spinner">Ingresar</label>
-                  <ng-template #spinner>
-                    <div class="row justify-content-center">
-                      <div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                      <input class="form-control"
+                        #passInput
+                        id="ctr-1"
+                        type="password"
+                        placeholder="Ingresá tu contraseña"
+                        autocomplete="current-password"
+                        (keypress)="keyPress($event, 'next')"
+                        [(ngModel)]="login.password"
+                      >
+                      <app-ojo inputId="ctr-1"></app-ojo>
                     </div>
-                  </ng-template>
-                </button>
-              </div>
+                  </div>
+
+                  <div class="mb-3 text-danger p-0" *ngIf="error != undefined">
+                    <label class="form-label">{{ error }}</label>
+                  </div>
+
+                  <button class="btn btn-primary w-100 mt-3 d-flex align-items-center justify-content-center gap-2" (click)="next()" [disabled]="loading">
+                    <ng-container *ngIf="!loading; else spinner">
+                      <i class="bi bi-box-arrow-in-right"></i>
+                      <span>Ingresar</span>
+                    </ng-container>
+                    <ng-template #spinner>
+                      <span class="spinner-border spinner-border-sm" role="status"></span>
+                      <span>Cargando...</span>
+                    </ng-template>
+                  </button>
+                </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>

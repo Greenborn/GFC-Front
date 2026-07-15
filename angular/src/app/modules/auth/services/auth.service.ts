@@ -111,6 +111,7 @@ export class AuthService {
             console.log('login de usuario', data)
             this.token = r.token
             this.userId = r.id
+            this.updateUser()
             resolve(true)
             // localStorage.setItem( this.confGral['appName']+'logedIn', JSON.stringify( true ) );
             this.router.navigateByUrl('/')

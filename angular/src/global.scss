@@ -255,10 +255,6 @@ ion-note{
 
 /*
  * Login view — dark overrides
- * Uses :host-context to detect body.dark from the component.
- * The login view applies [ngClass]="{'dark': responsiveService.darkMode}"
- * on its root div. We use :host-context(body.dark) instead of ion-content.dark
- * because the .dark class is on an inner div, not on ion-content.
  */
 body.dark .logoEntrada {
   filter: invert(0);
@@ -271,7 +267,46 @@ body.dark .login-accordion {
 }
 
 body.dark .input-bordered {
-  border-color: rgb(60, 60, 60);
+  border-color: rgb(60, 60, 60) !important;
+  background: #1e1e1e !important;
+}
+
+body.dark .input-bordered:focus-within {
+  border-color: #5a9cff !important;
+  box-shadow: 0 0 0 3px rgba(90, 156, 255, 0.15) !important;
+  background: #252525 !important;
+}
+
+body.dark .input-bordered .input-group-text {
+  color: #888 !important;
+}
+
+body.dark .input-bordered:focus-within .input-group-text {
+  color: #5a9cff !important;
+}
+
+body.dark .input-bordered .input-group .form-control {
+  color: #e0e0e0 !important;
+}
+
+body.dark .input-bordered .input-group .form-control::placeholder {
+  color: #666 !important;
+}
+
+body.dark .input-bordered:focus-within .input-group .form-control::placeholder {
+  color: #888 !important;
+}
+
+body.dark .input-bordered .input-group app-ojo .btn {
+  color: #888 !important;
+}
+
+body.dark .input-bordered:focus-within .input-group app-ojo .btn {
+  color: #5a9cff !important;
+}
+
+body.dark .form-label {
+  color: #bbb !important;
 }
 
 body.dark .separator-line {
