@@ -16,6 +16,7 @@
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true,
+    "ignoreDeprecations": "5.0",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },

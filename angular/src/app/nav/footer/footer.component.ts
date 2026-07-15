@@ -19,7 +19,7 @@ import { environment } from '../../../environments/environment';
 })
 export class FooterComponent extends ApiConsumer implements OnInit {
  usrr:boolean =false;
- footer: Footer =  this.footerService.template;
+ footer: Footer;
  public version:string = '';
 
   constructor( 
@@ -31,7 +31,8 @@ export class FooterComponent extends ApiConsumer implements OnInit {
     public configService: ConfigService,
     private sanitizer: DomSanitizer
     ) { 
-      super(alertCtrl)
+      super(alertCtrl);
+      this.footer = this.footerService.template;
     }
   async ngOnInit() {
     super.fetch<Footer>(() => this.footerService.get(1)).subscribe(f => {
