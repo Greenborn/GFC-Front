@@ -25,7 +25,7 @@
       </ul>
 
       <ng-container *ngIf="auth.loggedIn; else login">
-        <button class="btn btn-outline-dark" (click)="mostrarPerfil($event)">
+        <button class="btn btn-outline-dark d-none d-lg-inline-block" (click)="mostrarPerfil($event)">
           <i class="bi bi-person-circle fs-5"></i>
         </button>
         <button class="btn btn-outline-dark d-lg-none" (click)="toggleMenu()">

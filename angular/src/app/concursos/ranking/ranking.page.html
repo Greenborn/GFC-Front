@@ -2,7 +2,7 @@
 <div class="container-fluid py-3">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-10 offset-md-1">
+      <div class="col-md-10 offset-md-1 px-2">
 
         <div class="accordion">
           <div *ngFor="let r of ranking.profiles; let i = index" class="accordion-item">
@@ -33,7 +33,7 @@
                         [class.rank-2]="rg.posicion_temporada == 2"
                         [class.rank-3]="rg.posicion_temporada == 3"
                         [attr.data-rank]="(rg.posicion_temporada == 1 || rg.posicion_temporada == 2 || rg.posicion_temporada == 3) ? '#' + rg.posicion_temporada : null">
-                        <span class="mobile-label">#</span>{{rg.posicion_temporada}}
+                        <span class="mobile-label">#</span><ng-container *ngIf="rg.posicion_temporada > 3">{{rg.posicion_temporada}}</ng-container>
                       </div>
                       <div class="rank-col rank-col-name cap"
                         [class.rank-1]="rg.posicion_temporada == 1"
@@ -90,7 +90,7 @@
                         [class.rank-2]="r.posicion_temporada == 2"
                         [class.rank-3]="r.posicion_temporada == 3"
                         [attr.data-rank]="(r.posicion_temporada == 1 || r.posicion_temporada == 2 || r.posicion_temporada == 3) ? '#' + r.posicion_temporada : null">
-                        <span class="mobile-label">#</span>{{r.posicion_temporada}}
+                        <span class="mobile-label">#</span><ng-container *ngIf="r.posicion_temporada > 3">{{r.posicion_temporada}}</ng-container>
                       </div>
                       <div class="rank-col rank-col-name cap"
                         [class.rank-1]="r.posicion_temporada == 1"

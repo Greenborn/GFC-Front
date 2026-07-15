@@ -5,6 +5,12 @@ img {
   object-fit: cover;
 }
 
+.inner-content {
+  @media (max-width: 767px) {
+    overflow-x: hidden;
+  }
+}
+
 .img-clickable {
   cursor: pointer;
   transition: opacity 0.15s;

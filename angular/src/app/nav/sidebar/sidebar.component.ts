@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 
 @Component({
@@ -17,8 +18,16 @@ export class SidebarComponent implements OnInit {
   constructor(
     public auth: AuthService,
     private router: Router,
+    public config: ConfigService,
     public rolificador: RolificadorService
   ) { }
+
+  get darkMode(): boolean {
+    return document.body.classList.contains('dark');
+  }
+  set darkMode(l: boolean) {
+    document.body.classList.toggle('dark', l);
+  }
 
   ngOnInit() {
     this.router.events
