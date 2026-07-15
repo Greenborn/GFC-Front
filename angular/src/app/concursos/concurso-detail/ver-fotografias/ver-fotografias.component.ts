@@ -25,7 +25,7 @@ export class VerFotografiasComponent implements OnInit {
 
   scale: number = 1;
   minScale: number = 1;
-  maxScale: number = 6;
+  maxScale: number = 25;
   panX: number = 0;
   panY: number = 0;
 
@@ -94,19 +94,22 @@ export class VerFotografiasComponent implements OnInit {
   }
 
   zoomIn() {
-    const newScale = Math.min(this.scale * 1.5, this.maxScale);
+    const newScale = Math.min(this.scale + 1, this.maxScale);
     if (newScale !== this.scale) {
       this.scale = newScale;
+      this.applyPanConstraints();
     }
   }
 
   zoomOut() {
-    const newScale = Math.max(this.scale / 1.5, this.minScale);
+    const newScale = Math.max(this.scale - 1, this.minScale);
     if (newScale !== this.scale) {
       this.scale = newScale;
       if (newScale <= 1) {
         this.panX = 0;
         this.panY = 0;
+      } else {
+        this.applyPanConstraints();
       }
     }
   }
@@ -139,6 +142,7 @@ export class VerFotografiasComponent implements OnInit {
     const dy = event.clientY - this.dragStartY;
     this.panX = this.dragStartPanX + dx;
     this.panY = this.dragStartPanY + dy;
+    this.applyPanConstraints();
   }
 
   onDragEnd(event: MouseEvent) {
@@ -166,10 +170,12 @@ export class VerFotografiasComponent implements OnInit {
       const dy = event.touches[0].clientY - this.dragStartY;
       this.panX = this.dragStartPanX + dx;
       this.panY = this.dragStartPanY + dy;
+      this.applyPanConstraints();
     } else if (event.touches.length === 2 && this.isPinching) {
       const dist = this.getTouchDist(event.touches);
       const ratio = dist / this.pinchStartDist;
       this.scale = Math.min(Math.max(this.pinchStartScale * ratio, this.minScale), this.maxScale);
+      this.applyPanConstraints();
     }
   }
 
@@ -191,6 +197,22 @@ export class VerFotografiasComponent implements OnInit {
     const dx = touches[0].clientX - touches[1].clientX;
     const dy = touches[0].clientY - touches[1].clientY;
     return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  private applyPanConstraints() {
+    const wrapper = document.querySelector('.image-wrapper') as HTMLElement;
+    if (!wrapper) return;
+    const cw = wrapper.clientWidth;
+    const ch = wrapper.clientHeight;
+    if (cw <= 0 || ch <= 0) return;
+    const extraX = ((this.scale - 1) * cw) / 2;
+    const extraY = ((this.scale - 1) * ch) / 2;
+    const marginX = cw * 0.45;
+    const marginY = ch * 0.45;
+    const limitX = extraX + marginX;
+    const limitY = extraY + marginY;
+    this.panX = Math.min(Math.max(this.panX, -limitX), limitX);
+    this.panY = Math.min(Math.max(this.panY, -limitY), limitY);
   }
 
   async toggleFullscreen() {
