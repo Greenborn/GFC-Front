@@ -46,8 +46,6 @@
     })();
   </script>
 
-  <div id="gfc-diag" style="position:fixed;top:0;left:0;right:0;z-index:99999;padding:8px 12px;font:12px/1.4 sans-serif;background:#ffc;color:#333;text-align:center;border-bottom:2px solid #e80;display:none">GFC cargando...</div>
-
   <style nonce="gfc-loader-style">
     .gfc-loader {
       display: flex;
@@ -77,48 +75,13 @@
     html[data-bs-theme="dark"] .gfc-loader-text {
       color: #ccc;
     }
-    html.hydrated .gfc-loader,
-    html.ion-ce .gfc-loader,
     html.gfc-force-visible .gfc-loader {
       display: none;
     }
   </style>
 
-  <!-- Watchdog: si Ionic no se hidrata en 8s, fuerza visibilidad -->
-  <script nonce="gfc-watchdog">
-    (function() {
-      var GFC_WATCHDOG_DELAY = 8000;
-      var gfcTimer = setTimeout(function gfcWatchdog() {
-        var html = document.documentElement;
-        if (html.classList.contains('hydrated') || html.classList.contains('ion-ce') || html.classList.contains('gfc-force-visible')) return;
-        html.classList.add('ion-ce');
-        var d = document.getElementById('gfc-diag');
-        if (d) {
-          d.style.display = 'block';
-          d.textContent = 'La aplicaci\u00f3n est\u00e1 demorando. Si ves esto por m\u00e1s de 30s, recarg\u00e1 la p\u00e1gina.';
-        }
-      }, GFC_WATCHDOG_DELAY);
-    })();
-  </script>
-
-  <script nonce="gfc-diag-start">
-    window.__gfcLoaded = false;
-    setTimeout(function() {
-      var el = document.getElementById('gfc-diag');
-      if (el && !window.__gfcLoaded) {
-        el.style.display = 'block';
-        el.style.background = '#fcc';
-        el.style.borderColor = '#c00';
-        el.textContent = 'GFC no arranc\u00f3 en 8s. Posible error en bootstrap.';
-      }
-    }, 8000);
-  </script>
-
   <app-root></app-root>
 
-  <script nomodule nonce="gfc-fallback">
-    document.getElementById('gfc-diag') && (document.getElementById('gfc-diag').style.display = 'block') && (document.getElementById('gfc-diag').textContent = 'Este navegador no soporta ES modules. Prob\u00e1 con Chrome o Safari actualizado.');
-  </script>
 </body>
 
 </html>

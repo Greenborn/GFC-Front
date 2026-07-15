@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { AlertService } from 'src/app/services/ui/alert.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ConsoleLogService } from 'src/app/services/console-log.service';
 import { PublicContestService } from 'src/app/services/public.contest.service';
@@ -20,7 +20,7 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
 
   constructor(
     private publicContestService: PublicContestService,
-    public  alertController:      AlertController,
+    public  alertController:      AlertService,
     private configService:        ConfigService,
     private consoleLogService:    ConsoleLogService
   ) {

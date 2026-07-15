@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
-import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
+import { AlertService } from 'src/app/services/ui/alert.service';
+import { LoadingService } from 'src/app/services/ui/loading.service';
 
 import { ImagePostPage, ImagePostParams } from '../concurso-detail/image-post/image-post.page';
 
@@ -44,8 +45,8 @@ import { resultadosConcursoGeted } from 'src/app/services/contest-results.servic
 export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy {
 
   // @ViewChild('ConcursoTabs') pageTabs: HTMLIonContentElement
-  @ViewChild('pageContent') pageContent: HTMLIonContentElement
-  @ViewChild('tabsContent') tabsContent: HTMLIonRowElement
+  @ViewChild('pageContent') pageContent: any
+  @ViewChild('tabsContent') tabsContent: any
 
   mostrarFiltro: boolean = false;
   concurso: Contest = this.contestService.template;
@@ -60,7 +61,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
 
   fotoclubs: Fotoclub[] = [];
   metrics: Metric[] = [];
-  popover: HTMLIonPopoverElement = undefined;
+  popover: any = undefined;
   subs: Subscription[] = [];
   noImg: boolean = false;
 
@@ -69,11 +70,9 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    alertCtrl: AlertController,
-    public modalController: ModalController,
-    public popoverCtrl: PopoverController,
+    alertCtrl: AlertService,
     public auth: AuthService,
-    public loadingController: LoadingController,
+    public loadingService: LoadingService,
     
     public contestService: ContestService,
     private contestResultService: ContestResultService,
@@ -103,7 +102,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   async ngOnInit() {
     const tabsContent: HTMLElement = document.querySelector('#concurso-tabs')
     if (window.screen.width > 768) {
-      const content: HTMLIonContentElement = document.querySelector('#concurso-content')
+      const content: any = document.querySelector('#concurso-content')
       
       let tiempoScroll = new Date().getTime()
       let scrolling = false
@@ -218,91 +217,51 @@ obtenerPx() {
   }
 
   async openPopup(options: any) {
-    this.popover = await this.popoverCtrl.create(options)
-    await this.popover.present();
-    this.popover.onDidDismiss().then(_ => this.popover = undefined)
+    await this.UIUtilsService.mostrarModal(options.component, options.componentProps)
   }
 
   async mostrarAcciones(options: any) {
-    this.popover = await this.popoverCtrl.create(options)
-    await this.popover.present();
-    if (this.popover != undefined)
-      this.popover.onDidDismiss().then(_ => this.popover = undefined)
+    await this.UIUtilsService.mostrarModal(options.component, options.componentProps)
   }
 
   async desinscribir(profileContest: ProfileContestExpanded) {
-    if (this.popover != undefined) {
-      this.popoverCtrl.dismiss(this.popover)
-      this.popover = undefined
-    }
-    const alert = await this.alertCtrl.create({
+    const alert = await this.UIUtilsService.mostrarAlert({
       header: 'Confirmar desinscripción',
-      message: `Confirma desinscribir ${profileContest.profile.name} ${profileContest.profile.last_name} del concurso ${this.concurso.name}?`,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        }, {
-          text: 'Confirmar',
-          // handler: async () => {
-          handler: () => {
-            // await this.contestSvc.deleteConcurso(this.concurso.id);
-            if (this.resultadosConcurso.find(r => r.image.profile_id == profileContest.profile_id) != undefined) {
-              this.UIUtilsService.mostrarError({ message: 'El concursante tiene imágenes cargadas.' })
-            } else {
-              super.fetch<void>(() => 
-                this.profileContestService.delete(profileContest.id)
-              ).subscribe({
-                next: _ => {
-                  console.log('deleted', _)
-                  this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
-                  this.inscriptosJueces.splice(this.inscriptosJueces.findIndex(i => i.id == profileContest.id), 1)
-                  // this.concursoDetailService.inscriptos.emit(this.inscriptos)
-                  this.concursoDetailService.loadProfileContests()
-                  this.concursoDetailService.loadProfileContestsJueces()
-                  // this.router.navigate(['/concursos']);
-                }, 
-                error: async err => {
-                  (await this.alertCtrl.create({
-                    header: 'Error',
-                    message: this.errorFilter(err.error['error-info'][2]),
-                    buttons: [{
-                      text: 'Ok',
-                      role: 'cancel'
-                    }]
-                  })).present()
-                }
+      message: `Confirma desinscribir ${profileContest.profile.name} ${profileContest.profile.last_name} del concurso ${this.concurso.name}?`
+      }, 
+      () => {
+        if (this.resultadosConcurso.find(r => r.image.profile_id == profileContest.profile_id) != undefined) {
+          this.UIUtilsService.mostrarError({ message: 'El concursante tiene imágenes cargadas.' })
+        } else {
+          super.fetch<void>(() => 
+            this.profileContestService.delete(profileContest.id)
+          ).subscribe({
+            next: _ => {
+              console.log('deleted', _)
+              this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
+              this.inscriptosJueces.splice(this.inscriptosJueces.findIndex(i => i.id == profileContest.id), 1)
+              this.concursoDetailService.loadProfileContests()
+              this.concursoDetailService.loadProfileContestsJueces()
+            }, 
+            error: async err => {
+              this.UIUtilsService.mostrarAlert({
+                header: 'Error',
+                message: this.errorFilter(err.error['error-info'][2])
               })
-
             }
-          }
+          })
         }
-      ]
-    });
-
-    await alert.present();
+      }
+    )
   }
 
   async reviewImage(r: ContestResultExpanded) {
-    if (this.popover != undefined) {
-      this.popoverCtrl.dismiss(this.popover)
-      this.popover = undefined
-    }
-
-    const modal = await this.modalController.create({
-      component: ImageReviewPage,
-      cssClass: 'auto-width',
-      componentProps: {
-        "concurso": this.concurso.name,
-        "modalController": this.modalController,
-        "image": r.image,
-        "contestResult": r,
-        "review": r.metric
-      }
+    const data = await this.UIUtilsService.mostrarModal(ImageReviewPage, {
+      "concurso": this.concurso.name,
+      "image": r.image,
+      "contestResult": r,
+      "review": r.metric
     });
-    await modal.present()
-
-    const { data } = await modal.onWillDismiss();
 
     console.log('punteado imagen', data)
     const { metric } = data ?? {}
@@ -327,15 +286,11 @@ obtenerPx() {
   async postImage(params: ImagePostParams) {
     const i = params.image
     const s = params.section_id
-    if (this.popover != undefined) {
-      this.popoverCtrl.dismiss(this.popover)
-      this.popover = undefined
-    }
 
     const componentProps : {
       concurso: string;
       concurso_id: number;
-      modalController: ModalController;
+      modalController: any;
       profiles: ProfileContestExpanded[];
       secciones: Section[];
       image?: Image;
@@ -345,9 +300,8 @@ obtenerPx() {
     } = {
       "concurso": this.concurso.name,
       "concurso_id": this.concurso.id,
-      "modalController": this.modalController,
+      "modalController": { dismiss: (data?: any) => {} },
       "profiles": this.inscriptos,
-      // "profiles": this.concursantes.filter(c => this.inscriptos.findIndex(i => i.profile_id == c.id) > -1),
       "secciones": this.seccionesInscriptas.map(s => s.section),
       "section_max": this.concurso.max_img_section,
       "resultados": this.resultadosConcurso
@@ -362,14 +316,7 @@ obtenerPx() {
 
     console.log('props post image', componentProps)
 
-    const modal = await this.modalController.create({
-      component: ImagePostPage,
-      cssClass: 'auto-width',
-      componentProps
-    });
-    await modal.present()
-
-    const { data } = await modal.onWillDismiss();
+    const data = await this.UIUtilsService.mostrarModal(ImagePostPage, componentProps);
     console.log('dismiss image post popup con data', data);
     const { image, section_id } = data ?? {}
     if (image != undefined && section_id != undefined) {
@@ -470,85 +417,54 @@ obtenerPx() {
   }
 
   async deleteConcurso() {
-
-    const alert = await this.alertCtrl.create({
+    await this.UIUtilsService.mostrarAlert({
       header: 'Confirmar borrado',
-      message: 'Cuidado',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        }, {
-          text: 'Confirmar',
-          handler: () => {
-            this.contestService.deleteContest(this.concurso.id).subscribe({
-              next: response => {
-                console.log('Concurso eliminado', response)
-                this.router.navigate(['/concursos']);
-              }, 
-              error: async err => {
-                const errorMsg = err?.response?.data?.message || err?.message || 'Error al eliminar el concurso';
-                (await this.alertCtrl.create({
-                  header: 'Error',
-                  message: errorMsg,
-                  buttons: [{
-                    text: 'Ok',
-                    role: 'cancel'
-                  }]
-                })).present()
-              }
+      message: 'Cuidado'
+      }, 
+      () => {
+        this.contestService.deleteContest(this.concurso.id).subscribe({
+          next: response => {
+            console.log('Concurso eliminado', response)
+            this.router.navigate(['/concursos']);
+          }, 
+          error: async err => {
+            const errorMsg = err?.response?.data?.message || err?.message || 'Error al eliminar el concurso';
+            this.UIUtilsService.mostrarAlert({
+              header: 'Error',
+              message: errorMsg
             })
           }
-        }
-      ]
-    });
-
-    await alert.present();
+        })
+      }
+    )
   }
 
   async deleteImage(r: ContestResultExpanded) {
     const { id: result_id, image_id, metric_id } = r;
 
-    if (this.popover != undefined) {
-      this.popoverCtrl.dismiss(this.popover)
-      this.popover = undefined
-    }
-
-    const alert = await this.alertCtrl.create({
+    await this.UIUtilsService.mostrarAlert({
       header: 'Confirmar borrado',
-      message: 'Cuidado',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        }, {
-          text: 'Confirmar',
-          handler: () => {
-            super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe({
-              next: _ => {
-                // this.alertCtrl.dismiss()
-                // this.contestResults.splice(this.contestResults.findIndex(i => i.id == result_id), 1)
-                this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-                this.concursoDetailService.loadContestResults()
-                super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
-                  next: _ => this.concursoDetailService.loadContestResults(),
-                  error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
-                })
-                super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({
-                  next: _ => {},
-                  error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
-                })
-
-              },
-              error: async err => super.displayAlert(this.errorFilter(err))
+      message: 'Cuidado'
+      }, 
+      () => {
+        super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe({
+          next: _ => {
+            this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
+            this.concursoDetailService.loadContestResults()
+            super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
+              next: _ => this.concursoDetailService.loadContestResults(),
+              error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
             })
-            // return false
-          }
-        }
-      ]
-    });
+            super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({
+              next: _ => {},
+              error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
+            })
 
-    await alert.present();
+          },
+          error: async err => super.displayAlert(this.errorFilter(err))
+        })
+      }
+    )
   } 
 
   openRules() {

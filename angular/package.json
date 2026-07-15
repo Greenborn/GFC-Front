@@ -1,6 +1,6 @@
 {
   "name": "grupo_fotografico_centro",
-  "version": "1.19.46",
+  "version": "1.19.47",
   "author": "Greenborn",
   "homepage": "https://greenborn.com.ar",
   "scripts": {
@@ -22,7 +22,6 @@
     "@angular/platform-browser-dynamic": "^15.2.10",
     "@angular/router": "^15.2.10",
     "@angular/service-worker": "^15.2.10",
-    "@ionic/angular": "^7.8.6",
     "axios": "^1.18.1",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.13.1",
@@ -42,7 +41,6 @@
     "@angular/compiler": "^15.2.10",
     "@angular/compiler-cli": "^15.2.10",
     "@angular/language-service": "^15.2.10",
-    "@ionic/angular-toolkit": "^9.0.0",
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",

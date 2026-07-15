@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { AlertService } from 'src/app/services/ui/alert.service';
 import { Footer } from 'src/app/models/footer.model';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
@@ -26,7 +26,7 @@ export class FooterComponent extends ApiConsumer implements OnInit {
     public rolificador: RolificadorService,  
     public auth: AuthService,
     private UIUtilsService: UiUtilsService,
-    alertCtrl: AlertController,
+    alertCtrl: AlertService,
     private footerService: FooterService,
     public configService: ConfigService,
     private sanitizer: DomSanitizer

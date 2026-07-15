@@ -6,7 +6,7 @@ import { ContestResultService } from '../../services/contest-result.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../services/config/config.service';
-import { LoadingController } from '@ionic/angular';
+import { LoadingService } from '../../services/ui/loading.service';
 import { firstValueFrom } from 'rxjs';
 
 function normalizarNombre(nombre: string): string {
@@ -47,7 +47,7 @@ export class CargaResultadosPage implements OnInit {
     private contestResultService: ContestResultService,
     private http: HttpClient,
     private config: ConfigService,
-    private loadingController: LoadingController
+    private loadingService: LoadingService
   ) {
     const nav = this.router.getCurrentNavigation();
     this.estructura = nav?.extras?.state?.estructura || '';
@@ -481,10 +481,7 @@ export class CargaResultadosPage implements OnInit {
 
   async cargarResultados() {
     const estructuraJson = this.estructuraToJson();
-    const loading = await this.loadingController.create({
-      message: 'Enviando resultados...'
-    });
-    await loading.present();
+    await this.loadingService.present('Enviando resultados...');
     try {
       const token = localStorage.getItem(this.config.tokenKey);
       const headers = token ? { Authorization: 'Bearer ' + token } : {};
@@ -493,10 +490,10 @@ export class CargaResultadosPage implements OnInit {
         { estructura: estructuraJson },
         { headers }
       ));
-      await loading.dismiss();
+      this.loadingService.dismiss();
       alert('Resultados cargados correctamente.');
     } catch (error) {
-      await loading.dismiss();
+      this.loadingService.dismiss();
       let msg = 'Error al cargar resultados.';
       if (error instanceof HttpErrorResponse && error.error && error.error.message) {
         msg += '\n' + error.error.message;

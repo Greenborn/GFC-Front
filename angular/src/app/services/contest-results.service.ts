@@ -2,7 +2,7 @@
 import axios from "axios"
 import { BehaviorSubject } from 'rxjs';
 
-import { LoadingController } from '@ionic/angular';
+import { LoadingService } from './ui/loading.service';
 import { CONFIG } from './config/config.service';
 
 let result_data:any = null
@@ -45,10 +45,9 @@ export const get_all = async (attr, reload = true) => {
               })
             }
             
-            const loadingCtrl = new LoadingController()
-            const loading = await loadingCtrl.create({ message: 'Cargando Resultados' });
+            const loadingService = new LoadingService()
             if (attr?.present_loading)
-                await loading.present()
+                await loadingService.present('Cargando Resultados')
             
             const uniqueId = localStorage.getItem('sso_client_unique_id');
             if (uniqueId) {
@@ -64,14 +63,14 @@ export const get_all = async (attr, reload = true) => {
             console.log('attr_', attr.contest_id)
             if (res?.data){
                 if (attr?.present_loading)
-                    await loading.dismiss();
+                    loadingService.dismiss();
                 result_data = res.data
                 if (!attr?.skipPublish)
                   resultadosConcursoGeted.next(result_data)
                 return resolve(result_data)
             } else {
                 if (attr?.present_loading)
-                    await loading.dismiss(); 
+                    loadingService.dismiss(); 
                 return resolve(null)
             }
         } catch (error) {

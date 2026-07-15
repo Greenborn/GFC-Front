@@ -130,6 +130,25 @@
   letter-spacing: 0.02em;
 }
 
+@media (max-width: 767px) {
+  .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .concursos-grid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .cc-card {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
+  }
+  .cc-overlay {
+    border-radius: 0;
+  }
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;

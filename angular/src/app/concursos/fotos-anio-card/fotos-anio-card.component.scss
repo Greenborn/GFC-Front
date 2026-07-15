@@ -1,135 +1,212 @@
 .fotos-anio-card {
-  background: linear-gradient(135deg, #fff6c8 0%, #fff1a9 100%);
-  color: white;
-  margin: 20px 0;
-  
-  ion-card-header {
-    text-align: center;
-    
-    ion-card-title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-size: 1.5rem;
-      color: black;
-      
-      ion-icon {
-        font-size: 1.8rem;
-        color: gold;
-      }
-    }
-  }
-  
-  ion-card-content {
-    padding: 0;
-    position: relative;
-    
-    .slides-container {
-      position: relative;
-    }
-    
-    app-slides {
-      height: 500px;
-      display: block;
-      
-      @media (max-width: 768px) {
-        height: 400px;
-      }
-    }
-    
-    .slide-content {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-      padding: 20px;
-      min-width: 0;
-      overflow: hidden;
-      box-sizing: border-box;
-      
-      .image-container {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        margin-bottom: 15px;
-        
-        img {
-          max-width: 100%;
-          max-height: 100%;
-          object-fit: contain;
-        }
-      }
-      
-      .info-container {
-        text-align: center;
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.5);
-        border-radius: 8px;
-        min-width: 0;
-        width: 100%;
-        overflow: hidden;
-        box-sizing: border-box;
-        
-        .puesto {
-          margin-bottom: 10px;
-          
-          ion-badge {
-            font-size: 0.9rem;
-            padding: 8px 12px;
-            
-            ion-icon {
-              margin-right: 5px;
-            }
-          }
-        }
-        
-        .obra-titulo {
-          font-size: 1.3rem;
-          font-weight: bold;
-          margin: 10px 0;
-          color: white;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          max-width: 100%;
-        }
-        
-        .autor-nombre {
-          font-size: 1rem;
-          color: #f0f0f0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 5px;
-          margin: 5px 0;
-          
-          ion-icon {
-            font-size: 1.1rem;
-          }
-        }
-      }
-    }
-    
-    .no-fotos {
-      padding: 40px 20px;
-      text-align: center;
-      color: white;
-      font-size: 1.1rem;
+  position: relative;
+  background: #1a1a2e;
+  margin: 16px 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+.fac-header {
+  background: linear-gradient(135deg, #2d2d4a 0%, #1a1a2e 100%);
+  border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+  padding: 1rem 1.25rem;
+}
+
+.fac-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.fac-trophy {
+  font-size: 1.8rem;
+  color: #ffd700;
+  flex-shrink: 0;
+}
+
+.fac-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.fac-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+
+  a {
+    color: #ffd700;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
 
-// Estilos para la paginación del slider
+.fac-body {
+  position: relative;
+  background: #0f0f23;
+}
+
+.slides-container {
+  position: relative;
+}
+
+app-slides {
+  height: 480px;
+  display: block;
+
+  @media (max-width: 767px) {
+    height: 360px;
+  }
+}
+
+.slide-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.fac-image-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f0f23;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.fac-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0.1) 70%
+  );
+  pointer-events: none;
+}
+
+.fac-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 1.25rem 1.25rem;
+  z-index: 1;
+}
+
+.fac-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+
+  i {
+    font-size: 2em;
+  }
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  margin-bottom: 0.5rem;
+}
+
+.fac-obra {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.25rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fac-autor {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.fac-no-fotos {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  background: #0f0f23;
+}
+
+@media (max-width: 767px) {
+  .fotos-anio-card {
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .fac-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .fac-trophy {
+    font-size: 1.4rem;
+  }
+
+  .fac-title {
+    font-size: 0.95rem;
+  }
+
+  .fac-info {
+    padding: 1rem 0.75rem;
+  }
+
+  .fac-obra {
+    font-size: 1rem;
+  }
+}
+
+::ng-deep .fotos-anio-card .app-slides-btn {
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffd700;
+  width: 36px;
+  height: 36px;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.85);
+  }
+}
+
+::ng-deep .fotos-anio-card .app-slides-btn-prev {
+  left: 10px;
+}
+
+::ng-deep .fotos-anio-card .app-slides-btn-next {
+  right: 10px;
+}
+
 ::ng-deep .fotos-anio-card .app-slides-bullet {
-  background: white;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 ::ng-deep .fotos-anio-card .app-slides-bullet.active {
-  background: gold;
+  background: #ffd700;
 }

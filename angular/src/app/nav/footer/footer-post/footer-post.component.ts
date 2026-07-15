@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Footer } from 'src/app/models/footer.model';
 import { FooterService } from 'src/app/services/footer.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
   selector: 'app-footer-post',
@@ -12,7 +12,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 })
 export class FooterPostComponent extends ApiConsumer implements OnInit {
   
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() footer: Footer;
   
   public facebook: string;
@@ -24,10 +24,10 @@ export class FooterPostComponent extends ApiConsumer implements OnInit {
 
   constructor(
     public responsiveService: ResponsiveService,  
-    alertCtrl: AlertController,    
+    alertService: AlertService,    
     private footerService: FooterService,
     ) { 
-    super(alertCtrl)
+    super(alertService)
     this.footer = this.footerService.template
   }
 

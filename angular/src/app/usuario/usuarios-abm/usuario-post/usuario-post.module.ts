@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IonicModule } from '@ionic/angular';
 
 import { UsuarioPostPageRoutingModule } from './usuario-post-routing.module';
 
@@ -16,7 +15,6 @@ import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonicModule,
     UsuarioPostPageRoutingModule,
     SharedModule
   ],

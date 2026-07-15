@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { CreateUserService } from 'src/app/services/create-user.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
   selector: 'app-confirm-user',
@@ -14,7 +14,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 export class ConfirmUserComponent  extends ApiConsumer  implements OnInit {
 
   @Input() signUpVerifToken: string;
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
 
   public codigoVerificacion:string = "";
 
@@ -22,10 +22,10 @@ export class ConfirmUserComponent  extends ApiConsumer  implements OnInit {
     private createUserService: CreateUserService,
     private UIUtilsService: UiUtilsService,
     public responsiveService: ResponsiveService,
-    alertCtrl: AlertController,
+    alertService: AlertService,
     private router: Router,
   ) {
-    super(alertCtrl);
+    super(alertService);
   }
 
   ngOnInit() {

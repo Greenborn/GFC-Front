@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConcursoDetailService } from '../concurso-detail.service';
@@ -14,7 +13,7 @@ import { UserLogged } from 'src/app/models/user.model';
 })
 export class VerFotografiasComponent implements OnInit {
 
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() index: any;
   @Input() all_data: any;
   @Input() open: any;

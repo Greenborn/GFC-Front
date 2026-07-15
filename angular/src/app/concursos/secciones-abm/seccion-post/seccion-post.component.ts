@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ModalController, AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Section } from 'src/app/models/section.model';
 import { SectionService } from 'src/app/services/section.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
   selector: 'app-seccion-post',
@@ -14,20 +14,19 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 })
 export class SeccionPostComponent extends ApiConsumer implements OnInit {
 
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() parentSections: Section[]
   @Input() section: Section
-  // @Input() typeSubsection: boolean;
 
   public posting: boolean = false;
 
   constructor(
-    alertCtrl: AlertController,
+    alertService: AlertService,
     public responsiveService: ResponsiveService,
     private sectionService: SectionService,
     private UIUtilsService: UiUtilsService
   ) { 
-    super(alertCtrl)
+    super(alertService)
     this.section = this.sectionService.template
   }
 

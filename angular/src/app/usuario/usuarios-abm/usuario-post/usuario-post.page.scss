@@ -36,7 +36,7 @@
 
 /* Estilos para el modal del select de fotoclub */
 // Modal del ion-select de fotoclub (usa ion-alert por debajo)
-ion-alert.fotoclub-select-modal {
+.fotoclub-select-modal {
     @media (min-width: 768px) {
         --width: 600px;        // ancho del wrapper del alert
         --max-width: 600px;
@@ -44,7 +44,7 @@ ion-alert.fotoclub-select-modal {
 }
 
 // Fallback por si alguna plataforma ignora las CSS vars
-ion-alert.fotoclub-select-modal .alert-wrapper {
+.fotoclub-select-modal .alert-wrapper {
     @media (min-width: 768px) {
         width: 600px;
         max-width: 600px;

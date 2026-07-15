@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { AlertService } from 'src/app/services/ui/alert.service';
 import { Section } from 'src/app/models/section.model';
 import { SectionService } from 'src/app/services/section.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
@@ -28,7 +28,7 @@ export class SeccionesAbmPage extends ApiConsumer implements OnInit {
   public mostrarFiltro: boolean = false;
 
   constructor(
-    alertCtrl: AlertController,
+    alertCtrl: AlertService,
     public sectionService: SectionService,
     private UIUtilsService: UiUtilsService
   ) { 

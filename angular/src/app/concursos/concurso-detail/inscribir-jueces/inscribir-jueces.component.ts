@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Category } from 'src/app/models/category.model';
 import { Contest } from 'src/app/models/contest.model';
@@ -7,6 +6,7 @@ import { ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContest, ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
   selector: 'app-inscribir-jueces',
@@ -15,7 +15,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 })
 export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
 
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() contest: Contest;
   @Input() jueces: ProfileExpanded[];
   @Input() categorias: Category[];
@@ -24,11 +24,11 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
   public posting: boolean = false;
 
   constructor(
-    alertCtrl: AlertController,
+    alertService: AlertService,
     private profileContestService: ProfileContestService,
     public responsiveService: ResponsiveService
   ) { 
-    super(alertCtrl)
+    super(alertService)
     this.profileContest = this.profileContestService.template
   }
 

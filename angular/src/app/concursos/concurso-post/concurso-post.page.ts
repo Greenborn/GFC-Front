@@ -5,8 +5,8 @@ import { NgForm } from '@angular/forms';
 import { ContestService } from 'src/app/services/contest.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Contest } from 'src/app/models/contest.model';
-import { AlertController } from '@ionic/angular';
 import { Category } from 'src/app/models/category.model';
+import { AlertService } from 'src/app/services/ui/alert.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { ContestCategory } from 'src/app/models/contest_category.model';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
@@ -59,7 +59,7 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     private sectionService: SectionService,
     private contestSectionService: ContestSectionService,
     private router: Router,
-    alertCtrl: AlertController,
+    alertCtrl: AlertService,
     public UIUtilsService: UiUtilsService,
     public responsiveService: ResponsiveService,
     public configService: ConfigService,
@@ -290,27 +290,19 @@ get secycat(){
   async postConcurso(f: NgForm) {
     if (this.day_selects[0].selected_str == '-1'){
       this.posting = false;
-      (await this.alertCtrl.create({
+      await this.UIUtilsService.mostrarAlert({
         header: 'Error',
-        message: "Fecha de Inicio inválida.",
-        buttons: [{
-          text: 'Ok',
-          role: 'cancel'
-        }]
-      })).present()
+        message: "Fecha de Inicio inválida."
+      })
       return
     }
 
     if (this.day_selects[1].selected_str == '-1'){
       this.posting = false;
-      (await this.alertCtrl.create({
+      await this.UIUtilsService.mostrarAlert({
         header: 'Error',
-        message: "Fecha de Finalización inválida.",
-        buttons: [{
-          text: 'Ok',
-          role: 'cancel'
-        }]
-      })).present()
+        message: "Fecha de Finalización inválida."
+      })
       return
     }
 
@@ -388,14 +380,10 @@ get secycat(){
         },
         error: async err => {
           this.posting = false;
-          (await this.alertCtrl.create({
+          await this.UIUtilsService.mostrarAlert({
             header: 'Error',
-            message: this.getErrorMessage(err),
-            buttons: [{
-              text: 'Ok',
-              role: 'cancel'
-            }]
-          })).present()
+            message: this.getErrorMessage(err)
+          })
         },
       })
       // this.router.navigate(['/concursos/' + id]);

@@ -9,7 +9,7 @@ export class InputOjoComponent implements OnInit {
 
   @Input('inputId') inputId:string;
   public visibility: boolean = false;
-  public passwordInput: HTMLIonInputElement;
+  public passwordInput: any;
   constructor() { }
 
   ngOnInit() {

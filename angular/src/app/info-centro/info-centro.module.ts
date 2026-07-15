@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { IonicModule } from '@ionic/angular';
 
 import { InfoCentroPageRoutingModule } from './info-centro-routing.module';
 
@@ -17,7 +16,6 @@ import { PresentacionMiembrosComponent } from './presentacion-miembros/presentac
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
     InfoCentroPageRoutingModule,
     SharedModule
   ],

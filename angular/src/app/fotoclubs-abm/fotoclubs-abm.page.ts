@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from '../models/ApiConsumer';
+import { AlertService } from '../services/ui/alert.service';
 import { Fotoclub } from '../models/fotoclub.model';
 import { ConfigService } from '../services/config/config.service';
 import { FotoclubService } from '../services/fotoclub.service';
@@ -28,7 +28,7 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
   ];
 
   constructor(
-    alertCtrl: AlertController,
+    alertCtrl: AlertService,
     public UIUtilsService: UiUtilsService,
     private fotoclubService: FotoclubService,
     public configService: ConfigService,

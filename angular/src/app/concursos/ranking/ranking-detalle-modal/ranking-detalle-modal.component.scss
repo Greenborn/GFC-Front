@@ -47,9 +47,9 @@ img {
 
 .card-row {
   @media (min-width: 768px) {
-    ion-col {
+    .table-col {
       display: flex;
-      ion-card {
+      .card {
         flex: 1;
       }
     }
@@ -68,7 +68,7 @@ img {
     border-radius: 0;
   }
 
-  ion-card {
+  .card {
     border-left: none;
     border-right: none;
     border-radius: 0;
@@ -84,7 +84,7 @@ img {
   margin-bottom: 10px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  background: var(--ion-card-background, #fff);
+  background: #fff;
 }
 
 .accordion-header {
@@ -92,36 +92,36 @@ img {
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  background: var(--ion-card-background, #fff);
+  background: #fff;
   cursor: pointer;
   user-select: none;
   transition: background 0.15s;
 }
 
 .accordion-header:hover {
-  background: var(--ion-color-step-50, #f8f9fa);
+  background: #f8f9fa;
 }
 
 .accordion-header.expanded {
-  border-bottom: 1px solid var(--ion-border-color, #e9ecef);
+  border-bottom: 1px solid #e9ecef;
 }
 
 .accordion-title {
   font-weight: 700;
   font-size: 1rem;
-  color: var(--ion-text-color, #212529);
+  color: #212529;
 }
 
 .accordion-subtitle {
   font-size: 0.8rem;
-  color: var(--ion-color-medium, #6c757d);
+  color: #6c757d;
   margin-top: 2px;
 }
 
 .accordion-arrow {
   font-size: 13px;
   transition: transform 0.25s ease;
-  color: var(--ion-color-medium, #6c757d);
+  color: #6c757d;
   flex-shrink: 0;
   margin-left: 12px;
 }
@@ -149,7 +149,7 @@ img {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--gfc-section-header-text, #f8f9fa);
-  border-bottom: 2px solid var(--ion-color-primary, #0d6efd);
+  border-bottom: 2px solid #0d6efd;
 }
 
 @media (max-width: 767px) {
@@ -159,20 +159,20 @@ img {
 }
 
 .rank-table-body {
-  background: var(--ion-card-background, #fff);
+  background: #fff;
 }
 
 .rank-table-row {
   display: flex;
   padding: 10px 16px;
-  border-bottom: 1px solid var(--ion-border-color, #e9ecef);
+  border-bottom: 1px solid #e9ecef;
   transition: background 0.15s;
   gap: 10px;
-  background: var(--ion-card-background, #fff);
+  background: #fff;
 }
 
 .rank-table-body .rank-table-row:nth-child(even) {
-  background: var(--ion-color-step-50, #f8f9fa);
+  background: #f8f9fa;
 }
 
 .rank-table-row:last-child {
@@ -180,7 +180,7 @@ img {
 }
 
 .rank-table-row:hover {
-  background: var(--ion-color-step-100, #f0f1f2);
+  background: #f0f1f2;
 }
 
 .rank-col {
@@ -219,14 +219,14 @@ img {
 
 .field-label {
   font-weight: 600;
-  color: var(--ion-color-medium, #6c757d);
+  color: #6c757d;
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
 .field-value {
-  color: var(--ion-text-color, #212529);
+  color: #212529;
   text-align: right;
 }
 
@@ -267,7 +267,7 @@ img {
 
   .field-value {
     text-align: left;
-    color: var(--ion-text-color, #212529);
+    color: #212529;
     font-size: 0.85rem;
   }
 
@@ -293,15 +293,15 @@ img {
   border-radius: 999px;
   font-size: 0.7rem;
   font-weight: 600;
-  background: var(--ion-color-step-200, #212529);
+  background: #212529;
   color: #ffd700;
-  border: 1px solid var(--ion-color-step-350, #495057);
+  border: 1px solid #495057;
   white-space: nowrap;
 }
 
 .score-val {
   font-weight: 700;
-  color: var(--ion-color-primary, #0d6efd);
+  color: #0d6efd;
   font-size: 0.85rem;
 }
 
@@ -309,7 +309,7 @@ img {
   display: flex;
   gap: 24px;
   padding: 10px 16px;
-  background: var(--ion-color-step-50, #f8f9fa);
-  border-top: 1px solid var(--ion-border-color, #e9ecef);
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
   font-size: 0.85rem;
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { AlertService } from 'src/app/services/ui/alert.service';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
@@ -55,7 +55,7 @@ export class PresentacionMiembrosComponent extends ApiConsumer implements OnInit
   }
 
   constructor(
-    public  alertController:      AlertController,
+    public  alertController:      AlertService,
     public configService: ConfigService,
     public fotoclubService: FotoclubService,
     private sanitizer: DomSanitizer,

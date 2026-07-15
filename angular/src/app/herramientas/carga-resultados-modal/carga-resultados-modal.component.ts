@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-carga-resultados-modal',
@@ -7,7 +6,6 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./carga-resultados-modal.component.scss']
 })
 export class CargaResultadosModalComponent {
+  @Input() modalController: any;
   @Input() estructura: string;
-
-  constructor(public modalController: ModalController) {}
 } 

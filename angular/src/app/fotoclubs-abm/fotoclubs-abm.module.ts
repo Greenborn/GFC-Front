@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { IonicModule } from '@ionic/angular';
 
 import { FotoclubsAbmPageRoutingModule } from './fotoclubs-abm-routing.module';
 
@@ -14,7 +13,6 @@ import { FotoclubPostComponent } from './fotoclub-post/fotoclub-post.component';
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
     FotoclubsAbmPageRoutingModule,
     SharedModule
   ],

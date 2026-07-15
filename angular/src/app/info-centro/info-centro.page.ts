@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from '../models/ApiConsumer';
+import { AlertService } from '../services/ui/alert.service';
 import { InfoCentro } from '../models/info_centro.model';
 import { AuthService } from '../modules/auth/services/auth.service';
 import { RolificadorService } from '../modules/auth/services/rolificador.service';
@@ -24,7 +24,7 @@ export class InfoCentroPage extends ApiConsumer {
   constructor(
     private infoCentroService: InfoCentroService,
     private publicInfoCentroService: PublicInfoCentroService,
-    alertController: AlertController,
+    alertController: AlertService,
     public UIUtilsService: UiUtilsService,
     public responsiveService: ResponsiveService,
     public rolificador: RolificadorService,

@@ -212,7 +212,7 @@
 
 .info-panel {
   width: 320px;
-  background: var(--ion-background-color, #fff);
+  background: #fff;
   padding: 24px 20px;
   overflow-y: auto;
   display: flex;
@@ -243,16 +243,16 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--ion-color-medium, #666);
+  color: #666;
 }
 
 .info-value {
   font-size: 14px;
-  color: var(--ion-text-color, #000);
+  color: #000;
 }
 
 .mobile-info {
-  background: var(--ion-background-color, #fff);
+  background: #fff;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   flex-shrink: 0;
@@ -293,7 +293,7 @@
 
 .mobile-info-subtitle {
   font-size: 12px;
-  color: var(--ion-color-medium, #666);
+  color: #666;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

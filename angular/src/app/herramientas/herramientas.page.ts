@@ -8,8 +8,10 @@ import { Section } from '../models/section.model';
 import { SectionService } from '../services/section.service';
 import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
-import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
+import { LoadingService } from '../services/ui/loading.service';
+import { AlertService } from '../services/ui/alert.service';
+import { UiUtilsService } from '../services/ui/ui-utils.service';
 import { RankingService } from '../services/ranking.service';
 import { ConfigService } from '../services/config/config.service';
 import { firstValueFrom } from 'rxjs';
@@ -41,11 +43,11 @@ export class HerramientasPage implements OnInit {
     private categoryService: CategoryService,
     private sectionService: SectionService,
     private http: HttpClient,
-    private modalController: ModalController,
-    private loadingController: LoadingController,
-    private alertController: AlertController,
+    private loadingService: LoadingService,
+    private alertService: AlertService,
     private rankingService: RankingService,
-    private config: ConfigService
+    private config: ConfigService,
+    private UIUtilsService: UiUtilsService
   ) {}
 
   ngOnInit() {
@@ -76,11 +78,7 @@ export class HerramientasPage implements OnInit {
     console.log('=== DEBUG INICIO CARGA DIRECTORIO ===');
     
     // Mostrar loading INMEDIATAMENTE al detectar el evento
-    let loading = await this.loadingController.create({
-      message: 'Iniciando procesamiento...',
-      spinner: 'crescent'
-    });
-    await loading.present();
+    await this.loadingService.present('Iniciando procesamiento...');
     
     const files: FileList = event.target.files;
     
@@ -89,7 +87,7 @@ export class HerramientasPage implements OnInit {
     
     if (!files || files.length === 0) {
       console.log('No se seleccionaron archivos');
-      await loading.dismiss();
+      this.loadingService.dismiss();
       return;
     }
     
@@ -97,7 +95,7 @@ export class HerramientasPage implements OnInit {
       console.log(`Procesando ${files.length} archivos...`);
 
       // Actualizar mensaje de loading
-      loading.message = `Analizando estructura (${files.length} archivos)...`;
+      this.loadingService.present(`Analizando estructura (${files.length} archivos)...`);
       
       // Procesar estructura de directorio
       let estructura = '';
@@ -123,7 +121,7 @@ export class HerramientasPage implements OnInit {
       console.log(`Directorios detectados: ${directorios.size}`);
 
       // Obtener todas las categorías y secciones del sistema
-      loading.message = 'Cargando categorías y secciones...';
+      this.loadingService.present('Cargando categorías y secciones...');
       let categorias: Category[] = [];
       let secciones: Section[] = [];
       
@@ -148,7 +146,7 @@ export class HerramientasPage implements OnInit {
         throw new Error('No se pudo procesar la estructura del directorio');
       }
 
-      loading.message = 'Preparando vista de validación...';
+      this.loadingService.present('Preparando vista de validación...');
       
       // Navegar a la vista de carga de resultados
       await this.router.navigate(['/herramientas/carga-resultados'], { 
@@ -158,27 +156,22 @@ export class HerramientasPage implements OnInit {
       // Dar un pequeño delay para que la navegación se complete antes de cerrar el loading
       await new Promise(resolve => setTimeout(resolve, 100));
       
-      await loading.dismiss();
+      this.loadingService.dismiss();
       console.log('=== PROCESO COMPLETADO EXITOSAMENTE ===');
       
     } catch (error) {
       console.error('=== ERROR EN PROCESO DE CARGA ===', error);
       
       // Cerrar loading si está abierto
-      if (loading) {
-        await loading.dismiss();
-      }
+      this.loadingService.dismiss();
 
       // Mostrar alerta de error al usuario
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido al procesar el directorio';
       
-      const alert = await this.alertController.create({
+      await this.UIUtilsService.mostrarAlert({
         header: 'Error',
-        message: errorMessage,
-        buttons: ['OK'],
-        cssClass: 'alert-danger'
-      });
-      await alert.present();
+        message: errorMessage
+      })
       
     } finally {
       // Resetear el input para permitir nueva selección
@@ -223,44 +216,38 @@ export class HerramientasPage implements OnInit {
   }
 
   async recalcularRanking() {
-    const loading = await this.loadingController.create({ message: 'Recalculando ranking...' });
-    await loading.present();
+    await this.loadingService.present('Recalculando ranking...');
     try {
       await firstValueFrom(this.rankingService.recalculateRanking());
-      await loading.dismiss();
+      this.loadingService.dismiss();
       alert('Ranking recalculado correctamente.');
     } catch (error) {
-      await loading.dismiss();
+      this.loadingService.dismiss();
       alert('Error al recalcular ranking.');
     }
   }
 
   async descargarCompiladoGanadoras() {
-    const loading = await this.loadingController.create({ message: 'Generando compilado...' });
-    await loading.present();
+    await this.loadingService.present('Generando compilado...');
     try {
       const url = this.config.nodeApiBaseUrl + 'contest/compiled-winners';
       const r = await firstValueFrom(this.http.get<any>(url));
-      await loading.dismiss();
+      this.loadingService.dismiss();
       if (r && r.success && r.download_url) {
         window.open(r.download_url, '_blank');
       } else {
-        const alert = await this.alertController.create({
+        await this.UIUtilsService.mostrarAlert({
           header: 'Aviso',
-          message: 'No se pudo obtener la URL de descarga.',
-          buttons: ['OK']
-        });
-        await alert.present();
+          message: 'No se pudo obtener la URL de descarga.'
+        })
       }
     } catch (err) {
-      await loading.dismiss();
+      this.loadingService.dismiss();
       const msg = err && (err as any).error && (err as any).error.message ? (err as any).error.message : 'Error al generar el compilado.';
-      const alert = await this.alertController.create({
+      await this.UIUtilsService.mostrarAlert({
         header: 'Error',
-        message: msg,
-        buttons: ['OK']
-      });
-      await alert.present();
+        message: msg
+      })
     }
   }
 
@@ -273,11 +260,7 @@ export class HerramientasPage implements OnInit {
     }
 
     // Mostrar loading
-    const loading = await this.loadingController.create({
-      message: 'Procesando directorio de fotos del año...',
-      spinner: 'crescent'
-    });
-    await loading.present();
+    await this.loadingService.present('Procesando directorio de fotos del año...');
 
     try {
       // Construir estructura de directorios y archivos
@@ -344,27 +327,25 @@ export class HerramientasPage implements OnInit {
       console.log(JSON.stringify(estructura, null, 2));
 
       // Enviar al endpoint
-      loading.message = 'Enviando datos al servidor...';
+      this.loadingService.present('Enviando datos al servidor...');
       const url = `${this.config.nodeApiBaseUrl}foto-del-anio`;
       const token = localStorage.getItem(this.config.tokenKey);
       const headers = token ? { Authorization: 'Bearer ' + token } : {};
 
       const response = await firstValueFrom(this.http.post<any>(url, estructura, { headers }));
       
-      await loading.dismiss();
+      this.loadingService.dismiss();
 
       // Mostrar resultado exitoso
-      const alert = await this.alertController.create({
+      await this.UIUtilsService.mostrarAlert({
         header: 'Éxito',
-        message: 'La estructura de fotos del año se envió correctamente al servidor.',
-        buttons: ['OK']
-      });
-      await alert.present();
+        message: 'La estructura de fotos del año se envió correctamente al servidor.'
+      })
 
       console.log('Respuesta del servidor:', response);
 
     } catch (error) {
-      await loading.dismiss();
+      this.loadingService.dismiss();
       
       console.error('Error al procesar/enviar fotos del año:', error);
       
@@ -372,13 +353,10 @@ export class HerramientasPage implements OnInit {
         ? (error as any).error.message 
         : 'Error al procesar o enviar la estructura de fotos del año.';
       
-      const alert = await this.alertController.create({
+      await this.UIUtilsService.mostrarAlert({
         header: 'Error',
-        message: errorMessage,
-        buttons: ['OK'],
-        cssClass: 'alert-danger'
-      });
-      await alert.present();
+        message: errorMessage
+      })
       
     } finally {
       // Resetear el input para permitir nueva selección
@@ -428,11 +406,7 @@ export class HerramientasPage implements OnInit {
       return;
     }
 
-    const loading = await this.loadingController.create({
-      message: 'Agregando grabación...',
-      spinner: 'crescent'
-    });
-    await loading.present();
+    await this.loadingService.present('Agregando grabación...');
 
     try {
       const url = `${this.config.nodeApiBaseUrl}contest-record`;
@@ -454,19 +428,17 @@ export class HerramientasPage implements OnInit {
 
       const response = await firstValueFrom(this.http.post<any>(url, body, { headers }));
       
-      await loading.dismiss();
+      this.loadingService.dismiss();
 
-      const alert = await this.alertController.create({
+      await this.UIUtilsService.mostrarAlert({
         header: 'Éxito',
-        message: 'La grabación se agregó correctamente.',
-        buttons: ['OK']
-      });
-      await alert.present();
+        message: 'La grabación se agregó correctamente.'
+      })
 
       this.cerrarModalGrabacion();
 
     } catch (error) {
-      await loading.dismiss();
+      this.loadingService.dismiss();
       
       console.error('Error al agregar grabación:', error);
       
@@ -474,13 +446,10 @@ export class HerramientasPage implements OnInit {
         ? (error as any).error.message 
         : 'Error al agregar la grabación.';
       
-      const alert = await this.alertController.create({
+      await this.UIUtilsService.mostrarAlert({
         header: 'Error',
-        message: errorMessage,
-        buttons: ['OK'],
-        cssClass: 'alert-danger'
-      });
-      await alert.present();
+        message: errorMessage
+      })
     }
   }
 }
