@@ -84,11 +84,17 @@
       @if (concurso.contestRecords?.length) {
         <div class="info-section">
           <h3 class="info-section-title"><i class="bi bi-camera-video"></i> Grabaciones</h3>
-          <div class="info-links">
+          <div class="info-embeds">
             @for (s of concurso.contestRecords; track s) {
-              <a class="info-link" [href]="s.url" target="_blank" rel="noopener">
-                <i class="bi bi-play-circle"></i> {{ s.object }}
-              </a>
+              @if (getEmbedUrl(s); as safeUrl) {
+                <div class="info-embed">
+                  <iframe [src]="safeUrl" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                </div>
+              } @else {
+                <a class="info-link" [href]="s.url" target="_blank" rel="noopener">
+                  <i class="bi bi-play-circle"></i> {{ s.object }}
+                </a>
+              }
             }
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Contest } from 'src/app/models/contest.model';
 import { ContestResult, ContestResultExpanded } from 'src/app/models/contest_result.model';
@@ -8,6 +9,7 @@ import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
+import { ContestRecord } from '../contest-records/models/contest.record';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { Metric } from 'src/app/models/metric.model';
 import { Subscription } from 'rxjs';
@@ -61,7 +63,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     private router: Router,
     alertService: AlertService,
     public auth: AuthService,
-    
+    private sanitizer: DomSanitizer,
     public contestService: ContestService,
     private contestResultService: ContestResultService,
     private fotoclubService: FotoclubService,
@@ -361,6 +363,35 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
         })
     } else {
     }
+  }
+
+  getEmbedUrl(record: ContestRecord): SafeResourceUrl | null {
+    let embedUrl: string | null = null;
+    const url = record.url;
+
+    const ytMatch = url.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/
+    );
+    if (ytMatch) {
+      embedUrl = `https://www.youtube.com/embed/${ytMatch[1]}`;
+    }
+
+    const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+    if (vimeoMatch) {
+      embedUrl = `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+    }
+
+    const driveMatch = url.match(/drive\.google\.com\/.*[?&]id=([a-zA-Z0-9_-]+)/);
+    if (driveMatch) {
+      embedUrl = `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+    }
+
+    const driveMatch2 = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (driveMatch2) {
+      embedUrl = `https://drive.google.com/file/d/${driveMatch2[1]}/preview`;
+    }
+
+    return embedUrl ? this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl) : null;
   }
 
   get isContestNotFin() {
