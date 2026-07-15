@@ -1,67 +1,73 @@
 <!-- <div class="mb-3 search-select"> -->
-  <!-- <div class="col"> -->
-    <!-- <div class="row">
-      <div class="input-group"><input class="form-control" type="search" #queryInput
-        (input)="output()"
-      ></div>
-    </div> -->
-    <div class="row align-items-center me-3"
-      *ngIf="interface == 'popover'; else list"
+<!-- <div class="col"> -->
+<!-- <div class="row">
+<div class="input-group"><input class="form-control" type="search" #queryInput
+  (input)="output()"
+></div>
+</div> -->
+@if (interface == 'popover') {
+  <div class="row align-items-center me-3"
     >
-      <!-- <div class="col-2 p-0" *ngIf="atributoSelected != ''"> -->
-        <button (click)="changeQuery()" class="btn btn-link"
-          *ngIf="atributoSelected != ''"
+    <!-- <div class="col-2 p-0" *ngIf="atributoSelected != ''"> -->
+    @if (atributoSelected != '') {
+      <button (click)="changeQuery()" class="btn btn-link"
         >
-          <i class="bi bi-x-lg"></i>
-        </button>
-      <!-- </div> -->
-      <!-- <div class="col p-0"> -->
-        <div class="mb-3">
-          <label class="form-label"
-            position="stacked"
-            >{{ title }}</label
+        <i class="bi bi-x-lg"></i>
+      </button>
+    }
+  <!-- </div> -->
+  <!-- <div class="col p-0"> -->
+  <div class="mb-3">
+    <label class="form-label"
+      position="stacked"
+      >{{ title }}</label
+      >
+      @if (!updatingSelect) {
+        <select class="form-select" #atributoSelect
+          (change)="changeQuery($event.target)"
+          [value]="atributoSelectedAsInt"
           >
-          <select class="form-select" #atributoSelect
-            *ngIf="!updatingSelect"
-            (change)="changeQuery($event.target)"
-            [value]="atributoSelectedAsInt"
-          >
-            <option 
-              *ngFor="let o of optionsData"
+          @for (o of optionsData; track o) {
+            <option
               [value]="o[optionsProps.valueProp]"
               >{{ getPropertyName(o) }}</option
-            >
-          </select>
-        </div>
-      <!-- </div> -->
-    </div>
-
-    <ng-template #list>
-      <div class="row">
-        <div class="list-group list-group-flush">
-          <div class="list-group-item fw-bold gfc-list-header">
-            <div class="row align-items-center">
-              <label class="form-label">{{ title }}</label>
-              <button
-                *ngIf="atributoSelected != ''"
-                (click)="changeQuery()"
-                class="btn btn-link"
               >
-                <i class="bi bi-x-lg"></i>
-              </button>
-            </div>
-          </div>
-          <div class="mb-3" *ngFor="let o of optionsData">
+            }
+          </select>
+        }
+      </div>
+    <!-- </div> -->
+  </div>
+} @else {
+  <div class="row">
+    <div class="list-group list-group-flush">
+      <div class="list-group-item fw-bold gfc-list-header">
+        <div class="row align-items-center">
+          <label class="form-label">{{ title }}</label>
+          @if (atributoSelected != '') {
             <button
-              class="btn w-100"
-              [ngClass]="atributoSelected == o[optionsProps.valueProp] ? 'btn-primary' : 'btn-link'"
-              (click)="changeQuery(o[optionsProps.valueProp])"
-            >
-              {{ getPropertyName(o) }}
+              (click)="changeQuery()"
+              class="btn btn-link"
+              >
+              <i class="bi bi-x-lg"></i>
             </button>
-          </div>
+          }
         </div>
       </div>
-    </ng-template>
-  <!-- </div> -->
+      @for (o of optionsData; track o) {
+        <div class="mb-3">
+          <button
+            class="btn w-100"
+            [ngClass]="atributoSelected == o[optionsProps.valueProp] ? 'btn-primary' : 'btn-link'"
+            (click)="changeQuery(o[optionsProps.valueProp])"
+            >
+            {{ getPropertyName(o) }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<!-- </div> -->
 <!-- </div> -->

@@ -38,31 +38,34 @@
           </div>
         </div>
 
-        <div class="list-group list-group-flush border-start border-end" *ngIf="metricas.length > 0; else texto">
-          <div class="list-group-item" *ngFor="let s of metricas">
-            <div class="row align-items-center">
-              <div class="col-5">
-                <b>{{ s.prize }}</b>
-              </div>
-              <div class="col-4">
-                {{ s.score }}
-              </div>
-              <div class="col-1 text-end">
-                <div class="d-flex gap-1 justify-content-end">
-                  <button class="btn btn-warning btn-sm" title="Editar" (click)="post(s)">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-danger btn-sm" title="Eliminar" (click)="delete(s)">
-                    <i class="bi bi-trash"></i>
-                  </button>
+        @if (metricas.length > 0) {
+          <div class="list-group list-group-flush border-start border-end">
+            @for (s of metricas; track s) {
+              <div class="list-group-item">
+                <div class="row align-items-center">
+                  <div class="col-5">
+                    <b>{{ s.prize }}</b>
+                  </div>
+                  <div class="col-4">
+                    {{ s.score }}
+                  </div>
+                  <div class="col-1 text-end">
+                    <div class="d-flex gap-1 justify-content-end">
+                      <button class="btn btn-warning btn-sm" title="Editar" (click)="post(s)">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="btn btn-danger btn-sm" title="Eliminar" (click)="delete(s)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            }
           </div>
-        </div>
-        <ng-template #texto>
+        } @else {
           <div class="list-group-item border-start border-end">No hay premios</div>
-        </ng-template>
+        }
 
       </div>
     </div>

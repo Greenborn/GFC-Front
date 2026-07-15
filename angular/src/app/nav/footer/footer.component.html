@@ -1,20 +1,24 @@
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-auto align-self-center" *ngIf="auth.user | async as u">
-        <button class="btn btn-warning" *ngIf="rolificador.isAdmin(u)" style="margin-bottom: 0;" (click)="editar($event)">
-          <i class="bi bi-pencil"></i>
-        </button>
+<div class="container-fluid">
+  <div class="row">
+    @if (auth.user | async; as u) {
+      <div class="col-auto align-self-center">
+        @if (rolificador.isAdmin(u)) {
+          <button class="btn btn-warning" style="margin-bottom: 0;" (click)="editar($event)">
+            <i class="bi bi-pencil"></i>
+          </button>
+        }
       </div>
-      <div class="col">
-        <div class="row justify-content-center align-items-center h-100">
-          <a [href]="youUrl" target="_blank" class="me-3"><i class="bi bi-youtube" [ngStyle]="{'color': aspecto == false ? '#f8f9fa' : '#212529'}"> youtube</i></a>
-          <a [href]="instagramUrl" target="_blank" class="me-3"><i class="bi bi-instagram" [ngStyle]="{'color': aspecto == false ? '#f8f9fa' : '#212529'}">Instagram </i> </a>
-          <a [href]="faceUrl" target="_blank" class="me-3"><i class="bi bi-facebook" [ngStyle]="{'color': aspecto == false ? '#f8f9fa' : '#212529'}">Facebook </i></a>
-          <a href="mailto:{{mailUrl}}" target="_blank" class="me-3"><i class="bi bi-envelope" [ngStyle]="{'color': aspecto == false ? '#f8f9fa' : '#212529'}"> E-mail</i></a>
-        </div>
-      </div>
-      <div class="col-auto">
-        <span><small>v{{version}}</small></span>
+    }
+    <div class="col">
+      <div class="row justify-content-center align-items-center h-100">
+        <a [href]="youUrl" target="_blank" class="me-3"><i class="bi bi-youtube" [ngStyle]="{'color': aspecto == false ? '#f8f9fa' : '#212529'}"> youtube</i></a>
+        <a [href]="instagramUrl" target="_blank" class="me-3"><i class="bi bi-instagram" [ngStyle]="{'color': aspecto == false ? '#f8f9fa' : '#212529'}">Instagram </i> </a>
+        <a [href]="faceUrl" target="_blank" class="me-3"><i class="bi bi-facebook" [ngStyle]="{'color': aspecto == false ? '#f8f9fa' : '#212529'}">Facebook </i></a>
+        <a href="mailto:{{mailUrl}}" target="_blank" class="me-3"><i class="bi bi-envelope" [ngStyle]="{'color': aspecto == false ? '#f8f9fa' : '#212529'}"> E-mail</i></a>
       </div>
     </div>
+    <div class="col-auto">
+      <span><small>v{{version}}</small></span>
+    </div>
   </div>
+</div>

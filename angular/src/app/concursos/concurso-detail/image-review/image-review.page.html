@@ -34,9 +34,11 @@
 
                     <div class="mb-3" class="w-100 mb-3">
                       <label class="form-label">Premio</label>
-                     
+
                       <select class="form-select" name="elegida" [(ngModel)]="elegida">
-                        <option *ngFor="let met of metricas" [value]="met">{{ met.prize }}</option>
+                        @for (met of metricas; track met) {
+                          <option [value]="met">{{ met.prize }}</option>
+                        }
                       </select>
                     </div>
 

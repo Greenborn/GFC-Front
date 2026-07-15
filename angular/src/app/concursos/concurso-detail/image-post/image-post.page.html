@@ -19,12 +19,12 @@
           <div class="row">
             <div class="col">
               <div class="row pt-3">
-                
+
                 <div class="mb-3" class="w-100 mb-3">
                   <label class="form-label">Titulo</label>
                   <input class="form-control"
                     autocapitalize="sentences" [(ngModel)]="image.title"
-                   >
+                    >
                 </div>
 
                 <div class="row w-100">
@@ -32,16 +32,20 @@
                     <div class="mb-3" class="w-100 p-0 mb-3">
                       <input type="file" accept=".jpeg,.jpg" (change)="handleFileInput($event.target['files'])" />
                     </div>
-                    
-                    <span class="badge bg-danger d-inline-flex align-items-center gap-1" *ngIf="texto_img != null">
-                      <i class="bi bi-exclamation-triangle"></i>
-                      <label class="form-label">{{texto_img}}</label>
-                    </span>
-                    
+
+                    @if (texto_img != null) {
+                      <span class="badge bg-danger d-inline-flex align-items-center gap-1">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <label class="form-label">{{texto_img}}</label>
+                      </span>
+                    }
+
                     <div>
-                        <div class="row" *ngIf="img_url != '' || imageData != ''" class="justify-content-center">
-                          <img (ionError)="img_url=''" [src]="imgSource" alt=""> 
+                      @if (img_url != '' || imageData != '') {
+                        <div class="row" class="justify-content-center">
+                          <img (ionError)="img_url=''" [src]="imgSource" alt="">
                         </div>
+                      }
                     </div>
                   </div>
                 </div>
@@ -54,14 +58,18 @@
                 <div class="mb-3" class="w-100 mb-3">
                   <label class="form-label">Sección</label>
                   <select class="form-select" (change)="sectionSelect" [(ngModel)]="section_id">
-                    <option *ngFor="let s of secciones" [value]="s.id">{{ s.name }}</option>
+                    @for (s of secciones; track s) {
+                      <option [value]="s.id">{{ s.name }}</option>
+                    }
                   </select>
                 </div>
 
-                <span class="badge bg-danger d-inline-flex align-items-center gap-1" *ngIf="texto_sec != null">
-                  <i class="bi bi-exclamation-triangle"></i>
-                  <label class="form-label">{{texto_sec}}</label>
-                </span>
+                @if (texto_sec != null) {
+                  <span class="badge bg-danger d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <label class="form-label">{{texto_sec}}</label>
+                  </span>
+                }
 
               </div>
 
@@ -73,8 +81,12 @@
                 </div>
                 <div class="col-auto">
                   <button class="btn btn-success" [disabled]="!datosCargados()" (click)="postImage()">
-                    <div class="spinner-border spinner-border-sm text-primary" role="status" *ngIf="posting"><span class="visually-hidden">Loading...</span></div>
-                    <span *ngIf="!posting">Guardar</span>
+                    @if (posting) {
+                      <div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                    }
+                    @if (!posting) {
+                      <span>Guardar</span>
+                    }
                   </button>
                 </div>
               </div>

@@ -27,8 +27,10 @@
                     name="name" [ngModel]="concurso.name"
                     autocapitalize="sentences" maxlength="250" required
                     (focus)="nombreChangeFocus = true" (blur)="nombreChangeFocus = false"
-                    [class.is-invalid]="f.submitted && !f.controls?.['name']?.valid"></textarea>
-                  <small class="text-muted" *ngIf="nombreChangeFocus">Máximo 250 caracteres</small>
+                  [class.is-invalid]="f.submitted && !f.controls?.['name']?.valid"></textarea>
+                  @if (nombreChangeFocus) {
+                    <small class="text-muted">Máximo 250 caracteres</small>
+                  }
                 </div>
 
                 <div class="mb-3">
@@ -36,8 +38,10 @@
                   <textarea class="form-control" rows="2"
                     name="sub_title" [ngModel]="concurso.sub_title"
                     maxlength="250"
-                    (focus)="subtituloChangeFocus = true" (blur)="subtituloChangeFocus = false"></textarea>
-                  <small class="text-muted" *ngIf="subtituloChangeFocus">Máximo 250 caracteres</small>
+                  (focus)="subtituloChangeFocus = true" (blur)="subtituloChangeFocus = false"></textarea>
+                  @if (subtituloChangeFocus) {
+                    <small class="text-muted">Máximo 250 caracteres</small>
+                  }
                 </div>
 
                 <div class="mb-3">
@@ -46,8 +50,10 @@
                     name="description" [ngModel]="concurso.description"
                     autocapitalize="sentences" maxlength="250" required
                     (focus)="descrChangeFocus = true" (blur)="descrChangeFocus = false"
-                    [class.is-invalid]="f.submitted && !f.controls?.['description']?.valid"></textarea>
-                  <small class="text-muted" *ngIf="descrChangeFocus">Máximo 250 caracteres</small>
+                  [class.is-invalid]="f.submitted && !f.controls?.['description']?.valid"></textarea>
+                  @if (descrChangeFocus) {
+                    <small class="text-muted">Máximo 250 caracteres</small>
+                  }
                 </div>
               </div>
             </div>
@@ -67,21 +73,27 @@
                       <select class="form-select form-select-sm"
                         [(ngModel)]="day_selects[0].day" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                         <option value="-1">Día</option>
-                        <option *ngFor="let d of day_selects[0].days;" value="{{d.v}}">{{d.t}}</option>
+                        @for (d of day_selects[0].days; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
                       </select>
                     </div>
                     <div class="col-5">
                       <select class="form-select form-select-sm"
                         [(ngModel)]="day_selects[0].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                         <option value="-1">Mes</option>
-                        <option *ngFor="let d of day_selects[0].months;" value="{{d.v}}">{{d.t}}</option>
+                        @for (d of day_selects[0].months; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
                       </select>
                     </div>
                     <div class="col-3">
                       <select class="form-select form-select-sm"
                         [(ngModel)]="day_selects[0].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                         <option value="-1">Año</option>
-                        <option *ngFor="let d of day_selects[0].years;" value="{{d.v}}">{{d.t}}</option>
+                        @for (d of day_selects[0].years; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
                       </select>
                     </div>
                   </div>
@@ -90,14 +102,18 @@
                       <select class="form-select form-select-sm"
                         [(ngModel)]="day_selects[0].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                         <option value="-1">Hora</option>
-                        <option *ngFor="let d of day_selects[0].hours;" value="{{d.v}}">{{d.t}}</option>
+                        @for (d of day_selects[0].hours; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
                       </select>
                     </div>
                     <div class="col-6">
                       <select class="form-select form-select-sm"
                         [(ngModel)]="day_selects[0].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                         <option value="-1">Min</option>
-                        <option *ngFor="let d of day_selects[0].minutes;" value="{{d.v}}">{{d.t}}</option>
+                        @for (d of day_selects[0].minutes; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
                       </select>
                     </div>
                   </div>
@@ -110,21 +126,27 @@
                       <select class="form-select form-select-sm"
                         [(ngModel)]="day_selects[1].day" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                         <option value="-1">Día</option>
-                        <option *ngFor="let d of day_selects[1].days;" value="{{d.v}}">{{d.t}}</option>
+                        @for (d of day_selects[1].days; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
                       </select>
                     </div>
                     <div class="col-5">
                       <select class="form-select form-select-sm"
                         [(ngModel)]="day_selects[1].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                         <option value="-1">Mes</option>
-                        <option *ngFor="let d of day_selects[1].months;" value="{{d.v}}">{{d.t}}</option>
+                        @for (d of day_selects[1].months; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
                       </select>
                     </div>
                     <div class="col-3">
                       <select class="form-select form-select-sm"
                         [(ngModel)]="day_selects[1].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                         <option value="-1">Año</option>
-                        <option *ngFor="let d of day_selects[1].years;" value="{{d.v}}">{{d.t}}</option>
+                        @for (d of day_selects[1].years; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
                       </select>
                     </div>
                   </div>
@@ -133,14 +155,18 @@
                       <select class="form-select form-select-sm"
                         [(ngModel)]="day_selects[1].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                         <option value="-1">Hora</option>
-                        <option *ngFor="let d of day_selects[1].hours;" value="{{d.v}}">{{d.t}}</option>
+                        @for (d of day_selects[1].hours; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
                       </select>
                     </div>
                     <div class="col-6">
                       <select class="form-select form-select-sm"
                         [(ngModel)]="day_selects[1].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
                         <option value="-1">Min</option>
-                        <option *ngFor="let d of day_selects[1].minutes;" value="{{d.v}}">{{d.t}}</option>
+                        @for (d of day_selects[1].minutes; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
                       </select>
                     </div>
                   </div>
@@ -180,14 +206,18 @@
                     <span class="fw-semibold small">Categorías</span>
                     <i class="bi" [ngClass]="mostrarCategorias ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
                   </div>
-                  <div *ngIf="mostrarCategorias" class="mt-2">
-                    <div class="form-check mb-1" *ngFor="let c of categorias">
-                      <input type="checkbox" class="form-check-input"
-                        [(ngModel)]="getCategoriaSeleccionada(c.id).seleccionada"
-                        [ngModelOptions]="{standalone: true}" [id]="'cat-' + c.id">
-                      <label class="form-check-label small" [for]="'cat-' + c.id">{{c.name}}</label>
+                  @if (mostrarCategorias) {
+                    <div class="mt-2">
+                      @for (c of categorias; track c) {
+                        <div class="form-check mb-1">
+                          <input type="checkbox" class="form-check-input"
+                            [(ngModel)]="getCategoriaSeleccionada(c.id).seleccionada"
+                            [ngModelOptions]="{standalone: true}" [id]="'cat-' + c.id">
+                          <label class="form-check-label small" [for]="'cat-' + c.id">{{c.name}}</label>
+                        </div>
+                      }
                     </div>
-                  </div>
+                  }
                 </div>
 
                 <div class="mb-0">
@@ -197,14 +227,18 @@
                     <span class="fw-semibold small">Secciones</span>
                     <i class="bi" [ngClass]="mostrarSecciones ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
                   </div>
-                  <div *ngIf="mostrarSecciones" class="mt-2">
-                    <div class="form-check mb-1" *ngFor="let s of secciones">
-                      <input type="checkbox" class="form-check-input"
-                        [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
-                        [ngModelOptions]="{standalone: true}" [id]="'sec-' + s.id">
-                      <label class="form-check-label small" [for]="'sec-' + s.id">{{s.name}}</label>
+                  @if (mostrarSecciones) {
+                    <div class="mt-2">
+                      @for (s of secciones; track s) {
+                        <div class="form-check mb-1">
+                          <input type="checkbox" class="form-check-input"
+                            [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
+                            [ngModelOptions]="{standalone: true}" [id]="'sec-' + s.id">
+                          <label class="form-check-label small" [for]="'sec-' + s.id">{{s.name}}</label>
+                        </div>
+                      }
                     </div>
-                  </div>
+                  }
                 </div>
               </div>
             </div>
@@ -223,9 +257,11 @@
                   <p class="mb-0 small">Haga clic para subir una imagen</p>
                   <small class="text-muted">JPG, PNG, etc.</small>
                 </div>
-                <div class="image-preview" *ngIf="img_url" (click)="imageInput.click()">
-                  <img [src]="img_url" alt="Vista previa" (error)="img_url=''">
-                </div>
+                @if (img_url) {
+                  <div class="image-preview" (click)="imageInput.click()">
+                    <img [src]="img_url" alt="Vista previa" (error)="img_url=''">
+                  </div>
+                }
               </div>
             </div>
           </div>
@@ -243,9 +279,11 @@
                   <p class="mb-0 small">Haga clic para subir reglamento</p>
                   <small class="text-muted">Solo PDF</small>
                 </div>
-                <div class="rules-preview" *ngIf="rules_url">
-                  <iframe [src]="rules_url" frameborder="0"></iframe>
-                </div>
+                @if (rules_url) {
+                  <div class="rules-preview">
+                    <iframe [src]="rules_url" frameborder="0"></iframe>
+                  </div>
+                }
               </div>
             </div>
           </div>

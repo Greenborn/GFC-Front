@@ -1,5 +1,5 @@
 <div class="container py-3">
-  <ng-container *ngIf="auth.user | async as u">
+  @if (auth.user | async; as u) {
     <div class="row">
       <div class="col">
         <ul class="nav concurso-tabs mb-0">
@@ -8,11 +8,13 @@
               <i class="bi bi-info-circle me-1"></i> Información
             </a>
           </li>
-          <li class="nav-item" *ngIf="rolificador.esDelegado(u) || rolificador.isAdmin(u) || concurso?.judged">
-            <a class="nav-link" [routerLink]="['./concursantes']" routerLinkActive="active">
-              <i class="bi bi-people me-1"></i> Concursantes
-            </a>
-          </li>
+          @if (rolificador.esDelegado(u) || rolificador.isAdmin(u) || concurso?.judged) {
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['./concursantes']" routerLinkActive="active">
+                <i class="bi bi-people me-1"></i> Concursantes
+              </a>
+            </li>
+          }
           <li class="nav-item">
             <a class="nav-link" [routerLink]="['./fotografias']" routerLinkActive="active">
               <i class="bi bi-images me-1"></i> Fotografías
@@ -21,6 +23,6 @@
         </ul>
       </div>
     </div>
-  </ng-container>
+  }
   <router-outlet></router-outlet>
 </div>

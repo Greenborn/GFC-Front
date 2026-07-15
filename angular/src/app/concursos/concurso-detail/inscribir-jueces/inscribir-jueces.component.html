@@ -24,10 +24,11 @@
                 <div class="mb-3" class="w-100 mb-3">
                   <label class="form-label">Juez</label>
                   <select class="form-select" [(ngModel)]="profileContest.profile_id">
-                    <option
-                      *ngFor="let p of jueces"
-                      [value]="p.id"
+                    @for (p of jueces; track p) {
+                      <option
+                        [value]="p.id"
                       >{{ p.name + " " + p.last_name }}</option>
+                    }
                   </select>
                 </div>
               </div>
@@ -47,8 +48,8 @@
                       <button
                         class="btn btn-link w-100"
                         (click)="modalController.dismiss()"
-                      >
-                        Cancelar</button>
+                        >
+                      Cancelar</button>
                     </div>
                   </div>
                 </div>

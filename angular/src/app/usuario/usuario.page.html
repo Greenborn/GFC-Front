@@ -1,9 +1,11 @@
 <div class="p-3 text-center border-bottom">
-  <div *ngIf="authUser as u">
-    <app-usuario-img [src]="userProfile?.img_url ? configService.imageUrl(userProfile.img_url) : ''" style="max-width:64px;display:inline-block"></app-usuario-img>
-    <h6 class="mt-2 mb-0">{{ u.username }}</h6>
-    <small class="text-muted">{{userProfile?.name || ''}} {{userProfile?.last_name || ''}}</small>
-  </div>
+  @if (authUser; as u) {
+    <div>
+      <app-usuario-img [src]="userProfile?.img_url ? configService.imageUrl(userProfile.img_url) : ''" style="max-width:64px;display:inline-block"></app-usuario-img>
+      <h6 class="mt-2 mb-0">{{ u.username }}</h6>
+      <small class="text-muted">{{userProfile?.name || ''}} {{userProfile?.last_name || ''}}</small>
+    </div>
+  }
 </div>
 
 <div class="list-group list-group-flush">

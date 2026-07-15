@@ -21,12 +21,14 @@
           <div class="row">
             <div class="col">
 
-              <div class="mb-3 w-100 mb-3" *ngIf="parrafo != undefined">
-                <label class="form-label" position="floating">Título</label>
-                <input class="form-control"
-                  [(ngModel)]="parrafo.title"
-                >
-              </div>
+              @if (parrafo != undefined) {
+                <div class="mb-3 w-100 mb-3">
+                  <label class="form-label" position="floating">Título</label>
+                  <input class="form-control"
+                    [(ngModel)]="parrafo.title"
+                    >
+                </div>
+              }
 
               <div class="row w-100">
                 <div class="col p-0">
@@ -35,38 +37,42 @@
                     <input #inputFile
                       type="file"
                       (change)="imageUpload($event.target)"
-                    >
-                    <button class="btn btn-link" *ngIf="loadedImg" (click)="deleteImg(inputFile)">
-                      <i class="bi bi-x-lg"></i>
-                    </button>
+                      >
+                    @if (loadedImg) {
+                      <button class="btn btn-link" (click)="deleteImg(inputFile)">
+                        <i class="bi bi-x-lg"></i>
+                      </button>
+                    }
                     <div>
-                        <div class="row justify-content-center">
-      
-                          <img [src]="img_url" alt=""
-                            (load)="loadImg($event)"
-                            (error)="loadedImg = false"
+                      <div class="row justify-content-center">
+
+                        <img [src]="img_url" alt=""
+                          (load)="loadImg($event)"
+                          (error)="loadedImg = false"
                           >
-                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
-              <div class="mb-3 w-100" *ngIf="parrafo != undefined && parrafo.id != 1">
-                <label class="form-label" position="floating">Contenido</label>
-                <textarea class="form-control"
-                  autocapitalize="sentences"
-                  [(ngModel)]="parrafo.content"
-                  [rows]="responsiveService.isDesktop ? 6 : 4"
+
+              @if (parrafo != undefined && parrafo.id != 1) {
+                <div class="mb-3 w-100">
+                  <label class="form-label" position="floating">Contenido</label>
+                  <textarea class="form-control"
+                    autocapitalize="sentences"
+                    [(ngModel)]="parrafo.content"
+                    [rows]="responsiveService.isDesktop ? 6 : 4"
                   ></textarea>
-              </div>
+                </div>
+              }
 
               <div class="row justify-content-end mt-3">
                 <div class="col-12">
                   <div class="row justify-content-end">
                     <div
                       class="col-12 col-sm-3 align-self-center"
-                    >
+                      >
                       <app-btn-post
                         [posting]="posting"
                         (post)="postParrafo()"
@@ -76,7 +82,7 @@
 
                     <div
                       class="col-12 col-sm-3 align-self-center"
-                    >
+                      >
                       <button class="btn btn-link w-100" (click)="modalController.dismiss()">
                         Cancelar
                       </button>
