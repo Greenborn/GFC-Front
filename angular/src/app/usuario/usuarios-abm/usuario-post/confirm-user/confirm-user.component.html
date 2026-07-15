@@ -1,5 +1,5 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
-  <div class="bg-light border-bottom p-3">
+  <div class="gfc-modal-header">
     <div class="row align-items-center ms-3 me-3">
 
       <div class="col">
@@ -7,7 +7,7 @@
       </div>
 
       <div class="col-1 d-none d-md-block text-end">
-        <button (click)="modalController.dismiss()" class="btn btn-dark btn-sm"><i class="bi bi-x-lg"></i></button>
+        <button (click)="modalController.dismiss()" class="btn gfc-btn-back btn-sm"><i class="bi bi-x-lg"></i></button>
       </div>
 
     </div>

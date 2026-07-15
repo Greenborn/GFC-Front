@@ -136,31 +136,4 @@ ion-label{
     pointer-events:all!important;
 }
 
-ion-content.dark {
-    .logoEntrada{
-        filter: invert(0);
-    }
 
-    .login-accordion {
-        background: var(--ion-card-background, #1e1e1e);
-        border-color: rgb(41, 41, 41);
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .input-bordered {
-        border-color: rgb(60, 60, 60);
-    }
-
-    .separator-line {
-        background: rgb(60, 60, 60);
-    }
-
-    .separator-text {
-        color: #555;
-    }
-
-    .google-btn {
-        --border-color: rgb(60, 60, 60);
-        --color: #aaa;
-    }
-}

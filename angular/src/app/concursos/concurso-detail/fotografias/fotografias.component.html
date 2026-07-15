@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="col-auto">
-        <button class="btn btn-dark w-100" (click)="toggleSidebar()">
+        <button class="btn gfc-btn-back w-100" (click)="toggleSidebar()">
           <i class="bi bi-gear me-1"></i>
           <span class="d-none d-sm-inline">Filtros</span>
           <span class="badge bg-primary ms-3" *ngIf="filtrosActivosCount > 0 || sortBy">
@@ -30,7 +30,7 @@
         <div class="filter-panel">
           <div class="d-flex align-items-center justify-content-between d-md-none p-3 border-bottom">
             <h6 class="m-0">Filtros</h6>
-            <button class="btn btn-sm btn-outline-dark" (click)="toggleSidebar()"><i class="bi bi-x-lg"></i></button>
+            <button class="btn btn-sm btn-outline-secondary" (click)="toggleSidebar()"><i class="bi bi-x-lg"></i></button>
           </div>
           <div class="p-3">
             <div class="filter-section">
@@ -124,7 +124,7 @@
                         <button class="btn btn-primary btn-sm d-none d-md-inline-flex" *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar"><i class="bi bi-star"></i></button>
                         <button class="btn btn-warning btn-sm d-none d-md-inline-flex" *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar"><i class="bi bi-pencil"></i></button>
                         <button class="btn btn-danger btn-sm d-none d-md-inline-flex" *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar"><i class="bi bi-trash"></i></button>
-                        <button class="btn btn-outline-dark btn-sm d-md-none" (click)="mostrarAcciones($event, r, i, propiasFotos)"><i class="bi bi-three-dots-vertical"></i></button>
+                        <button class="btn btn-outline-secondary btn-sm d-md-none" (click)="mostrarAcciones($event, r, i, propiasFotos)"><i class="bi bi-three-dots-vertical"></i></button>
                       </div>
                     </div>
                   </div>
@@ -159,7 +159,7 @@
                   <button class="btn btn-primary btn-sm d-none d-md-inline-flex" *ngIf="rolificador.esJuez(u)" (click)="concursoDetailService.reviewImage.emit(r)" title="Calificar"><i class="bi bi-star"></i></button>
                   <button class="btn btn-warning btn-sm d-none d-md-inline-flex" *ngIf="checkPermissions(r) && can_edit(r)" (click)="postImage(r.image, r.section_id)" title="Editar"><i class="bi bi-pencil"></i></button>
                   <button class="btn btn-danger btn-sm d-none d-md-inline-flex" *ngIf="checkPermissions(r) && can_delete(r)" (click)="concursoDetailService.deleteImage.emit(r)" title="Eliminar"><i class="bi bi-trash"></i></button>
-                  <button class="btn btn-outline-dark btn-sm d-md-none" (click)="mostrarAcciones($event, r, i)"><i class="bi bi-three-dots-vertical"></i></button>
+                  <button class="btn btn-outline-secondary btn-sm d-md-none" (click)="mostrarAcciones($event, r, i)"><i class="bi bi-three-dots-vertical"></i></button>
                 </div>
               </div>
             </div>

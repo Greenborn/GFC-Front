@@ -8,7 +8,7 @@
 }
 
 .dir-card {
-    background: #fff;
+    background: var(--ion-card-background, #fff);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -22,7 +22,11 @@
 
 .dir-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+body.dark .dir-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .dir-photo {
@@ -42,13 +46,13 @@
     font-size: 0.85rem;
     font-weight: 700;
     margin: 0;
-    color: #222;
+    color: var(--ion-text-color, #222);
     line-height: 1.2;
 }
 
 .dir-role {
     font-size: 0.7rem;
-    color: #666;
+    color: var(--ion-color-medium, #666);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.03em;

@@ -2,20 +2,24 @@
   z-index: 1050;
 }
 
+.navbar .navbar-brand {
+  color: var(--gfc-navbar-text, rgba(0, 0, 0, 0.9));
+}
+
 .navbar .nav-link {
   padding: 0.375rem 0.75rem;
   border-radius: 0.375rem;
-  color: rgba(0, 0, 0, 0.7);
+  color: var(--gfc-navbar-link, rgba(0, 0, 0, 0.7));
   font-size: 0.875rem;
   transition: background 0.15s, color 0.15s;
 }
 
 .navbar .nav-link:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.9);
+  background-color: var(--gfc-navbar-link-hover-bg, rgba(0, 0, 0, 0.05));
+  color: var(--gfc-navbar-link-hover, rgba(0, 0, 0, 0.9));
 }
 
 .navbar .nav-link.active {
-  background-color: #212529 !important;
-  color: #fff !important;
+  background-color: var(--gfc-navbar-active-bg, #212529) !important;
+  color: var(--gfc-navbar-active-text, #fff) !important;
 }

@@ -1,5 +1,5 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
-  <div class="bg-light border-bottom p-3">
+  <div class="gfc-modal-header">
     <div class="row align-items-center ms-3 me-3">
       <div class="col">
         <h5 class="mb-0">
@@ -58,7 +58,7 @@
 
               <div class="row justify-content-center pt-3">
                 <div class="col-auto">
-                  <button class="btn btn-dark" (click)="modalController.dismiss()">
+                  <button class="btn gfc-btn-back" (click)="modalController.dismiss()">
                     Cancelar
                   </button>
                 </div>

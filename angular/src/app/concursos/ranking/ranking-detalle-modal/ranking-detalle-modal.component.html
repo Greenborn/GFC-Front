@@ -1,5 +1,5 @@
 <div [ngClass]="responsiveService.isDesktop ? 'ion-page' : ''">
-  <div class="bg-light border-bottom p-3">
+  <div class="gfc-modal-header">
     <div class="row align-items-center ms-3 me-3">
       <div class="col-auto d-md-none">
         <button class="btn btn-link" (click)="modalController.dismiss()">
@@ -72,7 +72,7 @@
               </div>
               <div class="card-body">
                 <div class="list-group list-group-flush">
-                  <div class="mb-3" bg-dark text-white>
+                  <div class="mb-3 gfc-header">
                     <div class="container-fluid">
                       <div class="row">
                         <div class="col-3">Categoría</div>

@@ -162,7 +162,7 @@ ion-note{
 }
 
 .modal-fullscreen{
-  --height: 100vh !important;
+  --height: 100dvh !important;
   --width: 100vw !important;
 }
 
@@ -207,4 +207,82 @@ ion-note{
 .modal-backdrop:not(.show),
 .offcanvas-backdrop:not(.show) {
   pointer-events: none;
+}
+
+/*
+ * GFC Theme Utilities
+ * ------------------------------------------------------
+ * Centralized theme-aware classes.
+ * Uses CSS custom properties from theme/variables.scss.
+ * Add classes here instead of scattering dark overrides in components.
+ */
+
+/* Section headers (used in list headers, form headers, etc.) */
+.gfc-header {
+  background: var(--gfc-section-header-bg) !important;
+  color: var(--gfc-section-header-text) !important;
+}
+
+/* Back / close buttons */
+.gfc-btn-back {
+  --background: var(--gfc-btn-back-bg) !important;
+  --border-color: var(--gfc-btn-back-border) !important;
+  color: var(--gfc-btn-back-text) !important;
+}
+
+/* Theme-aware badges */
+.gfc-badge {
+  background: var(--gfc-badge-bg) !important;
+  color: var(--gfc-badge-text) !important;
+}
+
+/* Modal / panel headers */
+.gfc-modal-header {
+  background: var(--gfc-modal-header-bg) !important;
+  border-color: var(--gfc-modal-header-border) !important;
+}
+
+/* List-group section labels */
+.gfc-list-header {
+  background: var(--gfc-modal-header-bg) !important;
+}
+
+/* Navbar */
+.gfc-navbar {
+  background: var(--gfc-navbar-bg) !important;
+  color: var(--gfc-navbar-text) !important;
+}
+
+/*
+ * Login view — dark overrides
+ * Uses :host-context to detect body.dark from the component.
+ * The login view applies [ngClass]="{'dark': responsiveService.darkMode}"
+ * on its root div. We use :host-context(body.dark) instead of ion-content.dark
+ * because the .dark class is on an inner div, not on ion-content.
+ */
+body.dark .logoEntrada {
+  filter: invert(0);
+}
+
+body.dark .login-accordion {
+  background: var(--ion-card-background, #1e1e1e);
+  border-color: rgb(41, 41, 41);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+body.dark .input-bordered {
+  border-color: rgb(60, 60, 60);
+}
+
+body.dark .separator-line {
+  background: rgb(60, 60, 60);
+}
+
+body.dark .separator-text {
+  color: #555;
+}
+
+body.dark .google-btn {
+  --border-color: rgb(60, 60, 60);
+  --color: #aaa;
 }

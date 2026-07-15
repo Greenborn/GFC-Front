@@ -25,7 +25,7 @@
         </div>
 
             <div class="d-none d-sm-block">
-              <div class="bg-dark text-white py-2 px-3 rounded-top">
+              <div class="gfc-header py-2 px-3 rounded-top">
                 <div class="row align-items-center">
                   <div class="col-4 col-md-4">
                     <app-th-sort
@@ -105,7 +105,7 @@
                         <i class="bi" [ngClass]="m.user.status == 0 ? 'bi-check-circle' : 'bi-x-circle'"></i>
                       </button>
                     </div>
-                    <button class="btn btn-outline-dark btn-sm d-sm-none" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" (click)="mostrarAcciones($event, m)">
+                    <button class="btn btn-outline-secondary btn-sm d-sm-none" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" (click)="mostrarAcciones($event, m)">
                       <i class="bi bi-three-dots-vertical"></i>
                     </button>
                   </div>

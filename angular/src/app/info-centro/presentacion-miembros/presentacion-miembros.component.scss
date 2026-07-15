@@ -1,9 +1,9 @@
 .colorTarget{
-    color: black;
+    color: var(--gfc-member-name, #222);
 }
 
 .member-card {
-    background: #fff;
+    background: var(--gfc-member-card-bg, #fff);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
@@ -33,7 +33,7 @@
     font-size: 1.7rem;
     font-weight: 400;
     margin: 0;
-    color: #222;
+    color: var(--gfc-member-name, #222);
     line-height: 1.2;
 }
 
@@ -51,8 +51,8 @@
     justify-content: center;
     text-decoration: none;
     font-size: 0.8rem;
-    color: #555;
-    background: #f0f0f0;
+    color: var(--gfc-member-link-text, #555);
+    background: var(--gfc-member-link-bg, #f0f0f0);
     transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 
@@ -73,23 +73,6 @@
 .member-link.email:hover {
     background: #333;
     color: #fff;
-}
-
-:host-context(.dark) .member-link {
-    background: rgba(255, 255, 255, 0.1);
-    color: #ccc;
-}
-
-:host-context(.dark) .member-link:hover {
-    color: #fff;
-}
-
-:host-context(.dark) .member-name {
-    color: #eee;
-}
-
-:host-context(.dark) .colorTarget {
-    color: #eee;
 }
 
 @media (max-width: 767px) {

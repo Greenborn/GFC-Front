@@ -82,6 +82,36 @@
    * -------------------------------------------
    */
 
+  /*
+   * GFC App Custom Properties
+   * -------------------------------------------
+   * Centralized theme variables for all components.
+   * Light defaults in :root, dark overrides in body.dark.
+   * Usage: var(--gfc-*) in global.scss utilities.
+   */
+  :root {
+    --gfc-section-header-bg: #212529;
+    --gfc-section-header-text: #fff;
+    --gfc-btn-back-bg: #212529;
+    --gfc-btn-back-border: #373b3e;
+    --gfc-btn-back-text: #fff;
+    --gfc-badge-bg: #f8f9fa;
+    --gfc-badge-text: #212529;
+    --gfc-modal-header-bg: #f8f9fa;
+    --gfc-modal-header-border: #dee2e6;
+    --gfc-navbar-bg: #f8f9fa;
+    --gfc-navbar-text: #212529;
+    --gfc-navbar-link: rgba(0, 0, 0, 0.7);
+    --gfc-navbar-link-hover-bg: rgba(0, 0, 0, 0.05);
+    --gfc-navbar-link-hover: rgba(0, 0, 0, 0.9);
+    --gfc-navbar-active-bg: #212529;
+    --gfc-navbar-active-text: #fff;
+    --gfc-member-card-bg: #fff;
+    --gfc-member-name: #222;
+    --gfc-member-link-bg: #f0f0f0;
+    --gfc-member-link-text: #555;
+  }
+
   body.dark {
     --ion-color-primary: #428cff;
     --ion-color-primary-rgb: 66,140,255;
@@ -145,6 +175,30 @@
     --ion-color-light-contrast-rgb: 255,255,255;
     --ion-color-light-shade: #1e2023;
     --ion-color-light-tint: #383a3e;
+
+    /*
+     * GFC App Custom Properties — dark overrides
+     */
+    --gfc-section-header-bg: #1e1e1e;
+    --gfc-section-header-text: #fff;
+    --gfc-btn-back-bg: #333;
+    --gfc-btn-back-border: #444;
+    --gfc-btn-back-text: #ccc;
+    --gfc-badge-bg: #2a2a2a;
+    --gfc-badge-text: #ccc;
+    --gfc-modal-header-bg: #1e1e1e;
+    --gfc-modal-header-border: #333;
+    --gfc-navbar-bg: #1e1e1e;
+    --gfc-navbar-text: #eee;
+    --gfc-navbar-link: rgba(255, 255, 255, 0.75);
+    --gfc-navbar-link-hover-bg: rgba(255, 255, 255, 0.1);
+    --gfc-navbar-link-hover: #fff;
+    --gfc-navbar-active-bg: #333;
+    --gfc-navbar-active-text: #fff;
+    --gfc-member-card-bg: #1e1e1e;
+    --gfc-member-name: #eee;
+    --gfc-member-link-bg: rgba(255, 255, 255, 0.1);
+    --gfc-member-link-text: #ccc;
   }
 
   /*

@@ -11,7 +11,7 @@
     <i class="bi bi-moon"></i>
     <span class="flex-grow-1">Modo oscuro</span>
     <div class="form-check form-switch mb-0">
-      <input type="checkbox" class="form-check-input" [checked]="darkMode" (click)="$event.stopPropagation()">
+      <input type="checkbox" class="form-check-input" [checked]="darkMode" (click)="darkMode = !darkMode; $event.stopPropagation()">
     </div>
   </div>
 
