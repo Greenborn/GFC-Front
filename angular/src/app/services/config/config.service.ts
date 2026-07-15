@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
-interface EnvironmentWithImagesBaseUrl {
+interface EnvironmentConfig {
   production: boolean;
   version: string;
-  apiBaseUrl: string;
   publicApi: string;
   loginAction: string;
   appName: string;
@@ -14,10 +13,9 @@ interface EnvironmentWithImagesBaseUrl {
   ssoRedirect: string;
 }
 
-const env: EnvironmentWithImagesBaseUrl = environment as EnvironmentWithImagesBaseUrl;
+const env: EnvironmentConfig = environment as EnvironmentConfig;
 
 export const CONFIG = {
-  apiBaseUrl: env.apiBaseUrl,
   publicApi: env.publicApi,
   loginAction: env.loginAction,
   appName: env.appName,
@@ -47,10 +45,6 @@ export class ConfigService {
   
   get tokenKey() { 
     return this.data.appName + 'token' 
-  }
-
-  apiUrl(recurso: string) { 
-    return this.data.apiBaseUrl + recurso
   }
 
   publicApiUrl(recurso: string) { 

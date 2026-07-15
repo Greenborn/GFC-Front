@@ -25,11 +25,7 @@ export abstract class ApiService<T> {
 
   get<K = T>(id: number, getParams: string = ''): Observable<K> {
     console.log('get', this.recurso, id)
-    const useNodeApi = this.recurso === 'contest-category' || this.recurso === 'contest-section' || this.recurso === 'contest-result'
-    const url = useNodeApi
-      ? `${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`
-      : this.config.apiUrl(`${this.recurso}/${id}?${getParams}`)
-
+    const url = `${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`
     return this.http.get<K>(url)
   }
 
@@ -37,7 +33,6 @@ export abstract class ApiService<T> {
     return this.all_meta;
   }
 
-  // https://www.yiiframework.com/doc/guide/2.0/en/rest-response-formatting
   getAll<K = T>(getParams: string = '', resource: string = null): Observable<K[]> {
 
     if (this.fetchAllOnce && this.all != undefined) {
@@ -47,11 +42,7 @@ export abstract class ApiService<T> {
       })
     } else {
       const recurso = resource ?? this.recurso
-      const useNodeApi = recurso === 'contest-category' || recurso === 'contest-section' || recurso === 'contest-result'
-      const url = useNodeApi
-        ? `${this.config.nodeApiBaseUrl}${recurso}?${getParams}`
-        : this.config.apiUrl(`${recurso}?${getParams}`)
-      // console.log('getting', url))
+      const url = `${this.config.nodeApiBaseUrl}${recurso}?${getParams}`
       return this.http.get<ApiSerializedResponse<K>>(url).pipe(
         map((data) => {
           console.log('get all', url, data)
@@ -72,45 +63,31 @@ export abstract class ApiService<T> {
   post<K = T>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
     console.log('posting', model, 'id: ', id)
     const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
-    return id == undefined ? 
-      this.http.post<K>(
-        this.config.apiUrl(`${this.recurso}?${getParams}`), 
-        model,
-        { headers }
-      ) :
-      this.http.put<K>(
-        `${this.config.apiUrl(this.recurso)}/${id}?${getParams}`, 
-        model,
-        { headers }
-      ) 
+    const url = id == undefined
+      ? `${this.config.nodeApiBaseUrl}${this.recurso}?${getParams}`
+      : `${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`
+    return id == undefined
+      ? this.http.post<K>(url, model, { headers })
+      : this.http.put<K>(url, model, { headers })
   }
   postFormData<K = T>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
-    // const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
     console.log(model);
     const f = new FormData()
     for ( let key in model ) {
       f.append(key, (model as any)[key])
     }
-    // f.forEach(v => {
-    //   console.log(v)
-    // })
     console.log('posting form data', f, 'id: ', id)
-    return id == undefined ? 
-      this.http.post<K>(
-        this.config.apiUrl(`${this.recurso}?${getParams}`), 
-        f,
-        // { headers }
-      ) :
-      this.http.put<K>(
-        `${this.config.apiUrl(this.recurso)}/${id}?${getParams}`, 
-        f,
-        // { headers }
-      ) 
+    const url = id == undefined
+      ? `${this.config.nodeApiBaseUrl}${this.recurso}?${getParams}`
+      : `${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`
+    return id == undefined
+      ? this.http.post<K>(url, f)
+      : this.http.put<K>(url, f)
   }
 
   delete(id: number): Observable<any> {
     return this.http.delete(
-      `${this.config.apiUrl(this.recurso)}/${id}`
+      `${this.config.nodeApiBaseUrl}${this.recurso}/${id}`
     )
   }
 
@@ -118,10 +95,10 @@ export abstract class ApiService<T> {
     console.log('put', model, 'id: ', id)
     const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
     return this.http.put(
-      `${this.config.apiUrl(recurso ?? this.recurso)}/${id}`, 
+      `${this.config.nodeApiBaseUrl}${recurso ?? this.recurso}/${id}`, 
       model,
       { headers }
-    ) 
+    )
   }
 
 }

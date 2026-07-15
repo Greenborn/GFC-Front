@@ -20,12 +20,12 @@ export class ConnectivityService {
    * Verifica si hay conectividad con la API
    */
   checkConnectivity(): Observable<boolean> {
-    return this.http.get(`${this.config.data.apiBaseUrl}ping`, { 
+    return this.http.get(`${this.config.nodeApiBaseUrl}ping`, { 
       responseType: 'text' 
     }).pipe(
-      timeout(5000), // 5 segundos de timeout
+      timeout(5000),
       retry(1),
-      map(() => true), // Si llega aquí, hay conectividad
+      map(() => true),
       catchError(error => {
         console.log('Error de conectividad:', error);
         return of(false);
@@ -33,18 +33,15 @@ export class ConnectivityService {
     );
   }
 
-  /**
-   * Verifica si el token actual es válido
-   */
   checkTokenValidity(): Observable<boolean> {
     if (!this.auth.token) {
       return of(false);
     }
 
-    return this.http.get(`${this.config.apiUrl('user')}/${this.auth.userId}?expand=profile,profile.fotoclub,role`).pipe(
-      timeout(10000), // 10 segundos de timeout
+    return this.http.get(`${this.config.nodeApiBaseUrl}user/${this.auth.userId}?expand=profile,profile.fotoclub,role`).pipe(
+      timeout(10000),
       retry(1),
-      map(() => true), // Si llega aquí, el token es válido
+      map(() => true),
       catchError(error => {
         console.log('Token inválido:', error);
         if (error.status === 401) {

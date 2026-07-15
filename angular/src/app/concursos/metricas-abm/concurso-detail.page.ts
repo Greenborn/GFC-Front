@@ -469,7 +469,7 @@ obtenerPx() {
   } 
 
   openRules() {
-    window.open(this.configService.apiUrl(this.concurso.rules_url), '_blank');
+    window.open(this.configService.imageUrl(this.concurso.rules_url), '_blank');
   }
 
 }
