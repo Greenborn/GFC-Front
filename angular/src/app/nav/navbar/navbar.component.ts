@@ -1,11 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
 
 import { UsuarioPage } from '../../usuario/usuario.page';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { filter } from 'rxjs/operators';
+import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,10 +18,10 @@ export class NavbarComponent implements OnInit {
   @Output() toggleSidebar = new EventEmitter<void>();
 
   constructor(
-    public popoverController: PopoverController,
     public router: Router,
     public auth: AuthService,
-    public rolificador: RolificadorService
+    public rolificador: RolificadorService,
+    private UIUtilsService: UiUtilsService
   ) { }
 
   ngOnInit() {
@@ -42,21 +42,7 @@ export class NavbarComponent implements OnInit {
   }
 
   async openPopover(ev: any, ctrl: any, url: string) {
-    const popover = await this.popoverController.create({
-      component: ctrl,
-      cssClass: 'my-custom-class',
-      event: ev,
-      translucent: true,
-    });
-    await popover.present();
-    this.router.events
-      .pipe()
-      .subscribe((e) => {
-        if (e instanceof NavigationEnd) {
-          popover.dismiss();
-        }
-      });
-    await popover.onDidDismiss();
+    await this.UIUtilsService.mostrarModal(ctrl);
   }
 
   async mostrarPerfil(ev: any) {

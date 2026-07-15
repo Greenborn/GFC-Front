@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ModalController, AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
   selector: 'app-fotoclub-post',
@@ -14,7 +14,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
   styleUrls: ['./fotoclub-post.component.scss'],
 })
 export class FotoclubPostComponent extends ApiConsumer implements OnInit {
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() fotoclub: Fotoclub;
 
   public posting: boolean = false
@@ -24,13 +24,13 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
   public img_url: string = '';
 
   constructor(
-    alertCtrl: AlertController,
+    alertService: AlertService,
     private fotoclubService: FotoclubService,
     public responsiveService: ResponsiveService,
     public UIUtilsService: UiUtilsService,
   public configService: ConfigService
   ) { 
-    super(alertCtrl)
+    super(alertService)
   }
 
   get formTitle() {

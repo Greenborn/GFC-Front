@@ -1,6 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../nav/footer/footer.component';
@@ -36,7 +35,6 @@ import { InfiniteScrollDirective } from './infinite-scroll.directive';
   ],
   imports: [
     CommonModule,
-    IonicModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -44,7 +42,6 @@ import { InfiniteScrollDirective } from './infinite-scroll.directive';
   exports: [
     FooterComponent,
     CommonModule,
-    IonicModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,

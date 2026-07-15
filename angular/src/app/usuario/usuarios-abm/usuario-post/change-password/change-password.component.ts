@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AlertController, ModalController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UserService } from 'src/app/services/user.service';
 import { ApiAdminChangePasswordBody, ApiChangePasswordBody } from 'src/app/models/ApiRequest';
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
   selector: 'app-change-password',
@@ -13,7 +13,7 @@ import { ApiAdminChangePasswordBody, ApiChangePasswordBody } from 'src/app/model
 })
 export class ChangePasswordComponent extends ApiConsumer implements OnInit {
 
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() userId: number;
   @Input() requireOldPassword: boolean = true;
   
@@ -25,10 +25,10 @@ export class ChangePasswordComponent extends ApiConsumer implements OnInit {
 
   constructor(
     private userService: UserService,
-    alertCtrl: AlertController,
+    alertService: AlertService,
     public responsiveService: ResponsiveService
   ) { 
-    super(alertCtrl)
+    super(alertService)
   }
 
   ngOnInit() {}

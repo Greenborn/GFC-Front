@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from '../models/ApiConsumer';
+import { AlertService } from '../services/ui/alert.service';
 import { Profile } from '../models/profile.model';
 import { User } from '../models/user.model';
 import { AuthService } from '../modules/auth/services/auth.service';
@@ -27,7 +27,7 @@ export class UsuarioPage extends ApiConsumer implements OnInit {
   // profile: Promise<Profile>
 
   constructor(
-    alertCtrl: AlertController,
+    alertCtrl: AlertService,
     public authService: AuthService,
     private userService: UserService,
     public profileService: ProfileService,

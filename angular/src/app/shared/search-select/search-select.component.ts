@@ -118,7 +118,7 @@ export class SearchSelectComponent implements OnInit, OnChanges {
     // if (typeof value != 'string') {
     if (!['string', 'number'].includes(typeof value)) {
       // console.log('changing query from select element', value)
-      value = (value as HTMLIonSelectElement).value
+      value = (value as any).value
     }
     // const queryParams: Params = { myParam: 'myNewValue' };
     // const queryParams: Params = {...this.queryParams};

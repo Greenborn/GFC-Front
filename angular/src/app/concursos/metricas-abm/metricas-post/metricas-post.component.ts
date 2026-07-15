@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ModalController, AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Metric } from 'src/app/models/metric.model';
 import { MetricAbmService } from 'src/app/services/metric-abm.service';
-// import { MetricService } from 'src/app/services/metric.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
   selector: 'app-metricas-post',
@@ -15,20 +14,19 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 })
 export class MetricasPostComponent extends ApiConsumer implements OnInit {
 
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() parentSections: Metric[]
   @Input() metric: Metric
-  // @Input() typeSubsection: boolean;
 
   public posting: boolean = false;
 
   constructor(
-    alertCtrl: AlertController,
+    alertService: AlertService,
     public responsiveService: ResponsiveService,
     private metricAbmService: MetricAbmService,
     private UIUtilsService: UiUtilsService
   ) { 
-    super(alertCtrl)
+    super(alertService)
     this.metric = this.metricAbmService.template
   }
 

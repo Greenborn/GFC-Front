@@ -77,21 +77,19 @@
     html[data-bs-theme="dark"] .gfc-loader-text {
       color: #ccc;
     }
-    html.hydrated .gfc-loader,
-    html.ion-ce .gfc-loader,
     html.gfc-force-visible .gfc-loader {
       display: none;
     }
   </style>
 
-  <!-- Watchdog: si Ionic no se hidrata en 8s, fuerza visibilidad -->
+  <!-- Watchdog: fuerza visibilidad si la app no arranca en 8s -->
   <script nonce="gfc-watchdog">
     (function() {
       var GFC_WATCHDOG_DELAY = 8000;
       var gfcTimer = setTimeout(function gfcWatchdog() {
         var html = document.documentElement;
-        if (html.classList.contains('hydrated') || html.classList.contains('ion-ce') || html.classList.contains('gfc-force-visible')) return;
-        html.classList.add('ion-ce');
+        if (html.classList.contains('gfc-force-visible')) return;
+        html.classList.add('gfc-force-visible');
         var d = document.getElementById('gfc-diag');
         if (d) {
           d.style.display = 'block';

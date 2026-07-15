@@ -2,10 +2,6 @@
     font-size: 1.5em;
 }
 
-ion-content {
-    --padding-top: 56px;
-}
-
 .logoEntrada{
     filter: invert(100%);
 }
@@ -31,15 +27,6 @@ ion-content {
     margin-bottom: 16px;
     background: #fafafa;
     transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-    --padding-start: 12px;
-    --padding-end: 12px;
-    --inner-padding-end: 0px;
-    --inner-padding-start: 0px;
-    --background: transparent;
-    --border-color: transparent;
-    --highlight-color-focused: transparent;
-    --highlight-color-valid: transparent;
-    --highlight-color-invalid: transparent;
 }
 
 .input-bordered:focus-within {
@@ -113,21 +100,12 @@ ion-content {
     padding-left: 2px;
 }
 
-ion-item {
-    --inner-padding-end: 0px;
-    --min-height: 44px;
-}
-
-ion-item.item {
-    --border-color: transparent;
-}
-
 .login-accordion-group {
     background: transparent;
 }
 
 .login-accordion {
-    background: var(--ion-card-background, #fff);
+    background: #fff;
     border-radius: 12px;
     border: solid 1px #cecece;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
@@ -136,19 +114,10 @@ ion-item.item {
 }
 
 .accordion-header {
-    --background: transparent;
-    --border-color: transparent;
-    --inner-padding-end: 16px;
     font-weight: 600;
     font-size: 15px;
     cursor: pointer;
     min-height: 52px;
-
-    ion-label {
-        pointer-events: none;
-        text-align: center;
-        width: 100%;
-    }
 }
 
 .accordion-content {
@@ -204,9 +173,3 @@ ion-item.item {
 .item-cover{
     display:none;
 }
-
-ion-label{
-    pointer-events:all!important;
-}
-
-

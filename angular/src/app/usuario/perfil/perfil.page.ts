@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { AlertController } from "@ionic/angular";
 import { ApiConsumer } from "src/app/models/ApiConsumer";
+import { AlertService } from "src/app/services/ui/alert.service";
 import { Stadistics } from "src/app/models/stadistics.model";
 import { AuthService } from "src/app/modules/auth/services/auth.service";
 import { ConfigService } from "src/app/services/config/config.service";
@@ -19,7 +19,7 @@ import { RolificadorService } from "src/app/modules/auth/services/rolificador.se
 export class PerfilPage extends ApiConsumer implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
-    alertCtrl: AlertController,
+    alertCtrl: AlertService,
     public authService: AuthService,
     private userService: UserService,
     public profileService: ProfileService,

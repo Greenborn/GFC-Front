@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { AlertService } from 'src/app/services/ui/alert.service';
 import { Profile } from 'src/app/models/profile.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { PublicProfileService } from 'src/app/services/public-profile.service';
@@ -53,7 +53,7 @@ export class PresentacionComisionDirectivaComponent extends ApiConsumer implemen
   directives: Profile[] = [];
 
   constructor(
-    public  alertController:      AlertController,
+    public  alertController:      AlertService,
     public configService: ConfigService,
     public publicProfileService: PublicProfileService,
   ) {

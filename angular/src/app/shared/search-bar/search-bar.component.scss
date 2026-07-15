@@ -1,8 +1,7 @@
 .search-bar {
     position: relative;
   
-    ion-select.inner-select {
-      --ion-margin: 2em;
+    .form-select.inner-select {
       position: absolute;
       right: 0
     }

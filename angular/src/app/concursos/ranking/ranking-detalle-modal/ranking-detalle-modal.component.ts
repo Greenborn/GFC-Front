@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
@@ -11,6 +10,7 @@ import { VerFotografiasComponent } from '../../concurso-detail/ver-fotografias/v
   styleUrls: ['./ranking-detalle-modal.component.scss']
 })
 export class RankingDetalleModalComponent implements OnInit {
+  @Input() modalController: any;
   @Input() detalle: any;
   @Input() categoriaNombre = '';
   @Input() seccionNombre = 'General';
@@ -18,7 +18,6 @@ export class RankingDetalleModalComponent implements OnInit {
   expandedContests: boolean[] = [];
 
   constructor(
-    public modalController: ModalController,
     public responsiveService: ResponsiveService,
     public configService: ConfigService,
     private UIUtilsService: UiUtilsService
@@ -33,7 +32,6 @@ export class RankingDetalleModalComponent implements OnInit {
   }
 
   cerrar() {
-    this.modalController.dismiss();
   }
 
   formatDate(d: any): string {

@@ -4,8 +4,9 @@ import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angula
 import {Location} from '@angular/common';
 
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
+import { LoadingService } from 'src/app/services/ui/loading.service';
 import { User } from 'src/app/models/user.model';
 import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { Role } from 'src/app/models/role.model';
@@ -32,9 +33,9 @@ import { ComparePassword } from 'src/app/modules/auth/validators/password.valida
 export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
 
-  @ViewChild('sFotoclub') selectFotoclub: HTMLIonSelectElement;
+  @ViewChild('sFotoclub') selectFotoclub: any;
   @ViewChild('ProfileImageUpload', { read: ElementRef, static:false }) profileImageUpload: ElementRef;
-  @ViewChild('sRol') selectRol: HTMLIonSelectElement;
+  @ViewChild('sRol') selectRol: any;
   @ViewChild('f') formUsuario: HTMLFormElement;
 
   public usuario: User;
@@ -65,10 +66,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     private profileService: ProfileService,
     private roleService: RoleService,
     private fotoclubService: FotoclubService,
-    alertCtrl: AlertController,
+    alertCtrl: AlertService,
     private location: Location,
-    public loadingController: LoadingController,
-    public modalController: ModalController,
+    public loadingService: LoadingService,
     public configService: ConfigService,
     private UIUtilsService: UiUtilsService,
     private formBuilder: FormBuilder,
@@ -137,11 +137,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     } );
     
     const dataPromises: Promise<boolean>[] = [];
-    const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Cargando...'
-    })
-    await loading.present();
+    await this.loadingService.present('Cargando...');
 
     this.isUserSignUp = this.activatedRoute.snapshot.pathFromRoot.some(r => r.routeConfig?.path === 'registro');
     if (this.isUserSignUp){
@@ -214,7 +210,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       Promise.all(dataPromises).then(r => {
         this.updatingSelect = true // pq no se actualizan los select
         setTimeout(() => this.updatingSelect = false)
-        loading.dismiss()
+        this.loadingService.dismiss()
       })
     })
   }
@@ -460,17 +456,10 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   async changePassword() {
-    const modal = await this.modalController.create({
-      component: ChangePasswordComponent,
-      cssClass: 'auto-width',
-      componentProps: {
-        modalController: this.modalController,
-        userId: this.usuario?.id ?? this.userLogged?.id,
-        requireOldPassword: this.isUserProfile
-      }
+    await this.UIUtilsService.mostrarModal(ChangePasswordComponent, {
+      userId: this.usuario?.id ?? this.userLogged?.id,
+      requireOldPassword: this.isUserProfile
     });
-    await modal.present()
-
   }
 
   private resizeImageToBase64(file: File): Promise<string | null> {

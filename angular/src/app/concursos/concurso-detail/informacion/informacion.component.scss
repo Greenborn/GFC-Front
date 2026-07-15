@@ -2,7 +2,7 @@
     padding: 0;
 }
 
-ion-row > ion-col.info-col {
+.table-row > .table-col.info-col {
     padding: 0;
 }
 
@@ -78,7 +78,7 @@ ion-row > ion-col.info-col {
     @media (max-width: 767px) {
         flex-direction: column;
 
-        ion-button {
+        .btn {
             width: 100%;
         }
     }
@@ -105,7 +105,7 @@ ion-row > ion-col.info-col {
     flex-wrap: wrap;
     gap: 0.35rem;
 
-    ion-badge {
+    .badge {
         font-size: 0.75rem;
         white-space: normal;
         text-align: left;

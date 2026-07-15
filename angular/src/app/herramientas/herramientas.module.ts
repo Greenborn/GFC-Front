@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 import { HerramientasPage } from './herramientas.page';
 import { RouterModule, Routes } from '@angular/router';
 import { CargaResultadosPage } from './carga-resultados/carga-resultados.page';
@@ -28,7 +27,6 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
     SharedModule,
     RouterModule.forChild(routes)
   ]

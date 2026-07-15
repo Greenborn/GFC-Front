@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from "@angular/core";
-import { AlertController } from "@ionic/angular";
 import { Observable, Subject } from "rxjs";
 import { first, takeUntil } from "rxjs/operators";
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
   template: ''
@@ -12,8 +12,7 @@ export abstract class ApiConsumer implements OnDestroy {
   private readonly unsubscribe$: Subject<void> = new Subject();
 
   constructor(
-    // private name: string,
-    protected alertCtrl: AlertController
+    protected alertService: AlertService
   ) { }
 
   protected fetch<T>(callback: CallableFunction): Observable<T> {
@@ -24,15 +23,7 @@ export abstract class ApiConsumer implements OnDestroy {
   }
 
 async displayAlert(message: string, header:string = 'Error') {
-  // this.alertCtrl.dismiss();
-  (await this.alertCtrl.create({
-    header: header,
-    message,
-    buttons: [{
-      text: 'Ok',
-      role: 'cancel'
-    }]
-  })).present()
+  this.alertService.showError({ message, header });
   }
 
   ngOnDestroy() {

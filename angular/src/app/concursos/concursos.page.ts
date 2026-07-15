@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild ,AfterViewInit} from '@angular/core';
-import { AlertController, PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -16,6 +15,8 @@ import { Contest } from '../models/contest.model';
 import { AuthService } from '../modules/auth/services/auth.service';
 import { ConfigService } from '../services/config/config.service';
 import { RolificadorService } from '../modules/auth/services/rolificador.service';
+import { AlertService } from '../services/ui/alert.service';
+import { UiUtilsService } from '../services/ui/ui-utils.service';
 
 import { User, UserLogged } from '../../app/models/user.model';
 import { ResponsiveService } from '../services/ui/responsive.service';
@@ -55,17 +56,16 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   ];
 
   constructor(
-    public popoverController: PopoverController,
     private router: Router,
     public auth: AuthService,
     public contestService: ContestService,
     public rolificador: RolificadorService,
-    alertController: AlertController,
+    alertController: AlertService,
     public configService: ConfigService,
     public responsiveService: ResponsiveService,
-    private http: HttpClient
+    private http: HttpClient,
+    public UIUtilsService: UiUtilsService
   ) { 
-    // super('concursos page', alertController)
     super(alertController)
   }
   get aspecto() {
@@ -394,18 +394,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   // popover
   async openPopover( ev:any, ctrl: any, url: string ){
     if (window.innerWidth > 767) {
-      const popover = await this.popoverController.create({
-        component: ctrl, //componente a mostrar
-        cssClass: 'my-custom-class',
-        event: ev,
-        translucent: true,
-        // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
-      });
-      await popover.present();
-      // this.router.events.subscribe() // dismiss popover cuando cambie de ruta
-
-      const { role } = await popover.onDidDismiss();
-      // console.log('onDidDismiss resolved with role', role);
+      await this.UIUtilsService.mostrarModal(ctrl);
     }
     else {
       this.router.navigate([url]);

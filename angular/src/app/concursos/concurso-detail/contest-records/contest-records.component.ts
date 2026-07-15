@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, LoadingController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { AlertService } from 'src/app/services/ui/alert.service';
+import { LoadingService } from 'src/app/services/ui/loading.service';
 import { ContestRecordService } from 'src/app/services/contest-record.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ContestRecordFormComponent } from './contest-record-form/contest-record-form.component';
@@ -16,8 +17,8 @@ export class ContestRecordsComponent extends ApiConsumer implements OnInit {
 
   constructor(
     public UIUtilsService: UiUtilsService,
-    alertCtrl: AlertController,
-    public loadingController: LoadingController,
+    alertCtrl: AlertService,
+    public loadingService: LoadingService,
     private contestRecordService: ContestRecordService
   ) { 
     super(alertCtrl);
@@ -67,16 +68,15 @@ export class ContestRecordsComponent extends ApiConsumer implements OnInit {
   }
 
   async eliminarGrabacion(grabacion) {
-    const loading = await this.loadingController.create({ message: 'Borrando grabación' });
-    await loading.present();
+    await this.loadingService.present('Borrando grabación');
     this.contestRecordService.delete(grabacion.id).subscribe({
       next: ok => {
-        loading.dismiss();
+        this.loadingService.dismiss();
         this.displayAlert('Grabación eliminada exitosamente');
         this.loadContestRecords();
       },
       error: err => {
-        loading.dismiss();
+        this.loadingService.dismiss();
         const errorMsg = err?.response?.data?.message || 'Ocurrió un error al intentar eliminar la grabación';
         this.displayAlert(errorMsg);
       }

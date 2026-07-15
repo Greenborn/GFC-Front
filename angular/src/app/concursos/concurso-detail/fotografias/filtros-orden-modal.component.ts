@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Metric } from 'src/app/models/metric.model';
@@ -21,7 +20,7 @@ export interface FiltrosOrdenState {
 })
 export class FiltrosOrdenModalComponent implements OnInit {
 
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() sortBy: string;
   @Input() sortAsc: boolean;
   @Input() seccionesInscriptas: ContestSectionExpanded[];

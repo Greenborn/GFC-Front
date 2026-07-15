@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { IonSearchbar } from '@ionic/angular';
 
 export interface SearchBarComponentParams {
   atributo: string;
@@ -19,7 +18,7 @@ export interface SearchBarComponentAtributo {
 export class SearchBarComponent implements OnInit, OnChanges {
 
   @ViewChild('atributoSelect') atributoSelect: ElementRef;
-  @ViewChild('queryInput') queryInput: IonSearchbar;
+  @ViewChild('queryInput') queryInput: any;
   @Input() atributos: string[] = undefined;
   @Input() atributosObj: SearchBarComponentAtributo[] = undefined;
   @Input() data: any[];
@@ -105,7 +104,7 @@ export class SearchBarComponent implements OnInit, OnChanges {
 
   changeRadio(atributoValue: string | EventTarget = '') {
     if (typeof atributoValue != 'string') {
-      atributoValue = (atributoValue as HTMLIonRadioGroupElement).value
+      atributoValue = (atributoValue as any).value
     }
     // console.log('changing radio', ev.target.value)
     this.atributoSelected = atributoValue as string

@@ -1,127 +1,43 @@
-import { Injectable } from '@angular/core';
-import { AlertController, LoadingController, ModalController, PopoverController, ToastButton, ToastController, ToastOptions } from '@ionic/angular';
-import { AlertOptions, ComponentRef, LoadingOptions } from '@ionic/core';
-import { MenuAccionesComponent, MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
-import { Component } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
+import { ModalService } from './modal.service';
+import { AlertService, AlertOptions } from './alert.service';
+import { ToastService, ToastOptions } from './toast.service';
+import { LoadingService } from './loading.service';
+import { MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UiUtilsService {
 
-  popover: HTMLIonPopoverElement = undefined;
-  loading: HTMLIonLoadingElement = undefined;
-
   constructor(
-    public popoverController: PopoverController,
-    public modalController: ModalController,
-    public toastController: ToastController,
-    public alertController: AlertController,
-    public loadingController: LoadingController,
-    ) { }
+    private modalService: ModalService,
+    private alertService: AlertService,
+    private toastService: ToastService,
+    private loadingService: LoadingService,
+  ) { }
 
   async mostrarMenuAcciones(
     acciones: MenuAccionesComponentAccion[], 
     event: any
   ) {
-    // const i = r.image
-    // this.popover = await this.popoverController.create({
-    //   component: MenuAccionesComponent, //componente a mostrar
-    //   componentProps: {
-    //     acciones: [
-    //       {
-    //         accion: (params: []) => this.reviewImage(r),
-    //         params: [],
-    //         icon: 'star-outline',
-    //         label: 'Puntuar'
-    //       },
-    //       {
-    //         accion: (params: []) => this.postImage(i),
-    //         params: [],
-    //         icon: 'create',
-    //         label: 'Editar'
-    //       },
-    //       {
-    //         accion: (params: number[]) => this.deleteImage(r),
-    //         params: [],
-    //         icon: 'trash',
-    //         label: 'Borrar'
-    //       }
-    //     ]
-    //   },
-    //   cssClass: 'auto-width',
-    //   event: ev,
-    //   translucent: true,
-    //   // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
-    // });
-    let popover: HTMLIonPopoverElement;
-    // loading: boolean = true;
-    const options = {
-      component: MenuAccionesComponent,
-      componentProps: { acciones, onClick: () => popover.dismiss() },
-      cssClass: 'auto-width',
-      event,
-      translucent: true,
-    }
-    popover = await this.popoverController.create(options)
-    await popover.present();
-    this.popover = popover
-    if (this.popover != undefined)
-      this.popover.onDidDismiss().then(_ => this.popover = undefined)
+    const { MenuAccionesComponent } = await import('src/app/shared/menu-acciones/menu-acciones.component');
+    this.modalService.showModal(MenuAccionesComponent, { acciones, onClick: () => this.modalService.dismiss() }, 'auto-width');
   }
 
-  async mostrarToast(buttons: ToastButton, options: ToastOptions) {
-    if (this.popover != undefined) {
-      this.popoverController.dismiss(this.popover)
-      this.popover = undefined
-      }
-      
-      const opt:any = options
-      if(buttons != undefined){
-        opt.buttons = buttons
-      }
-      
-      console.log("opt: " ,opt)
-    const toast = await this.toastController.create(opt);
-    await toast.present()
-
-    const { data } = await toast.onWillDismiss();
-    return data ?? {}
-    
+  async mostrarToast(buttons: any, options: ToastOptions) {
+    return this.toastService.show(options);
   }
 
   async mostrarModal(
-    component: ComponentRef, 
+    component: Type<any>, 
     componentProps: any = {},
     fullscreenOnDesktop: boolean = false
   ): Promise<any> {
-    if (this.popover != undefined) {
-      this.popoverController.dismiss(this.popover)
-      this.popover = undefined
-    }
+    componentProps.modalController = { dismiss: (data?: any) => this.modalService.dismiss(data) };
 
-    componentProps.modalController = this.modalController
-
-    const props: any = {
-      component,
-      componentProps,
-      cssClass: fullscreenOnDesktop ? 'modal-fullscreen' : ''
-    }
-    if (!fullscreenOnDesktop) {
-      props.cssClass = 'auto-width'
-    }
-
-    const modal = await this.modalController.create(props);
-    await modal.present()
-
-    const { data } = await modal.onWillDismiss();
-    console.log("dato d data modal: ", data)
-    // if(data){
-    //   return data
-    // } else {
-
-      return data ?? {}
-    // }
+    const cssClass = fullscreenOnDesktop ? 'modal-fullscreen' : 'auto-width';
+    return this.modalService.showModal(component, componentProps, cssClass);
   }
 
   async mostrarAlert(
@@ -129,11 +45,6 @@ export class UiUtilsService {
     confirmHandler: () => boolean | Promise<void> = async () => {},
     cancelHandler: () => boolean | Promise<void> = async () => {}
   ) {    
-    if (this.popover != undefined) {
-    this.popoverController.dismiss(this.popover)
-    this.popover = undefined
-    }
-  
     if (options.header == undefined) {
       options.header = 'Alert'
     }
@@ -153,53 +64,18 @@ export class UiUtilsService {
       ]
     }
 
-    const alert = await this.alertController.create(options);
-
-    await alert.present();
-
-    return alert
+    return this.alertService.show(options, confirmHandler, cancelHandler);
   }
 
   async mostrarError(options: AlertOptions) {
-    if (options.header == undefined) {
-      options.header = 'Error'
-    }
-    if (options.message == undefined) {
-      options.message = '.'
-    }
-    if (options.buttons == undefined) {
-      options.buttons = [{
-        text: 'Ok',
-        role: 'cancel'
-      }]
-    }
-    this.mostrarAlert(options) 
+    return this.alertService.showError(options);
   }
 
-  async presentLoading(options: LoadingOptions = {
-    cssClass: 'my-custom-class',
-    message: 'Cargando...'
-  }) {
-    try {
-      const loading = await this.loadingController.create(options)
-      this.loading = loading
-      return loading.present()
-    } catch (e) {
-      console.warn('Error al presentar loading', e);
-      return Promise.resolve();
-    }
+  async presentLoading(options: any = { message: 'Cargando...' }) {
+    return this.loadingService.present(options.message);
   }
 
   dismissLoading() {
-    if (this.loading != undefined) {
-      try {
-        this.loading.dismiss()
-      } catch (e) {
-        console.warn('Error al dismiss loading', e);
-      }
-      this.loading = undefined
-    }
+    this.loadingService.dismiss();
   }
-
-
 }

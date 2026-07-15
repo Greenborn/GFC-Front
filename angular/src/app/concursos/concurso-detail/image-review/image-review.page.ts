@@ -1,16 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 
 import { Image } from 'src/app/models/image.model';
 import { ContestResult } from 'src/app/models/contest_result.model';
 import { Metric } from 'src/app/models/metric.model';
-// import { ConcursoService } from 'src/app/services/concurso.service';
 import { MetricService } from 'src/app/services/metric.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { MetricAbmService } from 'src/app/services/metric-abm.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
+import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 
 @Component({
   selector: 'app-image-review',
@@ -20,7 +20,7 @@ import { MetricAbmService } from 'src/app/services/metric-abm.service';
 export class ImageReviewPage extends ApiConsumer implements OnInit {
 
   @Input() concurso: string;
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() image: Image;
   @Input() review: Metric;
   @Input() contestResult: ContestResult;
@@ -32,11 +32,12 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   constructor(
     private metricService: MetricService,
     private metricAbmService: MetricAbmService,
-    alertCtrl: AlertController,
+    alertService: AlertService,
     public responsiveService: ResponsiveService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private UIUtilsService: UiUtilsService
   ) { 
-    super(alertCtrl)
+    super(alertService)
   }
 
   get imgSource(): string {
@@ -64,15 +65,8 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
       console.log("metric n:",metric, f.value )
       super.fetch<Metric>(() => this.metricService.post(metric, this.review.id)).subscribe(
         m => this.dismiss(m),
-        async err => {
-          (await this.alertCtrl.create({
-            header: 'Error',
-            message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]),
-            buttons: [{
-              text: 'Ok',
-              role: 'cancel'
-            }]
-          })).present()
+        err => {
+          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]) });
         },
         () => this.posting = false
       )

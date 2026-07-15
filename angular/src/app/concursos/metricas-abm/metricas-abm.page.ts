@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { AlertService } from 'src/app/services/ui/alert.service';
 import { Metric } from 'src/app/models/metric.model';
 import { MetricAbmService } from 'src/app/services/metric-abm.service';
 // import { MetricService } from 'src/app/services/metric.service';
@@ -29,7 +29,7 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
   public mostrarFiltro: boolean = false;
 
   constructor(
-    alertCtrl: AlertController,
+    alertCtrl: AlertService,
     public metricAbmService: MetricAbmService,
     private UIUtilsService: UiUtilsService
   ) { 

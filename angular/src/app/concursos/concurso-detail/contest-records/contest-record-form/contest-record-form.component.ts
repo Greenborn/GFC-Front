@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestRecordService } from 'src/app/services/contest-record.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
   selector: 'app-contest-record-form',
@@ -15,16 +15,16 @@ export class ContestRecordFormComponent extends ApiConsumer implements OnInit {
 
   @Input() concurso: any;
   @Input() grabacion: any;
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   
   constructor(
-    alertCtrl: AlertController,
+    alertService: AlertService,
     public responsiveService: ResponsiveService,
     public UIUtilsService: UiUtilsService,
     private configService: ConfigService,
     private contestRecordService: ContestRecordService
   ) { 
-    super(alertCtrl);
+    super(alertService);
   }
 
   get formTitle() {

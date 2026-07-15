@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { InfoCentro } from 'src/app/models/info_centro.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { InfoCentroService } from 'src/app/services/info-centro.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
   selector: 'app-info-centro-post',
@@ -14,7 +14,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 })
 export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
 
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() parrafo: InfoCentro;
 
   public image_file: File;
@@ -23,13 +23,13 @@ export class InfoCentroPostComponent extends ApiConsumer implements OnInit {
   public loadedImg: boolean = false
 
   constructor(
-    alertCtrl: AlertController,
+    alertService: AlertService,
     private infoCentroService: InfoCentroService,
     public responsiveService: ResponsiveService,
     public UIUtilsService: UiUtilsService,
     private configService: ConfigService
   ) { 
-    super(alertCtrl)
+    super(alertService)
   }
 
 

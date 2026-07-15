@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { AlertService } from 'src/app/services/ui/alert.service';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Image as GFC_Image } from 'src/app/models/image.model';
@@ -33,7 +33,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   @Input() section_max: number;
   @Input() resultados: any;
   @Input() concurso_id: number;
-  @Input() modalController: ModalController;
+  @Input() modalController: any;
   @Input() image: GFC_Image = this.imageService.template;
   @Input() profiles: ProfileContestExpanded[];
   @Input() secciones: Section[];
@@ -55,13 +55,13 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
 
   constructor(
     private imageService: ImageService,
-    alertCtrl: AlertController,
+    alertService: AlertService,
     public responsiveService: ResponsiveService,
     public concursoDetailService: ConcursoDetailService,
     private configService: ConfigService,
     private authService: AuthService
   ) { 
-    super(alertCtrl)
+    super(alertService)
   }
 
   get categoryId(): number {

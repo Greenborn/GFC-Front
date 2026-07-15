@@ -1,26 +1,21 @@
-ion-content {
-    --padding-top: 56px;
-}
-
-ion-grid.tabla  {
-    --ion-grid-column-padding: 10px;
+.table-grid.tabla  {
     border-collapse: collapse;
     border-style: hidden;
     
-    ion-row:first-child {
+    .table-row:first-child {
       background-color:  #2dd36f;
       font-weight: bold;
     }
-    ion-col {
+    .table-col {
       border: 1px solid black;
       border-bottom: 0;
       border-right: 0;
     }
-    ion-col:last-child {
+    .table-col:last-child {
       border-right: 1px solid black;
     }
     
-    ion-row:last-child {
+    .table-row:last-child {
       border-bottom: 1px solid black;
     }
 }

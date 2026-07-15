@@ -1,30 +1,3 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
-
-/* Core CSS required for Ionic components to work properly */
-@import "~@ionic/angular/css/core.css";
-
-/* Basic CSS for apps built with Ionic */
-@import "~@ionic/angular/css/normalize.css";
-@import "~@ionic/angular/css/structure.css";
-@import "~@ionic/angular/css/typography.css";
-@import "~@ionic/angular/css/display.css";
-
-/* Optional CSS utils that can be commented out */
-@import "~@ionic/angular/css/padding.css";
-@import "~@ionic/angular/css/float-elements.css";
-@import "~@ionic/angular/css/text-alignment.css";
-@import "~@ionic/angular/css/text-transformation.css";
-@import "~@ionic/angular/css/flex-utils.css";
-
 /* Bootstrap 5 */
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
@@ -33,13 +6,6 @@
 
 .clickeable{
   cursor: pointer;
-}
-
-ion-button ion-icon[slot="start"] {
-  margin-inline-end: 8px;
-}
-ion-button ion-icon[slot="end"] {
-  margin-inline-start: 8px;
 }
 
 .pagination-element{
@@ -67,64 +33,24 @@ ion-button ion-icon[slot="end"] {
   box-shadow: none;
 }
 
-@media (max-width: 768px) {
-  ion-modal.auto-width {
-    .ion-page {
-      position: relative;
-      display: block;
-      contain: content;
-
-      .inner-content {
-        max-height: 95vh;
-        overflow: auto;
-        padding: 10px;
-      }
-    }
-  }  
+/* GFC Modal Page (replaces Ionic's ion-page) */
+.gfc-modal-page {
+  position: relative;
+  display: block;
+  contain: content;
 }
 
-@media (min-width: 768px) {
-  ion-toast div.toast-wrapper.toast-bottom{
-    margin-right: 0 !important;
+.gfc-modal-page .inner-content {
+  max-height: 80vh;
+  overflow: auto;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .gfc-modal-page .inner-content {
+    max-height: 95vh;
+    padding: 10px;
   }
-
-  ion-modal.modal-wide {
-    --width: 80vw;
-  }
-
-  ion-modal.auto-width {
-    &.bottom {
-      align-items: flex-end;
-    }
-
-    --height: auto;
-
-    .ion-page {
-      position: relative;
-      display: block;
-      contain: content;
-
-      .inner-content {
-        max-height: 80vh;
-        overflow: auto;
-        padding: 10px;
-      }
-    }
-  }
-
-  .picker-wrapper.sc-ion-picker-md {
-    bottom: auto;
-    top: 40%;
-  }
-
-  .picker-wrapper ion-picker-column{
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-      display: none;
-  }
-  }
-
-  
 }
 
 .sombra {
@@ -143,18 +69,6 @@ ion-button ion-icon[slot="end"] {
   width: 100% !important;
 }
 
-ion-note{
-  padding-top: 4px;
-  padding-left: 16px;
-  padding-bottom: 8px !important;
-}
-
-.fila-tabla{
-  ion-col, ion-list {
-    padding: 0;
-  }
-}
-
 .vertical-align-center {
      display: flex!important;
      align-content: center!important;
@@ -166,42 +80,18 @@ ion-note{
   --width: 100vw !important;
 }
 
-/* Modal del ion-select de Fotoclub/Agrupación/Institución (usuarios-abm) */
-@media (max-width: 767px) {
-  /* En mobile que ocupe todo el ancho */
-  ion-alert.fotoclub-select-modal {
-    --width: 100vw;
-    --max-width: 100vw;
-  }
-
-  ion-alert.fotoclub-select-modal .alert-wrapper {
-    width: 100vw;
-    max-width: 100vw;
-    margin: 0; /* evitar márgenes laterales */
-  }
-}
-
-@media (min-width: 768px) {
-  /* En desktop, ancho fijo más grande */
-  ion-alert.fotoclub-select-modal {
-    --width: 600px;
-    --max-width: 600px;
-  }
-
-  ion-alert.fotoclub-select-modal .alert-wrapper {
-    width: 600px;
-    max-width: 600px;
-  }
-}
-
 .app-slide-card {
-  background: var(--ion-card-background, var(--ion-item-background, #fff));
+  background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   height: 100%;
   padding: 1rem;
   margin: 0.25rem;
   box-sizing: border-box;
+}
+
+body.dark .app-slide-card {
+  background: var(--gfc-member-card-bg, #1e1e1e);
 }
 
 .modal-backdrop:not(.show),
@@ -261,7 +151,7 @@ body.dark .logoEntrada {
 }
 
 body.dark .login-accordion {
-  background: var(--ion-card-background, #1e1e1e);
+  background: #1e1e1e;
   border-color: rgb(41, 41, 41);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }

@@ -3,9 +3,11 @@ import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { RankingService } from '../../services/ranking.service';
-import { LoadingController, ModalController, AlertController } from '@ionic/angular';
 import { RankingDetalleModalComponent } from './ranking-detalle-modal/ranking-detalle-modal.component';
 import { ContestResultService } from '../../services/contest-result.service';
+import { LoadingService } from '../../services/ui/loading.service';
+import { AlertService } from '../../services/ui/alert.service';
+import { UiUtilsService } from '../../services/ui/ui-utils.service';
 
 @Component({
   selector: 'app-ranking',
@@ -16,10 +18,10 @@ export class RankingPage implements OnInit {
 
   constructor(
     private rankingService: RankingService,
-    public loadingController: LoadingController,
-    private modalController: ModalController,
-    private alertController: AlertController,
+    public loadingService: LoadingService,
+    private alertController: AlertService,
     private contestResultService: ContestResultService,
+    private UIUtilsService: UiUtilsService,
   ) { 
     this.cargarRanking()
   }
@@ -273,11 +275,7 @@ export class RankingPage implements OnInit {
   }
  
   async cargarRanking() {
-    const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Cargando...'
-    })
-    await loading.present()
+    await this.loadingService.present('Cargando...')
     this.rankingService.getAll(`year=${this.anio}`).subscribe(r => {
       this.ranking = this.procesar_ranking( r )
       this.expandedCategories = this.ranking.profiles?.map(() => true) ?? []
@@ -292,7 +290,7 @@ export class RankingPage implements OnInit {
 
       const profileIds = Array.from(profileIdSet)
       if (profileIds.length === 0) {
-        loading.dismiss()
+        this.loadingService.dismiss()
         return
       }
 
@@ -341,7 +339,7 @@ export class RankingPage implements OnInit {
           }
         }
 
-        loading.dismiss()
+        this.loadingService.dismiss()
       })
     })
   }
@@ -361,33 +359,22 @@ export class RankingPage implements OnInit {
       }
     }
 
-    const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Cargando...'
-    });
-    await loading.present();
+    await this.loadingService.present('Cargando...');
     this.rankingService.getDetalleRanking(profile_id, contest_id ?? undefined, year, section_id).subscribe({
       next: async detalle => {
-        await loading.dismiss();
-        const modal = await this.modalController.create({
-          component: RankingDetalleModalComponent,
-          cssClass: 'auto-width modal-wide',
-          componentProps: {
-            detalle,
-            categoriaNombre: categoria?.nombre_categoria || '',
-            seccionNombre
-          }
+        this.loadingService.dismiss();
+        await this.UIUtilsService.mostrarModal(RankingDetalleModalComponent, {
+          detalle,
+          categoriaNombre: categoria?.nombre_categoria || '',
+          seccionNombre
         });
-        await modal.present();
       },
       error: async _err => {
-        await loading.dismiss();
-        const alert = await this.alertController.create({
+        this.loadingService.dismiss();
+        await this.UIUtilsService.mostrarAlert({
           header: 'Error',
-          message: 'No se pudo obtener el detalle de ranking.',
-          buttons: ['Aceptar']
-        });
-        await alert.present();
+          message: 'No se pudo obtener el detalle de ranking.'
+        })
       }
     });
   }

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { IonicModule } from '@ionic/angular';
 
 import { SeccionesAbmPageRoutingModule } from './secciones-abm-routing.module';
 
@@ -13,7 +12,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
     SeccionesAbmPageRoutingModule,
     SharedModule
   ],

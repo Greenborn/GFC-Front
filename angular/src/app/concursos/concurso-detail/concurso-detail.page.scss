@@ -1,26 +1,22 @@
-ion-avatar img{ width: 100% !important; height: 100% !important; }
-
-ion-avatar{--border-radius: 0px; }
-
 #concurso-tabs {
     height: 100%
 }
 
 .concurso-tabs .nav-link {
     border-radius: 0;
-    color: var(--ion-text-color, #212529);
+    color: #212529;
     background: transparent;
-    border: 1px solid var(--ion-border-color, #dee2e6);
+    border: 1px solid #dee2e6;
     margin-right: 2px;
     padding: 0.5rem 1rem;
 }
 
 .concurso-tabs .nav-link.active {
-    background: var(--ion-color-primary, #212529);
-    color: var(--ion-color-primary-contrast, #fff);
-    border-color: var(--ion-color-primary, #212529);
+    background: #212529;
+    color: #fff;
+    border-color: #212529;
 }
 
 .concurso-tabs .nav-link:hover:not(.active) {
-    background: var(--ion-color-step-100, #f8f9fa);
+    background: #f8f9fa;
 }

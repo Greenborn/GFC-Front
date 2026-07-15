@@ -3,10 +3,10 @@
   color: white;
   margin: 20px 0;
   
-  ion-card-header {
+  .card-header {
     text-align: center;
     
-    ion-card-title {
+    .card-title {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -14,14 +14,14 @@
       font-size: 1.5rem;
       color: black;
       
-      ion-icon {
+      .icon {
         font-size: 1.8rem;
         color: gold;
       }
     }
   }
   
-  ion-card-content {
+  .card-body {
     padding: 0;
     position: relative;
     
@@ -78,11 +78,11 @@
         .puesto {
           margin-bottom: 10px;
           
-          ion-badge {
+          .badge {
             font-size: 0.9rem;
             padding: 8px 12px;
             
-            ion-icon {
+            .icon {
               margin-right: 5px;
             }
           }
@@ -109,7 +109,7 @@
           gap: 5px;
           margin: 5px 0;
           
-          ion-icon {
+          .icon {
             font-size: 1.1rem;
           }
         }

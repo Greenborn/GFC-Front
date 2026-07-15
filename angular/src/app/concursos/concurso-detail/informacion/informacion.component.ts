@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Contest } from 'src/app/models/contest.model';
 import { ContestResult, ContestResultExpanded } from 'src/app/models/contest_result.model';
@@ -27,6 +26,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { ImageReviewPage } from '../image-review/image-review.page';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { CompressedPhotosService } from 'src/app/services/compressed-photos.service'
+import { AlertService } from 'src/app/services/ui/alert.service';
 
 import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src/app/services/contest-results.service'
 @Component({
@@ -52,19 +52,14 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
 
   fotoclubs: Fotoclub[] = [];
   metrics: Metric[] = [];
-  popover: HTMLIonPopoverElement = undefined;
-  // loading: boolean = true;
   subs: Subscription[] = [];
   noImg: boolean = false;
 
   constructor( 
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    alertCtrl: AlertController,
-    public modalController: ModalController,
-    public popoverCtrl: PopoverController,
+    alertService: AlertService,
     public auth: AuthService,
-    public loadingController: LoadingController,
     
     public contestService: ContestService,
     private contestResultService: ContestResultService,
@@ -80,7 +75,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     public responsiveService: ResponsiveService,
     private compressedPhotosService: CompressedPhotosService
   ) {
-    super(alertCtrl)
+    super(alertService)
    }
 
   async ngOnDestroy() {
@@ -171,26 +166,19 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     }
   
     async openPopup(options: any) {
-      this.popover = await this.popoverCtrl.create(options)
-      await this.popover.present();
-      this.popover.onDidDismiss().then(_ => this.popover = undefined)
+      if (options.component) {
+        return this.UIUtilsService.mostrarModal(options.component, options.componentProps || {});
+      }
     }
   
-    // async mostrarAcciones(ev: any, r: ContestResultExpanded) {
     async mostrarAcciones(options: any) {
-  
-      this.popover = await this.popoverCtrl.create(options)
-      await this.popover.present();
-      if (this.popover != undefined)
-        this.popover.onDidDismiss().then(_ => this.popover = undefined)
+      if (options.component) {
+        return this.UIUtilsService.mostrarModal(options.component, options.componentProps || {});
+      }
     }
   
     async desinscribir(profileContest: ProfileContestExpanded) {
-      if (this.popover != undefined) {
-        this.popoverCtrl.dismiss(this.popover)
-        this.popover = undefined
-      }
-      const alert = await this.alertCtrl.create({
+      this.UIUtilsService.mostrarAlert({
         header: 'Confirmar desinscripción',
         message: `Confirma desinscribir ${profileContest.profile.name} ${profileContest.profile.last_name} del concurso ${this.concurso.name}?`,
         buttons: [
@@ -199,9 +187,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
             role: 'cancel'
           }, {
             text: 'Confirmar',
-            // handler: async () => {
             handler: () => {
-              // await this.contestSvc.deleteConcurso(this.concurso.id);
               if (this.resultadosConcurso.find(r => r.image.profile_id == profileContest.profile_id) != undefined) {
                 this.UIUtilsService.mostrarError({ message: 'El concursante tiene imágenes cargadas.' })
               } else {
@@ -213,15 +199,8 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                     this.inscriptos.splice(this.inscriptos.findIndex(i => i.id == profileContest.id), 1)
                     this.concursoDetailService.loadProfileContests();
                   }, 
-                  error: async err => {
-                    (await this.alertCtrl.create({
-                      header: 'Error',
-                      message: this.errorFilter(err.error['error-info'][2]),
-                      buttons: [{
-                        text: 'Ok',
-                        role: 'cancel'
-                      }]
-                    })).present()
+                  error: err => {
+                    this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) });
                   }
                 })
   
@@ -230,36 +209,21 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
           }
         ]
       });
-  
-      await alert.present();
     }
   
     async reviewImage(r: ContestResultExpanded) {
-      if (this.popover != undefined) {
-        this.popoverCtrl.dismiss(this.popover)
-        this.popover = undefined
-      }
-  
-      const modal = await this.modalController.create({
-        component: ImageReviewPage,
-        cssClass: 'auto-width',
-        componentProps: {
-          "concurso": this.concurso.name,
-          "modalController": this.modalController,
-          "image": r.image,
-          "contestResult": r,
-          "review": r.metric
-        }
+      const data = await this.UIUtilsService.mostrarModal(ImageReviewPage, {
+        "concurso": this.concurso.name,
+        "image": r.image,
+        "contestResult": r,
+        "review": r.metric
       });
-      await modal.present()
-  
-      const { data } = await modal.onWillDismiss();
   
       console.log('punteado imagen', data)
       const { metric } = data ?? {}
       if (metric != undefined) {
         const r = this.resultadosConcurso.find(e => e.metric_id == metric.id)
-
+  
         if (r != undefined) {
           console.log('udpating metric', r, metric)
           r.metric = metric
@@ -294,8 +258,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     }
   
     async deleteConcurso() {
-  
-      const alert = await this.alertCtrl.create({
+      this.UIUtilsService.mostrarAlert({
         header: 'Confirmar borrado',
         message: 'Cuidado',
         buttons: [
@@ -310,35 +273,21 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                   console.log('Concurso eliminado', response)
                   this.router.navigate(['/concursos']);
                 }, 
-                error: async err => {
+                error: err => {
                   const errorMsg = err?.response?.data?.message || err?.message || 'Error al eliminar el concurso';
-                  (await this.alertCtrl.create({
-                    header: 'Error',
-                    message: errorMsg,
-                    buttons: [{
-                      text: 'Ok',
-                      role: 'cancel'
-                    }]
-                  })).present()
+                  this.UIUtilsService.mostrarError({ message: errorMsg });
                 }
               })
             }
           }
         ]
       });
-  
-      await alert.present();
     }
   
     async deleteImage(r: ContestResultExpanded) {
       const { id: result_id, image_id, metric_id } = r;
   
-      if (this.popover != undefined) {
-        this.popoverCtrl.dismiss(this.popover)
-        this.popover = undefined
-      }
-  
-      const alert = await this.alertCtrl.create({
+      this.UIUtilsService.mostrarAlert({
         header: 'Confirmar borrado',
         message: 'Cuidado',
         buttons: [
@@ -354,24 +303,21 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                   await get_all_contest_results( { "contest_id" : this.concurso.id} )
                   super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
                     next: _ => get_all_contest_results({ "contest_id": this.concurso.id }),
-                    error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
+                    error: err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
                   })
                   super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({
                     next: _ => {},
-                    error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
+                    error: err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
                   })
-
+  
                 },
-                error: async err => super.displayAlert(this.errorFilter(err))
+                error: err => super.displayAlert(this.errorFilter(err))
               })
-              // return false
             }
           }
         ]
       });
-  
-      await alert.present();
-    } 
+    }
   
     openRules() {
       if (this.concurso.rules_url == null ) {
@@ -410,11 +356,8 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
 
   compartir() {
     const link = window.location.href.replace("informacion", "")
-    // console.log("link del sitio: ", link )
-  
     if(navigator.clipboard) {
         navigator.clipboard.writeText(link).then(async () => {
-            //TODO: mensaje de texto copiado!
           const { toast } = await this.UIUtilsService.mostrarToast(undefined,
               {
                 "message": "El link ah sido copiado al portapepeles",
@@ -427,14 +370,11 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     } else {
         console.log('Browser Not compatible')
     }
-
-    }
-    // document.execCommand('copy', true)
-  
-
-    get isContestNotFin() {
-      let finalizado = (new Date()).getTime() >= (new Date(this.concurso.end_date)).getTime()
-      return !(finalizado)
-    }
   }
+
+  get isContestNotFin() {
+    let finalizado = (new Date()).getTime() >= (new Date(this.concurso.end_date)).getTime()
+    return !(finalizado)
+  }
+}
 

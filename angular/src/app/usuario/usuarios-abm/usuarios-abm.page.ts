@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AlertController, LoadingController, PopoverController } from '@ionic/angular';
 import { NavigationEnd, Router } from '@angular/router';
 import { SearchBarComponentAtributo, SearchBarComponentParams } from 'src/app/shared/search-bar/search-bar.component';
 
@@ -20,6 +19,8 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
+import { LoadingService } from 'src/app/services/ui/loading.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -69,19 +70,18 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
   public loading: boolean = false;
   public searchQuery: string = '';
-  private popover: HTMLIonPopoverElement = undefined;
+  private popover: any = undefined;
 
   constructor(
     private fotoclubService: FotoclubService,
     private userService: UserService,
     private profileService: ProfileService,
     private roleService: RoleService,
-    alertCtrl: AlertController,
-    private popoverCtrl: PopoverController,
+    alertCtrl: AlertService,
     private router: Router,
     public auth: AuthService,
     public rolificador: RolificadorService,
-    public loadingController: LoadingController,
+    public loadingService: LoadingService,
     public configService: ConfigService,
     public UIUtilsService: UiUtilsService,
     private http: HttpClient
@@ -245,12 +245,6 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
   // }
 
   async toggleUsuarioStatus(p: ProfileExpanded) {
-
-    if (this.popover != undefined) {
-      this.popoverCtrl.dismiss(this.popover);
-      this.popover = undefined
-    }
-
     if (!p.user || p.user.id == null) {
       await this.UIUtilsService.mostrarError({ message: 'El perfil no tiene usuario asociado.' });
       return;
@@ -263,77 +257,44 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       ? 'Se procederá a deshabilitar al usuario. No se elimina para preservar la vinculación con su contenido. Al deshabilitar se invalida el access_token y no podrá acceder al sistema.'
       : 'Se procederá a habilitar al usuario. Podrá volver a acceder al sistema.';
 
-    const alert = await this.alertCtrl.create({
+    await this.UIUtilsService.mostrarAlert({
       header: confirmHeader,
-      message: confirmMessage,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        }, {
-          text: 'Confirmar',
-          handler: async () => {
-            try {
-              const url = `${this.configService.nodeApiBaseUrl}disable_user`;
-              const body = { id: p.user.id, status: newStatus };
-              const r: any = await firstValueFrom(this.http.post(url, body));
-              const message = r && r.message ? r.message : 'Usuario deshabilitado';
-              await this.UIUtilsService.mostrarAlert({ header: 'Acción realizada', message, buttons: [{ text: 'OK', role: 'cancel' }] });
-              p.user.status = newStatus;
-              const idx = this.miembros.findIndex(m => m.id == p.id);
-              if (idx >= 0 && this.miembros[idx].user) this.miembros[idx].user.status = newStatus;
-            } catch (err: any) {
-              const msg = err?.error?.message || 'Error al deshabilitar usuario';
-              await this.UIUtilsService.mostrarError({ message: msg });
-            }
-          }
+      message: confirmMessage
+      }, 
+      async () => {
+        try {
+          const url = `${this.configService.nodeApiBaseUrl}disable_user`;
+          const body = { id: p.user.id, status: newStatus };
+          const r: any = await firstValueFrom(this.http.post(url, body));
+          const message = r && r.message ? r.message : 'Usuario deshabilitado';
+          await this.UIUtilsService.mostrarAlert({ header: 'Acción realizada', message, buttons: [{ text: 'OK', role: 'cancel' }] });
+          p.user.status = newStatus;
+          const idx = this.miembros.findIndex(m => m.id == p.id);
+          if (idx >= 0 && this.miembros[idx].user) this.miembros[idx].user.status = newStatus;
+        } catch (err: any) {
+          const msg = err?.error?.message || 'Error al deshabilitar usuario';
+          await this.UIUtilsService.mostrarError({ message: msg });
         }
-      ]
-    });
-
-    await alert.present();
+      }
+    )
   }
 
   async mostrarAcciones(ev: any, p: ProfileExpanded) {
-    this.popover = await this.popoverCtrl.create({
-      component: MenuAccionesComponent, //componente a mostrar
-      componentProps: {
-        acciones: [
-          {
-            accion: (params: string[]) => this.router.navigate(params),
-            params: ['/usuarios', 'editar', p.user.id],
-            icon: 'create',
-            label: 'Editar'
-          },
-          {
-            accion: (params: number[]) => this.toggleUsuarioStatus(p),
-            params: [],
-            icon: (p.user && p.user.status === 0) ? 'checkmark-circle' : 'remove-circle',
-            label: (p.user && p.user.status === 0) ? 'Habilitar' : 'Deshabilitar'
-          }
-        ]
-      },
-      cssClass: 'my-custom-class',
-      event: ev,
-      translucent: true,
-      // mode: "ios" //para mostrar con la patita, pero es otro estilo y muy angosto
-    });
-    await this.popover.present();
-
-
-    this.popover.onDidDismiss().then(_ => this.popover = undefined)
-    // const t = this;
-    // this.router.events.subscribe() // dismiss popover cuando cambie de ruta
-    const s = this.router.events
-    // .pipe(filter(event => event instanceof NavigationEnd))
-    .subscribe(async (e) => {
-      if (e instanceof NavigationEnd) {
-        if (this.popover != undefined) {
-          await this.popoverCtrl.dismiss(this.popover);
-          this.popover = undefined
+    await this.UIUtilsService.mostrarModal(MenuAccionesComponent, {
+      acciones: [
+        {
+          accion: (params: string[]) => this.router.navigate(params),
+          params: ['/usuarios', 'editar', p.user.id],
+          icon: 'create',
+          label: 'Editar'
+        },
+        {
+          accion: (params: number[]) => this.toggleUsuarioStatus(p),
+          params: [],
+          icon: (p.user && p.user.status === 0) ? 'checkmark-circle' : 'remove-circle',
+          label: (p.user && p.user.status === 0) ? 'Habilitar' : 'Deshabilitar'
         }
-        s.unsubscribe();
-      }
+      ]
     });
   }
 
