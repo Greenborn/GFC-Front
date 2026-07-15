@@ -1,11 +1,10 @@
-import { ErrorHandler, Injectable, Injector, NgZone } from '@angular/core';
+import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { ConsoleLogService } from './console-log.service';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
   constructor(
-    private injector: Injector,
-    private ngZone: NgZone
+    private injector: Injector
   ) {}
 
   handleError(error: any): void {
@@ -24,18 +23,5 @@ export class GlobalErrorHandler implements ErrorHandler {
       // Si falla el envío, no romper el flujo
     }
     console.error(error);
-
-    // Mostrar error visible en pantalla para depuración
-    this.ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        const diag = document.getElementById('gfc-diag');
-        if (diag) {
-          diag.style.display = 'block';
-          diag.textContent = 'Error: ' + (error?.message || error?.toString() || 'Error desconocido');
-          diag.style.background = '#fcc';
-          diag.style.borderColor = '#c00';
-        }
-      }, 100);
-    });
   }
 }

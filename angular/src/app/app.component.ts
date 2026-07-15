@@ -3,17 +3,12 @@ import { ConsoleLogService } from './services/console-log.service';
 import { Router } from '@angular/router';
 import { ResponsiveService } from './services/ui/responsive.service';
 
-declare global {
-  interface Window { __gfcLoaded: boolean; }
-}
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  private static hasSetLoaded = false;
   public appPages = [
     { title: 'Inbox', url: '/folder/Inbox', icon: 'mail' },
     { title: 'Outbox', url: '/folder/Outbox', icon: 'paper-plane' },
@@ -37,16 +32,8 @@ export class AppComponent implements OnInit {
       document.body.classList.add('dark');
       document.documentElement.setAttribute('data-bs-theme', 'dark');
     }
+    document.documentElement.classList.add('gfc-force-visible');
     document.dispatchEvent(new CustomEvent('gfc-ready'));
-
-    // Ocultar barra de diagnóstico
-    if (!AppComponent.hasSetLoaded) {
-      AppComponent.hasSetLoaded = true;
-      window.__gfcLoaded = true;
-      const diag = document.getElementById('gfc-diag');
-      if (diag) diag.style.display = 'none';
-    }
-
 
     // Interceptar errores de consola después del bootstrap
     const originalConsoleError = console.error.bind(console);

@@ -24,10 +24,49 @@
         </li>
       </ul>
 
-      <ng-container *ngIf="auth.loggedIn; else login">
-        <button class="btn btn-outline-secondary d-none d-lg-inline-block" (click)="mostrarPerfil($event)">
-          <i class="bi bi-person-circle fs-5"></i>
-        </button>
+      <ng-container *ngIf="auth.loggedIn && auth.user | async as u; else login">
+        <div class="dropdown d-none d-lg-inline-block">
+          <button class="btn btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false" title="Perfil">
+            <i class="bi bi-person-circle fs-5"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow">
+            <li>
+              <div class="dropdown-item-text text-center border-bottom px-3 py-2" style="min-width:220px">
+                <app-usuario-img [src]="u.profile?.img_url ? configService.imageUrl(u.profile.img_url) : ''" style="max-width:48px;display:inline-block"></app-usuario-img>
+                <div class="fw-semibold mt-1">{{ u.username }}</div>
+                <small class="text-muted">{{ u.profile?.name || '' }} {{ u.profile?.last_name || '' }}</small>
+              </div>
+            </li>
+            <li>
+              <label class="dropdown-item d-flex align-items-center gap-3 clickeable">
+                <i class="bi bi-moon"></i>
+                <span class="flex-grow-1">Modo oscuro</span>
+                <div class="form-check form-switch mb-0">
+                  <input type="checkbox" class="form-check-input" [checked]="darkMode" (change)="darkMode = !darkMode" (click)="$event.stopPropagation()">
+                </div>
+              </label>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-3" [routerLink]="['/usuarios', 'editar', auth.userId]">
+                <i class="bi bi-person"></i>
+                <span>Editar perfil</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-3 text-danger" (click)="auth.logout()">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Salir</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <div class="text-center py-1">
+                <small class="text-muted" style="font-size:0.7rem">v{{ version }}</small>
+              </div>
+            </li>
+          </ul>
+        </div>
         <button class="btn btn-outline-secondary d-lg-none" (click)="toggleMenu()">
           <i class="bi bi-list fs-5"></i>
         </button>

@@ -23,3 +23,20 @@
   background-color: var(--gfc-navbar-active-bg, #212529) !important;
   color: var(--gfc-navbar-active-text, #fff) !important;
 }
+
+.dropdown-menu {
+  min-width: 240px;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+.dropdown-item label {
+  cursor: pointer;
+  margin: 0;
+}
+
+.dropdown-item .form-check-input {
+  cursor: pointer;
+}

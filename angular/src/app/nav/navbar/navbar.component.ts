@@ -1,11 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-import { UsuarioPage } from '../../usuario/usuario.page';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
+import { ConfigService } from 'src/app/services/config/config.service';
+import { environment } from 'src/environments/environment';
 import { filter } from 'rxjs/operators';
-import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
     public router: Router,
     public auth: AuthService,
     public rolificador: RolificadorService,
-    private UIUtilsService: UiUtilsService
+    public configService: ConfigService
   ) { }
 
   ngOnInit() {
@@ -41,12 +41,18 @@ export class NavbarComponent implements OnInit {
     return this.currentUrl.startsWith(url + '/') || this.currentUrl.startsWith(url + '?');
   }
 
-  async openPopover(ev: any, ctrl: any, url: string) {
-    await this.UIUtilsService.mostrarModal(ctrl);
+  get version() {
+    return environment.version;
   }
 
-  async mostrarPerfil(ev: any) {
-    this.openPopover(ev, UsuarioPage, '/perfil/editar');
+  get darkMode(): boolean {
+    return document.body.classList.contains('dark');
+  }
+
+  set darkMode(l: boolean) {
+    document.body.classList.toggle('dark', l);
+    document.documentElement.setAttribute('data-bs-theme', l ? 'dark' : 'light');
+    localStorage.setItem('darkMode', String(l));
   }
 
   toggleMenu() {
