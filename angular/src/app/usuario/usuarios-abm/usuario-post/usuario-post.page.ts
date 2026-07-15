@@ -198,6 +198,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
                 role_id: this.usuario.role_id,
                 dni: this.usuario.dni,
               });
+              this.form.markAsPristine();
               // loading.dismiss()
               resolve(true)
             })
@@ -290,6 +291,13 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       dni: this.form.get('dni')?.value,
     };
     return userState;
+  }
+
+  get hasChanges(): boolean {
+    if (this.isUserSignUp) return true;
+    if (this.file != undefined) return true;
+    if (!this.form) return false;
+    return this.form.dirty;
   }
 
   async postUsuario() {
@@ -399,7 +407,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       }
 
       if (Object.keys(profilePayload).length === 0 && Object.keys(userPayload).length === 0) {
-        super.displayAlert('No hay cambios para guardar.');
         return;
       }
 

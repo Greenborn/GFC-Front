@@ -16,7 +16,7 @@
           <div class="row justify-content-center">
             <div class="col-8 col-sm-6 col-md-5">
               <app-usuario-img
-                [src]="this.imgUrl != null ? configService.imageUrl(this.imgUrl) : ''"
+                [src]="this.imgUrl != null ? configService.imageUrl(this.imgUrl, true) : ''"
               ></app-usuario-img>
             </div>
           </div>

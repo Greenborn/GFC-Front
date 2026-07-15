@@ -7,7 +7,7 @@
     @if ((auth.user | async); as u) {
       <div class="user-section p-3 border-bottom text-center">
         <div class="mb-2">
-          <app-usuario-img [src]="u.profile?.img_url ? config.imageUrl(u.profile.img_url) : ''"></app-usuario-img>
+          <app-usuario-img [src]="u.profile?.img_url ? config.imageUrl(u.profile.img_url, true) : ''"></app-usuario-img>
         </div>
         <div class="fw-semibold">{{ u.username }}</div>
         <div class="text-muted small">{{ u.profile?.name }} {{ u.profile?.last_name }}</div>
@@ -35,7 +35,7 @@
           </li>
         }
       </ul>
-      <div class="border-top mt-auto">
+      <div class="border-top">
         <ul class="list-group list-group-flush">
           <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/usuarios', 'editar', u.id]">
             <i class="bi bi-person me-2"></i>Editar perfil

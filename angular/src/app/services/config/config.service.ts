@@ -75,7 +75,7 @@ export class ConfigService {
     return this.data.imagesBaseUrl;
   }
 
-  imageUrl(recurso: string) {
+  imageUrl(recurso: string, cacheBust: boolean = false) {
     if (!recurso) {
       return '';
     }
@@ -91,7 +91,11 @@ export class ConfigService {
     }
     // Eliminar barra inicial del recurso si existe
     recurso = recurso.replace(/^\/+/, '');
-    return base.replace(/\/$/, '') + '/' + recurso;
+    let url = base.replace(/\/$/, '') + '/' + recurso;
+    if (cacheBust) {
+      url += (url.includes('?') ? '&' : '?') + 't=' + Date.now();
+    }
+    return url;
   }
 
   get nodeApiBaseUrl() {

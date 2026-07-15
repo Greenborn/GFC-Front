@@ -1,3 +1,17 @@
+.sticky-top-bar {
+  position: sticky;
+  top: 10px;
+  z-index: 1020;
+  background: var(--bs-body-bg, #fff);
+  border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.sticky-top-bar app-btn-post {
+  --bs-btn-font-size: 0.9rem;
+}
+
 .expand-full{
     width: 100%;
 }
