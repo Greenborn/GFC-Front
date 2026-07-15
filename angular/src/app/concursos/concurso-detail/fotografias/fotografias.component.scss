@@ -23,7 +23,7 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    background: #f8f8f8;
+    background: var(--ion-card-background, #f8f8f8);
 }
 
 .foto-card .img-wrap {
@@ -31,7 +31,7 @@
     width: 100%;
     padding-top: 75%;
     overflow: hidden;
-    background: #eee;
+    background: var(--ion-color-step-100, #eee);
     cursor: pointer;
 }
 
