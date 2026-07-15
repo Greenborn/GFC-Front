@@ -1,16 +1,17 @@
 <!-- <ion-col size="2"> -->
-@if (passwordInput.value != '') {
+@if (passwordInput?.value) {
   <button
     (click)="toggleVisibility()"
     class="btn btn-link"
     [disabled]="passwordInput.value == ''"
     >
     @if (visibility == true) {
-      <i class="bi bi-eye-slash"
-      ></i>
+      <i class="bi bi-eye-slash"></i>
     } @else {
       <i class="bi bi-eye"></i>
     }
   </button>
+} @else {
+  <span style="width: 38px; display: inline-block;"></span>
 }
 <!-- </ion-col> -->

@@ -3,7 +3,7 @@
     <div class="col-12 col-lg-10 col-xl-9">
       <form class="w-100" [formGroup]="form" (ngSubmit)="postUsuario()">
         <div class="row g-4">
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-3">
             <div class="card h-100">
               <div class="card-header">
                 <h5 class="card-title mb-0">Foto de perfil</h5>
@@ -20,7 +20,7 @@
             </div>
           </div>
 
-          <div class="col-12 col-md-8">
+          <div class="col-12 col-md-9">
             <div class="card h-100">
               <div class="card-header">
                 <h5 class="card-title mb-0">Datos del perfil</h5>
@@ -68,31 +68,50 @@
 
           <div class="col-12">
             <div class="card">
-              <div class="card-header">
-                <h5 class="card-title mb-0">Datos del usuario</h5>
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="card-title mb-0">Datos de la cuenta</h5>
+                @if (!isPost && isLogged()) {
+                  <button class="btn btn-warning btn-sm" type="button" (click)="changePassword()">
+                    <i class="bi bi-key me-1"></i>Cambiar contraseña
+                  </button>
+                }
               </div>
               <div class="card-body">
                 <div class="row g-3">
-                  <div class="col-12 col-sm-6">
+                  <div class="col-12 col-sm-6 col-lg-4">
                     <label class="form-label">Nombre de Usuario</label>
                     <input class="form-control" (focus)="usernameFocus=true" (blur)="usernameFocus=false"
-                      autocapitalize="off" pattern="[a-zA-Z0-9]{1,20}"
-                      formControlName="username" required>
-                    @if (usernameFocus) {
+                      autocapitalize="off" formControlName="username" required>
+                    @if (form.get('username')?.invalid && form.get('username')?.touched) {
+                      <small class="text-danger">
+                        Máximo 20 caracteres alfanuméricos sin símbolos ni espacios
+                      </small>
+                    } @else if (usernameFocus) {
                       <small class="text-muted">
                         Máximo 20 caracteres alfanuméricos sin símbolos ni espacios
                       </small>
                     }
                   </div>
-                  <div class="col-12 col-sm-6">
+                  <div class="col-12 col-sm-6 col-lg-4">
                     <label class="form-label">E-Mail</label>
                     <input class="form-control" autocapitalize="off"
                       pattern="[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+(\.[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+)*@[a-zA-Z0-9_][\-a-zA-Z0-9_]*(\.[\-a-zA-Z0-9_]+)*\.[cC][oO][mM](:[0-9]{1,5})?"
                       formControlName="email" required>
                   </div>
 
+                  @if (!isUserProfile && isAdmin && !updatingSelect) {
+                    <div class="col-12 col-sm-6 col-lg-4">
+                      <label class="form-label">Rol</label>
+                      <select class="form-select" #sRol formControlName="role_id" required>
+                        @for (r of roles; track r) {
+                          <option [value]="r.id">{{r.type}}</option>
+                        }
+                      </select>
+                    </div>
+                  }
+
                   @if (isPost && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)) {
-                    <div class="col-12 col-sm-6">
+                    <div class="col-12 col-sm-6 col-lg-4">
                       <label class="form-label">Contraseña</label>
                       <div class="input-group">
                         <input class="form-control" id="ctr-1" pattern=".{8,}" type="password"
@@ -103,7 +122,7 @@
                   }
 
                   @if (!isUserProfile && isUserSignUp) {
-                    <div class="col-12 col-sm-6">
+                    <div class="col-12 col-sm-6 col-lg-4">
                       <label class="form-label">Repetir Contraseña</label>
                       <input class="form-control" type="password" formControlName="passwordRepeat">
                     </div>
@@ -113,50 +132,21 @@
                     @if (form.get('passwordRepeat')?.dirty || form.get('password')?.dirty) {
                       <small class="text-muted">
                         @if (form.get('passwordRepeat')?.errors?.['mustMatch']) {
-                          <p>- Atención: Las contraseñas no coinciden</p>
+                          <span class="me-3">- Atención: Las contraseñas no coinciden</span>
                         }
                         @if (form.get('password')?.errors?.['pattern']) {
-                          <p>- Atención: Longitud mínima 8 caracteres</p>
+                          <span>- Atención: Longitud mínima 8 caracteres</span>
                         }
                       </small>
                     }
                   </div>
-
-                  @if (!isPost && isLogged()) {
-                    <div class="col-12">
-                      <button class="btn btn-warning" type="button" (click)="changePassword()">Cambiar contraseña</button>
-                    </div>
-                  }
                 </div>
               </div>
             </div>
           </div>
 
-          @if (!isUserProfile && isAdmin && !updatingSelect) {
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-                  <h5 class="card-title mb-0">Configuración</h5>
-                </div>
-                <div class="card-body">
-                  <div class="row g-3">
-                    <div class="col-12 col-sm-6">
-                      <label class="form-label">Rol</label>
-                      <select class="form-select" #sRol formControlName="role_id" required>
-                        @for (r of roles; track r) {
-                          <option [value]="r.id">{{r.type}}</option>
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          }
-
           <div class="col-12">
-            <div class="d-flex justify-content-center justify-content-md-between gap-2">
-              <button class="btn btn-outline-secondary" type="button" onclick="history.back()">Cancelar</button>
+            <div class="d-flex justify-content-center">
               <app-btn-post [posting]="posting" [text]="submitBtnText"></app-btn-post>
             </div>
           </div>

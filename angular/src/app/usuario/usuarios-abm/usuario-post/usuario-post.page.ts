@@ -125,7 +125,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         fotoclub_id:    new FormControl(null, Validators.required),
         executive:      new FormControl(false),
         executive_rol:  new FormControl(''),
-        username:       new FormControl('', Validators.required),
+        username:       new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]{1,20}$/)]),
         email:          new FormControl('', Validators.required),
         password:       new FormControl('', Validators.required),
         passwordRepeat: new FormControl('', Validators.required),

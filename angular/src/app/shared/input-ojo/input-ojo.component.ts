@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 
 @Component({
   standalone: false,
@@ -11,11 +11,13 @@ export class InputOjoComponent implements OnInit {
   @Input('inputId') inputId:string;
   public visibility: boolean = false;
   public passwordInput: any;
-  constructor() { }
+
+  constructor(private host: ElementRef) { }
 
   ngOnInit() {
-    this.passwordInput = document.querySelector(`#${this.inputId}`);
-
+    this.passwordInput = this.host.nativeElement
+      .closest('.row')
+      ?.querySelector(`#${this.inputId}`);
   }
 
   toggleVisibility(){
