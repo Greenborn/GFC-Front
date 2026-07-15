@@ -56,6 +56,16 @@
                             }
                           </div>
                         </div>
+                        <div class="profile-photo-row">
+                          @if (rg.img_url) {
+                            <img class="profile-photo"
+                              [src]="configService.imageUrl(rg.img_url)"
+                              (error)="$event.target.style.display='none'"
+                              alt="">
+                          } @else {
+                            <i class="bi bi-person-circle profile-photo-icon"></i>
+                          }
+                        </div>
                         <div class="rank-row-sub">
                           <div class="rank-col rank-col-prizes">
                             <span class="mobile-label">Premios:</span>

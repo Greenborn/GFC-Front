@@ -8,6 +8,7 @@ import { ContestResultService } from '../../services/contest-result.service';
 import { LoadingService } from '../../services/ui/loading.service';
 import { AlertService } from '../../services/ui/alert.service';
 import { UiUtilsService } from '../../services/ui/ui-utils.service';
+import { ConfigService } from '../../services/config/config.service';
 
 @Component({
   standalone: false,
@@ -23,6 +24,7 @@ export class RankingPage implements OnInit {
     private alertController: AlertService,
     private contestResultService: ContestResultService,
     private UIUtilsService: UiUtilsService,
+    public configService: ConfigService,
   ) { 
     this.cargarRanking()
   }
@@ -305,6 +307,7 @@ export class RankingPage implements OnInit {
       forkJoin(detailRequests).subscribe(details => {
         // Build map: profile_id -> correct total score
         const scoreMap: { [profile_id: number]: number } = {}
+        const imgUrlMap: { [profile_id: number]: string } = {}
         details.forEach((detail, idx) => {
           if (detail) {
             const pid = profileIds[idx]
@@ -312,6 +315,9 @@ export class RankingPage implements OnInit {
               (acc: number, it: any) => acc + (it?.ranking?.total_score ?? 0), 0
             )
             scoreMap[pid] = total
+            if (detail.profile?.img_url) {
+              imgUrlMap[pid] = detail.profile.img_url
+            }
           }
         })
 
@@ -321,6 +327,9 @@ export class RankingPage implements OnInit {
             if (scoreMap[p.profile_id] !== undefined) {
               p.puntaje_temporada = scoreMap[p.profile_id]
               p.score_total = scoreMap[p.profile_id]
+            }
+            if (imgUrlMap[p.profile_id]) {
+              p.img_url = imgUrlMap[p.profile_id]
             }
           }
 
