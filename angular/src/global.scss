@@ -105,7 +105,7 @@
 }
 
 body.dark .app-slide-card {
-  background: var(--gfc-member-card-bg, #1e1e1e);
+  background: var(--gfc-member-card-bg, #1a1a1c);
 }
 
 .modal-backdrop:not(.show),
@@ -224,4 +224,156 @@ body.dark .separator-text {
 body.dark .google-btn {
   --border-color: rgb(60, 60, 60);
   --color: #aaa;
+}
+
+/* ─── Ranking page dark mode ─────────────────────── */
+
+body.dark .accordion-item,
+body.dark .accordion-header,
+body.dark .rank-table-body,
+body.dark .rank-table-row,
+body.dark .rank-pill,
+body.dark .seccion-selector {
+  background: #161618 !important;
+}
+
+body.dark .accordion-header:hover,
+body.dark .rank-table-row:hover {
+  background: #222 !important;
+}
+
+body.dark .rank-table-body .rank-table-row:nth-child(even) {
+  background: #1a1a1c !important;
+}
+
+body.dark .rank-table-body .rank-table-row:nth-child(even):hover {
+  background: #222 !important;
+}
+
+body.dark .accordion-header h1,
+body.dark .accordion-header h2 {
+  color: #e4e4e4 !important;
+}
+
+body.dark .accordion-header.expanded {
+  border-bottom-color: #2a2a2a !important;
+}
+
+body.dark .rank-table-row {
+  border-bottom-color: #2a2a2a !important;
+}
+
+body.dark .rank-col-name,
+body.dark .rank-col-pos {
+  color: #e4e4e4 !important;
+}
+
+body.dark .rank-col-eff {
+  color: #888 !important;
+}
+
+body.dark .rank-pill {
+  border-color: #333 !important;
+  color: #bbb !important;
+}
+
+body.dark .rank-pill:hover {
+  border-color: #5a9cff !important;
+  color: #5a9cff !important;
+}
+
+body.dark .seccion-selector {
+  border-bottom-color: #2a2a2a !important;
+}
+
+@media (max-width: 767.98px) {
+  body.dark .rank-table-body .rank-table-row {
+    background: #161618 !important;
+    border-color: #2a2a2a !important;
+  }
+
+  body.dark .rank-table-body .rank-table-row:nth-child(even) {
+    background: #161618 !important;
+  }
+
+  body.dark .rank-row-sub {
+    border-top-color: #2a2a2a !important;
+  }
+}
+
+/* ─── Fotografias page dark mode ─────────────────── */
+
+body.dark .foto-card {
+  background: #1a1a1c !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important;
+}
+
+body.dark .foto-card .img-wrap {
+  background: #222 !important;
+}
+
+body.dark .foto-card .foto-info {
+  background: #1a1a1c !important;
+}
+
+body.dark .sticky-search {
+  background: #161618 !important;
+}
+
+body.dark .sticky-search .input-group-text,
+body.dark .sticky-search .form-control {
+  background: #222 !important;
+  border-color: #333 !important;
+  color: #e4e4e4 !important;
+}
+
+body.dark .sticky-search .form-control::placeholder {
+  color: #666 !important;
+}
+
+body.dark .sticky-search .badge {
+  background: #e4e4e4 !important;
+  color: #161618 !important;
+}
+
+body.dark .sticky-search .btn.gfc-btn-back {
+  background: #333 !important;
+  border-color: #3a3a3a !important;
+  color: #ccc !important;
+}
+
+body.dark .sidebar-panel {
+  background: #161618 !important;
+}
+
+body.dark .sidebar-panel,
+body.dark .filter-panel {
+  color: #e4e4e4 !important;
+}
+
+body.dark .sidebar-header {
+  border-bottom-color: #2a2a2a !important;
+}
+
+body.dark .filter-section-title {
+  color: #888 !important;
+}
+
+body.dark .filter-options .btn {
+  border-color: #333 !important;
+  color: #bbb !important;
+}
+
+body.dark .filter-options .btn:hover {
+  background: #2a2a2a !important;
+}
+
+body.dark .badge.bg-primary {
+  background: #e4e4e4 !important;
+  color: #161618 !important;
+}
+
+body.dark .badge.bg-secondary {
+  background: #555 !important;
+  color: #e4e4e4 !important;
 }

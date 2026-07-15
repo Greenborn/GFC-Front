@@ -377,7 +377,7 @@ export class RankingPage implements OnInit {
           detalle,
           categoriaNombre: categoria?.nombre_categoria || '',
           seccionNombre
-        });
+        }, false, 'modal-xl');
       },
       error: async _err => {
         this.loadingService.dismiss();

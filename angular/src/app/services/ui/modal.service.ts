@@ -15,7 +15,8 @@ export class ModalService {
   async showModal<T>(
     component: Type<T>,
     componentProps: Record<string, any> = {},
-    cssClass: string = ''
+    cssClass: string = '',
+    dialogClass: string = ''
   ): Promise<any> {
     return new Promise((resolve) => {
       this.dismiss();
@@ -44,7 +45,7 @@ export class ModalService {
       modalDiv.tabIndex = -1;
 
       const dialog = document.createElement('div');
-      dialog.className = 'modal-dialog modal-dialog-centered modal-dialog-scrollable';
+      dialog.className = `modal-dialog modal-dialog-centered modal-dialog-scrollable${dialogClass ? ' ' + dialogClass : ''}`;
 
       const content = document.createElement('div');
       content.className = 'modal-content';

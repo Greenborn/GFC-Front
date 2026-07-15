@@ -32,12 +32,13 @@ export class UiUtilsService {
   async mostrarModal(
     component: Type<any>, 
     componentProps: any = {},
-    fullscreenOnDesktop: boolean = false
+    fullscreenOnDesktop: boolean = false,
+    dialogClass: string = ''
   ): Promise<any> {
     componentProps.modalController = { dismiss: (data?: any) => this.modalService.dismiss(data) };
 
     const cssClass = fullscreenOnDesktop ? 'modal-fullscreen' : 'auto-width';
-    return this.modalService.showModal(component, componentProps, cssClass);
+    return this.modalService.showModal(component, componentProps, cssClass, dialogClass);
   }
 
   async mostrarAlert(
