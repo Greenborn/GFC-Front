@@ -37,6 +37,7 @@ import { resultadosConcursoGeted } from 'src/app/services/contest-results.servic
 
 // TODO: sacar el contenido extra que se repite en informacion-component
 @Component({
+  standalone: false,
   selector: 'app-concurso-detail',
   templateUrl: './concurso-detail.page.html',
   styleUrls: ['./concurso-detail.page.scss'],

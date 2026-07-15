@@ -27,21 +27,23 @@
             <div class="col">
               <div class="row">
                 <div class="col">
-                  <span class="badge bg-danger d-inline-flex align-items-center gap-1" color="danger" *ngIf="formTitle.includes('Editar')">
-                    <i class="bi bi-exclamation-triangle"></i>
-                    <label class="form-label">CUIDADO: la modificación de este elemento repercutirá en concursos que lo utilicen, se recomienda la edición para correcciones ortográficas</label>
-                  </span>
+                  @if (formTitle.includes('Editar')) {
+                    <span class="badge bg-danger d-inline-flex align-items-center gap-1" color="danger">
+                      <i class="bi bi-exclamation-triangle"></i>
+                      <label class="form-label">CUIDADO: la modificación de este elemento repercutirá en concursos que lo utilicen, se recomienda la edición para correcciones ortográficas</label>
+                    </span>
+                  }
                   <form
                     #sectionForm="ngForm"
                     (ngSubmit)="postSection(sectionForm)"
-                  >
+                    >
                     <div class="mb-3" class="w-100">
                       <label class="form-label">Nombre</label>
                       <input class="form-control"
                         [ngModel]="section.name"
                         name="name"
                         required
-                      >
+                        >
                     </div>
 
                     <div class="row justify-content-end">

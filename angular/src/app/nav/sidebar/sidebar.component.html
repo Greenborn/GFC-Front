@@ -4,7 +4,7 @@
     <button type="button" class="btn-close" (click)="closeSidebar.emit()"></button>
   </div>
   <div class="offcanvas-body p-0">
-    <ng-container *ngIf="(auth.user | async) as u">
+    @if ((auth.user | async); as u) {
       <div class="user-section p-3 border-bottom text-center">
         <div class="mb-2">
           <app-usuario-img [src]="u.profile?.img_url ? config.imageUrl(u.profile.img_url) : ''"></app-usuario-img>
@@ -12,7 +12,6 @@
         <div class="fw-semibold">{{ u.username }}</div>
         <div class="text-muted small">{{ u.profile?.name }} {{ u.profile?.last_name }}</div>
       </div>
-
       <ul class="list-group list-group-flush">
         <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/concursos/ranking']">
           <i class="bi bi-trophy me-2"></i>Ranking
@@ -20,17 +19,22 @@
         <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/concursos']">
           <i class="bi bi-images me-2"></i>Concursos
         </li>
-        <li class="list-group-item list-group-item-action clickeable" *ngIf="rolificador.esDelegado(u)" [routerLink]="['/usuarios']">
-          <i class="bi bi-people me-2"></i>{{ rolificador.getNombreUsuarios(u.role_id) }}
-        </li>
-        <li class="list-group-item list-group-item-action clickeable" *ngIf="rolificador.isAdmin(u)" [routerLink]="['/organizaciones']">
-          <i class="bi bi-building me-2"></i>Organizaciones
-        </li>
-        <li class="list-group-item list-group-item-action clickeable" *ngIf="rolificador.isAdmin(u) || rolificador.esDelegado(u)" [routerLink]="['/herramientas']">
-          <i class="bi bi-tools me-2"></i>Herramientas
-        </li>
+        @if (rolificador.esDelegado(u)) {
+          <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/usuarios']">
+            <i class="bi bi-people me-2"></i>{{ rolificador.getNombreUsuarios(u.role_id) }}
+          </li>
+        }
+        @if (rolificador.isAdmin(u)) {
+          <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/organizaciones']">
+            <i class="bi bi-building me-2"></i>Organizaciones
+          </li>
+        }
+        @if (rolificador.isAdmin(u) || rolificador.esDelegado(u)) {
+          <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/herramientas']">
+            <i class="bi bi-tools me-2"></i>Herramientas
+          </li>
+        }
       </ul>
-
       <div class="border-top mt-auto">
         <ul class="list-group list-group-flush">
           <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/usuarios', 'editar', u.id]">
@@ -44,15 +48,17 @@
               </div>
             </div>
           </li>
-          <li class="list-group-item list-group-item-action clickeable" *ngIf="canInstall" (click)="installApp()">
-            <i class="bi bi-phone me-2"></i>Instalar App
-          </li>
+          @if (canInstall) {
+            <li class="list-group-item list-group-item-action clickeable" (click)="installApp()">
+              <i class="bi bi-phone me-2"></i>Instalar App
+            </li>
+          }
           <li class="list-group-item list-group-item-action clickeable text-danger" (click)="auth.logout()">
             <i class="bi bi-box-arrow-right me-2"></i>Salir
           </li>
         </ul>
       </div>
-    </ng-container>
+    }
   </div>
 </div>
 

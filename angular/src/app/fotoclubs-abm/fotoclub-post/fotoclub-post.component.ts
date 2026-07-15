@@ -9,6 +9,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
+  standalone: false,
   selector: 'app-fotoclub-post',
   templateUrl: './fotoclub-post.component.html',
   styleUrls: ['./fotoclub-post.component.scss'],

@@ -13,6 +13,7 @@ import { MenuAccionesComponentAccion } from '../shared/menu-acciones/menu-accion
 import { InfoCentroPostComponent } from './info-centro-post/info-centro-post.component';
 
 @Component({
+  standalone: false,
   selector: 'app-info-centro',
   templateUrl: './info-centro.page.html',
   styleUrls: ['./info-centro.page.scss'],

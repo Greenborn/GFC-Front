@@ -6,6 +6,7 @@ import { AuthService } from '../../modules/auth/services/auth.service';
 import { Usuario } from '../usuario.model';
 
 @Component({
+  standalone: false,
   selector: 'app-usuario-edit',
   templateUrl: './usuario-edit.page.html',
   styleUrls: ['./usuario-edit.page.scss'],

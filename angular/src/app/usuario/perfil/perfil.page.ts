@@ -12,6 +12,7 @@ import { ProfileExpanded } from "src/app/models/profile.model";
 import { RolificadorService } from "src/app/modules/auth/services/rolificador.service";
 
 @Component({
+  standalone: false,
   selector: "app-perfil",
   templateUrl: "./perfil.page.html",
   styleUrls: ["./perfil.page.scss"],

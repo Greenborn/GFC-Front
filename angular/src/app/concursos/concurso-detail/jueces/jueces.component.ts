@@ -14,6 +14,7 @@ import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar
 import { ConcursoDetailService } from '../concurso-detail.service';
 
 @Component({
+  standalone: false,
   selector: 'app-jueces',
   templateUrl: './jueces.component.html',
   styleUrls: ['./jueces.component.scss'],

@@ -13,27 +13,28 @@
       </button>
 
       <div class="image-wrapper"
-           [class.grabbable]="scale > 1 && !isDragging"
-           [class.grabbing]="isDragging"
-           (mousedown)="onDragStart($event)"
-           (mousemove)="onDragMove($event)"
-           (mouseup)="onDragEnd($event)"
-           (mouseleave)="onDragEnd($event)"
-           (touchstart)="onTouchStart($event)"
-           (touchmove)="onTouchMove($event)"
-           (touchend)="onTouchEnd($event)"
-           (wheel)="onWheel($event)">
+        [class.grabbable]="scale > 1 && !isDragging"
+        [class.grabbing]="isDragging"
+        (mousedown)="onDragStart($event)"
+        (mousemove)="onDragMove($event)"
+        (mouseup)="onDragEnd($event)"
+        (mouseleave)="onDragEnd($event)"
+        (touchstart)="onTouchStart($event)"
+        (touchmove)="onTouchMove($event)"
+        (touchend)="onTouchEnd($event)"
+        (wheel)="onWheel($event)">
 
         <div class="image-transform"
-             [style.transform]="imageTransform">
-          <img
-            (error)="yepImg = false"
-            (load)="onImageLoad($event)"
-            *ngIf="yepImg"
-            [src]="all_data[index].image.url != null ? configService.imageUrl(all_data[index].image.url) : ''"
-            class="img-det-modal"
-            draggable="false"
-          />
+          [style.transform]="imageTransform">
+          @if (yepImg) {
+            <img
+              (error)="yepImg = false"
+              (load)="onImageLoad($event)"
+              [src]="all_data[index].image.url != null ? configService.imageUrl(all_data[index].image.url) : ''"
+              class="img-det-modal"
+              draggable="false"
+              />
+          }
         </div>
 
       </div>
@@ -58,62 +59,86 @@
         <button class="zoom-btn" (click)="toggleFullscreen()" [title]="isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'">
           <i class="bi" [ngClass]="isFullscreen ? 'bi-fullscreen-exit' : 'bi-fullscreen'"></i>
         </button>
-        <span class="zoom-divider" *ngIf="canDownload"></span>
-        <button class="zoom-btn" *ngIf="canDownload" (click)="downloadImage()" title="Descargar imagen">
-          <i class="bi bi-download"></i>
-        </button>
+        @if (canDownload) {
+          <span class="zoom-divider"></span>
+        }
+        @if (canDownload) {
+          <button class="zoom-btn" (click)="downloadImage()" title="Descargar imagen">
+            <i class="bi bi-download"></i>
+          </button>
+        }
       </div>
 
     </div>
 
-    <div class="info-panel" *ngIf="responsiveService.isDesktop">
-      <h5>Detalle de Fotografía</h5>
-      <div class="info-body">
-        <div class="info-item">
-          <span class="info-label">Título</span>
-          <span class="info-value">{{all_data[index].image.title}}</span>
-        </div>
-        <div class="info-item" *ngIf="all_data[index]?.section">
-          <span class="info-label">Sección</span>
-          <span class="info-value">{{all_data[index]?.section?.name}}</span>
-        </div>
-        <div class="info-item" *ngIf="!open">
-          <span class="info-label">Premio</span>
-          <span class="info-value">{{ all_data[index].metric.prize != '0' && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}</span>
-        </div>
-        <div class="info-item" *ngIf="!open">
-          <span class="info-label">Autor/a</span>
-          <span class="info-value">{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}</span>
+    @if (responsiveService.isDesktop) {
+      <div class="info-panel">
+        <h5>Detalle de Fotografía</h5>
+        <div class="info-body">
+          <div class="info-item">
+            <span class="info-label">Título</span>
+            <span class="info-value">{{all_data[index].image.title}}</span>
+          </div>
+          @if (all_data[index]?.section) {
+            <div class="info-item">
+              <span class="info-label">Sección</span>
+              <span class="info-value">{{all_data[index]?.section?.name}}</span>
+            </div>
+          }
+          @if (!open) {
+            <div class="info-item">
+              <span class="info-label">Premio</span>
+              <span class="info-value">{{ all_data[index].metric.prize != '0' && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}</span>
+            </div>
+          }
+          @if (!open) {
+            <div class="info-item">
+              <span class="info-label">Autor/a</span>
+              <span class="info-value">{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}</span>
+            </div>
+          }
         </div>
       </div>
-    </div>
+    }
 
   </div>
 
-  <div class="mobile-info" *ngIf="!responsiveService.isDesktop" [class.expanded]="metadataOpen">
-    <div class="mobile-info-bar" (click)="toggleMetadata()">
-      <div class="mobile-info-text">
-        <span class="mobile-info-title">{{all_data[index].image.title}}</span>
-        <span class="mobile-info-subtitle" *ngIf="!metadataOpen && !open">
-          {{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}
-        </span>
+  @if (!responsiveService.isDesktop) {
+    <div class="mobile-info" [class.expanded]="metadataOpen">
+      <div class="mobile-info-bar" (click)="toggleMetadata()">
+        <div class="mobile-info-text">
+          <span class="mobile-info-title">{{all_data[index].image.title}}</span>
+          @if (!metadataOpen && !open) {
+            <span class="mobile-info-subtitle">
+              {{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}
+            </span>
+          }
+        </div>
+        <i class="bi" [ngClass]="metadataOpen ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
       </div>
-      <i class="bi" [ngClass]="metadataOpen ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
+      @if (metadataOpen) {
+        <div class="mobile-info-body">
+          @if (all_data[index]?.section) {
+            <div class="info-item">
+              <span class="info-label">Sección</span>
+              <span class="info-value">{{all_data[index]?.section?.name}}</span>
+            </div>
+          }
+          @if (!open) {
+            <div class="info-item">
+              <span class="info-label">Premio</span>
+              <span class="info-value">{{ all_data[index].metric.prize != '0' && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}</span>
+            </div>
+          }
+          @if (!open) {
+            <div class="info-item">
+              <span class="info-label">Autor/a</span>
+              <span class="info-value">{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}</span>
+            </div>
+          }
+        </div>
+      }
     </div>
-    <div class="mobile-info-body" *ngIf="metadataOpen">
-      <div class="info-item" *ngIf="all_data[index]?.section">
-        <span class="info-label">Sección</span>
-        <span class="info-value">{{all_data[index]?.section?.name}}</span>
-      </div>
-      <div class="info-item" *ngIf="!open">
-        <span class="info-label">Premio</span>
-        <span class="info-value">{{ all_data[index].metric.prize != '0' && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}</span>
-      </div>
-      <div class="info-item" *ngIf="!open">
-        <span class="info-label">Autor/a</span>
-        <span class="info-value">{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}</span>
-      </div>
-    </div>
-  </div>
+  }
 
 </div>

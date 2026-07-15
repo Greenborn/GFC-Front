@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-btn-sort',
   templateUrl: './btn-sort.component.html',
   styleUrls: ['./btn-sort.component.scss'],

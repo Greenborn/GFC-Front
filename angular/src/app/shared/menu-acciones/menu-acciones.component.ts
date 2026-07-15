@@ -9,6 +9,7 @@ export interface MenuAccionesComponentAccion {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-menu-acciones',
   templateUrl: './menu-acciones.component.html',
   styleUrls: ['./menu-acciones.component.scss'],

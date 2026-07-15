@@ -1,15 +1,16 @@
 <!-- <ion-col size="2"> -->
-<button
-  *ngIf="passwordInput.value != ''"
-  (click)="toggleVisibility()"
-  class="btn btn-link"
-  [disabled]="passwordInput.value == ''"
->
-  <i class="bi bi-eye-slash"
-    *ngIf="visibility == true; else noVisible"
-  ></i>
-  <ng-template #noVisible>
-    <i class="bi bi-eye"></i>
-  </ng-template>
-</button>
+@if (passwordInput.value != '') {
+  <button
+    (click)="toggleVisibility()"
+    class="btn btn-link"
+    [disabled]="passwordInput.value == ''"
+    >
+    @if (visibility == true) {
+      <i class="bi bi-eye-slash"
+      ></i>
+    } @else {
+      <i class="bi bi-eye"></i>
+    }
+  </button>
+}
 <!-- </ion-col> -->

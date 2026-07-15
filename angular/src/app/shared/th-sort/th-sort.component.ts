@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-th-sort',
   templateUrl: './th-sort.component.html',
   styleUrls: ['./th-sort.component.scss'],

@@ -1,6 +1,7 @@
 import { Directive, ElementRef, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 
 @Directive({
+  standalone: false,
   selector: '[appInfiniteScroll]'
 })
 export class InfiniteScrollDirective implements OnDestroy {

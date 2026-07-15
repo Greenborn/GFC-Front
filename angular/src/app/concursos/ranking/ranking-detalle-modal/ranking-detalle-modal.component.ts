@@ -5,6 +5,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { VerFotografiasComponent } from '../../concurso-detail/ver-fotografias/ver-fotografias.component';
 
 @Component({
+  standalone: false,
   selector: 'app-ranking-detalle-modal',
   templateUrl: './ranking-detalle-modal.component.html',
   styleUrls: ['./ranking-detalle-modal.component.scss']

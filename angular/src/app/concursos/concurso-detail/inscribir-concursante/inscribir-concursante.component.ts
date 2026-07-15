@@ -12,6 +12,7 @@ import { RolificadorService } from 'src/app/modules/auth/services/rolificador.se
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
+  standalone: false,
   selector: 'app-inscribir-concursante',
   templateUrl: './inscribir-concursante.component.html',
   styleUrls: ['./inscribir-concursante.component.scss'],

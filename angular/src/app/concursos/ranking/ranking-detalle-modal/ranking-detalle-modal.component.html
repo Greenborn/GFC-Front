@@ -25,14 +25,16 @@
         <div class="col p-0">
           <div class="row align-items-center justify-content-between">
             <div class="col">
-              <h6 class="card-subtitle text-muted" *ngIf="!detalle?.items">
-                {{ formatDate(detalle?.contest?.start_date) }} -
-                {{ formatDate(detalle?.contest?.end_date) }}
-              </h6>
+              @if (!detalle?.items) {
+                <h6 class="card-subtitle text-muted">
+                  {{ formatDate(detalle?.contest?.start_date) }} -
+                  {{ formatDate(detalle?.contest?.end_date) }}
+                </h6>
+              }
 
             </div>
             <div class="col-auto">
-              
+
             </div>
           </div>
 
@@ -49,7 +51,7 @@
                       <li>{{ detalle?.profile?.fotoclub?.name }}</li>
                     </ul>
                   </div>
-              </div>
+                </div>
               </div>
             </div>
             <div class="col-12 col-md-6">
@@ -59,13 +61,15 @@
                 </div>
                 <div class="card-body">
                   <div class="sumatoria-item"><b>Sumatoria Concursos:</b> {{ totalScoreAll() }}</div>
-                  <div class="sumatoria-item" *ngIf="detalle?.items"><b>Concursos contabilizados:</b> {{ detalle.items.length }}</div>
+                  @if (detalle?.items) {
+                    <div class="sumatoria-item"><b>Concursos contabilizados:</b> {{ detalle.items.length }}</div>
+                  }
                 </div>
               </div>
             </div>
           </div>
 
-          <ng-container *ngIf="!detalle?.items; else multiple">
+          @if (!detalle?.items) {
             <div class="card mb-3" class="mt-3">
               <div class="card-header">
                 <h5 class="card-title">Resultados</h5>
@@ -83,28 +87,29 @@
                       </div>
                     </div>
                   </div>
-                  <ng-container *ngFor="let r of sortResults(detalle?.results)">
-                    <div class="mb-3" *ngFor="let img of sortImages(r.images)">
-                      <div class="container-fluid">
-                        <div class="row align-items-center">
-                          <div class="col-3">{{ r.category }}</div>
-                          <div class="col-3">{{ r.section }}</div>
-                          <div class="col-2">
-                            <img class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" (click)="openPhotoModal(img)" />
-                          </div>
-                          <div class="col-2 cap">{{ img.title }}</div>
-                          <div class="col-2">
-                            <span class="badge bg-secondary">{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</span>
-                            <span class="ms-3">{{ img.metric?.score }}</span>
+                  @for (r of sortResults(detalle?.results); track r) {
+                    @for (img of sortImages(r.images); track img) {
+                      <div class="mb-3">
+                        <div class="container-fluid">
+                          <div class="row align-items-center">
+                            <div class="col-3">{{ r.category }}</div>
+                            <div class="col-3">{{ r.section }}</div>
+                            <div class="col-2">
+                              <img class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" (click)="openPhotoModal(img)" />
+                            </div>
+                            <div class="col-2 cap">{{ img.title }}</div>
+                            <div class="col-2">
+                              <span class="badge bg-secondary">{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</span>
+                              <span class="ms-3">{{ img.metric?.score }}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </ng-container>
+                    }
+                  }
                 </div>
               </div>
             </div>
-
             <div class="card mb-3" class="mt-3 mb-3">
               <div class="card-body">
                 <div class="row">
@@ -119,56 +124,61 @@
                 </div>
               </div>
             </div>
-          </ng-container>
-
-          <ng-template #multiple>
+          } @else {
             <div class="accordion">
-              <div *ngFor="let it of detalle.items; let i = index" class="accordion-item">
-                <div class="accordion-header" (click)="toggleContest(i)">
-                  <div>
-                    <div class="accordion-title">{{ it?.contest?.name }}</div>
-                    <div class="accordion-subtitle">{{ formatDate(it?.contest?.start_date) }} - {{ formatDate(it?.contest?.end_date) }}</div>
-                  </div>
-                  <span class="accordion-arrow" [class.open]="expandedContests[i]">&#9660;</span>
-                </div>
-                <div class="accordion-body" *ngIf="expandedContests[i]">
-                  <div class="rank-table">
-                    <div class="rank-table-header">
-                      <div class="rank-col rank-col-thumb">Miniatura</div>
-                      <div class="rank-col rank-col-fields">
-                        <div class="row-field">Categoría</div>
-                        <div class="row-field">Sección</div>
-                        <div class="row-field">Obra</div>
-                        <div class="row-field">Premio</div>
-                        <div class="row-field">Puntaje</div>
-                      </div>
+              @for (it of detalle.items; track it; let i = $index) {
+                <div class="accordion-item">
+                  <div class="accordion-header" (click)="toggleContest(i)">
+                    <div>
+                      <div class="accordion-title">{{ it?.contest?.name }}</div>
+                      <div class="accordion-subtitle">{{ formatDate(it?.contest?.start_date) }} - {{ formatDate(it?.contest?.end_date) }}</div>
                     </div>
-                    <div class="rank-table-body">
-                      <ng-container *ngFor="let r of sortResults(it?.results)">
-                        <div class="rank-table-row" *ngFor="let img of sortImages(r.images)">
-                          <div class="rank-col rank-col-thumb">
-                            <img class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="border-radius:4px;" (click)="openPhotoModal(img, it.results)" />
-                          </div>
+                    <span class="accordion-arrow" [class.open]="expandedContests[i]">&#9660;</span>
+                  </div>
+                  @if (expandedContests[i]) {
+                    <div class="accordion-body">
+                      <div class="rank-table">
+                        <div class="rank-table-header">
+                          <div class="rank-col rank-col-thumb">Miniatura</div>
                           <div class="rank-col rank-col-fields">
-                            <div class="row-field"><span class="field-label">Categoría</span><span class="field-value">{{ r.category }}</span></div>
-                            <div class="row-field"><span class="field-label">Sección</span><span class="field-value">{{ r.section }}</span></div>
-                            <div class="row-field"><span class="field-label">Obra</span><span class="field-value cap">{{ img.title }}</span></div>
-                            <div class="row-field"><span class="field-label">Premio</span><span class="field-value"><span class="prize-badge">{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</span></span></div>
-                            <div class="row-field"><span class="field-label">Puntaje</span><span class="field-value score-val">{{ img.metric?.score }}</span></div>
+                            <div class="row-field">Categoría</div>
+                            <div class="row-field">Sección</div>
+                            <div class="row-field">Obra</div>
+                            <div class="row-field">Premio</div>
+                            <div class="row-field">Puntaje</div>
                           </div>
                         </div>
-                      </ng-container>
+                        <div class="rank-table-body">
+                          @for (r of sortResults(it?.results); track r) {
+                            @for (img of sortImages(r.images); track img) {
+                              <div class="rank-table-row">
+                                <div class="rank-col rank-col-thumb">
+                                  <img class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="border-radius:4px;" (click)="openPhotoModal(img, it.results)" />
+                                </div>
+                                <div class="rank-col rank-col-fields">
+                                  <div class="row-field"><span class="field-label">Categoría</span><span class="field-value">{{ r.category }}</span></div>
+                                  <div class="row-field"><span class="field-label">Sección</span><span class="field-value">{{ r.section }}</span></div>
+                                  <div class="row-field"><span class="field-label">Obra</span><span class="field-value cap">{{ img.title }}</span></div>
+                                  <div class="row-field"><span class="field-label">Premio</span><span class="field-value"><span class="prize-badge">{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</span></span></div>
+                                  <div class="row-field"><span class="field-label">Puntaje</span><span class="field-value score-val">{{ img.metric?.score }}</span></div>
+                                </div>
+                              </div>
+                            }
+                          }
+                        </div>
+                      </div>
+                      <div class="rank-summary">
+                        <div class="summary-item"><b>Puntaje total:</b> {{ it?.ranking?.total_score }}</div>
+                        <div class="summary-item"><b>Posición:</b> {{ it?.ranking?.position }}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="rank-summary">
-                    <div class="summary-item"><b>Puntaje total:</b> {{ it?.ranking?.total_score }}</div>
-                    <div class="summary-item"><b>Posición:</b> {{ it?.ranking?.position }}</div>
-                  </div>
+                  }
                 </div>
-              </div>
+              }
             </div>
-          </ng-template>
-          
+          }
+
+
         </div>
       </div>
     </div>

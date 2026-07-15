@@ -1,124 +1,154 @@
 <div class="container-fluid py-3">
-  <div class="container" *ngIf="(auth.user | async) as userLogged">
-    <div class="row">
-      <div class="col">
-        <div class="row">
-          <div class="col-12">
-            <div class="container-fluid p-0 pb-3">
-            <div class="row align-items-center g-2 mb-3">
-              <div class="col-auto">
-                <button class="btn btn-success" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" [routerLink]="['nuevo']">
-                  <i class="bi bi-plus me-1"></i> Usuario
-                </button>
-              </div>
-              <div class="col">
-                <div class="input-group">
-                  <input class="form-control" [(ngModel)]="searchQuery" placeholder="Buscar usuarios" (keyup.enter)="buscarUsuarios()" (blur)="buscarUsuarios()">
-                  <button class="btn btn-primary" (click)="buscarUsuarios()">
-                    <i class="bi bi-search"></i>
-                  </button>
+  @if ((auth.user | async); as userLogged) {
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="row">
+            <div class="col-12">
+              <div class="container-fluid p-0 pb-3">
+                <div class="row align-items-center g-2 mb-3">
+                  <div class="col-auto">
+                    @if (rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)) {
+                      <button class="btn btn-success" [routerLink]="['nuevo']">
+                        <i class="bi bi-plus me-1"></i> Usuario
+                      </button>
+                    }
+                  </div>
+                  <div class="col">
+                    <div class="input-group">
+                      <input class="form-control" [(ngModel)]="searchQuery" placeholder="Buscar usuarios" (keyup.enter)="buscarUsuarios()" (blur)="buscarUsuarios()">
+                      <button class="btn btn-primary" (click)="buscarUsuarios()">
+                        <i class="bi bi-search"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            </div>
           </div>
-        </div>
-
-            <div class="d-none d-sm-block">
-              <div class="gfc-header py-2 px-3 rounded-top">
-                <div class="row align-items-center">
-                  <div class="col-4 col-md-4">
-                    <app-th-sort
-                      [sortFn]="funcionesOrdenamiento['usuario']"
-                      [(data)]="miembros"
-                      [title]="rolificador.getNombreUsuarios(userLogged.role_id)"
-                    ></app-th-sort>
-                  </div>
-                  <div class="col-2 col-md-2" *ngIf="rolificador.isAdmin(userLogged)">
+          <div class="d-none d-sm-block">
+            <div class="gfc-header py-2 px-3 rounded-top">
+              <div class="row align-items-center">
+                <div class="col-4 col-md-4">
+                  <app-th-sort
+                    [sortFn]="funcionesOrdenamiento['usuario']"
+                    [(data)]="miembros"
+                    [title]="rolificador.getNombreUsuarios(userLogged.role_id)"
+                  ></app-th-sort>
+                </div>
+                @if (rolificador.isAdmin(userLogged)) {
+                  <div class="col-2 col-md-2">
                     <app-th-sort
                       [sortFn]="funcionesOrdenamiento['executive_rol']"
                       [(data)]="miembros"
                       title="Comisión directiva"
                     ></app-th-sort>
                   </div>
-                  <div class="col-2 col-md-2" *ngIf="rolificador.isAdmin(userLogged)">
+                }
+                @if (rolificador.isAdmin(userLogged)) {
+                  <div class="col-2 col-md-2">
                     <app-th-sort
                       [sortFn]="funcionesOrdenamiento['rol']"
                       [(data)]="miembros"
                       title="Rol"
                     ></app-th-sort>
                   </div>
-                  <div class="col-2 col-md-2" *ngIf="rolificador.isAdmin(userLogged)">
+                }
+                @if (rolificador.isAdmin(userLogged)) {
+                  <div class="col-2 col-md-2">
                     <app-th-sort
                       [sortFn]="funcionesOrdenamiento['fotoclub']"
                       [(data)]="miembros"
                       title="Fotoclub"
                     ></app-th-sort>
                   </div>
-                  <div class="col-1 col-md-1" *ngIf="rolificador.isAdmin(userLogged)">
+                }
+                @if (rolificador.isAdmin(userLogged)) {
+                  <div class="col-1 col-md-1">
                     <app-th-sort
                       [sortFn]="funcionesOrdenamiento['estado']"
                       [(data)]="miembros"
                       title="Estado"
                     ></app-th-sort>
                   </div>
-                  <div class="col-1 col-md-1">Acciones</div>
-                </div>
+                }
+                <div class="col-1 col-md-1">Acciones</div>
               </div>
             </div>
-
-            <div class="list-group list-group-flush border-start border-end" *ngIf="miembros.length > 0; else texto">
-              <div class="list-group-item" *ngFor="let m of miembros">
-                <div class="row align-items-center">
-                  <div class="col-4 col-md-4">
-                    <div class="d-flex align-items-center gap-2">
-                      <app-usuario-img [src]="m.img_url != null ? configService.imageUrl(m.img_url) : '' "></app-usuario-img>
-                      <div>
-                        <small class="text-muted" *ngIf="m.user != null">
-                          <i>@{{m.user.username}}</i>
-                        </small>
-                        <div><b>{{m.name}} {{m.last_name}}</b></div>
+          </div>
+          @if (miembros.length > 0) {
+            <div class="list-group list-group-flush border-start border-end">
+              @for (m of miembros; track m) {
+                <div class="list-group-item">
+                  <div class="row align-items-center">
+                    <div class="col-4 col-md-4">
+                      <div class="d-flex align-items-center gap-2">
+                        <app-usuario-img [src]="m.img_url != null ? configService.imageUrl(m.img_url) : '' "></app-usuario-img>
+                        <div>
+                          @if (m.user != null) {
+                            <small class="text-muted">
+                              <i>&#64;{{m.user.username}}</i>
+                            </small>
+                          }
+                          <div><b>{{m.name}} {{m.last_name}}</b></div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div class="col-2 col-md-2 d-none d-sm-block" *ngIf="m.user != null && rolificador.isAdmin(userLogged)">
-                    {{ m.executive_rol != null && m.executive_rol != '' ? m.executive_rol : 'No' }}
-                  </div>
-                  <div class="col-2 col-md-2 d-none d-sm-block" *ngIf="m.user != null && rolificador.isAdmin(userLogged)">
-                    {{ getRoleType(m.user.role_id) }}
-                  </div>
-                  <div class="col-2 col-md-2 d-none d-sm-block" *ngIf="rolificador.isAdmin(userLogged)">
-                    {{ m.fotoclub_id != null ?  getFotoclubName(m.fotoclub_id) : 'Ninguno'}}
-                  </div>
-                  <div class="col-1 col-md-1 d-none d-sm-block" *ngIf="m.user != null && rolificador.isAdmin(userLogged)">
-                    <span class="badge" [ngClass]="m.user.status == 1 ? 'bg-success' : 'bg-danger'">
-                      {{ m.user.status == 1 ? 'Habilitado' : 'Deshabilitado' }}
-                    </span>
-                  </div>
-                  <div class="col-1 col-md-1 text-end">
-                    <div class="d-flex gap-1" *ngIf="m.user != null && (rolificador.esDelegado(userLogged)  || rolificador.isAdmin(userLogged))">
-                      <button class="btn btn-warning btn-sm" [routerLink]="['editar/' + getUserId(m.user)]">
-                        <i class="bi bi-pencil"></i>
-                      </button>
-                      <button class="btn btn-danger btn-sm" (click)="toggleUsuarioStatus(m)">
-                        <i class="bi" [ngClass]="m.user.status == 0 ? 'bi-check-circle' : 'bi-x-circle'"></i>
-                      </button>
+                    @if (m.user != null && rolificador.isAdmin(userLogged)) {
+                      <div class="col-2 col-md-2 d-none d-sm-block">
+                        {{ m.executive_rol != null && m.executive_rol != '' ? m.executive_rol : 'No' }}
+                      </div>
+                    }
+                    @if (m.user != null && rolificador.isAdmin(userLogged)) {
+                      <div class="col-2 col-md-2 d-none d-sm-block">
+                        {{ getRoleType(m.user.role_id) }}
+                      </div>
+                    }
+                    @if (rolificador.isAdmin(userLogged)) {
+                      <div class="col-2 col-md-2 d-none d-sm-block">
+                        {{ m.fotoclub_id != null ?  getFotoclubName(m.fotoclub_id) : 'Ninguno'}}
+                      </div>
+                    }
+                    @if (m.user != null && rolificador.isAdmin(userLogged)) {
+                      <div class="col-1 col-md-1 d-none d-sm-block">
+                        <span class="badge" [ngClass]="m.user.status == 1 ? 'bg-success' : 'bg-danger'">
+                          {{ m.user.status == 1 ? 'Habilitado' : 'Deshabilitado' }}
+                        </span>
+                      </div>
+                    }
+                    <div class="col-1 col-md-1 text-end">
+                      @if (m.user != null && (rolificador.esDelegado(userLogged)  || rolificador.isAdmin(userLogged))) {
+                        <div class="d-flex gap-1">
+                          <button class="btn btn-warning btn-sm" [routerLink]="['editar/' + getUserId(m.user)]">
+                            <i class="bi bi-pencil"></i>
+                          </button>
+                          <button class="btn btn-danger btn-sm" (click)="toggleUsuarioStatus(m)">
+                            <i class="bi" [ngClass]="m.user.status == 0 ? 'bi-check-circle' : 'bi-x-circle'"></i>
+                          </button>
+                        </div>
+                      }
+                      @if (rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)) {
+                        <button class="btn btn-outline-secondary btn-sm d-sm-none" (click)="mostrarAcciones($event, m)">
+                          <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                      }
                     </div>
-                    <button class="btn btn-outline-secondary btn-sm d-sm-none" *ngIf="rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)" (click)="mostrarAcciones($event, m)">
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
                   </div>
                 </div>
-              </div>
+              }
             </div>
-            <ng-template #texto>
-              <div class="list-group-item" *ngIf="!loading">No hay usuarios</div>
-              <div class="list-group-item" *ngIf="searchParams != undefined">
+          } @else {
+            @if (!loading) {
+              <div class="list-group-item">No hay usuarios</div>
+            }
+            @if (searchParams != undefined) {
+              <div class="list-group-item">
                 con {{searchParams.atributo}} que empiece con '{{searchParams.query}}'
               </div>
-            </ng-template>
+            }
+          }
+        </div>
       </div>
     </div>
-  </div>
+  }
 </div>

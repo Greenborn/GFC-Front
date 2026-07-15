@@ -23,6 +23,7 @@ import { ResponsiveService } from '../services/ui/responsive.service';
 import { FotosDelAnioResponse, ItemConcursoOFoto } from '../models/foto-del-anio.model';
 import { forkJoin } from 'rxjs';
 @Component({
+  standalone: false,
   selector: 'app-concursos',
   templateUrl: './concursos.page.html',
   styleUrls: ['./concursos.page.scss'],
@@ -104,8 +105,13 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     return aux
   }
 
+  private inicializado = false;
+
   ngOnInit() {
-    this.cargarConcursosInicial();
+    if (!this.inicializado) {
+      this.inicializado = true;
+      this.cargarConcursosInicial();
+    }
   }
 
   private cargarConcursosInicial() {
@@ -123,17 +129,20 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.loading = true;
-    this.concursoPage = 1;
-    this.hasMoreConcursos = true;
-    this.concursos = [];
-    this.allItems = [];
-    this.itemGroups = [];
-    this.fotosDelAnioPorTemporada.clear();
-    this.currentSearchQuery = '';
-    this.currentSearchAttribute = undefined;
-    this.cargarFotosDelAnio();
-    this.loadConcursos();
+    if (!this.inicializado) {
+      this.inicializado = true;
+      this.loading = true;
+      this.concursoPage = 1;
+      this.hasMoreConcursos = true;
+      this.concursos = [];
+      this.allItems = [];
+      this.itemGroups = [];
+      this.fotosDelAnioPorTemporada.clear();
+      this.currentSearchQuery = '';
+      this.currentSearchAttribute = undefined;
+      this.cargarFotosDelAnio();
+      this.loadConcursos();
+    }
   }
 
   onSearch() {
@@ -371,7 +380,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   }
 
   loadMoreConcursos(event?: any) {
-    if (this.loadingMore) {
+    if (this.loadingMore || this.loading) {
       return;
     }
 

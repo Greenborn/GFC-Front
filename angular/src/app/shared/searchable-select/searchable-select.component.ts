@@ -2,6 +2,7 @@ import { Component, Input, forwardRef, HostListener, ElementRef, ViewChild } fro
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
+  standalone: false,
   selector: 'app-searchable-select',
   templateUrl: './searchable-select.component.html',
   styleUrls: ['./searchable-select.component.scss'],

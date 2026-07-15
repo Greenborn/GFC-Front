@@ -26,6 +26,7 @@ import { Subject, firstValueFrom } from 'rxjs';
 import { ComparePassword } from 'src/app/modules/auth/validators/password.validator';
 
 @Component({
+  standalone: false,
   selector: 'app-usuario-post',
   templateUrl: './usuario-post.page.html',
   styleUrls: ['./usuario-post.page.scss'],

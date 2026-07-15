@@ -17,6 +17,7 @@ import { ConfigService } from '../services/config/config.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-herramientas',
   templateUrl: './herramientas.page.html',
   styleUrls: ['./herramientas.page.scss']

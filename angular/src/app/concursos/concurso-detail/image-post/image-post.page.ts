@@ -23,6 +23,7 @@ export interface ImagePostParams {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-image-post',
   templateUrl: './image-post.page.html',
   styleUrls: ['./image-post.page.scss'],
@@ -34,7 +35,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
   @Input() resultados: any;
   @Input() concurso_id: number;
   @Input() modalController: any;
-  @Input() image: GFC_Image = this.imageService.template;
+  @Input() image: GFC_Image;
   @Input() profiles: ProfileContestExpanded[];
   @Input() secciones: Section[];
 
@@ -61,7 +62,8 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     private configService: ConfigService,
     private authService: AuthService
   ) { 
-    super(alertService)
+    super(alertService);
+    this.image = this.imageService.template;
   }
 
   get categoryId(): number {

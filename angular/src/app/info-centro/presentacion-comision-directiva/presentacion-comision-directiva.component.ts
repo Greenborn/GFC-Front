@@ -8,6 +8,7 @@ import { timeout, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-presentacion-comision-directiva',
   templateUrl: './presentacion-comision-directiva.component.html',
   styleUrls: ['./presentacion-comision-directiva.component.scss'],

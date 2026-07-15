@@ -21,7 +21,8 @@
           <div class="row">
             <div class="col">
               <div class="row pt-3">
-                <div class="mb-3" *ngIf="concursantes.length > 1; else unicoElemento" class="w-100 mb-3">
+                @if (concursantes.length > 1) {
+                  <div class="mb-3" class="w-100 mb-3">
                     <label class="form-label">Concursante</label>
                     <app-searchable-select
                       [(ngModel)]="profileContest.profile_id"
@@ -30,28 +31,25 @@
                       itemTextField="name"
                       placeholder="Seleccionar concursante"
                     ></app-searchable-select>
-                  
-                </div>
-                <ng-template #unicoElemento>
-                
-                <div class="mb-3" class="w-100 mb-3">
-                <label class="form-label">Concursante</label>
-                <input class="form-control" bg-dark text-white
-                [(ngModel)]="concursantes[0].name"
-                disabled>
-                  
-                
-              </div>
-                </ng-template>
+                  </div>
+                } @else {
+                  <div class="mb-3" class="w-100 mb-3">
+                    <label class="form-label">Concursante</label>
+                    <input class="form-control" bg-dark text-white
+                      [(ngModel)]="concursantes[0].name"
+                      disabled>
+                  </div>
+                }
               </div>
               <div class="row pt-3">
                 <div class="mb-3" class="w-100 mb-3">
                   <label class="form-label">Categoría</label>
                   <select class="form-select" [(ngModel)]="profileContest.category_id">
-                    <option
-                      *ngFor="let c of categorias"
-                      [value]="c.id"
+                    @for (c of categorias; track c) {
+                      <option
+                        [value]="c.id"
                       >{{ c.name }}</option>
+                    }
                   </select>
                 </div>
               </div>
@@ -64,8 +62,12 @@
                 </div>
                 <div class="col-auto">
                   <button class="btn btn-success" [disabled]="!datosCargados()" (click)="inscribirConcursante()">
-                    <div class="spinner-border spinner-border-sm text-primary" role="status" *ngIf="posting"><span class="visually-hidden">Loading...</span></div>
-                    <span *ngIf="!posting">Completar Inscripción</span>
+                    @if (posting) {
+                      <div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                    }
+                    @if (!posting) {
+                      <span>Completar Inscripción</span>
+                    }
                   </button>
                 </div>
               </div>

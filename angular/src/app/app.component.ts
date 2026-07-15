@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ResponsiveService } from './services/ui/responsive.service';
 
 @Component({
+  standalone: false,
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],

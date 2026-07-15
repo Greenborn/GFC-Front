@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-politica-privacidad',
   templateUrl: './politica-privacidad.component.html',
   styleUrls: ['./politica-privacidad.component.scss'],

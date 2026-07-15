@@ -14,6 +14,7 @@ export interface FiltrosOrdenState {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-filtros-orden-modal',
   templateUrl: './filtros-orden-modal.component.html',
   styleUrls: ['./filtros-orden-modal.component.scss'],

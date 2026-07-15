@@ -8,6 +8,7 @@ import { timeout, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-presentacion-ultimo-concurso',
   templateUrl: './presentacion-ultimo-concurso.component.html',
   styleUrls: ['./presentacion-ultimo-concurso.component.scss'],

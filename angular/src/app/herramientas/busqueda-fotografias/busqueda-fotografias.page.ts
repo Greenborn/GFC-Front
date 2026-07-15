@@ -4,6 +4,7 @@ import { ConfigService } from '../../services/config/config.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-busqueda-fotografias',
   templateUrl: './busqueda-fotografias.page.html',
   styleUrls: ['./busqueda-fotografias.page.scss']

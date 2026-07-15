@@ -8,6 +8,7 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConcursoDetailService } from '../concurso-detail.service';
 
 @Component({
+  standalone: false,
   selector: 'app-juzgamiento',
   templateUrl: './juzgamiento.component.html',
   styleUrls: ['./juzgamiento.component.scss'],

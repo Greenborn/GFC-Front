@@ -30,6 +30,7 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 
 import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src/app/services/contest-results.service'
 @Component({
+  standalone: false,
   selector: 'app-informacion',
   templateUrl: './informacion.component.html',
   styleUrls: ['./informacion.component.scss'],

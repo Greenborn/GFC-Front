@@ -3,11 +3,11 @@
   type="submit"
   [disabled]="disabled"
   (click)="post.emit()"
->
-  <div class="spinner-border spinner-border-sm text-primary" role="status"
-    *ngIf="posting; else texto"
-  ><span class="visually-hidden">Loading...</span></div>
-  <ng-template #texto>
-    <span>{{text}}</span>
-  </ng-template>
-</button>
+  >
+  @if (posting) {
+    <div class="spinner-border spinner-border-sm text-primary" role="status"
+      ><span class="visually-hidden">Loading...</span></div>
+    } @else {
+      <span>{{text}}</span>
+    }
+  </button>

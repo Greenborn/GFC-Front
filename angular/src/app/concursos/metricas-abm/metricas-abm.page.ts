@@ -9,6 +9,7 @@ import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar
 import { MetricasPostComponent } from './metricas-post/metricas-post.component';
 
 @Component({
+  standalone: false,
   selector: 'app-metricas-abm',
   templateUrl: './metricas-abm.page.html',
   styleUrls: ['./metricas-abm.page.scss'],
