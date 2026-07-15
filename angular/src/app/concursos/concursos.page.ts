@@ -118,6 +118,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     this.fotosDelAnioPorTemporada.clear();
     this.currentSearchQuery = '';
     this.currentSearchAttribute = undefined;
+    this.cargarFotosDelAnio();
     this.loadConcursos();
   }
 
@@ -131,6 +132,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     this.fotosDelAnioPorTemporada.clear();
     this.currentSearchQuery = '';
     this.currentSearchAttribute = undefined;
+    this.cargarFotosDelAnio();
     this.loadConcursos();
   }
 
@@ -143,6 +145,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     this.allItems = [];
     this.itemGroups = [];
     this.fotosDelAnioPorTemporada.clear();
+    this.cargarFotosDelAnio();
     this.loadConcursos();
   }
 
@@ -305,6 +308,38 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
         console.log(`Temporada ${fotoData.temporada} agregada con ${fotoData.items.length} fotos`);
       }
     });
+  }
+
+  private cargarFotosDelAnio() {
+    const url = `${this.configService.nodeApiBaseUrl}foto-del-anio`;
+    this.http.get<any>(url).subscribe({
+      next: data => {
+        this.procesarFotosDelAnio(data);
+        if (this.concursos.length > 0) {
+          this.reconstruirItems();
+        }
+      },
+      error: err => {
+        console.warn('Error al cargar fotos del año:', err);
+      }
+    });
+  }
+
+  private reconstruirItems() {
+    const concursos = [...this.concursos];
+    this.concursos.length = 0;
+    this.allItems = [];
+    this.itemGroups = [];
+    for (let i = 0; i < concursos.length; i += this.concursoPageSize) {
+      const page = concursos.slice(i, i + this.concursoPageSize);
+      this.concursos.push(...page);
+      const nuevosItems = this.mezclarConcursosPorPagina(page);
+      this.allItems.push(...nuevosItems);
+    }
+    while (this.allItems.length > 0) {
+      const group = this.allItems.splice(0, this.itemsChunkSize);
+      this.itemGroups.push(group);
+    }
   }
 
   private actualizarEstadoPaginacion(concursos: Contest[]) {
