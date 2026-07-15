@@ -117,3 +117,14 @@ body.dark .feature-card:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
+@media (max-width: 767px) {
+    .sobre-gfc-card {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .sobre-gfc-card .card-body {
+        padding: 0 !important;
+    }
+}
+
