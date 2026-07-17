@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
   templateUrl: './btn-sort.component.html',
   styleUrls: ['./btn-sort.component.scss'],
 })
-export class BtnSortComponent implements OnInit, OnChanges {
+export class BtnSortComponent implements OnChanges {
 
   @Input() sortFn: Function;
   @Input() data: any[];
@@ -21,10 +21,7 @@ export class BtnSortComponent implements OnInit, OnChanges {
 
   constructor() { }
 
-  ngOnInit() {}
-
   ngOnChanges(changes: SimpleChanges) {
-    // console.log('changed', changes.data.currentValue, 'from', changes.data.previousValue, 'selected', this.selected, 'sorted', this.dataSorted)
     if (this.selected) {
       const equals = JSON.stringify(this.dataSorted) === JSON.stringify(changes.data.currentValue)
       if (!equals) {
@@ -43,12 +40,6 @@ export class BtnSortComponent implements OnInit, OnChanges {
   get ordenamientoFill(): string {
     return this.selected ? 'fill' : 'clear'
   }
-
-  // get selected(): boolean {
-  //   return JSON.stringify(this.dataSorted) === JSON.stringify(this.data)
-  //   // return this.dataSorted == undefined ? false : 
-  //   //   (this.data[0] == this.dataSorted[0])
-  // }
 
   ordenar() {
     this.ordenamientoCreciente = !this.ordenamientoCreciente

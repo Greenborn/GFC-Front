@@ -69,10 +69,6 @@ export class ConcursantesComponent implements OnInit {
     public configService: ConfigService
   ) { }
 
-  ionViewDidEnter() {
-
-  }
-
   get isAdmin() {
     return (this.user != undefined ? this.rolificador.isAdmin(this.user) : false)
   }
@@ -220,7 +216,5 @@ postImage(profile_id: number) {
     this.UIUtilsService.mostrarMenuAcciones(acciones, ev)
   }
 
-  ionViewWillEnter() {
-   
-  }
+
 }

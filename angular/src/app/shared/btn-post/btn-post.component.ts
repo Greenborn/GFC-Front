@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   templateUrl: './btn-post.component.html',
   styleUrls: ['./btn-post.component.scss'],
 })
-export class BtnPostComponent implements OnInit {
+export class BtnPostComponent {
 
   @Input() disabled: boolean;
   @Input() posting: boolean;
@@ -14,7 +14,5 @@ export class BtnPostComponent implements OnInit {
   @Output() post = new EventEmitter<void>();
 
   constructor() { }
-
-  ngOnInit() {}
 
 }

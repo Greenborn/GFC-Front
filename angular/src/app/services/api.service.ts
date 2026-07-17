@@ -37,7 +37,7 @@ export abstract class ApiService<T> {
     return this.customBaseUrl || this.config.nodeApiBaseUrl;
   }
 
-  private getPath(resource?: string): string {
+  protected getPath(resource?: string): string {
     return resource ?? (this.apiPath || this.recurso);
   }
 

@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable, OnInit } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
 import { Image } from 'src/app/models/image.model';
@@ -15,14 +15,14 @@ import { ContestService } from 'src/app/services/contest.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { filter, map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { ContestResultService } from 'src/app/services/contest-result.service';
 import { InscribirJuecesComponent } from './inscribir-jueces/inscribir-jueces.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ConcursoDetailService implements OnInit {
+export class ConcursoDetailService {
 
   
   public concurso: BehaviorSubject<Contest>;
@@ -65,9 +65,6 @@ export class ConcursoDetailService implements OnInit {
     this.refreshPhotos = new EventEmitter<void>();
     
     
-  }
-
-  ngOnInit() {
   }
 
   loadContest(id: number): Promise<void> {
@@ -153,24 +150,6 @@ export class ConcursoDetailService implements OnInit {
       })
     })
   }
-  /*async loadContestResults(attr:any = {}) {
-   
-
-    this.concurso.pipe(
-      filter(c => c.id != undefined)
-    ).subscribe(c => { 
-      let params:string = '';
-      params += '&expand=profile,profile.user,profile.fotoclub,image.profile,image.thumbnail'
-      params += '&filter[contest_id]='+c.id
-      params += attr?.page ? '&page='+attr.page : ''
-      params +=  (attr?.concursante_id) ? ('&filter[profile_id]=' + attr.concursante_id) : ''
-      const s = this.contestResultService.getAll<ContestResultExpanded>(params).subscribe(rs => {
-        this.resultadosConcurso.next(rs)
-        s.unsubscribe()
-      })
-
-    })
-  }*/
   imagenes_page_number:number = 1;
 
   async inscribirConcursante(category_id: number = undefined, ) {

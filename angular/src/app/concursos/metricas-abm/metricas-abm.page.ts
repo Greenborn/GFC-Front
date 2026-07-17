@@ -52,12 +52,7 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
     // componentProps.parentSections = this.sections.filter(s => s.parent_id == null && (section ? s.id != section.id : true))
     // componentProps.parentSections = this.getParentSections(section ? section.id : undefined)
     componentProps.parentSections = this.metricas
-    console.log('post section props', componentProps)
-    // const data = await this.UIUtilsService.mostrarModal(SeccionPostComponent, componentProps)
-    // if (data != undefined) {
-      // const { s } = data
     const { metric: s} = await this.UIUtilsService.mostrarModal(MetricasPostComponent, componentProps)
-    console.log('received', s)
     if (s) {
       const i = this.metricas.findIndex(s1 => s1.id == s.id)
       if (i > -1) {
@@ -79,7 +74,6 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
             this.metricAbmService.delete(metric.id)
           ).subscribe(
             _ => {
-              console.log('deleted section', metric.id, _)
               this.metricas.splice(this.metricas.findIndex(s => s.id == metric.id), 1)
               // this.router.navigate(['/concursos']);
             }, 

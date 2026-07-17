@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BtnSortComponent } from '../btn-sort/btn-sort.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { BtnSortComponent } from '../btn-sort/btn-sort.component';
   templateUrl: './th-sort.component.html',
   styleUrls: ['./th-sort.component.scss'],
 })
-export class ThSortComponent implements OnInit {
+export class ThSortComponent {
 
   @Input() data: any[];
   @Input() sortFn: Function;
@@ -18,7 +18,5 @@ export class ThSortComponent implements OnInit {
   @Output() dataChange = new EventEmitter<any[]>()
 
   constructor() { }
-
-  ngOnInit() {}
 
 }

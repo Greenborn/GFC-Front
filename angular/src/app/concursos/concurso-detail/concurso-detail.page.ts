@@ -21,7 +21,7 @@ import { MetricService } from 'src/app/services/metric.service';
 import { ContestResultService } from 'src/app/services/contest-result.service';
 import { ImageService } from 'src/app/services/image.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { filter, map } from 'rxjs/operators';
 
@@ -47,13 +47,10 @@ import { ContestResultsService, resultadosConcursoGeted } from 'src/app/services
 })
 export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy {
 
-  // @ViewChild('ConcursoTabs') pageTabs: HTMLIonContentElement
-  @ViewChild('pageContent') pageContent: any
   @ViewChild('tabsContent') tabsContent: any
 
   mostrarFiltro: boolean = false;
   concurso: Contest;
-  value = { lower: 1000, upper: 1500 };
   
   resultadosConcurso: any = [];
   concursantes: ProfileExpanded[] = [];
@@ -100,14 +97,6 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
 
 
   async ngOnInit() {
-    const tabsContent: HTMLElement = document.querySelector('#concurso-tabs')
-    if (window.screen.width > 768) {
-      const content: any = document.querySelector('#concurso-content')
-      
-      let tiempoScroll = new Date().getTime()
-      let scrolling = false
-    }
-
     this.desubsc();
     this.subsc();
     
@@ -272,19 +261,12 @@ obtenerPx() {
 
     const { metric } = data ?? {}
     if (metric != undefined) {
-      // const i = this.metrics.findIndex(m => m.id == metric.id)
       const r = this.resultadosConcurso.find(e => e.metric_id == metric.id)
-      // if (i != -1) {
-        // this.metrics[i] = metric
       if (r != undefined) {
         r.metric = metric
-        // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
         await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
         this.concursoDetailService.refreshPhotos.emit()
-      } 
-      // else {
-      //   this.metrics.push(metric)
-      // }
+      }
     }
   }
 
@@ -323,19 +305,14 @@ obtenerPx() {
     const data = await this.UIUtilsService.mostrarModal(ImagePostPage, componentProps);
     const { image, section_id } = data ?? {}
     if (image != undefined && section_id != undefined) {
-      // this.loading = true
-      // const i_index = this.images.findIndex(e => e.id == image.id)
       const r_updated = this.resultadosConcurso.find(e => e.image_id == image.id)
       if (r_updated == undefined) {
-        // this.images.push(image)
         super.fetch<Metric>(() =>
           this.metricService.post({
             prize: '0',
             score: 0
           })
           ).subscribe(metric => {
-          // this.metrics.push(m)
-
           super.fetch<ContestResult>(() =>
             this.contestResultService.post({
               contest_id: this.concurso.id,
@@ -353,12 +330,10 @@ obtenerPx() {
               await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
               this.concursoDetailService.refreshPhotos.emit()
             },
-            // cr => this.contestResults.push(cr),
             error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
           })
         })
       } else {
-        // this.images.splice(i_index, 1, image)
         r_updated.image = image
         if (section_id != r_updated.section_id) {
           const model = {
@@ -371,14 +346,11 @@ obtenerPx() {
           ).subscribe({
             next: async cr => {
               r_updated.section_id = section_id
-              // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
-              
               await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
               this.concursoDetailService.refreshPhotos.emit()
             },
             error: async err => {
               this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]) })
-              
               await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
               this.concursoDetailService.refreshPhotos.emit()
             },
@@ -407,11 +379,9 @@ obtenerPx() {
   }
 
   get fechaInicio(): string {
-    // return this.contestService.formatearFechaParaHTML(this.concurso.start_date ?? '');
     return this.concurso.start_date
   }
   get fechaFin(): string {
-    // return this.contestService.formatearFechaParaHTML(this.concurso.end_date ?? '');
     return this.concurso.end_date
   }
 

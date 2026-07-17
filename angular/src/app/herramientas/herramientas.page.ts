@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContestService } from '../services/contest.service';
 import { Contest } from '../models/contest.model';
@@ -8,7 +8,8 @@ import { Section } from '../models/section.model';
 import { SectionService } from '../services/section.service';
 import * as XLSX from 'xlsx';
 import axios from 'axios';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { LoadingService } from '../services/ui/loading.service';
 import { AlertService } from '../services/ui/alert.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
@@ -24,8 +25,9 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './herramientas.page.html',
   styleUrls: ['./herramientas.page.scss']
 })
-export class HerramientasPage implements OnInit {
+export class HerramientasPage implements OnInit, OnDestroy {
   concursos: Contest[] = [];
+  private destroy$ = new Subject<void>();
   concursoSeleccionado: Contest | null = null;
   @ViewChild('fileInput', { static: true }) fileInput!: ElementRef;
   @ViewChild('folderInput', { static: false }) folderInput!: ElementRef;
@@ -58,7 +60,7 @@ export class HerramientasPage implements OnInit {
       this.fileInput.nativeElement.value = '';
     }
     
-    this.contestService.getAll<Contest>('per-page=1000').subscribe(data => {
+    this.contestService.getAll<Contest>('per-page=1000').pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.concursos = data.sort((a, b) => {
         const dateA = a.end_date ? new Date(a.end_date).getTime() : 0;
         const dateB = b.end_date ? new Date(b.end_date).getTime() : 0;
@@ -67,46 +69,38 @@ export class HerramientasPage implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   abrirBusquedaFotografias() {
     this.router.navigate(['/herramientas/busqueda-fotografias']);
   }
 
   cargarResultados() {
-    console.log('Clic en Cargar Resultados');
-    // Aquí se implementará la lógica para cargar resultados de juzgamiento
   }
 
   async onFileSelected(event: any) {
-    console.log('=== DEBUG INICIO CARGA DIRECTORIO ===');
-    
-    // Mostrar loading INMEDIATAMENTE al detectar el evento
     await this.loadingService.present('Iniciando procesamiento...');
     
     const files: FileList = event.target.files;
-    
-    // Resetear el input inmediatamente para permitir reselección
     const inputElement = this.fileInput?.nativeElement;
     
     if (!files || files.length === 0) {
-      console.log('No se seleccionaron archivos');
       this.loadingService.dismiss();
       return;
     }
     
     try {
-      console.log(`Procesando ${files.length} archivos...`);
-
-      // Actualizar mensaje de loading
       this.loadingService.present(`Analizando estructura (${files.length} archivos)...`);
       
-      // Procesar estructura de directorio
       let estructura = '';
       Array.from(files).forEach(file => {
         const relativePath = (file as any).webkitRelativePath || file.name;
         estructura += '      ' + relativePath + '\n';
       });
 
-      // Agregar directorios explícitamente
       const directorios = new Set<string>();
       Array.from(files).forEach(file => {
         const relativePath = (file as any).webkitRelativePath || file.name;
@@ -120,54 +114,37 @@ export class HerramientasPage implements OnInit {
         estructura = '[DIR] ' + dir + '\n' + estructura;
       });
 
-      console.log(`Directorios detectados: ${directorios.size}`);
-
-      // Obtener todas las categorías y secciones del sistema
       this.loadingService.present('Cargando categorías y secciones...');
       let categorias: Category[] = [];
       let secciones: Section[] = [];
       
       try {
         categorias = await firstValueFrom(this.categoryService.getAll<Category>());
-        console.log(`Categorías obtenidas: ${categorias.length}`);
       } catch (err) {
-        console.error('Error al obtener categorías:', err);
         throw new Error('No se pudieron cargar las categorías del sistema');
       }
       
       try {
         secciones = await firstValueFrom(this.sectionService.getAll<Section>());
-        console.log(`Secciones obtenidas: ${secciones.length}`);
       } catch (err) {
-        console.error('Error al obtener secciones:', err);
         throw new Error('No se pudieron cargar las secciones del sistema');
       }
 
-      // Validar que se haya procesado algo
       if (!estructura || estructura.trim().length === 0) {
         throw new Error('No se pudo procesar la estructura del directorio');
       }
 
       this.loadingService.present('Preparando vista de validación...');
       
-      // Navegar a la vista de carga de resultados
       await this.router.navigate(['/herramientas/carga-resultados'], { 
         state: { estructura, categorias, secciones } 
       });
 
-      // Dar un pequeño delay para que la navegación se complete antes de cerrar el loading
       await new Promise(resolve => setTimeout(resolve, 100));
-      
       this.loadingService.dismiss();
-      console.log('=== PROCESO COMPLETADO EXITOSAMENTE ===');
       
     } catch (error) {
-      console.error('=== ERROR EN PROCESO DE CARGA ===', error);
-      
-      // Cerrar loading si está abierto
       this.loadingService.dismiss();
-
-      // Mostrar alerta de error al usuario
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido al procesar el directorio';
       
       await this.UIUtilsService.mostrarAlert({
@@ -176,7 +153,6 @@ export class HerramientasPage implements OnInit {
       })
       
     } finally {
-      // Resetear el input para permitir nueva selección
       if (inputElement) {
         inputElement.value = '';
       }
@@ -256,7 +232,6 @@ export class HerramientasPage implements OnInit {
     const files: FileList = event.target.files;
     
     if (!files || files.length === 0) {
-      console.log('No se seleccionaron archivos');
       return;
     }
 
@@ -323,10 +298,6 @@ export class HerramientasPage implements OnInit {
         }
       });
 
-      // Mostrar en consola
-      console.log('=== ESTRUCTURA DE DIRECTORIOS Y ARCHIVOS ===');
-      console.log(JSON.stringify(estructura, null, 2));
-
       // Enviar al endpoint
       this.loadingService.present('Enviando datos al servidor...');
       const url = `${this.config.nodeApiBaseUrl}foto-del-anio`;
@@ -340,12 +311,8 @@ export class HerramientasPage implements OnInit {
         message: 'La estructura de fotos del año se envió correctamente al servidor.'
       })
 
-      console.log('Respuesta del servidor:', response);
-
     } catch (error) {
       this.loadingService.dismiss();
-      
-      console.error('Error al procesar/enviar fotos del año:', error);
       
       const errorMessage = error && (error as any).error && (error as any).error.message 
         ? (error as any).error.message 
@@ -429,8 +396,6 @@ export class HerramientasPage implements OnInit {
 
     } catch (error) {
       this.loadingService.dismiss();
-      
-      console.error('Error al agregar grabación:', error);
       
       const errorMessage = error && (error as any).error && (error as any).error.message 
         ? (error as any).error.message 

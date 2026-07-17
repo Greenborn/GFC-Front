@@ -62,23 +62,22 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
       if (form.valid) {
         this.posting = true;
         const data = { ...form.value, id: this.fotoclub.id };
-        // Si hay imagen cargada en base64, agregarla como 'image'
         if (this.fotoclub.photo_base64 && this.fotoclub.photo_base64.file) {
           data.image = this.fotoclub.photo_base64.file;
         }
-        this.fotoclubService.post(data, this.fotoclub.id).subscribe(
-          async fotoclub => {
-            this.posting = false;
-            try {
-              await this.modalController.dismiss({ fotoclub });
-            } catch {}
-          },
-          err => {
-            this.posting = false;
-            console.log('Error post fotoclub', err);
-            this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error) });
-          }
-        );
+        super.fetch<Fotoclub>(() => this.fotoclubService.post(data, this.fotoclub.id))
+          .subscribe(
+            async fotoclub => {
+              this.posting = false;
+              try {
+                await this.modalController.dismiss({ fotoclub });
+              } catch {}
+            },
+            err => {
+              this.posting = false;
+              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error) });
+            }
+          );
       }
   }
 
@@ -90,11 +89,9 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
     reader.readAsDataURL(file);
     reader.onload = function () {
         me.fotoclub.photo_base64 = { file: reader.result, name:file.name};
-        console.log(me.fotoclub.photo_base64);
         me.img_url = me.fotoclub.photo_base64.file;
     };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
+    reader.onerror = function () {
       return false;
     };
   }

@@ -38,15 +38,10 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
   user: User = undefined;
   miembros: ProfileExpanded[] = [];
   miembrosOrig: ProfileExpanded[] = [];
-  // miembros: Observable<ProfileExpanded[]>;
-  // users: Observable<User[]>;
-  // profiles: Profile[] = [];
-
   roles: Role[] = [];
   fotoclubs: Fotoclub[] = [];
   comisiones: String[] = [];
 
-  // usuariosFiltrados: Usuario[] = [];
   searchParams: SearchBarComponentParams;
 
   public getUserId(e:any){
@@ -70,7 +65,6 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
   ];
 
   public funcionesOrdenamiento: Function[] = [];
-  // public funcionesFiltrado: Function[] = [];
   public filtrado: any[] = [];
 
   public loading: boolean = false;
@@ -91,7 +85,6 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     public UIUtilsService: UiUtilsService
   ) {
     super(alertCtrl)
-    // this.funcionesOrdenamiento['fotoclub'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
     this.funcionesOrdenamiento['usuario'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
       const n1 = e1.last_name
       const n2 = e2.last_name
@@ -158,60 +151,27 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       }
     })
 
-    // this.funcionesFiltrado['fotoclub'] = (p: ProfileExpanded, atributoValue: string) => {
-
-    //   return p.fotoclub_id == parseInt(atributoValue)
-    // }
-    // this.funcionesFiltrado['role'] = (p: ProfileExpanded, atributoValue: string) => {
-
-    //   return p.user.role_id == parseInt(atributoValue)
-    // }
   }
 
   getTitulo(u: UserLogged) {
     const nombreUsuarios = this.rolificador.getNombreUsuarios(u.role_id)
     if (!this.rolificador.isAdmin(u)) {
-      // const p = this.profiles.find(p => p.id == u.profile_id)
-      // if (p != undefined && this.fotoclubs.length > 0) {
       if (this.fotoclubs.length > 0) {
         return `${nombreUsuarios} del fotoclub ${this.fotoclubs.find(f => f.id == u.profile.fotoclub_id).name}`
       } else return ''
     } else return nombreUsuarios
   }
 
-  // get titulo() {
-  //   if (this.user != undefined) {
-  //     if (this.user.role_id != 1) {
-  //       const p = this.profiles.find(p => p.id == this.user.profile_id)
-  //       if (p != undefined && this.fotoclubs.length > 0) {
-  //         return `Concursantes del fotoclub ${this.fotoclubs.find(f => f.id == p.fotoclub_id).name}`
-  //       } else return ''
-  //     } else return 'Miembros'
-  //   } else return ''
-  // }
-
   getFotoclubName(fotoclub_id: number) {
     let name = ''
-    // const p = this.profiles.find(e => e.id == profile_id)
-    // console.log(p)
-    // if (p != undefined) {
     let fc = this.fotoclubs.find(e => e.id == fotoclub_id)
     if (fc != undefined) name = fc.name
-    // }
     return name
   }
   getRoleType(id: number) {
     const a = this.roles.find(e => e.id == id)
     return a != undefined ? a.type : ''
   }
-  // getFullName(profile_id: number) {
-  //   const a = this.profiles.find(e => e.id == profile_id)
-  //   return a != undefined ? `${a.name} ${a.last_name}` : ''
-  // }
-
-  // filtrarUsuarios({ atributo, query }: SearchBarComponentParams) {
-  //   this.usuariosFiltrados = this.usuarios.filter(u => u[atributo].substr(0, query.length) == query)
-  // }
   private sanitizeSearchQuery(query: string): string {
     if (query == undefined || query == null) {
       return '';
@@ -236,17 +196,6 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
       });
     });
   }
-  // get usuariosFiltrados() {
-  //   if (this.user != undefined && this.profiles.length > 0) {
-  //     if (this.user.role_id != 1) {
-  //       const fc_id = this.profiles.find(p => p.id == this.user.profile_id).fotoclub_id
-  //       return this.users.filter(u => this.profiles.find(p => p.id == u.profile_id).fotoclub_id == fc_id)
-  //     } else return this.users
-  //   } else return []
-
-  //   // const q = this.searchQuery;
-  //   // return this.usuarios.filter(u => u.username.substr(0, q.length) == q)
-  // }
 
   async toggleUsuarioStatus(p: ProfileExpanded) {
     if (!p.user || p.user.id == null) {
@@ -303,34 +252,6 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
   }
 
   async ngOnInit() {
-
-    // this.route.queryParams.subscribe(params => {
-
-    //   // console.log('detecting query params change', params)
-
-    //   this.miembros = [...this.miembrosOrig]
-
-    //   const filterCallbacks: {
-    //     queryValue: string;
-    //     callback: Function;
-    //   }[] = [];
-
-    //   for (const f of [this.filtrado['rol'], this.filtrado['fotoclub']]) {
-    //     // console.log('analizando filter callback', f)
-    //     if (params[f.options.queryParam] != undefined) {
-    //       // console.log('agregando filter callback', f.options.queryParam)
-    //       filterCallbacks.push({
-    //         callback: f.filterCallback,
-    //         queryValue: params[f.options.queryParam]
-    //       })
-    //     }
-    //   }
-
-    //   for (const f of filterCallbacks) {
-    //     this.miembros = this.miembros.filter(p => f.callback(p, f.queryValue))
-    //   }
-    // });
-
     super.fetch<Role[]>( () => this.roleService.getAll()).subscribe(r => this.roles = r)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => {
       this.fotoclubs = r
@@ -353,8 +274,4 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     this.cargarMiembros()
   }
 
-  // para implementar busqueda con la api (sobrescribe variable de usuarios)
-  // async buscarUsuarios(searchQuery) {
-  //   console.log(searchQuery)
-  // }
 }

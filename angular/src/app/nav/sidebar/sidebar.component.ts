@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, ElementRef, OnChanges, SimpleChanges, HostListener } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ElementRef, OnChanges, SimpleChanges, HostListener, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
@@ -29,7 +30,7 @@ const FOCUSABLE_SELECTORS = [
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit, OnChanges {
+export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() open: boolean = false;
   @Output() closeSidebar = new EventEmitter<void>();
@@ -38,6 +39,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   appInstalled = false;
 
   private triggerElement: HTMLElement | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(
     public auth: AuthService,
@@ -168,9 +170,14 @@ export class SidebarComponent implements OnInit, OnChanges {
     });
 
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.destroy$))
       .subscribe(() => {
         this.closeSidebar.emit();
       });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

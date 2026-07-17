@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input } from '@angular/core';
 
 export interface MenuAccionesComponentAccion {
   accion: Function;
@@ -16,27 +15,14 @@ export interface MenuAccionesComponentAccion {
   templateUrl: './menu-acciones.component.html',
   styleUrls: ['./menu-acciones.component.scss'],
 })
-export class MenuAccionesComponent implements OnInit {
-
-  // @Input() id: number;
-  // @Input() abmPage: UsuariosAbmPage;
+export class MenuAccionesComponent {
 
   @Input() acciones: MenuAccionesComponentAccion[] = [];
   @Input() onClick: Function = () => {};
-
-  constructor(
-    private router: Router
-  ) { }
 
   action(action: Function, params: any[]) {
     action(params)
     this.onClick()
   }
-
-  // editUsuario() {
-  //   this.router.navigate(['/usuarios/editar/' + this.id])  
-  // }
-
-  ngOnInit() {}
 
 }
