@@ -1,29 +1,8 @@
 # Especificación Técnica Universal - Grupo Fotográfico Centro
 
-## 📑 Índice
-1. [Descripción General](#-descripción-general)
-2. [Objetivo](#-objetivo)
-3. [Resumen Ejecutivo](#-resumen-ejecutivo)
-4. [Arquitectura de Alto Nivel](#️-arquitectura-de-alto-nivel)
-5. [Especificación de Diseño Visual](#-especificación-de-diseño-visual)
-6. [Especificación Funcional](#-especificación-funcional)
-7. [Especificación de Datos](#-especificación-de-datos)
-8. [Flujos de Proceso](#-flujos-de-proceso)
-9. [Especificación de APIs](#-especificación-de-apis)
-10. [Especificación de Testing](#-especificación-de-testing)
-11. [Especificación de Despliegue](#-especificación-de-despliegue)
-12. [Especificación de Seguridad](#-especificación-de-seguridad)
-13. [Especificación de Internacionalización](#-especificación-de-internacionalización)
-14. [Especificación de Accesibilidad](#-especificación-de-accesibilidad)
-15. [Especificación de Monitoreo y Observabilidad](#-especificación-de-monitoreo-y-observabilidad)
-16. [Especificación de Integración](#-especificación-de-integración)
-17. [Especificación de Dispositivos Móviles](#-especificación-de-dispositivos-móviles)
-18. [Especificación de Configuración](#-especificación-de-configuración)
-19. [Checklist de Implementación](#-checklist-de-implementación)
-20. [Migración y Compatibilidad](#-migración-y-compatibilidad)
-21. [Métricas y KPIs](#-métricas-y-kpis)
+> **⚠️ DOCUMENTACIÓN DESACTUALIZADA**: Este documento referencia Angular 12, Ionic 6, NgModules y Capacitor. El proyecto actual usa **Angular 21 + Bootstrap 5 + Standalone Components**. Ver [README.md](./README.md) para docs actualizadas.
 
-## 📋 Descripción General
+## Descripción General
 
 Esta especificación técnica universal define completamente el comportamiento, funcionalidad y estética del sistema del Grupo Fotográfico Centro de manera independiente de la tecnología de implementación. Permite replicar el sistema en cualquier stack tecnológico.
 

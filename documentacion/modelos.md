@@ -1,8 +1,10 @@
 # Documentación de Modelos - Grupo Fotográfico Centro
 
-## 📋 Descripción General
+> ⚠️ **Parcialmente desactualizado**: Algunas interfaces pueden diferir de la implementación actual. Revisar los archivos en `src/app/models/` para la fuente de verdad actual.
 
-Esta documentación describe todos los modelos de datos de la aplicación, incluyendo interfaces, tipos y estructuras de datos utilizadas en el sistema.
+## Descripción General
+
+Esta documentación describe los principales modelos de datos de la aplicación, incluyendo interfaces, tipos y estructuras de datos utilizadas en el sistema.
 
 ## 🏗️ Estructura de Modelos
 

@@ -1,856 +1,396 @@
 # Documentación de Componentes - Grupo Fotográfico Centro
 
-## 📋 Descripción General
+## Descripción General
 
-Esta documentación describe todos los componentes de la aplicación, organizados por módulos y funcionalidad. Cada componente incluye su propósito, propiedades, eventos y ejemplos de uso.
+Esta documentación describe todos los componentes de la aplicación. Todos son **standalone components** (Angular 21), organizados por área funcional.
 
-## 🏗️ Estructura de Componentes
+## Estructura de Componentes
 
-### Jerarquía de Componentes
 ```
-AppComponent
+AppComponent (standalone)
 ├── NavbarComponent
 ├── SidebarComponent
-├── FooterComponent
 └── RouterOutlet
-    ├── AuthModule
-    ├── ConcursosModule
-    ├── UsuarioModule
-    ├── InfoCentroModule
-    └── FotoclubsAbmModule
+    ├── Concursos (páginas + detail children)
+    ├── Auth (login, SSO, password recovery)
+    ├── Usuario (perfil, ABM)
+    ├── InfoCentro (home, comisión, miembros)
+    ├── FotoclubsAbm (organizaciones)
+    ├── Herramientas (búsqueda, carga resultados)
+    ├── Notificaciones
+    ├── Política Privacidad
+    └── Condiciones Servicio
 ```
 
-## 🔐 Módulo de Autenticación (AuthModule)
+## Autenticación
 
 ### LoginViewComponent
 **Archivo**: `src/app/modules/auth/components/login-view/login-view.component.ts`
 
-**Propósito**: Componente principal para la autenticación de usuarios.
+Propósito: Formulario de inicio de sesión con soporte SSO.
 
-**Características**:
-- Formulario de login con validación
+Características:
+- Formulario reactivo con validación
 - Integración con AuthService
-- Manejo de errores de autenticación
+- Botón de login SSO
+- Manejo de errores
 - Redirección post-login
 
-**Propiedades**:
-```typescript
-interface LoginViewComponent {
-  loginForm: FormGroup;
-  loading: boolean;
-  errorMessage: string;
-}
-```
+### LoginRedirectComponent
+**Archivo**: `src/app/modules/auth/components/login-redirect/login-redirect.component.ts`
 
-**Eventos**:
-- `onSubmit()`: Envía credenciales de login
-- `onError()`: Maneja errores de autenticación
+Propósito: Manejador de redirect post-autenticación SSO. Procesa el token recibido y redirige a la ruta correspondiente.
 
-**Uso**:
-```html
-<app-login-view></app-login-view>
-```
+### RecuperarPasswordSolicitudComponent
+**Archivo**: `src/app/modules/auth/components/recuperar-password/recuperar-password-solicitud.component.ts`
 
-## 🏆 Módulo de Concursos (ConcursosModule)
+Propósito: Formulario para solicitar recuperación de contraseña (ingreso de email).
+
+### RecuperarPasswordCodigoComponent
+**Archivo**: `src/app/modules/auth/components/recuperar-password/recuperar-password-codigo.component.ts`
+
+Propósito: Ingreso del código de verificación recibido por email.
+
+### RecuperarPasswordExitoComponent
+**Archivo**: `src/app/modules/auth/components/recuperar-password/recuperar-password-exito.component.ts`
+
+Propósito: Confirmación de que la contraseña fue restablecida exitosamente.
+
+## Concursos
 
 ### ConcursosPage
 **Archivo**: `src/app/concursos/concursos.page.ts`
 
-**Propósito**: Página principal que lista todos los concursos disponibles.
+Propósito: Lista de todos los concursos con búsqueda, filtros y ordenamiento.
 
-**Características**:
-- Lista de concursos con filtros
-- Búsqueda y ordenamiento
+Características:
+- Lista con búsqueda y filtros por estado/año
 - Acciones CRUD para administradores
+- Botón de foto del año
 - Integración con ContestService
 
-**Propiedades**:
-```typescript
-interface ConcursosPage {
-  contests: Contest[];
-  filteredContests: Contest[];
-  searchTerm: string;
-  sortBy: string;
-  loading: boolean;
-}
-```
+### ConcursoPostPage
+**Archivo**: `src/app/concursos/concurso-post/concurso-post.page.ts`
 
-**Métodos**:
-- `loadContests()`: Carga lista de concursos
-- `filterContests()`: Filtra concursos por término de búsqueda
-- `sortContests()`: Ordena concursos por criterio
-- `createContest()`: Navega a creación de concurso
-- `editContest(id)`: Navega a edición de concurso
-
-### RankingPage
-**Archivo**: `src/app/concursos/ranking/ranking.page.ts`
-
-**Propósito**: Muestra el ranking de participantes y organizaciones.
-
-**Características**:
-- Ranking de perfiles
-- Ranking de fotoclubs
-- Estadísticas de participación
-- Integración con RankingService
-
-**Propiedades**:
-```typescript
-interface RankingPage {
-  profilesRanking: Profile[];
-  fotoclubsRanking: Fotoclub[];
-  loading: boolean;
-}
-```
-
-### SeccionPostComponent
-**Archivo**: `src/app/concursos/secciones-abm/seccion-post/seccion-post.component.ts`
-
-**Propósito**: Formulario para crear y editar secciones de concursos.
-
-**Características**:
-- Formulario reactivo
-- Validación de campos
-- Integración con SectionService
-- Manejo de errores
-
-**Propiedades**:
-```typescript
-interface SeccionPostComponent {
-  sectionForm: FormGroup;
-  section: Section;
-  isEditMode: boolean;
-  loading: boolean;
-}
-```
-
-### MetricasPostComponent
-**Archivo**: `src/app/concursos/metricas-abm/metricas-post/metricas-post.component.ts`
-
-**Propósito**: Formulario para crear y editar métricas de evaluación.
-
-**Características**:
-- Formulario de métricas
-- Validación de puntajes
-- Integración con MetricService
-
-## 📸 Módulo de Detalle de Concurso (ConcursoDetailModule)
+Propósito: Formulario para crear/editar concursos (reutilizado para ambas operaciones).
 
 ### ConcursoDetailPage
 **Archivo**: `src/app/concursos/concurso-detail/concurso-detail.page.ts`
 
-**Propósito**: Página principal del detalle de un concurso específico.
+Propósito: Página de detalle de concurso con navegación por tabs hijos.
 
-**Características**:
-- Navegación por tabs
-- Información general del concurso
-- Gestión de participantes y fotografías
-- Control de acceso basado en roles
-
-**Propiedades**:
-```typescript
-interface ConcursoDetailPage {
-  contest: Contest;
-  activeTab: string;
-  userRole: string;
-  loading: boolean;
-}
-```
-
-**Tabs Disponibles**:
-- Información
+Tabs disponibles:
+- Información (default)
 - Concursantes
 - Fotografías
-- Jueces
-- Juzgamiento
+
+Dependencias: 15+ servicios inyectados (pendiente de refactor).
 
 ### InformacionComponent
 **Archivo**: `src/app/concursos/concurso-detail/informacion/informacion.component.ts`
 
-**Propósito**: Muestra información detallada del concurso.
-
-**Características**:
-- Información general del concurso
-- Fechas y reglas
-- Estadísticas de participación
-- Acciones administrativas
+Propósito: Información general del concurso, fechas, reglas y acciones administrativas.
 
 ### ConcursantesComponent
 **Archivo**: `src/app/concursos/concurso-detail/concursantes/concursantes.component.ts`
 
-**Propósito**: Gestión de participantes del concurso.
-
-**Características**:
-- Lista de participantes
-- Inscripción de nuevos participantes
-- Gestión de perfiles
-- Estadísticas de participación
-
-**Propiedades**:
-```typescript
-interface ConcursantesComponent {
-  participants: ProfileContest[];
-  contest: Contest;
-  loading: boolean;
-  canManage: boolean;
-}
-```
+Propósito: Gestión de participantes del concurso (lista, inscripción).
 
 ### FotografiasComponent
 **Archivo**: `src/app/concursos/concurso-detail/fotografias/fotografias.component.ts`
 
-**Propósito**: Gestión de fotografías del concurso.
+Propósito: Galería de fotografías con filtros por sección, participante y ordenamiento.
 
-**Características**:
-- Galería de fotografías
-- Filtros por sección y participante
-- Vista de detalle de imágenes
-- Gestión de fotografías (admin)
+### FiltrosOrdenModalComponent
+**Archivo**: `src/app/concursos/concurso-detail/fotografias/filtros-orden-modal.component.ts`
 
-**Propiedades**:
-```typescript
-interface FotografiasComponent {
-  images: Image[];
-  filteredImages: Image[];
-  sections: Section[];
-  participants: Profile[];
-  selectedSection: number;
-  selectedParticipant: number;
-  viewMode: 'grid' | 'list';
-}
-```
-
-### JuecesComponent
-**Archivo**: `src/app/concursos/concurso-detail/jueces/jueces.component.ts`
-
-**Propósito**: Gestión de jueces del concurso.
-
-**Características**:
-- Lista de jueces asignados
-- Asignación de nuevos jueces
-- Gestión de permisos
-- Estadísticas de juzgamiento
-
-### JuzgamientoComponent
-**Archivo**: `src/app/concursos/concurso-detail/juzgamiento/juzgamiento.component.ts`
-
-**Propósito**: Sistema de evaluación y juzgamiento.
-
-**Características**:
-- Evaluación de fotografías
-- Sistema de puntuación
-- Resultados y rankings
-- Reportes de evaluación
+Propósito: Modal para configurar filtros y orden de visualización de fotografías.
 
 ### ImagePostPage
 **Archivo**: `src/app/concursos/concurso-detail/image-post/image-post.page.ts`
 
-**Propósito**: Formulario para subir nuevas fotografías.
-
-**Características**:
-- Upload de imágenes
-- Validación de archivos
-- Metadatos de fotografía
-- Integración con ImageService
-
-**Propiedades**:
-```typescript
-interface ImagePostPage {
-  imageForm: FormGroup;
-  selectedFile: File;
-  previewUrl: string;
-  loading: boolean;
-  contest: Contest;
-}
-```
+Propósito: Formulario para subir nuevas fotografías a un concurso.
 
 ### ImageReviewPage
 **Archivo**: `src/app/concursos/concurso-detail/image-review/image-review.page.ts`
 
-**Propósito**: Vista detallada de una fotografía específica.
-
-**Características**:
-- Vista ampliada de imagen
-- Información del autor
-- Comentarios y evaluaciones
-- Navegación entre imágenes
+Propósito: Vista detallada de una fotografía con información del autor y metadatos.
 
 ### InscribirConcursanteComponent
 **Archivo**: `src/app/concursos/concurso-detail/inscribir-concursante/inscribir-concursante.component.ts`
 
-**Propósito**: Modal para inscribir participantes al concurso.
-
-**Características**:
-- Búsqueda de perfiles
-- Selección de secciones
-- Validación de inscripción
-- Confirmación de participación
+Propósito: Modal para inscribir participantes al concurso (búsqueda de perfiles, selección de secciones).
 
 ### InscribirJuecesComponent
 **Archivo**: `src/app/concursos/concurso-detail/inscribir-jueces/inscribir-jueces.component.ts`
 
-**Propósito**: Modal para asignar jueces al concurso.
-
-**Características**:
-- Búsqueda de usuarios
-- Asignación de roles de juez
-- Gestión de permisos
-- Confirmación de asignación
+Propósito: Modal para asignar jueces al concurso.
 
 ### VerFotografiasComponent
 **Archivo**: `src/app/concursos/concurso-detail/ver-fotografias/ver-fotografias.component.ts`
 
-**Propósito**: Galería completa de fotografías del concurso.
+Propósito: Galería completa de fotografías del concurso con vista ampliada.
 
-**Características**:
-- Vista de galería
-- Filtros avanzados
-- Navegación por imágenes
-- Información de autoría
+### ContestRecordsComponent
+**Archivo**: `src/app/concursos/concurso-detail/contest-records/contest-records.component.ts`
 
-## 👤 Módulo de Usuarios (UsuarioModule)
+Propósito: Gestión de registros y documentos asociados al concurso.
+
+### ContestRecordFormComponent
+**Archivo**: `src/app/concursos/concurso-detail/contest-records/contest-record-form/contest-record-form.component.ts`
+
+Propósito: Formulario para crear/editar registros del concurso.
+
+### SeccionesAbmPage
+**Archivo**: `src/app/concursos/secciones-abm/secciones-abm.page.ts`
+
+Propósito: Administración de secciones de concursos (ABM).
+
+### SeccionPostComponent
+**Archivo**: `src/app/concursos/secciones-abm/seccion-post/seccion-post.component.ts`
+
+Propósito: Formulario para crear/editar secciones.
+
+### MetricasAbmPage
+**Archivo**: `src/app/concursos/metricas-abm/metricas-abm.page.ts`
+
+Propósito: Administración de métricas de evaluación (ABM).
+
+### MetricasPostComponent
+**Archivo**: `src/app/concursos/metricas-abm/metricas-post/metricas-post.component.ts`
+
+Propósito: Formulario para crear/editar métricas.
+
+### RankingPage
+**Archivo**: `src/app/concursos/ranking/ranking.page.ts`
+
+Propósito: Ranking de participantes con filtros por año y concurso.
+
+### RankingDetalleModalComponent
+**Archivo**: `src/app/concursos/ranking/ranking-detalle-modal/ranking-detalle-modal.component.ts`
+
+Propósito: Modal con detalle del ranking de un participante (categorías, secciones, puntajes).
+
+### FotosAnioCardComponent
+**Archivo**: `src/app/concursos/fotos-anio-card/fotos-anio-card.component.ts`
+
+Propósito: Card para mostrar/seleccionar foto del año.
+
+## Usuarios
 
 ### UsuarioPage
 **Archivo**: `src/app/usuario/usuario.page.ts`
 
-**Propósito**: Página principal de gestión de perfil de usuario.
-
-**Características**:
-- Edición de perfil personal
-- Cambio de contraseña
-- Información de cuenta
-- Preferencias de usuario
+Propósito: Edición del perfil del usuario actual.
 
 ### PerfilPage
 **Archivo**: `src/app/usuario/perfil/perfil.page.ts`
 
-**Propósito**: Visualización de perfil de usuario específico.
-
-**Características**:
-- Información pública del perfil
-- Historial de participación
-- Estadísticas personales
-- Galería de trabajos
+Propósito: Visualización de perfil de usuario (propio o de otros).
 
 ### UsuariosAbmPage
 **Archivo**: `src/app/usuario/usuarios-abm/usuarios-abm.page.ts`
 
-**Propósito**: Administración de usuarios del sistema.
-
-**Características**:
-- Lista de usuarios
-- Creación y edición
-- Gestión de roles
-- Búsqueda y filtros
-
-**Propiedades**:
-```typescript
-interface UsuariosAbmPage {
-  users: User[];
-  filteredUsers: User[];
-  roles: Role[];
-  loading: boolean;
-  searchTerm: string;
-}
-```
+Propósito: Administración de usuarios del sistema (lista, búsqueda, roles).
 
 ### UsuarioPostPage
 **Archivo**: `src/app/usuario/usuarios-abm/usuario-post/usuario-post.page.ts`
 
-**Propósito**: Formulario para crear y editar usuarios.
-
-**Características**:
-- Formulario completo de usuario
-- Validación de campos
-- Gestión de roles y permisos
-- Integración con UserService
-
-**Propiedades**:
-```typescript
-interface UsuarioPostPage {
-  userForm: FormGroup;
-  user: User;
-  roles: Role[];
-  profiles: Profile[];
-  isEditMode: boolean;
-  loading: boolean;
-}
-```
+Propósito: Formulario para crear/editar usuarios (reutilizado para registro y admin).
 
 ### ChangePasswordComponent
 **Archivo**: `src/app/usuario/usuarios-abm/usuario-post/change-password/change-password.component.ts`
 
-**Propósito**: Modal para cambio de contraseña.
-
-**Características**:
-- Formulario de cambio de contraseña
-- Validación de contraseña actual
-- Confirmación de nueva contraseña
-- Integración con UserService
+Propósito: Modal para cambio de contraseña.
 
 ### ConfirmUserComponent
 **Archivo**: `src/app/usuario/usuarios-abm/usuario-post/confirm-user/confirm-user.component.ts`
 
-**Propósito**: Confirmación de registro de usuario.
+Propósito: Confirmación de registro de usuario.
 
-**Características**:
-- Confirmación de datos
-- Activación de cuenta
-- Redirección post-registro
-
-## 📰 Módulo de Información del Centro (InfoCentroModule)
+## Información del Centro
 
 ### InfoCentroPage
 **Archivo**: `src/app/info-centro/info-centro.page.ts`
 
-**Propósito**: Página principal de información del centro fotográfico.
-
-**Características**:
-- Información general del centro
-- Secciones informativas
-- Gestión de contenido (admin)
-- Navegación por secciones
+Propósito: Página principal del centro (home pública).
 
 ### InfoCentroPostComponent
 **Archivo**: `src/app/info-centro/info-centro-post/info-centro-post.component.ts`
 
-**Propósito**: Formulario para crear y editar contenido informativo.
-
-**Características**:
-- Editor de contenido
-- Gestión de imágenes
-- Categorización de contenido
-- Integración con InfoCentroService
+Propósito: Formulario para crear/editar contenido informativo.
 
 ### PresentacionComisionDirectivaComponent
 **Archivo**: `src/app/info-centro/presentacion-comision-directiva/presentacion-comision-directiva.component.ts`
 
-**Propósito**: Presentación de la comisión directiva.
-
-**Características**:
-- Lista de miembros directivos
-- Información de contacto
-- Cargos y responsabilidades
-- Imágenes de perfil
+Propósito: Presentación de la comisión directiva.
 
 ### PresentacionMiembrosComponent
 **Archivo**: `src/app/info-centro/presentacion-miembros/presentacion-miembros.component.ts`
 
-**Propósito**: Presentación de miembros del centro.
-
-**Características**:
-- Lista de miembros
-- Información de contacto
-- Categorías de membresía
-- Galería de perfiles
+Propósito: Presentación de miembros del centro.
 
 ### PresentacionUltimoConcursoComponent
 **Archivo**: `src/app/info-centro/presentacion-ultimo-concurso/presentacion-ultimo-concurso.component.ts`
 
-**Propósito**: Presentación del último concurso realizado.
+Propósito: Presentación del último concurso realizado.
 
-**Características**:
-- Información del concurso
-- Ganadores destacados
-- Galería de imágenes
-- Estadísticas del evento
-
-## 🏢 Módulo de Organizaciones (FotoclubsAbmModule)
+## Organizaciones
 
 ### FotoclubsAbmPage
 **Archivo**: `src/app/fotoclubs-abm/fotoclubs-abm.page.ts`
 
-**Propósito**: Administración de organizaciones/fotoclubs.
-
-**Características**:
-- Lista de organizaciones
-- Creación y edición
-- Gestión de información
-- Búsqueda y filtros
+Propósito: Lista de organizaciones/fotoclubs (pública).
 
 ### FotoclubPostComponent
 **Archivo**: `src/app/fotoclubs-abm/fotoclub-post/fotoclub-post.component.ts`
 
-**Propósito**: Formulario para crear y editar organizaciones.
+Propósito: Formulario para crear/editar organizaciones.
 
-**Características**:
-- Formulario completo de organización
-- Gestión de información de contacto
-- Redes sociales
-- Imágenes de perfil
+## Herramientas
 
-## 🔧 Componentes Compartidos (SharedModule)
+### HerramientasPage
+**Archivo**: `src/app/herramientas/herramientas.page.ts`
+
+Propósito: Panel principal de herramientas administrativas.
+
+### BusquedaFotografiasPage
+**Archivo**: `src/app/herramientas/busqueda-fotografias/busqueda-fotografias.page.ts`
+
+Propósito: Búsqueda avanzada de fotografías con múltiples filtros.
+
+### CargaResultadosPage
+**Archivo**: `src/app/herramientas/carga-resultados/carga-resultados.page.ts`
+
+Propósito: Importación de resultados de concursos desde archivos Excel.
+
+## Notificaciones
+
+### NotificacionesPage
+**Archivo**: `src/app/notificaciones/notificaciones.page.ts`
+
+Propósito: Centro de notificaciones del usuario.
+
+## Páginas Legales
+
+### PoliticaPrivacidadComponent
+**Archivo**: `src/app/politica-privacidad/politica-privacidad.component.ts`
+
+Propósito: Página de política de privacidad (pública, standalone eager).
+
+### CondicionesServicioComponent
+**Archivo**: `src/app/condiciones-servicio/condiciones-servicio.component.ts`
+
+Propósito: Página de condiciones de servicio (pública, standalone eager).
+
+## Componentes Compartidos (Shared)
 
 ### UsuarioImgComponent
 **Archivo**: `src/app/shared/usuario-img/usuario-img.component.ts`
 
-**Propósito**: Componente para mostrar imagen de usuario con fallback.
+Propósito: Imagen de perfil con fallback.
 
-**Propiedades**:
-```typescript
-interface UsuarioImgComponent {
-  @Input() userId: number;
-  @Input() size: 'small' | 'medium' | 'large';
-  @Input() alt: string;
-}
-```
-
-**Uso**:
 ```html
-<app-usuario-img [userId]="123" size="medium" alt="Foto de usuario"></app-usuario-img>
+<app-usuario-img [userId]="123" size="medium" alt="Foto"></app-usuario-img>
 ```
 
 ### SearchBarComponent
 **Archivo**: `src/app/shared/search-bar/search-bar.component.ts`
 
-**Propósito**: Barra de búsqueda reutilizable.
-
-**Propiedades**:
-```typescript
-interface SearchBarComponent {
-  @Input() placeholder: string;
-  @Input() searchTerm: string;
-  @Output() searchChange: EventEmitter<string>;
-  @Output() searchSubmit: EventEmitter<string>;
-}
-```
-
-**Uso**:
-```html
-<app-search-bar 
-  placeholder="Buscar concursos..."
-  [searchTerm]="searchTerm"
-  (searchChange)="onSearchChange($event)"
-  (searchSubmit)="onSearchSubmit($event)">
-</app-search-bar>
-```
+Propósito: Barra de búsqueda reutilizable con emit de cambios y submit.
 
 ### MenuAccionesComponent
 **Archivo**: `src/app/shared/menu-acciones/menu-acciones.component.ts`
 
-**Propósito**: Menú de acciones contextuales.
-
-**Propiedades**:
-```typescript
-interface MenuAccionesComponent {
-  @Input() actions: MenuAccion[];
-  @Input() item: any;
-  @Output() actionClick: EventEmitter<MenuAccionClick>;
-}
-```
-
-**Uso**:
-```html
-<app-menu-acciones 
-  [actions]="availableActions"
-  [item]="selectedItem"
-  (actionClick)="onActionClick($event)">
-</app-menu-acciones>
-```
+Propósito: Menú contextual de acciones (editar, eliminar, etc.).
 
 ### InputOjoComponent
 **Archivo**: `src/app/shared/input-ojo/input-ojo.component.ts`
 
-**Propósito**: Input de contraseña con toggle de visibilidad.
-
-**Propiedades**:
-```typescript
-interface InputOjoComponent {
-  @Input() placeholder: string;
-  @Input() value: string;
-  @Output() valueChange: EventEmitter<string>;
-}
-```
-
-**Uso**:
-```html
-<app-input-ojo 
-  placeholder="Contraseña"
-  [(value)]="password">
-</app-input-ojo>
-```
+Propósito: Input de contraseña con toggle de visibilidad.
 
 ### BtnSortComponent
 **Archivo**: `src/app/shared/btn-sort/btn-sort.component.ts`
 
-**Propósito**: Botón de ordenamiento con estados.
-
-**Propiedades**:
-```typescript
-interface BtnSortComponent {
-  @Input() field: string;
-  @Input() currentSort: string;
-  @Input() currentOrder: 'asc' | 'desc';
-  @Output() sortChange: EventEmitter<SortEvent>;
-}
-```
+Propósito: Botón de ordenamiento con estados asc/desc.
 
 ### ThSortComponent
 **Archivo**: `src/app/shared/th-sort/th-sort.component.ts`
 
-**Propósito**: Header de tabla con ordenamiento.
-
-**Propiedades**:
-```typescript
-interface ThSortComponent {
-  @Input() field: string;
-  @Input() label: string;
-  @Input() currentSort: string;
-  @Input() currentOrder: 'asc' | 'desc';
-  @Output() sortChange: EventEmitter<SortEvent>;
-}
-```
+Propósito: Header de tabla con indicador de ordenamiento.
 
 ### BtnPostComponent
 **Archivo**: `src/app/shared/btn-post/btn-post.component.ts`
 
-**Propósito**: Botón de acción principal (crear/editar).
+Propósito: Botón de acción principal con ícono y texto.
 
-**Propiedades**:
-```typescript
-interface BtnPostComponent {
-  @Input() text: string;
-  @Input() icon: string;
-  @Input() disabled: boolean;
-  @Output() click: EventEmitter<void>;
-}
-```
+### SearchableSelectComponent
+**Archivo**: `src/app/shared/searchable-select/searchable-select.component.ts`
 
-### ContestStatusChipComponent
-**Archivo**: `src/app/shared/contest-status-chip/contest-status-chip.component.ts`
+Propósito: Selector con búsqueda integrada (filtrado de opciones).
 
-**Propósito**: Chip para mostrar estado de concurso.
+### SlidesComponent
+**Archivo**: `src/app/shared/slides/slides.component.ts`
 
-**Propiedades**:
-```typescript
-interface ContestStatusChipComponent {
-  @Input() status: 'active' | 'inactive' | 'judged' | 'closed';
-  @Input() showText: boolean;
-}
-```
+Propósito: Carrusel de imágenes para galerías.
 
-### SearchSelectComponent
-**Archivo**: `src/app/shared/search-select/search-select.component.ts`
+## Directivas
 
-**Propósito**: Selector con búsqueda integrada.
+### InfiniteScrollDirective
+**Archivo**: `src/app/shared/infinite-scroll.directive.ts`
 
-**Propiedades**:
-```typescript
-interface SearchSelectComponent {
-  @Input() items: any[];
-  @Input() placeholder: string;
-  @Input() value: any;
-  @Input() itemText: string;
-  @Input() itemValue: string;
-  @Output() valueChange: EventEmitter<any>;
-  @Output() searchChange: EventEmitter<string>;
-}
-```
+Propósito: Directiva de scroll infinito para carga paginada.
 
-## 🧭 Componentes de Navegación (NavModule)
+## Navegación
 
 ### NavbarComponent
 **Archivo**: `src/app/nav/navbar/navbar.component.ts`
 
-**Propósito**: Barra de navegación superior.
-
-**Características**:
-- Logo y título
-- Menú de navegación
-- Información de usuario
-- Botones de acción
+Propósito: Barra de navegación superior con logo, menú y toggle de sidebar.
 
 ### SidebarComponent
 **Archivo**: `src/app/nav/sidebar/sidebar.component.ts`
 
-**Propósito**: Menú lateral para dispositivos móviles.
+Propósito: Menú lateral con navegación principal, información de usuario y enlaces.
 
-**Características**:
-- Navegación principal
-- Información de usuario
-- Accesos rápidos
-- Responsive design
+## Utilidades
 
-### FooterComponent
-**Archivo**: `src/app/nav/footer/footer.component.ts`
+### ErrorUtils
+**Archivo**: `src/app/shared/error-utils.ts`
 
-**Propósito**: Pie de página de la aplicación.
+Funciones utilitarias para normalización de mensajes de error.
 
-**Características**:
-- Información de contacto
-- Enlaces útiles
-- Información legal
-- Redes sociales
+### FocusUtils
+**Archivo**: `src/app/shared/focus-utils.ts`
 
-### FooterPostComponent
-**Archivo**: `src/app/nav/footer/footer-post/footer-post.component.ts`
+Utilidades para manejo de foco y accesibilidad.
 
-**Propósito**: Formulario para editar información del footer.
+## AppComponent (Raíz)
 
-**Características**:
-- Edición de contenido del footer
-- Gestión de enlaces
-- Información de contacto
-- Integración con servicios
+**Archivo**: `src/app/app.component.ts`
 
-## 📱 Componentes Responsive
-
-### ResponsiveService
-**Archivo**: `src/app/services/ui/responsive.service.ts`
-
-**Propósito**: Servicio para manejar responsive design.
-
-**Métodos**:
-- `isDesktop()`: Verifica si es vista desktop
-- `isMobile()`: Verifica si es vista móvil
-- `isTablet()`: Verifica si es vista tablet
-- `getScreenSize()`: Obtiene tamaño de pantalla
-
-### UiUtilsService
-**Archivo**: `src/app/services/ui/ui-utils.service.ts`
-
-**Propósito**: Utilidades para interfaz de usuario.
-
-**Métodos**:
-- `showLoading()`: Muestra indicador de carga
-- `hideLoading()`: Oculta indicador de carga
-- `showAlert()`: Muestra alerta
-- `showToast()`: Muestra toast
-
-## 🔄 Ciclo de Vida de Componentes
-
-### Hooks Principales
-```typescript
-// Inicialización
-ngOnInit() {
-  // Lógica de inicialización
-}
-
-// Cambios de input
-ngOnChanges(changes: SimpleChanges) {
-  // Manejo de cambios de propiedades
-}
-
-// Destrucción
-ngOnDestroy() {
-  // Limpieza de recursos
-}
+```html
+<a href="#main-content" class="visually-hidden-focusable">Saltar al contenido principal</a>
+<div class="d-flex flex-column vh-100">
+  <app-navbar (toggleSidebar)="toggleSidebar()"></app-navbar>
+  <app-sidebar [open]="sidebarOpen" (closeSidebar)="sidebarOpen = false"></app-sidebar>
+  <main class="flex-grow-1 overflow-auto" id="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
 ```
 
-### Patrones de Uso
-```typescript
-// Ejemplo de componente con suscripciones
-export class ExampleComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+Características:
+- Skip-to-content link para accesibilidad
+- Layout flexbox vertical (vh-100)
+- Navbar + Sidebar + RouterOutlet
+- Inicialización de tema oscuro y console.error interceptor
 
-  ngOnInit() {
-    this.service.getData()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => {
-        // Manejo de datos
-      });
-  }
+## Folder (Legacy)
+**Archivo**: `src/app/folder/folder.page.ts`
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-}
-```
-
-## 🎨 Estilos y Temas
-
-### Variables CSS
-```scss
-// Variables de color
---ion-color-primary: #3880ff;
---ion-color-secondary: #3dc2ff;
---ion-color-tertiary: #5260ff;
-
-// Variables de espaciado
---ion-padding: 16px;
---ion-margin: 16px;
-
-// Variables de tipografía
---ion-font-family: 'Roboto', sans-serif;
-```
-
-### Clases Utilitarias
-```scss
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-
-.mt-1 { margin-top: 8px; }
-.mt-2 { margin-top: 16px; }
-.mt-3 { margin-top: 24px; }
-
-.p-1 { padding: 8px; }
-.p-2 { padding: 16px; }
-.p-3 { padding: 24px; }
-```
-
-## 🧪 Testing de Componentes
-
-### Estructura de Tests
-```typescript
-describe('ExampleComponent', () => {
-  let component: ExampleComponent;
-  let fixture: ComponentFixture<ExampleComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ ExampleComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ExampleComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
-```
-
-### Testing de Inputs/Outputs
-```typescript
-it('should emit value on input change', () => {
-  const spy = jasmine.createSpy('valueChange');
-  component.valueChange.subscribe(spy);
-  
-  component.onInputChange('new value');
-  
-  expect(spy).toHaveBeenCalledWith('new value');
-});
-```
-
-## 📋 Checklist de Componentes
-
-### Antes de Crear un Componente
-- [ ] Definir propósito y responsabilidades
-- [ ] Identificar inputs y outputs
-- [ ] Planificar ciclo de vida
-- [ ] Considerar reutilización
-- [ ] Definir estilos y responsive design
-
-### Durante el Desarrollo
-- [ ] Implementar lógica de negocio
-- [ ] Agregar validaciones
-- [ ] Manejar errores
-- [ ] Implementar responsive design
-- [ ] Agregar tests unitarios
-
-### Antes del Deploy
-- [ ] Revisar performance
-- [ ] Verificar accesibilidad
-- [ ] Testear en diferentes dispositivos
-- [ ] Documentar cambios
-- [ ] Actualizar esta documentación
+Componente legacy del template original Ionic. Sin uso activo.
 
 ---
 
-*Esta documentación se actualiza automáticamente con cada cambio en los componentes del sistema.* 
+*Última actualización: Julio 2026*

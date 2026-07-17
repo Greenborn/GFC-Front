@@ -1,6 +1,8 @@
 # Guías de Desarrollo - Grupo Fotográfico Centro
 
-## 📋 Descripción General
+> ⚠️ **Parcialmente desactualizado**: Referencia Angular 12, HttpClient de Angular y NgModules. El proyecto actual usa **Angular 21**, **Axios** y **Standalone Components**. Priorizar [servicios.md](./servicios.md) y [rutas.md](./rutas.md) para patrones actuales.
+
+## Descripción General
 
 Este documento proporciona guías detalladas, mejores prácticas y convenciones de desarrollo para el proyecto Grupo Fotográfico Centro.
 

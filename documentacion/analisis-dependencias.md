@@ -1,6 +1,8 @@
 # Análisis de Dependencias y Recomendaciones de Actualización
 
-## 📋 Descripción General
+> ⚠️ **DOCUMENTACIÓN DESACTUALIZADA**: Este análisis referencia Angular 12-18. El proyecto está actualmente en **Angular 21.2.18**. Ver `package.json` para dependencias actuales.
+
+## Descripción General
 
 Este documento proporciona un análisis exhaustivo de las dependencias del proyecto, identificando versiones obsoletas, vulnerabilidades potenciales y recomendaciones de actualización.
 

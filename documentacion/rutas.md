@@ -1,19 +1,16 @@
 # Documentación de Rutas - Grupo Fotográfico Centro
 
-## 📋 Descripción General
+## Descripción General
 
-Esta documentación describe todas las rutas de la aplicación, organizadas por módulos y funcionalidad. Incluye información sobre protección de rutas, parámetros y navegación.
+Esta documentación describe todas las rutas de la aplicación. La aplicación utiliza **hash-based routing** con **lazy loading** mediante `loadComponent()` (standalone components) y **precarga de todos los módulos** (`PreloadAllModules`).
 
-## 🏗️ Estructura de Rutas
+## Configuración Principal
 
-### Configuración Principal
 **Archivo**: `src/app/app-routing.module.ts`
 
-La aplicación utiliza **lazy loading** para optimizar el rendimiento, cargando módulos solo cuando son necesarios.
-
 ```typescript
-const routes: Routes = [
-  // Rutas principales con lazy loading
+export const routes: Routes = [
+  // Rutas con lazy loading standalone
   {
     path: 'concursos',
     canActivate: [AuthGuard],
@@ -23,546 +20,295 @@ const routes: Routes = [
 ];
 ```
 
-## 🔐 Rutas de Autenticación
+La aplicación se bootstrapa de forma standalone (sin NgModules):
+
+```typescript
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideZoneChangeDetection(),
+    provideRouter(routes, withHashLocation(), withPreloading(PreloadAllModules)),
+    provideServiceWorker('ngsw-worker.js', { ... }),
+    { provide: ErrorHandler, useClass: GlobalErrorHandler }
+  ]
+});
+```
+
+## Rutas de Autenticación
 
 ### Login
 - **Ruta**: `/login`
-- **Módulo**: `AuthModule`
-- **Componente**: `LoginViewComponent`
-- **Protección**: Sin protección (acceso público)
-- **Descripción**: Página de inicio de sesión
+- **Componente**: `LoginViewComponent` (lazy)
+- **Protección**: Pública
+- Descripción: Página de inicio de sesión
 
-```typescript
-{
-  path: 'login',
-  component: LoginViewComponent
-}
-```
+### Redirect SSO
+- **Ruta**: `/login-redirect`
+- **Componente**: `LoginRedirectComponent` (lazy)
+- **Protección**: Pública
+- Descripción: Manejador de redirect SSO
 
-## 🏆 Rutas de Concursos
+### Recuperar Contraseña
+- **Ruta**: `/recuperar-password`
+- **Componente**: `RecuperarPasswordSolicitudComponent` (lazy)
+- **Protección**: Pública
+- Descripción: Solicitud de recuperación de contraseña
+
+- **Ruta**: `/recuperar-password/codigo`
+- **Componente**: `RecuperarPasswordCodigoComponent` (lazy)
+- **Protección**: Pública
+- Descripción: Ingreso de código de verificación
+
+- **Ruta**: `/recuperar-password/exito`
+- **Componente**: `RecuperarPasswordExitoComponent` (lazy)
+- **Protección**: Pública
+- Descripción: Confirmación de contraseña restablecida
+
+## Rutas de Concursos (Protegidas: AuthGuard)
 
 ### Lista de Concursos
 - **Ruta**: `/concursos`
-- **Módulo**: `ConcursosPageModule`
-- **Componente**: `ConcursosPage`
-- **Protección**: `AuthGuard`
-- **Descripción**: Página principal con lista de todos los concursos
+- **Componente**: `ConcursosPage` (lazy)
+- Descripción: Lista de todos los concursos con filtros
 
 ### Crear Concurso
 - **Ruta**: `/concursos/nuevo`
-- **Módulo**: `ConcursoPostPageModule`
-- **Componente**: `ConcursoPostPage`
-- **Protección**: `AuthGuard`
-- **Descripción**: Formulario para crear nuevo concurso
+- **Componente**: `ConcursoPostPage` (lazy)
+- Descripción: Formulario para crear nuevo concurso
 
 ### Editar Concurso
 - **Ruta**: `/concursos/editar/:id`
-- **Módulo**: `ConcursoPostPageModule`
-- **Componente**: `ConcursoPostPage`
-- **Protección**: `AuthGuard`
+- **Componente**: `ConcursoPostPage` (lazy)
 - **Parámetros**: `id` (ID del concurso)
-- **Descripción**: Formulario para editar concurso existente
+- Descripción: Formulario para editar concurso existente
 
 ### Detalle de Concurso
 - **Ruta**: `/concursos/:id`
-- **Módulo**: `ConcursoDetailPageModule`
-- **Componente**: `ConcursoDetailPage`
-- **Protección**: `AuthGuard`
+- **Componente**: `ConcursoDetailPage` (lazy, padre con tabs)
 - **Parámetros**: `id` (ID del concurso)
-- **Descripción**: Página de detalle del concurso con navegación por tabs
+- Redirección por defecto: `informacion`
 
-#### Subrutas del Detalle de Concurso
-
-##### Información del Concurso
-- **Ruta**: `/concursos/:id/informacion`
-- **Componente**: `InformacionComponent`
-- **Descripción**: Información general del concurso
-
-##### Concursantes
-- **Ruta**: `/concursos/:id/concursantes`
-- **Componente**: `ConcursantesComponent`
-- **Descripción**: Gestión de participantes del concurso
-
-##### Fotografías
-- **Ruta**: `/concursos/:id/fotografias`
-- **Componente**: `FotografiasComponent`
-- **Descripción**: Galería de fotografías del concurso
-
-##### Jueces
-- **Ruta**: `/concursos/:id/jueces`
-- **Componente**: `JuecesComponent`
-- **Descripción**: Gestión de jueces del concurso
-
-##### Juzgamiento
-- **Ruta**: `/concursos/:id/juzgamiento`
-- **Componente**: `JuzgamientoComponent`
-- **Descripción**: Sistema de evaluación y juzgamiento
+#### Subrutas (child routes)
+- `/concursos/:id/informacion` → `InformacionComponent`
+- `/concursos/:id/concursantes` → `ConcursantesComponent`
+- `/concursos/:id/fotografias` → `FotografiasComponent`
 
 ### Secciones ABM
 - **Ruta**: `/concursos/secciones`
-- **Módulo**: `SeccionesAbmPageModule`
-- **Componente**: `SeccionesAbmPage`
-- **Protección**: `AuthGuard`
-- **Descripción**: Administración de secciones de concursos
+- **Componente**: `SeccionesAbmPage` (lazy)
+- Descripción: Administración de secciones
 
 ### Métricas ABM
 - **Ruta**: `/concursos/metricas`
-- **Módulo**: `MetricasAbmPageModule`
-- **Componente**: `MetricasAbmPage`
-- **Protección**: `AuthGuard`
-- **Descripción**: Administración de métricas de evaluación
+- **Componente**: `MetricasAbmPage` (lazy)
+- Descripción: Administración de métricas de evaluación
 
 ### Ranking
 - **Ruta**: `/concursos/ranking`
-- **Módulo**: `ConcursosPageModule`
-- **Componente**: `RankingPage`
-- **Protección**: `AuthGuard`
-- **Descripción**: Ranking de participantes y organizaciones
+- **Componente**: `RankingPage` (lazy)
+- Descripción: Ranking de participantes con detalle modal
 
-## 👤 Rutas de Usuarios
+## Rutas de Usuarios
 
-### Perfil de Usuario
+### Perfil de Usuario (protegido)
 - **Ruta**: `/perfil/:id`
-- **Módulo**: `PerfilPageModule`
-- **Componente**: `PerfilPage`
-- **Protección**: `AuthGuard`
+- **Componente**: `PerfilPage` (lazy)
+- **Protección**: AuthGuard
 - **Parámetros**: `id` (ID del usuario)
-- **Descripción**: Visualización de perfil de usuario específico
 
-### Editar Perfil
+### Editar Perfil (protegido)
 - **Ruta**: `/perfil/editar`
-- **Módulo**: `UsuarioPageModule`
-- **Componente**: `UsuarioPage`
-- **Protección**: `AuthGuard`
-- **Descripción**: Edición del perfil del usuario actual
+- **Componente**: `UsuarioPage` (lazy)
+- **Protección**: AuthGuard
 
-### Administración de Usuarios
+### Administración de Usuarios (protegido)
 - **Ruta**: `/usuarios`
-- **Módulo**: `UsuariosAbmPageModule`
-- **Componente**: `UsuariosAbmPage`
-- **Protección**: `AuthGuard`
-- **Descripción**: Lista de usuarios del sistema
+- **Componente**: `UsuariosAbmPage` (lazy)
+- **Protección**: AuthGuard
 
-### Crear Usuario
+### Crear Usuario (protegido)
 - **Ruta**: `/usuarios/nuevo`
-- **Módulo**: `UsuarioPostPageModule`
-- **Componente**: `UsuarioPostPage`
-- **Protección**: `AuthGuard`
-- **Descripción**: Formulario para crear nuevo usuario
+- **Componente**: `UsuarioPostPage` (lazy)
+- **Protección**: AuthGuard
 
-### Editar Usuario
+### Editar Usuario (protegido)
 - **Ruta**: `/usuarios/editar/:id`
-- **Módulo**: `UsuarioPostPageModule`
-- **Componente**: `UsuarioPostPage`
-- **Protección**: `AuthGuard`
-- **Parámetros**: `id` (ID del usuario)
-- **Descripción**: Formulario para editar usuario existente
+- **Componente**: `UsuarioPostPage` (lazy)
+- **Protección**: AuthGuard
 
-### Registro de Usuario
+### Registro (público)
 - **Ruta**: `/registro`
-- **Módulo**: `UsuarioPostPageModule`
-- **Componente**: `UsuarioPostPage`
-- **Protección**: Sin protección (acceso público)
-- **Descripción**: Formulario de registro para nuevos usuarios
+- **Componente**: `UsuarioPostPage` (lazy)
+- **Protección**: Pública
 
-## 📰 Rutas de Información del Centro
+## Rutas de Herramientas (Protegidas: AuthGuard)
 
-### Página Principal
+### Herramientas
+- **Ruta**: `/herramientas`
+- **Componente**: `HerramientasPage` (lazy)
+- Descripción: Panel de herramientas administrativas
+
+### Búsqueda de Fotografías
+- **Ruta**: `/herramientas/busqueda-fotografias`
+- **Componente**: `BusquedaFotografiasPage` (lazy)
+- Descripción: Búsqueda avanzada de fotografías
+
+### Carga de Resultados
+- **Ruta**: `/herramientas/carga-resultados`
+- **Componente**: `CargaResultadosPage` (lazy)
+- Descripción: Importación de resultados desde Excel
+
+## Página Principal (Pública)
 - **Ruta**: `/`
-- **Módulo**: `InfoCentroPageModule`
-- **Componente**: `InfoCentroPage`
-- **Protección**: Sin protección (acceso público)
-- **Descripción**: Página principal con información del centro fotográfico
+- **Componente**: `InfoCentroPage` (lazy)
+- Descripción: Página principal con información del centro
 
-## 🏢 Rutas de Organizaciones
-
-### Administración de Organizaciones
+## Organizaciones (Pública)
 - **Ruta**: `/organizaciones`
-- **Módulo**: `FotoclubsAbmPageModule`
-- **Componente**: `FotoclubsAbmPage`
-- **Protección**: Sin protección (acceso público)
-- **Descripción**: Lista de organizaciones/fotoclubs
+- **Componente**: `FotoclubsAbmPage` (lazy)
+- Descripción: Lista de organizaciones/fotoclubs
 
-## 🔔 Rutas de Notificaciones
-
-### Notificaciones
+## Notificaciones (Protegida)
 - **Ruta**: `/notificaciones`
-- **Módulo**: `NotificacionesPageModule`
-- **Componente**: `NotificacionesPage`
-- **Protección**: `AuthGuard`
-- **Descripción**: Centro de notificaciones del usuario
+- **Componente**: `NotificacionesPage` (lazy)
+- **Protección**: AuthGuard
 
-## 📁 Rutas de Sistema
+## Páginas Legales
+- **Ruta**: `/politica-privacidad`
+- **Componente**: `PoliticaPrivacidadComponent` (eager, standalone)
+- **Protección**: Pública
 
-### Folder (Sistema)
+- **Ruta**: `/condiciones-servicio`
+- **Componente**: `CondicionesServicioComponent` (eager, standalone)
+- **Protección**: Pública
+
+## Rutas Legacy
 - **Ruta**: `/folder/:id`
-- **Módulo**: `FolderPageModule`
-- **Componente**: `FolderPage`
-- **Protección**: Sin protección
-- **Parámetros**: `id` (ID del folder)
-- **Descripción**: Rutas del sistema (Inbox, Outbox, etc.)
+- **Componente**: `FolderPage` (lazy)
+- **Protección**: Pública (no requiere auth)
+- Descripción: Ruta del sistema (legacy, del template original Ionic)
 
-## 🛡️ Protección de Rutas
+## Protección de Rutas
 
 ### AuthGuard
 **Archivo**: `src/app/modules/auth/guards/auth.guard.ts`
 
-El `AuthGuard` protege las rutas que requieren autenticación:
-
-```typescript
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard implements CanActivate {
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    // Verifica si el usuario está autenticado
-    if (this.authService.isAuthenticated()) {
-      return true;
-    }
-    
-    // Redirige al login si no está autenticado
-    this.router.navigate(['/login']);
-    return false;
-  }
-}
-```
+El `AuthGuard` protege las rutas que requieren autenticación. Verifica que el usuario tenga un token JWT válido en localStorage.
 
 ### Rutas Protegidas
-Las siguientes rutas requieren autenticación:
-- `/concursos/*`
+- `/concursos/*` (excepto `/concursos/ranking` y `/concursos/secciones` que también requieren auth)
 - `/perfil/*`
 - `/usuarios/*`
 - `/notificaciones`
+- `/herramientas/*`
 
 ### Rutas Públicas
-Las siguientes rutas son accesibles sin autenticación:
 - `/` (página principal)
 - `/login`
+- `/login-redirect`
 - `/registro`
 - `/organizaciones`
+- `/recuperar-password/*`
+- `/politica-privacidad`
+- `/condiciones-servicio`
+- `/folder/:id`
 
-## 🔄 Navegación Programática
+## Interceptor HTTP (Axios)
+**Archivo**: `src/main.ts`
 
-### Servicio de Navegación
-**Archivo**: `src/app/services/navigation.service.ts`
+No se usa `HttpInterceptor` de Angular. Se utiliza un **Axios request interceptor** que agrega automáticamente:
+- Bearer token desde localStorage
+- `unique_id` de SSO como query param
 
 ```typescript
-@Injectable({
-  providedIn: 'root'
-})
-export class NavigationService {
-  constructor(private router: Router) {}
-
-  // Navegar a concurso específico
-  navigateToContest(contestId: number): void {
-    this.router.navigate(['/concursos', contestId]);
-  }
-
-  // Navegar a perfil de usuario
-  navigateToProfile(userId: number): void {
-    this.router.navigate(['/perfil', userId]);
-  }
-
-  // Navegar a creación de concurso
-  navigateToCreateContest(): void {
-    this.router.navigate(['/concursos', 'nuevo']);
-  }
-
-  // Navegar a edición de concurso
-  navigateToEditContest(contestId: number): void {
-    this.router.navigate(['/concursos', 'editar', contestId]);
-  }
-}
-```
-
-### Ejemplos de Uso
-
-#### Navegación desde Componente
-```typescript
-export class ContestListComponent {
-  constructor(private router: Router) {}
-
-  onContestClick(contestId: number): void {
-    this.router.navigate(['/concursos', contestId]);
-  }
-
-  onCreateContest(): void {
-    this.router.navigate(['/concursos', 'nuevo']);
-  }
-}
-```
-
-#### Navegación con Parámetros
-```typescript
-// Navegar con parámetros de query
-this.router.navigate(['/concursos'], {
-  queryParams: { 
-    section: 'naturaleza',
-    year: '2024'
-  }
-});
-
-// Navegar con parámetros de ruta
-this.router.navigate(['/concursos', contestId, 'fotografias']);
-```
-
-#### Navegación con Estado
-```typescript
-// Navegar con datos adicionales
-this.router.navigate(['/concursos', contestId], {
-  state: { 
-    returnUrl: '/concursos',
-    contestData: contest
-  }
-});
-```
-
-## 📱 Rutas Responsive
-
-### Navegación Móvil
-```typescript
-// Detectar si es móvil para ajustar navegación
-export class NavigationComponent {
-  constructor(private responsiveService: ResponsiveService) {}
-
-  onMenuClick(): void {
-    if (this.responsiveService.isMobile()) {
-      // Cerrar sidebar en móvil
-      this.closeSidebar();
+axios.interceptors.request.use(config => {
+  if (config.url?.startsWith(API_BASE_URL)) {
+    const token = localStorage.getItem(tokenKey);
+    if (token) config.headers.Authorization = 'Bearer ' + token;
+    const uniqueId = localStorage.getItem('sso_client_unique_id');
+    if (uniqueId) {
+      const separator = config.url.includes('?') ? '&' : '?';
+      config.url += separator + 'unique_id=' + encodeURIComponent(uniqueId);
     }
   }
-}
+  return config;
+});
 ```
 
-### Rutas Adaptativas
-```typescript
-// Rutas que cambian según el dispositivo
-const mobileRoutes = [
-  { path: 'concursos', component: ConcursosMobilePage },
-  { path: 'perfil', component: PerfilMobilePage }
-];
+## Mapa Completo de Rutas
 
-const desktopRoutes = [
-  { path: 'concursos', component: ConcursosDesktopPage },
-  { path: 'perfil', component: PerfilDesktopPage }
-];
 ```
-
-## 🔍 Rutas de Búsqueda y Filtros
-
-### Parámetros de Query
-```typescript
-// Ejemplo de ruta con filtros
-/concursos?section=naturaleza&year=2024&status=active
-
-// Obtener parámetros en componente
-export class ContestListComponent implements OnInit {
-  constructor(private route: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const section = params['section'];
-      const year = params['year'];
-      const status = params['status'];
-      
-      this.applyFilters(section, year, status);
-    });
-  }
-}
-```
-
-### Rutas con Filtros Persistentes
-```typescript
-// Mantener filtros en la URL
-export class FilterService {
-  updateFilters(filters: any): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: filters,
-      queryParamsHandling: 'merge'
-    });
-  }
-}
-```
-
-## 🚨 Manejo de Errores en Rutas
-
-### Rutas de Error
-```typescript
-// Ruta 404
-{
-  path: '**',
-  component: NotFoundComponent
-}
-
-// Ruta de error
-{
-  path: 'error',
-  component: ErrorComponent
-}
-```
-
-### Interceptores de Error
-```typescript
-@Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          // Redirigir al login
-          this.router.navigate(['/login']);
-        } else if (error.status === 404) {
-          // Redirigir a página 404
-          this.router.navigate(['/error']);
-        }
-        return throwError(error);
-      })
-    );
-  }
-}
-```
-
-## 📊 Análisis de Rutas
-
-### Métricas de Uso
-```typescript
-// Servicio para analizar uso de rutas
-@Injectable({
-  providedIn: 'root'
-})
-export class RouteAnalyticsService {
-  constructor(private router: Router) {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.trackRoute(event.url);
-    });
-  }
-
-  private trackRoute(url: string): void {
-    // Enviar métricas de navegación
-    console.log('Navegación a:', url);
-  }
-}
-```
-
-### Rutas Más Utilizadas
-1. `/concursos` - Lista de concursos
-2. `/concursos/:id` - Detalle de concurso
-3. `/perfil/:id` - Perfil de usuario
-4. `/` - Página principal
-5. `/usuarios` - Administración de usuarios
-
-## 🔧 Configuración de Rutas
-
-### Configuración de Lazy Loading
-```typescript
-// Ejemplo de configuración de lazy loading
-{
-  path: 'concursos',
-  loadChildren: () => import('./concursos/concursos.module')
-    .then(m => m.ConcursosPageModule),
-  canActivate: [AuthGuard]
-}
-```
-
-### Configuración de Preloading
-```typescript
-// En app-routing.module.ts
-@NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { 
-      preloadingStrategy: PreloadAllModules,
-      useHash: true
-    })
-  ]
-})
-```
-
-### Configuración de Scroll
-```typescript
-// Restaurar posición de scroll
-{
-  path: 'concursos',
-  component: ConcursosPage,
-  scrollPositionRestoration: 'enabled'
-}
-```
-
-## 📋 Mapa Completo de Rutas
-
-### Estructura Jerárquica
-```
-/
-├── login
-├── registro
-├── concursos/
-│   ├── nuevo
-│   ├── editar/:id
-│   ├── :id/
-│   │   ├── informacion
-│   │   ├── concursantes
-│   │   ├── fotografias
-│   │   ├── jueces
-│   │   └── juzgamiento
-│   ├── secciones
-│   ├── metricas
-│   └── ranking
+/  (InfoCentroPage)
+├── login (LoginViewComponent)
+├── login-redirect (LoginRedirectComponent)
+├── registro (UsuarioPostPage)
+├── recuperar-password/
+│   ├── (RecuperarPasswordSolicitudComponent)
+│   ├── codigo (RecuperarPasswordCodigoComponent)
+│   └── exito (RecuperarPasswordExitoComponent)
+├── concursos/ (AuthGuard)
+│   ├── (ConcursosPage)
+│   ├── nuevo (ConcursoPostPage)
+│   ├── editar/:id (ConcursoPostPage)
+│   ├── :id/ (ConcursoDetailPage)
+│   │   ├── informacion (InformacionComponent) [default]
+│   │   ├── concursantes (ConcursantesComponent)
+│   │   └── fotografias (FotografiasComponent)
+│   ├── secciones (SeccionesAbmPage)
+│   ├── metricas (MetricasAbmPage)
+│   └── ranking (RankingPage)
 ├── perfil/
-│   ├── :id
-│   └── editar
-├── usuarios/
-│   ├── nuevo
-│   └── editar/:id
-├── organizaciones
-├── notificaciones
-└── folder/:id
+│   ├── :id (PerfilPage)
+│   └── editar (UsuarioPage)
+├── usuarios/ (AuthGuard)
+│   ├── (UsuariosAbmPage)
+│   ├── nuevo (UsuarioPostPage)
+│   └── editar/:id (UsuarioPostPage)
+├── herramientas/ (AuthGuard)
+│   ├── (HerramientasPage)
+│   ├── busqueda-fotografias (BusquedaFotografiasPage)
+│   └── carga-resultados (CargaResultadosPage)
+├── notificaciones (NotificacionesPage) [AuthGuard]
+├── organizaciones (FotoclubsAbmPage)
+├── politica-privacidad (PoliticaPrivacidadComponent)
+├── condiciones-servicio (CondicionesServicioComponent)
+└── folder/:id (FolderPage)
 ```
 
 ### Tabla de Rutas Completa
 
-| Ruta | Módulo | Componente | Protección | Descripción |
-|------|--------|------------|------------|-------------|
-| `/` | InfoCentroPageModule | InfoCentroPage | Pública | Página principal |
-| `/login` | AuthModule | LoginViewComponent | Pública | Login de usuarios |
-| `/registro` | UsuarioPostPageModule | UsuarioPostPage | Pública | Registro de usuarios |
-| `/concursos` | ConcursosPageModule | ConcursosPage | AuthGuard | Lista de concursos |
-| `/concursos/nuevo` | ConcursoPostPageModule | ConcursoPostPage | AuthGuard | Crear concurso |
-| `/concursos/editar/:id` | ConcursoPostPageModule | ConcursoPostPage | AuthGuard | Editar concurso |
-| `/concursos/:id` | ConcursoDetailPageModule | ConcursoDetailPage | AuthGuard | Detalle de concurso |
-| `/concursos/:id/informacion` | ConcursoDetailPageModule | InformacionComponent | AuthGuard | Info del concurso |
-| `/concursos/:id/concursantes` | ConcursoDetailPageModule | ConcursantesComponent | AuthGuard | Participantes |
-| `/concursos/:id/fotografias` | ConcursoDetailPageModule | FotografiasComponent | AuthGuard | Galería de fotos |
-| `/concursos/:id/jueces` | ConcursoDetailPageModule | JuecesComponent | AuthGuard | Jueces del concurso |
-| `/concursos/:id/juzgamiento` | ConcursoDetailPageModule | JuzgamientoComponent | AuthGuard | Sistema de evaluación |
-| `/concursos/secciones` | SeccionesAbmPageModule | SeccionesAbmPage | AuthGuard | Admin de secciones |
-| `/concursos/metricas` | MetricasAbmPageModule | MetricasAbmPage | AuthGuard | Admin de métricas |
-| `/concursos/ranking` | ConcursosPageModule | RankingPage | AuthGuard | Ranking general |
-| `/perfil/:id` | PerfilPageModule | PerfilPage | AuthGuard | Perfil de usuario |
-| `/perfil/editar` | UsuarioPageModule | UsuarioPage | AuthGuard | Editar perfil |
-| `/usuarios` | UsuariosAbmPageModule | UsuariosAbmPage | AuthGuard | Admin de usuarios |
-| `/usuarios/nuevo` | UsuarioPostPageModule | UsuarioPostPage | AuthGuard | Crear usuario |
-| `/usuarios/editar/:id` | UsuarioPostPageModule | UsuarioPostPage | AuthGuard | Editar usuario |
-| `/organizaciones` | FotoclubsAbmPageModule | FotoclubsAbmPage | Pública | Lista de organizaciones |
-| `/notificaciones` | NotificacionesPageModule | NotificacionesPage | AuthGuard | Centro de notificaciones |
-| `/folder/:id` | FolderPageModule | FolderPage | Pública | Sistema de carpetas |
-
-## 🔮 Futuras Rutas
-
-### Rutas Planificadas
-- `/admin` - Panel de administración
-- `/reportes` - Sistema de reportes
-- `/configuracion` - Configuración del sistema
-- `/ayuda` - Centro de ayuda
-- `/api-docs` - Documentación de API
-
-### Rutas de API
-- `/api/concursos` - API de concursos
-- `/api/usuarios` - API de usuarios
-- `/api/fotografias` - API de fotografías
-- `/api/auth` - API de autenticación
+| Ruta | Componente | Carga | Protección |
+|------|-----------|-------|-----------|
+| `/` | InfoCentroPage | lazy | Pública |
+| `/login` | LoginViewComponent | lazy | Pública |
+| `/login-redirect` | LoginRedirectComponent | lazy | Pública |
+| `/registro` | UsuarioPostPage | lazy | Pública |
+| `/recuperar-password` | RecuperarPasswordSolicitudComponent | lazy | Pública |
+| `/recuperar-password/codigo` | RecuperarPasswordCodigoComponent | lazy | Pública |
+| `/recuperar-password/exito` | RecuperarPasswordExitoComponent | lazy | Pública |
+| `/concursos` | ConcursosPage | lazy | AuthGuard |
+| `/concursos/nuevo` | ConcursoPostPage | lazy | AuthGuard |
+| `/concursos/editar/:id` | ConcursoPostPage | lazy | AuthGuard |
+| `/concursos/:id` | ConcursoDetailPage | lazy | AuthGuard |
+| `/concursos/:id/informacion` | InformacionComponent | lazy | AuthGuard |
+| `/concursos/:id/concursantes` | ConcursantesComponent | lazy | AuthGuard |
+| `/concursos/:id/fotografias` | FotografiasComponent | lazy | AuthGuard |
+| `/concursos/secciones` | SeccionesAbmPage | lazy | AuthGuard |
+| `/concursos/metricas` | MetricasAbmPage | lazy | AuthGuard |
+| `/concursos/ranking` | RankingPage | lazy | AuthGuard |
+| `/perfil/:id` | PerfilPage | lazy | AuthGuard |
+| `/perfil/editar` | UsuarioPage | lazy | AuthGuard |
+| `/usuarios` | UsuariosAbmPage | lazy | AuthGuard |
+| `/usuarios/nuevo` | UsuarioPostPage | lazy | AuthGuard |
+| `/usuarios/editar/:id` | UsuarioPostPage | lazy | AuthGuard |
+| `/herramientas` | HerramientasPage | lazy | AuthGuard |
+| `/herramientas/busqueda-fotografias` | BusquedaFotografiasPage | lazy | AuthGuard |
+| `/herramientas/carga-resultados` | CargaResultadosPage | lazy | AuthGuard |
+| `/notificaciones` | NotificacionesPage | lazy | AuthGuard |
+| `/organizaciones` | FotoclubsAbmPage | lazy | Pública |
+| `/politica-privacidad` | PoliticaPrivacidadComponent | eager | Pública |
+| `/condiciones-servicio` | CondicionesServicioComponent | eager | Pública |
+| `/folder/:id` | FolderPage | lazy | Pública |
 
 ---
 
-*Esta documentación se actualiza automáticamente con cada cambio en las rutas del sistema.* 
+*Última actualización: Julio 2026*

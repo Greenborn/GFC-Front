@@ -1,6 +1,8 @@
-# 📋 Informe Completo de Revisión y Actualización del Proyecto GFC-Front
+# Informe Completo de Revisión y Actualización del Proyecto GFC-Front
 
-## 🎯 Resumen Ejecutivo
+> ⚠️ **DOCUMENTACIÓN HISTÓRICA**: Este informe refleja el estado del proyecto en Octubre 2025. Para estado actual ver [README.md](./README.md).
+
+## Resumen Ejecutivo
 
 Se ha completado una **revisión exhaustiva y actualización integral** de la documentación y el estado del proyecto Grupo Fotográfico Centro (GFC-Front). Esta revisión abarca desde el análisis técnico profundo hasta la actualización de toda la documentación disponible.
 

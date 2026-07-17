@@ -1,41 +1,41 @@
 # Grupo Fotográfico Centro - Frontend
 
-Aplicación web frontend para la gestión de concursos fotográficos del Grupo Fotográfico Centro. Desarrollada con Angular 12 e Ionic 6.
+Aplicación web frontend para la gestión de concursos fotográficos del Grupo Fotográfico Centro. Desarrollada con **Angular 21** y **Bootstrap 5**.
 
-## 📋 Descripción
+## Descripción
 
 Esta aplicación permite la gestión completa de concursos fotográficos, incluyendo:
 - Gestión de concursos y participantes
 - Sistema de inscripciones y juzgamiento
 - Administración de usuarios y organizaciones
-- Galería de fotografías
+- Galería de fotografías con búsqueda
 - Sistema de notificaciones
 - Panel de administración
+- PWA con service worker
 
-## 🚀 Tecnologías
+## Tecnologías
 
-- **Framework**: Angular 12.1.1
-- **UI Framework**: Ionic 6.5.1
-- **Lenguaje**: TypeScript 4.2.4
-- **Gestión de Estado**: RxJS
-- **HTTP Client**: Axios 1.7.7
-- **Build Tool**: Angular CLI 12.1.1
-- **Testing**: Jasmine & Karma
-- **Mobile**: Capacitor 3.2.2
+- **Framework**: Angular 21.2.18 (Standalone Components)
+- **UI Framework**: Bootstrap 5.3.3 + Bootstrap Icons
+- **Lenguaje**: TypeScript ~5.9.3
+- **Estado**: RxJS 7.5.0 (BehaviorSubject, Subjects)
+- **HTTP Client**: Axios 1.18.1
+- **Build Tool**: Angular CLI 21.2.19
+- **PWA**: @angular/service-worker
+- **Linting**: ESLint + Angular ESLint 21.4.0
 
-## 📦 Instalación
+## Instalación
 
 ### Prerrequisitos
-- Node.js (versión 14 o superior)
-- npm o yarn
-- Angular CLI: `npm install -g @angular/cli`
+- Node.js (versión 18 o superior)
+- npm
 
 ### Pasos de instalación
 
 1. **Clonar el repositorio**
 ```bash
 git clone [URL_DEL_REPOSITORIO]
-cd GFC-Front
+cd GFC-Front/angular
 ```
 
 2. **Instalar dependencias**
@@ -45,9 +45,9 @@ npm install
 
 3. **Configurar variables de entorno**
 ```bash
-# Copiar el archivo de configuración
-cp src/environments/environment.ts.example src/environments/environment.ts
-# Editar las variables según tu entorno
+# Copiar y editar archivo de configuración
+cp config.env .env
+# Editar .env según tu entorno
 ```
 
 4. **Ejecutar en modo desarrollo**
@@ -57,96 +57,88 @@ npm start
 
 La aplicación estará disponible en `http://localhost:4200`
 
-## 🏗️ Scripts disponibles
+## Scripts disponibles
 
 ```bash
+# Generar variables de entorno desde .env
+npm run generate-env
+
 # Desarrollo
 npm start                    # Inicia el servidor de desarrollo
-npm run build               # Construye para producción
-npm test                    # Ejecuta las pruebas unitarias
-npm run lint                # Ejecuta el linter
-npm run e2e                 # Ejecuta las pruebas end-to-end
+
+# Build producción
+npm run build               # Construye para producción y genera .zip
+
+# Linting
+npm run lint                # Ejecuta ESLint
+
+# Actualizar versión
+npm run update-version      # Actualiza versión en package.json y environments
 ```
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
-src/
+angular/src/
 ├── app/
-│   ├── concursos/          # Módulo de concursos
-│   ├── usuario/            # Módulo de usuarios
-│   ├── modules/auth/       # Módulo de autenticación
-│   ├── shared/             # Componentes compartidos
-│   ├── services/           # Servicios de la aplicación
-│   ├── models/             # Modelos de datos
-│   └── nav/                # Componentes de navegación
-├── assets/                 # Recursos estáticos
-├── environments/           # Configuraciones de entorno
-└── theme/                  # Estilos globales
+│   ├── concursos/           # Gestión de concursos
+│   │   ├── concurso-detail/ # Detalle con tabs (info, participantes, fotos)
+│   │   ├── concurso-post/   # Crear/editar concurso
+│   │   ├── ranking/         # Ranking de participantes
+│   │   ├── secciones-abm/   # ABM de secciones
+│   │   ├── metricas-abm/    # ABM de métricas
+│   │   └── fotos-anio-card/ # Card de foto del año
+│   ├── usuario/             # Perfiles y ABM de usuarios
+│   ├── modules/auth/        # Autenticación (login, SSO, password recovery)
+│   ├── shared/              # Componentes reutilizables
+│   ├── services/            # Servicios (API, UI, config)
+│   ├── models/              # Interfaces TypeScript
+│   ├── nav/                 # Navbar y Sidebar
+│   ├── info-centro/         # Página principal del centro
+│   ├── fotoclubs-abm/       # ABM de organizaciones
+│   ├── herramientas/        # Búsqueda de fotos, carga de resultados
+│   ├── notificaciones/      # Centro de notificaciones
+│   ├── condiciones-servicio/   # Términos legales
+│   └── politica-privacidad/    # Política de privacidad
+├── assets/                  # Recursos estáticos (iconos, imágenes)
+├── environments/            # Configuración de entorno (auto-generado)
+└── theme/                   # Variables CSS y estilos globales
 ```
 
-## 📚 Documentación
+## Documentación
 
 La documentación completa del proyecto se encuentra en el directorio `documentacion/`:
 
-- [Arquitectura](./documentacion/arquitectura.md) - Descripción de la arquitectura del sistema
-- [Componentes](./documentacion/componentes.md) - Documentación de todos los componentes
-- [Rutas](./documentacion/rutas.md) - Mapeo completo de rutas y navegación
-- [Servicios](./documentacion/servicios.md) - Documentación de servicios y APIs
-- [Modelos](./documentacion/modelos.md) - Definición de modelos de datos
+- [Arquitectura](../documentacion/arquitectura.md) - Descripción de la arquitectura del sistema
+- [Componentes](../documentacion/componentes.md) - Documentación de todos los componentes
+- [Rutas](../documentacion/rutas.md) - Mapeo completo de rutas y navegación
+- [Servicios](../documentacion/servicios.md) - Documentación de servicios y APIs
+- [Modelos](../documentacion/modelos.md) - Definición de modelos de datos
 
-## 🔧 Configuración
+## Configuración
 
 ### Variables de Entorno
 
-Crear archivo `src/environments/environment.ts`:
-
-```typescript
-export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:3000/api',
-  // Otras configuraciones...
-};
-```
-
-### Configuración de Capacitor (Mobile)
+Las variables de entorno se configuran en `config.env` (equipo) o `.env` (personal):
 
 ```bash
-# Agregar plataforma iOS
-npx cap add ios
-
-# Agregar plataforma Android
-npx cap add android
-
-# Sincronizar cambios
-npx cap sync
+API_BASE_URL=https://gfc.prod-api.greenborn.com.ar/
+PUBLIC_API_URL=https://gfc.api2.greenborn.com.ar/api/
+IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
+NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
+LOGIN_ACTION=login
+APP_NAME=app_gfc_prod-
+APP_VERSION=1.19.50
 ```
 
-## 🧪 Testing
+## Build para Producción
 
 ```bash
-# Ejecutar pruebas unitarias
-npm test
-
-# Ejecutar pruebas con coverage
-npm run test:coverage
-
-# Ejecutar pruebas e2e
-npm run e2e
-```
-
-## 📱 Build para Producción
-
-```bash
-# Construir para web
 npm run build
-
-# Construir para mobile
-npx cap build ios
-npx cap build android
+# Genera build/ + gfc_build.zip
 ```
 
-## 🤝 Contribución
+## Contribución
 
 1. Fork el proyecto
 2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
@@ -154,33 +146,38 @@ npx cap build android
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## 📄 Licencia
+## Licencia
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+MIT
 
-## 👥 Autores
+## Autores
 
 - **Greenborn** - *Desarrollo inicial* - [Greenborn](https://greenborn.com.ar)
 
-## 📞 Soporte
+## Soporte
 
 Para soporte técnico o consultas, contactar a través de:
-- Email: [email]
 - Sitio web: [https://greenborn.com.ar](https://greenborn.com.ar)
 
 ---
 
-## 📝 Change Log
+## Change Log
 
-### **1.10.16** (Actual - Octubre 2025)
-- ✅ Actualización de dependencias críticas
-- ✅ Mejoras en la seguridad del sistema
-- ✅ Optimizaciones de rendimiento
-- ✅ Actualización completa de documentación técnica
-- ✅ Correcciones de bugs menores
+### **1.19.50** (Julio 2026)
+- Refactor a standalone components (sin NgModules)
+- Migración de Ionic 6 a Bootstrap 5
+- Angular 12 → Angular 21
+- TypeScript 4.2.4 → 5.9.3
+- Nuevo sistema de autenticación SSO
+- PWA con service worker
+- Ranking con detalle modal
+- Búsqueda de fotografías
+- Carga de resultados desde Excel
+- Tema oscuro/claro con transiciones suaves
 
-### **1.1.32**
-- Mejoras en la interfaz de usuario
+### **1.10.16** (Octubre 2025)
+- Actualización de dependencias críticas
+- Mejoras en la seguridad del sistema
 - Optimizaciones de rendimiento
 - Correcciones de bugs menores
 
@@ -242,7 +239,7 @@ Para soporte técnico o consultas, contactar a través de:
 - Se aumenta límite de tamaño de fotografías
 
 ### **1.0.12**
-- Se formate fechas de concurso para asegurarse de que siempre se vea en el formato correcto
+- Se formatean fechas de concurso para asegurarse de que siempre se vea en el formato correcto
 
 ### **1.0.2**
 - Se agrega botón para descarga de archivo comprimido de fotografías

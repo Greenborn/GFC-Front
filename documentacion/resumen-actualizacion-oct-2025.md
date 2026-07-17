@@ -1,6 +1,8 @@
 # Resumen de Actualización de Documentación - Octubre 2025
 
-## 📋 Resumen Ejecutivo
+> ⚠️ **DOCUMENTACIÓN HISTÓRICA**: Este documento refleja el estado del proyecto en Octubre 2025. Para estado actual ver [README.md](./README.md).
+
+## Resumen Ejecutivo
 
 Se ha realizado una revisión exhaustiva y actualización completa de la documentación del proyecto Grupo Fotográfico Centro (GFC-Front), versión **1.10.16**.
 
