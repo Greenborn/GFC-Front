@@ -24,22 +24,9 @@ h2 {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-body.dark .dir-card {
-    background: #1e1e2a;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-}
-
 .dir-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
-
-body.dark .dir-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-body.dark h2 {
-    color: #e4e4e4;
 }
 
 .dir-photo {
@@ -63,20 +50,12 @@ body.dark h2 {
     line-height: 1.2;
 }
 
-body.dark .dir-name {
-    color: #e4e4e4;
-}
-
 .dir-role {
     font-size: 0.7rem;
     color: #666;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-}
-
-body.dark .dir-role {
-    color: #aaa;
 }
 
 @media (max-width: 767px) {
@@ -97,5 +76,28 @@ body.dark .dir-role {
     .dir-info {
         text-align: left;
         flex: 1;
+    }
+}
+
+:host-context(body.dark) {
+    .dir-card {
+        background: #1e1e2a;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .dir-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    h2 {
+        color: #e4e4e4;
+    }
+
+    .dir-name {
+        color: #e4e4e4;
+    }
+
+    .dir-role {
+        color: #aaa;
     }
 }

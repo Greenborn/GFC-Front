@@ -433,6 +433,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         const userResult = await updateUser(profileResult?.id);
 
         this.posting = false
+        if (this.file != undefined) {
+          this.configService.bustImageCache();
+        }
         if (this.isUserProfile) {
           this.auth.updateUser()
           await this.auth.user

@@ -32,8 +32,13 @@ export const CONFIG = {
 export class ConfigService {
 
   private local = false;
+  private imageCacheBuster = Date.now();
 
   constructor() { }
+
+  bustImageCache(): void {
+    this.imageCacheBuster = Date.now();
+  }
 
   get data() {
     return CONFIG;
@@ -75,26 +80,21 @@ export class ConfigService {
     return this.data.imagesBaseUrl;
   }
 
-  imageUrl(recurso: string, cacheBust: boolean = false) {
+  imageUrl(recurso: string) {
     if (!recurso) {
       return '';
     }
-    // Si la URL ya es absoluta, no la modifica
     recurso = recurso.toString();
     if (recurso.startsWith('http') || recurso.startsWith('data:')) {
       return recurso;
     }
-    // Normalizar base y recurso para evitar dobles barras o rutas relativas
     let base = this.data.imagesBaseUrl;
     if (!base.startsWith('http')) {
       base = 'https://' + base.replace(/^\/+/, '');
     }
-    // Eliminar barra inicial del recurso si existe
     recurso = recurso.replace(/^\/+/, '');
     let url = base.replace(/\/$/, '') + '/' + recurso;
-    if (cacheBust) {
-      url += (url.includes('?') ? '&' : '?') + 't=' + Date.now();
-    }
+    url += (url.includes('?') ? '&' : '?') + 't=' + this.imageCacheBuster;
     return url;
   }
 
