@@ -115,6 +115,13 @@ img {
   margin-left: 12px;
 }
 
+.gfc-rank-table-header {
+  display: flex;
+  padding: 10px 16px;
+  gap: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
 .gfc-rank-table-row {
   display: flex;
   padding: 10px 16px;
