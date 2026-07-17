@@ -1,12 +1,12 @@
-import { enableProdMode, importProvidersFrom, ErrorHandler, isDevMode } from '@angular/core';
+import { enableProdMode, ErrorHandler, isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
+import { provideRouter, withPreloading, withHashLocation, PreloadAllModules } from '@angular/router';
 import { provideZoneChangeDetection } from '@angular/core';
 import { provideServiceWorker } from '@angular/service-worker';
-import { HTTP_INTERCEPTORS, withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
+import { withInterceptors, provideHttpClient } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app-routing.module';
-import { AuthInterceptorService } from './app/modules/auth/services/auth-interceptor.service';
+import { authInterceptorFn } from './app/modules/auth/services/auth-interceptor.fn';
 import { GlobalErrorHandler } from './app/services/global-error-handler';
 import { environment } from './environments/environment';
 
@@ -17,8 +17,8 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     provideZoneChangeDetection(),
-    provideHttpClient(withInterceptorsFromDi()),
-    provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideHttpClient(withInterceptors([authInterceptorFn])),
+    provideRouter(routes, withHashLocation(), withPreloading(PreloadAllModules)),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:3000'
@@ -26,11 +26,6 @@ bootstrapApplication(AppComponent, {
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
-      multi: true
     },
   ]
 })

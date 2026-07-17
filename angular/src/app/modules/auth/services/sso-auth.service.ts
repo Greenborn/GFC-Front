@@ -49,15 +49,22 @@ export class SSOAuthService {
     });
 
     if (!response.ok) {
+      const errText = await response.text().catch(() => '');
+      console.error('SSO handleCallback: Error al obtener bearer token', response.status, errText);
       throw new Error('Error al obtener bearer token');
     }
 
     const data: { data: SSOLoginResponse } = await response.json();
-    const bearerToken = data.data.bearer_token;
-    const ssoEmail = data.data.user.email;
+    const bearerToken = data.data?.bearer_token;
+    const ssoEmail = data.data?.user?.email;
+    console.log('SSO bearer token obtained:', bearerToken ? '✓' : '✗', 'email:', ssoEmail);
+
+    if (!bearerToken) {
+      throw new Error('No se recibió bearer token del servidor SSO');
+    }
 
     try { localStorage.setItem(SSO_TOKEN_KEY, bearerToken); } catch {}
-    try { localStorage.setItem(SSO_USER_KEY, JSON.stringify(data.data.user)); } catch {}
+    try { localStorage.setItem(SSO_USER_KEY, JSON.stringify(data.data?.user || {})); } catch {}
 
     const profileResponse = await fetch(
       `${this.config.nodeApiBaseUrl}user/sso-profile?unique_id=${uniqueId}`,
@@ -72,6 +79,7 @@ export class SSOAuthService {
     }
 
     const profileData: SSOProfileResponse = await profileResponse.json();
+    console.log('SSO profile check result:', profileData);
 
     if (profileData.exists && profileData.user) {
       this.auth.userId = profileData.user.id;

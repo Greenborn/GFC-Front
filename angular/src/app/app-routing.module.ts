@@ -124,7 +124,7 @@ export const routes: Routes = [
       },
       {
         path: 'busqueda-fotografias',
-        loadChildren: () => import('./herramientas/busqueda-fotografias/busqueda-fotografias.module').then(m => m.BusquedaFotografiasModule)
+        loadComponent: () => import('./herramientas/busqueda-fotografias/busqueda-fotografias.page').then(m => m.BusquedaFotografiasPage)
       },
       {
         path: 'carga-resultados',
