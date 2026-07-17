@@ -7,21 +7,13 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
+import { ThemeService } from 'src/app/services/ui/theme.service';
+import { FOCUSABLE_SELECTORS } from 'src/app/shared/focus-utils';
 
 export type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 };
-
-const FOCUSABLE_SELECTORS = [
-  'a[href]',
-  'button:not([disabled]):not([hidden])',
-  'input:not([disabled]):not([hidden])',
-  'select:not([disabled]):not([hidden])',
-  'textarea:not([disabled]):not([hidden])',
-  '[tabindex]:not([tabindex="-1"])',
-  '[contenteditable]'
-].join(', ');
 
 @Component({
   standalone: true,
@@ -46,19 +38,18 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
     public router: Router,
     public config: ConfigService,
     public rolificador: RolificadorService,
+    public themeService: ThemeService,
     private el: ElementRef
   ) { }
 
   get darkMode(): boolean {
-    return document.body.classList.contains('dark');
+    return this.themeService.darkMode;
   }
   set darkMode(l: boolean) {
-    document.body.classList.toggle('dark', l);
-    document.documentElement.setAttribute('data-bs-theme', l ? 'dark' : 'light');
-    localStorage.setItem('darkMode', String(l));
+    this.themeService.darkMode = l;
   }
   toggleDarkMode() {
-    this.darkMode = !this.darkMode;
+    this.themeService.toggleDarkMode();
   }
 
   get canInstall(): boolean {

@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import axios from "axios"
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { LoadingService } from './ui/loading.service';
 import { ConfigService } from './config/config.service';
-
-export const resultadosConcursoGeted = new BehaviorSubject<any>({ items: []});
 
 export interface GetContestResultsParams {
   contest_id: number;
@@ -29,6 +27,11 @@ export interface GetContestResultsParams {
 export class ContestResultsService {
 
   private resultData: any = null;
+  readonly resultadosConcursoGeted = new BehaviorSubject<any>({ items: [] });
+
+  get resultados$(): Observable<any> {
+    return this.resultadosConcursoGeted.asObservable();
+  }
 
   constructor(
     private loadingService: LoadingService,
@@ -78,9 +81,10 @@ export class ContestResultsService {
         params += '&unique_id=' + encodeURIComponent(uniqueId);
       }
 
+      const token = localStorage.getItem(this.config.tokenKey);
       const res = await axios.get(this.config.nodeApiBaseUrl + 'contest-result?' + params, {
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem(this.config.data.appName + 'token'),
+          ...(token ? { 'Authorization': 'Bearer ' + token } : {}),
           'Content-Type': 'application/json'
         }
       });
@@ -90,7 +94,7 @@ export class ContestResultsService {
           this.loadingService.dismiss();
         this.resultData = res.data;
         if (!attr?.skipPublish)
-          resultadosConcursoGeted.next(this.resultData);
+          this.resultadosConcursoGeted.next(this.resultData);
         return this.resultData;
       } else {
         if (attr?.present_loading)
@@ -103,3 +107,5 @@ export class ContestResultsService {
     }
   }
 }
+
+

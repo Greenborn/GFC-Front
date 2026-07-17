@@ -1,7 +1,8 @@
 import { Component, OnDestroy } from "@angular/core";
 import { Observable, Subject } from "rxjs";
-import { first, takeUntil } from "rxjs/operators";
+import { takeUntil } from "rxjs/operators";
 import { AlertService } from 'src/app/services/ui/alert.service';
+import { errorFilter as _errorFilter } from 'src/app/shared/error-utils';
 
 @Component({
   standalone: false,
@@ -9,7 +10,6 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 })
 export abstract class ApiConsumer implements OnDestroy {
 
-  // // https://dev.to/re4388/use-rxjs-takeuntil-to-unsubscribe-1ffj
   protected readonly unsubscribe$: Subject<void> = new Subject();
 
   constructor(
@@ -17,7 +17,6 @@ export abstract class ApiConsumer implements OnDestroy {
   ) { }
 
   protected fetch<T>(callback: CallableFunction): Observable<T> {
-    // console.log(`fetching api desde ${this.name}` ,)
     return callback().pipe(
       takeUntil(this.unsubscribe$)
     )
@@ -28,25 +27,12 @@ async displayAlert(message: string, header:string = 'Error') {
   }
 
   ngOnDestroy() {
-  // ionViewWillLeave() {
-    // console.log(`unsuscribed fetch`)
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  //Esta función será usada para filtrar todos los errores, quitando campos escupidos por la base de datos
-  errorFilter( e:string ){
-    e = e.replace('ERROR:','');
-    let i:number   = e.indexOf('CONTEXT') -1;
-
-    if (i == -2) return e
-    
-    let aux:string = '';
-    for (let c=0; c < i; c++){
-      aux += e[c];
-    }
-    aux += '.';
-    return aux;
+  errorFilter(e: string): string {
+    return _errorFilter(e);
   }
 
 }

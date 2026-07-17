@@ -1,6 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
+import { Profile } from 'src/app/models/profile.model';
 import { Image } from 'src/app/models/image.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { Contest } from 'src/app/models/contest.model';
@@ -8,6 +9,9 @@ import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { ImagePostParams } from './image-post/image-post.page';
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
+import { ProfileService } from 'src/app/services/profile.service';
+import { FotoclubService } from 'src/app/services/fotoclub.service';
+import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { InscribirConcursanteComponent } from './inscribir-concursante/inscribir-concursante.component';
 import { BehaviorSubject } from 'rxjs';
@@ -33,6 +37,7 @@ export class ConcursoDetailService {
   public categoriasInscriptas: BehaviorSubject<ContestCategoryExpanded[]>;
   public seccionesInscriptas: BehaviorSubject<ContestSectionExpanded[]>;
   public resultadosConcurso: BehaviorSubject<ContestResultExpanded[]>;
+  public fotoclubs: BehaviorSubject<Fotoclub[]>;
   public desinscribir: EventEmitter<ProfileContestExpanded>;
   public postImage: EventEmitter<ImagePostParams>;
   public reviewImage: EventEmitter<ContestResultExpanded>;
@@ -43,6 +48,8 @@ export class ConcursoDetailService {
   constructor(
     public UIUtilsService: UiUtilsService,
     private profileContestService: ProfileContestService,
+    private profileService: ProfileService,
+    private fotoclubService: FotoclubService,
     private contestService: ContestService,
     private contestResultService: ContestResultService,
     private rolificador: RolificadorService,
@@ -57,6 +64,7 @@ export class ConcursoDetailService {
     this.categoriasInscriptas = new BehaviorSubject<ContestCategoryExpanded[]>([]);
     this.seccionesInscriptas = new BehaviorSubject<ContestSectionExpanded[]>([]);
     this.resultadosConcurso = new BehaviorSubject<any>([]);
+    this.fotoclubs = new BehaviorSubject<Fotoclub[]>([]);
     this.desinscribir = new EventEmitter<ProfileContestExpanded>();
     this.postImage = new EventEmitter<ImagePostParams>();
     this.reviewImage = new EventEmitter<ContestResultExpanded>();
@@ -64,7 +72,50 @@ export class ConcursoDetailService {
     this.mostrarAcciones = new EventEmitter<any>();
     this.refreshPhotos = new EventEmitter<void>();
     
-    
+    this.loadFotoclubs();
+  }
+
+  private loadFotoclubs() {
+    this.fotoclubService.getAll().subscribe(f => this.fotoclubs.next(f));
+  }
+
+  getProfile(r: ContestResultExpanded): Profile {
+    const p = this.concursantes.getValue().find(p => p.id == r.image.profile_id);
+    return p != undefined ? p : this.profileService.template;
+  }
+
+  getFotoclubName(fotoclub_id: number): string {
+    const fc = this.fotoclubs.getValue().find(f => f.id == fotoclub_id);
+    return fc != undefined ? fc.name : '';
+  }
+
+  getFullName(profile_id: number): string {
+    const p = this.concursantes.getValue().find(p => p.id == profile_id);
+    return p != undefined ? `${p.name} ${p.last_name}` : '';
+  }
+
+  get categoriasInscriptasAsc(): ContestCategoryExpanded[] {
+    return [...this.categoriasInscriptas.getValue()].sort((c1, c2) => {
+      const n1 = c1.category.name;
+      const n2 = c2.category.name;
+      return n1 < n2 ? -1 : (n1 === n2 ? 0 : 1);
+    });
+  }
+
+  get seccionesInscriptasAsc(): ContestSectionExpanded[] {
+    return [...this.seccionesInscriptas.getValue()].sort((s1, s2) => {
+      const n1 = s1.section.name;
+      const n2 = s2.section.name;
+      return n1 < n2 ? -1 : (n1 === n2 ? 0 : 1);
+    });
+  }
+
+  get fechaInicio(): string {
+    return this.concurso.getValue().start_date;
+  }
+
+  get fechaFin(): string {
+    return this.concurso.getValue().end_date;
   }
 
   loadContest(id: number): Promise<void> {

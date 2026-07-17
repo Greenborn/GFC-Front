@@ -8,35 +8,27 @@ import { ImagePostPage, ImagePostParams } from './image-post/image-post.page';
 
 import { Image } from 'src/app/models/image.model';
 import { ContestResult, ContestResultExpanded } from 'src/app/models/contest_result.model';
-import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
-import { FotoclubService } from 'src/app/services/fotoclub.service';
-import { Fotoclub } from 'src/app/models/fotoclub.model';
 import { ImageReviewPage } from './image-review/image-review.page';
 import { Metric } from 'src/app/models/metric.model';
 import { ContestService } from 'src/app/services/contest.service';
-import { Contest, ContestExpanded } from 'src/app/models/contest.model';
+import { Contest } from 'src/app/models/contest.model';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
-import { ProfileService } from 'src/app/services/profile.service';
 import { MetricService } from 'src/app/services/metric.service';
 import { ContestResultService } from 'src/app/services/contest-result.service';
 import { ImageService } from 'src/app/services/image.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { Subscription } from 'rxjs';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
-import { filter, map } from 'rxjs/operators';
 
 import { ConcursoDetailService } from './concurso-detail.service';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
-import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Section } from 'src/app/models/section.model';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { ContestResultsService, resultadosConcursoGeted } from 'src/app/services/contest-results.service';
-
-// TODO: sacar el contenido extra que se repite en informacion-component
+import { ContestResultsService } from 'src/app/services/contest-results.service';
 @Component({
   standalone: true,
   imports: [RouterModule, AsyncPipe],
@@ -53,13 +45,10 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   concurso: Contest;
   
   resultadosConcurso: any = [];
-  concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
   inscriptosJueces: ProfileContestExpanded[] = [];
-  categoriasInscriptas: ContestCategoryExpanded[] = [];
   seccionesInscriptas: ContestSectionExpanded[] = [];
 
-  fotoclubs: Fotoclub[] = [];
   metrics: Metric[] = [];
   popover: any = undefined;
   subs: Subscription[] = [];
@@ -75,8 +64,6 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     
     public contestService: ContestService,
     private contestResultService: ContestResultService,
-    private fotoclubService: FotoclubService,
-    private profileService: ProfileService,
     private metricService: MetricService,
     private imageService: ImageService,
     public rolificador: RolificadorService,
@@ -99,8 +86,6 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   async ngOnInit() {
     this.desubsc();
     this.subsc();
-    
-    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f);
   }
 
   subsc(){
@@ -124,7 +109,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
 
     this.subs.push(this.concursoDetailService.mostrarAcciones.subscribe(
       o => {
-        this.mostrarAcciones(o)
+        this.UIUtilsService.mostrarModal(o.component, o.componentProps)
       }
     ));
     
@@ -141,14 +126,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
           this.noImg = false
         } 
       })
-      this.concursoDetailService.categoriasInscriptas.subscribe({
-        next: c => this.categoriasInscriptas = c 
-      })
       this.concursoDetailService.seccionesInscriptas.subscribe({
         next: c => this.seccionesInscriptas = c 
-      })
-      this.concursoDetailService.concursantes.subscribe({
-        next: c => this.concursantes = c 
       })
       this.concursoDetailService.inscriptos.subscribe({
         next: c => this.inscriptos = c 
@@ -156,7 +135,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       this.concursoDetailService.inscriptosJueces.subscribe({
         next: c => this.inscriptosJueces = c 
       })
-      resultadosConcursoGeted.subscribe({
+      this.contestResultsService.resultadosConcursoGeted.subscribe({
         next: c => this.resultadosConcurso = c.items 
       })
 
@@ -196,29 +175,6 @@ obtenerPx() {
 
   toggleFiltro() {
     this.mostrarFiltro = !this.mostrarFiltro;
-  }
-
-  getProfile(r: ContestResultExpanded): Profile {
-      const p = this.concursantes.find(p => p.id == r.image.profile_id)
-      return p != undefined ? p : this.profileService.template
-  }
-  
-  getFotoclubName(fotoclub_id: number): string {
-      const fc = this.fotoclubs.find(f => f.id == fotoclub_id)
-      return fc != undefined ? fc.name : ''
-  }
-
-  getFullName(profile_id) {
-    const p = this.concursantes.find(p => p.id == profile_id)
-    return p != undefined ? `${p.name} ${p.last_name}` : ''
-  }
-
-  async openPopup(options: any) {
-    await this.UIUtilsService.mostrarModal(options.component, options.componentProps)
-  }
-
-  async mostrarAcciones(options: any) {
-    await this.UIUtilsService.mostrarModal(options.component, options.componentProps)
   }
 
   async desinscribir(profileContest: ProfileContestExpanded) {
@@ -363,28 +319,6 @@ obtenerPx() {
     }
   }
   
-  get categoriasInscriptasAsc() {
-    return this.categoriasInscriptas.sort( (c1, c2) => {
-        const n1 = c1.category.name
-        const n2 = c2.category.name
-        return (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1))
-      })
-  }
-  get seccionesInscriptasAsc() {
-    return this.seccionesInscriptas.sort((s1, s2) => {
-      const n1 = s1.section.name
-      const n2 = s2.section.name
-        return (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1))
-    })
-  }
-
-  get fechaInicio(): string {
-    return this.concurso.start_date
-  }
-  get fechaFin(): string {
-    return this.concurso.end_date
-  }
-
   async deleteConcurso() {
     await this.UIUtilsService.mostrarAlert({
       header: 'Confirmar borrado',

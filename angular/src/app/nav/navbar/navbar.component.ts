@@ -5,6 +5,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { ThemeService } from 'src/app/services/ui/theme.service';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -27,7 +28,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public router: Router,
     public auth: AuthService,
     public rolificador: RolificadorService,
-    public configService: ConfigService
+    public configService: ConfigService,
+    public themeService: ThemeService
   ) { }
 
   ngOnInit() {
@@ -57,13 +59,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   get darkMode(): boolean {
-    return document.body.classList.contains('dark');
+    return this.themeService.darkMode;
   }
 
   set darkMode(l: boolean) {
-    document.body.classList.toggle('dark', l);
-    document.documentElement.setAttribute('data-bs-theme', l ? 'dark' : 'light');
-    localStorage.setItem('darkMode', String(l));
+    this.themeService.darkMode = l;
   }
 
   toggleMenu() {

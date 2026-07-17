@@ -1,38 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Contest } from 'src/app/models/contest.model';
-import { ContestResult, ContestResultExpanded } from 'src/app/models/contest_result.model';
+import { ContestResultExpanded } from 'src/app/models/contest_result.model';
+import { ImageReviewPage } from '../image-review/image-review.page';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { Image } from 'src/app/models/image.model';
-import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
-import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
-import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { ContestRecord } from '../contest-records/models/contest.record';
-import { Fotoclub } from 'src/app/models/fotoclub.model';
-import { Metric } from 'src/app/models/metric.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContestService } from 'src/app/services/contest.service';
 import { ContestResultService } from 'src/app/services/contest-result.service';
-import { ProfileService } from 'src/app/services/profile.service';
-import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ImageService } from 'src/app/services/image.service';
 import { MetricService } from 'src/app/services/metric.service';
+import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { ConcursoDetailService } from '../concurso-detail.service';
-import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { ImageReviewPage } from '../image-review/image-review.page';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { CompressedPhotosService } from 'src/app/services/compressed-photos.service'
 import { AlertService } from 'src/app/services/ui/alert.service';
 
-import { ContestResultsService, resultadosConcursoGeted } from 'src/app/services/contest-results.service'
+import { ContestResultsService } from 'src/app/services/contest-results.service'
 @Component({
   standalone: true,
   imports: [CommonModule, RouterModule],
@@ -44,20 +36,9 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
 
   mostrarFiltro: boolean = false;
   concurso: Contest;
-  contestResults: ContestResult[] = [];
-  images: Image[] = [];
-  // profiles: Profile[] = [];
-  value = { lower: 1000, upper: 1500 };
   isInscripto: boolean;
   resultadosConcurso: any = [];
-  concursantes: ProfileExpanded[] = [];
   inscriptos: ProfileContestExpanded[] = [];
-  categoriasInscriptas: ContestCategoryExpanded[] = [];
-  seccionesInscriptas: ContestSectionExpanded[] = [];
-  // contest: Observable<ContestExpanded>;
-
-  fotoclubs: Fotoclub[] = [];
-  metrics: Metric[] = [];
   subs: Subscription[] = [];
   noImg: boolean = false;
 
@@ -69,13 +50,11 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     private sanitizer: DomSanitizer,
     public contestService: ContestService,
     private contestResultService: ContestResultService,
-    private fotoclubService: FotoclubService,
-    private profileService: ProfileService,
-    private metricService: MetricService,
     private imageService: ImageService,
+    private metricService: MetricService,
+    private profileContestService: ProfileContestService,
     public rolificador: RolificadorService,
     public concursoDetailService: ConcursoDetailService,
-    private profileContestService: ProfileContestService,
     public UIUtilsService: UiUtilsService,
     public configService: ConfigService,
     public responsiveService: ResponsiveService,
@@ -92,7 +71,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   ngOnInit() {
     this.concurso = this.contestService.template;
     this.subsc();
-    super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(f =>  this.fotoclubs = f)
 }
 
 
@@ -108,22 +86,13 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
             this.noImg = false
           } 
         }))
-        this.subs.push(this.concursoDetailService.categoriasInscriptas.subscribe({
-          next: c => this.categoriasInscriptas = c 
-        }))
-        this.subs.push(this.concursoDetailService.seccionesInscriptas.subscribe({
-          next: c => this.seccionesInscriptas = c 
-        }))
-        this.subs.push(this.concursoDetailService.concursantes.subscribe({
-          next: c => this.concursantes = c 
-        }))
         this.subs.push(this.concursoDetailService.inscriptos.subscribe({
           next: c => {
             this.inscriptos = c
             this.estaInscripto()
           } 
         }))
-        this.subs.push(resultadosConcursoGeted.subscribe({
+        this.subs.push(this.contestResultsService.resultadosConcursoGeted.subscribe({
           next: c => this.resultadosConcurso = c.items
         }))
         
@@ -155,33 +124,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
         this.mostrarFiltro = !this.mostrarFiltro;
     }
     
-    getProfile(r: ContestResultExpanded): Profile {
-          const p = this.concursantes.find(p => p.id == r.image.profile_id)
-          return p != undefined ? p : this.profileService.template
-    }
-    
-    getFotoclubName(fotoclub_id: number): string {
-        const fc = this.fotoclubs.find(f => f.id == fotoclub_id)
-        return fc != undefined ? fc.name : ''
-    }
-  
-    getFullName(profile_id) {
-      const p = this.concursantes.find(p => p.id == profile_id)
-      return p != undefined ? `${p.name} ${p.last_name}` : ''
-    }
-  
-    async openPopup(options: any) {
-      if (options.component) {
-        return this.UIUtilsService.mostrarModal(options.component, options.componentProps || {});
-      }
-    }
-  
-    async mostrarAcciones(options: any) {
-      if (options.component) {
-        return this.UIUtilsService.mostrarModal(options.component, options.componentProps || {});
-      }
-    }
-  
     async desinscribir(profileContest: ProfileContestExpanded) {
       this.UIUtilsService.mostrarAlert({
         header: 'Confirmar desinscripción',
@@ -234,30 +176,6 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       }
     }
     
-    get categoriasInscriptasAsc() {
-      return this.categoriasInscriptas.sort( (c1, c2) => {
-          const n1 = c1.category.name
-          const n2 = c2.category.name
-          return (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1))
-        })
-    }
-    get seccionesInscriptasAsc() {
-      return this.seccionesInscriptas.sort((s1, s2) => {
-        const n1 = s1.section.name
-        const n2 = s2.section.name
-          return (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1))
-      })
-    }
-  
-    get fechaInicio(): string {
-      // return this.contestService.formatearFechaParaHTML(this.concurso.start_date ?? '');
-      return this.concurso.start_date
-    }
-    get fechaFin(): string {
-      // return this.contestService.formatearFechaParaHTML(this.concurso.end_date ?? '');
-      return this.concurso.end_date
-    }
-  
     async deleteConcurso() {
       this.UIUtilsService.mostrarAlert({
         header: 'Confirmar borrado',

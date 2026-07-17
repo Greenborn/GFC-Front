@@ -22,7 +22,7 @@
       <h1 class="info-hero-title">{{ concurso.name }}</h1>
       <p class="info-hero-dates">
         <i class="bi bi-calendar3" aria-hidden="true"></i>
-        {{ fechaInicio | date: "dd/MM/yyyy" }} — {{ fechaFin | date: "dd/MM/yyyy" }}
+        {{ concursoDetailService.fechaInicio | date: "dd/MM/yyyy" }} — {{ concursoDetailService.fechaFin | date: "dd/MM/yyyy" }}
       </p>
     </div>
     <div class="info-content">
@@ -65,21 +65,21 @@
           </div>
         </div>
       }
-      @if (categoriasInscriptasAsc.length > 0) {
+      @if (concursoDetailService.categoriasInscriptasAsc.length > 0) {
         <div class="info-section">
           <h3 class="info-section-title"><i class="bi bi-tags"></i> Categorías</h3>
           <div class="info-tags">
-            @for (c of categoriasInscriptasAsc; track c) {
+            @for (c of concursoDetailService.categoriasInscriptasAsc; track c) {
               <span class="info-tag">{{ c.category.name }}</span>
             }
           </div>
         </div>
       }
-      @if (seccionesInscriptasAsc.length > 0) {
+      @if (concursoDetailService.seccionesInscriptasAsc.length > 0) {
         <div class="info-section">
           <h3 class="info-section-title"><i class="bi bi-layers"></i> Secciones</h3>
           <div class="info-tags">
-            @for (s of seccionesInscriptasAsc; track s) {
+            @for (s of concursoDetailService.seccionesInscriptasAsc; track s) {
               <span class="info-tag">{{ s.section.name }}</span>
             }
           </div>

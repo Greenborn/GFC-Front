@@ -21,7 +21,7 @@ import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar
 import { ThSortComponent } from 'src/app/shared/th-sort/th-sort.component';
 import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
-import { resultadosConcursoGeted } from 'src/app/services/contest-results.service'
+import { ContestResultsService } from 'src/app/services/contest-results.service'
 
 @Component({
   standalone: true,
@@ -66,7 +66,8 @@ export class ConcursantesComponent implements OnInit {
     public UIUtilsService: UiUtilsService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    public configService: ConfigService
+    public configService: ConfigService,
+    private contestResultsService: ContestResultsService
   ) { }
 
   get isAdmin() {
@@ -104,7 +105,7 @@ export class ConcursantesComponent implements OnInit {
       this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
     )
     this.subscriptions.push(
-      resultadosConcursoGeted.subscribe(rs => {
+      this.contestResultsService.resultadosConcursoGeted.subscribe(rs => {
         this.resultadosConcurso = rs.items
       })
     )
