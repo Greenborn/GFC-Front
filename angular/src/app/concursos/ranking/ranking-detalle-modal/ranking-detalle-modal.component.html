@@ -1,13 +1,13 @@
-<div [ngClass]="responsiveService.isDesktop ? 'gfc-modal-page' : ''">
+<div class="ranking-modal-wrapper gfc-modal-page">
   <div class="gfc-modal-header">
-    <div class="row align-items-center ms-3 me-3">
+    <div class="row align-items-center px-3 w-100">
       <div class="col-auto d-md-none">
         <button class="btn btn-link" (click)="modalController.dismiss()">
           <i class="bi bi-arrow-left"></i>
         </button>
       </div>
       <div class="col">
-        <h5 class="mb-0">
+        <h5 class="mb-0 py-1">
           {{ categoriaNombre }} - {{ seccionNombre }} - Año {{ detalle?.year }}
         </h5>
       </div>
@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <div slot="start" class="w-100 inner-content float-md-start px-4">
+  <div slot="start" class="w-100 inner-content float-md-start">
     <div class="container-fluid p-0">
       <div class="row">
         <div class="col p-0">

@@ -16,9 +16,17 @@
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
+body.dark .member-card {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
 .member-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+body.dark .member-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .member-info {

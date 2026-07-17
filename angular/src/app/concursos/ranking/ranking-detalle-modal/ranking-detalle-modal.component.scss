@@ -1,17 +1,34 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.ranking-modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+:host-context(body.dark) .ranking-modal-wrapper {
+  background: #161618;
+}
+
+.gfc-modal-header {
+  flex-shrink: 0;
+}
+
+.inner-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
 h2 {
   margin: 0;
 }
 img {
   object-fit: cover;
-}
-
-.inner-content {
-  @media (max-width: 767px) {
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
 }
 
 .img-clickable {

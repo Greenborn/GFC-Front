@@ -156,6 +156,12 @@
   border-color: #0d6efd;
 }
 
+body.dark .rank-pill.active {
+  background: #0d6efd !important;
+  color: #fff !important;
+  border-color: #0d6efd !important;
+}
+
 .rank-table {
   display: flex;
   flex-direction: column;
