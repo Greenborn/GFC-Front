@@ -33,17 +33,6 @@ export class LoginViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {}
- 
-  keyPress(e, input = ''){
-    if (e.key == "Enter"){
-      
-      input == 'next' ? this.next() :
-        setTimeout(() => {
-          console.log(this.passInput)
-          this.passInput.nativeElement.setFocus();
-        }, 100)
-    }
-  }
 
   next() {
     // console.log(this.login)
