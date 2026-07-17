@@ -22,7 +22,6 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { CreateUserService } from 'src/app/services/create-user.service';
 import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
-import { HttpHeaders } from '@angular/common/http';
 import { Subject, firstValueFrom } from 'rxjs';
 import { ComparePassword } from 'src/app/modules/auth/validators/password.validator';
 import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
@@ -338,17 +337,17 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
         const body: any = { email, username, name };
 
-        let headers: HttpHeaders | undefined;
+        let headers: Record<string, string> = {};
 
         if (isSSO) {
           body.sso = true;
           body.unique_id = this.ssoAuth.getUniqueId();
           const token = this.ssoAuth.getToken();
           if (token) {
-            headers = new HttpHeaders({
+            headers = {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
-            });
+            };
           }
         } else {
           const password = this.form.get('password')?.value;

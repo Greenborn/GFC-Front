@@ -1,34 +1,56 @@
 <div class="searchable-select" #dropdown>
-  <div class="select-trigger" (click)="toggleDropdown()">
+  <div class="select-trigger"
+       role="combobox"
+       tabindex="0"
+       [attr.aria-haspopup]="'listbox'"
+       [attr.aria-expanded]="isOpen"
+       [attr.aria-controls]="isOpen ? listboxId : null"
+       [attr.aria-label]="placeholder"
+       (click)="toggleDropdown()"
+       (keydown)="onKeydown($event)">
     <span class="select-text" [class.placeholder]="!selectedItem">
       {{ displayText || placeholder }}
     </span>
-    <span class="select-arrow" [class.open]="isOpen">&#9662;</span>
+    <span class="select-arrow" [class.open]="isOpen" aria-hidden="true">&#9662;</span>
   </div>
 
   @if (isOpen) {
     <div class="select-dropdown">
       <div class="search-wrapper">
         <input
+          #searchInput
           class="search-input"
           type="text"
           [(ngModel)]="searchText"
           placeholder="Buscar..."
           autofocus
+          role="combobox"
+          [attr.aria-expanded]="isOpen"
+          [attr.aria-controls]="listboxId"
+          [attr.aria-activedescendant]="activeIndex >= 0 ? 'searchable-option-' + activeIndex : null"
+          (keydown)="onKeydown($event)"
           />
       </div>
-      <div class="options-list">
-        @for (item of filteredItems; track item) {
+      <div class="options-list"
+           [id]="listboxId"
+           role="listbox"
+           [attr.aria-label]="placeholder">
+        @for (item of filteredItems; track item; let i = $index) {
           <div
             class="option-item"
             [class.selected]="item[itemValueField] === value"
+            [class.active]="i === activeIndex"
+            role="option"
+            [id]="'searchable-option-' + i"
+            [attr.aria-selected]="item[itemValueField] === value"
             (click)="selectItem(item)"
+            (mouseenter)="activeIndex = i"
             >
             {{ item[itemTextField] }}
           </div>
         }
         @if (filteredItems.length === 0) {
-          <div class="option-empty">
+          <div class="option-empty" role="status">
             Sin resultados
           </div>
         }

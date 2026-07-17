@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, timeout, retry, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import axios from 'axios';
 import { ConfigService } from './config/config.service';
 import { AuthService } from '../modules/auth/services/auth.service';
 
@@ -11,26 +10,23 @@ import { AuthService } from '../modules/auth/services/auth.service';
 export class ConnectivityService {
 
   constructor(
-    private http: HttpClient,
     private config: ConfigService,
     private auth: AuthService
   ) { }
 
-  /**
-   * Verifica si hay conectividad con la API
-   */
   checkConnectivity(): Observable<boolean> {
-    return this.http.get(`${this.config.nodeApiBaseUrl}ping`, { 
-      responseType: 'text' 
-    }).pipe(
-      timeout(5000),
-      retry(1),
-      map(() => true),
-      catchError(error => {
-        console.log('Error de conectividad:', error);
-        return of(false);
-      })
-    );
+    return new Observable<boolean>(observer => {
+      axios.get(`${this.config.nodeApiBaseUrl}ping`, { timeout: 5000 })
+        .then(() => {
+          observer.next(true);
+          observer.complete();
+        })
+        .catch(error => {
+          console.log('Error de conectividad:', error);
+          observer.next(false);
+          observer.complete();
+        });
+    });
   }
 
   checkTokenValidity(): Observable<boolean> {
@@ -38,23 +34,25 @@ export class ConnectivityService {
       return of(false);
     }
 
-    return this.http.get(`${this.config.nodeApiBaseUrl}user/${this.auth.userId}?expand=profile,profile.fotoclub,role`).pipe(
-      timeout(10000),
-      retry(1),
-      map(() => true),
-      catchError(error => {
-        console.log('Token inválido:', error);
-        if (error.status === 401) {
-          this.auth.logout();
-        }
-        return of(false);
-      })
-    );
+    return new Observable<boolean>(observer => {
+      const headers: Record<string, string> = {};
+      if (this.auth.token) headers['Authorization'] = 'Bearer ' + this.auth.token;
+      axios.get(`${this.config.nodeApiBaseUrl}user/${this.auth.userId}?expand=profile,profile.fotoclub,role`, { timeout: 10000, headers })
+        .then(() => {
+          observer.next(true);
+          observer.complete();
+        })
+        .catch(error => {
+          console.log('Token inválido:', error);
+          if (error.response?.status === 401) {
+            this.auth.logout();
+          }
+          observer.next(false);
+          observer.complete();
+        });
+    });
   }
 
-  /**
-   * Verifica el estado completo de la sesión
-   */
   checkSessionStatus(): Observable<{
     connected: boolean;
     authenticated: boolean;
@@ -63,11 +61,7 @@ export class ConnectivityService {
     return new Observable(observer => {
       this.checkConnectivity().subscribe(connected => {
         if (!connected) {
-          observer.next({
-            connected: false,
-            authenticated: false,
-            tokenValid: false
-          });
+          observer.next({ connected: false, authenticated: false, tokenValid: false });
           observer.complete();
           return;
         }
@@ -84,9 +78,6 @@ export class ConnectivityService {
     });
   }
 
-  /**
-   * Intenta reconectar automáticamente
-   */
   attemptReconnection(): Observable<boolean> {
     return new Observable(observer => {
       let attempts = 0;
@@ -102,7 +93,7 @@ export class ConnectivityService {
             observer.next(true);
             observer.complete();
           } else if (attempts < maxAttempts) {
-            setTimeout(tryConnect, 2000); // Esperar 2 segundos antes del siguiente intento
+            setTimeout(tryConnect, 2000);
           } else {
             console.log('Falló la reconexión después de', maxAttempts, 'intentos');
             observer.next(false);
@@ -114,4 +105,4 @@ export class ConnectivityService {
       tryConnect();
     });
   }
-} 
+}

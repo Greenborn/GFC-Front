@@ -1,31 +1,10 @@
-<!-- <ion-buttons class="ion-hide-md-up">
-<ion-button (click)="router.navigate(['/usuarios/editar/', id])">
-  <ion-icon name="create"></ion-icon>
-  <ion-label>Editar</ion-label>
-</ion-button>
-<ion-button (click)="abmPage.deleteUsuario(id)">
-  <ion-icon name="trash"></ion-icon>
-  <ion-label>Borrar</ion-label>
-</ion-button>
-</ion-buttons> -->
-
 <div class="list-group list-group-flush">
   @for (a of acciones; track a) {
-    <div class="mb-3"
+    <button type="button" class="list-group-item list-group-item-action mb-3"
       (click)="action(a.accion, a.params)"
-      >
-      <i class="bi" [ngClass]="'bi-' + a.icon"></i>
-      <label class="form-label ms-2">{{a.label}}</label>
-    </div>
+      [attr.aria-label]="a.label">
+      <i class="bi" [ngClass]="'bi-' + a.icon" aria-hidden="true"></i>
+      <span class="ms-2">{{a.label}}</span>
+    </button>
   }
-  <!-- <ion-item (click)="router.navigate(['/usuarios/editar/', id])">
-  <ion-icon name="create"></ion-icon>
-  <ion-label class="ion-margin-start">Editar</ion-label>
-</ion-item>
-<ion-item (click)="abmPage.deleteUsuario(id)">
-  <ion-icon name="trash"></ion-icon>
-  <ion-label class="ion-margin-start">Borrar</ion-label>
-</ion-item> -->
-
-
 </div>

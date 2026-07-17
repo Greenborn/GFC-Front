@@ -1,81 +1,105 @@
-
+import { Injectable } from '@angular/core';
 import axios from "axios"
 import { BehaviorSubject } from 'rxjs';
-
 import { LoadingService } from './ui/loading.service';
-import { CONFIG } from './config/config.service';
-
-let result_data:any = null
+import { ConfigService } from './config/config.service';
 
 export const resultadosConcursoGeted = new BehaviorSubject<any>({ items: []});
 
-export const get_all = async (attr, reload = true) => {
-    return new Promise(async (resolve, reject) => {
-        if (!reload && result_data !== null)
-            return resolve(result_data)
+export interface GetContestResultsParams {
+  contest_id: number;
+  page?: number;
+  perPage?: number;
+  concursante_id?: number;
+  search?: string;
+  sort?: string;
+  sort_dir?: string;
+  author?: string;
+  code?: string;
+  section_ids?: number[];
+  category_ids?: number[];
+  prizes?: string[];
+  present_loading?: boolean;
+  skipPublish?: boolean;
+}
 
-        try {
-            if (!attr?.contest_id)
-                return resolve(null)
+@Injectable({
+  providedIn: 'root'
+})
+export class ContestResultsService {
 
-            let params:string = '';
-            params +=  'expand=profile,profile.user,profile.fotoclub,image.profile,image.thumbnail'
-            params +=  '&filter[contest_id]='+attr.contest_id
-            params +=  (attr?.page) ? '&page='+attr.page : ''
-            params +=  (attr?.perPage) ? '&per-page='+attr.perPage : ''
-            params +=  (attr?.concursante_id) ? ('&filter[profile_id]=' + attr.concursante_id) : ''
-            params +=  (attr?.search) ? '&search='+encodeURIComponent(attr.search) : ''
-            params +=  (attr?.sort) ? '&sort='+attr.sort : ''
-            params +=  (attr?.sort_dir) ? '&sort_dir='+attr.sort_dir : ''
-            params +=  (attr?.author) ? '&filter[author]='+encodeURIComponent(attr.author) : ''
-            params +=  (attr?.code) ? '&filter[code]='+encodeURIComponent(attr.code) : ''
-            if (attr?.section_ids?.length) {
-              attr.section_ids.forEach(id => {
-                params += '&filter[section_id]='+id
-              })
-            }
-            if (attr?.category_ids?.length) {
-              attr.category_ids.forEach(id => {
-                params += '&filter[category_id]='+id
-              })
-            }
-            if (attr?.prizes?.length) {
-              attr.prizes.forEach(p => {
-                params += '&filter[prize]='+encodeURIComponent(p)
-              })
-            }
-            
-            const loadingService = new LoadingService()
-            if (attr?.present_loading)
-                await loadingService.present('Cargando Resultados')
-            
-            const uniqueId = localStorage.getItem('sso_client_unique_id');
-            if (uniqueId) {
-              params += '&unique_id=' + encodeURIComponent(uniqueId);
-            }
+  private resultData: any = null;
 
-            let res = await axios.get(CONFIG.nodeApiBaseUrl+'contest-result?'+params, {
-                headers: {
-                    'Authorization': 'Bearer '+localStorage.getItem(CONFIG.appName + 'token' ),
-                    'Content-Type':  'application/json'
-                }
-            })
-            console.log('attr_', attr.contest_id)
-            if (res?.data){
-                if (attr?.present_loading)
-                    loadingService.dismiss();
-                result_data = res.data
-                if (!attr?.skipPublish)
-                  resultadosConcursoGeted.next(result_data)
-                return resolve(result_data)
-            } else {
-                if (attr?.present_loading)
-                    loadingService.dismiss(); 
-                return resolve(null)
-            }
-        } catch (error) {
-            console.log(error)
-            return resolve(null)
+  constructor(
+    private loadingService: LoadingService,
+    private config: ConfigService,
+  ) {}
+
+  async get_all(attr: GetContestResultsParams, reload = true) {
+    if (!reload && this.resultData !== null)
+      return this.resultData;
+
+    try {
+      if (!attr?.contest_id)
+        return null;
+
+      let params = '';
+      params += 'expand=profile,profile.user,profile.fotoclub,image.profile,image.thumbnail';
+      params += '&filter[contest_id]=' + attr.contest_id;
+      params += (attr?.page) ? '&page=' + attr.page : '';
+      params += (attr?.perPage) ? '&per-page=' + attr.perPage : '';
+      params += (attr?.concursante_id) ? ('&filter[profile_id]=' + attr.concursante_id) : '';
+      params += (attr?.search) ? '&search=' + encodeURIComponent(attr.search) : '';
+      params += (attr?.sort) ? '&sort=' + attr.sort : '';
+      params += (attr?.sort_dir) ? '&sort_dir=' + attr.sort_dir : '';
+      params += (attr?.author) ? '&filter[author]=' + encodeURIComponent(attr.author) : '';
+      params += (attr?.code) ? '&filter[code]=' + encodeURIComponent(attr.code) : '';
+      if (attr?.section_ids?.length) {
+        attr.section_ids.forEach(id => {
+          params += '&filter[section_id]=' + id;
+        });
+      }
+      if (attr?.category_ids?.length) {
+        attr.category_ids.forEach(id => {
+          params += '&filter[category_id]=' + id;
+        });
+      }
+      if (attr?.prizes?.length) {
+        attr.prizes.forEach(p => {
+          params += '&filter[prize]=' + encodeURIComponent(p);
+        });
+      }
+
+      if (attr?.present_loading)
+        await this.loadingService.present('Cargando Resultados');
+
+      const uniqueId = localStorage.getItem('sso_client_unique_id');
+      if (uniqueId) {
+        params += '&unique_id=' + encodeURIComponent(uniqueId);
+      }
+
+      const res = await axios.get(this.config.nodeApiBaseUrl + 'contest-result?' + params, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem(this.config.data.appName + 'token'),
+          'Content-Type': 'application/json'
         }
-    })
+      });
+
+      if (res?.data) {
+        if (attr?.present_loading)
+          this.loadingService.dismiss();
+        this.resultData = res.data;
+        if (!attr?.skipPublish)
+          resultadosConcursoGeted.next(this.resultData);
+        return this.resultData;
+      } else {
+        if (attr?.present_loading)
+          this.loadingService.dismiss();
+        return null;
+      }
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 }

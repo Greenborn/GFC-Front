@@ -3,11 +3,9 @@ import { Router } from '@angular/router';
 import { Category } from '../../models/category.model';
 import { Section } from '../../models/section.model';
 import { ContestResultService } from '../../services/contest-result.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { HttpClient } from '@angular/common/http';
+import axios from 'axios';
 import { ConfigService } from '../../services/config/config.service';
 import { LoadingService } from '../../services/ui/loading.service';
-import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 function normalizarNombre(nombre: string): string {
@@ -48,7 +46,6 @@ export class CargaResultadosPage implements OnInit {
   constructor(
     private router: Router,
     private contestResultService: ContestResultService,
-    private http: HttpClient,
     private config: ConfigService,
     private loadingService: LoadingService
   ) {
@@ -486,20 +483,14 @@ export class CargaResultadosPage implements OnInit {
     const estructuraJson = this.estructuraToJson();
     await this.loadingService.present('Enviando resultados...');
     try {
-      const token = localStorage.getItem(this.config.tokenKey);
-      const headers = token ? { Authorization: 'Bearer ' + token } : {};
-      const response = await firstValueFrom(this.http.post(
-        this.config.publicApiUrl('results/judging'),
-        { estructura: estructuraJson },
-        { headers }
-      ));
+      await axios.post(this.config.publicApiUrl('results/judging'), { estructura: estructuraJson });
       this.loadingService.dismiss();
       alert('Resultados cargados correctamente.');
-    } catch (error) {
+    } catch (error: any) {
       this.loadingService.dismiss();
       let msg = 'Error al cargar resultados.';
-      if (error instanceof HttpErrorResponse && error.error && error.error.message) {
-        msg += '\n' + error.error.message;
+      if (error?.response?.data?.message) {
+        msg += '\n' + error.response.data.message;
       }
       alert(msg);
     }

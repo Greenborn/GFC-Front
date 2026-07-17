@@ -24,10 +24,13 @@ export class SearchableSelectComponent implements ControlValueAccessor {
   @Input() placeholder: string = 'Seleccionar...';
 
   @ViewChild('dropdown') dropdownEl: ElementRef;
+  @ViewChild('searchInput') searchInputEl: ElementRef<HTMLInputElement>;
 
   isOpen = false;
   searchText = '';
   selectedItem: any = null;
+  activeIndex: number = -1;
+  listboxId = `searchable-listbox-${Date.now()}`;
 
   private _value: any;
   private onChange: any = () => {};
@@ -87,6 +90,14 @@ export class SearchableSelectComponent implements ControlValueAccessor {
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
       this.searchText = '';
+      this.activeIndex = -1;
+      setTimeout(() => {
+        if (this.searchInputEl) {
+          this.searchInputEl.nativeElement.focus();
+        }
+      });
+    } else {
+      this.activeIndex = -1;
     }
     this.onTouched();
   }
@@ -95,6 +106,64 @@ export class SearchableSelectComponent implements ControlValueAccessor {
     this.value = item[this.itemValueField];
     this.isOpen = false;
     this.searchText = '';
+    this.activeIndex = -1;
+    const trigger = this.dropdownEl?.nativeElement?.querySelector('.select-trigger') as HTMLElement;
+    if (trigger) trigger.focus();
+  }
+
+  onKeydown(event: KeyboardEvent) {
+    if (!this.isOpen) {
+      if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        this.toggleDropdown();
+      }
+      return;
+    }
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        if (this.filteredItems.length > 0) {
+          this.activeIndex = (this.activeIndex + 1) % this.filteredItems.length;
+          this.scrollToActive();
+        }
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        if (this.filteredItems.length > 0) {
+          this.activeIndex = this.activeIndex <= 0 ? this.filteredItems.length - 1 : this.activeIndex - 1;
+          this.scrollToActive();
+        }
+        break;
+      case 'Enter':
+        event.preventDefault();
+        if (this.activeIndex >= 0 && this.filteredItems[this.activeIndex]) {
+          this.selectItem(this.filteredItems[this.activeIndex]);
+        }
+        break;
+      case 'Escape':
+        event.preventDefault();
+        this.isOpen = false;
+        this.activeIndex = -1;
+        this.searchText = '';
+        const trigger = this.dropdownEl?.nativeElement?.querySelector('.select-trigger') as HTMLElement;
+        if (trigger) trigger.focus();
+        break;
+      case 'Tab':
+        this.isOpen = false;
+        this.activeIndex = -1;
+        this.searchText = '';
+        break;
+    }
+  }
+
+  private scrollToActive() {
+    setTimeout(() => {
+      const activeEl = document.getElementById(`searchable-option-${this.activeIndex}`);
+      if (activeEl) {
+        activeEl.scrollIntoView({ block: 'nearest' });
+      }
+    });
   }
 
   @HostListener('document:click', ['$event'])
@@ -104,6 +173,7 @@ export class SearchableSelectComponent implements ControlValueAccessor {
       if (!el.contains(event.target)) {
         this.isOpen = false;
         this.searchText = '';
+        this.activeIndex = -1;
       }
     }
   }

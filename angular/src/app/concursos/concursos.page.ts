@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import axios from 'axios';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -63,7 +63,6 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     alertController: AlertService,
     public configService: ConfigService,
     public responsiveService: ResponsiveService,
-    private http: HttpClient,
     public UIUtilsService: UiUtilsService
   ) { 
     super(alertController)
@@ -188,54 +187,6 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     });
   }
 
-  private mezclarConcursosYFotos(): ItemConcursoOFoto[] {
-    const itemsMezclados: ItemConcursoOFoto[] = [];
-    
-    const concursosPorAnio: Map<number, Contest[]> = new Map();
-    
-    this.concursos.forEach(concurso => {
-      const anio = concurso.end_date ? new Date(concurso.end_date).getFullYear() : 0;
-      if (!concursosPorAnio.has(anio)) {
-        concursosPorAnio.set(anio, []);
-      }
-      concursosPorAnio.get(anio)!.push(concurso);
-    });
-    
-    const aniosConcursos = Array.from(concursosPorAnio.keys());
-    const aniosFotos = Array.from(this.fotosDelAnioPorTemporada.keys());
-    const todosLosAnios = [...new Set([...aniosConcursos, ...aniosFotos])];
-    
-    const anios = todosLosAnios.sort((a, b) => b - a);
-    
-    anios.forEach(anio => {
-      if (this.fotosDelAnioPorTemporada.has(anio)) {
-        const fotosData = this.fotosDelAnioPorTemporada.get(anio)!;
-        itemsMezclados.push({
-          tipo: 'fotos-anio',
-          fotosAnio: fotosData.items,
-          temporada: fotosData.temporada,
-          url_grabacion: fotosData.url_grabacion
-        });
-      }
-      
-      const concursosDelAnio = concursosPorAnio.get(anio) || [];
-      concursosDelAnio.sort((a, b) => {
-        const fechaA = a.end_date ? new Date(a.end_date).getTime() : 0;
-        const fechaB = b.end_date ? new Date(b.end_date).getTime() : 0;
-        return fechaB - fechaA;
-      });
-      
-      concursosDelAnio.forEach(concurso => {
-        itemsMezclados.push({
-          tipo: 'concurso',
-          concurso: concurso
-        });
-      });
-    });
-    
-    return itemsMezclados;
-  }
-
   private mezclarConcursosPorPagina(concursos: Contest[]): ItemConcursoOFoto[] {
     const items: ItemConcursoOFoto[] = [];
     const concursosPorAnio: Map<number, Contest[]> = new Map();
@@ -298,17 +249,12 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
 
   private cargarFotosDelAnio() {
     const url = `${this.configService.nodeApiBaseUrl}foto-del-anio`;
-    this.http.get<any>(url).pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe({
-      next: data => {
-        this.procesarFotosDelAnio(data);
-        if (this.concursos.length > 0) {
-          this.reconstruirItems();
-        }
-      },
-      error: () => {}
-    });
+    axios.get(url).then(r => {
+      this.procesarFotosDelAnio(r.data);
+      if (this.concursos.length > 0) {
+        this.reconstruirItems();
+      }
+    }).catch(() => {});
   }
 
   private reconstruirItems() {

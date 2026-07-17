@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { AuthService } from './auth.service';
@@ -16,7 +15,6 @@ const SSO_CLIENT_UNIQUE_ID = 'sso_client_unique_id';
 export class SSOAuthService {
 
   constructor(
-    private http: HttpClient,
     private router: Router,
     private config: ConfigService,
     private auth: AuthService

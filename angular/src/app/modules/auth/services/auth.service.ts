@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router }                  from '@angular/router';
-// import { Subject }                 from 'rxjs';
-
+import { Router } from '@angular/router';
+import { from } from 'rxjs';
+import axios from 'axios';
 import { Login } from '../models/login.model';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { User, UserLogged } from 'src/app/models/user.model';
-import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
+import { UserLogged } from 'src/app/models/user.model';
 
 const SSO_TOKEN_KEY = 'sso_bearer_token';
 const SSO_USER_KEY = 'sso_user_data';
@@ -21,9 +18,8 @@ export class AuthService {
   private _user: Promise<UserLogged | null> | null = null;
 
   constructor(
-    private  router: Router,
-    private  http: HttpClient,
-    private  config: ConfigService,
+    private router: Router,
+    private config: ConfigService,
   ) { }
 
   get token(): string {
@@ -57,19 +53,17 @@ export class AuthService {
 
     if (this._user == undefined && this.loggedIn) {
       this._user = new Promise<UserLogged>(resolve => {
-    const url = `${this.config.nodeApiBaseUrl}user/${this.userId}`;
-    const s = this.http.get<UserLogged>(url).subscribe(
-          u => {
-            console.log('fetching user data', u)
-            resolve(u)
-          },
-          err => {
-            console.log('error fetching profile data', err)
-            resolve(null)
-          },
-          () => s.unsubscribe()
-        )
-        
+        const url = `${this.config.nodeApiBaseUrl}user/${this.userId}?expand=profile,profile.fotoclub,role`;
+        const token = this.token;
+        const headers: Record<string, string> = { 'Accept': 'application/json' };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        axios.get<UserLogged>(url, { headers }).then(u => {
+          console.log('fetching user data', u.data)
+          resolve(u.data)
+        }).catch(err => {
+          console.log('error fetching profile data', err)
+          resolve(null)
+        })
       })
     }
     
@@ -79,60 +73,34 @@ export class AuthService {
     this._user = undefined
   }
 
-  // updateUser(u: User = undefined): void {
-  //   this._user = u ? new Promise<User>(resolve => resolve(u)) : undefined
-  // }
-
-  // isAdmin(): boolean {
-  //   return true
-  // }
-  // set user(u: User) { 
-  //   this._user = u 
-  // }
-
   get loggedIn(): boolean {
-    // console.log(localStorage)
     return this.token != null
   }
 
   login(model: Login, onError: CallableFunction): Promise<boolean> {
     return new Promise<boolean>(resolve => {
       console.log('log in', model)
-      const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
-
-      // this.gral.presentLoading();
       const loginUrl = this.config.nodeApiBaseUrl + 'auth/login';
-      this.http.post(loginUrl, model, { headers }).subscribe(
-        data => {
-          const r = (data as any)
-          // this.gral.dismissLoading();
-          
-          if ( r.hasOwnProperty("token") ){
-            console.log('login de usuario', data)
+      axios.post(loginUrl, model, { headers: { 'Content-Type': 'application/json' } }).then(
+        response => {
+          const r = response.data
+          if (r.hasOwnProperty("token")) {
+            console.log('login de usuario', r)
             this.token = r.token
             this.userId = r.id
             this.updateUser()
             resolve(true)
-            // localStorage.setItem( this.confGral['appName']+'logedIn', JSON.stringify( true ) );
             this.router.navigateByUrl('/')
           } else {
-            console.log('login error', data)
-
-            onError(data)
+            console.log('login error', r)
+            onError(r)
             resolve(false)
-            // this.gral.showMessage( 'Usuario o contraseña incorrecta.' );
           }
         },
-        err =>  {
-          // this.gral.dismissLoading();
-          
+        err => {
           console.log('login http error', err)
           onError(err)
           resolve(false)
-          // localStorage.setItem( this.confGral['appName']+'logedIn',      JSON.stringify( false ) );
-          // localStorage.setItem( this.confGral['appName']+'token',        JSON.stringify( '' ) );
-          
-          // this.gral.showMessage( 'Usuario o contraseña incorrecta.' );
         }
       )
     })
@@ -154,34 +122,24 @@ export class AuthService {
       localStorage.removeItem(SSO_USER_KEY);
       localStorage.removeItem(SSO_CLIENT_UNIQUE_ID);
     }
-    this.token  = this.userId = null
+    this.token = this.userId = null
     this.userId = undefined;
-    this._user  = undefined 
+    this._user = undefined 
     this.router.navigateByUrl('/login')
   }
 
-  /**
-   * Solicita el envío de un código de recuperación al email
-   */
   solicitarRecuperacionPassword(email: string) {
     const url = this.config.getRecuperacionPasswordUrl('recupera_pass');
-    return this.http.post(url, { email });
+    return from(axios.post(url, { email }).then(r => r.data));
   }
 
-  /**
-   * Confirma el código de recuperación enviado al email
-   */
   confirmarCodigoRecuperacion(email: string, code: string) {
     const url = this.config.getRecuperacionPasswordUrl('recupera_pass_confirm_code');
-    return this.http.post(url, { email, code });
+    return from(axios.post(url, { email, code }).then(r => r.data));
   }
 
-  /**
-   * Establece una nueva contraseña usando el código recibido
-   */
   cambiarPasswordConCodigo(email: string, code: string, pass_0: string, pass_1: string) {
     const url = this.config.getRecuperacionPasswordUrl('recupera_pass_new_pass');
-    return this.http.post(url, { email, code, pass_0, pass_1 });
+    return from(axios.post(url, { email, code, pass_0, pass_1 }).then(r => r.data));
   }
-
 }

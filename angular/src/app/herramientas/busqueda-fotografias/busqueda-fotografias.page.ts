@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import axios from 'axios';
 import { ConfigService } from '../../services/config/config.service';
-import { firstValueFrom } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -20,7 +19,6 @@ export class BusquedaFotografiasPage {
   mostrarNota: boolean = true;
 
   constructor(
-    private http: HttpClient,
     private config: ConfigService
   ) {}
 
@@ -42,7 +40,7 @@ export class BusquedaFotografiasPage {
     
     try {
       const url = this.config.publicApiUrl(`images/search?q=${encodeURIComponent(this.terminoBusqueda)}`);
-      const response: any = await firstValueFrom(this.http.get(url));
+      const response = (await axios.get(url)).data;
       
       this.resultados = response.data || response || [];
     } catch (error) {

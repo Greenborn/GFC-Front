@@ -3,12 +3,28 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, withPreloading, withHashLocation, PreloadAllModules } from '@angular/router';
 import { provideZoneChangeDetection } from '@angular/core';
 import { provideServiceWorker } from '@angular/service-worker';
-import { withInterceptors, provideHttpClient } from '@angular/common/http';
+import axios from 'axios';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app-routing.module';
-import { authInterceptorFn } from './app/modules/auth/services/auth-interceptor.fn';
 import { GlobalErrorHandler } from './app/services/global-error-handler';
 import { environment } from './environments/environment';
+
+const API_BASE_URL = (environment as any).nodeApiBaseUrl;
+axios.interceptors.request.use(config => {
+  if (config.url?.startsWith(API_BASE_URL)) {
+    const tokenKey = (environment as any).appName + 'token';
+    const token = localStorage.getItem(tokenKey);
+    if (token) {
+      config.headers.Authorization = 'Bearer ' + token;
+    }
+    const uniqueId = localStorage.getItem('sso_client_unique_id');
+    if (uniqueId) {
+      const separator = config.url.includes('?') ? '&' : '?';
+      config.url += separator + 'unique_id=' + encodeURIComponent(uniqueId);
+    }
+  }
+  return config;
+});
 
 if (environment.production) {
   enableProdMode();
@@ -17,7 +33,6 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     provideZoneChangeDetection(),
-    provideHttpClient(withInterceptors([authInterceptorFn])),
     provideRouter(routes, withHashLocation(), withPreloading(PreloadAllModules)),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),

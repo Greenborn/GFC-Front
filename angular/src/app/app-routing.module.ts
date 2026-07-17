@@ -1,14 +1,9 @@
-import { PreloadAllModules, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { AuthGuard } from './modules/auth/guards/auth.guard';
 import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 import { CondicionesServicioComponent } from './condiciones-servicio/condiciones-servicio.component';
 
 export const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'concursos',
-  //   pathMatch: 'full'
-  // },
   {
     path: 'folder/:id',
     loadComponent: () => import('./folder/folder.page').then( m => m.FolderPage)
@@ -23,7 +18,7 @@ export const routes: Routes = [
       },
       {
         path: 'secciones',
-        loadChildren: () => import('./concursos/secciones-abm/secciones-abm.module').then( m => m.SeccionesAbmPageModule)
+        loadComponent: () => import('./concursos/secciones-abm/secciones-abm.page').then(m => m.SeccionesAbmPage)
       },
       {
         path: 'ranking',
@@ -31,7 +26,7 @@ export const routes: Routes = [
       },
       {
         path: 'metricas',
-        loadChildren: () => import('./concursos/metricas-abm/metricas-abm.module').then( m => m.MetricasAbmPageModule)
+        loadComponent: () => import('./concursos/metricas-abm/metricas-abm.page').then(m => m.MetricasAbmPage)
       },
       {
         path: 'nuevo',
@@ -54,10 +49,6 @@ export const routes: Routes = [
           {
             path: 'fotografias',
             loadComponent: () => import('./concursos/concurso-detail/fotografias/fotografias.component').then(m => m.FotografiasComponent)
-          },
-          {
-            path: 'juzgamiento',
-            loadComponent: () => import('./concursos/concurso-detail/juzgamiento/juzgamiento.component').then(m => m.JuzgamientoComponent)
           },
           {
             path: 'informacion',
@@ -85,7 +76,6 @@ export const routes: Routes = [
         loadComponent: () => import('./usuario/usuario.page').then( m => m.UsuarioPage)
       }
     ]
-    // loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
   },
   {
     path: 'usuarios',

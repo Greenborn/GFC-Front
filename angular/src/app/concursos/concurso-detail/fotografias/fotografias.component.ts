@@ -23,7 +23,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { MenuAccionesComponent } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 import { VerFotografiasComponent } from '../ver-fotografias/ver-fotografias.component';
-import { get_all } from '../../../services/contest-results.service'
+import { ContestResultsService } from '../../../services/contest-results.service'
 import { FiltrosOrdenModalComponent, FiltrosOrdenState } from './filtros-orden-modal.component';
 import { MetricAbmService } from 'src/app/services/metric-abm.service';
 import { InscribirConcursanteComponent } from '../inscribir-concursante/inscribir-concursante.component';
@@ -83,6 +83,7 @@ export class FotografiasComponent implements OnInit {
     public rolificador: RolificadorService,
     public auth: AuthService,
     private metricAbmService: MetricAbmService,
+    private contestResultsService: ContestResultsService,
   ) {
     this.subscribes()
   }
@@ -169,7 +170,7 @@ export class FotografiasComponent implements OnInit {
       this.filtroAutor = '';
     }
 
-    const response: any = await get_all({
+    const response: any = await this.contestResultsService.get_all({
       contest_id: this.concurso.id,
       page,
       perPage: this.pageSize,
@@ -280,7 +281,7 @@ export class FotografiasComponent implements OnInit {
       this.propiasFotos = [];
       return;
     }
-    const response: any = await get_all({
+    const response: any = await this.contestResultsService.get_all({
       contest_id: this.concurso.id,
       concursante_id: this.user.profile_id,
       page: 1,
@@ -352,16 +353,6 @@ export class FotografiasComponent implements OnInit {
   }
 
   onSortChangeManual(value: string) {
-    if (this.sortBy === value) {
-      this.sortAsc = !this.sortAsc;
-    } else {
-      this.sortBy = value;
-      this.sortAsc = true;
-    }
-    this.loadPage(1, true, false);
-  }
-
-  setSortBy(value: string) {
     if (this.sortBy === value) {
       this.sortAsc = !this.sortAsc;
     } else {
@@ -526,7 +517,7 @@ export class FotografiasComponent implements OnInit {
         if (!this.hasMorePages || this.loadingPage) return;
         this.loadingPage = true;
         const page = this.pageNumber + 1;
-        const response: any = await get_all({
+        const response: any = await this.contestResultsService.get_all({
           contest_id: this.concurso.id,
           page,
           perPage: this.pageSize,
@@ -557,14 +548,8 @@ export class FotografiasComponent implements OnInit {
     }, true);
   }
 
-  can_delete(r: any) {
-    const ES_MIA = r['image'].profile_id == this.user?.profile_id
-    return ES_MIA && this.concurso.active
-  }
-
-  can_edit(r: any) {
-    const ES_MIA = r['image'].profile_id == this.user?.profile_id
-    return ES_MIA && this.concurso.active
+  canModify(r: any) {
+    return r['image'].profile_id == this.user?.profile_id && this.concurso.active
   }
 
   async mostrarAcciones(ev: any, r: ContestResultExpanded, index: any, data?: any[]) {
@@ -589,23 +574,19 @@ export class FotografiasComponent implements OnInit {
         )
       }
 
-      if (this.can_edit(r)) {
+      if (this.canModify(r)) {
         acciones.push({
           accion: (params: []) => this.postImage(image, r.section_id),
           params: [],
           icon: 'create',
           label: 'Editar'
         })
-      }
-
-      if (this.can_delete(r)) {
         acciones.push({
           accion: (params: number[]) => this.concursoDetailService.deleteImage.emit(r),
           params: [],
           icon: 'trash',
           label: 'Borrar'
         })
-
       }
 
     }

@@ -1,22 +1,18 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { from, Observable } from 'rxjs';
+import axios from 'axios';
 import { Fotoclub } from '../models/fotoclub.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FotoclubService extends ApiService<Fotoclub> {
 
-  constructor(
-    http: HttpClient,
-    config: ConfigService
-  ) {
-    super('fotoclub', http, config)
-    // this.fetchAllOnce = true
+  constructor(config: ConfigService) {
+    super('fotoclub', config)
+    this.useAuthHeader = true
    }
 
    get template(): Fotoclub {
@@ -34,32 +30,33 @@ export class FotoclubService extends ApiService<Fotoclub> {
     }
   }
 
-  getAll<K = Fotoclub>(getParams: string = '', resource: string = null): Observable<K[]> {
-    // Usa la base parametrizada para el endpoint y agrega el token de sesión
-    const token = localStorage.getItem(this.config.tokenKey);
-    const headers = token ? { Authorization: 'Bearer ' + token } : {};
-    const url = this.config.data.publicApi.replace(/\/$/, '') + '/fotoclub/get_all' + (getParams ? '?' + getParams : '');
-    return this.http.get<{items: K[]}>(url, { headers }).pipe(
-      map(resp => resp.items)
-    );
+  private fotoclubBaseUrl() {
+    return this.config.data.publicApi.replace(/\/$/, '');
   }
 
-  get<K = Fotoclub>(id: number, getParams: string = ''): Observable<K> {
+  getAll<K = Fotoclub>(getParams = '', resource: string | null = null): Observable<K[]> {
     const token = localStorage.getItem(this.config.tokenKey);
-    const headers = token ? { Authorization: 'Bearer ' + token } : {};
-    const url = this.config.data.publicApi.replace(/\/$/, '') + `/fotoclub/${id}`;
-    return this.http.get<K>(url, { headers });
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const url = this.fotoclubBaseUrl() + '/fotoclub/get_all' + (getParams ? '?' + getParams : '');
+    return from(axios.get<{items: K[]}>(url, { headers }).then(r => r.data.items));
   }
 
-  post<K = Fotoclub>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
+  get<K = Fotoclub>(id: number, getParams = ''): Observable<K> {
     const token = localStorage.getItem(this.config.tokenKey);
-    const headers = token ? { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
-    if (id === undefined) {
-      const url = this.config.data.publicApi.replace(/\/$/, '') + '/fotoclub/create';
-      return this.http.post<K>(url, model, { headers });
-    } else {
-      const url = this.config.data.publicApi.replace(/\/$/, '') + '/fotoclub/edit';
-      return this.http.put<K>(url, model, { headers });
-    }
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const url = this.fotoclubBaseUrl() + `/fotoclub/${id}`;
+    return from(axios.get<K>(url, { headers }).then(r => r.data));
+  }
+
+  post<K = Fotoclub>(model: K, id: number | undefined = undefined, getParams = ''): Observable<K> {
+    const token = localStorage.getItem(this.config.tokenKey);
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const request = id === undefined
+      ? axios.post(this.fotoclubBaseUrl() + '/fotoclub/create', model, { headers })
+      : axios.put(this.fotoclubBaseUrl() + '/fotoclub/edit', model, { headers });
+    return from(request.then(r => r.data));
   }
 }

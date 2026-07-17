@@ -1,96 +1,19 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import axios from 'axios';
 import { ApiChangePasswordBody, ApiAdminChangePasswordBody } from '../models/ApiRequest';
 import { User } from '../models/user.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
-import { ApiSerializedResponse } from '../models/ApiResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService extends ApiService<User> {
 
-  constructor(
-    http: HttpClient,
-    config: ConfigService
-  ) {
-    super('user', http, config)
+  constructor(config: ConfigService) {
+    super('user', config)
    }
-
-  private nodeUserUrl(resource: string) {
-    return this.config.nodeApiBaseUrl + resource;
-  }
-
-  get<K = User>(id: number, getParams: string = ''): Observable<K> {
-    return this.http.get<K>(
-      this.nodeUserUrl(`${this.recurso}/${id}?${getParams}`)
-    );
-  }
-
-  getAll<K = User>(getParams: string = '', resource: string = null): Observable<K[]> {
-    const url = this.nodeUserUrl(`${resource ?? this.recurso}?${getParams}`);
-    return this.http.get<ApiSerializedResponse<K>>(url).pipe(
-      map((data) => {
-        if (data != null) {
-          this.all_meta = data._meta;
-          return data.items;
-        }
-        return null;
-      })
-    );
-  }
-
-  post<K = User>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return id == undefined ?
-      this.http.post<K>(
-        this.nodeUserUrl(`${this.recurso}?${getParams}`),
-        model,
-        { headers }
-      ) :
-      this.http.put<K>(
-        `${this.nodeUserUrl(this.recurso)}/${id}?${getParams}`,
-        model,
-        { headers }
-      );
-  }
-
-  postFormData<K = User>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
-    const f = new FormData();
-    for (let key in model) {
-      const value = (model as any)[key];
-      if (value !== undefined && value !== null) {
-        f.append(key, value);
-      }
-    }
-    return id == undefined ?
-      this.http.post<K>(
-        this.nodeUserUrl(`${this.recurso}?${getParams}`),
-        f
-      ) :
-      this.http.put<K>(
-        `${this.nodeUserUrl(this.recurso)}/${id}?${getParams}`,
-        f
-      );
-  }
-
-  delete(id: number): Observable<any> {
-    return this.http.delete(
-      `${this.nodeUserUrl(this.recurso)}/${id}`
-    );
-  }
-
-  put(model: any, id: number, recurso: string = null): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put(
-      `${this.nodeUserUrl(recurso ?? this.recurso)}/${id}`,
-      model,
-      { headers }
-    );
-  }
 
    get template(): User {
     return {
@@ -102,21 +25,18 @@ export class UserService extends ApiService<User> {
   }
 
   changePassword(params: ApiChangePasswordBody, userId: number): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put(
-      this.nodeUserUrl(`${this.recurso}/${userId}/password`),
+    return from(axios.put(
+      `${this.config.nodeApiBaseUrl}user/${userId}/password`,
       params,
-      { headers }
-    );
+      { headers: { 'Content-Type': 'application/json' } }
+    ).then(r => r.data));
   }
 
   updatePassword(params: ApiAdminChangePasswordBody, userId: number): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put(
-      this.nodeUserUrl(`${this.recurso}/${userId}/password`),
+    return from(axios.put(
+      `${this.config.nodeApiBaseUrl}user/${userId}/password`,
       params,
-      { headers }
-    );
+      { headers: { 'Content-Type': 'application/json' } }
+    ).then(r => r.data));
   }
-   
 }

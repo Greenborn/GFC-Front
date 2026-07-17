@@ -32,7 +32,7 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { CompressedPhotosService } from 'src/app/services/compressed-photos.service'
 import { AlertService } from 'src/app/services/ui/alert.service';
 
-import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src/app/services/contest-results.service'
+import { ContestResultsService, resultadosConcursoGeted } from 'src/app/services/contest-results.service'
 @Component({
   standalone: true,
   imports: [CommonModule, RouterModule],
@@ -79,7 +79,8 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     public UIUtilsService: UiUtilsService,
     public configService: ConfigService,
     public responsiveService: ResponsiveService,
-    private compressedPhotosService: CompressedPhotosService
+    private compressedPhotosService: CompressedPhotosService,
+    private contestResultsService: ContestResultsService,
   ) {
     super(alertService)
    }
@@ -228,7 +229,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   
         if (r != undefined) {
           r.metric = metric
-          await get_all_contest_results( { "contest_id" : this.concurso.id} )
+          await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
         } 
       }
     }
@@ -268,7 +269,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
           }, {
             text: 'Confirmar',
             handler: () => {
-              this.contestService.deleteContest(this.concurso.id).subscribe({
+              this.contestService.delete(this.concurso.id).subscribe({
                 next: response => {
                   this.router.navigate(['/concursos']);
                 }, 
@@ -299,9 +300,9 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
               super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe({
                 next: async _ => {
                   this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-                  await get_all_contest_results( { "contest_id" : this.concurso.id} )
+                  await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
                   super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
-                    next: _ => get_all_contest_results({ "contest_id": this.concurso.id }),
+                    next: _ => this.contestResultsService.get_all({ "contest_id": this.concurso.id }),
                     error: err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
                   })
                   super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({

@@ -34,7 +34,7 @@ import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Section } from 'src/app/models/section.model';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src/app/services/contest-results.service';
+import { ContestResultsService, resultadosConcursoGeted } from 'src/app/services/contest-results.service';
 
 // TODO: sacar el contenido extra que se repite en informacion-component
 @Component({
@@ -86,7 +86,8 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     public concursoDetailService: ConcursoDetailService,
     private profileContestService: ProfileContestService,
     public UIUtilsService: UiUtilsService,
-    public configService: ConfigService
+    public configService: ConfigService,
+    private contestResultsService: ContestResultsService,
   ) {
     super(alertCtrl)
     this.concurso = this.contestService.template;
@@ -147,7 +148,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       this.concursoDetailService.concurso.subscribe({
         next: async c => {
           this.concurso = c
-          await get_all_contest_results( { "contest_id" : this.concurso.id}, false )
+          await this.contestResultsService.get_all( { "contest_id" : this.concurso.id}, false )
           this.noImg = false
         } 
       })
@@ -278,7 +279,7 @@ obtenerPx() {
       if (r != undefined) {
         r.metric = metric
         // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
-        await get_all_contest_results( { "contest_id" : this.concurso.id} )
+        await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
         this.concursoDetailService.refreshPhotos.emit()
       } 
       // else {
@@ -349,7 +350,7 @@ obtenerPx() {
                 image,
                 metric
               })
-              await get_all_contest_results( { "contest_id" : this.concurso.id} )
+              await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
               this.concursoDetailService.refreshPhotos.emit()
             },
             // cr => this.contestResults.push(cr),
@@ -372,18 +373,18 @@ obtenerPx() {
               r_updated.section_id = section_id
               // this.concursoDetailService.resultadosConcurso.emit(this.resultadosConcurso)
               
-              await get_all_contest_results( { "contest_id" : this.concurso.id} )
+              await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
               this.concursoDetailService.refreshPhotos.emit()
             },
             error: async err => {
               this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]) })
               
-              await get_all_contest_results( { "contest_id" : this.concurso.id} )
+              await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
               this.concursoDetailService.refreshPhotos.emit()
             },
           })  
         } else {
-          await get_all_contest_results( { "contest_id" : this.concurso.id} )
+          await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
           this.concursoDetailService.refreshPhotos.emit()
         }
       }
@@ -420,7 +421,7 @@ obtenerPx() {
       message: 'Cuidado'
       }, 
       async () => {
-        this.contestService.deleteContest(this.concurso.id).subscribe({
+        this.contestService.delete(this.concurso.id).subscribe({
           next: response => {
             this.router.navigate(['/concursos']);
           }, 
@@ -447,10 +448,10 @@ obtenerPx() {
         super.fetch<null>(() => this.contestResultService.delete(result_id)).subscribe({
           next: async _ => {
             this.resultadosConcurso.splice(this.resultadosConcurso.findIndex(i => i.id == result_id), 1)
-            await get_all_contest_results( { "contest_id" : this.concurso.id} )
+            await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
             this.concursoDetailService.refreshPhotos.emit()
             super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
-              next: _ => get_all_contest_results({ "contest_id": this.concurso.id }),
+              next: _ => this.contestResultsService.get_all({ "contest_id": this.concurso.id }),
               error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
             })
             super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({

@@ -1,25 +1,19 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
 import axios from 'axios';
 import { Contest, ContestExpanded } from '../models/contest.model';
 import { ContestCategory, ContestCategoryExpanded } from '../models/contest_category.model';
 import { ContestSection, ContestSectionExpanded } from '../models/contest_section.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
-import { ApiSerializedResponse } from '../models/ApiResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContestService extends ApiService<Contest> {
 
-  constructor(
-    http: HttpClient,
-    config: ConfigService
-  ) { 
-    super('contest', http, config, )
+  constructor(config: ConfigService) {
+    super('contest', config)
   }
 
   get template(): Contest {
@@ -34,41 +28,23 @@ export class ContestService extends ApiService<Contest> {
     }
   }
 
-  // Sobrescribimos getAll para usar publicApiUrl en lugar de apiUrl
-  getAll<K = Contest>(getParams: string = '', resource: string = null): Observable<K[]> {
+  getAll<K = Contest>(getParams = '', resource: string | null = null): Observable<K[]> {
     if (this.fetchAllOnce && this.all != undefined) {
-      console.log('get all stored', this.all)
-      return new Observable(suscriber => {
-        suscriber.next(this.all as K[])
-      })
-    } else {
-      const url = this.config.publicApiUrl(`${resource ?? this.recurso}?${getParams}`)
-      
-      // Obtener token del localStorage
-      const token = localStorage.getItem(this.config.tokenKey);
-      const headers = token ? new HttpHeaders({
-        'Authorization': 'Bearer ' + token
-      }) : new HttpHeaders();
-
-      return this.http.get<ApiSerializedResponse<K>>(url, { headers }).pipe(
-        map((data) => {
-          console.log('get all', url, data)
-          if (this.fetchAllOnce) {
-            this.all = data.items;
-          }
-          if (data != null){
-            this.all_meta = data._meta;
-            return data.items;
-          }
-          return null;
-        })
-      )
+      return new Observable<K[]>(subscriber => {
+        subscriber.next(this.all as K[]);
+      });
     }
-  }
+    const url = this.config.publicApiUrl(`${resource ?? this.recurso}?${getParams}`)
+    const token = localStorage.getItem(this.config.tokenKey);
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = 'Bearer ' + token;
 
-  get<K = Contest>(id: number, getParams: string = ''): Observable<K> {
-    const url = `${this.config.nodeApiBaseUrl}contest/${id}?${getParams}`;
-    return this.http.get<K>(url);
+    return from(axios.get(url, { headers }).then(r => {
+      const data = r.data as any;
+      if (this.fetchAllOnce) this.all = data?.items;
+      if (data?._meta != null) this.all_meta = data._meta;
+      return data?.items ?? data;
+    }));
   }
 
   getCategoriasInscriptas(contest_id: number): Observable<ContestCategoryExpanded[]> {
@@ -82,16 +58,9 @@ export class ContestService extends ApiService<Contest> {
     return new Date(c.end_date) > new Date()
   }
 
-  
-  // getContestWithResults(id: number): Observable<ContestExpanded> {
-  //   return super.get<ContestExpanded>(id, `expand=contestResults,contestResults.image.profile`)
-  //   // return super.fetchAll<ContestExpanded>(`expand=image,metric&filter[contest_id]=${contestId}`)
-  // }
-
   formatearFechaParaHTML(fecha: string): string {
-    // console.log("lo que trae: " + fecha)
-    if (fecha == null) return '' 
-    let cadena:string[] = fecha.split("-");
+    if (fecha == null) return ''
+    let cadena: string[] = fecha.split("-");
     let meses = ['','ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
     return `${cadena[2]}-${meses[parseInt(cadena[1])]}-${cadena[0]}`;
   }
@@ -100,47 +69,5 @@ export class ContestService extends ApiService<Contest> {
     let d = new Date(fecha);
     let s = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString();
     return s;
-  }
-
-  /**
-   * Eliminar concurso usando API Node.js
-   * DELETE /api/contest/:id
-   */
-  deleteContest(id: number): Observable<any> {
-    const url = `${this.config.nodeApiBaseUrl}contest/${id}`;
-    const headers = {
-      'Authorization': 'Bearer ' + localStorage.getItem(this.config.data.appName + 'token'),
-      'Content-Type': 'application/json'
-    };
-    
-    return from(
-      axios.delete(url, { headers })
-        .then(res => res.data)
-    );
-  }
-
-  /**
-   * Crear/actualizar concurso usando Node API
-   * POST /api/contest
-   * PUT  /api/contest/:id
-   */
-  postFormData<K = Contest>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
-    const formData = new FormData();
-    for (const key in model) {
-      if (Object.prototype.hasOwnProperty.call(model, key)) {
-        const value = (model as any)[key];
-        if (value !== undefined && value !== null) {
-          formData.append(key, value);
-        }
-      }
-    }
-
-    const url = id == undefined
-      ? `${this.config.nodeApiBaseUrl}contest?${getParams}`
-      : `${this.config.nodeApiBaseUrl}contest/${id}?${getParams}`;
-
-    return id == undefined ?
-      this.http.post<K>(url, formData) :
-      this.http.put<K>(url, formData);
   }
 }

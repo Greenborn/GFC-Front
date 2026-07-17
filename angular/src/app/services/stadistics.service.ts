@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Stadistics } from '../models/stadistics.model';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
@@ -9,11 +8,8 @@ import { ConfigService } from './config/config.service';
 })
 export class StadisticsService extends ApiService<Stadistics> {
 
-  constructor(
-    http: HttpClient,
-    config: ConfigService
-  ) { 
-    super('stadistics', http, config)
+  constructor(config: ConfigService) {
+    super('stadistics', config)
   }
 
   get template(): Stadistics {
@@ -23,7 +19,6 @@ export class StadisticsService extends ApiService<Stadistics> {
       fotografias: undefined,
       mencion: undefined,
       primer_puesto: undefined,
-      
     }
-}
+  }
 }

@@ -7,13 +7,13 @@ import { CategoryService } from '../services/category.service';
 import { Section } from '../models/section.model';
 import { SectionService } from '../services/section.service';
 import * as XLSX from 'xlsx';
-import { HttpClient } from '@angular/common/http';
+import axios from 'axios';
+import { firstValueFrom } from 'rxjs';
 import { LoadingService } from '../services/ui/loading.service';
 import { AlertService } from '../services/ui/alert.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
 import { RankingService } from '../services/ranking.service';
 import { ConfigService } from '../services/config/config.service';
-import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -45,7 +45,6 @@ export class HerramientasPage implements OnInit {
     private contestService: ContestService,
     private categoryService: CategoryService,
     private sectionService: SectionService,
-    private http: HttpClient,
     private loadingService: LoadingService,
     private alertService: AlertService,
     private rankingService: RankingService,
@@ -187,10 +186,9 @@ export class HerramientasPage implements OnInit {
   descargarListado() {
     if (!this.concursoSeleccionado) return;
     const id = this.concursoSeleccionado.id;
-  const url = `${this.config.nodeApiBaseUrl}contests/participants?id=${id}`;
-    const token = localStorage.getItem(this.config.tokenKey);
-    const headers = token ? { Authorization: 'Bearer ' + token } : {};
-    this.http.get<any>(url, { headers }).subscribe(response => {
+    const url = `${this.config.nodeApiBaseUrl}contests/participants?id=${id}`;
+    axios.get(url).then(r => {
+      const response = r.data;
       if (response && response.participants) {
         const data = response.participants.map(p => ({
           Nombre: p.name,
@@ -234,7 +232,7 @@ export class HerramientasPage implements OnInit {
     await this.loadingService.present('Generando compilado...');
     try {
       const url = this.config.nodeApiBaseUrl + 'contest/compiled-winners';
-      const r = await firstValueFrom(this.http.get<any>(url));
+      const r = (await axios.get(url)).data;
       this.loadingService.dismiss();
       if (r && r.success && r.download_url) {
         window.open(r.download_url, '_blank');
@@ -332,10 +330,7 @@ export class HerramientasPage implements OnInit {
       // Enviar al endpoint
       this.loadingService.present('Enviando datos al servidor...');
       const url = `${this.config.nodeApiBaseUrl}foto-del-anio`;
-      const token = localStorage.getItem(this.config.tokenKey);
-      const headers = token ? { Authorization: 'Bearer ' + token } : {};
-
-      const response = await firstValueFrom(this.http.post<any>(url, estructura, { headers }));
+      const response = (await axios.post(url, estructura)).data;
       
       this.loadingService.dismiss();
 
@@ -413,23 +408,15 @@ export class HerramientasPage implements OnInit {
 
     try {
       const url = `${this.config.nodeApiBaseUrl}contest-record`;
-      const token = localStorage.getItem(this.config.tokenKey);
-      const headers = token ? { 
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'application/json'
-      } : {
-        'Content-Type': 'application/json'
-      };
-
       const body = {
-        contest_id: 51, // Según el ejemplo del curl
+        contest_id: 51,
         url: this.grabacionData.url,
         object: "Foto del Año",
         temporada: this.grabacionData.temporada,
         type: "FOTO_DEL_ANIO"
       };
 
-      const response = await firstValueFrom(this.http.post<any>(url, body, { headers }));
+      const response = (await axios.post(url, body)).data;
       
       this.loadingService.dismiss();
 

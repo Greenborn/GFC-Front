@@ -18,13 +18,12 @@ import { User, UserLogged } from 'src/app/models/user.model';
 import { Profile, ProfileExpanded } from 'src/app/models/profile.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
-import { Observable, firstValueFrom } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { LoadingService } from 'src/app/services/ui/loading.service';
-import { HttpClient } from '@angular/common/http';
+import axios from 'axios';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
@@ -89,8 +88,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     public rolificador: RolificadorService,
     public loadingService: LoadingService,
     public configService: ConfigService,
-    public UIUtilsService: UiUtilsService,
-    private http: HttpClient
+    public UIUtilsService: UiUtilsService
   ) {
     super(alertCtrl)
     // this.funcionesOrdenamiento['fotoclub'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
@@ -271,7 +269,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
         try {
           const url = `${this.configService.nodeApiBaseUrl}disable_user`;
           const body = { id: p.user.id, status: newStatus };
-          const r: any = await firstValueFrom(this.http.post(url, body));
+          const r = (await axios.post(url, body)).data;
           const message = r && r.message ? r.message : 'Usuario deshabilitado';
           await this.UIUtilsService.mostrarAlert({ header: 'Acción realizada', message, buttons: [{ text: 'OK', role: 'cancel' }] });
           p.user.status = newStatus;

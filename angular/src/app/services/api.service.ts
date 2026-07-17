@@ -1,8 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ApiSerializedResponse } from '../models/ApiResponse';
+import { Observable, from } from 'rxjs';
+import axios from 'axios';
 import { ConfigService } from './config/config.service';
 
 @Injectable({
@@ -10,95 +8,110 @@ import { ConfigService } from './config/config.service';
 })
 export abstract class ApiService<T> {
 
-  protected fetchAllOnce: boolean = false;
-  protected all: any[];
-  all_meta:any;
-  
+  protected fetchAllOnce = false;
+  protected all: T[] | undefined;
+  all_meta: any;
+
+  protected useAuthHeader = false;
+  protected unwrapResponse: 'none' | 'data' | 'items' = 'none';
+  protected customBaseUrl = '';
+  protected apiPath = '';
+
   constructor(
     @Inject(String) protected recurso: string,
-    protected  http: HttpClient,
     protected config: ConfigService,
-    // private _template: T
   ) { }
 
   abstract get template(): T;
 
-  get<K = T>(id: number, getParams: string = ''): Observable<K> {
-    console.log('get', this.recurso, id)
-    const url = `${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`
-    return this.http.get<K>(url)
+  protected getHeaders(): Record<string, string> {
+    const headers: Record<string, string> = {};
+    if (this.useAuthHeader) {
+      const token = localStorage.getItem(this.config.tokenKey);
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+    }
+    return headers;
   }
 
-  public getAllMeta(){
+  protected getBaseUrl(): string {
+    return this.customBaseUrl || this.config.nodeApiBaseUrl;
+  }
+
+  private getPath(resource?: string): string {
+    return resource ?? (this.apiPath || this.recurso);
+  }
+
+  get<K = T>(id: number, getParams = ''): Observable<K> {
+    const url = `${this.getBaseUrl()}${this.getPath()}/${id}?${getParams}`;
+    return from(axios.get<K>(url, { headers: this.getHeaders() }).then(r => {
+      const data = r.data as any;
+      return this.unwrapResponse === 'data' ? (data?.data ?? data) : data;
+    }));
+  }
+
+  getAll<K = T>(getParams = '', resource: string | null = null): Observable<K[]> {
+    if (this.fetchAllOnce && this.all != undefined) {
+      return new Observable<K[]>(subscriber => {
+        subscriber.next(this.all as any);
+      });
+    }
+    const path = this.getPath(resource);
+    const url = `${this.getBaseUrl()}${path}?${getParams}`;
+    return from(axios.get(url, { headers: this.getHeaders() }).then(r => {
+      const data = r.data as any;
+      const items = data?.items ?? data;
+      if (this.fetchAllOnce) this.all = items;
+      if (data?._meta != null) this.all_meta = data._meta;
+      return items;
+    }));
+  }
+
+  getAllMeta() {
     return this.all_meta;
   }
 
-  getAll<K = T>(getParams: string = '', resource: string = null): Observable<K[]> {
-
-    if (this.fetchAllOnce && this.all != undefined) {
-      console.log('get all stored', this.all)
-      return new Observable(suscriber => {
-        suscriber.next(this.all as K[])
-      })
-    } else {
-      const recurso = resource ?? this.recurso
-      const url = `${this.config.nodeApiBaseUrl}${recurso}?${getParams}`
-      return this.http.get<ApiSerializedResponse<K>>(url).pipe(
-        map((data) => {
-          console.log('get all', url, data)
-          if (this.fetchAllOnce) {
-            this.all = data.items;
-          }
-          if (data != null){
-            this.all_meta = data._meta;
-            return data.items;
-          }
-          return null;
-        })
-      )
-    }
-
+  post<K = T>(model: K, id: number | undefined = undefined, getParams = ''): Observable<K> {
+    const path = this.getPath();
+    const url = id == undefined
+      ? `${this.getBaseUrl()}${path}?${getParams}`
+      : `${this.getBaseUrl()}${path}/${id}?${getParams}`;
+    const headers = { ...this.getHeaders(), 'Content-Type': 'application/json' };
+    const request = id == undefined
+      ? axios.post(url, model, { headers })
+      : axios.put(url, model, { headers });
+    return from(request.then(r => {
+      const data = r.data as any;
+      return this.unwrapResponse === 'data' ? (data?.data ?? data) : data;
+    }));
   }
 
-  post<K = T>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
-    console.log('posting', model, 'id: ', id)
-    const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
-    const url = id == undefined
-      ? `${this.config.nodeApiBaseUrl}${this.recurso}?${getParams}`
-      : `${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`
-    return id == undefined
-      ? this.http.post<K>(url, model, { headers })
-      : this.http.put<K>(url, model, { headers })
-  }
-  postFormData<K = T>(model: K, id: number = undefined, getParams: string = ''): Observable<K> {
-    console.log(model);
-    const f = new FormData()
-    for ( let key in model ) {
-      f.append(key, (model as any)[key])
+  postFormData<K = T>(model: K, id: number | undefined = undefined, getParams = ''): Observable<K> {
+    const formData = new FormData();
+    for (const key in model) {
+      if (Object.prototype.hasOwnProperty.call(model, key)) {
+        const value = (model as any)[key];
+        if (value !== undefined && value !== null) {
+          formData.append(key, value);
+        }
+      }
     }
-    console.log('posting form data', f, 'id: ', id)
+    const path = this.getPath();
     const url = id == undefined
-      ? `${this.config.nodeApiBaseUrl}${this.recurso}?${getParams}`
-      : `${this.config.nodeApiBaseUrl}${this.recurso}/${id}?${getParams}`
-    return id == undefined
-      ? this.http.post<K>(url, f)
-      : this.http.put<K>(url, f)
+      ? `${this.getBaseUrl()}${path}?${getParams}`
+      : `${this.getBaseUrl()}${path}/${id}?${getParams}`;
+    const request = id == undefined
+      ? axios.post(url, formData, { headers: this.getHeaders() })
+      : axios.put(url, formData, { headers: this.getHeaders() });
+    return from(request.then(r => r.data));
   }
 
   delete(id: number): Observable<any> {
-    return this.http.delete(
-      `${this.config.nodeApiBaseUrl}${this.recurso}/${id}`
-    )
+    return from(axios.delete(`${this.getBaseUrl()}${this.getPath()}/${id}`, { headers: this.getHeaders() }).then(r => r.data));
   }
 
-  put(model: any, id: number, recurso: string = null): Observable<any> {
-    console.log('put', model, 'id: ', id)
-    const headers = new HttpHeaders({ 'Content-Type':  'application/json' })
-    return this.http.put(
-      `${this.config.nodeApiBaseUrl}${recurso ?? this.recurso}/${id}`, 
-      model,
-      { headers }
-    )
+  put(model: any, id: number, recursoOverride: string | null = null): Observable<any> {
+    const headers = { ...this.getHeaders(), 'Content-Type': 'application/json' };
+    const path = recursoOverride ?? this.getPath();
+    return from(axios.put(`${this.getBaseUrl()}${path}/${id}`, model, { headers }).then(r => r.data));
   }
-
 }
