@@ -588,3 +588,14 @@ body.dark .card h4,
 body.dark .card h5 {
   color: #e4e4e4;
 }
+
+/* ─── Theme transition ──────────────────────────── */
+
+body,
+body *,
+body *::before,
+body *::after {
+  transition-duration: 2s;
+  transition-property: background-color, color, border-color, box-shadow;
+  transition-timing-function: ease;
+}
