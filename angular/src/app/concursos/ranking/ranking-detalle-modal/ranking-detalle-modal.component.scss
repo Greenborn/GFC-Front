@@ -7,7 +7,10 @@ img {
 
 .inner-content {
   @media (max-width: 767px) {
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -312,4 +315,73 @@ img {
   background: #f8f9fa;
   border-top: 1px solid #e9ecef;
   font-size: 0.85rem;
+}
+
+body.dark .accordion-item,
+body.dark .accordion-header,
+body.dark .rank-table-body,
+body.dark .rank-table-row {
+  background: #161618;
+}
+
+body.dark .accordion-header:hover,
+body.dark .rank-table-row:hover {
+  background: #222;
+}
+
+body.dark .rank-table-body .rank-table-row:nth-child(even) {
+  background: #1a1a1c;
+}
+
+body.dark .accordion-title {
+  color: #e4e4e4;
+}
+
+body.dark .accordion-subtitle {
+  color: #999;
+}
+
+body.dark .accordion-arrow {
+  color: #888;
+}
+
+body.dark .field-label {
+  color: #999;
+}
+
+body.dark .field-value {
+  color: #e4e4e4;
+}
+
+body.dark .rank-summary {
+  background: #1a1a1c;
+  border-top-color: #2a2a2a;
+  color: #e4e4e4;
+}
+
+body.dark .sumatoria-item {
+  color: #ccc;
+}
+
+body.dark .card {
+  background: #1e1e2a;
+  border-color: #2a2a3a;
+  color: #ccc;
+}
+
+body.dark .card-header {
+  background: #161618;
+  border-bottom-color: #2a2a3a;
+}
+
+body.dark .card-title {
+  color: #e4e4e4;
+}
+
+body.dark .participante-lista li {
+  color: #ccc;
+}
+
+body.dark .card-subtitle {
+  color: #999;
 }

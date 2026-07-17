@@ -377,3 +377,23 @@ body.dark .badge.bg-secondary {
   background: #555 !important;
   color: #e4e4e4 !important;
 }
+
+/* ─── Page background ────────────────────────────── */
+
+body.dark {
+  background: #121212;
+}
+
+body.dark .card {
+  background: #1e1e2a;
+  border-color: #2a2a3a;
+  color: #ccc;
+}
+
+body.dark .card h1,
+body.dark .card h2,
+body.dark .card h3,
+body.dark .card h4,
+body.dark .card h5 {
+  color: #e4e4e4;
+}

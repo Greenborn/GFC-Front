@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./usuario-img.component.scss'],
   inputs: ['src']
 })
-export class UsuarioImgComponent implements OnInit {
+export class UsuarioImgComponent implements OnChanges {
 
   @Input() src: string;
   @Input() imageChangeClick:Subject<any> = new Subject();
@@ -18,8 +18,10 @@ export class UsuarioImgComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['src'] && changes['src'].currentValue !== changes['src'].previousValue) {
+      this.imgError = false;
+    }
   }
 
   imageClick(){

@@ -84,6 +84,11 @@
     padding-top: calc(0.75rem + env(safe-area-inset-top));
 }
 
+:host-context(body.dark) .container {
+    background: #121212;
+    min-height: calc(100vh - 56px);
+}
+
 @media (max-width: 767px) {
     .concurso-tabs {
         padding: 0 0.5rem;

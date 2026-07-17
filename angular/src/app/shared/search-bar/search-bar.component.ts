@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 export interface SearchBarComponentParams {
   atributo: string;
@@ -32,11 +33,11 @@ export class SearchBarComponent implements OnInit, OnChanges {
   private origData: any[];
   private dataFiltered: any[];
   public atributoSelected: string = '';
+  private searchSubject = new Subject<{ atributo: string; query: string }>();
 
   constructor() { }
 
   getCancelbuttonStatus() {
-    // console.log(q.value)
     if (!this.queryInput) return 'never';
     const empty = this.queryInput.value == undefined || this.queryInput.value == '' 
     return empty ? 'never' : 'always'
@@ -54,18 +55,22 @@ export class SearchBarComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged((prev, curr) => prev.query === curr.query && prev.atributo === curr.atributo)
+    ).subscribe(params => {
+      this.executeSearch(params.atributo, params.query);
+    });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    // console.log('detectomg data change', changes.data?.currentValue)
     if (changes.data && changes.data.currentValue != this.dataFiltered) {
       this.origData = changes.data.currentValue
-      this.atributoSelected = ''
-      // this.searchQuery = ''
       if (this.queryInput != undefined) {
-        // const q = await this.queryInput.getInputElement()
-        // q.value = ''
         this.queryInput.value = ''
+      }
+      if (this.atributosPasados?.length === 1) {
+        this.atributoSelected = this.getAtributoValor(this.atributosPasados[0])
       }
     }
   } 
@@ -77,29 +82,27 @@ export class SearchBarComponent implements OnInit, OnChanges {
     if (!this.atributoSelected && this.atributosPasados?.length === 1) {
       this.atributoSelected = this.getAtributoValor(this.atributosPasados[0])
     }
-    // let atributo: string = this.atributoSelect.nativeElement.value;
     let atributo: string = this.atributoSelected;
-    let query: string = this.queryInput.value;
+    let query: string = this.queryInput?.value ?? '';
+    this.searchSubject.next({ atributo, query });
+  }
 
+  private executeSearch(atributo: string, query: string) {
     let atributoObj: SearchBarComponentAtributo = (this.atributosObj ?? []).find(a => atributo == a.valor)
     let filterCallback: Function;
     if (atributoObj != undefined && atributoObj.callback != undefined) {
       filterCallback = atributoObj.callback
     } else if (atributo != '') {
       filterCallback = (e: any, q: string) => {
-        console.log(e[atributo])
-        return e[atributo].includes(q)
+        return e[atributo] != undefined ? String(e[atributo]).includes(q) : false
       } 
     } else {
-      // console.log('TODO: Filtrando por todos los callbacks y atributos...')
       filterCallback = (e: any, q: string) => this.atributosObj.map(o => o.callback(e, q)).reduce((acc, v) => acc || v)
     }
     this.buscar.emit({ atributo, query });
     if (this.origData != undefined) {
       this.dataFiltered = this.origData.filter(e => filterCallback(e, query))
-      this.dataChange.emit(
-        this.dataFiltered
-      )
+      this.dataChange.emit(this.dataFiltered)
     }
   }
 
@@ -107,7 +110,6 @@ export class SearchBarComponent implements OnInit, OnChanges {
     if (typeof atributoValue != 'string') {
       atributoValue = (atributoValue as any).value
     }
-    // console.log('changing radio', ev.target.value)
     this.atributoSelected = atributoValue as string
     this.output()
   }

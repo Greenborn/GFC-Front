@@ -39,8 +39,9 @@
 @media (max-width: 767.98px) {
   .accordion-header.expanded {
     position: sticky;
-    top: 0;
+    top: 56px;
     z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
 
   .accordion-item {
@@ -76,6 +77,15 @@
 
 .accordion-body {
   padding: 0;
+}
+
+@media (max-width: 767.98px) {
+  .accordion-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 52px;
+  }
 }
 
 .mobile-label {
@@ -118,6 +128,8 @@
   background: #f8f9fa;
   border-bottom: 1px solid #e9ecef;
 }
+
+
 
 .rank-pill {
   display: inline-block;

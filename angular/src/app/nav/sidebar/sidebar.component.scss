@@ -19,6 +19,10 @@
 
 .user-section {
   background: #f8f9fa;
+
+  :host-context(body.dark) & {
+    background: #1e1e2a;
+  }
 }
 
 .user-avatar {

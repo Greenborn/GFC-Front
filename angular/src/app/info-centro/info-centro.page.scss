@@ -78,14 +78,6 @@
     gap: 0.75rem;
     transition: transform 0.2s, box-shadow 0.2s;
 
-    .feature-icon {
-        width: 48px !important;
-        height: 48px !important;
-        max-width: 48px !important;
-        aspect-ratio: 1 !important;
-        color: #3880ff;
-    }
-
     h3 {
         font-size: 1.25rem;
         font-weight: 700;
@@ -102,6 +94,18 @@
     }
 }
 
+body.dark .feature-card {
+    background: #1e1e2a;
+}
+
+body.dark .feature-card h3 {
+    color: #e4e4e4;
+}
+
+body.dark .feature-card p {
+    color: #aaa;
+}
+
 @media (max-width: 320px) {
     .feature-card p {
         max-width: 100%;
@@ -115,6 +119,27 @@
 
 body.dark .feature-card:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+body.dark .sobre-gfc-card {
+    background: #1e1e2a;
+    border-color: #2a2a3a;
+}
+
+body.dark .sobre-gfc-card .card-body {
+    color: #ccc;
+}
+
+body.dark .sobre-gfc-card h2 {
+    color: #e4e4e4;
+}
+
+body.dark .sobre-gfc-card p {
+    color: #bbb;
+}
+
+body.dark .uc-placeholder {
+    background: #121212;
 }
 
 @media (max-width: 767px) {

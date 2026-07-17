@@ -2,7 +2,7 @@
 
 .info-hero {
     position: relative;
-    height: 220px;
+    min-height: 220px;
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -14,7 +14,7 @@
 .info-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.15) 100%);
     pointer-events: none;
 }
 
@@ -27,16 +27,20 @@
 
 .info-hero-badge {
     display: inline-block;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 0.2rem 0.7rem;
+    padding: 0.3rem 0.85rem;
     border-radius: 999px;
     margin-bottom: 0.5rem;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+
+    &:not(.open) {
+        background: rgba(0, 0, 0, 0.45);
+        color: #fff;
+    }
 
     &.open {
         background: #4caf50;
@@ -76,6 +80,14 @@
     gap: 0.35rem;
 }
 
+body.dark .info-hero-btn.edit {
+    background: rgba(255, 193, 7, 0.75);
+}
+
+body.dark .info-hero-btn.delete {
+    background: rgba(244, 67, 54, 0.75);
+}
+
 .info-hero-btn {
     width: 36px;
     height: 36px;
@@ -103,7 +115,7 @@
 
 @media (min-width: 768px) {
     .info-hero {
-        height: 340px;
+        min-height: 340px;
         margin-left: calc(-1 * var(--bs-gutter-x, .75rem));
         margin-right: calc(-1 * var(--bs-gutter-x, .75rem));
         border-radius: 12px 12px 0 0;
@@ -222,12 +234,22 @@
     background: #4caf50;
     color: #fff;
     &:hover { background: #43a047; }
+
+    body.dark & {
+        background: #388e3c;
+        &:hover { background: #2e7d32; }
+    }
 }
 
 .info-btn-danger {
     background: #f44336;
     color: #fff;
     &:hover { background: #e53935; }
+
+    body.dark & {
+        background: #c62828;
+        &:hover { background: #b71c1c; }
+    }
 }
 
 .info-btn-outline {
@@ -320,6 +342,10 @@
 
     &:hover {
         text-decoration: underline;
+    }
+
+    body.dark & {
+        color: #6ea8fe;
     }
 
     i {

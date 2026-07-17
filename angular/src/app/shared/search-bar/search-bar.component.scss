@@ -1,8 +1,5 @@
 .search-bar {
-    position: relative;
-  
-    .form-select.inner-select {
-      position: absolute;
-      right: 0
+    .form-check-inline {
+        cursor: pointer;
     }
-  }
+}

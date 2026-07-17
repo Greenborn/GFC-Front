@@ -1,7 +1,7 @@
 <div class="p-3 text-center border-bottom">
   @if (authUser; as u) {
     <div>
-      <app-usuario-img [src]="userProfile?.img_url ? configService.imageUrl(userProfile.img_url, true) : ''" style="max-width:64px;display:inline-block"></app-usuario-img>
+      <app-usuario-img [src]="userProfile?.img_url ? configService.imageUrl(userProfile.img_url) : ''" style="max-width:64px;display:inline-block"></app-usuario-img>
       <h6 class="mt-2 mb-0">{{ u.username }}</h6>
       <small class="text-muted">{{userProfile?.name || ''}} {{userProfile?.last_name || ''}}</small>
     </div>
