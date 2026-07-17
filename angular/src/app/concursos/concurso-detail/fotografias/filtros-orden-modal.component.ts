@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Metric } from 'src/app/models/metric.model';
@@ -14,7 +16,8 @@ export interface FiltrosOrdenState {
 }
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   selector: 'app-filtros-orden-modal',
   templateUrl: './filtros-orden-modal.component.html',
   styleUrls: ['./filtros-orden-modal.component.scss'],

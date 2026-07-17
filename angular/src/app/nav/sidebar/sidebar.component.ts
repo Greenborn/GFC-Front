@@ -1,9 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
+import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
 
 export type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -11,7 +13,8 @@ export type BeforeInstallPromptEvent = Event & {
 };
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, RouterModule, UsuarioImgComponent],
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],

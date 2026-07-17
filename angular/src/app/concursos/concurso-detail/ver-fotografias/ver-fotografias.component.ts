@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
@@ -7,7 +8,8 @@ import { RolificadorService } from 'src/app/modules/auth/services/rolificador.se
 import { UserLogged } from 'src/app/models/user.model';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule],
   selector: 'app-ver-fotografias',
   templateUrl: './ver-fotografias.component.html',
   styleUrls: ['./ver-fotografias.component.scss'],

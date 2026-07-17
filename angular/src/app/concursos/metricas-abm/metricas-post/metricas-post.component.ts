@@ -1,14 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Metric } from 'src/app/models/metric.model';
 import { MetricAbmService } from 'src/app/services/metric-abm.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
+import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, BtnPostComponent],
   selector: 'app-metricas-post',
   templateUrl: './metricas-post.component.html',
   styleUrls: ['./metricas-post.component.scss'],

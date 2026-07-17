@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   selector: 'app-recuperar-password-codigo',
   templateUrl: './recuperar-password-codigo.component.html',
   styleUrls: ['./recuperar-password-codigo.component.scss']

@@ -1,7 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule],
   selector: 'app-btn-sort',
   templateUrl: './btn-sort.component.html',
   styleUrls: ['./btn-sort.component.scss'],

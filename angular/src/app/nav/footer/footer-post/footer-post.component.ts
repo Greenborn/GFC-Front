@@ -1,12 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Footer } from 'src/app/models/footer.model';
 import { FooterService } from 'src/app/services/footer.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
+import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, BtnPostComponent],
   selector: 'app-footer-post',
   templateUrl: './footer-post.component.html',
   styleUrls: ['./footer-post.component.scss'],

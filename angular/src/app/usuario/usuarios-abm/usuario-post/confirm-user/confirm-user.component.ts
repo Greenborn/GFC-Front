@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { CreateUserService } from 'src/app/services/create-user.service';
@@ -7,7 +9,8 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   selector: 'app-confirm-user',
   templateUrl: './confirm-user.component.html',
   styleUrls: ['./confirm-user.component.scss'],

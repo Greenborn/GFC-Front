@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, forwardRef, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   selector: 'app-searchable-select',
   templateUrl: './searchable-select.component.html',
   styleUrls: ['./searchable-select.component.scss'],

@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -17,11 +18,14 @@ import { ContestService } from 'src/app/services/contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
+import { ThSortComponent } from 'src/app/shared/th-sort/th-sort.component';
+import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 import { resultadosConcursoGeted } from 'src/app/services/contest-results.service'
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [AsyncPipe, ThSortComponent, UsuarioImgComponent],
   selector: 'app-concursantes',
   templateUrl: './concursantes.component.html',
   styleUrls: ['./concursantes.component.scss'],

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
@@ -13,7 +14,8 @@ import { FooterPostComponent } from './footer-post/footer-post.component';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule],
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],

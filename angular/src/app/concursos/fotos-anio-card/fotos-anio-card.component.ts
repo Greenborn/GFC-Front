@@ -1,11 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FotoDelAnio } from 'src/app/models/foto-del-anio.model';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { VerFotografiasComponent } from '../concurso-detail/ver-fotografias/ver-fotografias.component';
+import { SlidesComponent } from 'src/app/shared/slides/slides.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, SlidesComponent],
   selector: 'app-fotos-anio-card',
   templateUrl: './fotos-anio-card.component.html',
   styleUrls: ['./fotos-anio-card.component.scss']

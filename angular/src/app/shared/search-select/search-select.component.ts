@@ -1,5 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 
 
 export interface SearchSelectOption {
@@ -15,7 +16,8 @@ export interface SearchSelectOptions {
 }
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   selector: 'app-search-select',
   templateUrl: './search-select.component.html',
   styleUrls: ['./search-select.component.scss'],

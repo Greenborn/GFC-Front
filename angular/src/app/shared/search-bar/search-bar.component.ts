@@ -12,7 +12,7 @@ export interface SearchBarComponentAtributo {
 }
 
 @Component({
-  standalone: false,
+  standalone: true,
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],

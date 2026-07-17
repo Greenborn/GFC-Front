@@ -11,9 +11,13 @@ import { ResponsiveService } from '../services/ui/responsive.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
 import { MenuAccionesComponentAccion } from '../shared/menu-acciones/menu-acciones.component';
 import { InfoCentroPostComponent } from './info-centro-post/info-centro-post.component';
+import { PresentacionUltimoConcursoComponent } from './presentacion-ultimo-concurso/presentacion-ultimo-concurso.component';
+import { PresentacionComisionDirectivaComponent } from './presentacion-comision-directiva/presentacion-comision-directiva.component';
+import { PresentacionMiembrosComponent } from './presentacion-miembros/presentacion-miembros.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [PresentacionUltimoConcursoComponent, PresentacionComisionDirectivaComponent, PresentacionMiembrosComponent],
   selector: 'app-info-centro',
   templateUrl: './info-centro.page.html',
   styleUrls: ['./info-centro.page.scss'],

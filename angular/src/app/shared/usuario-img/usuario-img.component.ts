@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Component({
-  standalone: false,
+  standalone: true,
   selector: 'app-usuario-img',
   templateUrl: './usuario-img.component.html',
   styleUrls: ['./usuario-img.component.scss'],

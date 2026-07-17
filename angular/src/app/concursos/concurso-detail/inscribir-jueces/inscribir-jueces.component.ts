@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Category } from 'src/app/models/category.model';
 import { Contest } from 'src/app/models/contest.model';
@@ -7,9 +9,11 @@ import { ProfileContest, ProfileContestExpanded } from 'src/app/models/profile_c
 import { ProfileContestService } from 'src/app/services/profile-contest.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
+import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, BtnPostComponent],
   selector: 'app-inscribir-jueces',
   templateUrl: './inscribir-jueces.component.html',
   styleUrls: ['./inscribir-jueces.component.scss'],

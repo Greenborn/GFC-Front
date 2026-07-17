@@ -1,5 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+
+import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
 
 import { Image } from 'src/app/models/image.model';
 import { ContestResult } from 'src/app/models/contest_result.model';
@@ -13,7 +16,8 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, BtnPostComponent],
   selector: 'app-image-review',
   templateUrl: './image-review.page.html',
   styleUrls: ['./image-review.page.scss'],

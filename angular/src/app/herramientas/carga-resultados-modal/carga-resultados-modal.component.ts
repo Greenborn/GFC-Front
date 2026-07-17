@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule],
   selector: 'app-carga-resultados-modal',
   templateUrl: './carga-resultados-modal.component.html',
   styleUrls: ['./carga-resultados-modal.component.scss']

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { ConsoleLogService } from './services/console-log.service';
-import { Router } from '@angular/router';
 import { ResponsiveService } from './services/ui/responsive.service';
+import { NavbarComponent } from './nav/navbar/navbar.component';
+import { SidebarComponent } from './nav/sidebar/sidebar.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [RouterModule, NavbarComponent, SidebarComponent],
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -9,7 +10,8 @@ export interface MenuAccionesComponentAccion {
 }
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule],
   selector: 'app-menu-acciones',
   templateUrl: './menu-acciones.component.html',
   styleUrls: ['./menu-acciones.component.scss'],

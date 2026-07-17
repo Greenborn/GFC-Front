@@ -1,14 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { environment } from 'src/environments/environment';
 import { filter } from 'rxjs/operators';
+import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, RouterModule, UsuarioImgComponent],
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],

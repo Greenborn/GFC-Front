@@ -1,4 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { InfiniteScrollDirective } from 'src/app/shared/infinite-scroll.directive';
 
 import { Contest } from 'src/app/models/contest.model';
 import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
@@ -27,7 +31,8 @@ import { firstValueFrom } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, InfiniteScrollDirective],
   selector: 'app-fotografias',
   templateUrl: './fotografias.component.html',
   styleUrls: ['./fotografias.component.scss'],

@@ -1,4 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { NavigationEnd, Router } from '@angular/router';
 import { SearchBarComponentAtributo, SearchBarComponentParams } from 'src/app/shared/search-bar/search-bar.component';
@@ -22,9 +25,11 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { LoadingService } from 'src/app/services/ui/loading.service';
 import { HttpClient } from '@angular/common/http';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, SharedModule],
   selector: 'app-usuarios-abm',
   templateUrl: './usuarios-abm.page.html',
   styleUrls: ['./usuarios-abm.page.scss'],

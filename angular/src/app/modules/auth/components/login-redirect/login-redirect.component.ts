@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { SSOAuthService } from '../../services/sso-auth.service';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   selector: 'app-login-redirect',
   templateUrl: './login-redirect.component.html',
   styleUrls: ['./login-redirect.component.scss'],

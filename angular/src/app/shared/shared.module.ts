@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -18,7 +18,11 @@ import { InfiniteScrollDirective } from './infinite-scroll.directive';
 
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
     FooterComponent,
     UsuarioImgComponent,
     SearchBarComponent,
@@ -31,13 +35,7 @@ import { InfiniteScrollDirective } from './infinite-scroll.directive';
     BtnPostComponent,
     ContestStatusChipComponent,
     SlidesComponent,
-    InfiniteScrollDirective
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
+    InfiniteScrollDirective,
   ],
   exports: [
     FooterComponent,
@@ -58,6 +56,5 @@ import { InfiniteScrollDirective } from './infinite-scroll.directive';
     SlidesComponent,
     InfiniteScrollDirective
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule { }

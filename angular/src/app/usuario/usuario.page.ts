@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { ApiConsumer } from '../models/ApiConsumer';
 import { AlertService } from '../services/ui/alert.service';
 import { Profile } from '../models/profile.model';
@@ -8,9 +10,11 @@ import { ConfigService } from '../services/config/config.service';
 import { ProfileService } from '../services/profile.service';
 import { UserService } from '../services/user.service';
 import { environment } from '../../environments/environment';
+import { UsuarioImgComponent } from '../shared/usuario-img/usuario-img.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, RouterModule, UsuarioImgComponent],
   selector: 'app-usuario',
   templateUrl: './usuario.page.html',
   styleUrls: ['./usuario.page.scss'],

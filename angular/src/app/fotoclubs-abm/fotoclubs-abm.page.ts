@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApiConsumer } from '../models/ApiConsumer';
 import { AlertService } from '../services/ui/alert.service';
@@ -7,10 +8,12 @@ import { FotoclubService } from '../services/fotoclub.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
 import { MenuAccionesComponentAccion } from '../shared/menu-acciones/menu-acciones.component';
 import { SearchBarComponentAtributo } from '../shared/search-bar/search-bar.component';
+import { ThSortComponent } from '../shared/th-sort/th-sort.component';
 import { FotoclubPostComponent } from './fotoclub-post/fotoclub-post.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, ThSortComponent],
   selector: 'app-fotoclubs-abm',
   templateUrl: './fotoclubs-abm.page.html',
   styleUrls: ['./fotoclubs-abm.page.scss'],
