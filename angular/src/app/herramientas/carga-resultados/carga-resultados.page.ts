@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../services/config/config.service';
 import { LoadingService } from '../../services/ui/loading.service';
 import { firstValueFrom } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 function normalizarNombre(nombre: string): string {
   // Quitar acentos, pasar a minúsculas, pero mantener espacios
@@ -26,7 +27,8 @@ function normalizarNombre(nombre: string): string {
 }
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule],
   selector: 'app-carga-resultados',
   templateUrl: './carga-resultados.page.html',
   styleUrls: ['./carga-resultados.page.scss']

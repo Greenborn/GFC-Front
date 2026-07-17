@@ -1,4 +1,6 @@
+import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
+import { RouterModule, ActivatedRoute } from "@angular/router";
 import { ApiConsumer } from "src/app/models/ApiConsumer";
 import { AlertService } from "src/app/services/ui/alert.service";
 import { Stadistics } from "src/app/models/stadistics.model";
@@ -7,12 +9,13 @@ import { ConfigService } from "src/app/services/config/config.service";
 import { ProfileService } from "src/app/services/profile.service";
 import { StadisticsService } from "src/app/services/stadistics.service";
 import { UserService } from "src/app/services/user.service";
-import { ActivatedRoute } from "@angular/router";
 import { ProfileExpanded } from "src/app/models/profile.model";
 import { RolificadorService } from "src/app/modules/auth/services/rolificador.service";
+import { UsuarioImgComponent } from "src/app/shared/usuario-img/usuario-img.component";
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, RouterModule, UsuarioImgComponent],
   selector: "app-perfil",
   templateUrl: "./perfil.page.html",
   styleUrls: ["./perfil.page.scss"],

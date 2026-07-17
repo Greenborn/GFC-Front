@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
@@ -23,7 +25,8 @@ export interface ImagePostParams {
 }
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   selector: 'app-image-post',
   templateUrl: './image-post.page.html',
   styleUrls: ['./image-post.page.scss'],

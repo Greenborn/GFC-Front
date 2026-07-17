@@ -1,6 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {Location} from '@angular/common';
 
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
@@ -24,9 +25,13 @@ import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
 import { HttpHeaders } from '@angular/common/http';
 import { Subject, firstValueFrom } from 'rxjs';
 import { ComparePassword } from 'src/app/modules/auth/validators/password.validator';
+import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
+import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
+import { InputOjoComponent } from 'src/app/shared/input-ojo/input-ojo.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, BtnPostComponent, UsuarioImgComponent, InputOjoComponent],
   selector: 'app-usuario-post',
   templateUrl: './usuario-post.page.html',
   styleUrls: ['./usuario-post.page.scss'],

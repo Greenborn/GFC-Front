@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Contest } from 'src/app/models/contest.model';
@@ -32,7 +34,8 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 
 import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src/app/services/contest-results.service'
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   selector: 'app-informacion',
   templateUrl: './informacion.component.html',
   styleUrls: ['./informacion.component.scss'],

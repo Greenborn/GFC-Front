@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { AfterContentChecked, AfterContentInit, Component, ContentChildren, ElementRef, HostListener, Input, OnChanges, OnDestroy, QueryList, Renderer2, SimpleChanges } from '@angular/core';
 
 const TABLET_BREAKPOINT = 768;
@@ -16,7 +17,8 @@ export interface SlidesOptions {
 }
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule],
   selector: 'app-slides',
   templateUrl: './slides.component.html',
   styleUrls: ['./slides.component.scss'],

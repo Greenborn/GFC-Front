@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
 
 import { RankingService } from '../../services/ranking.service';
 import { RankingDetalleModalComponent } from './ranking-detalle-modal/ranking-detalle-modal.component';
@@ -11,7 +12,8 @@ import { UiUtilsService } from '../../services/ui/ui-utils.service';
 import { ConfigService } from '../../services/config/config.service';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule],
   selector: 'app-ranking',
   templateUrl: './ranking.page.html',
   styleUrls: ['./ranking.page.scss'],

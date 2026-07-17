@@ -6,9 +6,11 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { PublicProfileService } from 'src/app/services/public-profile.service';
 import { timeout, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [UsuarioImgComponent],
   selector: 'app-presentacion-comision-directiva',
   templateUrl: './presentacion-comision-directiva.component.html',
   styleUrls: ['./presentacion-comision-directiva.component.scss'],

@@ -1,11 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { VerFotografiasComponent } from '../../concurso-detail/ver-fotografias/ver-fotografias.component';
+import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, UsuarioImgComponent],
   selector: 'app-ranking-detalle-modal',
   templateUrl: './ranking-detalle-modal.component.html',
   styleUrls: ['./ranking-detalle-modal.component.scss']

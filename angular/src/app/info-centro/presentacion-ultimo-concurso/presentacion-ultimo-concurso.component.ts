@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { ConfigService } from 'src/app/services/config/config.service';
@@ -8,7 +9,8 @@ import { timeout, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [RouterModule],
   selector: 'app-presentacion-ultimo-concurso',
   templateUrl: './presentacion-ultimo-concurso.component.html',
   styleUrls: ['./presentacion-ultimo-concurso.component.scss'],

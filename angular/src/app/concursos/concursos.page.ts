@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { NotificacionesPage } from '../notificaciones/notificaciones.page';
 import { UsuarioPage } from '../usuario/usuario.page';
@@ -16,8 +18,11 @@ import { UiUtilsService } from '../services/ui/ui-utils.service';
 import { ResponsiveService } from '../services/ui/responsive.service';
 import { FotosDelAnioResponse, ItemConcursoOFoto } from '../models/foto-del-anio.model';
 import { takeUntil } from 'rxjs/operators';
+import { InfiniteScrollDirective } from '../shared/infinite-scroll.directive';
+import { FotosAnioCardComponent } from './fotos-anio-card/fotos-anio-card.component';
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, InfiniteScrollDirective, FotosAnioCardComponent],
   selector: 'app-concursos',
   templateUrl: './concursos.page.html',
   styleUrls: ['./concursos.page.scss'],

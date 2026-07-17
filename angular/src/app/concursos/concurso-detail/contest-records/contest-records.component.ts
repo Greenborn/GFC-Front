@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { LoadingService } from 'src/app/services/ui/loading.service';
@@ -8,7 +9,8 @@ import { ContestRecordFormComponent } from './contest-record-form/contest-record
 import { ContestRecord } from './models/contest.record';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule],
   selector: 'app-contest-records',
   templateUrl: './contest-records.component.html',
   styleUrls: ['./contest-records.component.scss'],

@@ -1,15 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { Metric } from 'src/app/models/metric.model';
 import { MetricAbmService } from 'src/app/services/metric-abm.service';
-// import { MetricService } from 'src/app/services/metric.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
+import { ThSortComponent } from 'src/app/shared/th-sort/th-sort.component';
 import { MetricasPostComponent } from './metricas-post/metricas-post.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, ThSortComponent],
   selector: 'app-metricas-abm',
   templateUrl: './metricas-abm.page.html',
   styleUrls: ['./metricas-abm.page.scss'],

@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Category } from 'src/app/models/category.model';
 import { Contest } from 'src/app/models/contest.model';
@@ -10,9 +12,11 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { SearchableSelectComponent } from 'src/app/shared/searchable-select/searchable-select.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, SearchableSelectComponent],
   selector: 'app-inscribir-concursante',
   templateUrl: './inscribir-concursante.component.html',
   styleUrls: ['./inscribir-concursante.component.scss'],

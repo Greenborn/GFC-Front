@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { AlertService } from 'src/app/services/ui/alert.service';
@@ -5,10 +6,12 @@ import { Section } from 'src/app/models/section.model';
 import { SectionService } from 'src/app/services/section.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
+import { ThSortComponent } from 'src/app/shared/th-sort/th-sort.component';
 import { SeccionPostComponent } from './seccion-post/seccion-post.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, ThSortComponent],
   selector: 'app-secciones-abm',
   templateUrl: './secciones-abm.page.html',
   styleUrls: ['./secciones-abm.page.scss'],

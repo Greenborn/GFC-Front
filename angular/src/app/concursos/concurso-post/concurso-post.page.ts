@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { ContestService } from 'src/app/services/contest.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
@@ -18,9 +21,12 @@ import { ContestSection } from 'src/app/models/contest_section.model';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { ContestRecordsComponent } from '../concurso-detail/contest-records/contest-records.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, SharedModule, ContestRecordsComponent],
   selector: 'app-concurso-post',
   templateUrl: './concurso-post.page.html',
   styleUrls: ['./concurso-post.page.scss'],

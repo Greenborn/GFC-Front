@@ -15,7 +15,7 @@ interface MemberItem extends Fotoclub {
 }
 
 @Component({
-  standalone: false,
+  standalone: true,
   selector: 'app-presentacion-miembros',
   templateUrl: './presentacion-miembros.component.html',
   styleUrls: ['./presentacion-miembros.component.scss'],

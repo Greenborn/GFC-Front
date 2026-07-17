@@ -8,16 +8,18 @@ import { Section } from '../models/section.model';
 import { SectionService } from '../services/section.service';
 import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
-import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
 import { LoadingService } from '../services/ui/loading.service';
 import { AlertService } from '../services/ui/alert.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
 import { RankingService } from '../services/ranking.service';
 import { ConfigService } from '../services/config/config.service';
 import { firstValueFrom } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   selector: 'app-herramientas',
   templateUrl: './herramientas.page.html',
   styleUrls: ['./herramientas.page.scss']

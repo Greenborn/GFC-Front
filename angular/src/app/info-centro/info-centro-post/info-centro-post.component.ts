@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { InfoCentro } from 'src/app/models/info_centro.model';
 import { ConfigService } from 'src/app/services/config/config.service';
@@ -6,9 +8,11 @@ import { InfoCentroService } from 'src/app/services/info-centro.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
+import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, BtnPostComponent],
   selector: 'app-info-centro-post',
   templateUrl: './info-centro-post.component.html',
   styleUrls: ['./info-centro-post.component.scss'],

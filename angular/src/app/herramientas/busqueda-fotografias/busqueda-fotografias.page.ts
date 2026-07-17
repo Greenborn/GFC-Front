@@ -1,10 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../services/config/config.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   selector: 'app-busqueda-fotografias',
   templateUrl: './busqueda-fotografias.page.html',
   styleUrls: ['./busqueda-fotografias.page.scss']

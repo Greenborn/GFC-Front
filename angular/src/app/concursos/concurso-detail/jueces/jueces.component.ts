@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Contest } from 'src/app/models/contest.model';
@@ -11,10 +12,13 @@ import { ContestService } from 'src/app/services/contest.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { MenuAccionesComponentAccion } from 'src/app/shared/menu-acciones/menu-acciones.component';
 import { SearchBarComponentAtributo } from 'src/app/shared/search-bar/search-bar.component';
+import { SearchBarComponent } from 'src/app/shared/search-bar/search-bar.component';
+import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
 import { ConcursoDetailService } from '../concurso-detail.service';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [AsyncPipe, SearchBarComponent, UsuarioImgComponent],
   selector: 'app-jueces',
   templateUrl: './jueces.component.html',
   styleUrls: ['./jueces.component.scss'],

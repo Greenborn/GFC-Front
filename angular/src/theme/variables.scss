@@ -6,8 +6,8 @@
  * Usage: var(--gfc-*) in global.scss utilities.
  */
 :root {
-  --gfc-section-header-bg: #212529;
-  --gfc-section-header-text: #fff;
+  --gfc-section-header-bg: #f8f9fa;
+  --gfc-section-header-text: #212529;
   --gfc-btn-back-bg: #212529;
   --gfc-btn-back-border: #373b3e;
   --gfc-btn-back-text: #fff;
@@ -26,6 +26,17 @@
   --gfc-member-name: #222;
   --gfc-member-link-bg: #f0f0f0;
   --gfc-member-link-text: #555;
+
+  /* General theme colors */
+  --gfc-bg-primary: #fff;
+  --gfc-bg-secondary: #f8f9fa;
+  --gfc-bg-tertiary: #f0f1f2;
+  --gfc-border-color: #dee2e6;
+  --gfc-border-light: #e9ecef;
+  --gfc-text-primary: #212529;
+  --gfc-text-secondary: #6c757d;
+  --gfc-card-radius: 12px;
+  --gfc-card-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 body.dark {
@@ -49,4 +60,15 @@ body.dark {
   --gfc-member-name: #eee;
   --gfc-member-link-bg: rgba(255, 255, 255, 0.1);
   --gfc-member-link-text: #ccc;
+
+  /* General theme colors */
+  --gfc-bg-primary: #161618;
+  --gfc-bg-secondary: #1a1a1c;
+  --gfc-bg-tertiary: #222;
+  --gfc-border-color: #2a2a2a;
+  --gfc-border-light: #333;
+  --gfc-text-primary: #e4e4e4;
+  --gfc-text-secondary: #888;
+  --gfc-card-radius: 12px;
+  --gfc-card-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  standalone: false,
+  standalone: true,
   selector: 'app-btn-post',
   templateUrl: './btn-post.component.html',
   styleUrls: ['./btn-post.component.scss'],

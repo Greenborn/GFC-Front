@@ -1,11 +1,9 @@
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-// import { LoggedInGuard } from './guards/logged-in.guard';
+import { PreloadAllModules, Routes } from '@angular/router';
 import { AuthGuard } from './modules/auth/guards/auth.guard';
 import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 import { CondicionesServicioComponent } from './condiciones-servicio/condiciones-servicio.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   // {
   //   path: '',
   //   redirectTo: 'concursos',
@@ -13,7 +11,7 @@ const routes: Routes = [
   // },
   {
     path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+    loadComponent: () => import('./folder/folder.page').then( m => m.FolderPage)
   },
   {
     path: 'concursos',
@@ -21,21 +19,56 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./concursos/concursos.module').then( m => m.ConcursosPageModule)
+        loadComponent: () => import('./concursos/concursos.page').then(m => m.ConcursosPage)
+      },
+      {
+        path: 'secciones',
+        loadChildren: () => import('./concursos/secciones-abm/secciones-abm.module').then( m => m.SeccionesAbmPageModule)
+      },
+      {
+        path: 'ranking',
+        loadComponent: () => import('./concursos/ranking/ranking.page').then(m => m.RankingPage)
+      },
+      {
+        path: 'metricas',
+        loadChildren: () => import('./concursos/metricas-abm/metricas-abm.module').then( m => m.MetricasAbmPageModule)
       },
       {
         path: 'nuevo',
         canActivate: [AuthGuard],
-        loadChildren: () => import('./concursos/concurso-post/concurso-post.module').then( m => m.ConcursoPostPageModule)
+        loadComponent: () => import('./concursos/concurso-post/concurso-post.page').then( m => m.ConcursoPostPage)
       },
       {
         path: 'editar/:id',
         canActivate: [AuthGuard],
-        loadChildren: () => import('./concursos/concurso-post/concurso-post.module').then( m => m.ConcursoPostPageModule)
+        loadComponent: () => import('./concursos/concurso-post/concurso-post.page').then( m => m.ConcursoPostPage)
       },
       {
         path: ':id',
-        loadChildren: () => import('./concursos/concurso-detail/concurso-detail.module').then( m => m.ConcursoDetailPageModule)
+        loadComponent: () => import('./concursos/concurso-detail/concurso-detail.page').then( m => m.ConcursoDetailPage),
+        children: [
+          {
+            path: 'concursantes',
+            loadComponent: () => import('./concursos/concurso-detail/concursantes/concursantes.component').then(m => m.ConcursantesComponent)
+          },
+          {
+            path: 'fotografias',
+            loadComponent: () => import('./concursos/concurso-detail/fotografias/fotografias.component').then(m => m.FotografiasComponent)
+          },
+          {
+            path: 'juzgamiento',
+            loadComponent: () => import('./concursos/concurso-detail/juzgamiento/juzgamiento.component').then(m => m.JuzgamientoComponent)
+          },
+          {
+            path: 'informacion',
+            loadComponent: () => import('./concursos/concurso-detail/informacion/informacion.component').then(m => m.InformacionComponent)
+          },
+          {
+            path: '',
+            redirectTo: 'informacion',
+            pathMatch: 'full'
+          }
+        ]
       }
     ]
   },
@@ -45,11 +78,11 @@ const routes: Routes = [
     children: [
       {
         path: ':id',
-        loadChildren: () => import('./usuario/perfil/perfil.module').then( m => m.PerfilPageModule)
+        loadComponent: () => import('./usuario/perfil/perfil.page').then( m => m.PerfilPage)
       },
       {
         path: 'editar',
-        loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
+        loadComponent: () => import('./usuario/usuario.page').then( m => m.UsuarioPage)
       }
     ]
     // loadChildren: () => import('./usuario/usuario.module').then( m => m.UsuarioPageModule)
@@ -60,40 +93,53 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./usuario/usuarios-abm/usuarios-abm.module').then( m => m.UsuariosAbmPageModule)
+        loadComponent: () => import('./usuario/usuarios-abm/usuarios-abm.page').then( m => m.UsuariosAbmPage)
       },
       {
         path: 'nuevo',
-        loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
+        loadComponent: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.page').then( m => m.UsuarioPostPage)
       },
       {
         path: 'editar/:id',
-        loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule)
+        loadComponent: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.page').then( m => m.UsuarioPostPage)
       }
   ]
 },
 {
   path: 'notificaciones',
   canActivate: [AuthGuard],
-  loadChildren: () => import('./notificaciones/notificaciones.module').then( m => m.NotificacionesPageModule)
+  loadComponent: () => import('./notificaciones/notificaciones.page').then( m => m.NotificacionesPage)
 },
   {
     path: 'organizaciones',
-    loadChildren: () => import('./fotoclubs-abm/fotoclubs-abm.module').then( m => m.FotoclubsAbmPageModule)
+    loadComponent: () => import('./fotoclubs-abm/fotoclubs-abm.page').then( m => m.FotoclubsAbmPage)
   },
   {
     path: 'herramientas',
     canActivate: [AuthGuard],
-    loadChildren: () => import('./herramientas/herramientas.module').then(m => m.HerramientasModule)
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./herramientas/herramientas.page').then(m => m.HerramientasPage)
+      },
+      {
+        path: 'busqueda-fotografias',
+        loadComponent: () => import('./herramientas/busqueda-fotografias/busqueda-fotografias.page').then(m => m.BusquedaFotografiasPage)
+      },
+      {
+        path: 'carga-resultados',
+        loadComponent: () => import('./herramientas/carga-resultados/carga-resultados.page').then(m => m.CargaResultadosPage)
+      }
+    ]
   },
   {
     path: '',
-    loadChildren: () => import('./info-centro/info-centro.module').then( m => m.InfoCentroPageModule),
+    loadComponent: () => import('./info-centro/info-centro.page').then( m => m.InfoCentroPage),
     pathMatch: 'full'
   },
   {
     path: 'registro',
-    loadChildren: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.module').then( m => m.UsuarioPostPageModule),
+    loadComponent: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.page').then( m => m.UsuarioPostPage),
     pathMatch: 'full'
   },
   {
@@ -103,16 +149,30 @@ const routes: Routes = [
   {
     path: 'condiciones-servicio',
     component: CondicionesServicioComponent
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./modules/auth/components/login-view/login-view.component').then(m => m.LoginViewComponent)
+  },
+  {
+    path: 'login-redirect',
+    loadComponent: () => import('./modules/auth/components/login-redirect/login-redirect.component').then(m => m.LoginRedirectComponent)
+  },
+  {
+    path: 'recuperar-password',
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./modules/auth/components/recuperar-password/recuperar-password-solicitud.component').then(m => m.RecuperarPasswordSolicitudComponent)
+      },
+      {
+        path: 'codigo',
+        loadComponent: () => import('./modules/auth/components/recuperar-password/recuperar-password-codigo.component').then(m => m.RecuperarPasswordCodigoComponent)
+      },
+      {
+        path: 'exito',
+        loadComponent: () => import('./modules/auth/components/recuperar-password/recuperar-password-exito.component').then(m => m.RecuperarPasswordExitoComponent)
+      }
+    ]
   }
 ];
-
-@NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { 
-      preloadingStrategy: PreloadAllModules, 
-      useHash: true
-    })
-  ],
-  exports: [RouterModule]
-})
-export class AppRoutingModule {}

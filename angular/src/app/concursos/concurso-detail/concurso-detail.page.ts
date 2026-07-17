@@ -1,5 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router, RouterModule } from '@angular/router';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { LoadingService } from 'src/app/services/ui/loading.service';
 
@@ -37,7 +38,8 @@ import { get_all as get_all_contest_results, resultadosConcursoGeted } from 'src
 
 // TODO: sacar el contenido extra que se repite en informacion-component
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [RouterModule, AsyncPipe],
   selector: 'app-concurso-detail',
   templateUrl: './concurso-detail.page.html',
   styleUrls: ['./concurso-detail.page.scss'],

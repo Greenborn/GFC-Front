@@ -1,13 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UserService } from 'src/app/services/user.service';
 import { ApiAdminChangePasswordBody, ApiChangePasswordBody } from 'src/app/models/ApiRequest';
 import { AlertService } from 'src/app/services/ui/alert.service';
+import { InputOjoComponent } from 'src/app/shared/input-ojo/input-ojo.component';
+import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
 
 @Component({
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule, InputOjoComponent, BtnPostComponent],
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss'],
