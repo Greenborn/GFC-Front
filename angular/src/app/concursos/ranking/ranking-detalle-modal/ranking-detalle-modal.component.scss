@@ -76,13 +76,13 @@ img {
   }
 }
 
-.accordion {
+.gfc-accordion {
   margin-top: 12px;
   margin-bottom: 1rem;
 }
 
 @media (max-width: 767px) {
-  .accordion-item {
+  .gfc-accordion-item {
     border-left: none;
     border-right: none;
     border-radius: 0;
@@ -98,109 +98,27 @@ img {
   }
 }
 
-.accordion-item {
-  border: 1px solid var(--gfc-modal-header-border, #dee2e6);
-  border-radius: 10px;
-  margin-bottom: 10px;
-  overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  background: #fff;
-}
-
-.accordion-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 20px;
-  background: #fff;
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.15s;
-}
-
-.accordion-header:hover {
-  background: #f8f9fa;
-}
-
-.accordion-header.expanded {
-  border-bottom: 1px solid #e9ecef;
-}
-
-.accordion-title {
+.gfc-accordion-title {
   font-weight: 700;
   font-size: 1rem;
   color: #212529;
 }
 
-.accordion-subtitle {
+.gfc-accordion-subtitle {
   font-size: 0.8rem;
   color: #6c757d;
   margin-top: 2px;
 }
 
-.accordion-arrow {
-  font-size: 13px;
-  transition: transform 0.25s ease;
-  color: #6c757d;
+.gfc-accordion-arrow {
   flex-shrink: 0;
   margin-left: 12px;
 }
 
-.accordion-arrow.open {
-  transform: rotate(180deg);
-}
-
-.accordion-body {
-  padding: 0;
-}
-
-.rank-table {
-  display: flex;
-  flex-direction: column;
-}
-
-.rank-table-header {
-  display: flex;
-  align-items: center;
-  padding: 8px 16px;
-  background: var(--gfc-section-header-bg, #212529);
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--gfc-section-header-text, #f8f9fa);
-  border-bottom: 2px solid #0d6efd;
-}
-
-@media (max-width: 767px) {
-  .rank-table-header {
-    display: none;
-  }
-}
-
-.rank-table-body {
-  background: #fff;
-}
-
-.rank-table-row {
+.gfc-rank-table-row {
   display: flex;
   padding: 10px 16px;
-  border-bottom: 1px solid #e9ecef;
-  transition: background 0.15s;
   gap: 10px;
-  background: #fff;
-}
-
-.rank-table-body .rank-table-row:nth-child(even) {
-  background: #f8f9fa;
-}
-
-.rank-table-row:last-child {
-  border-bottom: none;
-}
-
-.rank-table-row:hover {
-  background: #f0f1f2;
 }
 
 .rank-col {
@@ -251,7 +169,7 @@ img {
 }
 
 @media (min-width: 768px) {
-  .rank-table-row {
+  .gfc-rank-table-row {
     align-items: center;
     gap: 0;
   }
@@ -334,71 +252,68 @@ img {
   font-size: 0.85rem;
 }
 
-body.dark .accordion-item,
-body.dark .accordion-header,
-body.dark .rank-table-body,
-body.dark .rank-table-row {
-  background: #161618;
+:host-context(body.dark) .gfc-accordion-title {
+  color: #e4e4e4;
 }
 
-body.dark .accordion-header:hover,
-body.dark .rank-table-row:hover {
+:host-context(body.dark) .gfc-accordion-subtitle {
+  color: #999;
+}
+
+:host-context(body.dark) .field-label {
+  color: #999;
+}
+
+:host-context(body.dark) .field-value {
+  color: #e4e4e4;
+}
+
+:host-context(body.dark) .gfc-rank-table,
+:host-context(body.dark) .gfc-rank-table-body,
+:host-context(body.dark) .gfc-rank-table-header,
+:host-context(body.dark) .gfc-rank-table-row {
+  color: #e4e4e4;
+}
+
+:host-context(body.dark) .gfc-header {
+  color: #e4e4e4;
+}
+
+:host-context(body.dark) .card-body .list-group-flush {
+  color: #e4e4e4;
+}
+
+:host-context(body.dark) .rank-summary {
   background: #222;
-}
-
-body.dark .rank-table-body .rank-table-row:nth-child(even) {
-  background: #1a1a1c;
-}
-
-body.dark .accordion-title {
-  color: #e4e4e4;
-}
-
-body.dark .accordion-subtitle {
-  color: #999;
-}
-
-body.dark .accordion-arrow {
-  color: #888;
-}
-
-body.dark .field-label {
-  color: #999;
-}
-
-body.dark .field-value {
-  color: #e4e4e4;
-}
-
-body.dark .rank-summary {
-  background: #1a1a1c;
   border-top-color: #2a2a2a;
   color: #e4e4e4;
 }
 
-body.dark .sumatoria-item {
+:host-context(body.dark) .sumatoria-item {
   color: #ccc;
 }
 
-body.dark .card {
-  background: #1e1e2a;
-  border-color: #2a2a3a;
+:host-context(body.dark) .participante-lista li {
   color: #ccc;
 }
 
-body.dark .card-header {
-  background: #161618;
-  border-bottom-color: #2a2a3a;
+:host-context(body.dark) .card-subtitle {
+  color: #999;
 }
 
-body.dark .card-title {
+:host-context(body.dark) .card-title {
   color: #e4e4e4;
 }
 
-body.dark .participante-lista li {
-  color: #ccc;
+:host-context(body.dark) .gfc-modal-header h5 {
+  color: #e4e4e4;
 }
 
-body.dark .card-subtitle {
-  color: #999;
+:host-context(body.dark) .card-body b,
+:host-context(body.dark) .card-body .ms-3 {
+  color: #e4e4e4;
+}
+
+:host-context(body.dark) .score-val {
+  color: #6ea8fe;
 }

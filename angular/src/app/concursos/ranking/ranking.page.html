@@ -4,32 +4,32 @@
     <div class="row">
       <div class="col-md-10 offset-md-1 px-2">
 
-        <div class="accordion">
+        <div class="gfc-accordion">
           @for (r of ranking.profiles; track r; let i = $index) {
-            <div class="accordion-item">
-              <div class="accordion-header" (click)="toggleCategory(i)" [class.expanded]="expandedCategories[i]">
+            <div class="gfc-accordion-item">
+              <div class="gfc-accordion-header" (click)="toggleCategory(i)" [class.expanded]="expandedCategories[i]">
                 <h2>{{r.nombre_categoria}}</h2>
-                <span class="accordion-arrow" [class.open]="expandedCategories[i]">&#9660;</span>
+                <span class="gfc-accordion-arrow" [class.open]="expandedCategories[i]">&#9660;</span>
               </div>
               @if (expandedCategories[i]) {
-                <div class="accordion-body">
+                <div class="gfc-accordion-body">
                   <div class="seccion-selector">
                     <span class="rank-pill" [class.active]="r.pestania_seccion == -1" (click)="r.pestania_seccion = -1">General</span>
                     @for (btnSec of r.ranks_seccion; track btnSec; let iSec = $index) {
                       <span class="rank-pill" [class.active]="r.pestania_seccion == iSec" (click)="r.pestania_seccion = iSec">{{btnSec.nombre_seccion}}</span>
                     }
                   </div>
-                  <div class="rank-table">
-                    <div class="rank-table-header">
+                  <div class="gfc-rank-table">
+                    <div class="gfc-rank-table-header">
                       <div class="rank-col rank-col-pos">Posición</div>
                       <div class="rank-col rank-col-name">Participante</div>
                       <div class="rank-col rank-col-score">Puntaje</div>
                       <div class="rank-col rank-col-prizes">Premios</div>
                       <div class="rank-col rank-col-action"></div>
                     </div>
-                    <div class="rank-table-body">
+                    <div class="gfc-rank-table-body">
                       @for (rg of obtener_filas(r); track rg) {
-                        <div class="rank-table-row">
+                        <div class="gfc-rank-table-row">
                           <div class="rank-row-main">
                             <div class="rank-col rank-col-pos"
                               [class.rank-1]="rg.posicion_temporada == 1"
@@ -88,25 +88,25 @@
       </div>
 
 
-      <div class="accordion">
-        <div class="accordion-item">
-          <div class="accordion-header" (click)="toggleFotoclub()" [class.expanded]="fotoclubExpanded">
+      <div class="gfc-accordion">
+        <div class="gfc-accordion-item">
+          <div class="gfc-accordion-header" (click)="toggleFotoclub()" [class.expanded]="fotoclubExpanded">
             <h1>Por fotoclub - {{anio}}</h1>
-            <span class="accordion-arrow" [class.open]="fotoclubExpanded">&#9660;</span>
+            <span class="gfc-accordion-arrow" [class.open]="fotoclubExpanded">&#9660;</span>
           </div>
           @if (fotoclubExpanded) {
-            <div class="accordion-body">
-              <div class="rank-table">
-                <div class="rank-table-header">
+            <div class="gfc-accordion-body">
+              <div class="gfc-rank-table">
+                <div class="gfc-rank-table-header">
                   <div class="rank-col rank-col-pos">Posición</div>
                   <div class="rank-col rank-col-name">Fotoclub</div>
                   <div class="rank-col rank-col-score">Puntaje</div>
                   <div class="rank-col rank-col-eff">Efectividad</div>
                   <div class="rank-col rank-col-prizes">Premios</div>
                 </div>
-                <div class="rank-table-body">
+                <div class="gfc-rank-table-body">
                   @for (r of ranking.fotoclubs; track r) {
-                    <div class="rank-table-row">
+                    <div class="gfc-rank-table-row">
                       <div class="rank-row-main">
                         <div class="rank-col rank-col-pos fotoclub-rank-pos"
                           [class.rank-1]="r.posicion_temporada == 1"

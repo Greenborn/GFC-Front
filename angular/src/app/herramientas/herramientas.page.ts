@@ -8,7 +8,6 @@ import { Section } from '../models/section.model';
 import { SectionService } from '../services/section.service';
 import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
-import { CargaResultadosModalComponent } from './carga-resultados-modal/carga-resultados-modal.component';
 import { LoadingService } from '../services/ui/loading.service';
 import { AlertService } from '../services/ui/alert.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';

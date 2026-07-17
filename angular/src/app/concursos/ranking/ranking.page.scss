@@ -1,50 +1,20 @@
-.accordion {
+.gfc-accordion {
   margin-bottom: 1.5rem;
 }
 
 @media (max-width: 767.98px) {
-  .accordion {
+  .gfc-accordion {
     margin-bottom: 0;
   }
-}
 
-.accordion-item {
-  border: 1px solid var(--gfc-modal-header-border, #dee2e6);
-  border-radius: 12px;
-  margin-bottom: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  background: #fff;
-}
-
-.accordion-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background: #fff;
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.15s;
-}
-
-.accordion-header:hover {
-  background: #f8f9fa;
-}
-
-.accordion-header.expanded {
-  border-bottom: 1px solid #e9ecef;
-}
-
-@media (max-width: 767.98px) {
-  .accordion-header.expanded {
+  .gfc-accordion-header.expanded {
     position: sticky;
     top: 56px;
     z-index: 10;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
 
-  .accordion-item {
+  .gfc-accordion-item {
     overflow: visible;
     border-radius: 0;
     border-left: none;
@@ -52,40 +22,24 @@
     margin-bottom: 0;
   }
 
-  .accordion:last-child .accordion-item:last-child {
+  .gfc-accordion:last-child .gfc-accordion-item:last-child {
     border-bottom: none;
   }
-}
 
-.accordion-header h1,
-.accordion-header h2 {
-  margin: 0;
-  font-weight: 700;
-  font-size: 1.15rem;
-  color: #212529;
-}
-
-.accordion-arrow {
-  font-size: 13px;
-  transition: transform 0.25s ease;
-  color: #6c757d;
-}
-
-.accordion-arrow.open {
-  transform: rotate(180deg);
-}
-
-.accordion-body {
-  padding: 0;
-}
-
-@media (max-width: 767.98px) {
-  .accordion-body {
+  .gfc-accordion-body {
     max-height: 70vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-top: 52px;
   }
+}
+
+.gfc-accordion-header h1,
+.gfc-accordion-header h2 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #212529;
 }
 
 .mobile-label {
@@ -162,63 +116,12 @@ body.dark .rank-pill.active {
   border-color: #0d6efd !important;
 }
 
-.rank-table {
-  display: flex;
-  flex-direction: column;
-}
-
-.rank-table-header {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
-  background: var(--gfc-section-header-bg, #212529);
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--gfc-section-header-text, #f8f9fa);
-  border-bottom: 2px solid #0d6efd;
-}
-
-.rank-table-header .rank-col {
+.gfc-rank-table-header .gfc-rank-col {
   color: inherit;
 }
 
-@media (max-width: 767.98px) {
-  .rank-table-header {
-    display: none;
-  }
-}
-
-.rank-table-body {
-  background: #fff;
-}
-
-.rank-table-row {
-  padding: 0;
-  border-bottom: 1px solid #e9ecef;
-  transition: background 0.15s, box-shadow 0.15s;
-  background: #fff;
-}
-
-.rank-table-body .rank-table-row:nth-child(even) {
-  background: #f8f9fa;
-}
-
-.rank-table-body .rank-table-row:nth-child(even):hover {
-  background: #e9ecef;
-}
-
-.rank-table-body .rank-table-row:last-child {
-  border-bottom: none;
-}
-
-.rank-table-row:hover {
-  background: #f0f1f2;
-}
-
 @media (min-width: 768px) {
-  .rank-table-row {
+  .gfc-rank-table-row {
     display: flex;
     align-items: center;
     padding: 10px 20px;
@@ -226,7 +129,7 @@ body.dark .rank-pill.active {
 }
 
 @media (max-width: 767.98px) {
-  .rank-table-row {
+  .gfc-rank-table-row {
     padding: 12px 16px;
   }
 
@@ -345,11 +248,11 @@ body.dark .rank-pill.active {
     font-weight: 800;
   }
 
-  .rank-table-row .rank-row-main {
+  .gfc-rank-table-row .rank-row-main {
     flex-wrap: wrap;
   }
 
-  .rank-table-body .rank-table-row {
+  .gfc-rank-table-body .gfc-rank-table-row {
     background: #fff;
     border: 1px solid #e9ecef;
     border-radius: 10px;
@@ -358,11 +261,11 @@ body.dark .rank-pill.active {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   }
 
-  .rank-table-body .rank-table-row:nth-child(even) {
+  .gfc-rank-table-body .gfc-rank-table-row:nth-child(even) {
     background: #fff;
   }
 
-  .rank-table-body .rank-table-row:last-child {
+  .gfc-rank-table-body .gfc-rank-table-row:last-child {
     border-bottom: 1px solid #e9ecef;
     margin-bottom: 0;
   }

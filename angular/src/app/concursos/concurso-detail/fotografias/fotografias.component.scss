@@ -1,7 +1,3 @@
-.lista-elem {
-    --inner-padding-end: 0;
-}
-
 @media (max-width: 767px) {
     .foto-card-col {
         padding: 6px !important;
@@ -48,12 +44,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-}
-
-:host-context(body.dark) {
-    .foto-card .foto-info {
-        background: #1e1e2a;
-    }
 }
 
 .foto-card .foto-info .foto-actions {
@@ -106,28 +96,6 @@
   }
 }
 
-.sticky-search .input-group-text,
-.sticky-search .form-control {
-    body.dark & {
-        background: #2a2a3a;
-        border-color: #3a3a4a;
-        color: #e0e0e0;
-    }
-}
-
-.sticky-search .form-control::placeholder {
-    body.dark & {
-        color: #666;
-    }
-}
-
-.sticky-search .badge {
-    body.dark & {
-        background: #e0e0e0;
-        color: #1a1a2e;
-    }
-}
-
 .foto-text {
     flex: 1;
     min-width: 0;
@@ -154,20 +122,10 @@
     position: sticky;
     top: 0;
 
-    body.dark & {
-        background: #1a1a2e;
-    }
-
     .btn.gfc-btn-back {
         background: #000;
         border-color: #000;
         color: #fff;
-
-        body.dark & {
-            background: #333;
-            border-color: #444;
-            color: #ccc;
-        }
     }
 }
 
@@ -194,10 +152,6 @@
 .sidebar-panel {
     background: #fff;
     overflow-y: auto;
-
-    body.dark & {
-        background: #1a1a2e;
-    }
 
     @media (max-width: 767.98px) {
         position: fixed;
@@ -232,10 +186,6 @@
     padding: 0.75rem 1rem;
     border-bottom: 1px solid #e0e0e0;
 
-    body.dark & {
-        border-bottom-color: #3a3a4a;
-    }
-
     @media (min-width: 768px) {
         display: none;
     }
@@ -246,13 +196,6 @@
 
     @media (max-width: 767px) {
         padding: 1rem;
-    }
-}
-
-.sidebar-panel,
-.filter-panel {
-    body.dark & {
-        color: #e0e0e0;
     }
 }
 
@@ -274,10 +217,6 @@
     letter-spacing: 0.05em;
     margin-bottom: 0.4rem;
     color: #666;
-
-    body.dark & {
-        color: #999;
-    }
 }
 
 .filter-options {
@@ -295,17 +234,8 @@
         cursor: pointer;
         transition: all 0.15s;
 
-        body.dark & {
-            border-color: #3a3a4a;
-            color: #ccc;
-        }
-
         &:hover {
             background: #f4f5f8;
-
-            body.dark & {
-                background: #3a3a4a;
-            }
         }
 
         &.btn-primary {

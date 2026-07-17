@@ -125,20 +125,20 @@
               </div>
             </div>
           } @else {
-            <div class="accordion">
+            <div class="gfc-accordion">
               @for (it of detalle.items; track it; let i = $index) {
-                <div class="accordion-item">
-                  <div class="accordion-header" (click)="toggleContest(i)">
+                <div class="gfc-accordion-item">
+                  <div class="gfc-accordion-header" (click)="toggleContest(i)">
                     <div>
-                      <div class="accordion-title">{{ it?.contest?.name }}</div>
-                      <div class="accordion-subtitle">{{ formatDate(it?.contest?.start_date) }} - {{ formatDate(it?.contest?.end_date) }}</div>
+                      <div class="gfc-accordion-title">{{ it?.contest?.name }}</div>
+                      <div class="gfc-accordion-subtitle">{{ formatDate(it?.contest?.start_date) }} - {{ formatDate(it?.contest?.end_date) }}</div>
                     </div>
-                    <span class="accordion-arrow" [class.open]="expandedContests[i]">&#9660;</span>
+                    <span class="gfc-accordion-arrow" [class.open]="expandedContests[i]">&#9660;</span>
                   </div>
                   @if (expandedContests[i]) {
-                    <div class="accordion-body">
-                      <div class="rank-table">
-                        <div class="rank-table-header">
+                    <div class="gfc-accordion-body">
+                      <div class="gfc-rank-table">
+                        <div class="gfc-rank-table-header">
                           <div class="rank-col rank-col-thumb">Miniatura</div>
                           <div class="rank-col rank-col-fields">
                             <div class="row-field">Categoría</div>
@@ -148,10 +148,10 @@
                             <div class="row-field">Puntaje</div>
                           </div>
                         </div>
-                        <div class="rank-table-body">
+                        <div class="gfc-rank-table-body">
                           @for (r of sortResults(it?.results); track r) {
                             @for (img of sortImages(r.images); track img) {
-                              <div class="rank-table-row">
+                              <div class="gfc-rank-table-row">
                                 <div class="rank-col rank-col-thumb">
                                    <img loading="lazy" class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="border-radius:4px;" (click)="openPhotoModal(img, it.results)" />
                                 </div>
