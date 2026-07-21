@@ -17,6 +17,5 @@ sshpass -p "$PASS" ssh -o StrictHostKeyChecking=no -p "$PUERTO" "$USUARIO@$IP" "
   git stash
   git pull
   npm i
-  npm run prebuild
   npm run build
 "

@@ -7,7 +7,7 @@
     "ng": "ng",
     "postinstall": "node scripts/postinstall.js",
     "start": "node scripts/ng.js serve",
-    "build": "node scripts/ng.js build --configuration production && zip -r gfc_build.zip build",
+    "build": "node scripts/ng.js build --configuration production",
     "update-version": "node update-version.js"
   },
   "private": true,
