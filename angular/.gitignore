@@ -5,3 +5,5 @@ www/*
 .angular
 *.zip
 .env
+src/environments/*
+!src/environments/.gitkeep

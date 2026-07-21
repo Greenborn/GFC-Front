@@ -6,11 +6,8 @@
   "scripts": {
     "ng": "ng",
     "postinstall": "node scripts/postinstall.js",
-    "prestart": "node scripts/generate-env.js",
-    "start": "ng serve",
-    "prebuild": "node scripts/generate-env.js",
-    "build": "ng build --configuration production && zip -r gfc_build.zip build",
-    "generate-env": "node scripts/generate-env.js",
+    "start": "node scripts/ng.js serve",
+    "build": "node scripts/ng.js build --configuration production && zip -r gfc_build.zip build",
     "update-version": "node update-version.js"
   },
   "private": true,
