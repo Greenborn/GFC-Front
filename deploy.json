@@ -1,19 +1,19 @@
 {
   "install": [
     {
-      "cwd": "/media/debian/Datos_EX4/Trabajo/Greenborn/GFC-Front/angular"
+      "cwd": "angular"
     }
   ],
   "pm2": [
     {
-      "cwd": "/media/debian/Datos_EX4/Trabajo/Greenborn/GFC-Front/angular"
+      "cwd": "angular"
     }
   ],
-  "build": [
+  "build": [],
+  "custom": [
     {
-      "name": "front_angular",
       "cwd": "angular",
-      "command": "npm run build"
+      "command": "npm run start"
     }
   ]
 }

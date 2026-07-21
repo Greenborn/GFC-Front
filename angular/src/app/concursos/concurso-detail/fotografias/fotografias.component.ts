@@ -50,6 +50,7 @@ export class FotografiasComponent implements OnInit {
   user: UserLogged;
 
   puntajes: Metric[] = [];
+  private _todasLasMetricas: Metric[] = [];
   propiasFotos: ContestResultExpanded[] = [];
   propiasExpandidas: boolean = true;
 
@@ -238,6 +239,7 @@ export class FotografiasComponent implements OnInit {
     if (this.concurso === null)
       this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
         this.concurso = c
+        this.filtrarMetricas();
         if (this.concurso && this.concurso.id) {
           await this.loadPage(1, true, true)
           this.cargarPropiasFotos();
@@ -270,9 +272,28 @@ export class FotografiasComponent implements OnInit {
     this.cargarMetricas();
   }
 
+  private filtrarMetricas() {
+    if (!this._todasLasMetricas?.length) {
+      this.puntajes = [];
+      return;
+    }
+    if (!this.concurso?.organization_type) {
+      this.puntajes = [...this._todasLasMetricas];
+      return;
+    }
+    this.puntajes = this._todasLasMetricas.filter(m => {
+      if (!m.organization_type) return false;
+      if (this.concurso.organization_type === 'EXTERNO_0') {
+        return m.organization_type === 'EXTERNO' || m.organization_type === 'EXTERNO_0';
+      }
+      return m.organization_type === this.concurso.organization_type;
+    });
+  }
+
   cargarMetricas() {
     this.metricAbmService.getAll().subscribe(s => {
-      this.puntajes = s;
+      this._todasLasMetricas = s;
+      this.filtrarMetricas();
     });
   }
 
