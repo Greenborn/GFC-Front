@@ -24,8 +24,9 @@ function updateEnvironmentFile(filePath) {
   console.log(`✅ Versión actualizada en ${filePath}: ${version}`);
 }
 
-// Actualizar ambos archivos de environment
+// Actualizar los archivos de environment
 updateEnvironmentFile('src/environments/environment.ts');
 updateEnvironmentFile('src/environments/environment.prod.ts');
+updateEnvironmentFile('src/environments/environment.local.ts');
 
 console.log(`🎉 Versión ${version} actualizada en todos los archivos de environment`); 

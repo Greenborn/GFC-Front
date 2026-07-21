@@ -10,6 +10,20 @@ import { GlobalErrorHandler } from './app/services/global-error-handler';
 import { environment } from './environments/environment';
 
 const API_BASE_URL = (environment as any).nodeApiBaseUrl;
+const isLoginUrl = (url: string) => url.endsWith('/auth/login') || url.includes('/auth/login?');
+
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401 && error.config?.url?.startsWith(API_BASE_URL) && !isLoginUrl(error.config.url)) {
+      const tokenKey = (environment as any).appName + 'token';
+      localStorage.removeItem(tokenKey);
+      window.location.hash = '#/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 axios.interceptors.request.use(config => {
   if (config.url?.startsWith(API_BASE_URL)) {
     const tokenKey = (environment as any).appName + 'token';
