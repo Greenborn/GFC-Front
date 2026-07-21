@@ -33,9 +33,18 @@ function readEnvFile() {
   envContent.split('\n').forEach(line => {
     const trimmedLine = line.trim();
     if (trimmedLine && !trimmedLine.startsWith('#')) {
-      const [key, value] = trimmedLine.split('=');
-      if (key && value) {
-        envVars[key.trim()] = value.trim();
+      const eqIndex = trimmedLine.indexOf('=');
+      if (eqIndex > 0) {
+        let key = trimmedLine.substring(0, eqIndex).trim();
+        let value = trimmedLine.substring(eqIndex + 1).trim();
+        // Remove surrounding quotes (single or double)
+        if ((value.startsWith("'") && value.endsWith("'")) ||
+            (value.startsWith('"') && value.endsWith('"'))) {
+          value = value.slice(1, -1);
+        }
+        if (key && value) {
+          envVars[key] = value;
+        }
       }
     }
   });
