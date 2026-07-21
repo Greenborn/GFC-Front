@@ -241,6 +241,10 @@ export class FotografiasComponent implements OnInit {
         this.concurso = c
         this.filtrarMetricas();
         if (this.concurso && this.concurso.id) {
+          if (this.loadingPage) {
+            this.pendingRefresh = true;
+            return;
+          }
           await this.loadPage(1, true, true)
           this.cargarPropiasFotos();
         }
