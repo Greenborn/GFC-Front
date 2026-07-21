@@ -29,7 +29,7 @@ export class FotoclubService {
   }
 
   private fotoclubBaseUrl() {
-    return this.config.data.publicApi.replace(/\/$/, '');
+    return this.config.nodeApiBaseUrl.replace(/\/$/, '');
   }
 
   private getHeaders(): Record<string, string> {

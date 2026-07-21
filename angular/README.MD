@@ -123,7 +123,6 @@ Las variables de entorno se configuran en `config.env` (equipo) o `.env` (person
 
 ```bash
 API_BASE_URL=https://gfc.prod-api.greenborn.com.ar/
-PUBLIC_API_URL=https://gfc.api2.greenborn.com.ar/api/
 IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
 NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 LOGIN_ACTION=login

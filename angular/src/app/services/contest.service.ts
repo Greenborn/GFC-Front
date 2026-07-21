@@ -13,7 +13,7 @@ export class ContestService extends ApiService<Contest> {
 
   constructor(config: ConfigService) {
     super('contest', config)
-    this.customBaseUrl = config.data.publicApi
+    this.customBaseUrl = config.data.nodeApiBaseUrl
     this.useAuthHeader = true
   }
 

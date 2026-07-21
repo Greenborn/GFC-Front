@@ -31,7 +31,6 @@ function generateEnvContent(vars, production) {
   production: ${production},
   version: ${JSON.stringify(vars.APP_VERSION || (JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version) || '1.0.0')},
   apiBaseUrl: ${JSON.stringify(vars.API_BASE_URL || '')},
-  publicApi: ${JSON.stringify(vars.PUBLIC_API_URL || '')},
   loginAction: ${JSON.stringify(vars.LOGIN_ACTION || '')},
   appName: ${JSON.stringify(vars.APP_NAME || '')},
   imagesBaseUrl: ${JSON.stringify(vars.IMAGES_BASE_URL || '')},

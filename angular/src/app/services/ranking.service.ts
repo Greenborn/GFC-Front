@@ -24,7 +24,7 @@ export class RankingService extends ApiService<any> {
     const token = localStorage.getItem(this.config.tokenKey);
     const headers: Record<string, string> = {};
     if (token) headers['Authorization'] = 'Bearer ' + token;
-    return from(axios.post(this.config.publicApiUrl('results/recalcular-ranking'), {}, { headers }).then(r => r.data));
+    return from(axios.post(this.config.nodeApiBaseUrl + 'results/recalcular-ranking', {}, { headers }).then(r => r.data));
   }
 
   getDetalleRanking(profile_id: number, contest_id?: number, year?: number, section_id?: number): Observable<any> {

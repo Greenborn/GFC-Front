@@ -4,7 +4,6 @@ import { environment } from '../../../environments/environment';
 interface EnvironmentConfig {
   production: boolean;
   version: string;
-  publicApi: string;
   loginAction: string;
   appName: string;
   imagesBaseUrl: string;
@@ -16,7 +15,6 @@ interface EnvironmentConfig {
 const env: EnvironmentConfig = environment as EnvironmentConfig;
 
 export const CONFIG = {
-  publicApi: env.publicApi,
   loginAction: env.loginAction,
   appName: env.appName,
   version: env.version,
@@ -50,10 +48,6 @@ export class ConfigService {
   
   get tokenKey() { 
     return this.data.appName + 'token' 
-  }
-
-  publicApiUrl(recurso: string) { 
-    return this.data.publicApi + recurso
   }
 
   setLocalStorage(r: string, v: any): void {

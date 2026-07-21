@@ -295,7 +295,7 @@ export class CargaResultadosPage implements OnInit {
     const estructuraJson = this.estructuraToJson();
     await this.loadingService.present('Enviando resultados...');
     try {
-      await axios.post(this.config.publicApiUrl('results/judging'), { estructura: estructuraJson });
+      await axios.post(this.config.nodeApiBaseUrl + 'results/judging', { estructura: estructuraJson });
       this.loadingService.dismiss();
       alert('Resultados cargados correctamente.');
     } catch (error: any) {

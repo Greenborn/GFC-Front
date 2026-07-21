@@ -39,7 +39,7 @@ export class BusquedaFotografiasPage {
     this.busquedaRealizada = true;
     
     try {
-      const url = this.config.publicApiUrl(`images/search?q=${encodeURIComponent(this.terminoBusqueda)}`);
+      const url = this.config.nodeApiBaseUrl + `images/search?q=${encodeURIComponent(this.terminoBusqueda)}`;
       const response = (await axios.get(url)).data;
       
       this.resultados = response.data || response || [];
