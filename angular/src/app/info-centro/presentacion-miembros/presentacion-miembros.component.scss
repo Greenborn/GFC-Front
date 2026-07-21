@@ -1,0 +1,93 @@
+.colorTarget{
+    color: var(--gfc-member-name, #222);
+}
+
+.member-card {
+    background: var(--gfc-member-card-bg, #fff);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0.75rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+body.dark .member-card {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.member-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+body.dark .member-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: center;
+    text-align: center;
+}
+
+.member-name {
+    font-size: 1.7rem;
+    font-weight: 400;
+    margin: 0;
+    color: var(--gfc-member-name, #222);
+    line-height: 1.2;
+}
+
+.member-links {
+    display: flex;
+    gap: 0.35rem;
+}
+
+.member-link {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 0.8rem;
+    color: var(--gfc-member-link-text, #555);
+    background: var(--gfc-member-link-bg, #f0f0f0);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.member-link:hover {
+    transform: scale(1.15);
+}
+
+.member-link.instagram:hover {
+    background: #e4405f;
+    color: #fff;
+}
+
+.member-link.facebook:hover {
+    background: #1877f2;
+    color: #fff;
+}
+
+.member-link.email:hover {
+    background: #333;
+    color: #fff;
+}
+
+@media (max-width: 767px) {
+    :host .main-row {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}

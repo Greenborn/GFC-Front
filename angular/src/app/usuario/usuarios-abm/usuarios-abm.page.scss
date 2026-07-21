@@ -1,0 +1,26 @@
+.table-grid.tabla  {
+    border-collapse: collapse;
+    border-style: hidden;
+    
+    .table-row:first-child {
+      background-color:  #2dd36f;
+      font-weight: bold;
+    }
+    .table-col {
+      border: 1px solid black;
+      border-bottom: 0;
+      border-right: 0;
+    }
+    .table-col:last-child {
+      border-right: 1px solid black;
+    }
+    
+    .table-row:last-child {
+      border-bottom: 1px solid black;
+    }
+}
+
+app-usuario-img {
+  width: auto !important;
+  height: auto !important;
+}

@@ -1,0 +1,96 @@
+<div [ngClass]="responsiveService.isDesktop ? 'gfc-modal-page' : ''">
+  <div class="gfc-modal-header">
+    <div class="row align-items-center me-3">
+      <div class="col-2 d-md-none">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+      </div>
+      <div class="col" [ngClass]="{'ms-3': responsiveService.isDesktop}">
+        <h5 class="mb-0">
+          {{ formTitle }}
+        </h5>
+      </div>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div slot="start" class="w-100 inner-content float-md-start">
+    <div class="container-fluid">
+      <div class="row justify-content-center align-self-center">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <form
+                    #metricForm="ngForm"
+                    (ngSubmit)="post(metricForm)"
+                  >
+                    <div class="mb-3" class="w-100">
+                      <label class="form-label">Premio</label>
+                      <input class="form-control"
+                        [ngModel]="metric.prize"
+                        name="prize"
+                        required
+                      >
+                    </div>
+
+                    <div class="mb-3" class="w-100">
+                      <label class="form-label">Puntaje</label>
+                      <input class="form-control"
+                        [ngModel]="metric.score"
+                        name="score"
+                        required
+                      >
+                    </div>
+
+                    <div class="mb-3" class="w-100">
+                      <label class="form-label">Tipo de organización</label>
+                      <select class="form-select"
+                        [ngModel]="metric.organization_type"
+                        name="organization_type"
+                        required
+                       
+                       
+                      >
+                        <option value="INTERNO">Interno</option>
+                        <option value="EXTERNO">Externo</option>
+                        <option value="EXTERNO_0">Externo 0</option>
+                        <option value="EXTERNO_UNICEN">Externo UNICEN</option>
+                      </select>
+                    </div>
+
+                    <div class="row justify-content-end">
+                      <div class="col-12">
+                        <div class="row justify-content-end">
+                          <div class="col-12 col-sm-3 align-self-center">
+                            <app-btn-post
+                              [posting]="posting"
+                              [disabled]="!datosCargados(metricForm)"
+                            ></app-btn-post>
+                          </div>
+
+                          <div class="col-12 col-sm-3 align-self-center">
+                            <button
+                              class="btn btn-link w-100"
+                              (click)="modalController.dismiss()"
+                            >Cancelar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+
+<button (click)="ordenar()"
+  class="btn btn-sm"
+  [ngClass]="ordenamientoFill === 'fill' ? 'gfc-btn-back' : 'btn-link'"
+  [title]="ordenamientoTitle"
+  [disabled]="disabled"
+>
+  <i class="bi bi-arrow-down-up"
+    [style]="ordenamientoStyle"
+  ></i>
+</button>

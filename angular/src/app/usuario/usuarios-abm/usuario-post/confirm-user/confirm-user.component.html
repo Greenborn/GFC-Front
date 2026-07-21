@@ -1,0 +1,55 @@
+<div [ngClass]="responsiveService.isDesktop ? 'gfc-modal-page' : ''">
+  <div class="gfc-modal-header">
+    <div class="row align-items-center ms-3 me-3">
+
+      <div class="col">
+        <h5 class="mb-0">Activar Usuario</h5>
+      </div>
+
+      <div class="col-1 d-none d-md-block text-end">
+        <button (click)="modalController.dismiss()" class="btn gfc-btn-back btn-sm"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="w-100 inner-content float-md-start">
+    <div class="container-fluid">
+      <div class="row justify-content-center align-self-center">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              
+              <div class="row pt-3">
+                <div class="mb-3 w-100">
+                 
+                  <label class="form-label">Ingrese su código de verificación enviado por e-mail</label>
+                  <input class="form-control" [(ngModel)]="codigoVerificacion">
+          
+                
+              </div>
+
+              <div class="row justify-content-end">
+                <div class="col-12">
+                  <div class="row justify-content-end">
+
+                    <div class="col-12 col-sm-3 align-self-center">
+                      <button class="btn btn-link w-100" (click)="modalController.dismiss()">Cancelar</button>
+                    </div>
+
+                    <div class="col-12 col-sm-3 align-self-center">
+                      <button class="btn btn-success w-100" type="submit" (click)="confirmarUsuario()">Enviar</button>
+                    </div>
+    
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

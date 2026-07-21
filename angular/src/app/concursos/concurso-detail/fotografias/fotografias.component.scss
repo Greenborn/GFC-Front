@@ -1,0 +1,252 @@
+@media (max-width: 767px) {
+    .foto-card-col {
+        padding: 6px !important;
+        padding-bottom: 0.5rem !important;
+    }
+}
+ 
+.img-galeria {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.foto-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    background: #f8f8f8;
+}
+
+.foto-card .img-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 75%;
+    overflow: hidden;
+    background: #eee;
+    cursor: pointer;
+}
+
+.foto-card .img-wrap img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.foto-card .foto-info {
+    padding: 0.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.foto-card .foto-info .foto-actions {
+    margin-top: auto;
+}
+
+.foto-card .foto-info p {
+    margin-bottom: 0.15rem;
+    line-height: 1.3;
+}
+
+.foto-card .foto-info small {
+    font-size: 0.8rem;
+}
+
+.foto-info-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding: 0.35rem 0;
+
+    @media (max-width: 767px) {
+        gap: 0.35rem;
+        padding: 0.25rem 0;
+    }
+}
+
+.foto-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 767px) {
+  .row.g-2 {
+    --bs-gutter-x: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .row.g-2 > [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .foto-card {
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .foto-card .foto-info {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+.foto-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.cont-img-text {
+    max-width: 15rem;
+    text-align: left;
+    p {
+        margin-top: 0.15rem;
+        margin-bottom: 0.15rem;
+        font-size: 1rem;
+        line-height: 1.3;
+    }
+
+    @media (max-width: 767px) {
+        max-width: 100%;
+    }
+}
+
+.sticky-search {
+    background: #fff;
+    z-index: 10;
+    position: sticky;
+    top: 0;
+
+    .btn.gfc-btn-back {
+        background: #000;
+        border-color: #000;
+        color: #fff;
+    }
+}
+
+@media (max-width: 767px) {
+    .sticky-search .filter-panel {
+        top: 0;
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+}
+
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1040;
+
+    @media (max-width: 767px) {
+        display: block;
+    }
+}
+
+.sidebar-panel {
+    background: #fff;
+    overflow-y: auto;
+
+    @media (max-width: 767.98px) {
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        height: 100vh;
+        z-index: 1050;
+        transition: left 0.25s ease;
+        box-shadow: 2px 0 12px rgba(0,0,0,0.15);
+        padding: 0;
+
+        &.show { left: 0; }
+    }
+
+    @media (min-width: 768px) {
+        display: none;
+        border-right: 1px solid #e0e0e0;
+        position: sticky;
+        top: 0;
+        height: calc(100vh - 56px);
+        padding: 0.75rem;
+
+        &.show { display: block; }
+    }
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e0e0e0;
+
+    @media (min-width: 768px) {
+        display: none;
+    }
+}
+
+.sidebar-body {
+    padding: 0.75rem;
+
+    @media (max-width: 767px) {
+        padding: 1rem;
+    }
+}
+
+.filter-panel {
+    position: sticky;
+    top: 60px;
+    max-height: calc(100vh - 116px);
+    overflow-y: auto;
+}
+
+.filter-section {
+    margin-bottom: 1rem;
+}
+
+.filter-section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+    color: #666;
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+
+    .btn {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        background: transparent;
+        color: #333;
+        cursor: pointer;
+        transition: all 0.15s;
+
+        &:hover {
+            background: #f4f5f8;
+        }
+
+        &.btn-primary {
+            background: #3880ff;
+            color: #fff;
+            border-color: #3880ff;
+        }
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+    }
+}

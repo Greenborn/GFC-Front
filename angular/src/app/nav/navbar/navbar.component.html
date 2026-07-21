@@ -1,0 +1,89 @@
+<nav class="navbar navbar-expand-lg gfc-navbar px-3 fixed-top" aria-label="Navegación principal">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center gap-2 clickeable overflow-hidden" [routerLink]="['/']" style="min-width:0">
+      <img src="../../../assets/gfc-logo.png" alt="GFC" width="30" height="30" class="d-inline-block align-text-top flex-shrink-0">
+      <span class="overflow-hidden" style="white-space:nowrap; font-size:.7em">Grupo Fotográfico Centro</span>
+    </a>
+
+    <div class="d-flex align-items-center ms-auto gap-2">
+      @if (auth.loggedIn && auth.user | async; as u) {
+        <ul class="navbar-nav d-none d-lg-flex flex-row align-items-center gap-1">
+          @if (rolificador.isAdmin(u) || rolificador.esDelegado(u)) {
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="isActive('/herramientas')" [routerLink]="['/herramientas']" [attr.aria-current]="isActive('/herramientas') ? 'page' : null">Herramientas</a>
+            </li>
+          }
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="isActive('/concursos/ranking')" [routerLink]="['/concursos/ranking']" [attr.aria-current]="isActive('/concursos/ranking') ? 'page' : null">Ranking</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="isActive('/concursos')" [routerLink]="['/concursos']" [attr.aria-current]="isActive('/concursos') ? 'page' : null">Concursos</a>
+          </li>
+          @if (rolificador.esDelegado(u) || rolificador.isAdmin(u)) {
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="isActive('/usuarios')" [routerLink]="['/usuarios']" [attr.aria-current]="isActive('/usuarios') ? 'page' : null">{{ rolificador.getNombreUsuarios(u.role_id) }}</a>
+            </li>
+          }
+          @if (rolificador.isAdmin(u)) {
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="isActive('/organizaciones')" [routerLink]="['/organizaciones']" [attr.aria-current]="isActive('/organizaciones') ? 'page' : null">Organizaciones</a>
+            </li>
+          }
+        </ul>
+      }
+
+      @if (auth.loggedIn && auth.user | async; as u) {
+        <div class="dropdown d-none d-lg-inline-block">
+          <button class="btn btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menú de perfil">
+            <i class="bi bi-person-circle fs-5" aria-hidden="true"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow">
+            <li>
+              <div class="dropdown-item-text text-center border-bottom px-3 py-2" style="min-width:220px">
+                <app-usuario-img [src]="u.profile?.img_url ? configService.imageUrl(u.profile.img_url) : ''" style="max-width:48px;display:inline-block"></app-usuario-img>
+                <div class="fw-semibold mt-1">{{ u.username }}</div>
+                <small class="text-muted">{{ u.profile?.name || '' }} {{ u.profile?.last_name || '' }}</small>
+              </div>
+            </li>
+            <li>
+              <label class="dropdown-item d-flex align-items-center gap-3 clickeable">
+                <i class="bi bi-moon" aria-hidden="true"></i>
+                <span class="flex-grow-1">Modo oscuro</span>
+                <div class="form-check form-switch mb-0">
+                  <input type="checkbox" class="form-check-input" [checked]="darkMode" (change)="darkMode = !darkMode" (click)="$event.stopPropagation()" aria-label="Activar modo oscuro">
+                </div>
+              </label>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-3" [routerLink]="['/usuarios', 'editar', auth.userId]">
+                <i class="bi bi-person" aria-hidden="true"></i>
+                <span>Editar perfil</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-3 text-danger" (click)="auth.logout()">
+                <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                <span>Salir</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <div class="text-center py-1">
+                <small class="text-muted" style="font-size:0.7rem">v{{ version }}</small>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <button class="btn btn-outline-secondary d-lg-none" (click)="toggleMenu()" aria-label="Abrir menú de navegación">
+          <i class="bi bi-list fs-5" aria-hidden="true"></i>
+        </button>
+      } @else {
+        @if (router.url != '/login') {
+          <a class="btn btn-outline-secondary" [routerLink]="['/login']" aria-label="Iniciar sesión">Ingresar</a>
+        }
+      }
+
+    </div>
+  </div>
+</nav>

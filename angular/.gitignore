@@ -1,0 +1,9 @@
+node_modules
+build/public_html
+package-lock.json
+www/*
+.angular
+*.zip
+.env
+src/environments/*
+!src/environments/.gitkeep

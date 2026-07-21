@@ -1,0 +1,120 @@
+<div class="container-fluid py-3">
+  @if ( (auth.user | async); as userLogged) {
+    <div class="container concursos-grid">
+      <div class="row align-items-center g-2 mb-3">
+        @if (rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)) {
+          <div class="col-auto">
+            <button class="btn btn-success" [routerLink]="['nuevo']">
+              <i class="bi bi-plus me-1"></i> Concurso
+            </button>
+          </div>
+        }
+        @if (rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)) {
+          <div class="col-auto">
+            <button class="btn btn-primary" [routerLink]="['secciones']">Administrar secciones</button>
+          </div>
+        }
+        @if (rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)) {
+          <div class="col-auto">
+            <button class="btn btn-primary" [routerLink]="['metricas']">Administrar Puntajes</button>
+          </div>
+        }
+        <div class="col-12 col-md">
+          <div class="input-group">
+            <input class="form-control" [(ngModel)]="searchQuery" placeholder="Buscar concursos" (keyup.enter)="onSearch()" (blur)="onSearch()">
+            <button class="btn btn-primary" (click)="onSearch()">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      @if (itemGroups.length > 0) {
+        <div
+          >
+          @for (group of itemGroups; track group; let gi = $index) {
+            @for (item of group; track trackByItem(i, item); let i = $index) {
+              @if (item.tipo === 'concurso') {
+                <div class="cc-card clickeable">
+                  <img class="cc-img" [src]="getImg(item.concurso.img_url)" alt="{{item.concurso.name}}">
+                  <div class="cc-body">
+                    <div class="cc-body-col cc-body-col--header">
+                      <span class="cc-badge" [class.cc-badge--open]="item.concurso.active" [class.cc-badge--closed]="!item.concurso.active">{{ item.concurso.active ? 'Abierto' : 'Cerrado' }}</span>
+                      <h2 class="cc-title">{{item.concurso.name}}</h2>
+                    </div>
+                    <div class="cc-body-col cc-body-col--content">
+                      <p class="cc-meta">
+                        Desde: {{get_fecha_formateada(item.concurso.start_date) }} - Hasta:
+                        {{get_fecha_formateada(item.concurso.end_date)}}
+                      </p>
+                      <p class="cc-desc">{{item.concurso.description}}</p>
+                      @if (item.concurso.categories?.length) {
+                        <div class="cc-tags">
+                          @for (c of item.concurso.categories; track c) {
+                            <span class="cc-tag">{{c.name}}</span>
+                          }
+                        </div>
+                      }
+                      @if (item.concurso.sections?.length) {
+                        <div class="cc-tags">
+                          @for (s of item.concurso.sections; track s) {
+                            <span class="cc-tag">{{s.name}}</span>
+                          }
+                        </div>
+                      }
+                    </div>
+                    <div class="cc-body-col cc-body-col--actions">
+                      <div class="cc-actions">
+                        <button
+                          type="button"
+                          class="cc-btn btn btn-primary btn-sm"
+                          size="small"
+                          [routerLink]="['/concursos', item.concurso.id, 'fotografias']"
+                          >
+                          <i class="bi bi-images"></i>
+                          Fotografías
+                        </button>
+                        <button
+                          type="button"
+                          class="cc-btn btn btn-primary btn-sm"
+                          size="small"
+                          [routerLink]="['/concursos', item.concurso.id]"
+                        >Ver concurso</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+              @if (item.tipo === 'fotos-anio') {
+                <app-fotos-anio-card
+                  [fotos]="item.fotosAnio"
+                  [temporada]="item.temporada"
+                  [url_grabacion]="item.url_grabacion"
+                ></app-fotos-anio-card>
+              }
+            }
+          }
+        </div>
+      } @else {
+        <ng-template [ngTemplateOutlet]="(loading ? spinner : texto)"></ng-template>
+      }
+      @if (hasMoreConcursos || allItems.length > 0) {
+        <div class="text-center py-3">
+          @if (loadingMore) {
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando más concursos...</span>
+            </div>
+          }
+          <div class="infinite-scroll-sentinel" appInfiniteScroll [appInfiniteScroll]="hasMoreConcursos || allItems.length > 0" (loadMore)="loadMoreConcursos()"></div>
+        </div>
+      }
+      <ng-template #texto>
+        <div class="alert alert-info">No se encontraron concursos</div>
+      </ng-template>
+      <ng-template #spinner>
+        <div class="row justify-content-center">
+          <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+        </div>
+      </ng-template>
+    </div>
+  }
+</div>

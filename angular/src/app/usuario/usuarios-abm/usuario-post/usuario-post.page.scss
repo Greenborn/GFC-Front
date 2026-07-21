@@ -1,0 +1,66 @@
+.sticky-top-bar {
+  position: sticky;
+  top: 10px;
+  z-index: 1020;
+  background: var(--bs-body-bg, #fff);
+  border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.sticky-top-bar app-btn-post {
+  --bs-btn-font-size: 0.9rem;
+}
+
+.expand-full{
+    width: 100%;
+}
+.sinC{
+    --inner-padding-end:0 !important;
+}
+
+.fotoclub-select-item {
+    @media (min-width: 768px) {
+        width: 200%; /* Doble ancho en desktop */
+        max-width: 400px; /* Límite máximo para evitar que sea demasiado ancho */
+    }
+}
+
+.profile-image-card {
+    min-height: 280px;
+}
+
+.profile-image-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-image-card-content app-usuario-img,
+.profile-image-card-content app-usuario-img img {
+    width: 100%;
+    max-width: 260px;
+    min-height: 260px;
+}
+
+.upload-button-row {
+    width: 100%;
+}
+
+/* Estilos para el modal del select de fotoclub */
+// Modal del ion-select de fotoclub (usa ion-alert por debajo)
+.fotoclub-select-modal {
+    @media (min-width: 768px) {
+        --width: 600px;        // ancho del wrapper del alert
+        --max-width: 600px;
+    }
+}
+
+// Fallback por si alguna plataforma ignora las CSS vars
+.fotoclub-select-modal .alert-wrapper {
+    @media (min-width: 768px) {
+        width: 600px;
+        max-width: 600px;
+    }
+}

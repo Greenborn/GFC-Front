@@ -1,0 +1,73 @@
+<div class="container-fluid py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <div class="col-12">
+            <div class="container-fluid p-0 pb-3">
+              <div class="row g-2 mb-3">
+                <div class="col-auto">
+                  <button class="btn btn-success" (click)="post()">
+                    <i class="bi bi-plus me-1"></i> Premio
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-none d-sm-block">
+          <div class="gfc-header py-2 px-3 rounded-top">
+            <div class="row align-items-center">
+              <div class="col-5">
+                <app-th-sort
+                  [sortFn]="ordenarPorPremio"
+                  [(data)]="metricas"
+                  title="Premio"
+                ></app-th-sort>
+              </div>
+              <div class="col-4">
+                <app-th-sort
+                  [sortFn]="ordenarPorPuntaje"
+                  [(data)]="metricas"
+                  title="Puntaje"
+                ></app-th-sort>
+              </div>
+              <div class="col-1 text-end">Acciones</div>
+            </div>
+          </div>
+        </div>
+
+        @if (metricas.length > 0) {
+          <div class="list-group list-group-flush border-start border-end">
+            @for (s of metricas; track s) {
+              <div class="list-group-item">
+                <div class="row align-items-center">
+                  <div class="col-5">
+                    <b>{{ s.prize }}</b>
+                  </div>
+                  <div class="col-4">
+                    {{ s.score }}
+                  </div>
+                  <div class="col-1 text-end">
+                    <div class="d-flex gap-1 justify-content-end">
+                      <button class="btn btn-warning btn-sm" title="Editar" (click)="post(s)">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="btn btn-danger btn-sm" title="Eliminar" (click)="delete(s)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="list-group-item border-start border-end">No hay premios</div>
+        }
+
+      </div>
+    </div>
+  </div>
+</div>

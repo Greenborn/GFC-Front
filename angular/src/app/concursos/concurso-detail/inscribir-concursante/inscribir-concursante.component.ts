@@ -1,0 +1,91 @@
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ApiConsumer } from 'src/app/models/ApiConsumer';
+import { Category } from 'src/app/models/category.model';
+import { Contest } from 'src/app/models/contest.model';
+import { ProfileExpanded } from 'src/app/models/profile.model';
+import { ProfileContest, ProfileContestExpanded } from 'src/app/models/profile_contest';
+import { ProfileContestService } from 'src/app/services/profile-contest.service';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
+
+import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { SearchableSelectComponent } from 'src/app/shared/searchable-select/searchable-select.component';
+
+@Component({
+  standalone: true,
+  imports: [CommonModule, FormsModule, SearchableSelectComponent],
+  selector: 'app-inscribir-concursante',
+  templateUrl: './inscribir-concursante.component.html',
+  styleUrls: ['./inscribir-concursante.component.scss'],
+})
+export class InscribirConcursanteComponent extends ApiConsumer implements OnInit {
+
+  @Input() modalController: any;
+  @Input() contest: Contest;
+  @Input() concursantes: any[];
+  @Input() categorias: Category[];
+  @Input() profileContest: ProfileContest;
+
+  public posting: boolean = false;
+
+  constructor(
+    alertService: AlertService,
+    private profileContestService: ProfileContestService,
+    public responsiveService: ResponsiveService,
+    private rolificador: RolificadorService,
+    private authService: AuthService
+  ) { 
+    super(alertService)
+    this.profileContest = this.profileContestService.template
+  }
+
+  ngOnInit() {
+    //modificacion datos de concursantes para concatenar nombre y apellido
+    for (let c=0; c<this.concursantes.length; c++){
+      this.concursantes[c].name = this.concursantes[c].name + ' ' + this.concursantes[c].last_name;
+    }
+    
+   if(this.concursantes.length == 1) {
+    this.profileContest.profile_id = this.concursantes[0].id
+   }
+  }
+
+  datosCargados() {
+    return this.profileContest.profile_id != undefined && 
+              this.profileContest.category_id != undefined
+  }
+
+  async inscribirConcursante() {
+    if (this.datosCargados()) {
+      if(!this.rolificador.esConcursante(await this.authService.user) ){
+      } else {
+        this.profileContest.profile_id = this.concursantes[0].id
+      }
+
+        this.posting = true
+        const s = this.profileContestService.post({
+            profile_id: this.profileContest.profile_id,
+            contest_id: this.contest.id,
+            category_id: this.profileContest.category_id
+          }, undefined, 'expand=profile,profile.user,profile.fotoclub,category'
+        ).subscribe(
+          async profileContest => {
+            this.posting = false
+            try { await this.modalController.dismiss({ profileContest }); } catch {}
+          },
+          err => {
+            super.displayAlert(this.errorFilter(err.error.message))
+          },
+          () => {
+            s.unsubscribe()
+          }
+        )
+  
+    }
+    
+  }
+
+}

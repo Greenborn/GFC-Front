@@ -1,0 +1,66 @@
+<div class="offcanvas offcanvas-end" [class.show]="open" tabindex="-1"
+     role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title">Menú</h5>
+    <button type="button" class="btn-close" (click)="closeSidebar.emit()" aria-label="Cerrar menú"></button>
+  </div>
+  <div class="offcanvas-body p-0">
+    @if ((auth.user | async); as u) {
+      <div class="user-section p-3 border-bottom text-center">
+        <div class="mb-2">
+          <app-usuario-img [src]="u.profile?.img_url ? config.imageUrl(u.profile.img_url) : ''"></app-usuario-img>
+        </div>
+        <div class="fw-semibold">{{ u.username }}</div>
+        <div class="text-muted small">{{ u.profile?.name }} {{ u.profile?.last_name }}</div>
+      </div>
+      <ul class="list-group list-group-flush" role="list">
+        <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/concursos/ranking']" [attr.aria-current]="router.url === '/concursos/ranking' ? 'page' : null">
+          <i class="bi bi-trophy me-2" aria-hidden="true"></i>Ranking
+        </li>
+        <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/concursos']" [attr.aria-current]="router.url === '/concursos' || (router.url.startsWith('/concursos/') && !router.url.startsWith('/concursos/ranking')) ? 'page' : null">
+          <i class="bi bi-images me-2" aria-hidden="true"></i>Concursos
+        </li>
+        @if (rolificador.esDelegado(u)) {
+          <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/usuarios']" [attr.aria-current]="router.url.startsWith('/usuarios') ? 'page' : null">
+            <i class="bi bi-people me-2" aria-hidden="true"></i>{{ rolificador.getNombreUsuarios(u.role_id) }}
+          </li>
+        }
+        @if (rolificador.isAdmin(u)) {
+          <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/organizaciones']" [attr.aria-current]="router.url.startsWith('/organizaciones') ? 'page' : null">
+            <i class="bi bi-building me-2" aria-hidden="true"></i>Organizaciones
+          </li>
+        }
+        @if (rolificador.isAdmin(u) || rolificador.esDelegado(u)) {
+          <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/herramientas']" [attr.aria-current]="router.url.startsWith('/herramientas') ? 'page' : null">
+            <i class="bi bi-tools me-2" aria-hidden="true"></i>Herramientas
+          </li>
+        }
+      </ul>
+      <div class="border-top">
+        <ul class="list-group list-group-flush" role="list">
+          <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/usuarios', 'editar', u.id]">
+            <i class="bi bi-person me-2" aria-hidden="true"></i>Editar perfil
+          </li>
+          <li class="list-group-item clickeable" (click)="toggleDarkMode()" role="button" tabindex="0" (keydown.enter)="toggleDarkMode()" (keydown.space)="toggleDarkMode(); $event.preventDefault()">
+            <div class="d-flex align-items-center justify-content-between">
+              <span><i class="bi bi-moon me-2" aria-hidden="true"></i>Modo oscuro</span>
+              <div class="form-check form-switch mb-0">
+                <input type="checkbox" class="form-check-input" [checked]="darkMode" (click)="toggleDarkMode(); $event.stopPropagation()" aria-label="Activar modo oscuro">
+              </div>
+            </div>
+          </li>
+          @if (canInstall) {
+            <li class="list-group-item list-group-item-action clickeable" (click)="installApp()" role="button" tabindex="0" (keydown.enter)="installApp()" (keydown.space)="installApp(); $event.preventDefault()">
+              <i class="bi bi-phone me-2" aria-hidden="true"></i>Instalar App
+            </li>
+          }
+          <li class="list-group-item list-group-item-action clickeable text-danger" (click)="auth.logout()" role="button" tabindex="0" (keydown.enter)="auth.logout()" (keydown.space)="auth.logout(); $event.preventDefault()">
+            <i class="bi bi-box-arrow-right me-2" aria-hidden="true"></i>Salir
+          </li>
+        </ul>
+      </div>
+    }
+  </div>
+</div>
+
+<div class="offcanvas-backdrop fade" [class.show]="open" (click)="closeSidebar.emit()"></div>

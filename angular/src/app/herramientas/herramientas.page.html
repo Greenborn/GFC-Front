@@ -1,0 +1,115 @@
+<div class="container py-3">
+  <div class="row g-3">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+      <div class="card tool-card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Fotografías</h5>
+        </div>
+        <div class="card-body">
+          <button class="btn btn-primary w-100" (click)="abrirBusquedaFotografias()">Búsqueda de Fotografías</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+      <div class="card tool-card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Concursos</h5>
+        </div>
+        <div class="card-body">
+          <select class="form-select" [(ngModel)]="concursoSeleccionado" placeholder="Elige un concurso">
+            @for (c of concursos; track c) {
+              <option [value]="c">{{c.name}}</option>
+            }
+          </select>
+          <button class="btn btn-primary w-100" [disabled]="!concursoSeleccionado" (click)="descargarListado()">Listado Inscriptos</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+      <div class="card tool-card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Juzgamiento</h5>
+        </div>
+        <div class="card-body">
+          <input #fileInput type="file" webkitdirectory directory multiple (change)="onFileSelected($event)" style="display: none;" />
+          <button class="btn btn-success w-100" (click)="fileInput.click()">Cargar Resultados</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+      <div class="card tool-card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Ranking</h5>
+        </div>
+        <div class="card-body">
+          <button class="btn btn-primary w-100" (click)="recalcularRanking()">Recalcular Ranking</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+      <div class="card tool-card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Premiadas Temporada</h5>
+        </div>
+        <div class="card-body">
+          <button class="btn btn-primary w-100 text-white" (click)="descargarCompiladoGanadoras()">Descargar Compilado</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+      <div class="card tool-card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Fotografías del Año</h5>
+        </div>
+        <div class="card-body">
+          <input #folderInput type="file" webkitdirectory directory multiple (change)="onFolderSelected($event)" style="display: none;" />
+          <button class="btn btn-success w-100" (click)="folderInput.click()">Seleccionar Carpeta</button>
+          <button class="btn btn-success w-100" (click)="abrirModalAgregarGrabacion()">Agregar Grabación</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para Agregar Grabación -->
+<div class="modal" tabindex="-1" [class.show]="isModalGrabacionOpen" [style.display]="isModalGrabacionOpen ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header d-flex justify-content-between align-items-center">
+        <h5 class="modal-title">Agregar Grabación</h5>
+        <button class="btn gfc-btn-back" (click)="cerrarModalGrabacion()">Cerrar</button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Temporada</label>
+          <select class="form-select" [(ngModel)]="grabacionData.temporada">
+            <option [value]="anioActual">{{anioActual}}</option>
+            <option [value]="anioAnterior">{{anioAnterior}}</option>
+          </select>
+        </div>
+
+        <div class="mb-3" [class.is-invalid]="urlInvalida && grabacionData.url.length > 0">
+          <label class="form-label">URL</label>
+          <input class="form-control"
+            [(ngModel)]="grabacionData.url"
+            (change)="validarUrl()"
+            placeholder="https://ejemplo.com/grabacion.json"
+            type="url">
+        </div>
+        @if (urlInvalida && grabacionData.url.length > 0) {
+          <small class="text-danger">
+            Por favor, ingrese una URL válida
+          </small>
+        }
+
+        <button
+          class="btn btn-success w-100 mt-3"
+          (click)="agregarGrabacion()"
+          [disabled]="urlInvalida || !grabacionData.url">
+          Agregar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="isModalGrabacionOpen" (click)="cerrarModalGrabacion()"></div>

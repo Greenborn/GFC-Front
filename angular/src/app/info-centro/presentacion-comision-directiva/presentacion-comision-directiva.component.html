@@ -1,0 +1,29 @@
+<div class="row mt-3 mb-3 text-center main-row">
+  <div class="col">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10">
+        <div class="row pt-4 pb-4">
+          <div class="col"><h2>Comisión Directiva</h2></div>
+        </div>
+
+        <div class="row dir-grid g-4">
+          @for (s of directives; track s) {
+            <div class="col-12 col-md-4 col-lg-3">
+              <div class="dir-card">
+                <div class="dir-photo">
+                  <app-usuario-img [src]="s.img_url != null ? configService.imageUrl(s.img_url) : ''"></app-usuario-img>
+                </div>
+                <div class="dir-info">
+                  <h3 class="dir-name">{{s.name}} {{s.last_name}}</h3>
+                  <span class="dir-role">{{s.executive_rol}}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

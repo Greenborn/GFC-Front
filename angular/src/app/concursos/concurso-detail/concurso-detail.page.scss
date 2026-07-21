@@ -1,0 +1,109 @@
+.concurso-tabs {
+    display: flex;
+    border-bottom: 2px solid #e8ecf0;
+    gap: 0;
+    padding: 0 calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    width: 100%;
+    margin: 0 auto;
+}
+
+:host-context(body.dark) .concurso-tabs {
+    border-bottom-color: #2a2a3a;
+    background: #1a1a2e;
+}
+
+@media (min-width: 576px) {
+    .concurso-tabs {
+        max-width: 540px;
+    }
+}
+@media (min-width: 768px) {
+    .concurso-tabs {
+        max-width: 720px;
+    }
+}
+@media (min-width: 992px) {
+    .concurso-tabs {
+        max-width: 960px;
+    }
+}
+@media (min-width: 1200px) {
+    .concurso-tabs {
+        max-width: 1140px;
+    }
+}
+@media (min-width: 1400px) {
+    .concurso-tabs {
+        max-width: 1320px;
+    }
+}
+
+.concurso-tabs .nav-item {
+    margin-bottom: -2px;
+}
+
+.concurso-tabs .nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #888;
+    background: transparent;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &:hover {
+        color: #555;
+    }
+}
+
+:host-context(body.dark) .concurso-tabs .nav-link {
+    color: #999;
+
+    &:hover { color: #ccc; }
+}
+
+.concurso-tabs .nav-link.active {
+    color: #212529;
+    border-bottom-color: #212529;
+    background: transparent;
+}
+
+:host-context(body.dark) .concurso-tabs .nav-link.active {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+
+.container {
+    padding-top: calc(0.75rem + env(safe-area-inset-top));
+}
+
+:host-context(body.dark) .container {
+    background: #121212;
+    min-height: calc(100vh - 56px);
+}
+
+@media (max-width: 767px) {
+    .concurso-tabs {
+        padding: 0 0.5rem;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .concurso-tabs .nav-link {
+        padding: 0.6rem 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

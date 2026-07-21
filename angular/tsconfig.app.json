@@ -1,0 +1,27 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/app/concursos/metricas-abm/concurso-detail.page.ts",
+    "src/app/concursos/concurso-detail/image-post/image-post.module.ts",
+    "src/app/concursos/concurso-detail/image-post/image-post-routing.module.ts",
+    "src/app/concursos/concurso-detail/image-review/image-review.module.ts",
+    "src/app/concursos/concurso-detail/image-review/image-review-routing.module.ts",
+    "src/app/guards/logged-in.guard.ts",
+    "src/app/services/connectivity.service.ts",
+    "src/app/usuario/usuario-edit/",
+    "src/app/usuario/usuario.model.ts",
+    "src/environments/environment.local.ts"
+  ]
+}

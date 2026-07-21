@@ -1,0 +1,118 @@
+<div class="gfc-modal-header">
+  <h5 class="mb-0">Carga de Resultados</h5>
+</div>
+<div class="container-fluid py-3">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <h5>Estructura de archivos y directorios:</h5>
+        @if (estructura && estructura.trim().length > 0) {
+          <pre style="white-space: pre-wrap; font-size: 14px; background: #f8f8f8; padding: 12px; border-radius: 6px;">{{ estructura }}</pre>
+        } @else {
+          <div class="card border-danger">
+            <div class="card-body text-danger">
+              Error: No se pudo procesar el archivo o está vacío.
+            </div>
+          </div>
+        }
+        <button class="btn gfc-btn-back w-100 mt-3" (click)="volver()">Volver</button>
+      </div>
+      <div class="col-12 col-md-6">
+        <button class="btn btn-success w-100 mb-3" [disabled]="!canCargarResultados()" (click)="cargarResultados()">
+          Cargar Resultados
+        </button>
+        @if (directorioBaseValido) {
+          <div class="card border-success">
+            <div class="card-body text-success">
+              Validación correcta: existe el directorio base <b>{{ directorioBase }}</b>
+            </div>
+          </div>
+        }
+        @if (!directorioBaseValido) {
+          <div class="card border-warning">
+            <div class="card-body text-warning">
+              No se pudo detectar un directorio base válido
+            </div>
+          </div>
+        }
+        @if (directorioBaseValido && validacionesCategorias.length > 0) {
+          <h6>Validaciones de Categorías:</h6>
+          @for (val of validacionesCategorias; track val) {
+            <div class="card" [ngClass]="'border-' + val.color">
+              <div class="card-body">
+                {{ val.mensaje }}
+              </div>
+            </div>
+          }
+        }
+
+        @if (directorioBaseValido && validacionesSecciones.length > 0) {
+          <h6>Validaciones de Secciones ({{ validacionesSecciones.length }}):</h6>
+          @for (val of validacionesSecciones; track val) {
+            <div class="card" [ngClass]="'border-' + val.color">
+              <div class="card-body">
+                {{ val.mensaje }}
+              </div>
+            </div>
+          }
+        }
+
+        @if (directorioBaseValido && validacionesSecciones.length === 0) {
+          <div class="card border-secondary">
+            <div class="card-body text-secondary">
+              No se encontraron validaciones de secciones (array vacío)
+            </div>
+          </div>
+        }
+
+        @if (directorioBaseValido && validacionesPremios.length > 0) {
+          <h6>Validaciones de Premios ({{ validacionesPremios.length }}):</h6>
+          @for (val of validacionesPremios; track val) {
+            <div class="card" [ngClass]="'border-' + val.color">
+              <div class="card-body">
+                {{ val.mensaje }}
+              </div>
+            </div>
+          }
+        }
+
+        @if (directorioBaseValido && fotografiasSinCatalogar.length > 0) {
+          <h6>Fotografías Sin Catalogar ({{ fotografiasSinCatalogar.length }}):</h6>
+          <div class="card border-warning">
+            <div class="card-body">
+              <p>Las siguientes fotografías no están en directorios de premios:</p>
+              <div class="fotografias-badges">
+                @for (foto of fotografiasSinCatalogar; track foto; let i = $index) {
+                  <span class="badge bg-warning text-dark me-3 mb-3">
+                    {{ obtenerNombreArchivo(foto) }}
+                  </span>
+                }
+              </div>
+              <details class="mt-3">
+                <summary>Ver rutas completas (debug)</summary>
+                <div style="font-size: 12px; margin-top: 8px;">
+                  @for (foto of fotografiasSinCatalogar; track foto; let i = $index) {
+                    <div>
+                      {{ i + 1 }}. {{ foto }}
+                    </div>
+                  }
+                </div>
+              </details>
+            </div>
+          </div>
+        }
+
+        @if (directorioBaseValido && validacionesFotografias.length > 0) {
+          <h6>Validaciones de Directorios de Premios ({{ validacionesFotografias.length }}):</h6>
+          @for (val of validacionesFotografias; track val) {
+            <div class="card" [ngClass]="'border-' + val.color">
+              <div class="card-body">
+                {{ val.mensaje }}
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</div>

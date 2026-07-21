@@ -1,0 +1,84 @@
+<div class="container-fluid py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="row align-items-center g-2 mb-3">
+          <div class="col-auto">
+            <button class="btn btn-success" (click)="postFotoclub()">
+              <i class="bi bi-plus me-1"></i> Institución
+            </button>
+          </div>
+          <div class="col">
+            <div class="input-group">
+              <input class="form-control" placeholder="Buscar instituciones" (keyup.enter)="mostrarFiltro = !mostrarFiltro">
+              <button class="btn btn-primary" (click)="mostrarFiltro = !mostrarFiltro">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-none d-sm-block">
+          <div class="gfc-header py-2 px-3 rounded-top">
+            <div class="row align-items-center">
+              <div class="col-9 col-md-10">
+                <app-th-sort
+                  [sortFn]="funcionesOrdenamiento['fotoclub']"
+                  [(data)]="fotoclubs"
+                  title="Organización"
+                ></app-th-sort>
+              </div>
+              <div class="col-2 col-md-1 text-center">Habilitado</div>
+              <div class="col-1 col-md-1 text-center">Acciones</div>
+            </div>
+          </div>
+        </div>
+
+        @if (fotoclubs.length > 0) {
+          <div class="list-group list-group-flush border-start border-end">
+            @for (f of fotoclubs; track f) {
+              <div class="list-group-item">
+                <div class="row align-items-center">
+                  <div class="col-9 col-md-10">
+                    <div class="d-flex align-items-center gap-3">
+                      <img
+                        style="width:40px;height:40px;object-fit:cover;border-radius:6px;"
+                        [ngStyle]="aspecto && (f.photo_url == null || f.photo_url == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
+                        [src]="f.photo_url != null && f.photo_url != ''  ? configService.imageUrl(f.photo_url) : './assets/no-pictures.png'"
+                        >
+                      <span title="Nombre"><b>{{f.name}}</b></span>
+                    </div>
+                  </div>
+                  <div class="col-2 col-md-1 text-center">
+                    <span class="badge" [ngClass]="f.enabled ? 'bg-success' : 'bg-danger'">
+                      {{ f.enabled ? 'Si' : 'No' }}
+                    </span>
+                  </div>
+                  <div class="col-1 col-md-1 text-center">
+                    <div class="d-flex gap-1 justify-content-center">
+                      <button class="btn btn-warning btn-sm" (click)="postFotoclub(f)">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      @if (false) {
+                        <button class="btn btn-danger btn-sm" (click)="deleteFotoclub(f)">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      }
+                      <button class="btn btn-outline-secondary btn-sm d-sm-none" (click)="mostrarAcciones($event, f)">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="list-group-item">No hay fotoclubs</div>
+        }
+
+
+      </div>
+    </div>
+  </div>
+</div>

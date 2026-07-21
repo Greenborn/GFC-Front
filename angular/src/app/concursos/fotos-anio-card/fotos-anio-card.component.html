@@ -1,0 +1,45 @@
+<div class="fotos-anio-card">
+  <div class="fac-header">
+    <div class="fac-header-content">
+      <i class="bi bi-trophy-fill fac-trophy"></i>
+      <div>
+        <h5 class="fac-title">Fotografías del Año {{ temporada }}</h5>
+        <span class="fac-subtitle">
+          {{ fotos?.length || 0 }} fotografías
+          @if (url_grabacion) {
+            &nbsp;|&nbsp; <a [href]="url_grabacion" target="_blank" rel="noopener noreferrer"><i class="bi bi-camera-video"></i> Ver grabación</a>
+          }
+        </span>
+      </div>
+    </div>
+  </div>
+
+  @if (fotos && fotos.length > 0) {
+    <div class="fac-body">
+      <div class="slides-container">
+        <app-slides [options]="slideOpts" #slides>
+          @for (foto of fotos; track foto; let i = $index) {
+            <div #slide class="app-slide">
+              <div class="slide-content" (click)="abrirFotoDetalle(i)">
+                <div class="fac-image-wrapper">
+                  <img loading="lazy" [src]="getImageUrl(foto.url_imagen)" [alt]="foto.nombre_obra" (error)="onImageError($event)" />
+                  <div class="fac-overlay"></div>
+                </div>
+                <div class="fac-info">
+                  <span class="fac-badge"><i class="bi bi-award-fill"></i> {{ foto.puesto }}</span>
+                  <h3 class="fac-obra">{{ foto.nombre_obra }}</h3>
+                  <p class="fac-autor"><i class="bi bi-person-circle"></i> {{ foto.nombre_autor }}</p>
+                </div>
+              </div>
+            </div>
+          }
+        </app-slides>
+      </div>
+    </div>
+  } @else {
+    <div class="fac-no-fotos">
+      <p>No hay fotografías del año disponibles para esta temporada.</p>
+    </div>
+  }
+
+</div>

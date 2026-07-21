@@ -1,0 +1,90 @@
+@if ((auth.user | async); as u) {
+  <div class="py-3">
+    <div class="row justify-content-center">
+      <div class="col">
+        <div class="d-none d-md-flex align-items-center py-2 px-3 gfc-header rounded-top mb-1">
+          <div class="row w-100 g-0">
+            <div class="col-6 col-md-4">
+              <app-th-sort
+              [sortFn]="ordenarPorApellido" [(data)]="inscriptos" title="Concursante"></app-th-sort>
+            </div>
+            @if (checkPermissions) {
+              <div class="col-4 d-none d-md-block">
+                <app-th-sort
+                [sortFn]="ordenarPorFotoclub" [(data)]="inscriptos" title="Fotoclub"></app-th-sort>
+              </div>
+            }
+            <div class="col-2 d-none d-md-block text-center">Categoría</div>
+            <div class="col-2 d-none d-md-block text-center">Fotos</div>
+          </div>
+        </div>
+        @if (inscriptosFiltrados.length > 0) {
+          <div>
+            @for (m of inscriptosFiltrados; track m) {
+              <div class="concursante-item"
+                >
+                <div class="row align-items-center g-0 py-2 px-3">
+                  <div class="col-8 col-md-4">
+                    <div class="d-flex align-items-center gap-3">
+                      <app-usuario-img class="concursante-avatar" [src]="m.profile?.img_url ? configService.imageUrl(m.profile.img_url) : ''"></app-usuario-img>
+                      <div class="min-w-0">
+                        <div class="fw-semibold text-truncate">
+                          {{ m.profile?.name || '' }} {{ m.profile?.last_name || '' }}
+                        </div>
+                        <small class="text-muted">
+                          <i class="bi bi-at me-1"></i>{{ m.profile?.user?.username || '' }}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                  @if (checkPermissions) {
+                    <div class="col-4 d-none d-md-block">
+                      <span class="text-truncate d-inline-block" style="max-width: 180px;" title="{{ getFotoclubName(m.profile_id) }}">
+                        {{ getFotoclubName(m.profile_id) || '—' }}
+                      </span>
+                    </div>
+                  }
+                  <div class="col-2 d-none d-md-block text-center">
+                    <span class="badge bg-info bg-opacity-10 text-info rounded-pill">
+                      {{ getCategoryName(m.category_id) || '—' }}
+                    </span>
+                  </div>
+                  <div class="col-2 d-none d-md-block text-center">
+                    <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">
+                      <i class="bi bi-camera me-1"></i>{{ m.photo_count ?? 0 }}
+                    </span>
+                  </div>
+                </div>
+                <div class="d-flex d-md-none gap-2 px-3 pb-2 pt-0 border-bottom">
+                  <span class="badge bg-info bg-opacity-10 text-info rounded-pill small">
+                    {{ getCategoryName(m.category_id) || 'Sin categoría' }}
+                  </span>
+                  <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill small">
+                    <i class="bi bi-camera me-1"></i>{{ m.photo_count ?? 0 }} fotos
+                  </span>
+                  @if (checkPermissions) {
+                    <span class="small text-muted">
+                      {{ getFotoclubName(m.profile_id) || '' }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="text-center py-5">
+            <i class="bi bi-people fs-1 text-muted"></i>
+            <p class="mt-3 text-muted fs-5">No hay inscriptos</p>
+          </div>
+        }
+        <ng-template #spinner>
+          <div class="row justify-content-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+}

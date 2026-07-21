@@ -1,0 +1,489 @@
+.gfc-accordion {
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 767.98px) {
+  .gfc-accordion {
+    margin-bottom: 0;
+  }
+
+  .gfc-accordion-header.expanded {
+    position: sticky;
+    top: 56px;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .gfc-accordion-item {
+    overflow: visible;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    margin-bottom: 0;
+  }
+
+  .gfc-accordion:last-child .gfc-accordion-item:last-child {
+    border-bottom: none;
+  }
+
+  .gfc-accordion-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 52px;
+  }
+}
+
+.gfc-accordion-header h1,
+.gfc-accordion-header h2 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #212529;
+}
+
+.mobile-label {
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  .container-fluid.py-3 {
+    padding: 0;
+  }
+
+  .container-fluid.py-3 .container-fluid {
+    padding: 0;
+  }
+
+  .container-fluid.py-3 .row {
+    margin: 0;
+  }
+
+  .container-fluid.py-3 .row > [class*="col-"] {
+    padding: 0;
+  }
+
+  .mobile-label {
+    display: inline;
+    font-weight: 700;
+    color: #6c757d;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-right: 4px;
+  }
+}
+
+.seccion-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px 20px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+
+
+.rank-pill {
+  display: inline-block;
+  padding: 5px 14px;
+  border: 1px solid #ced4da;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+  color: #495057;
+  background: #fff;
+}
+
+.rank-pill:hover {
+  border-color: #0d6efd;
+  color: #0d6efd;
+}
+
+.rank-pill.active {
+  background: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+
+body.dark .rank-pill.active {
+  background: #0d6efd !important;
+  color: #fff !important;
+  border-color: #0d6efd !important;
+}
+
+.gfc-rank-table-header .gfc-rank-col {
+  color: inherit;
+}
+
+@media (min-width: 768px) {
+  .gfc-rank-table-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .gfc-rank-table-row {
+    padding: 12px 16px;
+  }
+
+  .profile-photo-row {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0 4px;
+  }
+
+  .profile-photo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0f0f0;
+  }
+
+  .profile-photo-icon {
+    font-size: 3.2rem;
+    color: #adb5bd;
+    line-height: 1;
+  }
+
+  .rank-row-sub {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .rank-col-prizes {
+    width: 100%;
+    flex: none;
+    padding-left: 0;
+  }
+
+  .rank-row-sub .rank-col-action {
+    margin-left: 0;
+    margin-top: 4px;
+  }
+}
+
+.rank-row-main {
+  display: flex;
+  align-items: center;
+}
+
+.rank-row-sub {
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .rank-row-main,
+  .rank-row-sub {
+    display: contents;
+  }
+
+  .rank-row-sub {
+    margin-top: 0;
+  }
+}
+
+.rank-col {
+  padding: 0 8px;
+}
+
+.rank-col-pos {
+  width: 9%;
+  min-width: 60px;
+  font-weight: 700;
+  color: #212529;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 767.98px) {
+  .rank-col-pos {
+    min-width: 40px;
+    width: auto;
+  }
+
+  .fotoclub-hide-mobile {
+    display: none;
+  }
+
+  .fotoclub-rank-pos {
+    order: 1;
+  }
+
+  .fotoclub-rank-eff {
+    order: 3;
+    width: 100%;
+    flex: none;
+    padding: 4px 0 0 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #495057;
+    text-align: left;
+    display: flex;
+    gap: 4px;
+  }
+
+  .rank-col-name.fotoclub-rank-name {
+    order: 2;
+    flex: 1;
+    padding-left: 0;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #212529;
+    display: flex;
+    align-items: center;
+  }
+
+  .rank-col-name.fotoclub-rank-name.rank-1,
+  .rank-col-name.fotoclub-rank-name.rank-2,
+  .rank-col-name.fotoclub-rank-name.rank-3 {
+    font-weight: 800;
+  }
+
+  .gfc-rank-table-row .rank-row-main {
+    flex-wrap: wrap;
+  }
+
+  .gfc-rank-table-body .gfc-rank-table-row {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .gfc-rank-table-body .gfc-rank-table-row:nth-child(even) {
+    background: #fff;
+  }
+
+  .gfc-rank-table-body .gfc-rank-table-row:last-child {
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 0;
+  }
+
+  .rank-row-sub {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .prize-badge {
+    font-size: 0.68rem;
+    padding: 2px 8px;
+  }
+}
+
+.fotoclub-eff-mobile {
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  .fotoclub-eff-desktop {
+    display: none;
+  }
+
+  .fotoclub-eff-mobile {
+    display: inline;
+  }
+}
+
+@media (min-width: 768px) {
+  .fotoclub-eff-desktop {
+    display: inline;
+  }
+
+  .profile-photo-row,
+  .profile-photo,
+  .profile-photo-icon {
+    display: none;
+  }
+}
+
+.rank-col-pos.rank-1,
+.rank-col-pos.rank-2,
+.rank-col-pos.rank-3 {
+  font-size: 0.85rem;
+}
+
+.rank-col-pos.rank-1::before,
+.rank-col-pos.rank-2::before,
+.rank-col-pos.rank-3::before {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-right: 4px;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.rank-col-pos.rank-1 {
+  color: #b8860b;
+}
+
+.rank-col-pos.rank-1::before {
+  content: attr(data-rank);
+  background: #ffd700;
+  color: #7a6200;
+  box-shadow: 0 1px 4px rgba(255, 215, 0, 0.4);
+}
+
+.rank-col-pos.rank-2 {
+  color: #6c757d;
+}
+
+.rank-col-pos.rank-2::before {
+  content: attr(data-rank);
+  background: #e9ecef;
+  color: #495057;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.rank-col-pos.rank-3 {
+  color: #8b4513;
+}
+
+.rank-col-pos.rank-3::before {
+  content: attr(data-rank);
+  background: #cd7f32;
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(205, 127, 50, 0.4);
+}
+
+@media (max-width: 767.98px) {
+  .rank-col-pos.rank-1::before,
+  .rank-col-pos.rank-2::before,
+  .rank-col-pos.rank-3::before {
+    width: 24px;
+    height: 24px;
+    font-size: 0.6rem;
+  }
+}
+
+.rank-col-name {
+  flex: 1;
+  font-weight: 500;
+  color: #212529;
+}
+
+.rank-col-name.rank-1 {
+  font-weight: 700;
+}
+
+.rank-col-name.rank-2 {
+  font-weight: 600;
+}
+
+.rank-col-name.rank-3 {
+  font-weight: 600;
+}
+
+@media (max-width: 767.98px) {
+  .rank-col-name {
+    word-break: break-word;
+  }
+}
+
+.rank-col-score {
+  width: 14%;
+  min-width: 90px;
+  font-weight: 700;
+  color: #0d6efd;
+  font-size: 1rem;
+  text-align: center;
+}
+
+@media (max-width: 767.98px) {
+  .rank-col-score {
+    min-width: auto;
+    width: auto;
+    margin-left: auto;
+    text-align: right;
+  }
+}
+
+.rank-col-score.rank-1 {
+  font-size: 1.15rem;
+}
+
+.rank-col-score.rank-2 {
+  font-size: 1.05rem;
+}
+
+.rank-col-eff {
+  width: 14%;
+  min-width: 90px;
+  color: #495057;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (max-width: 767.98px) {
+  .rank-col-eff {
+    min-width: 60px;
+  }
+}
+
+.rank-col-prizes {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-left: 12px;
+}
+
+.rank-col-action {
+  width: 10%;
+  min-width: 80px;
+  text-align: right;
+}
+
+@media (max-width: 767.98px) {
+  .rank-col-action {
+    min-width: 60px;
+    width: auto;
+  }
+}
+
+.prize-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #212529;
+  color: #ffd700;
+  border: 1px solid #495057;
+}
+
+.habilitado-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  margin-left: 6px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+

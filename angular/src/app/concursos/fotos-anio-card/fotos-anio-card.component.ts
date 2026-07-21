@@ -1,0 +1,79 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FotoDelAnio } from 'src/app/models/foto-del-anio.model';
+import { ConfigService } from 'src/app/services/config/config.service';
+import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { VerFotografiasComponent } from '../concurso-detail/ver-fotografias/ver-fotografias.component';
+import { SlidesComponent } from 'src/app/shared/slides/slides.component';
+
+@Component({
+  standalone: true,
+  imports: [CommonModule, SlidesComponent],
+  selector: 'app-fotos-anio-card',
+  templateUrl: './fotos-anio-card.component.html',
+  styleUrls: ['./fotos-anio-card.component.scss']
+})
+export class FotosAnioCardComponent implements OnInit {
+  @Input() fotos: FotoDelAnio[] = [];
+  @Input() temporada: number = 0;
+  @Input() url_grabacion: string | null = null;
+
+  slideOpts = {
+    initialSlide: 0,
+    speed: 400,
+    slidesPerView: 1,
+    slidesPerViewTablet: 3,
+    slidesPerViewDesktop: 3,
+    autoplay: {
+      delay: 5000
+    }
+  };
+
+  constructor(
+    public configService: ConfigService,
+    private UIUtilsService: UiUtilsService
+  ) {}
+
+  ngOnInit() {}
+
+  getImageUrl(url: string): string {
+    if (!url) return '';
+    return this.configService.imageUrl(url) || '';
+  }
+
+  onImageError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = '../../../assets/no-pictures.png';
+  }
+
+  abrirFotoDetalle(index: number) {
+    // Convertir las fotos del año al formato esperado por VerFotografiasComponent
+    const fotosFormateadas = this.fotos.map(foto => ({
+      image: {
+        id: foto.id_foto,
+        title: foto.nombre_obra,
+        url: foto.url_imagen,
+        thumbnail: foto.url_imagen,
+        code: `FOTO-${foto.temporada}-${foto.orden}`,
+        profile: {
+          name: foto.nombre_autor.split(' ')[0] || foto.nombre_autor,
+          last_name: foto.nombre_autor.split(' ').slice(1).join(' ') || ''
+        }
+      },
+      section: null,
+      metric: {
+        prize: foto.puesto
+      }
+    }));
+
+    this.UIUtilsService.mostrarModal(
+      VerFotografiasComponent, 
+      { 
+        index, 
+        all_data: fotosFormateadas, 
+        open: false // false porque ya están finalizadas
+      }, 
+      true
+    );
+  }
+}

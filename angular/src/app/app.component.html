@@ -1,0 +1,11 @@
+<a href="#main-content" class="visually-hidden-focusable">Saltar al contenido principal</a>
+
+<div class="d-flex flex-column vh-100">
+  <app-navbar (toggleSidebar)="toggleSidebar()"></app-navbar>
+
+  <app-sidebar [open]="sidebarOpen" (closeSidebar)="sidebarOpen = false"></app-sidebar>
+
+  <main class="flex-grow-1 overflow-auto" id="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

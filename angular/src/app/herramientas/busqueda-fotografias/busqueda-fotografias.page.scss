@@ -1,0 +1,96 @@
+/* Estilos para la vista de búsqueda de fotografías */
+
+/* Estilos para la nota de ayuda */
+.nota-ayuda {
+  margin-bottom: 20px;
+  background: #e8f5e8;
+  border-left: 4px solid #4caf50;
+  
+  .cerrar-nota {
+    margin-left: auto;
+    --color: #4caf50;
+    
+    &:hover {
+      --color: #2e7d32;
+    }
+  }
+  
+  .nota-content {
+    padding: 8px 16px 16px 16px;
+    
+    ul {
+      margin: 0;
+      padding-left: 20px;
+      
+      li {
+        margin-bottom: 8px;
+        color: #222428;
+        line-height: 1.4;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+/* Estilos para las imágenes en los resultados */
+.card img {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Icono grande para mensaje sin resultados */
+.icon-large {
+  font-size: 48px;
+  color: #92949c;
+  margin-bottom: 16px;
+}
+
+/* Espaciado para el título de resultados */
+h3 {
+  margin: 20px 0 16px 0;
+  color: #3880ff;
+}
+
+/* Autor en negrita y capitalizado */
+.card-subtitle strong {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+/* Centrar tarjeta única y mejorar presentación */
+.centrado-un-resultado {
+  display: flex;
+  justify-content: center;
+}
+
+.centrado-un-resultado .result-row {
+  justify-content: center;
+}
+
+.centrado-un-resultado .result-col {
+  max-width: 400px;
+  flex: 1 1 400px;
+}
+
+@media (max-width: 420px) {
+  .centrado-un-resultado .result-col {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+}

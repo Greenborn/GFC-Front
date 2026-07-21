@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Grupo Fotográfico Centro</title>
+  <link rel="shortcut icon" href="./assets/icon/favicon.ico">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#212529">
+
+  <base href="/" />
+
+  <meta name="color-scheme" content="light dark" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+
+  <!-- add to homescreen for ios -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+  <style nonce="gfc-loader-style">
+    @keyframes gfc-loader-bar {
+      0%, 100% { width: 40px; opacity: 0.3; }
+      50% { width: 80px; opacity: 1; }
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- Loader DOM-based (funciona en todos los browsers, incluyendo Safari iOS) -->
+  <div id="gfc-loader" class="gfc-loader">
+    <span class="gfc-loader-text">Cargando\u2026</span>
+    <span class="gfc-loader-bar"></span>
+  </div>
+
+  <script nonce="gfc-dark-reader">
+    (function() {
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+        document.body.classList.add('dark');
+        var loader = document.getElementById('gfc-loader');
+        if (loader) loader.style.background = '#121212';
+      }
+    })();
+  </script>
+
+  <style nonce="gfc-loader-style">
+    .gfc-loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 100000;
+      background: #fff;
+    }
+    .gfc-loader-text {
+      font: 16px/1.4 sans-serif;
+      color: #666;
+    }
+    .gfc-loader-bar {
+      margin-top: 8px;
+      width: 40px;
+      height: 4px;
+      background: #3880ff;
+      border-radius: 2px;
+      animation: gfc-loader-bar 1.2s ease-in-out infinite;
+    }
+    html[data-bs-theme="dark"] .gfc-loader {
+      background: #121212;
+    }
+    html[data-bs-theme="dark"] .gfc-loader-text {
+      color: #ccc;
+    }
+    html.gfc-force-visible .gfc-loader {
+      display: none;
+    }
+  </style>
+
+  <app-root></app-root>
+
+</body>
+
+</html>

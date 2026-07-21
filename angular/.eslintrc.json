@@ -1,0 +1,63 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.app.json"
+        ]
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ],
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "argsIgnorePattern": "^_"
+          }
+        ],
+        "no-console": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
+        "@typescript-eslint/ban-types": "off",
+        "prefer-const": "warn",
+        "@angular-eslint/component-class-suffix": "off"
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {}
+    }
+  ]
+}

@@ -1,7 +1,0 @@
-{
-  "name": "GrupoFotografico",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}

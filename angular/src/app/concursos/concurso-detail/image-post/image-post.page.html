@@ -1,0 +1,99 @@
+<div [ngClass]="responsiveService.isDesktop ? 'gfc-modal-page': ''">
+  <div class="gfc-modal-header">
+    <div class="row align-items-center ms-3 me-3">
+      <div class="col">
+        <h5 class="mb-0">{{ formTitle }}</h5>
+      </div>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="inner-content float-md-start">
+    <div class="container-fluid">
+      <div class="row justify-content-center align-self-center">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <div class="row pt-3">
+
+                <div class="mb-3" class="w-100 mb-3">
+                  <label class="form-label">Titulo</label>
+                  <input class="form-control"
+                    autocapitalize="sentences" [(ngModel)]="image.title"
+                    >
+                </div>
+
+                <div class="row w-100">
+                  <div class="col p-0">
+                    <div class="mb-3" class="w-100 p-0 mb-3">
+                      <input type="file" accept=".jpeg,.jpg" (change)="handleFileInput($event.target['files'])" />
+                    </div>
+
+                    @if (texto_img != null) {
+                      <span class="badge bg-danger d-inline-flex align-items-center gap-1">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <label class="form-label">{{texto_img}}</label>
+                      </span>
+                    }
+
+                    <div>
+                      @if (img_url != '' || imageData != '') {
+                        <div class="row" class="justify-content-center">
+                          <img (ionError)="img_url=''" [src]="imgSource" alt="">
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+              <div class="row">
+
+                <div class="mb-3" class="w-100 mb-3">
+                  <label class="form-label">Sección</label>
+                  <select class="form-select" (change)="sectionSelect" [(ngModel)]="section_id">
+                    @for (s of secciones; track s) {
+                      <option [value]="s.id">{{ s.name }}</option>
+                    }
+                  </select>
+                </div>
+
+                @if (texto_sec != null) {
+                  <span class="badge bg-danger d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <label class="form-label">{{texto_sec}}</label>
+                  </span>
+                }
+
+              </div>
+
+              <div class="row justify-content-center pt-3">
+                <div class="col-auto">
+                  <button class="btn gfc-btn-back" (click)="modalController.dismiss()">
+                    Cancelar
+                  </button>
+                </div>
+                <div class="col-auto">
+                  <button class="btn btn-success" [disabled]="!datosCargados()" (click)="postImage()">
+                    @if (posting) {
+                      <div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                    }
+                    @if (!posting) {
+                      <span>Guardar</span>
+                    }
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

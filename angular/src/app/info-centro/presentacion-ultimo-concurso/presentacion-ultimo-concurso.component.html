@@ -1,0 +1,19 @@
+@if (cargando) {
+  <div class="uc-placeholder">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+}
+
+@if (concurso != null) {
+  <div class="uc-hero" style="background-image: url({{bg_image}});">
+    <div class="uc-overlay"></div>
+    <div class="uc-content">
+      <span class="uc-badge">{{concurso.sub_title}}</span>
+      <h1 class="uc-title">{{concurso.name}}</h1>
+      <p class="uc-desc">Se encuentra abierta la inscripción para el próximo concurso del GFC.</p>
+      <button class="btn btn-primary uc-btn" [routerLink]="['/concursos/' + concurso.id]">Ver información</button>
+    </div>
+  </div>
+}

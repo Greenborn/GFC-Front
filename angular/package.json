@@ -1,0 +1,45 @@
+{
+  "name": "grupo_fotografico_centro",
+  "version": "1.19.50",
+  "author": "Greenborn",
+  "homepage": "https://greenborn.com.ar",
+  "scripts": {
+    "ng": "ng",
+    "postinstall": "node scripts/postinstall.js",
+    "start": "node scripts/ng.js serve",
+    "build": "node scripts/ng.js build --configuration production",
+    "update-version": "node update-version.js"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "^21.2.18",
+    "@angular/core": "^21.2.18",
+    "@angular/forms": "^21.2.18",
+    "@angular/platform-browser": "^21.2.18",
+    "@angular/platform-browser-dynamic": "^21.2.18",
+    "@angular/router": "^21.2.18",
+    "@angular/service-worker": "^21.2.18",
+    "axios": "^1.18.1",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.13.1",
+    "rxjs": "^7.5.0",
+    "tslib": "^2.8.1",
+    "xlsx": "^0.18.5",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^21.2.19",
+    "@angular-eslint/builder": "^21.4.0",
+    "@angular-eslint/eslint-plugin": "^21.4.0",
+    "@angular-eslint/eslint-plugin-template": "^21.4.0",
+    "@angular-eslint/template-parser": "^21.4.0",
+    "@angular/cli": "^21.2.19",
+    "@angular/compiler": "^21.2.18",
+    "@angular/compiler-cli": "^21.2.18",
+    "@typescript-eslint/eslint-plugin": "6.0.0",
+    "@typescript-eslint/parser": "6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "~5.9.3"
+  },
+  "description": "Grupo Fotografico Centro"
+}

@@ -1,0 +1,107 @@
+<div class="gfc-modal-header d-flex align-items-center gap-2">
+  <button class="btn gfc-btn-back" (click)="dismiss()">
+    <i class="bi bi-arrow-left"></i>
+  </button>
+  <h5 class="mb-0">Filtros y orden</h5>
+</div>
+
+<div class="container-fluid py-3">
+  <div class="list-group list-group-flush mb-3">
+    <div class="list-group-item fw-bold gfc-list-header">
+      <label class="form-label">Ordenar por</label>
+      @if (hasSort) {
+        <button (click)="toggleSortDir()" class="btn btn-link btn-sm">
+          <i class="bi me-1" [ngClass]="localSortAsc ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+          {{ localSortAsc ? 'Asc' : 'Desc' }}
+        </button>
+      }
+    </div>
+    <div class="d-flex flex-column gap-2 p-3">
+      <div class="form-check" (click)="onSortChange('')">
+        <input class="form-check-input" type="radio" name="sortBy" value="" [checked]="localSortBy === ''" (change)="onSortChange('')">
+        <label class="form-check-label">Sin ordenar</label>
+      </div>
+      <div class="form-check" (click)="onSortChange('title')">
+        <input class="form-check-input" type="radio" name="sortBy" value="title" [checked]="localSortBy === 'title'" (change)="onSortChange('title')">
+        <label class="form-check-label">Título</label>
+      </div>
+      @if (canFilterByAuthor) {
+        <div class="form-check" (click)="onSortChange('author')">
+          <input class="form-check-input" type="radio" name="sortBy" value="author" [checked]="localSortBy === 'author'" (change)="onSortChange('author')">
+          <label class="form-check-label">Autor</label>
+        </div>
+      }
+      <div class="form-check" [class.text-muted]="!isContestJudged" (click)="isContestJudged && onSortChange('prize')">
+        <input class="form-check-input" type="radio" name="sortBy" value="prize" [checked]="localSortBy === 'prize'" [disabled]="!isContestJudged" (change)="isContestJudged && onSortChange('prize')">
+        <label class="form-check-label">Premio</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="list-group list-group-flush mb-3">
+    <div class="list-group-item fw-bold gfc-list-header">Secciones</div>
+    <div class="p-3 d-flex flex-wrap gap-2">
+      <span class="badge rounded-pill clickeable" [ngClass]="todasSecciones ? 'bg-primary' : 'bg-secondary'" (click)="seccionAll()">Todas</span>
+      @for (s of seccionesInscriptas; track s) {
+        <span class="badge rounded-pill clickeable"
+          (click)="toggleSeccion(s.section.id)"
+          [ngClass]="localSecciones.has(s.section.id) ? 'bg-primary' : 'bg-secondary'">
+          {{ s.section.name }}
+        </span>
+      }
+    </div>
+  </div>
+
+  <div class="list-group list-group-flush mb-3">
+    <div class="list-group-item fw-bold gfc-list-header">Categorías</div>
+    <div class="p-3 d-flex flex-wrap gap-2">
+      <span class="badge rounded-pill clickeable" [ngClass]="todasCategorias ? 'bg-primary' : 'bg-secondary'" (click)="categoriaAll()">Todos</span>
+      @for (c of categoriasInscriptas; track c) {
+        <span class="badge rounded-pill clickeable"
+          (click)="toggleCategoria(c.category.id)"
+          [ngClass]="localCategorias.has(c.category.id) ? 'bg-primary' : 'bg-secondary'">
+          {{ c.category.name }}
+        </span>
+      }
+    </div>
+  </div>
+
+  @if (isContestJudged) {
+    <div class="list-group list-group-flush mb-3">
+      <div class="list-group-item fw-bold gfc-list-header">Premios</div>
+      <div class="p-3 d-flex flex-wrap gap-2">
+        <span class="badge rounded-pill clickeable" [ngClass]="todosPremios ? 'bg-primary' : 'bg-secondary'" (click)="premioAll()">Todos</span>
+        @for (p of puntajes; track p) {
+          <span class="badge rounded-pill clickeable"
+            (click)="togglePremio(p.prize)"
+            [ngClass]="localPremios.has(p.prize) ? 'bg-primary' : 'bg-secondary'">
+            {{ p.prize }}
+          </span>
+        }
+      </div>
+    </div>
+  }
+
+  @if (canFilterByAuthor) {
+    <div class="list-group list-group-flush mb-3">
+      <div class="list-group-item fw-bold gfc-list-header">Filtrar por autor</div>
+      <div class="p-3">
+        <input class="form-control" [(ngModel)]="localFiltroAutor" placeholder="Nombre del autor">
+      </div>
+    </div>
+  }
+
+  @if (isContestJudged) {
+    <div class="list-group list-group-flush mb-3">
+      <div class="list-group-item fw-bold gfc-list-header">Filtrar por código</div>
+      <div class="p-3">
+        <input class="form-control" [(ngModel)]="localFiltroCodigo" placeholder="Código de fotografía">
+      </div>
+    </div>
+  }
+
+  <button class="btn btn-danger w-100 mt-3" (click)="resetAll()">
+    <i class="bi bi-x-circle me-1"></i>
+    Limpiar filtros
+  </button>
+</div>

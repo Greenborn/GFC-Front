@@ -1,0 +1,116 @@
+@if (auth.user | async; as u) {
+  <div class="pb-3">
+    <div class="info-hero">
+      @if (concurso.img_url) {
+        <img [src]="configService.imageUrl(concurso.img_url)" class="info-hero-img" alt="{{ concurso.name }}">
+      } @else {
+        <div class="info-hero-placeholder"></div>
+      }
+      <span class="info-hero-badge" [class.open]="isContestNotFin">{{ isContestNotFin ? 'Abierto' : 'Finalizado' }}</span>
+      @if (rolificador.esDelegado(u) || rolificador.isAdmin(u)) {
+        <div class="info-hero-admin">
+          <button class="info-hero-btn edit" [routerLink]="['/concursos/editar/' + concurso.id]" title="Editar concurso">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button class="info-hero-btn delete" (click)="deleteConcurso()" title="Eliminar concurso">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      }
+    </div>
+    <div class="info-hero-content">
+      <h1 class="info-hero-title">{{ concurso.name }}</h1>
+      <p class="info-hero-dates">
+        <i class="bi bi-calendar3" aria-hidden="true"></i>
+        {{ concursoDetailService.fechaInicio | date: "dd/MM/yyyy" }} — {{ concursoDetailService.fechaFin | date: "dd/MM/yyyy" }}
+      </p>
+    </div>
+    <div class="info-content">
+      @if (concurso.description) {
+        <div class="info-section info-desc-section">
+          <h3 class="info-section-title"><i class="bi bi-info-circle"></i> Descripción</h3>
+          <p class="info-desc">{{ concurso.description }}</p>
+        </div>
+      }
+      <div class="info-section info-actions-section">
+        <div class="info-actions">
+          @if (isContestNotFin && !isInscripto) {
+            <button class="info-btn info-btn-primary" (click)="inscribirConcursante()">
+              <i class="bi bi-pencil-square"></i> Inscribirme
+            </button>
+          }
+          @if (isContestNotFin && isInscripto) {
+            <button class="info-btn info-btn-danger" (click)="desinscribirme()">
+              <i class="bi bi-x-circle"></i> Desinscribirme
+            </button>
+          }
+          <button class="info-btn info-btn-outline" [routerLink]="['/concursos', concurso.id, 'fotografias']">
+            <i class="bi bi-images"></i> Ver Fotografías
+          </button>
+          <button class="info-btn info-btn-outline" (click)="descargarFotografias()">
+            <i class="bi bi-download"></i> Descargar
+          </button>
+          <button class="info-btn info-btn-outline" (click)="compartir()">
+            <i class="bi bi-share"></i> Compartir
+          </button>
+        </div>
+      </div>
+      @if (concurso.rules_url) {
+        <div class="info-section">
+          <div class="info-row">
+            <span class="info-label"><i class="bi bi-file-text"></i> Reglamento</span>
+            <button class="info-btn info-btn-sm info-btn-outline" (click)="openRules()">
+              <i class="bi bi-box-arrow-up-right"></i> Ver reglamento
+            </button>
+          </div>
+        </div>
+      }
+      @if (concursoDetailService.categoriasInscriptasAsc.length > 0) {
+        <div class="info-section">
+          <h3 class="info-section-title"><i class="bi bi-tags"></i> Categorías</h3>
+          <div class="info-tags">
+            @for (c of concursoDetailService.categoriasInscriptasAsc; track c) {
+              <span class="info-tag">{{ c.category.name }}</span>
+            }
+          </div>
+        </div>
+      }
+      @if (concursoDetailService.seccionesInscriptasAsc.length > 0) {
+        <div class="info-section">
+          <h3 class="info-section-title"><i class="bi bi-layers"></i> Secciones</h3>
+          <div class="info-tags">
+            @for (s of concursoDetailService.seccionesInscriptasAsc; track s) {
+              <span class="info-tag">{{ s.section.name }}</span>
+            }
+          </div>
+        </div>
+      }
+      @if (concurso.contestRecords?.length) {
+        <div class="info-section">
+          <h3 class="info-section-title"><i class="bi bi-camera-video"></i> Grabaciones</h3>
+          <div class="info-embeds">
+            @for (s of concurso.contestRecords; track s) {
+              <div class="info-embed-wrapper">
+                @if (getEmbedUrl(s); as safeUrl) {
+                  <div class="info-embed">
+                    <iframe [src]="safeUrl" frameborder="0" allowfullscreen loading="lazy" title="{{ s.object }}"></iframe>
+                  </div>
+                }
+                <a class="info-video-card" [href]="s.url" target="_blank" rel="noopener" title="Abrir en una nueva ventana">
+                  <div class="info-video-card-icon">
+                    <i class="bi bi-play-circle-fill"></i>
+                  </div>
+                  <div class="info-video-card-info">
+                    <span class="info-video-card-title">{{ s.object }}</span>
+                    <span class="info-video-card-hint">Abrir video en nueva ventana</span>
+                  </div>
+                  <i class="bi bi-box-arrow-up-right info-video-card-ext"></i>
+                </a>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

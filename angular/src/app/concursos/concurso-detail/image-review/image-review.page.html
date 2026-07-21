@@ -1,0 +1,74 @@
+<div [ngClass]="responsiveService.isDesktop ? 'gfc-modal-page': ''">
+  <div class="gfc-modal-header">
+    <div class="row align-items-center ms-3 me-3">
+      <div class="col">
+        <h5 class="mb-0">Puntuar imagen de {{ concurso }}</h5>
+      </div>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="dismiss()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="inner-content">
+    <div class="container-fluid">
+      <div class="row justify-content-center align-self-center">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <div class="col align-self-center">
+                  <h6 class="card-subtitle text-muted" title="Código de la obra">{{ image.code }}</h6>
+                  <h5 class="card-title" title="Nombre de la obra"><b>{{image.title}}</b></h5>
+                  <div> <img [src]="imgSource" alt=""> </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <form
+                    #formReview="ngForm"
+                    (ngSubmit)="postReview(formReview)">
+
+                    <div class="mb-3" class="w-100 mb-3">
+                      <label class="form-label">Premio</label>
+
+                      <select class="form-select" name="elegida" [(ngModel)]="elegida">
+                        @for (met of metricas; track met) {
+                          <option [value]="met">{{ met.prize }}</option>
+                        }
+                      </select>
+                    </div>
+
+                    <div class="row justify-content-end">
+                      <div class="col-12">
+                        <div class="row justify-content-end">
+                          <div class="col-12 col-sm-3 align-self-center">
+
+                            <app-btn-post [posting]="posting" [disabled]="!formReview.valid"></app-btn-post>
+                          </div>
+
+                          <div class="col-12 col-sm-3 align-self-center">
+                            <button
+                              class="btn btn-link w-100" (click)="dismiss()">
+                              Cancelar
+                            </button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

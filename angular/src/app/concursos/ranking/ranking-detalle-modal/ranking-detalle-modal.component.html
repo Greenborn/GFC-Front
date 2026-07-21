@@ -1,0 +1,186 @@
+<div class="ranking-modal-wrapper gfc-modal-page">
+  <div class="gfc-modal-header">
+    <div class="row align-items-center px-3 w-100">
+      <div class="col-auto d-md-none">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+      </div>
+      <div class="col">
+        <h5 class="mb-0 py-1">
+          {{ categoriaNombre }} - {{ seccionNombre }} - Año {{ detalle?.year }}
+        </h5>
+      </div>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div slot="start" class="w-100 inner-content float-md-start">
+    <div class="container-fluid p-0">
+      <div class="row">
+        <div class="col p-0">
+          <div class="row align-items-center justify-content-between">
+            <div class="col">
+              @if (!detalle?.items) {
+                <h6 class="card-subtitle text-muted">
+                  {{ formatDate(detalle?.contest?.start_date) }} -
+                  {{ formatDate(detalle?.contest?.end_date) }}
+                </h6>
+              }
+
+            </div>
+            <div class="col-auto">
+
+            </div>
+          </div>
+
+          <div class="row card-row mb-3">
+            <div class="col-12 col-md-6">
+              <div class="card mb-3" class="mt-3 mb-3 h-100">
+                <div class="card-body">
+                  <div class="participante-layout">
+                    <div class="participante-avatar-col">
+                      <app-usuario-img [src]="detalle?.profile?.img_url ? configService.imageUrl(detalle?.profile?.img_url) : ''"></app-usuario-img>
+                    </div>
+                    <ul class="participante-lista">
+                      <li>{{ detalle?.profile?.name }} {{ detalle?.profile?.last_name }}</li>
+                      <li>{{ detalle?.profile?.fotoclub?.name }}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card mb-3" class="mt-3 mb-3 h-100">
+                <div class="card-header">
+                  <h5 class="card-title">Sumatoria de puntajes</h5>
+                </div>
+                <div class="card-body">
+                  <div class="sumatoria-item"><b>Sumatoria Concursos:</b> {{ totalScoreAll() }}</div>
+                  @if (detalle?.items) {
+                    <div class="sumatoria-item"><b>Concursos contabilizados:</b> {{ detalle.items.length }}</div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          @if (!detalle?.items) {
+            <div class="card mb-3" class="mt-3">
+              <div class="card-header">
+                <h5 class="card-title">Resultados</h5>
+              </div>
+              <div class="card-body">
+                <div class="list-group list-group-flush">
+                  <div class="mb-3 gfc-header">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col-3">Categoría</div>
+                        <div class="col-3">Sección</div>
+                        <div class="col-2">Miniatura</div>
+                        <div class="col-2">Obra</div>
+                        <div class="col-2">Premio / Puntaje</div>
+                      </div>
+                    </div>
+                  </div>
+                  @for (r of sortResults(detalle?.results); track r) {
+                    @for (img of sortImages(r.images); track img) {
+                      <div class="mb-3">
+                        <div class="container-fluid">
+                          <div class="row align-items-center">
+                            <div class="col-3">{{ r.category }}</div>
+                            <div class="col-3">{{ r.section }}</div>
+                            <div class="col-2">
+                               <img loading="lazy" class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="height:48px;width:auto;border-radius:4px;" (click)="openPhotoModal(img)" />
+                            </div>
+                            <div class="col-2 cap">{{ img.title }}</div>
+                            <div class="col-2">
+                              <span class="badge bg-secondary">{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</span>
+                              <span class="ms-3">{{ img.metric?.score }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="card mb-3" class="mt-3 mb-3">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-6">
+                    <b>Puntaje total:</b>
+                    <span class="ms-3">{{ detalle?.ranking?.total_score }}</span>
+                  </div>
+                  <div class="col-6">
+                    <b>Posición:</b>
+                    <span class="ms-3">{{ detalle?.ranking?.position }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="gfc-accordion">
+              @for (it of detalle.items; track it; let i = $index) {
+                <div class="gfc-accordion-item">
+                  <div class="gfc-accordion-header" (click)="toggleContest(i)">
+                    <div>
+                      <div class="gfc-accordion-title">{{ it?.contest?.name }}</div>
+                      <div class="gfc-accordion-subtitle">{{ formatDate(it?.contest?.start_date) }} - {{ formatDate(it?.contest?.end_date) }}</div>
+                    </div>
+                    <span class="gfc-accordion-arrow" [class.open]="expandedContests[i]">&#9660;</span>
+                  </div>
+                  @if (expandedContests[i]) {
+                    <div class="gfc-accordion-body">
+                      <div class="gfc-rank-table">
+                        <div class="gfc-rank-table-header">
+                          <div class="rank-col rank-col-thumb">Miniatura</div>
+                          <div class="rank-col rank-col-fields">
+                            <div class="row-field">Categoría</div>
+                            <div class="row-field">Sección</div>
+                            <div class="row-field">Obra</div>
+                            <div class="row-field">Premio</div>
+                            <div class="row-field">Puntaje</div>
+                          </div>
+                        </div>
+                        <div class="gfc-rank-table-body">
+                          @for (r of sortResults(it?.results); track r) {
+                            @for (img of sortImages(r.images); track img) {
+                              <div class="gfc-rank-table-row">
+                                <div class="rank-col rank-col-thumb">
+                                   <img loading="lazy" class="img-clickable" [src]="img?.thumbnail_url ? configService.imageUrl(img.thumbnail_url) : ''" alt="" style="border-radius:4px;" (click)="openPhotoModal(img, it.results)" />
+                                </div>
+                                <div class="rank-col rank-col-fields">
+                                  <div class="row-field"><span class="field-label">Categoría</span><span class="field-value">{{ r.category }}</span></div>
+                                  <div class="row-field"><span class="field-label">Sección</span><span class="field-value">{{ r.section }}</span></div>
+                                  <div class="row-field"><span class="field-label">Obra</span><span class="field-value cap">{{ img.title }}</span></div>
+                                  <div class="row-field"><span class="field-label">Premio</span><span class="field-value"><span class="prize-badge">{{ (img.metric?.prize && img.metric?.prize != '0') ? img.metric?.prize : '-' }}</span></span></div>
+                                  <div class="row-field"><span class="field-label">Puntaje</span><span class="field-value score-val">{{ img.metric?.score }}</span></div>
+                                </div>
+                              </div>
+                            }
+                          }
+                        </div>
+                      </div>
+                      <div class="rank-summary">
+                        <div class="summary-item"><b>Puntaje total:</b> {{ it?.ranking?.total_score }}</div>
+                        <div class="summary-item"><b>Posición:</b> {{ it?.ranking?.position }}</div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

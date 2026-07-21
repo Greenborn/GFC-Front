@@ -1,0 +1,328 @@
+<div class="gfc-modal-header py-2 px-3">
+  <div class="d-flex align-items-center gap-2">
+    <button class="btn gfc-btn-back btn-sm" [routerLink]="backUrl">
+      <i class="bi bi-arrow-left"></i>
+    </button>
+    <h5 class="mb-0">{{formTitle}}</h5>
+  </div>
+</div>
+
+<div class="container-fluid py-3">
+  <div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+      <form #f="ngForm" (ngSubmit)="postConcurso(f)" novalidate>
+
+        <div class="row g-3 equal-height-row">
+
+          <!-- Información -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card mb-3 equal-height-card">
+              <div class="card-header gfc-list-header">
+                <h6 class="mb-0"><i class="bi bi-info-circle me-1"></i>Información</h6>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Nombre</label>
+                  <textarea class="form-control" rows="2"
+                    name="name" [ngModel]="concurso.name"
+                    autocapitalize="sentences" maxlength="250" required
+                    (focus)="nombreChangeFocus = true" (blur)="nombreChangeFocus = false"
+                  [class.is-invalid]="f.submitted && !f.controls?.['name']?.valid"></textarea>
+                  @if (nombreChangeFocus) {
+                    <small class="text-muted">Máximo 250 caracteres</small>
+                  }
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Sub-título</label>
+                  <textarea class="form-control" rows="2"
+                    name="sub_title" [ngModel]="concurso.sub_title"
+                    maxlength="250"
+                  (focus)="subtituloChangeFocus = true" (blur)="subtituloChangeFocus = false"></textarea>
+                  @if (subtituloChangeFocus) {
+                    <small class="text-muted">Máximo 250 caracteres</small>
+                  }
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Descripción</label>
+                  <textarea class="form-control" rows="3"
+                    name="description" [ngModel]="concurso.description"
+                    autocapitalize="sentences" maxlength="250" required
+                    (focus)="descrChangeFocus = true" (blur)="descrChangeFocus = false"
+                  [class.is-invalid]="f.submitted && !f.controls?.['description']?.valid"></textarea>
+                  @if (descrChangeFocus) {
+                    <small class="text-muted">Máximo 250 caracteres</small>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fechas -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card mb-3 equal-height-card">
+              <div class="card-header gfc-list-header">
+                <h6 class="mb-0"><i class="bi bi-calendar-event me-1"></i>Fechas</h6>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Inicio</label>
+                  <div class="row g-1 mb-1">
+                    <div class="col-4">
+                      <select class="form-select form-select-sm"
+                        [(ngModel)]="day_selects[0].day" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                        <option value="-1">Día</option>
+                        @for (d of day_selects[0].days; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="col-5">
+                      <select class="form-select form-select-sm"
+                        [(ngModel)]="day_selects[0].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                        <option value="-1">Mes</option>
+                        @for (d of day_selects[0].months; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="col-3">
+                      <select class="form-select form-select-sm"
+                        [(ngModel)]="day_selects[0].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                        <option value="-1">Año</option>
+                        @for (d of day_selects[0].years; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row g-1">
+                    <div class="col-6">
+                      <select class="form-select form-select-sm"
+                        [(ngModel)]="day_selects[0].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                        <option value="-1">Hora</option>
+                        @for (d of day_selects[0].hours; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="col-6">
+                      <select class="form-select form-select-sm"
+                        [(ngModel)]="day_selects[0].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                        <option value="-1">Min</option>
+                        @for (d of day_selects[0].minutes; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-0">
+                  <label class="form-label small fw-semibold">Finalización</label>
+                  <div class="row g-1 mb-1">
+                    <div class="col-4">
+                      <select class="form-select form-select-sm"
+                        [(ngModel)]="day_selects[1].day" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                        <option value="-1">Día</option>
+                        @for (d of day_selects[1].days; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="col-5">
+                      <select class="form-select form-select-sm"
+                        [(ngModel)]="day_selects[1].month" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                        <option value="-1">Mes</option>
+                        @for (d of day_selects[1].months; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="col-3">
+                      <select class="form-select form-select-sm"
+                        [(ngModel)]="day_selects[1].year" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                        <option value="-1">Año</option>
+                        @for (d of day_selects[1].years; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row g-1">
+                    <div class="col-6">
+                      <select class="form-select form-select-sm"
+                        [(ngModel)]="day_selects[1].hour" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                        <option value="-1">Hora</option>
+                        @for (d of day_selects[1].hours; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
+                      </select>
+                    </div>
+                    <div class="col-6">
+                      <select class="form-select form-select-sm"
+                        [(ngModel)]="day_selects[1].minute" [ngModelOptions]="{standalone: true}" (change)="dateUpdate()">
+                        <option value="-1">Min</option>
+                        @for (d of day_selects[1].minutes; track d) {
+                          <option value="{{d.v}}">{{d.t}}</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Configuración -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card mb-3 equal-height-card">
+              <div class="card-header gfc-list-header">
+                <h6 class="mb-0"><i class="bi bi-gear me-1"></i>Configuración</h6>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Total de imágenes por sección</label>
+                  <input class="form-control" name="max_img_section"
+                    [ngModel]="concurso.max_img_section" type="number" required
+                    [class.is-invalid]="f.submitted && !f.controls?.['max_img_section']?.valid">
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Tipo de organización</label>
+                  <select class="form-select" name="organization_type"
+                    [(ngModel)]="concurso.organization_type" required>
+                    <option value="INTERNO">Interno</option>
+                    <option value="EXTERNO_0">Externo</option>
+                    <option value="EXTERNO_UNICEN">UNICEN</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <div class="d-flex align-items-center justify-content-between gfc-list-header rounded px-2 py-1 clickeable"
+                    (click)="mostrarCategorias = !mostrarCategorias"
+                    [class.text-muted]="loadingCategorias" [class.pe-none]="loadingCategorias">
+                    <span class="fw-semibold small">Categorías</span>
+                    <i class="bi" [ngClass]="mostrarCategorias ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                  </div>
+                  @if (mostrarCategorias) {
+                    <div class="mt-2">
+                      @for (c of categorias; track c) {
+                        <div class="form-check mb-1">
+                          <input type="checkbox" class="form-check-input"
+                            [(ngModel)]="getCategoriaSeleccionada(c.id).seleccionada"
+                            [ngModelOptions]="{standalone: true}" [id]="'cat-' + c.id">
+                          <label class="form-check-label small" [for]="'cat-' + c.id">{{c.name}}</label>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <div class="mb-0">
+                  <div class="d-flex align-items-center justify-content-between gfc-list-header rounded px-2 py-1 clickeable"
+                    (click)="mostrarSecciones = !mostrarSecciones"
+                    [class.text-muted]="loadingSecciones" [class.pe-none]="loadingSecciones">
+                    <span class="fw-semibold small">Secciones</span>
+                    <i class="bi" [ngClass]="mostrarSecciones ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                  </div>
+                  @if (mostrarSecciones) {
+                    <div class="mt-2">
+                      @for (s of secciones; track s) {
+                        <div class="form-check mb-1">
+                          <input type="checkbox" class="form-check-input"
+                            [(ngModel)]="getSeccionSeleccionada(s.id).seleccionada"
+                            [ngModelOptions]="{standalone: true}" [id]="'sec-' + s.id">
+                          <label class="form-check-label small" [for]="'sec-' + s.id">{{s.name}}</label>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Imagen -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card mb-3 equal-height-card">
+              <div class="card-header gfc-list-header">
+                <h6 class="mb-0"><i class="bi bi-image me-1"></i>Imagen</h6>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <div class="upload-zone mb-3" (click)="imageInput.click()">
+                  <input type="file" #imageInput hidden accept="image/*" (change)="imageUpload($event.target)" />
+                  <i class="bi bi-cloud-arrow-up fs-2"></i>
+                  <p class="mb-0 small">Haga clic para subir una imagen</p>
+                  <small class="text-muted">JPG, PNG, etc.</small>
+                </div>
+                @if (img_url) {
+                  <div class="image-preview" (click)="imageInput.click()">
+                    <img [src]="img_url" alt="Vista previa" (error)="img_url=''">
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Reglamento -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card mb-3 equal-height-card">
+              <div class="card-header gfc-list-header">
+                <h6 class="mb-0"><i class="bi bi-file-earmark-text me-1"></i>Reglamento</h6>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <div class="upload-zone mb-3" (click)="rulesInput.click()">
+                  <input type="file" #rulesInput hidden accept=".pdf" (change)="fileUpload($event.target)" />
+                  <i class="bi bi-cloud-arrow-up fs-2"></i>
+                  <p class="mb-0 small">Haga clic para subir reglamento</p>
+                  <small class="text-muted">Solo PDF</small>
+                </div>
+                @if (rules_url) {
+                  <div class="rules-preview">
+                    <iframe [src]="rules_url" frameborder="0"></iframe>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Grabaciones -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card mb-3 equal-height-card">
+              <div class="card-header gfc-list-header">
+                <h6 class="mb-0"><i class="bi bi-mic me-1"></i>Grabaciones</h6>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <app-contest-records [concurso]="concurso"></app-contest-records>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Acciones -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <div class="d-flex flex-wrap gap-2 justify-content-end align-items-center">
+              <button class="btn btn-link" [routerLink]="backUrl">
+                <i class="bi bi-x me-1"></i>Cancelar
+              </button>
+              <app-btn-post [posting]="posting" [disabled]="!f.valid || secycat"></app-btn-post>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+      <ng-template #spinner>
+        <div class="row justify-content-center">
+          <div class="spinner-border spinner-border-sm text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

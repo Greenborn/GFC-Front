@@ -1,0 +1,80 @@
+<div class="gfc-modal-header">
+  <div class="d-flex align-items-center gap-1">
+    <button class="btn gfc-btn-back btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i> Volver</button>
+    <h5 class="mb-0">Perfil</h5>
+  </div>
+</div>
+
+<div class="container-fluid py-3" *ngIf="isActive">
+  <div class="card mb-3 restrict-height"
+    color="white"
+    *ngIf="(authService.user | async) as u"
+  >
+    <div class="col">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="row justify-content-center">
+            <div class="col-8 col-sm-6 col-md-5">
+<app-usuario-img
+  [src]="this.imgUrl != null ? configService.imageUrl(this.imgUrl) : ''"
+></app-usuario-img>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="row">
+            <span>
+              <h2>{{ this.name }}</h2></span>
+            <span class="p-0" color="medium">
+              <p class="text-username">&#64;{{ this.username }}</p></span>
+          </div>
+          <div class="row">
+            <span>Rol: {{ this.role }}</span>
+          </div>
+          <div class="row">
+            <span
+              >Fotoclub/Entidad: {{ this.fotoclub }}</span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="row justify-content-center">
+            <button class="btn btn-warning" *ngIf=" this.privilegies" [routerLink]="['/usuarios', 'editar', this.userId]">
+              Editar perfil
+            </button>
+          </div>
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="mb-3 m-3 text-center sombra">
+              <div class="col">
+                <span>Concursos</span>
+                <h3 class="fw-bold">{{this.estadisticas != undefined ? this.estadisticas.concursos : "0"}}</h3>
+              </div>
+            
+            <div class="mb-3 m-3 text-center sombra">
+              <div class="col">
+                <span>Fotografías</span>
+                <h3 class="fw-bold">{{this.estadisticas != undefined ? this.estadisticas.fotografias : "0"}}</h3>
+              </div>
+            
+            <div class="mb-3 m-3 text-center sombra">
+              <div class="col">
+                <span>1° Puesto</span>
+                <h3 class="fw-bold">{{this.estadisticas != undefined ? this.estadisticas.primer_puesto : "0"}}</h3>
+              </div>
+            
+            <div class="mb-3 m-3 text-center sombra">
+              <div class="col">
+                <span>Mención</span>
+                <h3 class="fw-bold">{{this.estadisticas != undefined ? this.estadisticas.mencion : "0"}}</h3>
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

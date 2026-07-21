@@ -1,0 +1,10 @@
+<div class="img-thumb">
+  <div class="cont">
+    @if (!src || imgError) {
+      <i class="bi bi-person-circle placeholder-icon"></i>
+    }
+    @if (src && !imgError) {
+      <span><img src="{{src}}" (error)="imgError = true" /></span>
+    }
+  </div>
+</div>

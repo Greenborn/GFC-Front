@@ -1,0 +1,46 @@
+<div
+  class="app-slides-container"
+  (touchstart)="onTouchStart($event)"
+  (touchmove)="onTouchMove($event)"
+  (touchend)="onTouchEnd()"
+  >
+  @if (canNavigate) {
+    <button
+      class="app-slides-btn app-slides-btn-prev"
+      (click)="slidePrev()"
+      aria-label="Anterior"
+      >
+      <i class="bi bi-chevron-left"></i>
+    </button>
+  }
+
+  <div
+    class="app-slides-track"
+    [style.transform]="transform"
+    [style.transition-duration]="transitionDuration"
+    >
+    <ng-content></ng-content>
+  </div>
+
+  @if (canNavigate) {
+    <button
+      class="app-slides-btn app-slides-btn-next"
+      (click)="slideNext()"
+      aria-label="Siguiente"
+      >
+      <i class="bi bi-chevron-right"></i>
+    </button>
+  }
+
+  @if (options.pagination !== false && totalSlides > slidesPerView && !isDesktop) {
+    <div class="app-slides-pagination">
+      @for (_ of bullets; track _; let i = $index) {
+        <span
+          class="app-slides-bullet"
+          [class.active]="i === bulletIndex"
+          (click)="slideTo(i)"
+        ></span>
+      }
+    </div>
+  }
+</div>

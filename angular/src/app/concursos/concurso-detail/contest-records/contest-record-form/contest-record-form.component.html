@@ -1,0 +1,47 @@
+<div [ngClass]="responsiveService.isDesktop ? 'gfc-modal-page' : ''">
+  <div class="gfc-modal-header">
+    <div class="row align-items-center ms-3 me-3">
+      <div class="col">
+        <h5 class="mb-0">
+          {{ formTitle }}
+        </h5>
+      </div>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="modalController.dismiss()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-100 inner-content float-md-start">
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="mb-3" class="w-100 mb-3">
+          <label class="form-label">Nombre</label>
+          <input class="form-control" name="name" [(ngModel)]="grabacion.object" autocapitalize="sentences" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mb-3" class="w-100 mb-3">
+          <label class="form-label">URL</label>
+          <input class="form-control" name="name" [(ngModel)]="grabacion.url" autocapitalize="sentences" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-auto">
+          <button class="btn gfc-btn-back w-100" (click)="modalController.dismiss()">Cancelar</button>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-success" (click)="guardar()">Guardar</button>
+        </div>
+        <div class="col"></div>
+      </div>
+      
+    </div>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<div class="gfc-modal-header d-flex justify-content-between align-items-center">
+  <div class="d-flex gap-1">
+    <button class="btn gfc-btn-back btn-sm" onclick="history.back()"><i class="bi bi-arrow-left"></i></button>
+  </div>
+  <h5 class="mb-0">Búsqueda de Fotografías</h5>
+</div>
+
+<div class="container-fluid py-3">
+  <!-- Nota de ayuda -->
+  @if (mostrarNota) {
+    <div class="card mb-3 nota-ayuda">
+      <div class="card-header">
+        <h5 class="card-title">
+          <i class="bi bi-info-circle"></i>
+          Cómo usar la búsqueda
+          <button class="btn btn-link btn-sm cerrar-nota" (click)="cerrarNota()">
+            <i class="bi bi-x"></i>
+          </button>
+        </h5>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li><strong>Buscar por:</strong> Título de la obra o código asociado a la misma</li>
+          <li><strong>Para buscar:</strong> Escribe el término y presiona Enter</li>
+          <li><strong>Ver imagen completa:</strong> Haz click sobre la imagen para abrirla en tamaño completo en una nueva pestaña</li>
+        </ul>
+      </div>
+    </div>
+  }
+
+  <!-- Cuadro de búsqueda -->
+  <div class="input-group mb-3">
+    <span class="input-group-text"><i class="bi bi-search"></i></span>
+    <input type="text" class="form-control" [(ngModel)]="terminoBusqueda" placeholder="Buscar por título o código..." (keyup.enter)="realizarBusqueda()">
+  </div>
+
+  <!-- Resultados -->
+  @if (resultados.length > 0) {
+    <div>
+      <h3>Resultados ({{ resultados.length }})</h3>
+      <div class="container-fluid" [class.centrado-un-resultado]="resultados.length === 1">
+        @if (resultados.length > 1) {
+          <div class="row">
+            @for (imagen of resultados; track imagen) {
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card mb-3">
+                  <img [src]="imagen.thumbnail_url || imagen.url"
+                    alt="{{ imagen.title }}"
+                    (click)="abrirImagen(imagen.thumbnail_url || imagen.url)"
+                    style="cursor: pointer;" />
+                  <div class="card-header">
+                    <h5 class="card-title">{{ imagen.title }}</h5>
+                    <h6 class="card-subtitle text-muted">Código: {{ imagen.code }}</h6>
+                    @if (imagen.author) {
+                      <h6 class="card-subtitle text-muted">Autor: <strong>{{ imagen.author | titlecase }}</strong></h6>
+                    }
+                    @if (imagen.section) {
+                      <h6 class="card-subtitle text-muted">Sección: <strong>{{ imagen.section }}</strong></h6>
+                    }
+                    @if (imagen.contest?.name) {
+                      <h6 class="card-subtitle text-muted">Concurso: <strong>{{ imagen.contest.name }}</strong></h6>
+                    }
+                    @if (imagen.category?.name) {
+                      <h6 class="card-subtitle text-muted">Categoría: <strong>{{ imagen.category.name }}</strong></h6>
+                    }
+                  </div>
+                  <div class="card-body">
+                    @if (imagen.description) {
+                      <p>{{ imagen.description }}</p>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+        @if (resultados.length === 1) {
+          <div class="row" class="justify-content-center">
+            <div style="max-width: 400px; flex: 1 1 400px;">
+              <div class="card mb-3">
+                <img [src]="resultados[0].thumbnail_url || resultados[0].url"
+                  alt="{{ resultados[0].title }}"
+                  (click)="abrirImagen(resultados[0].thumbnail_url || resultados[0].url)"
+                  style="cursor: pointer;" />
+                <div class="card-header">
+                  <h5 class="card-title">{{ resultados[0].title }}</h5>
+                  <h6 class="card-subtitle text-muted">Código: {{ resultados[0].code }}</h6>
+                  @if (resultados[0].author) {
+                    <h6 class="card-subtitle text-muted">Autor: <strong>{{ resultados[0].author | titlecase }}</strong></h6>
+                  }
+                  @if (resultados[0].section) {
+                    <h6 class="card-subtitle text-muted">Sección: <strong>{{ resultados[0].section }}</strong></h6>
+                  }
+                  @if (resultados[0].contest?.name) {
+                    <h6 class="card-subtitle text-muted">Concurso: <strong>{{ resultados[0].contest.name }}</strong></h6>
+                  }
+                  @if (resultados[0].category?.name) {
+                    <h6 class="card-subtitle text-muted">Categoría: <strong>{{ resultados[0].category.name }}</strong></h6>
+                  }
+                </div>
+                <div class="card-body">
+                  @if (resultados[0].description) {
+                    <p>{{ resultados[0].description }}</p>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Mensaje sin resultados -->
+  @if (busquedaRealizada && resultados.length === 0) {
+    <div class="text-center">
+      <i class="bi bi-search" style="font-size: 2rem;"></i>
+      <p>No se encontraron resultados para "{{ terminoBusqueda }}"</p>
+    </div>
+  }
+
+  <!-- Loading -->
+  @if (cargando) {
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div>
+      <p>Buscando...</p>
+    </div>
+  }
+</div>

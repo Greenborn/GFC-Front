@@ -1,0 +1,18 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+@Component({
+  standalone: true,
+  selector: 'app-btn-post',
+  templateUrl: './btn-post.component.html',
+  styleUrls: ['./btn-post.component.scss'],
+})
+export class BtnPostComponent {
+
+  @Input() disabled: boolean;
+  @Input() posting: boolean;
+  @Input() text: string = "Guardar";
+  @Output() post = new EventEmitter<void>();
+
+  constructor() { }
+
+}

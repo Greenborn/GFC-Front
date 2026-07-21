@@ -1,0 +1,29 @@
+@if (auth.user | async; as u) {
+  <ul class="nav concurso-tabs mb-0">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/concursos" title="Volver a concursos">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['./informacion']" routerLinkActive="active">
+        <i class="bi bi-info-circle me-1"></i> Información
+      </a>
+    </li>
+    @if (rolificador.esDelegado(u) || rolificador.isAdmin(u) || concurso?.judged) {
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['./concursantes']" routerLinkActive="active">
+          <i class="bi bi-people me-1"></i> Concursantes
+        </a>
+      </li>
+    }
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['./fotografias']" routerLinkActive="active">
+        <i class="bi bi-images me-1"></i> Fotografías
+      </a>
+    </li>
+  </ul>
+}
+<div class="container py-3">
+  <router-outlet></router-outlet>
+</div>
