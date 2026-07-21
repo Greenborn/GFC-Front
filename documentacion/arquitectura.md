@@ -122,7 +122,7 @@ Router → AuthGuard → loadComponent() → Componente → Service → API
 ```typescript
 export const environment = {
   production: false,
-  version: '1.19.50',
+  version: '1.19.51',
   apiBaseUrl: 'https://gfc.prod-api.greenborn.com.ar/',
   publicApi: 'https://gfc.api2.greenborn.com.ar/api/',
   loginAction: 'login',

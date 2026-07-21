@@ -99,4 +99,4 @@ Los siguientes archivos contienen referencias a versiones anteriores (Angular 12
 ---
 
 **Última actualización**: Julio 2026  
-**Versión**: 1.19.50
+**Versión**: 1.19.51
