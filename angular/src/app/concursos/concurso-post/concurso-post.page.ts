@@ -213,6 +213,7 @@ get secycat(){
         this.concurso.start_date = fecha.toISOString()
         this.day_selects[0].selected_str = this.concurso.start_date
         this.concurso.organization_type = this.concurso.organization_type ?? 'INTERNO'
+        this.concurso.is_test = this.concurso.is_test ?? false
         
         getCategorias.then(() => {
           this.categoriasSeleccionadas = this.categorias.map(c => ({

@@ -119,6 +119,18 @@
                     </div>
                   }
 
+                  @if (!isPost && isAdmin) {
+                    <div class="col-12">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch"
+                          id="is_test_enabled" formControlName="is_test_enabled">
+                        <label class="form-check-label" for="is_test_enabled">
+                          <i class="bi bi-flask me-1"></i>Usuario de prueba
+                        </label>
+                      </div>
+                    </div>
+                  }
+
                   @if (isPost && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)) {
                     <div class="col-12 col-sm-6 col-lg-4">
                       <label class="form-label">Contraseña</label>

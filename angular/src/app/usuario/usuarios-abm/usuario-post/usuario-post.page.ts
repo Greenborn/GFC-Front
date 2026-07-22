@@ -127,6 +127,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         passwordRepeat: new FormControl('', Validators.required),
         role_id:        new FormControl(null, Validators.required),
         dni:            new FormControl('', Validators.required),
+        is_test_enabled: new FormControl(false),
     };
 
     this.form = this.formBuilder.group( formControls, {
@@ -146,6 +147,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     }
 
     if(this.isLogged()){
+      this.auth.user.then(u => this.userLogged = u)
       dataPromises.push(
         new Promise(resolve => super.fetch<Role[]>(() => this.roleService.getAll()).subscribe(r => {
           this.roles = r
@@ -193,6 +195,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
                 email: this.usuario.email,
                 role_id: this.usuario.role_id,
                 dni: this.usuario.dni,
+                is_test_enabled: this.usuario.is_test_enabled ?? false,
               });
               this.form.markAsPristine();
               // loading.dismiss()
@@ -285,6 +288,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       email: this.form.get('email')?.value,
       role_id: this.form.get('role_id')?.value,
       dni: this.form.get('dni')?.value,
+      is_test_enabled: this.form.get('is_test_enabled')?.value ?? false,
     };
     return userState;
   }

@@ -13,6 +13,7 @@ export interface User {
     role?: Role;
     dni?: string;
     status?: number;
+    is_test_enabled?: boolean;
 }
 export interface UserLogged extends User {
     profile: ProfileExpanded,
