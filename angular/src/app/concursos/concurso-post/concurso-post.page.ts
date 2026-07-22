@@ -23,10 +23,17 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ContestRecordsComponent } from '../concurso-detail/contest-records/contest-records.component';
+import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
+import { ContestJudgeService } from 'src/app/services/contest-judge.service';
+import { ContestJudge } from 'src/app/models/contest_judge.model';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
+import { ProfileService } from 'src/app/services/profile.service';
+import { ProfileExpanded } from 'src/app/models/profile.model';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SharedModule, ContestRecordsComponent],
+  imports: [CommonModule, FormsModule, RouterModule, SharedModule, ContestRecordsComponent, UsuarioImgComponent],
   selector: 'app-concurso-post',
   templateUrl: './concurso-post.page.html',
   styleUrls: ['./concurso-post.page.scss'],
@@ -58,6 +65,12 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
 
   public day_selects = [{days:[], months:[], years:[], day:-1, month: -1, year: -1, hours:[], minutes:[], hour:0, minute:0, selected_str: "" }, {days:[], months:[], years:[], day:-1, month: -1, year: -1, hours:[], minutes:[], hour:0, minute:0, selected_str: "" }]
 
+  public jueces: ContestJudge[] = [];
+  public usuariosDisponibles: ProfileExpanded[] = [];
+  public juezSeleccionadoId: number = -1;
+  public loadingJueces: boolean = false;
+  user: any = null;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     public contestService: ContestService,
@@ -65,11 +78,15 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
     private contestCategoryService: ContestCategoryService,
     private sectionService: SectionService,
     private contestSectionService: ContestSectionService,
+    private contestJudgeService: ContestJudgeService,
+    private profileService: ProfileService,
     private router: Router,
     alertCtrl: AlertService,
     public UIUtilsService: UiUtilsService,
     public responsiveService: ResponsiveService,
     public configService: ConfigService,
+    public auth: AuthService,
+    public rolificador: RolificadorService,
     private sanitizer: DomSanitizer
   ) { 
     super(alertCtrl)
@@ -89,6 +106,7 @@ get secycat(){
 
   async ngOnInit() {
     await this.UIUtilsService.presentLoading();
+    this.auth.user.then(u => this.user = u)
     this.mostrarCategorias = false
     this.mostrarSecciones = false
     this.activatedRoute.paramMap.subscribe(async paramMap => {
@@ -186,12 +204,9 @@ get secycat(){
             }))
             await getSecciones
             this.UIUtilsService.dismissLoading()
-            // this.seccionesSeleccionadas = this.secciones.map(c => ({
-            //   id: c.id,
-            //   seleccionada: this.seccionesInscriptas.find(s1 => s1.section_id == c.id) != undefined
-            // }))
-            // this.loading = false
           })
+          this.loadJueces(c.id)
+          this.loadUsuariosJueces()
         })
       } else {
         let fecha =  new Date()
@@ -212,7 +227,100 @@ get secycat(){
           }))
           this.UIUtilsService.dismissLoading()
         })
+        this.loadUsuariosJueces()
       }
+    })
+  }
+
+  loadJueces(contestId: number) {
+    this.loadingJueces = true
+    this.contestJudgeService.getAll<ContestJudge>(`contest_id=${contestId}&expand=user,user.profile`).subscribe({
+      next: jueces => {
+        this.jueces = jueces
+        this.loadingJueces = false
+      },
+      error: () => {
+        this.jueces = []
+        this.loadingJueces = false
+      }
+    })
+  }
+
+  loadUsuariosJueces() {
+    this.profileService.getAll<ProfileExpanded>('expand=user').subscribe({
+      next: profiles => {
+        this.usuariosDisponibles = profiles || []
+      },
+      error: () => {
+        this.usuariosDisponibles = []
+      }
+    })
+  }
+
+  agregarJuez() {
+    if (this.juezSeleccionadoId == -1) return
+    if (this.jueces.find(j => j.user_id == this.juezSeleccionadoId)) {
+      this.UIUtilsService.mostrarError({ message: 'El juez ya está asignado a este concurso.' })
+      return
+    }
+    const profile = this.usuariosDisponibles.find(p => p.user?.id == this.juezSeleccionadoId)
+    if (!profile) return
+
+    if (this.concurso.id) {
+      this.contestJudgeService.post({
+        contest_id: this.concurso.id,
+        user_id: this.juezSeleccionadoId
+      }, undefined, 'expand=user,user.profile').subscribe({
+        next: juez => {
+          this.jueces.push(juez as any)
+          this.juezSeleccionadoId = -1
+        },
+        error: err => {
+          this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
+        }
+      })
+    } else {
+      this.jueces.push({
+        contest_id: undefined,
+        user_id: this.juezSeleccionadoId,
+        user: {
+          id: profile.user.id,
+          username: profile.user.username,
+          email: profile.user.email,
+          profile_id: profile.id,
+          profile: {
+            id: profile.id,
+            name: profile.name,
+            last_name: profile.last_name,
+            img_url: profile.img_url
+          }
+        }
+      } as ContestJudge)
+      this.juezSeleccionadoId = -1
+    }
+  }
+
+  quitarJuez(id: number) {
+    const juez = this.jueces.find(j => j.id == id)
+    if (!juez) return
+    const idx = this.jueces.findIndex(j => j.id == id)
+    const nombre = juez.user?.username || 'el juez'
+    if (!juez.id && !juez.contest_id) {
+      this.jueces.splice(idx, 1)
+      return
+    }
+    this.UIUtilsService.mostrarAlert({
+      header: 'Confirmar',
+      message: `¿Quitar a ${nombre} como juez del concurso?`
+    }, async () => {
+      this.contestJudgeService.delete(id).subscribe({
+        next: () => {
+          this.jueces.splice(idx, 1)
+        },
+        error: err => {
+          this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
+        }
+      })
     })
   }
 
@@ -376,6 +484,21 @@ get secycat(){
 
           this.seccionesInscriptas.push(...resInscripcionesSecciones.map(cc => this.seccionesInscriptas.find(ci => ci.id == cc.id)))
           // // TODO: eliminar desinscripciones
+
+          const inscripcionesJueces: Promise<any>[] = []
+          const pendientes = this.jueces.filter(j => j.contest_id == undefined || j.id == undefined)
+          for (let j of pendientes) {
+            inscripcionesJueces.push(new Promise((resolve, reject) => {
+              this.contestJudgeService.post({
+                contest_id: contest.id,
+                user_id: j.user_id
+              }).subscribe({
+                next: juez => resolve(juez),
+                error: err => resolve(err)
+              })
+            }))
+          }
+          await Promise.all(inscripcionesJueces)
 
           this.posting = false
           if (resDesinscripcionesCategorias.find(r => r === false) == undefined && resDesinscripcionesSecciones.find(r => r === false) == undefined)

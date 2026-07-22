@@ -85,6 +85,26 @@
           </div>
         </div>
       }
+      @if (jueces.length > 0) {
+        <div class="info-section">
+          <h3 class="info-section-title"><i class="bi bi-person-badge"></i> Jurado</h3>
+          <div class="row dir-grid g-3 mt-1">
+            @for (j of jueces; track j.id) {
+              <div class="col-6 col-md-4 col-lg-3">
+                <div class="dir-card">
+                  <div class="dir-photo">
+                    <app-usuario-img [src]="j.user?.profile?.img_url ? configService.imageUrl(j.user.profile.img_url) : ''"></app-usuario-img>
+                  </div>
+                  <div class="dir-info">
+                    <h3 class="dir-name">{{j.user?.profile?.name || j.user?.username}} {{j.user?.profile?.last_name || ''}}</h3>
+                    <span class="dir-role">Juez</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
       @if (concurso.contestRecords?.length) {
         <div class="info-section">
           <h3 class="info-section-title"><i class="bi bi-camera-video"></i> Grabaciones</h3>

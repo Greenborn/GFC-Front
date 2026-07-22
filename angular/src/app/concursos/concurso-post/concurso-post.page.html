@@ -244,6 +244,60 @@
             </div>
           </div>
 
+          <!-- Jurado -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card mb-3 equal-height-card">
+              <div class="card-header gfc-list-header">
+                <h6 class="mb-0"><i class="bi bi-person-badge me-1"></i>Jurado</h6>
+              </div>
+              <div class="card-body">
+                @if (user) {
+                  @if (rolificador.isAdmin(user)) {
+                    <div class="d-flex gap-2 mb-3">
+                      <select class="form-select form-select-sm" [(ngModel)]="juezSeleccionadoId" [ngModelOptions]="{standalone: true}">
+                        <option value="-1">Seleccionar juez...</option>
+                        @for (p of usuariosDisponibles; track p.id) {
+                          <option [value]="p.user?.id">{{p.name}} {{p.last_name}} @if (p.user?.username) {(@{{p.user.username}})}</option>
+                        }
+                      </select>
+                      <button type="button" class="btn btn-success btn-sm d-flex align-items-center" (click)="agregarJuez()" [disabled]="juezSeleccionadoId == -1">
+                        <i class="bi bi-plus"></i>
+                      </button>
+                    </div>
+                  }
+                  @if (loadingJueces) {
+                    <div class="text-center py-3">
+                      <div class="spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                      </div>
+                    </div>
+                  } @else if (jueces.length > 0) {
+                    <div class="d-flex flex-wrap gap-2">
+                      @for (j of jueces; track j.id) {
+                        <div class="dir-card">
+                          <div class="dir-photo">
+                            <app-usuario-img [src]="j.user?.profile?.img_url ? configService.imageUrl(j.user.profile.img_url) : ''"></app-usuario-img>
+                          </div>
+                          <div class="dir-info">
+                            <h3 class="dir-name">{{j.user?.profile?.name || j.user?.username}} {{j.user?.profile?.last_name || ''}}</h3>
+                            <span class="dir-role">Juez</span>
+                          </div>
+                          @if (rolificador.isAdmin(user)) {
+                            <button type="button" class="btn btn-link btn-sm text-danger p-0 mt-1" (click)="quitarJuez(j.id)" title="Quitar juez">
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          }
+                        </div>
+                      }
+                    </div>
+                  } @else {
+                    <p class="text-muted small mb-0">No hay jueces asignados</p>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+
           <!-- Imagen -->
           <div class="col-12 col-md-6 col-lg-4">
             <div class="card mb-3 equal-height-card">

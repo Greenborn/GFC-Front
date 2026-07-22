@@ -50,29 +50,19 @@
                   <div class="row">
                     @for (m of inscriptos; track m) {
                       <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <div class="card mb-3" class="juez-card">
-                          <div class="card-body">
-                            <div class="row align-items-center">
-                              <div class="col-4">
-                                <app-usuario-img [src]="m.profile.img_url != null ? configService.imageUrl(m.profile.img_url) : ''"></app-usuario-img>
-                              </div>
-                              <div class="col-8 ps-3">
-                                <label class="form-label">
-                                  <b>{{ m.profile.name }} {{ m.profile.last_name }}</b>
-                                  <p><i>&#64;{{ m.profile.user.username }}</i></p>
-                                </label>
-                              </div>
-                            </div>
-                            @if (checkPermissions) {
-                              <div class="row">
-                                <div class="col text-end">
-                                  <button class="btn btn-link" (click)="concursoDetailService.desinscribir.emit(m)" title="Desinscribir">
-                                    <i class="bi bi-trash"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            }
+                        <div class="dir-card">
+                          <div class="dir-photo">
+                            <app-usuario-img [src]="m.profile.img_url != null ? configService.imageUrl(m.profile.img_url) : ''"></app-usuario-img>
                           </div>
+                          <div class="dir-info">
+                            <h3 class="dir-name">{{ m.profile.name }} {{ m.profile.last_name }}</h3>
+                            <span class="dir-role">&#64;{{ m.profile.user.username }}</span>
+                          </div>
+                          @if (checkPermissions) {
+                            <button class="btn btn-link btn-sm text-danger p-0 mt-1" (click)="concursoDetailService.desinscribir.emit(m)" title="Desinscribir">
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          }
                         </div>
                       </div>
                     }

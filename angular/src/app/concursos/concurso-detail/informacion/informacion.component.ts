@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Contest } from 'src/app/models/contest.model';
@@ -23,11 +24,13 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { CompressedPhotosService } from 'src/app/services/compressed-photos.service'
 import { AlertService } from 'src/app/services/ui/alert.service';
+import { ContestJudgeService } from 'src/app/services/contest-judge.service';
+import { ContestJudge } from 'src/app/models/contest_judge.model';
 
 import { ContestResultsService } from 'src/app/services/contest-results.service'
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, UsuarioImgComponent],
   selector: 'app-informacion',
   templateUrl: './informacion.component.html',
   styleUrls: ['./informacion.component.scss'],
@@ -39,6 +42,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   isInscripto: boolean;
   resultadosConcurso: any = [];
   inscriptos: ProfileContestExpanded[] = [];
+  jueces: ContestJudge[] = [];
   subs: Subscription[] = [];
   noImg: boolean = false;
 
@@ -59,6 +63,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     public configService: ConfigService,
     public responsiveService: ResponsiveService,
     private compressedPhotosService: CompressedPhotosService,
+    private contestJudgeService: ContestJudgeService,
     private contestResultsService: ContestResultsService,
   ) {
     super(alertService)
@@ -79,11 +84,14 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       this.activatedRoute.paramMap.subscribe(async paramMap => {
       
         const id = parseInt(paramMap.get('id'))
-  
+
         this.subs.push(this.concursoDetailService.concurso.subscribe({
           next: c => {
             this.concurso = c
             this.noImg = false
+            if (c.id) {
+              this.loadJueces(c.id)
+            }
           } 
         }))
         this.subs.push(this.concursoDetailService.inscriptos.subscribe({
@@ -98,6 +106,13 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
         
       })
     )
+  }
+
+  loadJueces(contestId: number) {
+    this.contestJudgeService.getAll<ContestJudge>(`contest_id=${contestId}&expand=user,user.profile`).subscribe({
+      next: jueces => this.jueces = jueces || [],
+      error: () => this.jueces = []
+    })
   }
 
   descargarFotografias(){
