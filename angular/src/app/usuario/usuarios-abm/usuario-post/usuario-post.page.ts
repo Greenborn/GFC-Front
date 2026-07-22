@@ -39,7 +39,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
 
   @ViewChild('sFotoclub') selectFotoclub: any;
-  @ViewChild('ProfileImageUpload', { read: ElementRef, static:false }) profileImageUpload: ElementRef;
   @ViewChild('sRol') selectRol: any;
   @ViewChild('f') formUsuario: HTMLFormElement;
 
@@ -59,7 +58,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public updatingSelect: boolean = false
   public file: File;
   public img_url: string;
-  public ImageChangeClick:Subject<any> = new Subject();
 
   public contest_type_selected:Boolean = false
 
@@ -116,12 +114,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   async ngOnInit() {
     this.usuario = this.userService.template;
     this.profile = this.profileService.template;
-
-    this.ImageChangeClick.subscribe({  next: ( response: any ) => {
-      if (this.profileImageUpload && this.profileImageUpload.nativeElement) {
-        this.profileImageUpload.nativeElement.click();
-      }
-    }});
 
     let formControls = {
         name:           new FormControl('', Validators.required),
@@ -468,6 +460,26 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     //}
   }
 
+  async openProfileImageModal() {
+    const { ProfileImageModalComponent } = await import('src/app/shared/profile-image-modal/profile-image-modal.component');
+
+    const isMobile = window.innerWidth <= 768;
+    const result = await this.UIUtilsService.mostrarModal(
+      ProfileImageModalComponent,
+      {},
+      isMobile
+    );
+
+    if (!result?.file) return;
+
+    this.file = result.file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.img_url = e.target?.result as string;
+    };
+    reader.readAsDataURL(result.file);
+  }
+
   async changePassword() {
     await this.UIUtilsService.mostrarModal(ChangePasswordComponent, {
       userId: this.usuario?.id ?? this.userLogged?.id,
@@ -506,34 +518,4 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     });
   }
 
-    // https://medium.com/@danielimalmeida/creating-a-file-upload-component-with-angular-and-rxjs-c1781c5bdee
-    // fileUpload(event: FileList) {
-    fileUpload(event: EventTarget) {
-      
-      const file = (event as HTMLInputElement).files.item(0)
-  
-      if (!file) return;
-
-      this.file = file
-  
-      const fileReader = new FileReader();
-      const { type, name } = file;
-      // return new Observable((observer: Observer<IUploadedFile>) => {
-        // this.validateSize(file, observer);
-        fileReader.readAsDataURL(file);
-        fileReader.onload = event => {
-  
-          // if (this.isImage(type)) {
-            const image = new Image();
-            image.onload = (i) => {
-              const imageData = (i.target as HTMLImageElement).src
-              // this.imageData = imageData
-              this.img_url = imageData
-            };
-            image.onerror = () => {
-            };
-            image.src = fileReader.result as string;
-          }
-  
-    }
 }

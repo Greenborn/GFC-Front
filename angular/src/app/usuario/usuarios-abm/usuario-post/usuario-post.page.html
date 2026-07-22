@@ -19,12 +19,11 @@
                 <h5 class="card-title mb-0">Foto de perfil</h5>
               </div>
               <div class="card-body d-flex flex-column align-items-center">
-                <app-usuario-img [src]="img_url" [imageChangeEnabled]="true" [imageChangeClick]="ImageChangeClick"></app-usuario-img>
-                <div class="mt-3 w-100">
-                  <button class="btn btn-warning w-100 btn-sm" type="button" (click)="ProfileImageUpload.click()">
-                    Cambiar imagen
+                <div class="avatar-wrapper">
+                  <app-usuario-img [src]="img_url" style="max-width:96px;display:block"></app-usuario-img>
+                  <button class="camera-btn" (click)="openProfileImageModal()" type="button" aria-label="Cambiar foto de perfil">
+                    <i class="bi bi-camera-fill"></i>
                   </button>
-                  <input #ProfileImageUpload type="file" accept="image/*" style="display:none" (change)="fileUpload($event.target)">
                 </div>
               </div>
             </div>
