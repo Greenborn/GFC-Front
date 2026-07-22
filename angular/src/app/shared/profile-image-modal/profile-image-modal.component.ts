@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -22,6 +22,8 @@ export class ProfileImageModalComponent implements OnDestroy {
   private readonly DESKTOP_BREAKPOINT = 768;
 
   @ViewChild('videoElement') videoElement: ElementRef<HTMLVideoElement>;
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   get isDesktop(): boolean {
     return window.innerWidth > this.DESKTOP_BREAKPOINT;
@@ -55,16 +57,20 @@ export class ProfileImageModalComponent implements OnDestroy {
   async startWebcam() {
     this.stopWebcam();
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }
+      });
       this.webcamStream = stream;
       this.showWebcam = true;
       this.error = null;
 
-      setTimeout(() => {
-        if (this.videoElement?.nativeElement) {
-          this.videoElement.nativeElement.srcObject = stream;
-        }
-      });
+      this.cdr.detectChanges();
+
+      const videoEl = this.videoElement?.nativeElement;
+      if (videoEl) {
+        videoEl.srcObject = stream;
+        videoEl.onloadedmetadata = () => videoEl.play().catch(() => {});
+      }
     } catch (err) {
       this.error = 'No se pudo acceder a la cámara. Verificá los permisos.';
       this.showWebcam = false;
