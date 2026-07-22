@@ -107,6 +107,17 @@ export class AuthService {
   }
 
   async logout() {
+    const bearerToken = this.token;
+    if (bearerToken) {
+      try {
+        await fetch(`${this.config.nodeApiBaseUrl}auth/cerrar_sesion`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${bearerToken}` }
+        });
+      } catch (error) {
+        console.error('Error al cerrar sesión en el backend:', error);
+      }
+    }
     const ssoToken = localStorage.getItem(SSO_TOKEN_KEY);
     if (ssoToken) {
       try {
