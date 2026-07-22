@@ -10,6 +10,12 @@ import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
+import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { ProfileService } from 'src/app/services/profile.service';
+import { ResponsiveService } from 'src/app/services/ui/responsive.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
+import { UserLogged } from 'src/app/models/user.model';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -29,7 +35,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     public rolificador: RolificadorService,
     public configService: ConfigService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private uiUtils: UiUtilsService,
+    private profileService: ProfileService,
+    public responsiveService: ResponsiveService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit() {
@@ -64,6 +74,44 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   set darkMode(l: boolean) {
     this.themeService.darkMode = l;
+  }
+
+  async openProfileImageModal(u: UserLogged) {
+    const { ProfileImageModalComponent } = await import('src/app/shared/profile-image-modal/profile-image-modal.component');
+
+    const isMobile = !this.responsiveService.isDesktop;
+    const result = await this.uiUtils.mostrarModal(
+      ProfileImageModalComponent,
+      {},
+      isMobile
+    );
+
+    if (!result?.file) return;
+
+    const profileId = u.profile?.id;
+    if (!profileId) return;
+
+    try {
+      await firstValueFrom(
+        this.profileService.postFormData({ image_file: result.file }, profileId)
+      );
+
+      this.auth.updateUser();
+      this.configService.bustImageCache();
+
+      this.alertService.show({
+        header: 'Foto actualizada',
+        message: 'Tu foto de perfil se actualizó correctamente.',
+        buttons: [{ text: 'OK', role: 'confirm' }]
+      });
+    } catch (err) {
+      console.error('Error al actualizar foto de perfil', err);
+      this.alertService.show({
+        header: 'Error',
+        message: 'No se pudo actualizar la foto de perfil. Intentalo de nuevo.',
+        buttons: [{ text: 'OK', role: 'confirm' }]
+      });
+    }
   }
 
   toggleMenu() {

@@ -1,0 +1,70 @@
+<div class="gfc-modal-page profile-image-modal">
+  <div class="gfc-modal-header">
+    <div class="row align-items-center px-3 w-100">
+      <div class="col">
+        <h5 class="mb-0 py-1">Cambiar foto de perfil</h5>
+      </div>
+      <div class="col-1 d-none d-md-block">
+        <button class="btn btn-link" (click)="cancel()" type="button" aria-label="Cerrar">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="inner-content">
+    <input id="file-input-camera" type="file" accept="image/*" capture="environment" style="display:none" (change)="onFileSelected($event)">
+    <input id="file-input-gallery" type="file" accept="image/*" style="display:none" (change)="onFileSelected($event)">
+
+    @if (!showWebcam) {
+      <div class="source-buttons">
+        <button class="btn btn-outline-secondary source-btn" (click)="triggerCamera()" type="button">
+          <i class="bi bi-camera"></i>
+          <span>Tomar foto</span>
+        </button>
+        <button class="btn btn-outline-secondary source-btn" (click)="triggerGallery()" type="button">
+          <i class="bi bi-images"></i>
+          <span>Elegir de galería</span>
+        </button>
+      </div>
+    } @else {
+      <div class="webcam-toolbar">
+        <button class="btn btn-outline-secondary btn-sm" (click)="stopWebcam()" type="button">
+          <i class="bi bi-arrow-left"></i> Volver
+        </button>
+      </div>
+    }
+
+    <div class="preview-container">
+      @if (showWebcam) {
+        <div class="webcam-wrapper">
+          <video #videoElement autoplay playsinline muted></video>
+          <button class="btn btn-light capture-btn" (click)="captureWebcamSnapshot()" type="button" aria-label="Capturar foto">
+            <i class="bi bi-camera-fill"></i>
+          </button>
+        </div>
+      } @else if (previewUrl) {
+        <img [src]="previewUrl" alt="Vista previa" class="preview-image">
+      } @else {
+        <div class="preview-placeholder">
+          <i class="bi bi-person-circle"></i>
+          <span>Seleccioná una imagen</span>
+        </div>
+      }
+    </div>
+
+    @if (error) {
+      <div class="alert alert-danger py-2 mb-0" role="alert">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        {{ error }}
+      </div>
+    }
+  </div>
+
+  <div class="gfc-modal-footer">
+    <button class="btn btn-outline-secondary" (click)="cancel()" type="button">Cancelar</button>
+    <button class="btn btn-primary" (click)="confirm()" [disabled]="!selectedFile" type="button">
+      Guardar
+    </button>
+  </div>
+</div>

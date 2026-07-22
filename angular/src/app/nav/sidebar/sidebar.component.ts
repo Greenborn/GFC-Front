@@ -9,6 +9,11 @@ import { RolificadorService } from 'src/app/modules/auth/services/rolificador.se
 import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
 import { ThemeService } from 'src/app/services/ui/theme.service';
 import { FOCUSABLE_SELECTORS } from 'src/app/shared/focus-utils';
+import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { ProfileService } from 'src/app/services/profile.service';
+import { AlertService } from 'src/app/services/ui/alert.service';
+import { UserLogged } from 'src/app/models/user.model';
+import { firstValueFrom } from 'rxjs';
 
 export type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -39,7 +44,10 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
     public config: ConfigService,
     public rolificador: RolificadorService,
     public themeService: ThemeService,
-    private el: ElementRef
+    private el: ElementRef,
+    private uiUtils: UiUtilsService,
+    private profileService: ProfileService,
+    private alertService: AlertService
   ) { }
 
   get darkMode(): boolean {
@@ -146,6 +154,44 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
     } else if (!event.shiftKey && document.activeElement === last) {
       event.preventDefault();
       first.focus();
+    }
+  }
+
+  async openProfileImageModal(u: UserLogged) {
+    const { ProfileImageModalComponent } = await import('src/app/shared/profile-image-modal/profile-image-modal.component');
+
+    const isMobile = window.innerWidth <= 768;
+    const result = await this.uiUtils.mostrarModal(
+      ProfileImageModalComponent,
+      {},
+      isMobile
+    );
+
+    if (!result?.file) return;
+
+    const profileId = u.profile?.id;
+    if (!profileId) return;
+
+    try {
+      await firstValueFrom(
+        this.profileService.postFormData({ image_file: result.file }, profileId)
+      );
+
+      this.auth.updateUser();
+      this.config.bustImageCache();
+
+      this.alertService.show({
+        header: 'Foto actualizada',
+        message: 'Tu foto de perfil se actualizó correctamente.',
+        buttons: [{ text: 'OK', role: 'confirm' }]
+      });
+    } catch (err) {
+      console.error('Error al actualizar foto de perfil', err);
+      this.alertService.show({
+        header: 'Error',
+        message: 'No se pudo actualizar la foto de perfil. Intentalo de nuevo.',
+        buttons: [{ text: 'OK', role: 'confirm' }]
+      });
     }
   }
 

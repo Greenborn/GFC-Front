@@ -7,10 +7,13 @@
   <div class="offcanvas-body p-0">
     @if ((auth.user | async); as u) {
       <div class="user-section p-3 border-bottom text-center">
-        <div class="mb-2">
-          <app-usuario-img [src]="u.profile?.img_url ? config.imageUrl(u.profile.img_url) : ''"></app-usuario-img>
+        <div class="avatar-wrapper">
+          <app-usuario-img [src]="u.profile?.img_url ? config.imageUrl(u.profile.img_url) : ''" style="max-width:64px;display:block"></app-usuario-img>
+          <button class="camera-btn" (click)="openProfileImageModal(u)" type="button" aria-label="Cambiar foto de perfil">
+            <i class="bi bi-camera-fill"></i>
+          </button>
         </div>
-        <div class="fw-semibold">{{ u.username }}</div>
+        <div class="fw-semibold mt-2">{{ u.username }}</div>
         <div class="text-muted small">{{ u.profile?.name }} {{ u.profile?.last_name }}</div>
       </div>
       <ul class="list-group list-group-flush" role="list">
