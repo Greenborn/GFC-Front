@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
+import axios from 'axios';
 import { Contest, ContestExpanded } from '../models/contest.model';
 import { ContestCategory, ContestCategoryExpanded } from '../models/contest_category.model';
 import { ContestSection, ContestSectionExpanded } from '../models/contest_section.model';
@@ -38,5 +39,10 @@ export class ContestService extends ApiService<Contest> {
 
   isActive(c: Contest): boolean {
     return new Date(c.end_date) > new Date()
+  }
+
+  setJudging(id: number): Observable<any> {
+    const url = `${this.getBaseUrl()}${this.getPath()}/${id}/set-judging`;
+    return from(axios.put(url, {}, { headers: this.getHeaders() }).then(r => r.data));
   }
 }

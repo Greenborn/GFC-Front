@@ -401,6 +401,24 @@ get secycat(){
     return '/concursos' + (c.id != null ? `/${c.id}` : '')
   }
 
+  setJudging() {
+    if (!this.concurso.id) return
+    this.UIUtilsService.mostrarAlert({
+      header: 'Confirmar',
+      message: '¿Está seguro de cambiar a modo de juzgamiento? Esta acción no se puede deshacer.'
+    }, async () => {
+      super.fetch<any>(() => this.contestService.setJudging(this.concurso.id)).subscribe({
+        next: async res => {
+          const data = res?.data || res
+          await this.UIUtilsService.mostrarToast(undefined, { message: `Modo juzgamiento activado para "${data.name}"` })
+        },
+        error: async err => {
+          await this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
+        }
+      })
+    })
+  }
+
   async postConcurso(f: NgForm) {
     if (this.day_selects[0].selected_str == '-1'){
       this.posting = false;
