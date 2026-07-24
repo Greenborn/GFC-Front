@@ -11,6 +11,7 @@ export class ModalService {
   private triggerElement: HTMLElement | null = null;
   private keydownHandler: ((e: KeyboardEvent) => void) | null = null;
   private modalDiv: HTMLElement | null = null;
+  private dragCleanup: (() => void) | null = null;
 
   constructor(
     private appRef: ApplicationRef,
@@ -91,11 +92,69 @@ export class ModalService {
       };
       document.addEventListener('keydown', this.keydownHandler);
 
+      this.initDrag(dialog);
       this.modalRef = componentRef;
     });
   }
 
+  private initDrag(dialog: HTMLElement) {
+    const header = dialog.querySelector<HTMLElement>('.gfc-modal-header') || dialog.querySelector<HTMLElement>('.modal-header');
+    if (!header) return;
+
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let totalDx = 0, totalDy = 0;
+
+    const onMouseDown = (e: MouseEvent) => {
+      if (e.button !== 0) return;
+      const target = e.target as HTMLElement;
+      if (target.closest('input, select, textarea, button, a, .btn, .btn-link')) return;
+
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      dialog.style.transition = 'none';
+      header.classList.add('grabbing');
+      document.body.style.userSelect = 'none';
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      dialog.style.transform = `translate(${totalDx + dx}px, ${totalDy + dy}px)`;
+    };
+
+    const onMouseUp = (e: MouseEvent) => {
+      if (!isDragging) return;
+      totalDx += e.clientX - startX;
+      totalDy += e.clientY - startY;
+      isDragging = false;
+      dialog.style.transition = '';
+      header.classList.remove('grabbing');
+      document.body.style.userSelect = '';
+    };
+
+    header.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+
+    this.dragCleanup = () => {
+      header.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      document.body.style.userSelect = '';
+      dialog.style.transition = '';
+    };
+  }
+
   private close(componentRef: ComponentRef<any>) {
+    if (this.dragCleanup) {
+      this.dragCleanup();
+      this.dragCleanup = null;
+    }
+
     const el = componentRef.location.nativeElement;
     const modalDiv = el.closest('.modal');
     const backdrop = document.querySelector('.modal-backdrop.fade.show');

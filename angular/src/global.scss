@@ -33,6 +33,16 @@
   box-shadow: none;
 }
 
+/* Drag handle para modales (solo dentro de un modal) */
+.modal .gfc-modal-header,
+.modal .modal-header {
+  cursor: grab;
+}
+.modal .gfc-modal-header.grabbing,
+.modal .modal-header.grabbing {
+  cursor: grabbing;
+}
+
 /* GFC Modal Page (replaces Ionic's ion-page) */
 .gfc-modal-page {
   position: relative;
@@ -40,16 +50,15 @@
   contain: layout style;
 }
 
-.gfc-modal-page .inner-content {
+.inner-content {
   max-height: 80vh;
-  overflow: auto;
+  overflow: visible;
   padding: 10px;
 }
 
 @media (max-width: 768px) {
-  .gfc-modal-page .inner-content {
+  .inner-content {
     max-height: 95vh;
-    padding: 10px;
   }
 }
 
@@ -78,6 +87,15 @@
      display: flex!important;
      align-content: center!important;
      align-items: center!important;
+}
+
+/* Modal auto-width: se adapta al contenido en desktop */
+@media (min-width: 576px) {
+  .modal.auto-width .modal-dialog {
+    display: inline-flex;
+    max-width: calc(100vw - 3.5rem);
+    min-width: 300px;
+  }
 }
 
 .modal.modal-fullscreen {
@@ -146,7 +164,8 @@ body.dark .app-slide-card {
 }
 
 /* Modal / panel headers */
-.gfc-modal-header {
+.gfc-modal-header,
+.modal-header {
   background: var(--gfc-modal-header-bg) !important;
   border-color: var(--gfc-modal-header-border) !important;
 }
