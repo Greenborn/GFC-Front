@@ -3,25 +3,21 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <div class="row">
-            <div class="col-12">
-              <div class="container-fluid p-0 pb-3">
-                <div class="row align-items-center g-2 mb-3">
-                  <div class="col-auto">
-                    @if (rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)) {
-                      <button class="btn btn-success" [routerLink]="['nuevo']">
-                        <i class="bi bi-plus me-1"></i> Usuario
-                      </button>
-                    }
-                  </div>
-                  <div class="col">
-                    <div class="input-group">
-                      <input class="form-control" [(ngModel)]="searchQuery" placeholder="Buscar usuarios" (keyup.enter)="buscarUsuarios()" (blur)="buscarUsuarios()">
-                      <button class="btn btn-primary" (click)="buscarUsuarios()">
-                        <i class="bi bi-search"></i>
-                      </button>
-                    </div>
-                  </div>
+          <div class="sticky-search">
+            <div class="row align-items-center g-2 mb-3">
+              <div class="col-auto">
+                @if (rolificador.esDelegado(userLogged) || rolificador.isAdmin(userLogged)) {
+                  <button class="btn btn-success" [routerLink]="['nuevo']">
+                    <i class="bi bi-plus me-1"></i> Usuario
+                  </button>
+                }
+              </div>
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control" [(ngModel)]="searchQuery" placeholder="Buscar usuarios" (keyup.enter)="buscarUsuarios()" (blur)="buscarUsuarios()">
+                  <button class="btn btn-primary" (click)="buscarUsuarios()">
+                    <i class="bi bi-search"></i>
+                  </button>
                 </div>
               </div>
             </div>
