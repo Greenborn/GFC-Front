@@ -199,17 +199,6 @@
                   </select>
                 </div>
 
-                <div class="mb-0">
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch"
-                      id="is_test" name="is_test"
-                      [(ngModel)]="concurso.is_test">
-                    <label class="form-check-label small fw-semibold" for="is_test">
-                      <i class="bi bi-flask me-1"></i>Concurso de prueba
-                    </label>
-                  </div>
-                </div>
-
                 <div class="mb-3">
                   <div class="d-flex align-items-center justify-content-between gfc-list-header rounded px-2 py-1 clickeable"
                     (click)="mostrarCategorias = !mostrarCategorias"
@@ -373,6 +362,55 @@
               </div>
             </div>
           </div>
+
+          <!-- Opciones de prueba -->
+          @if (concurso.id) {
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card mb-3 equal-height-card">
+                <div class="card-header gfc-list-header">
+                  <h6 class="mb-0"><i class="bi bi-flask me-1"></i>Opciones de prueba</h6>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" role="switch"
+                        id="is_test" name="is_test"
+                        [(ngModel)]="concurso.is_test">
+                      <label class="form-check-label small fw-semibold" for="is_test">
+                        <i class="bi bi-flask me-1"></i>Concurso de prueba
+                      </label>
+                    </div>
+                  </div>
+
+                  @if (concurso.is_test && concursosOrigen.length > 0) {
+                    <div class="mb-3">
+                      <label class="form-label small fw-semibold">Clonar datos desde</label>
+                      <app-searchable-select
+                        [(ngModel)]="origenSeleccionadoId"
+                        [ngModelOptions]="{standalone: true}"
+                        [items]="concursosOrigen"
+                        itemValueField="id"
+                        itemTextField="name"
+                        placeholder="Seleccionar concurso origen"
+                      ></app-searchable-select>
+                    </div>
+
+                    <button type="button" class="btn btn-outline-primary w-100"
+                      [disabled]="!origenSeleccionadoId || clonando"
+                      (click)="clonarDatos()">
+                      @if (clonando) {
+                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                          <span class="visually-hidden">Clonando...</span>
+                        </div>
+                      } @else {
+                        <i class="bi bi-copy me-1"></i>Importar datos
+                      }
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+          }
 
         </div>
 

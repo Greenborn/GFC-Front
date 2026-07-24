@@ -37,7 +37,7 @@
 .gfc-modal-page {
   position: relative;
   display: block;
-  contain: content;
+  contain: layout style;
 }
 
 .gfc-modal-page .inner-content {
@@ -51,6 +51,11 @@
     max-height: 95vh;
     padding: 10px;
   }
+}
+
+/* Evita que modal-dialog-scrollable recorte elementos absolutos (ej. searchable-select dropdown) */
+.modal-dialog-scrollable .modal-content {
+  overflow: visible;
 }
 
 .sombra {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { AlertService } from 'src/app/services/ui/alert.service';
@@ -15,7 +15,7 @@ import { ContestRecord } from './models/contest.record';
   templateUrl: './contest-records.component.html',
   styleUrls: ['./contest-records.component.scss'],
 })
-export class ContestRecordsComponent extends ApiConsumer implements OnInit {
+export class ContestRecordsComponent extends ApiConsumer implements OnInit, OnChanges {
   @Input() concurso: any;
 
   constructor(
@@ -29,6 +29,12 @@ export class ContestRecordsComponent extends ApiConsumer implements OnInit {
 
   ngOnInit() {
     this.loadContestRecords();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['concurso'] && this.concurso?.id) {
+      this.loadContestRecords();
+    }
   }
 
   loadContestRecords() {

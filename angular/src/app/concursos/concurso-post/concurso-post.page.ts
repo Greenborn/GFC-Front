@@ -71,6 +71,10 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public loadingJueces: boolean = false;
   user: any = null;
 
+  public concursosOrigen: Contest[] = [];
+  public origenSeleccionadoId: number | null = null;
+  public clonando: boolean = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     public contestService: ContestService,
@@ -207,6 +211,7 @@ get secycat(){
           })
           this.loadJueces(c.id)
           this.loadUsuariosJueces()
+          this.loadConcursosOrigen(c.id)
         })
       } else {
         let fecha =  new Date()
@@ -254,6 +259,41 @@ get secycat(){
       },
       error: () => {
         this.usuariosDisponibles = []
+      }
+    })
+  }
+
+  loadConcursosOrigen(excludeId: number) {
+    this.contestService.getAll<Contest>('sort=start_date&order=desc').subscribe({
+      next: contests => {
+        this.concursosOrigen = (contests || []).filter(c => c.id !== excludeId)
+      },
+      error: () => {
+        this.concursosOrigen = []
+      }
+    })
+  }
+
+  async clonarDatos() {
+    if (!this.origenSeleccionadoId || !this.concurso.id) return
+
+    this.clonando = true
+    const origenId = this.origenSeleccionadoId
+    const destinoId = this.concurso.id
+
+    super.fetch<any>(() => this.contestService.cloneData(origenId, destinoId)).subscribe({
+      next: async res => {
+        this.clonando = false
+        await this.UIUtilsService.mostrarToast(undefined, {
+          message: res.message || 'Datos clonados exitosamente',
+          duration: 3000,
+          position: 'bottom',
+          color: 'success'
+        })
+      },
+      error: async err => {
+        this.clonando = false
+        await this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
       }
     })
   }
