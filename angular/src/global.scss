@@ -92,9 +92,11 @@
 /* Modal auto-width: se adapta al contenido en desktop */
 @media (min-width: 576px) {
   .modal.auto-width .modal-dialog {
-    display: inline-flex;
     max-width: calc(100vw - 3.5rem);
     min-width: 300px;
+  }
+  .modal.auto-width .modal-dialog .modal-content {
+    width: auto;
   }
 }
 

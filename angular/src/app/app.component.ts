@@ -46,6 +46,26 @@ export class AppComponent implements OnInit {
       }
       originalConsoleError(...args);
     };
+
+    // Capturar errores JS fuera de Angular zone (event handlers, setTimeout, third-party)
+    window.onerror = (message, source, lineno, colno, error) => {
+      this.consoleLogService.sendLog('error', String(message), {
+        accion: 'window.onerror',
+        source, lineno, colno,
+        stack: error?.stack || null,
+        usuario_id: localStorage.getItem('usuario_id') || undefined
+      });
+    };
+
+    // Capturar promesas rechazadas sin catch
+    window.addEventListener('unhandledrejection', (event) => {
+      const reason = event.reason;
+      this.consoleLogService.sendLog('error', reason?.message || String(reason), {
+        accion: 'unhandledrejection',
+        stack: reason?.stack || null,
+        usuario_id: localStorage.getItem('usuario_id') || undefined
+      });
+    });
   }
 
   toggleSidebar() {
