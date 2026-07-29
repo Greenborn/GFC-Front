@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -26,50 +26,30 @@ import { LoadingService } from 'src/app/services/ui/loading.service';
 import axios from 'axios';
 import { SharedModule } from 'src/app/shared/shared.module';
 
+import { TableEditorComponent } from 'src/app/components/table-editor/table-editor.component';
+import { ColumnDef, BtnConfig } from 'src/app/components/table-editor/table-editor.types';
+
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SharedModule],
+  imports: [CommonModule, FormsModule, RouterModule, SharedModule, TableEditorComponent],
   selector: 'app-usuarios-abm',
   templateUrl: './usuarios-abm.page.html',
   styleUrls: ['./usuarios-abm.page.scss'],
 })
 export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
 
+  @ViewChild('tableEditor') tableEditor!: TableEditorComponent;
+
   user: User = undefined;
   miembros: ProfileExpanded[] = [];
-  miembrosOrig: ProfileExpanded[] = [];
   roles: Role[] = [];
   fotoclubs: Fotoclub[] = [];
-  comisiones: String[] = [];
 
-  searchParams: SearchBarComponentParams;
+  loading: boolean = false;
+  selectedRow: any = null;
 
-  public getUserId(e:any){
-    if (e == null){ return ''; }
-    return e.id;
-  }
-
-  public atributosBusqueda: SearchBarComponentAtributo[] = [
-    {
-      valor: 'name',
-      valorMostrado: 'Nombre y apellido',
-      // callback: (c: ContestResultExpanded, query: string) => c.image.title.toLowerCase().includes(query.toLowerCase())
-      callback: (c: ProfileExpanded, query: string) => `${c.name} ${c.last_name}`.match(new RegExp(`${query}`, 'i'))
-    },
-    {
-      valor: 'username',
-      valorMostrado: 'Username',
-      // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase())
-      callback: (c: ProfileExpanded, query: string) => c.user.username.match(new RegExp(`^${query}`, 'i'))
-    }
-  ];
-
-  public funcionesOrdenamiento: Function[] = [];
-  public filtrado: any[] = [];
-
-  public loading: boolean = false;
-  public searchQuery: string = '';
-  private popover: any = undefined;
+  tableColumns: ColumnDef[] = [];
+  userLogged: UserLogged | null = null;
 
   constructor(
     private fotoclubService: FotoclubService,
@@ -85,81 +65,6 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     public UIUtilsService: UiUtilsService
   ) {
     super(alertCtrl)
-    this.funcionesOrdenamiento['usuario'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
-      const n1 = e1.last_name
-      const n2 = e2.last_name
-
-      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
-        (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
-    }
-    this.funcionesOrdenamiento['executive_rol'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
-      const n1 = e1.executive_rol == null ? '' : e1.executive_rol
-      const n2 = e2.executive_rol == null ? '' : e2.executive_rol
-      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
-        (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
-    }
-    this.funcionesOrdenamiento['fotoclub'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
-      const n1 = this.getFotoclubName(e1.fotoclub_id)
-      const n2 = this.getFotoclubName(e2.fotoclub_id)
-
-      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
-        (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
-    }
-    this.funcionesOrdenamiento['rol'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
-      const n1 = this.getRoleType(e1.user.role_id)
-      const n2 = this.getRoleType(e2.user.role_id)
-
-      return creciente ? (n1 < n2 ? -1 : (n1 == n2 ? 0 : 1)) :
-        (n1 > n2 ? -1 : (n1 == n2 ? 0 : 1))
-    }
-    this.funcionesOrdenamiento['estado'] = (e1: ProfileExpanded, e2: ProfileExpanded, creciente: boolean) => {
-      const s1 = e1.user && typeof e1.user.status === 'number' ? e1.user.status : 1
-      const s2 = e2.user && typeof e2.user.status === 'number' ? e2.user.status : 1
-      return creciente ? (s1 < s2 ? -1 : (s1 == s2 ? 0 : 1)) :
-        (s1 > s2 ? -1 : (s1 == s2 ? 0 : 1))
-    }
-
-    this.filtrado['fotoclub'] = {
-      options: {
-        valueProp: 'id',
-        titleProp: 'name',
-        queryParam: 'asociacion_id'
-      },
-      filterCallback: (p: ProfileExpanded, atributoValue: string) => {
-        return p.fotoclub_id == parseInt(atributoValue)
-      }
-    }
-    this.filtrado['rol'] = {
-      options: {
-        valueProp: 'id',
-        titleProp: 'type',
-        queryParam: 'rol_id'
-      },
-      filterCallback: (p: ProfileExpanded, atributoValue: string) => {
-        return p.user.role_id == parseInt(atributoValue)
-      }
-    }
-
-    this.auth.user.then(u => {
-      if (this.rolificador.isAdmin(u)) {
-        this.atributosBusqueda.push({
-          valor: 'fotoclub_id',
-          valorMostrado: 'Fotoclub / Agrupación',
-          // callback: (c: ContestResultExpanded, query: string) => c.image.code.toLowerCase().includes(query.toLowerCase())
-          callback: (c: ProfileExpanded, query: string) => this.getFotoclubName(c.fotoclub_id).match(new RegExp(`^${query}`, 'i'))
-        })
-      }
-    })
-
-  }
-
-  getTitulo(u: UserLogged) {
-    const nombreUsuarios = this.rolificador.getNombreUsuarios(u.role_id)
-    if (!this.rolificador.isAdmin(u)) {
-      if (this.fotoclubs.length > 0) {
-        return `${nombreUsuarios} del fotoclub ${this.fotoclubs.find(f => f.id == u.profile.fotoclub_id).name}`
-      } else return ''
-    } else return nombreUsuarios
   }
 
   getFotoclubName(fotoclub_id: number) {
@@ -168,33 +73,147 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     if (fc != undefined) name = fc.name
     return name
   }
+
   getRoleType(id: number) {
     const a = this.roles.find(e => e.id == id)
     return a != undefined ? a.type : ''
   }
-  private sanitizeSearchQuery(query: string): string {
-    if (query == undefined || query == null) {
-      return '';
+
+  private buildColumns(): ColumnDef[] {
+    const isAdmin = this.userLogged && this.rolificador.isAdmin(this.userLogged)
+    const cols: ColumnDef[] = [
+      {
+        field: '_nombre',
+        headerName: this.userLogged ? this.rolificador.getNombreUsuarios(this.userLogged.role_id) : 'Usuario',
+        sortable: true,
+        formatter: (row: ProfileExpanded) => `${row.name} ${row.last_name}`,
+      },
+    ]
+
+    if (isAdmin) {
+      cols.push({
+        field: 'executive_rol',
+        headerName: 'Comisión directiva',
+        sortable: true,
+        css: 'd-none d-sm-table-cell',
+      })
+      cols.push({
+        field: '_rol',
+        headerName: 'Rol',
+        sortable: true,
+        css: 'd-none d-sm-table-cell',
+      })
+      cols.push({
+        field: '_fotoclub',
+        headerName: 'Fotoclub',
+        sortable: true,
+        css: 'd-none d-sm-table-cell',
+      })
+      cols.push({
+        field: '_estado',
+        headerName: 'Estado',
+        sortable: true,
+        css: 'd-none d-sm-table-cell',
+      })
     }
-    let cleaned = query.toString().trim().substring(0, 100);
-    cleaned = cleaned.replace(/<|>|"|'|;|\\|\||%|`|\u0000/g, '');
-    cleaned = cleaned.replace(/--|\/\*|\*\//g, '');
-    return cleaned;
+
+    return cols
   }
 
-  async buscarUsuarios() {
-    const term = this.sanitizeSearchQuery(this.searchQuery);
-    await this.loadMiembros(term);
+  private enrichRows(rows: ProfileExpanded[]): any[] {
+    return rows.map(r => ({
+      ...r,
+      _nombre: `${r.name} ${r.last_name}`,
+      _rol: r.user ? this.getRoleType(r.user.role_id) : '',
+      _fotoclub: r.fotoclub_id != null ? this.getFotoclubName(r.fotoclub_id) : 'Ninguno',
+      _estado: r.user ? (r.user.status == 1 ? 'Habilitado' : 'Deshabilitado') : 'Desconocido',
+      _estadoClase: r.user?.status == 1 ? 'bg-success' : 'bg-danger',
+      _username: r.user?.username || '',
+    }))
   }
 
-  private async loadMiembros(searchTerm: string = '') {
-    this.auth.user.then(u => {
-      this.user = u;
-      super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u, searchTerm)).subscribe(m => {
-        this.miembros = m;
-        this.miembrosOrig = [...m];
-      });
-    });
+  onRowSelected(row: any): void {
+    this.selectedRow = row
+  }
+
+  getCrearBtn(): BtnConfig {
+    return new BtnConfig({
+      key: 'crear',
+      icon: 'bi bi-plus-lg',
+      severity: 'btn-success',
+      label: 'Usuario',
+      onClick: () => this.router.navigate(['/usuarios', 'nuevo']),
+    })
+  }
+
+  getEditBtn(forToolbar: boolean = false): BtnConfig {
+    return new BtnConfig({
+      key: 'edit',
+      icon: 'bi bi-pencil',
+      severity: 'btn-warning',
+      label: 'Editar',
+      isDisabled: () => forToolbar && !this.selectedRow,
+      onClick: (row: any) => {
+        const r = row || this.selectedRow
+        const uid = r?.user?.id ?? r?.id
+        if (uid) this.router.navigate(['/usuarios', 'editar', uid])
+      },
+    })
+  }
+
+  getToggleStatusBtn(forToolbar: boolean = false): BtnConfig {
+    return new BtnConfig({
+      key: 'toggle',
+      icon: 'bi bi-toggle-on',
+      severity: 'btn-danger',
+      getLabel: () => {
+        const r = this.selectedRow
+        if (!r) return ''
+        const st = r.user?.status ?? 1
+        return st === 0 ? 'Habilitar' : 'Deshabilitar'
+      },
+      isDisabled: () => forToolbar && !this.selectedRow,
+      onClick: (row: any) => {
+        const r = row || this.selectedRow
+        if (r) this.toggleUsuarioStatus(r)
+      },
+    })
+  }
+
+  getTableConfig() {
+    const isDelegadoOrAdmin = this.userLogged && (this.rolificador.esDelegado(this.userLogged) || this.rolificador.isAdmin(this.userLogged))
+    return {
+      lazy: false,
+      infiniteScroll: false,
+      selectionMode: 'single' as 'single' | 'multiple' | null,
+      showFilterRow: false,
+      hideCsvExport: true,
+      hideRefresh: true,
+      scrollHeight: 'calc(100vh - 200px)',
+      elementName: { singular: 'Usuario', gender: 'M' },
+      valueFormatters: {
+        _estado: (row: any) => {
+          const status = row.user?.status ?? 1
+          const cls = status == 1 ? 'bg-success' : 'bg-danger'
+          const label = status == 1 ? 'Habilitado' : 'Deshabilitado'
+          return `<span class="badge ${cls}">${label}</span>`
+        },
+        _nombre: (row: any) => {
+          const img = row.img_url ? this.configService.imageUrl(row.img_url) : ''
+          const name = `${row.name} ${row.last_name}`
+          const username = row._username ? `<small class="text-muted d-block"><i>@${row._username}</i></small>` : ''
+          const imgHtml = img ? `<img src="${img}" class="rounded-circle me-1" width="32" height="32">` : ''
+          return `${imgHtml}<span class="align-middle">${name}</span>${username}`
+        },
+        _rol: (row: any) => row._rol || '-',
+        _fotoclub: (row: any) => row._fotoclub || 'Ninguno',
+        executive_rol: (row: any) => row.executive_rol || 'No',
+      },
+      buttons: {
+        toolbar: [this.getCrearBtn(), this.getEditBtn(true), this.getToggleStatusBtn(true)],
+        rowActions: isDelegadoOrAdmin ? [this.getEditBtn(), this.getToggleStatusBtn()] : [],
+      },
+    }
   }
 
   async toggleUsuarioStatus(p: ProfileExpanded) {
@@ -206,14 +225,14 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     const currentStatus = typeof p.user.status === 'number' ? p.user.status : 1;
     const newStatus = currentStatus === 1 ? 0 : 1;
     const confirmHeader = newStatus === 0 ? 'Confirmar deshabilitación' : 'Confirmar habilitación';
-    const confirmMessage = newStatus === 0 
+    const confirmMessage = newStatus === 0
       ? 'Se procederá a deshabilitar al usuario. No se elimina para preservar la vinculación con su contenido. Al deshabilitar se invalida el access_token y no podrá acceder al sistema.'
       : 'Se procederá a habilitar al usuario. Podrá volver a acceder al sistema.';
 
     await this.UIUtilsService.mostrarAlert({
       header: confirmHeader,
       message: confirmMessage
-      }, 
+      },
       async () => {
         try {
           const url = `${this.configService.nodeApiBaseUrl}disable_user`;
@@ -224,6 +243,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
           p.user.status = newStatus;
           const idx = this.miembros.findIndex(m => m.id == p.id);
           if (idx >= 0 && this.miembros[idx].user) this.miembros[idx].user.status = newStatus;
+          this.refreshTable();
         } catch (err: any) {
           const msg = err?.error?.message || 'Error al deshabilitar usuario';
           await this.UIUtilsService.mostrarError({ message: msg });
@@ -232,27 +252,15 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     )
   }
 
-  async mostrarAcciones(ev: any, p: ProfileExpanded) {
-    await this.UIUtilsService.mostrarModal(MenuAccionesComponent, {
-      acciones: [
-        {
-          accion: (params: string[]) => this.router.navigate(params),
-          params: ['/usuarios', 'editar', p.user.id],
-          icon: 'create',
-          label: 'Editar'
-        },
-        {
-          accion: (params: number[]) => this.toggleUsuarioStatus(p),
-          params: [],
-          icon: (p.user && p.user.status === 0) ? 'checkmark-circle' : 'remove-circle',
-          label: (p.user && p.user.status === 0) ? 'Habilitar' : 'Deshabilitar'
-        }
-      ]
-    });
+  private refreshTable(): void {
+    if (this.tableEditor) {
+      const enriched = this.enrichRows(this.miembros)
+      this.tableEditor.loadExternalData(enriched, this.tableColumns)
+    }
   }
 
   async ngOnInit() {
-    super.fetch<Role[]>( () => this.roleService.getAll()).subscribe(r => this.roles = r)
+    super.fetch<Role[]>(() => this.roleService.getAll()).subscribe(r => this.roles = r)
     super.fetch<Fotoclub[]>(() => this.fotoclubService.getAll()).subscribe(r => {
       this.fotoclubs = r
       this.cargarMiembros()
@@ -263,9 +271,16 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     this.auth.user.then(u => {
       if (!u) return
       this.user = u
-      super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u, this.sanitizeSearchQuery(this.searchQuery))).subscribe(m => {
+      this.userLogged = u
+      this.tableColumns = this.buildColumns()
+      super.fetch<ProfileExpanded[]>(() => this.rolificador.getMiembros(u)).subscribe(m => {
         this.miembros = m
-        this.miembrosOrig = [...m]
+        setTimeout(() => {
+          if (this.tableEditor) {
+            const enriched = this.enrichRows(m)
+            this.tableEditor.loadExternalData(enriched, this.tableColumns)
+          }
+        })
       })
     })
   }

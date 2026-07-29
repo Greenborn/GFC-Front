@@ -1,0 +1,265 @@
+<div class="te-wrapper">
+  <!-- Toolbar -->
+  <div *ngIf="!config?.hideToolbar" class="te-toolbar">
+    <div class="te-toolbar-start">
+      <ng-container *ngFor="let btn of toolbarButtons(); trackBy: trackByBtn">
+        <button *ngIf="btn.isVisible()"
+          [class]="'btn btn-sm ' + btn.severity + ' ' + btn.class"
+          [disabled]="btn.isDisabled()"
+          (click)="btn.onClick()"
+          [title]="btn.getLabel()">
+          <i *ngIf="btn.icon" [class]="btn.icon + ' me-1'"></i>{{ btn.getLabel() }}
+        </button>
+      </ng-container>
+    </div>
+    <div class="te-toolbar-end">
+      <!-- Dropdown visibilidad de columnas -->
+      <div class="dropdown d-inline-block me-2">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" title="Columnas">
+          <i class="bi bi-layout-three-columns me-1"></i>Columnas
+        </button>
+        <div class="dropdown-menu p-2" style="min-width:220px">
+          <div *ngFor="let col of availableColumns(); trackBy: trackByCol" class="te-cols-item">
+            <label class="d-flex align-items-center gap-2 px-1 py-1" style="cursor:pointer;white-space:nowrap">
+              <input type="checkbox"
+                [checked]="selectedColumns().includes(col)"
+                (change)="toggleColumnVisibility(col, $event)"
+                class="form-check-input m-0"
+                [id]="'te-cols-'+col.field" />
+              <span>{{ col.headerName }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <!-- Búsqueda global -->
+      <div class="input-group input-group-sm" style="width:200px">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control"
+          [ngModel]="globalFilterValue()"
+          (ngModelChange)="globalFilterValue.set($event); onGlobalFilterDebounced()"
+          placeholder="Buscar..." />
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll wrap -->
+  <div class="te-scroll-wrap"
+    [style]="scrollHeight() ? { height: scrollHeight(), minHeight: scrollHeight() } : {}"
+    #scrollWrapRef>
+    <!-- Loading overlay -->
+    <div *ngIf="loading()" class="te-loading-overlay">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+
+    <table class="te-table" [class.te-striped]="striped()">
+      <colgroup>
+        <col *ngIf="selectionMode() !== null" [style]="{ width: selectionColWidth() }" />
+        <col *ngIf="rowActionButtons().length" [style]="{ width: actionColWidth() }" />
+        <col *ngFor="let col of visibleColumns(); trackBy: trackByCol"
+          [style]="{ width: columnWidths()[col.field] || '15rem' }"
+          [attr.data-field]="col.field" />
+        <col class="te-col-filler" />
+      </colgroup>
+
+      <thead>
+        <!-- Grupos de columnas -->
+        <tr *ngIf="hasColumnGroups()" class="te-header-group-row">
+          <th *ngIf="selectionMode() !== null" class="te-th te-th-sel" [attr.rowspan]="2">
+            <input *ngIf="selectionMode() === 'multiple'" type="checkbox"
+              [checked]="isAllSelected()"
+              (change)="toggleSelectAll()" />
+          </th>
+          <th *ngIf="rowActionButtons().length" class="te-th te-th-acts" [attr.rowspan]="2">Acciones</th>
+          <ng-container *ngFor="let hcol of columnGroupHeaders(); trackBy: trackByHCol">
+            <th *ngIf="hcol._type === 'group'" [attr.colspan]="hcol._span" class="te-th te-th-group">
+              <span class="te-th-group-label">{{ hcol.headerName }}</span>
+            </th>
+            <th *ngIf="hcol._type !== 'group'" [attr.rowspan]="2"
+              [attr.data-field]="hcol._col.field"
+              [class]="'te-th ' + (hcol._col.css || '')">
+              <div class="te-th-content">
+                <span class="te-th-label" (click)="onSortClick(hcol._col.field)">
+                  {{ hcol._col.headerName }}
+                  <span *ngIf="hcol._col.sortable !== false" class="te-sort-icon-std">
+                    {{ sortField() === hcol._col.field ? (sortOrder() === 'asc' ? '▲' : '▼') : '⇅' }}
+                  </span>
+                </span>
+              </div>
+              <div class="te-resize-handle"
+                (pointerdown)="onResizeStart($event, hcol._col.field); $event.stopPropagation()"
+                (dblclick)="onResizeDblClick($event, hcol._col.field); $event.stopPropagation()"
+                (click)="$event.stopPropagation()"></div>
+            </th>
+          </ng-container>
+          <th class="te-th te-th-filler" [attr.rowspan]="2"></th>
+        </tr>
+        <tr *ngIf="hasColumnGroups()" class="te-header-row te-has-groups">
+          <ng-container *ngFor="let hcol of columnGroupHeaders(); trackBy: trackByHCol">
+            <ng-container *ngIf="hcol._type === 'group'">
+              <th *ngFor="let col of hcol._cols; trackBy: trackByCol"
+                [attr.data-field]="col.field"
+                [class]="'te-th ' + (col.css || '')">
+                <div class="te-th-content">
+                  <span class="te-th-label" (click)="onSortClick(col.field)">
+                    {{ col.headerName }}
+                    <span *ngIf="col.sortable !== false" class="te-sort-icon-std">
+                      {{ sortField() === col.field ? (sortOrder() === 'asc' ? '▲' : '▼') : '⇅' }}
+                    </span>
+                  </span>
+                </div>
+                <div class="te-resize-handle"
+                  (pointerdown)="onResizeStart($event, col.field); $event.stopPropagation()"
+                  (dblclick)="onResizeDblClick($event, col.field); $event.stopPropagation()"
+                  (click)="$event.stopPropagation()"></div>
+              </th>
+            </ng-container>
+          </ng-container>
+        </tr>
+
+        <!-- Fila header principal (sin grupos) -->
+        <tr *ngIf="!hasColumnGroups()" class="te-header-row">
+          <th *ngIf="selectionMode() !== null" class="te-th te-th-sel">
+            <input *ngIf="selectionMode() === 'multiple'" type="checkbox"
+              [checked]="isAllSelected()"
+              (change)="toggleSelectAll()" />
+          </th>
+          <th *ngIf="rowActionButtons().length" class="te-th te-th-acts">Acciones</th>
+          <th *ngFor="let col of visibleColumns(); trackBy: trackByCol"
+            [attr.data-field]="col.field"
+            [class]="'te-th ' + (col.css || '')"
+            [class.te-th-dragover-left]="dragOverField() === col.field && dropSide() === 'left'"
+            [class.te-th-dragover-right]="dragOverField() === col.field && dropSide() === 'right'"
+            [class.te-th-dragging]="dragField() === col.field"
+            [draggable]="reorderableColumns()"
+            (dragstart)="onDragStart($event, col.field)"
+            (dragenter)="onDragEnter($event, col.field)"
+            (dragover)="onDragOver($event, col.field)"
+            (dragleave)="onDragLeave($event, col.field)"
+            (drop)="onDrop($event, col.field)"
+            (dragend)="onDragEnd()">
+            <div class="te-th-content">
+              <span *ngIf="reorderableColumns()" class="te-th-grip">⠿</span>
+              <span class="te-th-label" (click)="onSortClick(col.field)">
+                {{ col.headerName }}
+                <span *ngIf="col.sortable !== false" class="te-sort-icon-std">
+                  {{ sortField() === col.field ? (sortOrder() === 'asc' ? '▲' : '▼') : '⇅' }}
+                </span>
+              </span>
+            </div>
+            <div class="te-resize-handle"
+              [class.te-resizing-active]="resizingField() === col.field"
+              draggable="false"
+              (pointerdown)="onResizeStart($event, col.field); $event.stopPropagation()"
+              (dblclick)="onResizeDblClick($event, col.field); $event.stopPropagation()"
+              (click)="$event.stopPropagation()"></div>
+            <div *ngIf="dragOverField() === col.field && dropSide() === 'left'" class="te-drop-indicator te-drop-left"></div>
+            <div *ngIf="dragOverField() === col.field && dropSide() === 'right'" class="te-drop-indicator te-drop-right"></div>
+          </th>
+          <th class="te-th te-th-filler"></th>
+        </tr>
+
+        <!-- Fila de filtros por columna -->
+        <tr *ngIf="showFilterRow()" class="te-filter-row">
+          <td *ngIf="selectionMode() !== null" class="te-td"></td>
+          <td *ngIf="rowActionButtons().length" class="te-td"></td>
+          <td *ngFor="let col of visibleColumns(); trackBy: trackByCol" class="te-td">
+            <input [ngModel]="columnFilters()[col.field]"
+              (ngModelChange)="onColumnFilterChange(col.field, $event)"
+              type="text" class="te-filter-input" placeholder="" />
+            <div class="te-resize-handle" draggable="false"
+              (pointerdown)="onResizeStart($event, col.field); $event.stopPropagation()"
+              (dblclick)="onResizeDblClick($event, col.field); $event.stopPropagation()"
+              (click)="$event.stopPropagation()"></div>
+          </td>
+          <td class="te-td te-td-filler"></td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let row of displayRows(); let rIdx = index; trackBy: trackByRow"
+          [class]="'te-tr ' + (row.__css_class || '')"
+          [class.te-tr-selected]="isSelected(row)"
+          [class.te-tr-highlight]="selectedRow() === row"
+          [style]="row.__style"
+          (click)="onRowClick(row, $event)"
+          (dblclick)="onRowDblClick(row)">
+          <td *ngIf="selectionMode() !== null" class="te-td te-td-sel" (click)="$event.stopPropagation()">
+            <input *ngIf="selectionMode() === 'multiple'" type="checkbox"
+              [checked]="isSelected(row)"
+              (change)="toggleRowSelection(row)" />
+            <input *ngIf="selectionMode() !== 'multiple'" type="radio"
+              [checked]="selectedRow() === row"
+              (change)="selectSingle(row)" />
+          </td>
+          <td *ngIf="rowActionButtons().length" class="te-td te-td-acts">
+            <div class="te-actions-wrap">
+              <ng-container *ngFor="let btn of rowActionButtons(); trackBy: trackByBtn">
+                <button *ngIf="btn.isVisible()"
+                  [class]="'btn btn-sm ' + btn.severity + ' ' + btn.class"
+                  [disabled]="btn.isDisabled()"
+                  (click)="btn.onClick(row); $event.stopPropagation()"
+                  [title]="btn.getLabel()">
+                  <i *ngIf="btn.icon" [class]="btn.icon"></i> {{ btn.getLabel() }}
+                </button>
+              </ng-container>
+            </div>
+          </td>
+          <td *ngFor="let col of visibleColumns(); trackBy: trackByCol"
+            [class]="'te-td ' + (col.css || '')"
+            [class.te-td-inline-edit]="!!getInlineEditCfg(col)"
+            [style]="cellStyle(row, col) || null">
+            <ng-container *ngIf="isEditingCell(row, col)">
+              <input [ngModel]="inlineEditValue()"
+                (ngModelChange)="inlineEditValue.set($event)"
+                type="text" class="te-editing-input"
+                (blur)="confirmInlineEdit(row, col)"
+                (keydown.enter)="confirmInlineEdit(row, col)"
+                (keydown.escape)="cancelInlineEdit()"
+                #inlineEditRef />
+            </ng-container>
+            <div *ngIf="!isEditingCell(row, col)" class="te-cell-wrap">
+              <span (dblclick)="startInlineEdit($event, row, col)" [innerHTML]="formatCell(row, col)"></span>
+              <button *ngIf="getInlineEditCfg(col)" class="te-inline-edit-btn"
+                (click)="startInlineEdit($event, row, col); $event.stopPropagation()"
+                title="Editar inline">
+                <i class="bi bi-pencil"></i>
+              </button>
+            </div>
+            <div class="te-resize-handle" draggable="false"
+              (pointerdown)="onResizeStart($event, col.field); $event.stopPropagation()"
+              (dblclick)="onResizeDblClick($event, col.field); $event.stopPropagation()"
+              (click)="$event.stopPropagation()"></div>
+          </td>
+          <td class="te-td te-td-filler"></td>
+        </tr>
+        <tr *ngIf="!displayRows().length">
+          <td [attr.colspan]="totalColspan()" class="te-td te-empty">Sin registros</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Sentinel para infinite scroll -->
+    <div *ngIf="infiniteScroll()" #sentinelRef class="te-sentinel">
+      <span *ngIf="isLoadingMore()" class="te-loading-spinner"></span>
+    </div>
+  </div>
+
+  <!-- Paginador -->
+  <div *ngIf="!infiniteScroll() && showPaginator()" class="te-paginator">
+    <span class="te-page-info">Mostrando {{ pageStart() }} a {{ pageEnd() }} de {{ totalRows() }}</span>
+    <div class="te-page-controls">
+      <button class="te-page-btn" [disabled]="page() <= 1" (click)="goToPage(1)">««</button>
+      <button class="te-page-btn" [disabled]="page() <= 1" (click)="goToPage(page() - 1)">«</button>
+      <span class="te-page-current">{{ page() }} / {{ totalPages() }}</span>
+      <button class="te-page-btn" [disabled]="page() >= totalPages()" (click)="goToPage(page() + 1)">»</button>
+      <button class="te-page-btn" [disabled]="page() >= totalPages()" (click)="goToPage(totalPages())">»»</button>
+    </div>
+    <select [ngModel]="pageSize()"
+      (ngModelChange)="pageSize.set($event); onPageSizeChange()"
+      class="te-page-size form-select form-select-sm">
+      <option *ngFor="let s of pageSizeOptions(); trackBy: trackByIndex" [value]="s">{{ s }}</option>
+    </select>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+.te-wrapper { display: grid; grid-template-rows: auto 1fr auto; height: 100%; font-size: 0.875rem; }
+
+.te-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; background: #fff; border: 1px solid #dee2e6; border-radius: 0.375rem 0.375rem 0 0; padding: 0.5rem 1rem; flex-wrap: wrap; }
+:host-context(.dark) .te-toolbar { background: #2b3035; border-color: #444; }
+.te-toolbar-start { display: flex; align-items: center; gap: 0.25rem; flex-wrap: wrap; }
+.te-toolbar-end { display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
+
+.te-scroll-wrap { position: relative; overflow: auto; flex: 1; border: 1px solid #dee2e6; border-top: 0; }
+:host-context(.dark) .te-scroll-wrap { border-color: #444; }
+
+.te-loading-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; z-index: 5; }
+:host-context(.dark) .te-loading-overlay { background: rgba(0,0,0,0.5); }
+
+.te-table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 100%; }
+.te-table.te-striped tbody tr:nth-child(even) { background: #f8f9fa; }
+:host-context(.dark) .te-table.te-striped tbody tr:nth-child(even) { background: #2a2d31; }
+
+/* Headers */
+.te-th { position: sticky; top: 0; background: #e9ecef; font-weight: 600; padding: 0.5rem 0.5rem; text-align: left; border-bottom: 2px solid #dee2e6; white-space: nowrap; user-select: none; z-index: 2; }
+:host-context(.dark) .te-th { background: #343a40; border-color: #444; color: #e9ecef; }
+.te-th-group { text-align: center; background: #dee2e6; }
+:host-context(.dark) .te-th-group { background: #3a3f45; }
+.te-th-sel, .te-th-acts { text-align: center; }
+.te-th-content { display: flex; align-items: center; gap: 0.25rem; }
+.te-th-label { cursor: pointer; flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.te-th-grip { cursor: grab; color: #aaa; font-size: 1rem; line-height: 1; opacity: 0.5; }
+.te-th-dragging { opacity: 0.4; }
+.te-th-dragover-left { border-left: 2px solid #0d6efd; }
+.te-th-dragover-right { border-right: 2px solid #0d6efd; }
+
+.te-sort-icon-std { font-size: 0.7rem; margin-left: 0.25rem; opacity: 0.5; }
+.te-th-label:hover .te-sort-icon-std { opacity: 1; }
+
+/* Resize handle */
+.te-resize-handle { position: absolute; top: 0; right: 0; width: 10px; height: 100%; cursor: col-resize; z-index: 3; background: transparent; }
+.te-th, .te-td { position: relative; }
+.te-resizing { user-select: none !important; }
+.te-resizing-active { background: rgba(13,110,253,0.2) !important; }
+
+/* Drop indicator */
+.te-drop-indicator { position: absolute; top: 0; bottom: 0; width: 3px; background: #0d6efd; z-index: 4; }
+.te-drop-left { left: 0; }
+.te-drop-right { right: 0; }
+
+/* Filter row */
+.te-filter-row .te-td { padding: 0.25rem; }
+.te-filter-input { width: 100%; border: 1px solid #ced4da; border-radius: 0.2rem; padding: 0.15rem 0.3rem; font-size: 0.8rem; box-sizing: border-box; }
+:host-context(.dark) .te-filter-input { background: #2b3035; border-color: #444; color: #e9ecef; }
+
+/* Cells */
+.te-td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #eee; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; }
+:host-context(.dark) .te-td { border-color: #333; }
+.te-tr-selected { background: #cfe2ff !important; }
+:host-context(.dark) .te-tr-selected { background: #1a3a5c !important; }
+.te-tr-highlight { outline: 2px solid #0d6efd; outline-offset: -2px; }
+.te-td-sel { text-align: center; width: 3rem; }
+.te-td-acts { white-space: nowrap; }
+.te-td-filler, .te-th-filler { width: auto; padding: 0; }
+.te-col-filler { width: 100%; }
+.te-empty { text-align: center; padding: 2rem; color: #999; }
+:host-context(.dark) .te-empty { color: #777; }
+
+/* Column visibility dropdown */
+.te-cols-item label { white-space: nowrap; }
+.te-cols-item input { flex-shrink: 0; }
+
+/* Actions wrap */
+.te-actions-wrap { display: flex; gap: 0.25rem; flex-wrap: nowrap; }
+
+/* Inline editing */
+.te-td-inline-edit { cursor: pointer; }
+.te-inline-edit-btn { position: absolute; right: 2px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: 1px solid #ddd; border-radius: 3px; padding: 0 4px; font-size: 0.7rem; opacity: 0; transition: opacity 0.15s; }
+.te-tr:hover .te-inline-edit-btn { opacity: 1; }
+:host-context(.dark) .te-inline-edit-btn { background: rgba(40,40,40,0.9); border-color: #555; }
+.te-editing-input { width: 100%; border: 1px solid #0d6efd; border-radius: 0.2rem; padding: 0.15rem 0.3rem; font-size: inherit; box-sizing: border-box; }
+
+/* Images inside cells (::ng-deep porque se renderizan via [innerHTML]) */
+:host ::ng-deep .te-td img { height: 2rem !important; width: 2rem !important; object-fit: cover !important; vertical-align: middle !important; border-radius: 50% !important; }
+
+/* Color badge */
+.te-color-badge { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 3px; font-weight: bold; font-size: 0.75rem; }
+
+/* Sentinel infinite */
+.te-sentinel { display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.te-loading-spinner { width: 1.5rem; height: 1.5rem; border: 2px solid #ddd; border-top-color: #0d6efd; border-radius: 50%; animation: te-spin 0.6s linear infinite; display: inline-block; }
+@keyframes te-spin { to { transform: rotate(360deg); } }
+
+/* Paginator */
+.te-paginator { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: #fff; border: 1px solid #dee2e6; border-top: 0; border-radius: 0 0 0.375rem 0.375rem; padding: 0.5rem 1rem; flex-wrap: wrap; }
+:host-context(.dark) .te-paginator { background: #2b3035; border-color: #444; }
+.te-page-info { color: #666; font-size: 0.8rem; }
+:host-context(.dark) .te-page-info { color: #aaa; }
+.te-page-controls { display: flex; align-items: center; gap: 0.25rem; }
+.te-page-btn { background: #fff; border: 1px solid #dee2e6; border-radius: 0.25rem; padding: 0.25rem 0.5rem; font-size: 0.8rem; cursor: pointer; color: #333; }
+.te-page-btn:hover:not(:disabled) { background: #e9ecef; }
+.te-page-btn:disabled { opacity: 0.4; cursor: default; }
+:host-context(.dark) .te-page-btn { background: #343a40; border-color: #444; color: #e9ecef; }
+:host-context(.dark) .te-page-btn:hover:not(:disabled) { background: #444; }
+.te-page-current { font-weight: 600; font-size: 0.85rem; padding: 0 0.5rem; }
+.te-page-size { width: auto; min-width: 4rem; }
