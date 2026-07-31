@@ -32,10 +32,33 @@
 .te-th-label:hover .te-sort-icon-std { opacity: 1; }
 
 /* Resize handle */
-.te-resize-handle { position: absolute; top: 0; right: 0; width: 10px; height: 100%; cursor: col-resize; z-index: 3; background: transparent; }
+.te-resize-handle { position: absolute; top: 0; right: 0; width: 12px; height: 100%; cursor: col-resize; z-index: 3; background: transparent; transition: background-color 0.15s ease; }
 .te-th, .te-td { position: relative; }
+
+/* Línea de guía vertical del manejador (atraviesa todo el alto de la celda) */
+.te-resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 3px;
+  background: transparent;
+  border-radius: 2px;
+  pointer-events: none;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.te-resize-handle:hover { background: rgba(13,110,253,0.15); }
+.te-resize-handle:hover::after { background: #0d6efd; box-shadow: 0 0 0 1px rgba(13,110,253,0.35); }
+.te-resizing-active { background: rgba(13,110,253,0.25) !important; }
+.te-resizing-active::after { background: #0d6efd !important; box-shadow: 0 0 0 1px rgba(13,110,253,0.4) !important; }
 .te-resizing { user-select: none !important; }
-.te-resizing-active { background: rgba(13,110,253,0.2) !important; }
+
+/* Remarcado de la línea divisoria de la columna en resize (header + cuerpo) */
+.te-th.te-col-resizing,
+.te-td.te-col-resizing {
+  border-right: 3px solid #0d6efd !important;
+}
 
 /* Drop indicator */
 .te-drop-indicator { position: absolute; top: 0; bottom: 0; width: 3px; background: #0d6efd; z-index: 4; }

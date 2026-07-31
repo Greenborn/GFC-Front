@@ -29,6 +29,8 @@ import { Section } from 'src/app/models/section.model';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestResultsService } from 'src/app/services/contest-results.service';
+import { ContestJudgeService } from 'src/app/services/contest-judge.service';
+import { ContestJudge } from 'src/app/models/contest_judge.model';
 @Component({
   standalone: true,
   imports: [RouterModule, AsyncPipe],
@@ -53,6 +55,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   popover: any = undefined;
   subs: Subscription[] = [];
   noImg: boolean = false;
+  esJuezDelConcurso: boolean = false;
 
 
   constructor(
@@ -72,6 +75,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
     public UIUtilsService: UiUtilsService,
     public configService: ConfigService,
     private contestResultsService: ContestResultsService,
+    private contestJudgeService: ContestJudgeService,
   ) {
     super(alertCtrl)
     this.concurso = this.contestService.template;
@@ -144,8 +148,21 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       this.concursoDetailService.loadJueces()
       this.concursoDetailService.loadProfileContests()
       this.concursoDetailService.loadProfileContestsJueces()
+      this.cargarEsJuezDelConcurso(id)
       
     });
+  }
+  
+  async cargarEsJuezDelConcurso(contestId: number) {
+    this.esJuezDelConcurso = false
+    const user = await this.auth.user;
+    if (!user?.id) return
+    this.contestJudgeService.getAll<ContestJudge>(`contest_id=${contestId}`).subscribe({
+      next: jueces => {
+        this.esJuezDelConcurso = (jueces || []).some(j => j.user_id == user.id)
+      },
+      error: () => this.esJuezDelConcurso = false
+    })
   }
   
   goToFotografias(){

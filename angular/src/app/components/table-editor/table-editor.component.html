@@ -78,7 +78,8 @@
             </th>
             <th *ngIf="hcol._type !== 'group'" [attr.rowspan]="2"
               [attr.data-field]="hcol._col.field"
-              [class]="'te-th ' + (hcol._col.css || '')">
+              [class]="'te-th ' + (hcol._col.css || '')"
+              [class.te-col-resizing]="resizingField() === hcol._col.field">
               <div class="te-th-content">
                 <span class="te-th-label" (click)="onSortClick(hcol._col.field)">
                   {{ hcol._col.headerName }}
@@ -88,6 +89,7 @@
                 </span>
               </div>
               <div class="te-resize-handle"
+                [class.te-resizing-active]="resizingField() === hcol._col.field"
                 (pointerdown)="onResizeStart($event, hcol._col.field); $event.stopPropagation()"
                 (dblclick)="onResizeDblClick($event, hcol._col.field); $event.stopPropagation()"
                 (click)="$event.stopPropagation()"></div>
@@ -100,7 +102,8 @@
             <ng-container *ngIf="hcol._type === 'group'">
               <th *ngFor="let col of hcol._cols; trackBy: trackByCol"
                 [attr.data-field]="col.field"
-                [class]="'te-th ' + (col.css || '')">
+                [class]="'te-th ' + (col.css || '')"
+                [class.te-col-resizing]="resizingField() === col.field">
                 <div class="te-th-content">
                   <span class="te-th-label" (click)="onSortClick(col.field)">
                     {{ col.headerName }}
@@ -110,6 +113,7 @@
                   </span>
                 </div>
                 <div class="te-resize-handle"
+                  [class.te-resizing-active]="resizingField() === col.field"
                   (pointerdown)="onResizeStart($event, col.field); $event.stopPropagation()"
                   (dblclick)="onResizeDblClick($event, col.field); $event.stopPropagation()"
                   (click)="$event.stopPropagation()"></div>
@@ -129,6 +133,7 @@
           <th *ngFor="let col of visibleColumns(); trackBy: trackByCol"
             [attr.data-field]="col.field"
             [class]="'te-th ' + (col.css || '')"
+            [class.te-col-resizing]="resizingField() === col.field"
             [class.te-th-dragover-left]="dragOverField() === col.field && dropSide() === 'left'"
             [class.te-th-dragover-right]="dragOverField() === col.field && dropSide() === 'right'"
             [class.te-th-dragging]="dragField() === col.field"
@@ -164,11 +169,13 @@
         <tr *ngIf="showFilterRow()" class="te-filter-row">
           <td *ngIf="selectionMode() !== null" class="te-td"></td>
           <td *ngIf="rowActionButtons().length" class="te-td"></td>
-          <td *ngFor="let col of visibleColumns(); trackBy: trackByCol" class="te-td">
+          <td *ngFor="let col of visibleColumns(); trackBy: trackByCol" class="te-td"
+            [class.te-col-resizing]="resizingField() === col.field">
             <input [ngModel]="columnFilters()[col.field]"
               (ngModelChange)="onColumnFilterChange(col.field, $event)"
               type="text" class="te-filter-input" placeholder="" />
             <div class="te-resize-handle" draggable="false"
+              [class.te-resizing-active]="resizingField() === col.field"
               (pointerdown)="onResizeStart($event, col.field); $event.stopPropagation()"
               (dblclick)="onResizeDblClick($event, col.field); $event.stopPropagation()"
               (click)="$event.stopPropagation()"></div>
@@ -209,6 +216,7 @@
           <td *ngFor="let col of visibleColumns(); trackBy: trackByCol"
             [class]="'te-td ' + (col.css || '')"
             [class.te-td-inline-edit]="!!getInlineEditCfg(col)"
+            [class.te-col-resizing]="resizingField() === col.field"
             [style]="cellStyle(row, col) || null">
             <ng-container *ngIf="isEditingCell(row, col)">
               <input [ngModel]="inlineEditValue()"
@@ -228,6 +236,7 @@
               </button>
             </div>
             <div class="te-resize-handle" draggable="false"
+              [class.te-resizing-active]="resizingField() === col.field"
               (pointerdown)="onResizeStart($event, col.field); $event.stopPropagation()"
               (dblclick)="onResizeDblClick($event, col.field); $event.stopPropagation()"
               (click)="$event.stopPropagation()"></div>

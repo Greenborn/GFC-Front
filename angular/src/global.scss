@@ -103,6 +103,14 @@ app-table-editor .te-td img { height: 2rem !important; width: 2rem !important; o
   }
 }
 
+/* Todos los modales deben abrirse centrados en pantalla por defecto */
+.modal .modal-dialog {
+  margin: var(--bs-modal-margin, 0.5rem) auto;
+}
+.modal .modal-dialog-centered {
+  min-height: calc(100dvh - var(--bs-modal-margin, 0.5rem) * 2);
+}
+
 .modal.modal-fullscreen {
   padding: 0 !important;
 }

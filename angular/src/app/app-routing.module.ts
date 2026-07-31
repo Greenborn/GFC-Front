@@ -55,6 +55,10 @@ export const routes: Routes = [
             loadComponent: () => import('./concursos/concurso-detail/informacion/informacion.component').then(m => m.InformacionComponent)
           },
           {
+            path: 'juzgamiento',
+            loadComponent: () => import('./concursos/concurso-detail/juzgamiento/juzgamiento.component').then(m => m.JuzgamientoComponent)
+          },
+          {
             path: '',
             redirectTo: 'informacion',
             pathMatch: 'full'

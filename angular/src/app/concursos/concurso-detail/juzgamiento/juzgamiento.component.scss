@@ -1,0 +1,45 @@
+.juzgamiento-card {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px dashed #ced4da;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+:host-context(.dark) .juzgamiento-card {
+    background: #1e1e2f;
+    border-color: #34343f;
+    color: #e9ecef;
+}
+
+.juzgamiento-icon {
+    font-size: 3rem;
+    color: #f9a825;
+    margin-bottom: 1rem;
+}
+
+.juzgamiento-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #212529;
+    margin: 0 0 0.5rem;
+}
+
+:host-context(.dark) .juzgamiento-title {
+    color: #e9ecef;
+}
+
+.juzgamiento-subtitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #495057;
+    margin: 0 0 0.75rem;
+}
+
+.juzgamiento-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin: 0;
+}
