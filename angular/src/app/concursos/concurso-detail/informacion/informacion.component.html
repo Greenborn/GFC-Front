@@ -6,7 +6,12 @@
       } @else {
         <div class="info-hero-placeholder"></div>
       }
-      <span class="info-hero-badge" [class.open]="isContestNotFin">{{ isContestNotFin ? 'Abierto' : 'Finalizado' }}</span>
+      @if (!concurso.is_judging) {
+        <span class="info-hero-badge" [class.open]="isContestNotFin">{{ isContestNotFin ? 'Abierto' : 'Finalizado' }}</span>
+      }
+      @if (concurso.is_judging) {
+        <span class="info-hero-badge info-hero-badge--judging">En juzgamiento</span>
+      }
       @if (rolificador.esDelegado(u) || rolificador.isAdmin(u)) {
         <div class="info-hero-admin">
           <button class="info-hero-btn edit" [routerLink]="['/concursos/editar/' + concurso.id]" title="Editar concurso">
@@ -34,19 +39,28 @@
       }
       <div class="info-section info-actions-section">
         <div class="info-actions">
+          @if (rolificador.isAdmin(u) && !concurso.judged) {
+            <button class="info-btn"
+              [class.info-btn-primary]="!concurso.is_judging"
+              [class.info-btn-danger]="concurso.is_judging"
+              (click)="toggleJudging()">
+              <i class="bi" [class.bi-shield-check]="!concurso.is_judging" [class.bi-shield-x]="concurso.is_judging"></i>
+              {{ concurso.is_judging ? 'Desactivar modo de juzgamiento' : 'Activar modo de juzgamiento' }}
+            </button>
+          }
           @if (rolificador.esConcursante(u)) {
-            @if (isContestNotFin && !isInscripto) {
+            @if (isContestNotFin && !isInscripto && !concurso.is_judging) {
               <button class="info-btn info-btn-primary" (click)="inscribirConcursante()">
                 <i class="bi bi-pencil-square"></i> Inscribirme
               </button>
             }
-            @if (isContestNotFin && isInscripto) {
+            @if (isContestNotFin && isInscripto && !concurso.is_judging) {
               <button class="info-btn info-btn-danger" (click)="desinscribirme()">
                 <i class="bi bi-x-circle"></i> Desinscribirme
               </button>
             }
           } @else {
-            @if (isContestNotFin) {
+            @if (isContestNotFin && !concurso.is_judging) {
               <button class="info-btn info-btn-primary" (click)="inscribirConcursante()">
                 <i class="bi bi-pencil-square"></i> Inscribir
               </button>

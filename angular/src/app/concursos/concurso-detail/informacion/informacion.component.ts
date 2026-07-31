@@ -260,11 +260,53 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
       }
     }
 
+  async toggleJudging(){
+    if (!this.concurso.id) return
+    if (this.concurso.judged) return
+
+    const activar = !this.concurso.is_judging
+    const message = activar
+      ? 'Va a poner el concurso en modo de juzgamiento. Mientras esté activo se bloqueará la inscripción y desinscripción de concursantes. ¿Desea continuar?'
+      : '¿Está seguro de sacar el concurso de la etapa de juzgamiento?'
+
+    this.UIUtilsService.mostrarAlert({ header: activar ? 'Modo de juzgamiento' : 'Confirmar', message }, async () => {
+      const call = activar
+        ? this.contestService.setJudging(this.concurso.id)
+        : this.contestService.disableJudging(this.concurso.id)
+      super.fetch<any>(() => call).subscribe({
+        next: async res => {
+          const data = res?.data || res
+          await this.concursoDetailService.loadContest(this.concurso.id)
+          this.loadJueces(this.concurso.id)
+          await this.UIUtilsService.mostrarToast(undefined, {
+            message: activar
+              ? `Modo juzgamiento activado para "${data.name}"`
+              : `El concurso "${data.name}" ha sido sacado de la etapa de juzgamiento`,
+            duration: 2000,
+            position: 'bottom',
+            color: 'dark'
+          })
+        },
+        error: async err => {
+          await this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2] || err) })
+        }
+      })
+    })
+  }
+
   inscribirConcursante(){
+    if (this.concurso.is_judging) {
+      this.UIUtilsService.mostrarError({ message: 'No se puede inscribir: el concurso está en etapa de juzgamiento' })
+      return
+    }
     this.concursoDetailService.inscribirConcursante(undefined)
   }
 
   async desinscribirme(){
+    if (this.concurso.is_judging) {
+      this.UIUtilsService.mostrarError({ message: 'No se puede eliminar la inscripción: el concurso está en etapa de juzgamiento' })
+      return
+    }
     const user = await this.auth.user;
     if (!user?.profile) return;
     const yo = user.profile;

@@ -19,6 +19,7 @@ export interface Contest {
     contestRecords?: any[];
     sub_title?: string;
     judged?: boolean;
+    is_judging?: boolean;
     is_test?: boolean;
     organization_type?: 'INTERNO' | 'EXTERNO_0' | 'EXTERNO_UNICEN';
 }

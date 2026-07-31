@@ -39,6 +39,9 @@
                   <div class="cc-body">
                     <div class="cc-body-col cc-body-col--header">
                       <span class="cc-badge" [class.cc-badge--open]="item.concurso.active" [class.cc-badge--closed]="!item.concurso.active">{{ item.concurso.active ? 'Abierto' : 'Cerrado' }}</span>
+                      @if (item.concurso.is_judging) {
+                        <span class="cc-badge cc-badge--judging">En juzgamiento</span>
+                      }
                       <h2 class="cc-title">{{item.concurso.name}}</h2>
                     </div>
                     <div class="cc-body-col cc-body-col--content">
