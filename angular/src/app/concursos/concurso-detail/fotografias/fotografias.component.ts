@@ -456,18 +456,18 @@ export class FotografiasComponent implements OnInit {
     this.loadPage(1, true, false);
   }
 
-  getThumbUrl(obj: any, thumb_id: number = 1) {
-    if (obj == null) {
-      return '';
-    }
-    if (obj !== undefined && (obj.length === undefined || obj.length == 0)) {
-      return this.configService.imageUrl(obj.url);
-    }
-    for (let c = 0; c < obj.length; c++) {
-      if (obj[c].thumbnail_type == thumb_id) {
-        return this.configService.imageUrl(obj[c].url);
+  getFotoThumb(image: any, thumb_id: number = 1): string {
+    if (!image) return '';
+    const thumb = image.thumbnail;
+    if (thumb) {
+      if (Array.isArray(thumb)) {
+        const t = thumb.find(x => x.thumbnail_type === thumb_id);
+        if (t?.url) return this.configService.imageUrl(t.url);
+      } else if (thumb.url) {
+        return this.configService.imageUrl(thumb.url);
       }
     }
+    if (image.url) return this.configService.imageUrl(image.url);
     return '';
   }
 

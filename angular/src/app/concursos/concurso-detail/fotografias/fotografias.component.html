@@ -184,8 +184,8 @@
     <div class="foto-card w-100">
       <div class="img-wrap" (click)="openImage(i, data || undefined)">
         <img loading="lazy"
-          [ngStyle]="aspecto && (getThumbUrl(r.image.thumbnail,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
-          [src]="getThumbUrl(r.image.thumbnail,1) != '' ? getThumbUrl(r.image.thumbnail,1) : './assets/no-pictures.png'"
+          [ngStyle]="aspecto && (getFotoThumb(r.image,1) == '') ? {'filter': 'invert(100)' }:{ 'filter': 'invert(0)'}"
+          [src]="getFotoThumb(r.image,1) != '' ? getFotoThumb(r.image,1) : './assets/no-pictures.png'"
           alt=""
           />
       </div>
