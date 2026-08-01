@@ -1,0 +1,32 @@
+<div class="generic-alert" [class.generic-alert--confirm]="isConfirm">
+  <div class="gfc-modal-header generic-alert-header">
+    <div class="row align-items-center w-100 me-0">
+      <div class="col-auto">
+        <i class="bi generic-alert-icon" [ngClass]="[icon, colorClass]"></i>
+      </div>
+      <div class="col">
+        <h5 class="mb-0">{{ header }}</h5>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-link" (click)="close()" title="Cerrar">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body generic-alert-body">
+    {{ message }}
+  </div>
+  @if (buttons.length > 0) {
+    <div class="modal-footer generic-alert-footer">
+      @for (btn of buttons; track $index) {
+        <button
+          class="btn"
+          [ngClass]="btn.role === 'cancel' ? 'btn-outline-secondary' : (type === 'error' ? 'btn-danger' : 'btn-primary')"
+          (click)="onClick(btn)">
+          {{ btn.text }}
+        </button>
+      }
+    </div>
+  }
+</div>

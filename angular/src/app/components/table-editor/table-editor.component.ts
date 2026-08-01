@@ -120,6 +120,21 @@ export class TableEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     return sel
   })
 
+  orderedAvailableColumns = computed(() => {
+    const avail = this.availableColumns()
+    const order = this.columnOrder()
+    if (!order.length) return avail
+    const ordered: ColumnDef[] = []
+    for (const f of order) {
+      const found = avail.find(c => c.field === f)
+      if (found) ordered.push(found)
+    }
+    for (const c of avail) {
+      if (!ordered.some(x => x.field === c.field)) ordered.push(c)
+    }
+    return ordered
+  })
+
   hasColumnGroups = computed(() =>
     this.config?.columnGroups?.length > 0
   )
@@ -612,37 +627,62 @@ export class TableEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  onDragEnter(e: DragEvent, field: string): void {
-    if (this.dragField() === field) return
-    const ct = e.currentTarget as HTMLElement
-    if (e.relatedTarget && ct.contains(e.relatedTarget as Node)) return
-    this.dragOverField.set(field)
+  private dropTargetField(e: DragEvent): string | null {
+    const th = (e.target as HTMLElement)?.closest?.('th')
+    return th?.getAttribute('data-field') || null
   }
 
-  onDragOver(e: DragEvent, field: string): void {
-    if (this.dragField() === field) return
+  onHeaderDragEnter(e: DragEvent): void {
+    e.preventDefault()
+    const field = this.dropTargetField(e)
+    if (field && field !== this.dragField() && this.dragOverField() !== field) {
+      this.dragOverField.set(field)
+    }
+  }
+
+  onHeaderDragOver(e: DragEvent): void {
+    e.preventDefault()
+    if (!this.dragField()) return
+    const field = this.dropTargetField(e)
+    if (!field || field === this.dragField()) {
+      if (this.dropSide() !== null || this.dragOverField() !== null) {
+        this.dragOverField.set(null)
+        this.dropSide.set(null)
+      }
+      return
+    }
     if (e.dataTransfer) e.dataTransfer.dropEffect = 'move'
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
-    this.dropSide.set(e.clientX < rect.left + rect.width / 2 ? 'left' : 'right')
+    if (this.dragOverField() !== field) this.dragOverField.set(field)
+    const th = (e.target as HTMLElement).closest('th') as HTMLElement
+    const rect = th.getBoundingClientRect()
+    const side = e.clientX < rect.left + rect.width / 2 ? 'left' : 'right'
+    if (this.dropSide() !== side) this.dropSide.set(side)
   }
 
-  onDragLeave(e: DragEvent, field: string): void {
-    const ct = e.currentTarget as HTMLElement
-    if (ct.contains(e.relatedTarget as Node)) return
-    if (this.dragOverField() === field) {
+  onHeaderDragLeave(e: DragEvent): void {
+    const tr = (e.currentTarget as HTMLElement)
+    if (tr.contains(e.relatedTarget as Node)) return
+    if (this.dragOverField() !== null || this.dropSide() !== null) {
       this.dragOverField.set(null)
       this.dropSide.set(null)
     }
   }
 
-  onDrop(e: DragEvent, field: string): void {
-    if (!this.dragField() || this.dragField() === field) { this.onDragEnd(); return }
+  onHeaderDrop(e: DragEvent): void {
+    e.preventDefault()
+    const field = this.dropTargetField(e)
+    if (!this.dragField() || !field) { this.onDragEnd(); return }
+    this.dropTo(field)
+    this.onDragEnd()
+  }
+
+  private dropTo(field: string): void {
     const order = this.columnOrder().length
       ? [...this.columnOrder()]
       : this.selectedColumns().map(c => c.field)
     const from = order.indexOf(this.dragField()!)
     const to = order.indexOf(field)
-    if (from < 0 || to < 0) { this.onDragEnd(); return }
+    if (from < 0 || to < 0) return
     const [m] = order.splice(from, 1)
     const at = from < to
       ? (this.dropSide() === 'right' ? to : to - 1)
@@ -650,7 +690,6 @@ export class TableEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     order.splice(Math.max(0, Math.min(order.length, at)), 0, m)
     this.columnOrder.set(order)
     this.debouncedPersist()
-    this.onDragEnd()
   }
 
   onDragEnd(): void {
@@ -823,11 +862,11 @@ export class TableEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (Object.keys(cf).length) p.filters = JSON.stringify(cf)
     try {
-      const res = await this.api!.list!(p)
-      if (res?.stat) {
-        this.totalRecords.set(res.data.totalRecords || res.data.total || 0)
-        this.processData(res.data)
-      }
+        const res = await this.api!.list!(p)
+        if (res?.stat) {
+          this.totalRecords.set(res.data.totalRecords || res.data.total || 0)
+          this.processData(res.data, this.columns)
+        }
     } catch (err) {
       console.error('[TableEditor] load error:', err)
     } finally {
@@ -852,30 +891,35 @@ export class TableEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (defs.length) {
-      this.columnDefs.set(defs)
-      this.selectedColumns.set([...defs])
-      this.availableColumns.set([...defs])
-      if (this.config?.defaultColumnProps) {
-        this.selectedColumns.update(cols =>
-          cols.map(c => ({ ...c, ...this.config!.defaultColumnProps }))
-        )
-      }
-      if (this.config?.columnOrder) {
-        const ordered: ColumnDef[] = []
-        for (const f of this.config.columnOrder) {
-          const found = this.selectedColumns().find(c => c.field === f)
-          if (found) ordered.push(found)
+      const currentFields = this.columnDefs().map(c => c.field).join('\u0001')
+      const newFields = defs.map(c => c.field).join('\u0001')
+      const changed = currentFields !== newFields
+      if (changed) {
+        this.columnDefs.set(defs)
+        this.selectedColumns.set([...defs])
+        this.availableColumns.set([...defs])
+        if (this.config?.defaultColumnProps) {
+          this.selectedColumns.update(cols =>
+            cols.map(c => ({ ...c, ...this.config!.defaultColumnProps }))
+          )
         }
-        for (const c of this.selectedColumns()) {
-          if (!ordered.some(x => x.field === c.field)) ordered.push(c)
+        if (this.config?.columnOrder) {
+          const ordered: ColumnDef[] = []
+          for (const f of this.config.columnOrder) {
+            const found = this.selectedColumns().find(c => c.field === f)
+            if (found) ordered.push(found)
+          }
+          for (const c of this.selectedColumns()) {
+            if (!ordered.some(x => x.field === c.field)) ordered.push(c)
+          }
+          this.selectedColumns.set(ordered)
         }
-        this.selectedColumns.set(ordered)
+        const saved = this.loadPersistedConfig()
+        if (saved?.columnWidths) {
+          this.columnWidths.set({ ...saved.columnWidths })
+        }
+        this.columnOrder.set(saved?.columnOrder || [])
       }
-      const saved = this.loadPersistedConfig()
-      if (saved?.columnWidths) {
-        this.columnWidths.set({ ...saved.columnWidths })
-      }
-      this.columnOrder.set(saved?.columnOrder || [])
     }
 
     if (!data.fields_def && data.total != null) {

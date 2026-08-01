@@ -72,6 +72,14 @@ export class UiUtilsService {
     return this.alertService.showError(options);
   }
 
+  async mostrarInfo(options: AlertOptions) {
+    return this.alertService.showInfo(options);
+  }
+
+  async mostrarWarning(options: AlertOptions) {
+    return this.alertService.showWarning(options);
+  }
+
   async presentLoading(options: any = { message: 'Cargando...' }) {
     return this.loadingService.present(options.message);
   }

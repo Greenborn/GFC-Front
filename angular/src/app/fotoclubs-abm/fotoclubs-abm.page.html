@@ -1,15 +1,9 @@
-<div class="container-fluid py-3" style="height:100%">
-  <div class="container" style="height:100%">
-    <div class="row" style="height:100%">
-      <div class="col" style="height:100%">
-        <app-table-editor
-          #tableEditor
-          id="fotoclubs"
-          [columns]="tableColumns"
-          [config]="getTableConfig()"
-          (rowSelected)="onRowSelected($event)"
-        />
-      </div>
-    </div>
-  </div>
+<div class="container-fluid px-0 py-3" style="height:100%">
+  <app-table-editor
+    #tableEditor
+    id="fotoclubs"
+    [columns]="tableColumns"
+    [config]="getTableConfig()"
+    (rowSelected)="onRowSelected($event)"
+  />
 </div>

@@ -1,17 +1,12 @@
-<div class="container-fluid py-3" style="height:100%">
+<div class="container-fluid px-0 py-3" style="height:100%">
   @if ((auth.user | async); as userLogged) {
-    <div class="container" style="height:100%">
-      <div class="row" style="height:100%">
-        <div class="col" style="height:100%">
-          <app-table-editor
-            #tableEditor
-            id="usuarios"
-            [columns]="tableColumns"
-            [config]="getTableConfig()"
-            (rowSelected)="onRowSelected($event)"
-          />
-        </div>
-      </div>
-    </div>
+    <app-table-editor
+      #tableEditor
+      id="usuarios"
+      [columns]="tableColumns"
+      [config]="getTableConfig()"
+      [api]="getTableApi()"
+      (rowSelected)="onRowSelected($event)"
+    />
   }
 </div>

@@ -95,8 +95,11 @@ app-table-editor .te-td img { height: 2rem !important; width: 2rem !important; o
 /* Modal auto-width: se adapta al contenido en desktop */
 @media (min-width: 576px) {
   .modal.auto-width .modal-dialog {
+    width: fit-content;
     max-width: calc(100vw - 3.5rem);
     min-width: 300px;
+    justify-content: center;
+    margin: var(--bs-modal-margin, 0.5rem) auto;
   }
   .modal.auto-width .modal-dialog .modal-content {
     width: auto;

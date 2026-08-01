@@ -19,7 +19,7 @@
           <i class="bi bi-layout-three-columns me-1"></i>Columnas
         </button>
         <div class="dropdown-menu p-2" style="min-width:220px">
-          <div *ngFor="let col of availableColumns(); trackBy: trackByCol" class="te-cols-item">
+          <div *ngFor="let col of orderedAvailableColumns(); trackBy: trackByCol" class="te-cols-item">
             <label class="d-flex align-items-center gap-2 px-1 py-1" style="cursor:pointer;white-space:nowrap">
               <input type="checkbox"
                 [checked]="selectedColumns().includes(col)"
@@ -65,7 +65,11 @@
 
       <thead>
         <!-- Grupos de columnas -->
-        <tr *ngIf="hasColumnGroups()" class="te-header-group-row">
+        <tr *ngIf="hasColumnGroups()" class="te-header-group-row"
+          (dragenter)="onHeaderDragEnter($event)"
+          (dragover)="onHeaderDragOver($event)"
+          (dragleave)="onHeaderDragLeave($event)"
+          (drop)="onHeaderDrop($event)">
           <th *ngIf="selectionMode() !== null" class="te-th te-th-sel" [attr.rowspan]="2">
             <input *ngIf="selectionMode() === 'multiple'" type="checkbox"
               [checked]="isAllSelected()"
@@ -97,13 +101,23 @@
           </ng-container>
           <th class="te-th te-th-filler" [attr.rowspan]="2"></th>
         </tr>
-        <tr *ngIf="hasColumnGroups()" class="te-header-row te-has-groups">
+        <tr *ngIf="hasColumnGroups()" class="te-header-row te-has-groups"
+          (dragenter)="onHeaderDragEnter($event)"
+          (dragover)="onHeaderDragOver($event)"
+          (dragleave)="onHeaderDragLeave($event)"
+          (drop)="onHeaderDrop($event)">
           <ng-container *ngFor="let hcol of columnGroupHeaders(); trackBy: trackByHCol">
             <ng-container *ngIf="hcol._type === 'group'">
               <th *ngFor="let col of hcol._cols; trackBy: trackByCol"
                 [attr.data-field]="col.field"
                 [class]="'te-th ' + (col.css || '')"
-                [class.te-col-resizing]="resizingField() === col.field">
+                [class.te-col-resizing]="resizingField() === col.field"
+                [class.te-th-dragover-left]="dragOverField() === col.field && dropSide() === 'left'"
+                [class.te-th-dragover-right]="dragOverField() === col.field && dropSide() === 'right'"
+                [class.te-th-dragging]="dragField() === col.field"
+                [draggable]="reorderableColumns()"
+                (dragstart)="onDragStart($event, col.field)"
+                (dragend)="onDragEnd()">
                 <div class="te-th-content">
                   <span class="te-th-label" (click)="onSortClick(col.field)">
                     {{ col.headerName }}
@@ -123,7 +137,11 @@
         </tr>
 
         <!-- Fila header principal (sin grupos) -->
-        <tr *ngIf="!hasColumnGroups()" class="te-header-row">
+        <tr *ngIf="!hasColumnGroups()" class="te-header-row"
+          (dragenter)="onHeaderDragEnter($event)"
+          (dragover)="onHeaderDragOver($event)"
+          (dragleave)="onHeaderDragLeave($event)"
+          (drop)="onHeaderDrop($event)">
           <th *ngIf="selectionMode() !== null" class="te-th te-th-sel">
             <input *ngIf="selectionMode() === 'multiple'" type="checkbox"
               [checked]="isAllSelected()"
@@ -139,10 +157,6 @@
             [class.te-th-dragging]="dragField() === col.field"
             [draggable]="reorderableColumns()"
             (dragstart)="onDragStart($event, col.field)"
-            (dragenter)="onDragEnter($event, col.field)"
-            (dragover)="onDragOver($event, col.field)"
-            (dragleave)="onDragLeave($event, col.field)"
-            (drop)="onDrop($event, col.field)"
             (dragend)="onDragEnd()">
             <div class="te-th-content">
               <span *ngIf="reorderableColumns()" class="te-th-grip">⠿</span>

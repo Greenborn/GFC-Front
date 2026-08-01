@@ -1,0 +1,26 @@
+.generic-alert {
+  min-width: 320px;
+  max-width: 100%;
+}
+
+.generic-alert-header {
+  border-bottom: 1px solid var(--gfc-modal-header-border, #dee2e6);
+}
+
+.generic-alert-header .modal-title {
+  display: inline-flex;
+  align-items: center;
+}
+
+.generic-alert-icon {
+  font-size: 1.4rem;
+}
+
+.generic-alert-body {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.generic-alert-footer {
+  border-top: 1px solid var(--gfc-modal-header-border, #dee2e6);
+}

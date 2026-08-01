@@ -13,6 +13,7 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { SearchableSelectComponent } from 'src/app/shared/searchable-select/searchable-select.component';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 
 @Component({
   standalone: true,
@@ -77,7 +78,8 @@ export class InscribirConcursanteComponent extends ApiConsumer implements OnInit
             try { await this.modalController.dismiss({ profileContest }); } catch {}
           },
           err => {
-            super.displayAlert(this.errorFilter(err.error.message))
+            this.posting = false
+            super.displayAlert(extractErrorMessage(err, 'Error al inscribir el concursante'))
           },
           () => {
             s.unsubscribe()
