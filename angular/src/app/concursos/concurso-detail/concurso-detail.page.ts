@@ -276,7 +276,9 @@ obtenerPx() {
 
 
     const data = await this.UIUtilsService.mostrarModal(ImagePostPage, componentProps);
+    console.log('[postImage] data modal:', data);
     const { image, section_id } = data ?? {}
+    console.log('[postImage] image:', image, 'section_id:', section_id);
     if (image != undefined && section_id != undefined) {
       const r_updated = this.resultadosConcurso.find(e => e.image_id == image.id)
       if (r_updated == undefined) {

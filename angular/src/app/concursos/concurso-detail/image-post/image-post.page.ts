@@ -113,7 +113,8 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
              image => {
                this.posting = false
                i = image
-               this.dismiss(i, this.section_id)
+               console.log('[image-post] imagen creada:', image, 'section_id:', this.section_id);
+               this.dismiss({ image: i, section_id: this.section_id })
              },
               async err => {
                 super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2] || err.message))
@@ -134,11 +135,8 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
         && tieneImagen
   }
   
-  dismiss(image: GFC_Image = undefined, section_id: number) {
-    this.modalController.dismiss({
-      image,
-      section_id
-    });
+  dismiss(data: any = {}) {
+    this.modalController.dismiss(data);
   }
 
   get sectionSelect(){
