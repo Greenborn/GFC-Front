@@ -127,7 +127,7 @@ IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
 NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 LOGIN_ACTION=login
 APP_NAME=app_gfc_prod-
-APP_VERSION=1.19.54
+APP_VERSION=1.19.55
 ```
 
 ## Build para Producción
@@ -162,9 +162,15 @@ Para soporte técnico o consultas, contactar a través de:
 
 ## Change Log
 
+### **1.19.55** (Agosto de 2026)
+
+- Eliminada la consulta de jueces del listado de concursos (`/#/concursos`). El acceso a juzgamiento queda solo dentro del detalle del concurso
+- Corregido envío de `unique_id` de sesión en `ContestJudgeService` para las consultas por `contest_id`
+
 ### **1.19.54** (Agosto de 2026)
 
-
+- Script de actualización de versión (`scripts/bump-version.js`) que sincroniza `package.json`, README, `.env` y `environment*.ts`
+- Corregido número de versión mostrado en el menú (APP_VERSION desactualizado en `.env`)
 
 ### **1.19.53** (Julio 2026)
 

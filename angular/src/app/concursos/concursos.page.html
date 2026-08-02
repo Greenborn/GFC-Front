@@ -67,16 +67,6 @@
                     </div>
                     <div class="cc-body-col cc-body-col--actions">
                       <div class="cc-actions">
-                        @if (item.concurso.is_judging && esJuezDelConcurso(item.concurso.id)) {
-                          <button
-                            type="button"
-                            class="cc-btn btn btn-warning btn-sm"
-                            [routerLink]="['/concursos', item.concurso.id, 'juzgamiento']"
-                          >
-                            <i class="bi bi-shield-check"></i>
-                            Juzgar
-                          </button>
-                        }
                         <button
                           type="button"
                           class="cc-btn btn btn-primary btn-sm"

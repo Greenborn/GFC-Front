@@ -24,7 +24,7 @@ export class ContestJudgeService extends ApiService<ContestJudge> {
     }
   }
 
-  getAll<K = T>(getParams = '', resource: string | null = null): Observable<K[]> {
+  getAll<K = ContestJudge>(getParams = '', resource: string | null = null): Observable<K[]> {
     let params = getParams;
     const uniqueId = localStorage.getItem('sso_client_unique_id');
     if (uniqueId) {

@@ -20,8 +20,6 @@ import { FotosDelAnioResponse, ItemConcursoOFoto } from '../models/foto-del-anio
 import { takeUntil } from 'rxjs/operators';
 import { InfiniteScrollDirective } from '../shared/infinite-scroll.directive';
 import { FotosAnioCardComponent } from './fotos-anio-card/fotos-anio-card.component';
-import { ContestJudgeService } from '../services/contest-judge.service';
-import { ContestJudge } from '../models/contest_judge.model';
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, InfiniteScrollDirective, FotosAnioCardComponent],
@@ -66,30 +64,10 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     public configService: ConfigService,
     public responsiveService: ResponsiveService,
     public UIUtilsService: UiUtilsService,
-    private contestJudgeService: ContestJudgeService,
   ) { 
     super(alertController)
   }
 
-  public concursosJuzgados: Set<number> = new Set();
-
-  private cargarConcursosJuzgados() {
-    const user = this.auth.user;
-    if (user == null) return;
-    user.then(u => {
-      if (!u?.id) return;
-      this.contestJudgeService.getAll<ContestJudge>(`filter[user_id]=${u.id}`).subscribe({
-        next: jueces => {
-          this.concursosJuzgados = new Set((jueces || []).map(j => j.contest_id))
-        },
-        error: () => this.concursosJuzgados = new Set()
-      })
-    })
-  }
-
-  esJuezDelConcurso(contestId: number): boolean {
-    return this.concursosJuzgados.has(contestId)
-  }
   get aspecto() {
     return document.body.classList.contains("dark")
    }
@@ -131,7 +109,6 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
     if (!this.inicializado) {
       this.inicializado = true;
       this.cargarConcursosInicial();
-      this.cargarConcursosJuzgados();
     }
   }
 
