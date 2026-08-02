@@ -127,7 +127,7 @@ IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
 NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 LOGIN_ACTION=login
 APP_NAME=app_gfc_prod-
-APP_VERSION=1.19.53
+APP_VERSION=1.19.54
 ```
 
 ## Build para Producción
@@ -161,6 +161,10 @@ Para soporte técnico o consultas, contactar a través de:
 ---
 
 ## Change Log
+
+### **1.19.54** (Agosto de 2026)
+
+
 
 ### **1.19.53** (Julio 2026)
 
