@@ -70,12 +70,61 @@ app-table-editor .te-td img { height: 2rem !important; width: 2rem !important; o
   overflow: visible;
 }
 
+/*
+ * Formularios GFC que crecen con su contenido.
+ * `.modal-dialog-scrollable` fuerza la altura del diálogo a casi toda la pantalla,
+ * dejando un hueco transparente abajo cuando el contenido no la llena.
+ * Aquí el diálogo se ajusta al contenido (crece hasta ~100dvh y hace scroll interno).
+ */
+.modal-dialog:has(app-image-post) {
+  height: auto !important;
+  min-height: auto !important;
+  align-items: center;
+}
+.modal-dialog:has(app-image-post) .modal-content {
+  max-height: calc(100dvh - var(--bs-modal-margin, 0.5rem) * 2) !important;
+  overflow: hidden;
+}
+.modal-dialog:has(app-image-post) .inner-content {
+  background-color: var(--gfc-bg-primary, #fff);
+  max-height: calc(100dvh - 6rem);
+  overflow-y: auto;
+}
+
+/*
+ * Formulario de organizaciones: ancho doble en desktop, dos columnas y
+ * altura adaptada al contenido (crece hasta ~100dvh y hace scroll interno).
+ */
+.modal-dialog:has(app-fotoclub-post) {
+  height: auto !important;
+  min-height: auto !important;
+  align-items: center;
+  width: min(760px, calc(100vw - 3.5rem)) !important;
+  max-width: calc(100vw - 3.5rem) !important;
+}
+.modal-dialog:has(app-fotoclub-post) .modal-content {
+  max-height: calc(100dvh - var(--bs-modal-margin, 0.5rem) * 2) !important;
+  overflow: hidden;
+}
+.modal-dialog:has(app-fotoclub-post) .inner-content {
+  background-color: var(--gfc-bg-primary, #fff);
+  max-height: calc(100dvh - 6rem);
+  overflow-y: auto;
+}
+@media (max-width: 991.98px) {
+  .modal-dialog:has(app-fotoclub-post) {
+    width: calc(100vw - 3.5rem) !important;
+    max-width: calc(100vw - 3.5rem) !important;
+  }
+}
+
 /* GFC Modal presentation: spacing y apariencia consistente */
 .modal-content {
   border-radius: 0;
   border: 1px solid var(--gfc-modal-header-border, #dee2e6);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
   overflow: hidden;
+  background-color: var(--gfc-bg-primary, #fff);
 }
 
 .modal-header,

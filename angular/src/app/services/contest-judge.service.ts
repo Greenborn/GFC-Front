@@ -28,8 +28,7 @@ export class ContestJudgeService extends ApiService<ContestJudge> {
     let params = getParams;
     const uniqueId = localStorage.getItem('sso_client_unique_id');
     if (uniqueId) {
-      const separator = params.includes('?') ? '&' : '?';
-      params += separator + 'unique_id=' + encodeURIComponent(uniqueId);
+      params += (params ? '&' : '') + 'unique_id=' + encodeURIComponent(uniqueId);
     }
     const path = this.getPath(resource);
     const url = `${this.getBaseUrl()}${path}?${params}`;

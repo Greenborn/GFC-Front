@@ -18,24 +18,6 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Fotografía</label>
-          <input type="file" accept=".jpeg,.jpg" class="form-control te-file-input"
-            (change)="handleFileInput($event.target['files'])" />
-          @if (texto_img != null) {
-            <span class="badge bg-danger d-inline-flex align-items-center gap-1 mt-2">
-              <i class="bi bi-exclamation-triangle"></i>
-              <label class="form-label">{{texto_img}}</label>
-            </span>
-          }
-        </div>
-
-        @if (img_url != '' || imageData != '') {
-          <div class="mb-3 text-center">
-            <img (ionError)="img_url=''" [src]="imgSource" alt="" class="te-preview img-fluid">
-          </div>
-        }
-
-        <div class="mb-3">
           <label class="form-label">Sección</label>
           <select class="form-select" (change)="sectionSelect" [(ngModel)]="section_id">
             @for (s of secciones; track s) {
@@ -49,6 +31,31 @@
             </span>
           }
         </div>
+
+        <div class="mb-3">
+          <label class="form-label">Fotografía</label>
+          <div class="te-file-select">
+            <input type="file" accept=".jpeg,.jpg" id="gfc-image-file-input" class="te-file-input"
+              (change)="handleFileInput($event.target['files'])" />
+            <label for="gfc-image-file-input" class="te-file-button">
+              <i class="bi bi-folder2-open"></i>
+              <span>Examinar</span>
+            </label>
+            <span class="te-file-name">{{ file ? file.name : 'Ningún archivo seleccionado' }}</span>
+          </div>
+          @if (texto_img != null) {
+            <span class="badge bg-danger d-inline-flex align-items-center gap-1 mt-2">
+              <i class="bi bi-exclamation-triangle"></i>
+              <label class="form-label">{{texto_img}}</label>
+            </span>
+          }
+        </div>
+
+        @if (img_url != '' || imageData != '') {
+          <div class="mb-3 text-center">
+            <img (ionError)="img_url=''" [src]="imgSource" alt="" class="te-preview img-fluid">
+          </div>
+        }
 
         <div class="d-flex justify-content-center gap-2 pt-3 flex-wrap">
           <button class="btn btn-outline-secondary" (click)="modalController.dismiss()">
