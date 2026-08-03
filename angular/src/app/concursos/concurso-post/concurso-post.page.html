@@ -254,12 +254,15 @@
                 @if (user) {
                   @if (rolificador.isAdmin(user)) {
                     <div class="d-flex gap-2 mb-3">
-                      <select class="form-select form-select-sm" [(ngModel)]="juezSeleccionadoId" [ngModelOptions]="{standalone: true}">
-                        <option value="-1">Seleccionar juez...</option>
-                        @for (p of usuariosDisponibles; track p.id) {
-                          <option [value]="p.user?.id">{{p.name}} {{p.last_name}} @if (p.user?.username) {(@{{p.user.username}})}</option>
-                        }
-                      </select>
+                      <app-searchable-select
+                        class="flex-grow-1"
+                        [searchFn]="buscarJueces"
+                        [(ngModel)]="juezSeleccionadoId"
+                        [ngModelOptions]="{standalone: true}"
+                        [displayFn]="nombreJuez"
+                        (selectionChange)="juezSeleccionadoProfile = $event"
+                        placeholder="Buscar juez..."
+                      ></app-searchable-select>
                       <button type="button" class="btn btn-success btn-sm d-flex align-items-center" (click)="agregarJuez()" [disabled]="juezSeleccionadoId == -1">
                         <i class="bi bi-plus"></i>
                       </button>

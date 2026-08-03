@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import { ContestService } from 'src/app/services/contest.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
@@ -66,8 +67,8 @@ export class ConcursoPostPage extends ApiConsumer implements OnInit {
   public day_selects = [{days:[], months:[], years:[], day:-1, month: -1, year: -1, hours:[], minutes:[], hour:0, minute:0, selected_str: "" }, {days:[], months:[], years:[], day:-1, month: -1, year: -1, hours:[], minutes:[], hour:0, minute:0, selected_str: "" }]
 
   public jueces: ContestJudge[] = [];
-  public usuariosDisponibles: ProfileExpanded[] = [];
   public juezSeleccionadoId: number = -1;
+  public juezSeleccionadoProfile: ProfileExpanded | null = null;
   public loadingJueces: boolean = false;
   user: any = null;
 
@@ -206,7 +207,6 @@ get secycat(){
             this.UIUtilsService.dismissLoading()
           })
           this.loadJueces(c.id)
-          this.loadUsuariosJueces()
         })
       } else {
         let fecha =  new Date()
@@ -228,7 +228,6 @@ get secycat(){
           }))
           this.UIUtilsService.dismissLoading()
         })
-        this.loadUsuariosJueces()
       }
     })
   }
@@ -247,34 +246,38 @@ get secycat(){
     })
   }
 
-  loadUsuariosJueces() {
-    this.profileService.getAll<ProfileExpanded>('expand=user').subscribe({
-      next: profiles => {
-        this.usuariosDisponibles = profiles || []
-      },
-      error: () => {
-        this.usuariosDisponibles = []
-      }
-    })
+  loadUsuariosJueces(term: string): Observable<ProfileExpanded[]> {
+    const params = `expand=user` + (term && term.trim() ? `&q=${encodeURIComponent(term)}` : '');
+    return this.profileService.getAll<ProfileExpanded>(params);
   }
 
+  buscarJueces = (term: string): Observable<ProfileExpanded[]> => {
+    return this.loadUsuariosJueces(term);
+  };
+
+  nombreJuez = (item: ProfileExpanded): string => {
+    const nombre = [item?.name, item?.last_name].filter(Boolean).join(' ');
+    return item?.user?.username ? `${nombre || item.user.username} (@${item.user.username})` : nombre;
+  };
+
   agregarJuez() {
-    if (this.juezSeleccionadoId == -1) return
-    if (this.jueces.find(j => j.user_id == this.juezSeleccionadoId)) {
+    const profile = this.juezSeleccionadoProfile
+    if (!profile || !profile.user || profile.user.id == null) return
+    const user_id = profile.user.id
+    if (this.jueces.find(j => j.user_id == user_id)) {
       this.UIUtilsService.mostrarError({ message: 'El juez ya está asignado a este concurso.' })
       return
     }
-    const profile = this.usuariosDisponibles.find(p => p.user?.id == this.juezSeleccionadoId)
-    if (!profile) return
 
     if (this.concurso.id) {
       this.contestJudgeService.post({
         contest_id: this.concurso.id,
-        user_id: this.juezSeleccionadoId
+        user_id
       }, undefined, 'expand=user,user.profile').subscribe({
         next: juez => {
           this.jueces.push(juez as any)
           this.juezSeleccionadoId = -1
+          this.juezSeleccionadoProfile = null
         },
         error: err => {
           this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })
@@ -283,7 +286,7 @@ get secycat(){
     } else {
       this.jueces.push({
         contest_id: undefined,
-        user_id: this.juezSeleccionadoId,
+        user_id,
         user: {
           id: profile.user.id,
           username: profile.user.username,
@@ -298,6 +301,7 @@ get secycat(){
         }
       } as ContestJudge)
       this.juezSeleccionadoId = -1
+      this.juezSeleccionadoProfile = null
     }
   }
 

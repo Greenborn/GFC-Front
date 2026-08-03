@@ -21,7 +21,8 @@
           #searchInput
           class="search-input"
           type="text"
-          [(ngModel)]="searchText"
+          [ngModel]="searchText"
+          (ngModelChange)="onSearchChange($event)"
           placeholder="Buscar..."
           autofocus
           role="combobox"
@@ -31,6 +32,12 @@
           (keydown)="onKeydown($event)"
           />
       </div>
+      @if (loading) {
+        <div class="search-loading" role="status">
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+          <span class="visually-hidden">Buscando...</span>
+        </div>
+      }
       <div class="options-list"
            [id]="listboxId"
            role="listbox"
@@ -46,10 +53,10 @@
             (click)="selectItem(item)"
             (mouseenter)="activeIndex = i"
             >
-            {{ item[itemTextField] }}
+            {{ getItemLabel(item) }}
           </div>
         }
-        @if (filteredItems.length === 0) {
+        @if (!loading && filteredItems.length === 0) {
           <div class="option-empty" role="status">
             Sin resultados
           </div>

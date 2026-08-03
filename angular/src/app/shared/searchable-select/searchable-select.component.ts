@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, forwardRef, HostListener, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef, HostListener, ElementRef, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { Observable, Subject, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -17,11 +19,16 @@ import { FormsModule } from '@angular/forms';
     },
   ],
 })
-export class SearchableSelectComponent implements ControlValueAccessor {
+export class SearchableSelectComponent implements ControlValueAccessor, OnInit, OnDestroy {
   @Input() items: any[] = [];
   @Input() itemValueField: string = 'id';
   @Input() itemTextField: string = 'name';
   @Input() placeholder: string = 'Seleccionar...';
+  @Input() searchFn?: (term: string) => Observable<any[]>;
+  @Input() searchMinChars: number = 2;
+  @Input() searchDelay: number = 300;
+  @Input() displayFn?: (item: any) => string;
+  @Output() selectionChange = new EventEmitter<any>();
 
   @ViewChild('dropdown') dropdownEl: ElementRef;
   @ViewChild('searchInput') searchInputEl: ElementRef<HTMLInputElement>;
@@ -29,12 +36,51 @@ export class SearchableSelectComponent implements ControlValueAccessor {
   isOpen = false;
   searchText = '';
   selectedItem: any = null;
+  selectedLabel = '';
   activeIndex: number = -1;
+  loading = false;
   listboxId = `searchable-listbox-${Date.now()}`;
 
   private _value: any;
   private onChange: any = () => {};
   private onTouched: any = () => {};
+  private searchTerms = new Subject<string>();
+  private searchSub: any;
+
+  get isRemote(): boolean {
+    return typeof this.searchFn === 'function';
+  }
+
+  ngOnInit(): void {
+    if (this.isRemote) {
+      this.searchSub = this.searchTerms.pipe(
+        debounceTime(this.searchDelay),
+        distinctUntilChanged(),
+        switchMap(term => {
+          if (!term || term.trim().length < this.searchMinChars) {
+            this.items = [];
+            return of([]);
+          }
+          this.loading = true;
+          return this.searchFn!(term);
+        })
+      ).subscribe({
+        next: results => {
+          this.items = results || [];
+          this.loading = false;
+          this.activeIndex = -1;
+        },
+        error: () => {
+          this.items = [];
+          this.loading = false;
+        }
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.searchSub) this.searchSub.unsubscribe();
+  }
 
   get value(): any {
     return this._value;
@@ -49,19 +95,33 @@ export class SearchableSelectComponent implements ControlValueAccessor {
   }
 
   get filteredItems(): any[] {
+    if (this.isRemote) {
+      return this.items;
+    }
     if (!this.searchText) {
       return this.items;
     }
     const q = this.searchText.toLowerCase();
     return this.items.filter(
-      (item) =>
-        item[this.itemTextField] &&
-        item[this.itemTextField].toLowerCase().includes(q)
+      (item) => {
+        const text = this.getItemLabel(item).toLowerCase();
+        return text.includes(q);
+      }
     );
   }
 
   get displayText(): string {
-    return this.selectedItem ? this.selectedItem[this.itemTextField] : '';
+    if (this.selectedItem != null) {
+      return this.getItemLabel(this.selectedItem);
+    }
+    return this.selectedLabel;
+  }
+
+  getItemLabel(item: any): string {
+    if (typeof this.displayFn === 'function') {
+      return this.displayFn(item) || '';
+    }
+    return item ? (item[this.itemTextField] ?? '') : '';
   }
 
   writeValue(v: any): void {
@@ -79,10 +139,22 @@ export class SearchableSelectComponent implements ControlValueAccessor {
 
   private updateSelectedItem(): void {
     if (this._value != null && this.items?.length) {
-      this.selectedItem =
-        this.items.find((i) => i[this.itemValueField] === this._value) || null;
+      const found = this.items.find((i) => i[this.itemValueField] === this._value);
+      if (found) {
+        this.selectedItem = found;
+        this.selectedLabel = this.getItemLabel(found);
+        return;
+      }
+    }
+    this.selectedItem = null;
+  }
+
+  onSearchChange(term: string): void {
+    this.searchText = term;
+    if (this.isRemote) {
+      this.searchTerms.next(term);
     } else {
-      this.selectedItem = null;
+      this.activeIndex = -1;
     }
   }
 
@@ -91,6 +163,9 @@ export class SearchableSelectComponent implements ControlValueAccessor {
     if (this.isOpen) {
       this.searchText = '';
       this.activeIndex = -1;
+      if (this.isRemote) {
+        this.searchTerms.next('');
+      }
       setTimeout(() => {
         if (this.searchInputEl) {
           this.searchInputEl.nativeElement.focus();
@@ -104,6 +179,9 @@ export class SearchableSelectComponent implements ControlValueAccessor {
 
   selectItem(item: any): void {
     this.value = item[this.itemValueField];
+    this.selectedItem = item;
+    this.selectedLabel = this.getItemLabel(item);
+    this.selectionChange.emit(item);
     this.isOpen = false;
     this.searchText = '';
     this.activeIndex = -1;

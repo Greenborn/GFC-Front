@@ -39,4 +39,21 @@ export class ContestJudgeService extends ApiService<ContestJudge> {
       return items;
     }));
   }
+
+  post<K = ContestJudge>(model: K, id: number | undefined = undefined, getParams = ''): Observable<K> {
+    let params = getParams;
+    const uniqueId = localStorage.getItem('sso_client_unique_id');
+    if (uniqueId) {
+      params += (params ? '&' : '') + 'unique_id=' + encodeURIComponent(uniqueId);
+    }
+    const path = this.getPath();
+    const url = id == undefined
+      ? `${this.getBaseUrl()}${path}?${params}`
+      : `${this.getBaseUrl()}${path}/${id}?${params}`;
+    const headers = { ...this.getHeaders(), 'Content-Type': 'application/json' };
+    const request = id == undefined
+      ? axios.post(url, model, { headers })
+      : axios.put(url, model, { headers });
+    return from(request.then(r => r.data));
+  }
 }

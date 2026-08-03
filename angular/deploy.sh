@@ -8,6 +8,7 @@ IP=""
 PASS=""
 BRANCH="master"
 DEPLOY_PATH="/var/www/GFC-Front-PRD"
+BUMP="patch"
 
 usage() {
   echo "Uso: $0 [parámetros]"
@@ -19,6 +20,7 @@ usage() {
   echo "  --port=<puerto>           Puerto SSH (default: 22)"
   echo "  --branch=<rama>           Rama a desplegar (default: master)"
   echo "  --deploy-path=<ruta>      Ruta del despliegue en el server (default: /var/www/GFC-Front-PRD)"
+  echo "  --bump=<tipo>             Incremento de versión en el server: patch|minor|major|ninguna (default: patch)"
   echo ""
   echo "También acepta posiciónales (compatibilidad):"
   echo "  $0 <usuario> <puerto> <ip> <contraseña>"
@@ -44,6 +46,7 @@ else
       --port=*)    PUERTO="${arg#*=}" ;;
       --branch=*)  BRANCH="${arg#*=}" ;;
       --deploy-path=*) DEPLOY_PATH="${arg#*=}" ;;
+      --bump=*)    BUMP="${arg#*=}" ;;
       --help|-h)   usage ;;
       *)           echo "Parámetro desconocido: $arg" >&2; usage ;;
     esac
@@ -58,6 +61,14 @@ fi
 echo "Desplegando GFC-Front a $USUARIO@$IP:$PUERTO"
 echo "  Rama:        $BRANCH"
 echo "  Deploy path: $DEPLOY_PATH"
+echo "  Bump versión: $BUMP"
+
+if [ "$BUMP" != "ninguna" ]; then
+  case "$BUMP" in
+    patch|minor|major) ;;
+    *) echo "Error: --bump inválido: $BUMP. Usa patch|minor|major|ninguna" >&2; exit 1 ;;
+  esac
+fi
 
 sshpass -p "$PASS" ssh -o StrictHostKeyChecking=no -p "$PUERTO" "$USUARIO@$IP" "
   set -e
@@ -67,5 +78,8 @@ sshpass -p "$PASS" ssh -o StrictHostKeyChecking=no -p "$PUERTO" "$USUARIO@$IP" "
   git checkout \"$BRANCH\"
   git pull origin \"$BRANCH\"
   npm i
+  if [ \"$BUMP\" != \"ninguna\" ]; then
+    npm run version -- $BUMP
+  fi
   npm run build
 "

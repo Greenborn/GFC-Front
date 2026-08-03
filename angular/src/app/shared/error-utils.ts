@@ -1,13 +1,12 @@
-export function extractErrorMessage(err: any, fallback = 'Ocurrió un error'): string {
+export const STANDARD_ERROR_MESSAGE = 'Ocurrió un error inesperado.';
+
+export function extractErrorMessage(err: any, fallback = STANDARD_ERROR_MESSAGE): string {
   if (!err) return fallback;
 
   const candidates: any[] = [
     err?.response?.data?.message,
-    err?.response?.data?.['error-info']?.[2],
-    err?.response?.data,
+    err?.data?.message,
     err?.error?.message,
-    err?.error?.['error-info']?.[2],
-    err?.error,
     err?.message,
   ];
 

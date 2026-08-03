@@ -5,8 +5,9 @@ import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Category } from 'src/app/models/category.model';
 import { Contest } from 'src/app/models/contest.model';
 import { ProfileExpanded } from 'src/app/models/profile.model';
-import { ProfileContest, ProfileContestExpanded } from 'src/app/models/profile_contest';
-import { ProfileContestService } from 'src/app/services/profile-contest.service';
+import { ProfileContest } from 'src/app/models/profile_contest';
+import { ContestJudgeService } from 'src/app/services/contest-judge.service';
+import { UserService } from 'src/app/services/user.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
@@ -28,16 +29,35 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
   @Input() profileContest: ProfileContest;
   public posting: boolean = false;
 
+  private userIdByProfile: Record<number, number> = {};
+
   constructor(
     alertService: AlertService,
-    private profileContestService: ProfileContestService,
+    private contestJudgeService: ContestJudgeService,
+    private userService: UserService,
     public responsiveService: ResponsiveService
   ) { 
     super(alertService)
-    this.profileContest = this.profileContestService.template
+    this.profileContest = {
+      id: undefined,
+      profile_id: undefined,
+      contest_id: undefined,
+      category_id: undefined
+    }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userService.getAllPaged({ perPage: 1000, filters: { role_id: '4' } }).subscribe({
+      next: res => {
+        const items = res?.items || [];
+        for (const u of items) {
+          if (u?.profile_id != null && u?.id != null) {
+            this.userIdByProfile[u.profile_id] = u.id;
+          }
+        }
+      }
+    });
+  }
 
   datosCargados() {
     return this.profileContest.profile_id != undefined
@@ -45,26 +65,32 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
 
   inscribirJuez() {
     if (this.datosCargados()) {
-      
+
+        const user_id = this.userIdByProfile[this.profileContest.profile_id];
+        if (user_id == undefined) {
+          super.displayAlert('No se pudo determinar el usuario del juez seleccionado')
+          return
+        }
+
         this.posting = true
-        const s = this.profileContestService.post({
-            profile_id: this.profileContest.profile_id,
+        const s = this.contestJudgeService.post({
+            user_id,
             contest_id: this.contest.id,
-            // category_id: null
-          }, undefined, 'expand=profile,profile.user,profile.fotoclub,category'
+          }
         ).subscribe(
-          async profileContest => {
+          async contestJudge => {
             this.posting = false
-            try { await this.modalController.dismiss({ profileContest }); } catch {}
+            try { await this.modalController.dismiss({ contestJudge }); } catch {}
           },
           err => {
+            this.posting = false
             super.displayAlert(this.errorFilter(err.error['error-info']))
           },
           () => {
             s.unsubscribe()
           }
         );
-      
+
     }
     
   }
