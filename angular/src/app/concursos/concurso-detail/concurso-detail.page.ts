@@ -277,9 +277,15 @@ obtenerPx() {
 
     const data = await this.UIUtilsService.mostrarModal(ImagePostPage, componentProps);
     console.log('[postImage] data modal:', data);
-    const { image, section_id } = data ?? {}
-    console.log('[postImage] image:', image, 'section_id:', section_id);
+    const { image, section_id, contest_result } = data ?? {}
+    console.log('[postImage] image:', image, 'section_id:', section_id, 'contest_result:', contest_result);
     if (image != undefined && section_id != undefined) {
+      if (contest_result != undefined) {
+        this.resultadosConcurso.push({ ...contest_result, image })
+        await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
+        this.concursoDetailService.refreshPhotos.emit()
+        return
+      }
       const r_updated = this.resultadosConcurso.find(e => e.image_id == image.id)
       if (r_updated == undefined) {
         super.fetch<Metric>(() =>

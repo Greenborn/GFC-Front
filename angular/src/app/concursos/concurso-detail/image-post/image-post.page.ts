@@ -95,12 +95,35 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
     }
   }
 
-  async postImage() {
+   async postImage() {
     
     if (this.datosCargados()) {
    
            this.posting = true
             let i: GFC_Image;
+
+            if (this.image.id == undefined) {
+              const model: any = {
+                contest_id: this.concurso_id,
+                section_id: this.section_id,
+                title: this.image.title,
+                photo_base64: this.photo_base64
+              }
+              this.imageService.postContestUpload(model).subscribe({
+                next: (res: any) => {
+                  this.posting = false
+                  i = res?.image
+                  console.log('[image-post] imagen creada (contest-upload):', res, 'section_id:', this.section_id);
+                  this.dismiss({ image: i, section_id: this.section_id, contest_result: res?.contest_result })
+                },
+                error: async err => {
+                  super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2] || err.message))
+                  this.posting = false
+                },
+              })
+              return
+            }
+
              const model: any = {
                title: this.image.title,
                code: this.code,
