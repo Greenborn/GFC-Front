@@ -20,6 +20,7 @@ export interface Contest {
     sub_title?: string;
     judged?: boolean;
     is_judging?: boolean;
+    judging_stage?: 'preseleccion' | 'puntuacion' | null;
     is_test?: boolean;
     organization_type?: 'INTERNO' | 'EXTERNO_0' | 'EXTERNO_UNICEN';
 }

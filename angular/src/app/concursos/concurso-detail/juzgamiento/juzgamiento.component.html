@@ -34,9 +34,34 @@
     <div class="col-12 col-lg-3 juzgamiento-controls-col">
       <div class="juzgamiento-controls">
         <h5>Juzgamiento</h5>
-        <p class="text-muted small">
-          Los controles de puntuación del juez se agregarán aquí.
-        </p>
+        <div class="juzgamiento-stage-badge">
+          <i [class]="etapaJuzgamientoIcono"></i>
+          <span>Etapa: {{ etapaJuzgamiento }}</span>
+        </div>
+
+        @if (esPreseleccion) {
+          <div class="juzgamiento-preseleccion">
+            <p class="text-muted small">
+              Presiona <kbd>1</kbd> para aceptar o <kbd>2</kbd> para rechazar la fotografía.
+            </p>
+            <div class="juzgamiento-preseleccion-actions">
+              <button type="button" class="juzgamiento-btn juzgamiento-btn--accept" (click)="aceptar()">
+                <i class="bi bi-check-lg"></i> Aceptar <kbd>1</kbd>
+              </button>
+              <button type="button" class="juzgamiento-btn juzgamiento-btn--reject" (click)="rechazar()">
+                <i class="bi bi-x-lg"></i> Rechazar <kbd>2</kbd>
+              </button>
+            </div>
+          </div>
+        } @else if (!hasPhotos) {
+          <p class="text-muted small">
+            No hay fotografías para juzgar.
+          </p>
+        } @else {
+          <p class="text-muted small">
+            Los controles de puntuación del juez se agregarán aquí.
+          </p>
+        }
       </div>
     </div>
 

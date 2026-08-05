@@ -110,6 +110,86 @@
   color: #e9ecef;
 }
 
+.juzgamiento-stage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  margin: 8px 0 12px;
+  border-radius: 8px;
+  background: #e8f5e9;
+  color: #1b5e20;
+  border: 1px solid #a5d6a7;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.juzgamiento-stage-badge i {
+  font-size: 14px;
+}
+
+:host-context(.dark) .juzgamiento-stage-badge {
+  background: rgba(76, 175, 80, 0.15);
+  color: #81c784;
+  border-color: rgba(129, 199, 132, 0.4);
+}
+
+.juzgamiento-preseleccion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.juzgamiento-preseleccion kbd {
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 5px;
+  background: #343a40;
+  color: #fff;
+}
+
+.juzgamiento-preseleccion-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.juzgamiento-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.1s;
+}
+
+.juzgamiento-btn:hover {
+  filter: brightness(0.92);
+}
+
+.juzgamiento-btn:active {
+  transform: scale(0.98);
+}
+
+.juzgamiento-btn kbd {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.juzgamiento-btn--accept {
+  background: #198754;
+}
+
+.juzgamiento-btn--reject {
+  background: #dc3545;
+}
+
 @media (max-width: 991px) {
   .juzgamiento-controls-col {
     padding-left: 0;

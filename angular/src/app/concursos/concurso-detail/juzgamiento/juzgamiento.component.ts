@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Contest } from 'src/app/models/contest.model';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ConcursoDetailService } from '../concurso-detail.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestResultsService } from 'src/app/services/contest-results.service';
+import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ZoomableImageComponent } from 'src/app/shared/zoomable-image/zoomable-image.component';
 import { Subscription } from 'rxjs';
 
@@ -27,6 +28,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     public concursoDetailService: ConcursoDetailService,
     public configService: ConfigService,
     private contestResultsService: ContestResultsService,
+    public UIUtilsService: UiUtilsService,
   ) {
     this.concurso = this.concursoDetailService.concurso.getValue();
   }
@@ -71,6 +73,58 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
 
   get currentTitle(): string {
     return this.current?.image?.title ?? '';
+  }
+
+  get etapaJuzgamiento(): string {
+    switch (this.concurso?.judging_stage) {
+      case 'preseleccion': return 'Preselección';
+      case 'puntuacion': return 'Puntuación';
+      default: return 'En juzgamiento';
+    }
+  }
+
+  get etapaJuzgamientoIcono(): string {
+    switch (this.concurso?.judging_stage) {
+      case 'preseleccion': return 'bi bi-eye';
+      case 'puntuacion': return 'bi bi-star';
+      default: return 'bi bi-shield-check';
+    }
+  }
+
+  get esPreseleccion(): boolean {
+    return this.concurso?.judging_stage === 'preseleccion' && this.hasPhotos;
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent) {
+    if (!this.esPreseleccion) return;
+    if (event.key === '1') {
+      event.preventDefault();
+      this.aceptar();
+    } else if (event.key === '2') {
+      event.preventDefault();
+      this.rechazar();
+    }
+  }
+
+  aceptar() {
+    if (!this.esPreseleccion) return;
+    this.UIUtilsService.mostrarToast(undefined, {
+      message: 'Fotografía aceptada',
+      duration: 1500,
+      position: 'top',
+      color: 'success',
+    });
+  }
+
+  rechazar() {
+    if (!this.esPreseleccion) return;
+    this.UIUtilsService.mostrarToast(undefined, {
+      message: 'Fotografía rechazada',
+      duration: 1500,
+      position: 'top',
+      color: 'danger',
+    });
   }
 
   anterior() {
