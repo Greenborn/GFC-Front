@@ -44,18 +44,18 @@
       <i class="bi bi-plus-lg"></i>
     </button>
     <span class="zoom-divider"></span>
-    <button class="zoom-btn" (click)="fit()" title="Ajustar">
+    <button class="zoom-btn" (click)="fit()" title="Ajustar (0)">
       <i class="bi bi-arrows-fullscreen"></i>
     </button>
     @if (showFullscreen) {
       <span class="zoom-divider"></span>
-      <button class="zoom-btn" (click)="toggleFullscreen()" [title]="isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'">
+      <button class="zoom-btn" (click)="toggleFullscreen()" [title]="(isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa') + ' (f)'">
         <i class="bi" [ngClass]="isFullscreen ? 'bi-fullscreen-exit' : 'bi-fullscreen'"></i>
       </button>
     }
     @if (showDownload) {
       <span class="zoom-divider"></span>
-      <button class="zoom-btn" (click)="downloadImage()" title="Descargar imagen">
+      <button class="zoom-btn" (click)="downloadImage()" title="Descargar imagen (d)">
         <i class="bi bi-download"></i>
       </button>
     }

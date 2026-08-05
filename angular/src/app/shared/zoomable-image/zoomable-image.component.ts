@@ -196,6 +196,15 @@ export class ZoomableImageComponent implements OnChanges, OnDestroy, OnInit {
     } else if (event.key === '-' || event.key === '_') {
       event.preventDefault();
       this.zoomOut();
+    } else if (event.key === '0') {
+      event.preventDefault();
+      this.fit();
+    } else if (event.key === 'f' || event.key === 'F') {
+      event.preventDefault();
+      this.toggleFullscreen();
+    } else if (event.key === 'd' || event.key === 'D') {
+      event.preventDefault();
+      this.downloadImage();
     }
   }
 

@@ -30,7 +30,7 @@
             </button>
           }
 
-          @if (esPreseleccion && isFullscreen && mostrarVotoFs) {
+          @if (esPreseleccion && isFullscreen && (controlesVisibles || mostrarVotoFs)) {
             <div class="juzgamiento-fs-actions">
               @if (fotoAceptada) {
                 <span class="juzgamiento-votado-badge juzgamiento-votado-badge--accept">
