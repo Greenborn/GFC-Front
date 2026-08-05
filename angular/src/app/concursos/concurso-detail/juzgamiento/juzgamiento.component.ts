@@ -25,8 +25,13 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   resultados: ContestResultExpanded[] = [];
   currentIndex: number = 0;
   preseleccionadas: ContestPreselectedPhoto[] = [];
+  isFullscreen: boolean = false;
+  controlesVisibles: boolean = true;
+  mostrarVotoFs: boolean = false;
 
   private subs: Subscription[] = [];
+  private controlesTimer: any = null;
+  private votoFsTimer: any = null;
 
   constructor(
     public concursoDetailService: ConcursoDetailService,
@@ -114,6 +119,54 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     return this.concurso?.judging_stage === 'preseleccion' && this.hasPhotos;
   }
 
+  onFullscreenChange(fs: boolean) {
+    this.isFullscreen = fs;
+    if (fs) {
+      this.controlesVisibles = false;
+      this.mostrarVotoFs = false;
+    } else {
+      this.controlesVisibles = true;
+      this.mostrarVotoFs = false;
+      this.limpiarControlesTimer();
+      this.limpiarVotoFsTimer();
+    }
+  }
+
+  private mostrarVotoTemporalmente() {
+    this.mostrarVotoFs = true;
+    this.limpiarVotoFsTimer();
+    this.votoFsTimer = setTimeout(() => {
+      this.mostrarVotoFs = false;
+      this.votoFsTimer = null;
+    }, 2500);
+  }
+
+  private limpiarVotoFsTimer() {
+    if (this.votoFsTimer != null) {
+      clearTimeout(this.votoFsTimer);
+      this.votoFsTimer = null;
+    }
+  }
+
+  toggleControles() {
+    if (!this.isFullscreen) return;
+    this.controlesVisibles = !this.controlesVisibles;
+    if (this.controlesVisibles) {
+      this.limpiarControlesTimer();
+      this.controlesTimer = setTimeout(() => {
+        this.controlesVisibles = false;
+        this.controlesTimer = null;
+      }, 4000);
+    }
+  }
+
+  private limpiarControlesTimer() {
+    if (this.controlesTimer != null) {
+      clearTimeout(this.controlesTimer);
+      this.controlesTimer = null;
+    }
+  }
+
   get currentPhotoId(): number | null {
     return this.current?.image?.id ?? this.current?.image_id ?? null;
   }
@@ -146,8 +199,22 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keydown', ['$event'])
   onKeydown(event: KeyboardEvent) {
-    if (!this.esPreseleccion) return;
-    if (event.key === '1') {
+    if (event.key === 'h' || event.key === 'H') {
+      if (this.isFullscreen) {
+        event.preventDefault();
+        this.toggleControles();
+      }
+      return;
+    }
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      this.anterior();
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      this.siguiente();
+    } else if (!this.esPreseleccion) {
+      return;
+    } else if (event.key === '1') {
       event.preventDefault();
       this.aceptar();
     } else if (event.key === '2') {
@@ -182,6 +249,9 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     }
 
     this.actualizarPreseleccionLocal(result);
+    if (this.isFullscreen) {
+      this.mostrarVotoTemporalmente();
+    }
 
     this.UIUtilsService.mostrarToast(undefined, {
       message: preselected ? 'Fotografía aceptada' : 'Fotografía rechazada',
@@ -223,6 +293,8 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.limpiarControlesTimer();
+    this.limpiarVotoFsTimer();
     for (const s of this.subs) {
       s.unsubscribe();
     }

@@ -2,7 +2,7 @@
   <div class="row g-0 juzgamiento-row">
 
     <div class="col-12 col-lg-9 juzgamiento-photo-col">
-      <div class="juzgamiento-viewer">
+      <div class="juzgamiento-viewer visor-container" [class.fs]="isFullscreen" [class.controls-hidden]="isFullscreen && !controlesVisibles">
         @if (hasPhotos) {
           <app-zoomable-image
             [src]="currentSrc"
@@ -10,18 +10,43 @@
             [resetKey]="currentIndex"
             [showDownload]="true"
             [showFullscreen]="true"
+            (fullscreenChange)="onFullscreenChange($event)"
           ></app-zoomable-image>
 
-          <button class="btn-nav btn-prev" (click)="anterior()" title="Anterior">
+          <button class="btn-nav btn-prev" (click)="anterior()" title="Anterior (←)">
             <i class="bi bi-chevron-left"></i>
           </button>
-          <button class="btn-nav btn-next" (click)="siguiente()" title="Siguiente">
+          <button class="btn-nav btn-next" (click)="siguiente()" title="Siguiente (→)">
             <i class="bi bi-chevron-right"></i>
           </button>
 
           <div class="juzgamiento-counter">
             {{ currentIndex + 1 }} / {{ resultados.length }}
           </div>
+
+          @if (isFullscreen) {
+            <button class="juzgamiento-fs-toggle" [class.active]="controlesVisibles" (click)="toggleControles()" [title]="(controlesVisibles ? 'Ocultar barra de herramientas' : 'Mostrar barra de herramientas') + ' (h)'">
+              <i class="bi bi-gear"></i>
+            </button>
+          }
+
+          @if (esPreseleccion && isFullscreen && mostrarVotoFs) {
+            <div class="juzgamiento-fs-actions">
+              @if (fotoAceptada) {
+                <span class="juzgamiento-votado-badge juzgamiento-votado-badge--accept">
+                  <i class="bi bi-check-circle-fill"></i> Votaste: Aceptar
+                </span>
+              } @else if (fotoRechazada) {
+                <span class="juzgamiento-votado-badge juzgamiento-votado-badge--reject">
+                  <i class="bi bi-x-circle-fill"></i> Votaste: Rechazar
+                </span>
+              } @else {
+                <span class="juzgamiento-votado-badge juzgamiento-votado-badge--pending">
+                  <i class="bi bi-dash-circle"></i> Aún no votaste esta foto
+                </span>
+              }
+            </div>
+          }
         } @else {
           <div class="juzgamiento-empty">
             <i class="bi bi-shield-check"></i>
@@ -45,10 +70,10 @@
               Presiona <kbd>1</kbd> para aceptar o <kbd>2</kbd> para rechazar la fotografía.
             </p>
             <div class="juzgamiento-preseleccion-actions">
-              <button type="button" class="juzgamiento-btn juzgamiento-btn--accept" (click)="aceptar()">
+              <button type="button" class="juzgamiento-btn juzgamiento-btn--accept" (click)="aceptar()" title="Aceptar (1)">
                 <i class="bi bi-check-lg"></i> Aceptar <kbd>1</kbd>
               </button>
-              <button type="button" class="juzgamiento-btn juzgamiento-btn--reject" (click)="rechazar()">
+              <button type="button" class="juzgamiento-btn juzgamiento-btn--reject" (click)="rechazar()" title="Rechazar (2)">
                 <i class="bi bi-x-lg"></i> Rechazar <kbd>2</kbd>
               </button>
             </div>

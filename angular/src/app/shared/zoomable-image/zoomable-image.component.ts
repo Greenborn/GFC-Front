@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -184,6 +184,17 @@ export class ZoomableImageComponent implements OnChanges, OnDestroy, OnInit {
     if (event.deltaY < 0) {
       this.zoomIn();
     } else {
+      this.zoomOut();
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent) {
+    if (event.key === '+' || event.key === '=') {
+      event.preventDefault();
+      this.zoomIn();
+    } else if (event.key === '-' || event.key === '_') {
+      event.preventDefault();
       this.zoomOut();
     }
   }

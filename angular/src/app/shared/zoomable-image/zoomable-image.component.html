@@ -36,11 +36,11 @@
   </div>
 
   <div class="zoom-controls">
-    <button class="zoom-btn" (click)="zoomOut()" [disabled]="scale <= minScale" title="Alejar">
+    <button class="zoom-btn" (click)="zoomOut()" [disabled]="scale <= minScale" title="Alejar (-)">
       <i class="bi bi-dash-lg"></i>
     </button>
     <span class="zoom-level">{{ scale | number:'1.1-1' }}x</span>
-    <button class="zoom-btn" (click)="zoomIn()" [disabled]="scale >= maxScale" title="Acercar">
+    <button class="zoom-btn" (click)="zoomIn()" [disabled]="scale >= maxScale" title="Acercar (+)">
       <i class="bi bi-plus-lg"></i>
     </button>
     <span class="zoom-divider"></span>

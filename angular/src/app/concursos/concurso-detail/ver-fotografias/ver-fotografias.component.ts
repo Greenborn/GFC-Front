@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConcursoDetailService } from '../concurso-detail.service';
@@ -60,6 +60,17 @@ export class VerFotografiasComponent implements OnInit {
 
   toggleMetadata(){
     this.metadataOpen = !this.metadataOpen;
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent) {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      this.anterior();
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      this.siguiente();
+    }
   }
 
   anterior(){
