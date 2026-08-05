@@ -1,14 +1,44 @@
-<div class="container py-4">
-  <div class="juzgamiento-card">
-    <div class="juzgamiento-icon">
-      <i class="bi bi-shield-check"></i>
+<div class="juzgamiento-layout">
+  <div class="row g-0 juzgamiento-row">
+
+    <div class="col-12 col-lg-9 juzgamiento-photo-col">
+      <div class="juzgamiento-viewer">
+        @if (hasPhotos) {
+          <app-zoomable-image
+            [src]="currentSrc"
+            [title]="currentTitle"
+            [resetKey]="currentIndex"
+            [showDownload]="true"
+            [showFullscreen]="true"
+          ></app-zoomable-image>
+
+          <button class="btn-nav btn-prev" (click)="anterior()" title="Anterior">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <button class="btn-nav btn-next" (click)="siguiente()" title="Siguiente">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+
+          <div class="juzgamiento-counter">
+            {{ currentIndex + 1 }} / {{ resultados.length }}
+          </div>
+        } @else {
+          <div class="juzgamiento-empty">
+            <i class="bi bi-shield-check"></i>
+            <p>No hay fotografías para juzgar en este concurso.</p>
+          </div>
+        }
+      </div>
     </div>
-    <h2 class="juzgamiento-title">Vista de juzgamiento</h2>
-    @if (concurso) {
-      <p class="juzgamiento-subtitle">Concurso: {{ concurso.name }}</p>
-    }
-    <p class="juzgamiento-text">
-      Esta vista se encuentra en construcción.
-    </p>
+
+    <div class="col-12 col-lg-3 juzgamiento-controls-col">
+      <div class="juzgamiento-controls">
+        <h5>Juzgamiento</h5>
+        <p class="text-muted small">
+          Los controles de puntuación del juez se agregarán aquí.
+        </p>
+      </div>
+    </div>
+
   </div>
 </div>

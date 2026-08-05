@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationStart, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { LoadingService } from 'src/app/services/ui/loading.service';
 
@@ -56,6 +57,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
   subs: Subscription[] = [];
   noImg: boolean = false;
   esJuezDelConcurso: boolean = false;
+  isJuzgamiento: boolean = false;
 
 
   constructor(
@@ -89,10 +91,18 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
 
   async ngOnInit() {
     this.desubsc();
+    this.isJuzgamiento = this.router.url.includes('/juzgamiento');
     this.subsc();
   }
 
   subsc(){
+    this.subs.push(
+      this.router.events
+        .pipe(filter(e => e instanceof NavigationEnd))
+        .subscribe(() => {
+          this.isJuzgamiento = this.router.url.includes('/juzgamiento');
+        })
+    );
     this.subs.push(this.concursoDetailService.postImage.subscribe(
       params => {
         this.postImage(params)
