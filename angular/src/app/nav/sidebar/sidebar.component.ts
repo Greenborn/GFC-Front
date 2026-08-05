@@ -14,6 +14,10 @@ import { ProfileService } from 'src/app/services/profile.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { UserLogged } from 'src/app/models/user.model';
 import { firstValueFrom } from 'rxjs';
+import { ContestJudgeService } from 'src/app/services/contest-judge.service';
+import { ContestJudge } from 'src/app/models/contest_judge.model';
+import { ContestService } from 'src/app/services/contest.service';
+import { Contest } from 'src/app/models/contest.model';
 
 export type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -35,6 +39,10 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
   installPrompt: BeforeInstallPromptEvent | null = null;
   appInstalled = false;
 
+  concursosAJuzgar: { id: number; name: string }[] = [];
+
+  private loadedOnce = false;
+
   private triggerElement: HTMLElement | null = null;
   private destroy$ = new Subject<void>();
 
@@ -47,7 +55,9 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
     private el: ElementRef,
     private uiUtils: UiUtilsService,
     private profileService: ProfileService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private contestJudgeService: ContestJudgeService,
+    private contestService: ContestService
   ) { }
 
   get darkMode(): boolean {
@@ -206,11 +216,58 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
       this.installPrompt = null;
     });
 
+    this.refreshIfNeeded();
+
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.destroy$))
       .subscribe(() => {
         this.closeSidebar.emit();
+        this.refreshIfNeeded();
       });
+  }
+
+  private refreshIfNeeded() {
+    if (this.auth.loggedIn) {
+      if (!this.loadedOnce) {
+        this.loadedOnce = true;
+        this.loadConcursosAJuzgar();
+      }
+    } else {
+      this.loadedOnce = false;
+    }
+  }
+
+  async loadConcursosAJuzgar() {
+    this.concursosAJuzgar = [];
+    if (!this.auth.loggedIn) return;
+    const user = await this.auth.user;
+    if (!user?.id) return;
+
+    this.contestService.getAll<Contest>('per-page=1000').subscribe({
+      next: contests => {
+        const judging = (contests || []).filter(c => c.is_judging && !c.judged);
+        if (judging.length === 0) {
+          this.concursosAJuzgar = [];
+          return;
+        }
+        const result: { id: number; name: string }[] = [];
+        let pending = judging.length;
+        for (const c of judging) {
+          this.contestJudgeService.getAll<ContestJudge>(`contest_id=${c.id}`).subscribe({
+            next: jueces => {
+              if ((jueces || []).some(j => j.user_id == user.id)) {
+                result.push({ id: c.id, name: c.name });
+              }
+            },
+            error: () => {},
+            complete: () => {
+              if (--pending === 0) this.concursosAJuzgar = result;
+            }
+          });
+        }
+      },
+      error: () => this.concursosAJuzgar = []
+    })
   }
 
   ngOnDestroy() {

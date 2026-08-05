@@ -50,18 +50,30 @@
                     </span>
                   </div>
                   <div class="col-2 d-none d-md-block text-center">
-                    <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">
-                      <i class="bi bi-camera me-1"></i>{{ m.photo_count ?? 0 }}
-                    </span>
+                    @if (esJuez(m.profile_id)) {
+                      <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill">
+                        <i class="bi bi-person-badge me-1"></i>Juez
+                      </span>
+                    } @else {
+                      <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">
+                        <i class="bi bi-camera me-1"></i>{{ m.photo_count ?? 0 }}
+                      </span>
+                    }
                   </div>
                 </div>
                 <div class="d-flex d-md-none gap-2 px-3 pb-2 pt-0 border-bottom">
                   <span class="badge bg-info bg-opacity-10 text-info rounded-pill small">
                     {{ getCategoryName(m.category_id) || 'Sin categoría' }}
                   </span>
-                  <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill small">
-                    <i class="bi bi-camera me-1"></i>{{ m.photo_count ?? 0 }} fotos
-                  </span>
+                  @if (esJuez(m.profile_id)) {
+                    <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill small">
+                      <i class="bi bi-person-badge me-1"></i>Juez
+                    </span>
+                  } @else {
+                    <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill small">
+                      <i class="bi bi-camera me-1"></i>{{ m.photo_count ?? 0 }} fotos
+                    </span>
+                  }
                   @if (checkPermissions) {
                     <span class="small text-muted">
                       {{ getFotoclubName(m.profile_id) || '' }}

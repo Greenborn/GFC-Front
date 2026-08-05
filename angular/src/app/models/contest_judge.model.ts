@@ -15,4 +15,10 @@ export interface ContestJudge {
       img_url?: string;
     };
   };
+  contest?: {
+    id: number;
+    name: string;
+    is_judging?: boolean;
+    judged?: boolean;
+  };
 }

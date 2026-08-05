@@ -23,6 +23,13 @@
         <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/concursos']" [attr.aria-current]="router.url === '/concursos' || (router.url.startsWith('/concursos/') && !router.url.startsWith('/concursos/ranking')) ? 'page' : null">
           <i class="bi bi-images me-2" aria-hidden="true"></i>Concursos
         </li>
+        @if (concursosAJuzgar.length > 0) {
+          @for (c of concursosAJuzgar; track c.id) {
+            <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/concursos', c.id, 'juzgamiento']">
+              <i class="bi bi-person-badge me-2" aria-hidden="true"></i>Juzgar: {{ c.name }}
+            </li>
+          }
+        }
         @if (rolificador.esDelegado(u)) {
           <li class="list-group-item list-group-item-action clickeable" [routerLink]="['/usuarios']" [attr.aria-current]="router.url.startsWith('/usuarios') ? 'page' : null">
             <i class="bi bi-people me-2" aria-hidden="true"></i>{{ rolificador.getNombreUsuarios(u.role_id) }}

@@ -19,6 +19,20 @@
           <li class="nav-item">
             <a class="nav-link" [class.active]="isActive('/concursos')" [routerLink]="['/concursos']" [attr.aria-current]="isActive('/concursos') ? 'page' : null">Concursos</a>
           </li>
+          @if (concursosAJuzgar.length > 0) {
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Juzgamiento
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end shadow">
+                @for (c of concursosAJuzgar; track c.id) {
+                  <li>
+                    <a class="dropdown-item" [routerLink]="['/concursos', c.id, 'juzgamiento']">{{ c.name }}</a>
+                  </li>
+                }
+              </ul>
+            </li>
+          }
           @if (rolificador.esDelegado(u) || rolificador.isAdmin(u)) {
             <li class="nav-item">
               <a class="nav-link" [class.active]="isActive('/usuarios')" [routerLink]="['/usuarios']" [attr.aria-current]="isActive('/usuarios') ? 'page' : null">{{ rolificador.getNombreUsuarios(u.role_id) }}</a>

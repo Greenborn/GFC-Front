@@ -39,6 +39,7 @@ export class ConcursantesComponent implements OnInit {
   inscriptos: ProfileContestExpanded[] = [];
   categoriasInscriptas: ContestCategoryExpanded[] = [];
   resultadosConcurso: any = [];
+  juecesProfileIds: Set<number> = new Set();
   
   mostrarFiltro: boolean = false;
   public categoriaSeleccionada: Category = null;
@@ -102,6 +103,11 @@ export class ConcursantesComponent implements OnInit {
       this.concursoDetailService.categoriasInscriptas.subscribe(cs => this.categoriasInscriptas = cs)
     )
     this.subscriptions.push(
+      this.concursoDetailService.inscriptosJueces.subscribe(js => {
+        this.juecesProfileIds = new Set(js.map(j => j.profile_id))
+      })
+    )
+    this.subscriptions.push(
       this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
     )
     this.subscriptions.push(
@@ -134,6 +140,10 @@ export class ConcursantesComponent implements OnInit {
 
   isLogedIn(){ //agregado para seguir manteniendo el servicio auth como private
     return this.auth.loggedIn;
+  }
+
+  esJuez(profile_id: number): boolean {
+    return this.juecesProfileIds.has(profile_id);
   }
 
   getFotosCargadas(profile_id: number) {
