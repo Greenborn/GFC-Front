@@ -32,6 +32,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
   private controlesTimer: any = null;
   private votoFsTimer: any = null;
+  private loadedContestId: number | null = null;
 
   constructor(
     public concursoDetailService: ConcursoDetailService,
@@ -47,12 +48,17 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subs.push(
       this.concursoDetailService.concurso.subscribe({
-        next: c => this.concurso = c
+        next: c => {
+          this.concurso = c;
+          this.ensureResults();
+          this.ensurePreseleccionadas();
+        }
       })
     );
     this.subs.push(
       this.contestResultsService.resultadosConcursoGeted.subscribe({
         next: rs => {
+          if (this.loadedContestId !== this.concurso?.id) return;
           this.resultados = rs?.items ?? [];
           if (this.currentIndex >= this.resultados.length) {
             this.currentIndex = Math.max(0, this.resultados.length - 1);
@@ -78,7 +84,8 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
 
   private ensureResults() {
     const id = this.concurso?.id;
-    if (!id || this.resultados.length > 0) return;
+    if (!id) return;
+    this.loadedContestId = id;
     this.contestResultsService.get_all({ contest_id: id });
   }
 
