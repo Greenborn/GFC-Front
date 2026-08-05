@@ -5,6 +5,9 @@ import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ConcursoDetailService } from '../concurso-detail.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestResultsService } from 'src/app/services/contest-results.service';
+import { ContestPreselectedPhotoService } from 'src/app/services/contest-preselected-photo.service';
+import { ContestPreselectedPhoto } from 'src/app/models/contest-preselected-photo.model';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ZoomableImageComponent } from 'src/app/shared/zoomable-image/zoomable-image.component';
 import { Subscription } from 'rxjs';
@@ -21,6 +24,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   concurso: Contest;
   resultados: ContestResultExpanded[] = [];
   currentIndex: number = 0;
+  preseleccionadas: ContestPreselectedPhoto[] = [];
 
   private subs: Subscription[] = [];
 
@@ -28,6 +32,8 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     public concursoDetailService: ConcursoDetailService,
     public configService: ConfigService,
     private contestResultsService: ContestResultsService,
+    private contestPreselectedPhotoService: ContestPreselectedPhotoService,
+    private authService: AuthService,
     public UIUtilsService: UiUtilsService,
   ) {
     this.concurso = this.concursoDetailService.concurso.getValue();
@@ -50,6 +56,19 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
       })
     );
     this.ensureResults();
+    this.ensurePreseleccionadas();
+  }
+
+  private ensurePreseleccionadas() {
+    if (this.concurso?.judging_stage !== 'preseleccion' || !this.concurso?.id) return;
+    this.recargarPreseleccion();
+  }
+
+  private recargarPreseleccion() {
+    if (this.concurso?.judging_stage !== 'preseleccion' || !this.concurso?.id) return;
+    this.contestPreselectedPhotoService.list(this.concurso.id).then(items => {
+      this.preseleccionadas = items ?? [];
+    });
   }
 
   private ensureResults() {
@@ -95,6 +114,36 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     return this.concurso?.judging_stage === 'preseleccion' && this.hasPhotos;
   }
 
+  get currentPhotoId(): number | null {
+    return this.current?.image?.id ?? this.current?.image_id ?? null;
+  }
+
+  get currentContestId(): number | null {
+    return this.current?.contest_id ?? this.concurso?.id ?? null;
+  }
+
+  get preseleccionDeFotoActual(): ContestPreselectedPhoto | null {
+    const imageId = this.currentPhotoId;
+    if (imageId == null) return null;
+    return this.preseleccionadas.find(p => p.image_id === imageId) ?? null;
+  }
+
+  get votosDeFotoActual(): number {
+    return this.preseleccionDeFotoActual?.vote_count ?? 0;
+  }
+
+  get votoPropioDeFotoActual(): 'aceptar' | 'rechazar' | null {
+    return this.preseleccionDeFotoActual?.my_vote ?? null;
+  }
+
+  get fotoAceptada(): boolean {
+    return this.votoPropioDeFotoActual === 'aceptar';
+  }
+
+  get fotoRechazada(): boolean {
+    return this.votoPropioDeFotoActual === 'rechazar';
+  }
+
   @HostListener('window:keydown', ['$event'])
   onKeydown(event: KeyboardEvent) {
     if (!this.esPreseleccion) return;
@@ -107,36 +156,70 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     }
   }
 
-  aceptar() {
+  private async votar(preselected: boolean) {
     if (!this.esPreseleccion) return;
+    const contestId = this.currentContestId;
+    const imageId = this.currentPhotoId;
+    if (contestId == null || imageId == null) {
+      this.UIUtilsService.mostrarToast(undefined, {
+        message: 'No se pudo identificar la fotografía',
+        duration: 2000,
+        position: 'top',
+        color: 'danger',
+      });
+      return;
+    }
+
+    const result = await this.contestPreselectedPhotoService.votar(contestId, imageId, preselected);
+    if (!result) {
+      this.UIUtilsService.mostrarToast(undefined, {
+        message: 'No se pudo guardar el voto',
+        duration: 2000,
+        position: 'top',
+        color: 'danger',
+      });
+      return;
+    }
+
+    this.actualizarPreseleccionLocal(result);
+
     this.UIUtilsService.mostrarToast(undefined, {
-      message: 'Fotografía aceptada',
+      message: preselected ? 'Fotografía aceptada' : 'Fotografía rechazada',
       duration: 1500,
       position: 'top',
-      color: 'success',
+      color: preselected ? 'success' : 'danger',
     });
   }
 
+  private actualizarPreseleccionLocal(result: ContestPreselectedPhoto) {
+    const idx = this.preseleccionadas.findIndex(p => p.image_id === result.image_id);
+    if (idx >= 0) {
+      this.preseleccionadas[idx] = result;
+    } else {
+      this.preseleccionadas.push(result);
+    }
+  }
+
+  aceptar() {
+    this.votar(true);
+  }
+
   rechazar() {
-    if (!this.esPreseleccion) return;
-    this.UIUtilsService.mostrarToast(undefined, {
-      message: 'Fotografía rechazada',
-      duration: 1500,
-      position: 'top',
-      color: 'danger',
-    });
+    this.votar(false);
   }
 
   anterior() {
     if (!this.hasPhotos) return;
     this.currentIndex--;
     if (this.currentIndex < 0) this.currentIndex = this.resultados.length - 1;
+    this.recargarPreseleccion();
   }
 
   siguiente() {
     if (!this.hasPhotos) return;
     this.currentIndex++;
     if (this.currentIndex >= this.resultados.length) this.currentIndex = 0;
+    this.recargarPreseleccion();
   }
 
   ngOnDestroy() {

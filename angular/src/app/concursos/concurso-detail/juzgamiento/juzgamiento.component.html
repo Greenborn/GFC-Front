@@ -52,6 +52,20 @@
                 <i class="bi bi-x-lg"></i> Rechazar <kbd>2</kbd>
               </button>
             </div>
+            <div class="juzgamiento-votos">
+              <span class="juzgamiento-votos-count">
+                <i class="bi bi-people"></i> Votos: {{ votosDeFotoActual }}
+              </span>
+              @if (fotoAceptada) {
+                <span class="juzgamiento-votado-badge juzgamiento-votado-badge--accept">
+                  <i class="bi bi-check-circle-fill"></i> Votaste: Aceptar
+                </span>
+              } @else if (fotoRechazada) {
+                <span class="juzgamiento-votado-badge juzgamiento-votado-badge--reject">
+                  <i class="bi bi-x-circle-fill"></i> Votaste: Rechazar
+                </span>
+              }
+            </div>
           </div>
         } @else if (!hasPhotos) {
           <p class="text-muted small">
