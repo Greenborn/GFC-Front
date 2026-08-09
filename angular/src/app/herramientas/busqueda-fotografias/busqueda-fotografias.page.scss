@@ -1,96 +1,136 @@
 /* Estilos para la vista de búsqueda de fotografías */
 
-/* Estilos para la nota de ayuda */
-.nota-ayuda {
-  margin-bottom: 20px;
-  background: #e8f5e8;
-  border-left: 4px solid #4caf50;
-  
-  .cerrar-nota {
-    margin-left: auto;
-    --color: #4caf50;
-    
-    &:hover {
-      --color: #2e7d32;
+.sticky-search {
+    background: #fff;
+    z-index: 10;
+    position: sticky;
+    top: 0;
+
+    .btn.gfc-btn-back {
+        background: #000;
+        border-color: #000;
+        color: #fff;
     }
-  }
-  
-  .nota-content {
-    padding: 8px 16px 16px 16px;
-    
-    ul {
-      margin: 0;
-      padding-left: 20px;
-      
-      li {
-        margin-bottom: 8px;
-        color: #222428;
-        line-height: 1.4;
-        
-        &:last-child {
-          margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+    .sticky-search .filter-panel {
+        top: 0;
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+}
+
+.filter-panel {
+    position: sticky;
+    top: 60px;
+    max-height: calc(100vh - 116px);
+    overflow-y: auto;
+}
+
+.filter-section {
+    margin-bottom: 1rem;
+}
+
+.filter-section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+    color: #666;
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+
+    .btn {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        background: transparent;
+        color: #333;
+        cursor: pointer;
+        transition: all 0.15s;
+
+        &:hover {
+            background: #f4f5f8;
         }
-      }
+
+        &.btn-primary {
+            background: #3880ff;
+            color: #fff;
+            border-color: #3880ff;
+        }
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
     }
+}
+
+.foto-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    background: #f8f8f8;
+}
+
+.foto-card .img-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 75%;
+    overflow: hidden;
+    background: #eee;
+    cursor: pointer;
+}
+
+.foto-card .img-wrap img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.foto-card .foto-info {
+    padding: 0.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.foto-card .foto-info p {
+    margin-bottom: 0.15rem;
+    line-height: 1.3;
+}
+
+.foto-card .foto-info small {
+    font-size: 0.8rem;
+}
+
+@media (max-width: 767px) {
+  .row.g-2 {
+    --bs-gutter-x: 0;
+    margin-left: 0;
+    margin-right: 0;
   }
-}
-
-/* Estilos para las imágenes en los resultados */
-.card img {
-  width: 100%;
-  height: auto;
-  max-height: 300px;
-  object-fit: contain;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-  
-  &:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  .row.g-2 > [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
   }
-}
-
-.text-center {
-  text-align: center;
-}
-
-/* Icono grande para mensaje sin resultados */
-.icon-large {
-  font-size: 48px;
-  color: #92949c;
-  margin-bottom: 16px;
-}
-
-/* Espaciado para el título de resultados */
-h3 {
-  margin: 20px 0 16px 0;
-  color: #3880ff;
-}
-
-/* Autor en negrita y capitalizado */
-.card-subtitle strong {
-  font-weight: bold;
-  text-transform: capitalize;
-}
-
-/* Centrar tarjeta única y mejorar presentación */
-.centrado-un-resultado {
-  display: flex;
-  justify-content: center;
-}
-
-.centrado-un-resultado .result-row {
-  justify-content: center;
-}
-
-.centrado-un-resultado .result-col {
-  max-width: 400px;
-  flex: 1 1 400px;
-}
-
-@media (max-width: 420px) {
-  .centrado-un-resultado .result-col {
-    max-width: 100%;
-    flex: 1 1 100%;
+  .foto-card {
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .foto-card .foto-info {
+    padding: 0.5rem 0.75rem;
   }
 }
