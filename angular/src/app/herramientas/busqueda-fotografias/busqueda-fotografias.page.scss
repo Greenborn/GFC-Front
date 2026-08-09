@@ -13,6 +13,14 @@
     }
 }
 
+@media (min-width: 768px) {
+    .buscador-row {
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
 @media (max-width: 767px) {
     .sticky-search .filter-panel {
         top: 0;

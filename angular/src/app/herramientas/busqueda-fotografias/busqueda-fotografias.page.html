@@ -1,8 +1,9 @@
 <div class="py-3">
   <div class="sticky-search">
-    <div class="row g-2 align-items-center mb-2">
-      <div class="col">
-        <div class="input-group">
+    <div class="container-fluid">
+      <div class="row g-2 align-items-center mb-2 buscador-row">
+        <div class="col">
+          <div class="input-group">
           <span class="input-group-text"><i class="bi bi-search"></i></span>
           <input class="form-control" type="search" [(ngModel)]="terminoBusqueda" (input)="onSearchChange()" placeholder="Buscar fotografías...">
         </div>
@@ -26,6 +27,7 @@
         </div>
       </div>
     }
+    </div>
   </div>
 
   <div class="row">
