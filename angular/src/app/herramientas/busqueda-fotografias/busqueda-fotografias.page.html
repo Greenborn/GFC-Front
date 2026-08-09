@@ -37,7 +37,6 @@
     <div class="col-12" [ngClass]="sidebarVisible && responsiveService.isDesktop ? 'col-md-9' : 'col-12'">
       @if (resultados.length > 0) {
         <div>
-          <h3 class="mb-3">Resultados ({{ resultados.length }})</h3>
           <div class="row g-2">
             @for (imagen of resultados; track imagen; let i = $index) {
               <ng-container *ngTemplateOutlet="fotoCard; context: { $implicit: imagen, idx: i }"></ng-container>

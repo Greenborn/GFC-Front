@@ -81,5 +81,17 @@ sshpass -p "$PASS" ssh -o StrictHostKeyChecking=no -p "$PUERTO" "$USUARIO@$IP" "
   if [ \"$BUMP\" != \"ninguna\" ]; then
     npm run version -- $BUMP
   fi
+  node -e '
+    const fs = require(\"fs\");
+    const ver = JSON.parse(fs.readFileSync(\"package.json\", \"utf8\")).version;
+    const re = /(APP_VERSION=)\\d+\\.\\d+\\.\\d+/;
+    [\".env\", \"config.env\"].forEach(f => {
+      if (!fs.existsSync(f)) return;
+      let c = fs.readFileSync(f, \"utf8\");
+      c = re.test(c) ? c.replace(re, \"\$1\" + ver) : c + \"\\nAPP_VERSION=\" + ver;
+      fs.writeFileSync(f, c);
+      console.log(\"APP_VERSION sincronizado a \" + ver + \" en \" + f);
+    });
+  '
   npm run build
 "
