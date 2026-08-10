@@ -101,6 +101,25 @@
             Los controles de puntuación del juez se agregarán aquí.
           </p>
         }
+
+        <div class="juzgamiento-jueces">
+          <div class="juzgamiento-jueces-header">
+            <h6>Jueces en línea</h6>
+            <span class="juzgamiento-jueces-count">{{ onlineUserIds.size }}/{{ jueces.length }}</span>
+          </div>
+          <ul class="juzgamiento-jueces-list">
+            @for (juez of jueces; track juez.user_id) {
+              <li class="juzgamiento-juez" [class.online]="isOnline(juez.user_id)">
+                <span class="led" [class.led--on]="isOnline(juez.user_id)"></span>
+                <span class="juzgamiento-juez-nombre">
+                  {{ juez.user?.profile?.name }} {{ juez.user?.profile?.last_name || juez.user?.username }}
+                </span>
+              </li>
+            } @empty {
+              <li class="text-muted small">Sin jueces asignados.</li>
+            }
+          </ul>
+        </div>
       </div>
     </div>
 

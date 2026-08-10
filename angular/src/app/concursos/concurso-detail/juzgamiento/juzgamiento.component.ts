@@ -7,6 +7,8 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestResultsService } from 'src/app/services/contest-results.service';
 import { ContestPreselectedPhotoService } from 'src/app/services/contest-preselected-photo.service';
 import { ContestPreselectedPhoto } from 'src/app/models/contest-preselected-photo.model';
+import { ContestJudgeService } from 'src/app/services/contest-judge.service';
+import { ContestJudge } from 'src/app/models/contest_judge.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ZoomableImageComponent } from 'src/app/shared/zoomable-image/zoomable-image.component';
@@ -29,9 +31,15 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   controlesVisibles: boolean = true;
   mostrarVotoFs: boolean = false;
 
+  jueces: ContestJudge[] = [];
+  onlineUserIds: Set<number> = new Set();
+  isJudging: boolean = false;
+
   private subs: Subscription[] = [];
   private controlesTimer: any = null;
   private votoFsTimer: any = null;
+  private heartbeatTimer: any = null;
+  private activeTimer: any = null;
   private loadedContestId: number | null = null;
 
   constructor(
@@ -39,6 +47,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     public configService: ConfigService,
     private contestResultsService: ContestResultsService,
     private contestPreselectedPhotoService: ContestPreselectedPhotoService,
+    private contestJudgeService: ContestJudgeService,
     private authService: AuthService,
     public UIUtilsService: UiUtilsService,
   ) {
@@ -52,6 +61,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
           this.concurso = c;
           this.ensureResults();
           this.ensurePreseleccionadas();
+          this.iniciarSeguimientoJueces();
         }
       })
     );
@@ -68,6 +78,64 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     );
     this.ensureResults();
     this.ensurePreseleccionadas();
+    this.iniciarSeguimientoJueces();
+  }
+
+  private seguimientoContestId: number | null = null;
+
+  private iniciarSeguimientoJueces() {
+    const id = this.concurso?.id;
+    if (!id) return;
+    if (this.seguimientoContestId === id) return;
+    this.detenerSeguimientoJueces();
+    this.seguimientoContestId = id;
+    this.cargarJueces(id);
+    this.refreshActive();
+    this.activeTimer = setInterval(() => this.refreshActive(), 15000);
+    this.heartbeatTimer = setInterval(() => this.heartbeat(), 30000);
+  }
+
+  private detenerSeguimientoJueces() {
+    if (this.activeTimer != null) {
+      clearInterval(this.activeTimer);
+      this.activeTimer = null;
+    }
+    if (this.heartbeatTimer != null) {
+      clearInterval(this.heartbeatTimer);
+      this.heartbeatTimer = null;
+    }
+  }
+
+  private cargarJueces(contestId: number) {
+    this.contestJudgeService.getAll<ContestJudge>(`contest_id=${contestId}&expand=user,user.profile`).subscribe({
+      next: jueces => this.jueces = jueces ?? [],
+      error: () => this.jueces = [],
+    });
+  }
+
+  private refreshActive() {
+    const id = this.concurso?.id;
+    if (!id) return;
+    this.contestJudgeService.getActive(id).then(res => {
+      this.isJudging = res.is_judging;
+      this.onlineUserIds = new Set(res.items.map(i => i.user_id));
+      if (!this.isJudging) return;
+      this.heartbeat();
+    });
+  }
+
+  private heartbeat() {
+    const id = this.concurso?.id;
+    if (!id || !this.isJudging) return;
+    this.contestJudgeService.heartbeat(id).then(res => {
+      if (res?.code === 409) {
+        this.isJudging = false;
+      }
+    });
+  }
+
+  isOnline(userId: number): boolean {
+    return this.onlineUserIds.has(userId);
   }
 
   private ensurePreseleccionadas() {
@@ -300,6 +368,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.detenerSeguimientoJueces();
     this.limpiarControlesTimer();
     this.limpiarVotoFsTimer();
     for (const s of this.subs) {
