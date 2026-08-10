@@ -405,16 +405,29 @@ get secycat(){
     return '/concursos' + (c.id != null ? `/${c.id}` : '')
   }
 
-  setJudging() {
+  toggleJudging() {
     if (!this.concurso.id) return
-    this.UIUtilsService.mostrarAlert({
-      header: 'Confirmar',
-      message: '¿Está seguro de cambiar a modo de juzgamiento? Esta acción no se puede deshacer.'
-    }, async () => {
-      super.fetch<any>(() => this.contestService.setJudging(this.concurso.id)).subscribe({
+    if (this.concurso.judged) return
+    const activar = !this.concurso.is_judging
+    const header = activar ? 'Modo de juzgamiento' : 'Confirmar'
+    const message = activar
+      ? '¿Está seguro de cambiar a modo de juzgamiento? Esta acción no se puede deshacer.'
+      : '¿Está seguro de sacar el concurso de la etapa de juzgamiento?'
+    this.UIUtilsService.mostrarAlert({ header, message }, async () => {
+      const call = activar
+        ? this.contestService.setJudging(this.concurso.id)
+        : this.contestService.disableJudging(this.concurso.id)
+      super.fetch<any>(() => call).subscribe({
         next: async res => {
           const data = res?.data || res
-          await this.UIUtilsService.mostrarToast(undefined, { message: `Modo juzgamiento activado para "${data.name}"` })
+          super.fetch<Contest>(() => this.contestService.get(this.concurso.id)).subscribe(c => {
+            this.concurso = c
+          })
+          await this.UIUtilsService.mostrarToast(undefined, {
+            message: activar
+              ? `Modo juzgamiento activado para "${data.name}"`
+              : `El concurso "${data.name}" ha sido sacado de la etapa de juzgamiento`
+          })
         },
         error: async err => {
           await this.UIUtilsService.mostrarError({ message: this.getErrorMessage(err) })

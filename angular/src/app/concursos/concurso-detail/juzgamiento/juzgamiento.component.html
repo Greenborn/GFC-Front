@@ -58,10 +58,12 @@
 
     <div class="col-12 col-lg-3 juzgamiento-controls-col">
       <div class="juzgamiento-controls">
-        <h5>Juzgamiento</h5>
-        <div class="juzgamiento-stage-badge">
-          <i [class]="etapaJuzgamientoIcono"></i>
-          <span>Etapa: {{ etapaJuzgamiento }}</span>
+        <div class="juzgamiento-header">
+          <h5 class="juzgamiento-title">Juzgamiento</h5>
+          <div class="juzgamiento-stage-badge">
+            <i [class]="etapaJuzgamientoIcono"></i>
+            <span>Etapa: {{ etapaJuzgamiento }}</span>
+          </div>
         </div>
 
         @if (esPreseleccion) {
