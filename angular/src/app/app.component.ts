@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { SSOAuthService, SSOSocketService } from 'angular-greenborn-sso-front';
 import { ConsoleLogService } from './services/console-log.service';
 import { ResponsiveService } from './services/ui/responsive.service';
 import { NavbarComponent } from './nav/navbar/navbar.component';
 import { SidebarComponent } from './nav/sidebar/sidebar.component';
+import { AuthService } from './modules/auth/services/auth.service';
 
 @Component({
   standalone: true,
@@ -12,13 +15,17 @@ import { SidebarComponent } from './nav/sidebar/sidebar.component';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   sidebarOpen = false;
+  private socketSub: Subscription;
 
   constructor(
     public router: Router,
     public responsiveService: ResponsiveService,
-    private consoleLogService: ConsoleLogService
+    private consoleLogService: ConsoleLogService,
+    private ssoAuth: SSOAuthService,
+    private ssoSocket: SSOSocketService,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -66,6 +73,31 @@ export class AppComponent implements OnInit {
         usuario_id: localStorage.getItem('usuario_id') || undefined
       });
     });
+
+    this.setupWebSocket();
+  }
+
+  private setupWebSocket(): void {
+    const haySesion = this.ssoAuth.isSSOSession() || !!this.auth.token;
+    if (!haySesion) {
+      console.log('[WebSocket] Sin sesión activa, no se intenta conectar.');
+      return;
+    }
+
+    this.socketSub = this.ssoSocket.connected$.subscribe(connected => {
+      if (connected) {
+        console.log('[WebSocket] Conexión establecida.');
+      }
+    });
+
+    this.ssoSocket.connect();
+  }
+
+  ngOnDestroy(): void {
+    if (this.socketSub) {
+      this.socketSub.unsubscribe();
+    }
+    this.ssoSocket.disconnect();
   }
 
   toggleSidebar() {

@@ -16,6 +16,7 @@ const SSO_CONFIG = {
   ssoRedirect: environment.ssoRedirect,
   nodeApiBaseUrl: environment.nodeApiBaseUrl,
   appName: environment.appName,
+  wsUrl: environment.wsUrl,
   wsPath: '/socket.io',
 };
 

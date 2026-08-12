@@ -36,7 +36,8 @@ function generateEnvContent(vars, production) {
   imagesBaseUrl: ${JSON.stringify(vars.IMAGES_BASE_URL || '')},
   nodeApiBaseUrl: ${JSON.stringify(vars.NODE_API_BASE_URL || '')},
   ssoBaseUrl: ${JSON.stringify(vars.SSO_BASE_URL || '')},
-  ssoRedirect: ${JSON.stringify(vars.SSO_REDIRECT || '')}
+  ssoRedirect: ${JSON.stringify(vars.SSO_REDIRECT || '')},
+  wsUrl: ${JSON.stringify(vars.WS_URL || '')}
 };
 `;
 }
