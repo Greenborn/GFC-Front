@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "^21.2.18",
     "@angular/router": "^21.2.18",
     "@angular/service-worker": "^21.2.18",
+    "angular-greenborn-sso-front": "^1.0.1",
     "axios": "^1.18.1",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.13.1",

@@ -3,58 +3,23 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, withPreloading, withHashLocation, PreloadAllModules } from '@angular/router';
 import { provideZoneChangeDetection } from '@angular/core';
 import { provideServiceWorker } from '@angular/service-worker';
-import axios from 'axios';
+import { provideSso, installSsoAxiosInterceptors } from 'angular-greenborn-sso-front';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app-routing.module';
 import { GlobalErrorHandler } from './app/services/global-error-handler';
-import { ToastService } from './app/services/ui/toast.service';
-import { extractErrorMessage } from './app/shared/error-utils';
 import { environment } from './environments/environment';
-
-const API_BASE_URL = (environment as any).nodeApiBaseUrl;
-const isLoginUrl = (url: string) => url.endsWith('/auth/login') || url.includes('/auth/login?');
 
 let appInjector: EnvironmentInjector | null = null;
 
-axios.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response?.status === 401 && error.config?.url?.startsWith(API_BASE_URL) && !isLoginUrl(error.config.url)) {
-      const tokenKey = (environment as any).appName + 'token';
-      localStorage.removeItem(tokenKey);
-      window.location.hash = '#/login';
-    }
+const SSO_CONFIG = {
+  ssoBaseUrl: environment.ssoBaseUrl,
+  ssoRedirect: environment.ssoRedirect,
+  nodeApiBaseUrl: environment.nodeApiBaseUrl,
+  appName: environment.appName,
+  wsPath: '/socket.io',
+};
 
-    if (error.response?.status === 403 && error.config?.url?.startsWith(API_BASE_URL)) {
-      const message = extractErrorMessage(error, '');
-      if (message) {
-        if (appInjector) {
-          appInjector.get(ToastService).show({ message, color: 'danger', duration: 5000 });
-        } else {
-          console.error('[403]', message);
-        }
-      }
-    }
-
-    return Promise.reject(error);
-  }
-);
-
-axios.interceptors.request.use(config => {
-  if (config.url?.startsWith(API_BASE_URL)) {
-    const tokenKey = (environment as any).appName + 'token';
-    const token = localStorage.getItem(tokenKey);
-    if (token) {
-      config.headers.Authorization = 'Bearer ' + token;
-    }
-    const uniqueId = localStorage.getItem('sso_client_unique_id');
-    if (uniqueId) {
-      const separator = config.url.includes('?') ? '&' : '?';
-      config.url += separator + 'unique_id=' + encodeURIComponent(uniqueId);
-    }
-  }
-  return config;
-});
+installSsoAxiosInterceptors(SSO_CONFIG).install();
 
 if (environment.production) {
   enableProdMode();
@@ -64,6 +29,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideZoneChangeDetection(),
     provideRouter(routes, withHashLocation(), withPreloading(PreloadAllModules)),
+    provideSso(SSO_CONFIG),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:3000'

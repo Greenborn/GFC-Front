@@ -16,7 +16,7 @@ import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { Profile } from 'src/app/models/profile.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { SSOAuthService } from 'src/app/modules/auth/services/sso-auth.service';
+import { SSOAuthService } from 'angular-greenborn-sso-front';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
