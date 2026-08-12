@@ -11,6 +11,7 @@ import { ContestJudgeService } from 'src/app/services/contest-judge.service';
 import { ContestJudge } from 'src/app/models/contest_judge.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { SSOSocketService } from 'angular-greenborn-sso-front';
 import { ZoomableImageComponent } from 'src/app/shared/zoomable-image/zoomable-image.component';
 import { Subscription } from 'rxjs';
 
@@ -34,13 +35,15 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   jueces: ContestJudge[] = [];
   onlineUserIds: Set<number> = new Set();
   isJudging: boolean = false;
+  socketError: string | null = null;
 
+  private presente: Map<number, { last_active: number; user?: any }> = new Map();
   private subs: Subscription[] = [];
   private controlesTimer: any = null;
   private votoFsTimer: any = null;
   private heartbeatTimer: any = null;
-  private activeTimer: any = null;
   private loadedContestId: number | null = null;
+  private juecesUpdateHandler: ((payload: any) => void) | null = null;
 
   constructor(
     public concursoDetailService: ConcursoDetailService,
@@ -49,6 +52,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     private contestPreselectedPhotoService: ContestPreselectedPhotoService,
     private contestJudgeService: ContestJudgeService,
     private authService: AuthService,
+    private ssoSocket: SSOSocketService,
     public UIUtilsService: UiUtilsService,
   ) {
     this.concurso = this.concursoDetailService.concurso.getValue();
@@ -87,23 +91,26 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     const id = this.concurso?.id;
     if (!id) return;
     if (this.seguimientoContestId === id) return;
+    const prevId = this.seguimientoContestId;
     this.detenerSeguimientoJueces();
+    if (prevId != null) {
+      this.ssoSocket.emit('contest:leave', { contest_id: prevId });
+    }
     this.seguimientoContestId = id;
     this.cargarJueces(id);
-    this.refreshActive();
-    this.activeTimer = setInterval(() => this.refreshActive(), 15000);
-    this.heartbeatTimer = setInterval(() => this.heartbeat(), 30000);
+    this.conectarPresencia(id);
   }
 
   private detenerSeguimientoJueces() {
-    if (this.activeTimer != null) {
-      clearInterval(this.activeTimer);
-      this.activeTimer = null;
+    if (this.juecesUpdateHandler != null) {
+      this.ssoSocket.off('contest:judges:update', this.juecesUpdateHandler);
+      this.juecesUpdateHandler = null;
     }
     if (this.heartbeatTimer != null) {
       clearInterval(this.heartbeatTimer);
       this.heartbeatTimer = null;
     }
+    this.socketError = null;
   }
 
   private cargarJueces(contestId: number) {
@@ -113,29 +120,86 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     });
   }
 
-  private refreshActive() {
-    const id = this.concurso?.id;
-    if (!id) return;
-    this.contestJudgeService.getActive(id).then(res => {
-      this.isJudging = res.is_judging;
-      this.onlineUserIds = new Set(res.items.map(i => i.user_id));
-      if (!this.isJudging) return;
-      this.heartbeat();
+  private conectarPresencia(contestId: number) {
+    if (!this.juecesUpdateHandler) {
+      this.juecesUpdateHandler = (payload: any) => this.aplicarPresencia(payload);
+      this.ssoSocket.on('contest:judges:update', this.juecesUpdateHandler);
+    }
+
+    this.subs.push(
+      this.ssoSocket.connected$.subscribe(connected => {
+        if (connected) {
+          this.unirseAlConcurso(contestId);
+        }
+      })
+    );
+
+    this.ssoSocket.connect();
+    if (this.ssoSocket.isConnected) {
+      this.unirseAlConcurso(contestId);
+    }
+
+    this.heartbeatTimer = setInterval(() => this.heartbeatSocket(), 25000);
+  }
+
+  private unirseAlConcurso(contestId: number) {
+    this.ssoSocket.emit('contest:join', { contest_id: contestId }, (res: any) => {
+      if (res?.success) {
+        this.isJudging = res.is_judging === true;
+        this.socketError = null;
+        this.aplicarPresencia(res);
+      } else {
+        this.isJudging = false;
+        this.socketError = res?.error || 'No se pudo unir al juzgamiento';
+      }
     });
   }
 
-  private heartbeat() {
+  private aplicarPresencia(payload: any) {
+    if (payload?.contest_id != null && payload.contest_id !== this.concurso?.id) return;
+    const items = payload?.items ?? [];
+    const map = new Map<number, { last_active: number; user?: any }>();
+    const ids = new Set<number>();
+    for (const item of items) {
+      if (item?.user_id == null) continue;
+      ids.add(item.user_id);
+      map.set(item.user_id, {
+        last_active: item.last_active,
+        user: item.user,
+      });
+    }
+    this.presente = map;
+    this.onlineUserIds = ids;
+    if (payload?.is_judging != null) {
+      this.isJudging = payload.is_judging === true;
+    }
+  }
+
+  private heartbeatSocket() {
     const id = this.concurso?.id;
     if (!id || !this.isJudging) return;
-    this.contestJudgeService.heartbeat(id).then(res => {
-      if (res?.code === 409) {
+    this.ssoSocket.emit('contest:heartbeat', { contest_id: id }, (res: any) => {
+      if (res && res.success === false) {
         this.isJudging = false;
+        this.socketError = res.error || null;
       }
     });
   }
 
   isOnline(userId: number): boolean {
     return this.onlineUserIds.has(userId);
+  }
+
+  lastActiveLabel(userId: number): string {
+    const entry = this.presente.get(userId);
+    if (!entry || entry.last_active == null) return '';
+    const diff = Math.floor((Date.now() - entry.last_active * 1000) / 1000);
+    if (diff < 0) return 'ahora';
+    if (diff < 60) return `hace ${diff} s`;
+    const min = Math.floor(diff / 60);
+    if (min < 60) return `hace ${min} min`;
+    const horas = Math.floor(min / 60);
+    return `hace ${horas} h`;
   }
 
   private ensurePreseleccionadas() {
@@ -368,6 +432,10 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    const id = this.seguimientoContestId;
+    if (id != null) {
+      this.ssoSocket.emit('contest:leave', { contest_id: id });
+    }
     this.detenerSeguimientoJueces();
     this.limpiarControlesTimer();
     this.limpiarVotoFsTimer();

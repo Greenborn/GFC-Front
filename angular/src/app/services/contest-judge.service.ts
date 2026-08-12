@@ -56,43 +56,4 @@ export class ContestJudgeService extends ApiService<ContestJudge> {
       : axios.put(url, model, { headers });
     return from(request.then(r => r.data));
   }
-
-  heartbeat(contest_id: number): Promise<any> {
-    const url = `${this.getBaseUrl()}${this.getPath()}/heartbeat`;
-    return axios.post(url, { contest_id }, {
-      headers: { ...this.getHeaders(), 'Content-Type': 'application/json' }
-    }).then(r => r.data ?? { success: true }).catch(error => {
-      const status = error?.response?.status ?? 0;
-      if (status === 409) {
-        return { success: false, code: 409 };
-      }
-      console.error('Error al reportar juez activo', error);
-      return { success: false, code: status };
-    });
-  }
-
-  getActive(contest_id: number): Promise<{ items: ContestActive[]; is_judging: boolean }> {
-    const url = `${this.getBaseUrl()}${this.getPath()}/active?contest_id=${contest_id}`;
-    return axios.get(url, { headers: this.getHeaders() }).then(r => {
-      const data = r.data ?? {};
-      return {
-        items: data?.items ?? [],
-        is_judging: data?.is_judging === true,
-      };
-    }).catch(error => {
-      console.error('Error al consultar jueces activos', error);
-      return { items: [], is_judging: false };
-    });
-  }
-}
-
-export interface ContestActive {
-  user_id: number;
-  last_active: number;
-  user?: {
-    id: number;
-    username: string;
-    email: string;
-    profile_id: number;
-  };
 }

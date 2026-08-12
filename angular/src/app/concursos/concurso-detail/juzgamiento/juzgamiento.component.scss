@@ -394,6 +394,35 @@
   text-overflow: ellipsis;
 }
 
+.juzgamiento-juez-last {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 11px;
+  color: #198754;
+  white-space: nowrap;
+}
+
+.juzgamiento-juez.online {
+  border-color: #a5d6a7;
+}
+
+.juzgamiento-socket-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  background: #fdecea;
+  color: #b71c1c;
+  border: 1px solid #f0b4b4;
+}
+
+.juzgamiento-socket-alert i {
+  font-size: 15px;
+}
+
 .led {
   flex-shrink: 0;
   width: 11px;
@@ -424,6 +453,16 @@
 
 :host-context(.dark) .juzgamiento-juez-nombre {
   color: #adb5bd;
+}
+
+:host-context(.dark) .juzgamiento-juez-last {
+  color: #81c784;
+}
+
+:host-context(.dark) .juzgamiento-socket-alert {
+  background: rgba(220, 53, 69, 0.15);
+  color: #ef9a9a;
+  border-color: rgba(224, 121, 121, 0.4);
 }
 
 @media (max-width: 991px) {
