@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SSOAuthService, SSOSocketService } from 'angular-greenborn-sso-front';
+import { SSOAuthService, SSOSocketService, SSO_TOKEN_KEY } from 'angular-greenborn-sso-front';
 import { ConsoleLogService } from './services/console-log.service';
 import { ResponsiveService } from './services/ui/responsive.service';
 import { NavbarComponent } from './nav/navbar/navbar.component';
@@ -78,6 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private setupWebSocket(): void {
+    this.asegurarTokenSocket();
     const haySesion = this.ssoAuth.isSSOSession() || !!this.auth.token;
     if (!haySesion) {
       console.log('[WebSocket] Sin sesión activa, no se intenta conectar.');
@@ -91,6 +92,21 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     this.ssoSocket.connect();
+  }
+
+  // El socket usa sso_bearer_token. Si la sesión es local (solo gfc_token), no hay
+  // sso_bearer_token y el socket quedaría sin token. Copiamos el token local como respaldo
+  // únicamente cuando sso_bearer_token está vacío (no afecta una sesión SSO activa).
+  private asegurarTokenSocket(): void {
+    try {
+      if (localStorage.getItem(SSO_TOKEN_KEY)) return;
+      const localToken = this.auth.token;
+      if (localToken) {
+        localStorage.setItem(SSO_TOKEN_KEY, localToken);
+      }
+    } catch (e) {
+      console.warn('[WebSocket] No se pudo asegurar el token del socket', e);
+    }
   }
 
   ngOnDestroy(): void {

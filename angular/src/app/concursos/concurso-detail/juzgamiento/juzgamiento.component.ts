@@ -15,7 +15,7 @@ import { Metric } from 'src/app/models/metric.model';
 import { ContestService } from 'src/app/services/contest.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
-import { SSOSocketService } from 'angular-greenborn-sso-front';
+import { SSOSocketService, SSO_TOKEN_KEY } from 'angular-greenborn-sso-front';
 import { ZoomableImageComponent } from 'src/app/shared/zoomable-image/zoomable-image.component';
 import { Subscription } from 'rxjs';
 
@@ -194,13 +194,38 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.ssoSocket.connect();
+    this.asegurarTokenSocket();
     if (this.ssoSocket.isConnected) {
       this.unirseAlConcurso(contestId);
+    } else {
+      this.reconectarSocket(contestId);
     }
 
     if (this.presenciaTimer == null) {
       this.presenciaTimer = setInterval(() => this.refrescarPresencia(), 15000);
+    }
+  }
+
+  // El socket de la librería, una vez creado, no reconecta con `connect()` (if(socket) return).
+  // Al no estar conectado, forzamos disconnect()+connect() para crear una conexión nueva con
+  // el token vigente. Si aún no se creó el cliente, disconnect() es no-op y connect() lo crea.
+  private reconectarSocket(contestId: number) {
+    this.ssoSocket.disconnect();
+    this.ssoSocket.connect();
+    if (this.ssoSocket.isConnected) {
+      this.unirseAlConcurso(contestId);
+    }
+  }
+
+  private asegurarTokenSocket(): void {
+    try {
+      if (localStorage.getItem(SSO_TOKEN_KEY)) return;
+      const localToken = this.authService.token;
+      if (localToken) {
+        localStorage.setItem(SSO_TOKEN_KEY, localToken);
+      }
+    } catch (e) {
+      console.warn('[WebSocket] No se pudo asegurar el token del socket', e);
     }
   }
 
