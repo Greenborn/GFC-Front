@@ -26,7 +26,7 @@
             @if (modoGuiaActivo) {
               {{ guia!.remaining_count }} restantes
             } @else {
-              {{ currentIndex + 1 }} / {{ resultados.length }}
+              {{ (currentIndex % resultadosFiltrados.length) + 1 }} / {{ resultadosFiltrados.length }}
             }
           </div>
 
@@ -58,6 +58,11 @@
             <i class="bi bi-check-all"></i>
             <p>{{ esJuez ? '¡Juzgaste todas las fotografías!' : 'El juzgamiento de este concurso está completo.' }}</p>
           </div>
+        } @else if (filtro !== 'actual') {
+          <div class="juzgamiento-empty">
+            <i class="bi bi-funnel"></i>
+            <p>No hay fotografías que coincidan con el filtro seleccionado.</p>
+          </div>
         } @else {
           <div class="juzgamiento-empty">
             <i class="bi bi-shield-check"></i>
@@ -76,6 +81,20 @@
             <span>Etapa: {{ etapaJuzgamiento }}</span>
           </div>
         </div>
+
+        @if (esPreseleccion) {
+          <div class="juzgamiento-filtros" role="group" aria-label="Filtrar por resultado de votación">
+            @for (op of filtroOpciones; track op.value) {
+              <button
+                type="button"
+                class="juzgamiento-filtro"
+                [class.active]="filtro === op.value"
+                (click)="cambiarFiltro(op.value)">
+                <i [class]="op.icono"></i> {{ op.label }}
+              </button>
+            }
+          </div>
+        }
 
         @if (esPreseleccion) {
           <div class="juzgamiento-preseleccion">

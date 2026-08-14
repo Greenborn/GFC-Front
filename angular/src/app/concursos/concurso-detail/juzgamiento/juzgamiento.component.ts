@@ -15,6 +15,16 @@ import { SSOSocketService } from 'angular-greenborn-sso-front';
 import { ZoomableImageComponent } from 'src/app/shared/zoomable-image/zoomable-image.component';
 import { Subscription } from 'rxjs';
 
+type FiltroJuzgamiento = 'actual' | 'todas' | 'preseleccionadas' | 'rechazadas' | 'sin_votar';
+
+const FILTROS: { value: FiltroJuzgamiento; label: string; icono: string }[] = [
+  { value: 'actual', label: 'Actual', icono: 'bi bi-play-fill' },
+  { value: 'todas', label: 'Todas', icono: 'bi bi-grid' },
+  { value: 'preseleccionadas', label: 'Preseleccionadas', icono: 'bi bi-check-circle' },
+  { value: 'rechazadas', label: 'Rechazadas', icono: 'bi bi-x-circle' },
+  { value: 'sin_votar', label: 'Sin votar', icono: 'bi bi-clock' },
+];
+
 @Component({
   standalone: true,
   imports: [CommonModule, ZoomableImageComponent],
@@ -27,6 +37,8 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   concurso: Contest;
   resultados: ContestResultExpanded[] = [];
   currentIndex: number = 0;
+  filtro: FiltroJuzgamiento = 'actual';
+  readonly filtroOpciones = FILTROS;
   preseleccionadas: ContestPreselectedPhoto[] = [];
   guia: ContestCurrentPhoto | null = null;
   cargandoGuia: boolean = false;
@@ -259,8 +271,26 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     return this.resultados.length > 0;
   }
 
+  get resultadosFiltrados(): ContestResultExpanded[] {
+    if (this.filtro === 'actual' || this.filtro === 'todas') return this.resultados;
+
+    const map = new Map<number, ContestPreselectedPhoto>();
+    for (const p of this.preseleccionadas) {
+      if (p.image_id != null) map.set(p.image_id, p);
+    }
+
+    return this.resultados.filter(r => {
+      const imgId = r.image?.id ?? r.image_id;
+      const item = map.get(imgId);
+      if (this.filtro === 'preseleccionadas') return item?.preselected === true;
+      if (this.filtro === 'rechazadas') return !!item && item.preselected === false;
+      if (this.filtro === 'sin_votar') return !item;
+      return true;
+    });
+  }
+
   get modoGuiaActivo(): boolean {
-    return this.concurso?.judging_stage === 'preseleccion';
+    return this.filtro === 'actual' && this.concurso?.judging_stage === 'preseleccion';
   }
 
   get guiaFotoActual() {
@@ -273,11 +303,14 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   get mostrarVisor(): boolean {
-    return this.modoGuiaActivo ? this.guiaFotoActual != null : this.hasPhotos;
+    return this.modoGuiaActivo ? this.guiaFotoActual != null : this.resultadosFiltrados.length > 0;
   }
 
   get current(): ContestResultExpanded | null {
-    return this.hasPhotos ? this.resultados[this.currentIndex] : null;
+    const list = this.resultadosFiltrados;
+    if (list.length === 0) return null;
+    const idx = Math.max(0, Math.min(this.currentIndex, list.length - 1));
+    return list[idx];
   }
 
   get currentSrc(): string {
@@ -307,6 +340,16 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
 
   get esPreseleccion(): boolean {
     return this.concurso?.judging_stage === 'preseleccion';
+  }
+
+  cambiarFiltro(f: FiltroJuzgamiento) {
+    if (this.filtro === f) return;
+    this.filtro = f;
+    this.currentIndex = 0;
+    if (f === 'actual') {
+      this.cargarGuia();
+    }
+    this.recargarPreseleccion();
   }
 
   onFullscreenChange(fs: boolean) {
@@ -475,17 +518,19 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
 
   anterior() {
     if (this.modoGuiaActivo) return;
-    if (!this.hasPhotos) return;
+    const list = this.resultadosFiltrados;
+    if (list.length === 0) return;
     this.currentIndex--;
-    if (this.currentIndex < 0) this.currentIndex = this.resultados.length - 1;
+    if (this.currentIndex < 0) this.currentIndex = list.length - 1;
     this.recargarPreseleccion();
   }
 
   siguiente() {
     if (this.modoGuiaActivo) return;
-    if (!this.hasPhotos) return;
+    const list = this.resultadosFiltrados;
+    if (list.length === 0) return;
     this.currentIndex++;
-    if (this.currentIndex >= this.resultados.length) this.currentIndex = 0;
+    if (this.currentIndex >= list.length) this.currentIndex = 0;
     this.recargarPreseleccion();
   }
 
