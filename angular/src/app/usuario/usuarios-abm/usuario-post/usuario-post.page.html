@@ -10,7 +10,7 @@
             </a>
           }
           <div class="flex-grow-1">
-            <app-btn-post [posting]="posting" [text]="submitBtnText" [disabled]="!hasChanges"></app-btn-post>
+            <app-btn-post [posting]="posting" [text]="submitBtnText" [disabled]="!hasChanges" (post)="postUsuario()"></app-btn-post>
           </div>
         </div>
       </div>
