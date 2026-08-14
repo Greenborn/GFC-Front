@@ -37,6 +37,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   jueces: ContestJudge[] = [];
   onlineUserIds: Set<number> = new Set();
   isJudging: boolean = false;
+  esJuez: boolean = false;
   socketError: string | null = null;
 
   private presente: Map<number, { last_active: number; user?: any }> = new Map();
@@ -44,6 +45,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   private controlesTimer: any = null;
   private votoFsTimer: any = null;
   private heartbeatTimer: any = null;
+  private pollTimer: any = null;
   private loadedContestId: number | null = null;
   private juecesUpdateHandler: ((payload: any) => void) | null = null;
 
@@ -112,14 +114,36 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
       clearInterval(this.heartbeatTimer);
       this.heartbeatTimer = null;
     }
+    if (this.pollTimer != null) {
+      clearInterval(this.pollTimer);
+      this.pollTimer = null;
+    }
     this.socketError = null;
   }
 
   private cargarJueces(contestId: number) {
-    this.contestJudgeService.getAll<ContestJudge>(`contest_id=${contestId}&expand=user,user.profile`).subscribe({
-      next: jueces => this.jueces = jueces ?? [],
-      error: () => this.jueces = [],
+    this.authService.user.then(user => {
+      this.contestJudgeService.getAll<ContestJudge>(`contest_id=${contestId}&expand=user,user.profile`).subscribe({
+        next: jueces => {
+          this.jueces = jueces ?? [];
+          this.esJuez = user?.role_id === 1 || (jueces ?? []).some(j => j.user_id == user?.id);
+          if (this.esJuez && this.heartbeatTimer == null) {
+            this.heartbeatTimer = setInterval(() => this.heartbeatSocket(), 25000);
+          }
+          this.iniciarSeguimientoEnVivo();
+        },
+        error: () => this.jueces = [],
+      });
     });
+  }
+
+  private iniciarSeguimientoEnVivo() {
+    if (this.esJuez) return;
+    if (this.pollTimer != null) return;
+    this.pollTimer = setInterval(() => {
+      this.cargarGuia();
+      this.recargarPreseleccion();
+    }, 10000);
   }
 
   private conectarPresencia(contestId: number) {
@@ -140,8 +164,6 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     if (this.ssoSocket.isConnected) {
       this.unirseAlConcurso(contestId);
     }
-
-    this.heartbeatTimer = setInterval(() => this.heartbeatSocket(), 25000);
   }
 
   private unirseAlConcurso(contestId: number) {
@@ -179,7 +201,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
 
   private heartbeatSocket() {
     const id = this.concurso?.id;
-    if (!id || !this.isJudging) return;
+    if (!id || !this.esJuez || !this.isJudging) return;
     this.ssoSocket.emit('contest:heartbeat', { contest_id: id }, (res: any) => {
       if (res && res.success === false) {
         this.isJudging = false;
@@ -394,6 +416,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   private async votar(preselected: boolean) {
+    if (!this.esJuez) return;
     if (!this.esPreseleccion) return;
     if (this.todasJuzgadas || !this.mostrarVisor) return;
     const contestId = this.currentContestId;

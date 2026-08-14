@@ -36,7 +36,7 @@
             </button>
           }
 
-          @if (esPreseleccion && isFullscreen && (controlesVisibles || mostrarVotoFs)) {
+          @if (esPreseleccion && esJuez && isFullscreen && (controlesVisibles || mostrarVotoFs)) {
             <div class="juzgamiento-fs-actions">
               @if (fotoAceptada) {
                 <span class="juzgamiento-votado-badge juzgamiento-votado-badge--accept">
@@ -56,7 +56,7 @@
         } @else if (todasJuzgadas) {
           <div class="juzgamiento-empty juzgamiento-empty--done">
             <i class="bi bi-check-all"></i>
-            <p>¡Juzgaste todas las fotografías!</p>
+            <p>{{ esJuez ? '¡Juzgaste todas las fotografías!' : 'El juzgamiento de este concurso está completo.' }}</p>
           </div>
         } @else {
           <div class="juzgamiento-empty">
@@ -86,9 +86,9 @@
             } @else if (todasJuzgadas) {
               <div class="juzgamiento-done">
                 <i class="bi bi-check-all"></i>
-                <p>Completaste la preselección de este concurso.</p>
+                <p>{{ esJuez ? 'Completaste la preselección de este concurso.' : 'El juzgamiento de este concurso está completo.' }}</p>
               </div>
-            } @else {
+            } @else if (esJuez) {
             <p class="text-muted small">
               Presiona <kbd>1</kbd> para aceptar o <kbd>2</kbd> para rechazar la fotografía.
             </p>
@@ -113,6 +113,18 @@
                   <i class="bi bi-x-circle-fill"></i> Votaste: Rechazar
                 </span>
               }
+            </div>
+            } @else {
+            <div class="juzgamiento-votos">
+              <span class="juzgamiento-votos-count">
+                <i class="bi bi-people"></i> Votos: {{ votosDeFotoActual }}
+              </span>
+              <span class="juzgamiento-votos-count">
+                <i class="bi bi-check-circle"></i> Aceptadas: {{ preseleccionDeFotoActual?.accept_count ?? 0 }}
+              </span>
+              <span class="juzgamiento-votos-count">
+                <i class="bi bi-x-circle"></i> Rechazadas: {{ preseleccionDeFotoActual?.reject_count ?? 0 }}
+              </span>
             </div>
             }
           </div>

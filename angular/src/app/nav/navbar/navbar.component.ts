@@ -16,8 +16,6 @@ import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { UserLogged } from 'src/app/models/user.model';
 import { firstValueFrom } from 'rxjs';
-import { ContestJudgeService } from 'src/app/services/contest-judge.service';
-import { ContestJudge } from 'src/app/models/contest_judge.model';
 import { ContestService } from 'src/app/services/contest.service';
 import { Contest } from 'src/app/models/contest.model';
 
@@ -47,7 +45,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private profileService: ProfileService,
     public responsiveService: ResponsiveService,
     private alertService: AlertService,
-    private contestJudgeService: ContestJudgeService,
     private contestService: ContestService
   ) { }
 
@@ -76,31 +73,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   async loadConcursosAJuzgar() {
     this.concursosAJuzgar = [];
     if (!this.auth.loggedIn) return;
-    const user = await this.auth.user;
-    if (!user?.id) return;
 
     this.contestService.getAll<Contest>('per-page=1000').subscribe({
       next: contests => {
         const judging = (contests || []).filter(c => c.is_judging && !c.judged);
-        if (judging.length === 0) {
-          this.concursosAJuzgar = [];
-          return;
-        }
-        const result: { id: number; name: string }[] = [];
-        let pending = judging.length;
-        for (const c of judging) {
-          this.contestJudgeService.getAll<ContestJudge>(`contest_id=${c.id}`).subscribe({
-            next: jueces => {
-              if ((jueces || []).some(j => j.user_id == user.id)) {
-                result.push({ id: c.id, name: c.name });
-              }
-            },
-            error: () => {},
-            complete: () => {
-              if (--pending === 0) this.concursosAJuzgar = result;
-            }
-          });
-        }
+        this.concursosAJuzgar = judging.map(c => ({ id: c.id, name: c.name }));
       },
       error: () => this.concursosAJuzgar = []
     })
