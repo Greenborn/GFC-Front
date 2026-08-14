@@ -317,6 +317,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         }
         //En caso de que se trate de un formulario de registro de usuario
       if (this.isUserSignUp){
+        if (this.posting) return;
         if (this.form.invalid) {
           Object.keys(this.form.controls).forEach(key => {
             this.form.get(key)?.markAsTouched();
@@ -359,10 +360,12 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
         body.img_perfil_b64 = this.file ? await this.resizeImageToBase64(this.file) : null;
 
+        this.posting = true;
         await this.UIUtilsService.presentLoading();
         this.createUserService.post(body, undefined, '', headers).subscribe(
           ok => {
             this.UIUtilsService.dismissLoading();
+            this.posting = false;
             if (ok['success'] == false){
               super.displayAlert(this.errorFilter(ok['error']));
             } else if (isSSO) {
@@ -381,6 +384,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           },
           err => {
             this.UIUtilsService.dismissLoading();       
+            this.posting = false;
             super.displayAlert("Ocurrió un error al intentar realizar la petición de registro de usuario.");
           }
         );
