@@ -98,7 +98,7 @@
           <i class="bi bi-list fs-5" aria-hidden="true"></i>
         </button>
       } @else {
-        @if (router.url != '/login') {
+        @if (router.url != '/login' && router.url != '/registro') {
           <a class="btn btn-outline-secondary" [routerLink]="['/login']" aria-label="Iniciar sesión">Ingresar</a>
         }
       }

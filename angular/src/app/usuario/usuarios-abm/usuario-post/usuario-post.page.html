@@ -2,7 +2,17 @@
   <div class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10 col-xl-9">
-        <app-btn-post [posting]="posting" [text]="submitBtnText" [disabled]="!hasChanges" (post)="postUsuario()"></app-btn-post>
+        <div class="d-flex gap-2">
+          @if (isUserSignUp) {
+            <a class="btn btn-outline-secondary btn-sm flex-shrink-0 d-flex align-items-center"
+              [routerLink]="['/']" aria-label="Volver al inicio">
+              <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Volver
+            </a>
+          }
+          <div class="flex-grow-1">
+            <app-btn-post [posting]="posting" [text]="submitBtnText" [disabled]="!hasChanges" (post)="postUsuario()"></app-btn-post>
+          </div>
+        </div>
       </div>
     </div>
   </div>
