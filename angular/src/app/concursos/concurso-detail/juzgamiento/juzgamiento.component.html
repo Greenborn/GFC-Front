@@ -178,6 +178,42 @@
           <p class="text-muted small">
             No hay fotografías para juzgar.
           </p>
+        } @else if (esPuntuacion) {
+          <div class="juzgamiento-puntuacion">
+            <p class="text-muted small mb-1">
+              Fotos votadas: <strong>{{ puntuacionProgreso }}</strong>
+            </p>
+            @if (cargandoPuntuacion) {
+              <p class="text-muted small">Cargando votos...</p>
+            } @else if (esJuez) {
+              <div class="juzgamiento-metricas" role="group" aria-label="Asignar métrica">
+                @for (met of metricasDisponibles; track met.id) {
+                  <button
+                    type="button"
+                    class="juzgamiento-metrica"
+                    [class.active]="miVotoFotoActual === met.id"
+                    (click)="votarMetrica(met.id!)">
+                    <i class="bi bi-trophy"></i> {{ met.prize }}
+                  </button>
+                } @empty {
+                  <span class="text-muted small">No hay métricas para este tipo de concurso.</span>
+                }
+              </div>
+              @if (miVotoFotoActual != null) {
+                <p class="text-success small mb-0"><i class="bi bi-check-circle-fill"></i> Tu métrica: {{ metricaActualName }}</p>
+              }
+            } @else {
+              <div class="juzgamiento-votos">
+                @for (v of votosFotoActual; track v.metric_abm_id) {
+                  <span class="juzgamiento-votos-count">
+                    <i class="bi bi-trophy"></i> {{ v.metric_abm?.prize ?? v.metric_abm_id }}: {{ v.count }}
+                  </span>
+                } @empty {
+                  <span class="text-muted small">Sin votos aún.</span>
+                }
+              </div>
+            }
+          </div>
         } @else {
           <p class="text-muted small">
             Los controles de puntuación del juez se agregarán aquí.

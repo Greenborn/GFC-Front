@@ -10,6 +10,8 @@ import { ContestPreselectedPhoto, ContestCurrentPhoto } from 'src/app/models/con
 import { ContestJudgeService } from 'src/app/services/contest-judge.service';
 import { ContestJudge } from 'src/app/models/contest_judge.model';
 import { ContestApproveService, ContestApprovalStatus } from 'src/app/services/contest-approve.service';
+import { ContestPuntuacionService, PuntuacionStatus, PuntuacionItem, PuntuacionVoteCount } from 'src/app/services/contest-puntuacion.service';
+import { Metric } from 'src/app/models/metric.model';
 import { ContestService } from 'src/app/services/contest.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
@@ -57,6 +59,9 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   cargandoAprobacion: boolean = false;
   aprobando: boolean = false;
   cambiandoFase: boolean = false;
+  puntuacion: PuntuacionStatus | null = null;
+  cargandoPuntuacion: boolean = false;
+  votandoMetrica: boolean = false;
 
   private presente: Map<number, { last_active: number; user?: any }> = new Map();
   private subs: Subscription[] = [];
@@ -75,6 +80,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     private contestPreselectedPhotoService: ContestPreselectedPhotoService,
     private contestJudgeService: ContestJudgeService,
     private contestApproveService: ContestApproveService,
+    private contestPuntuacionService: ContestPuntuacionService,
     private contestService: ContestService,
     private authService: AuthService,
     private ssoSocket: SSOSocketService,
@@ -90,6 +96,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
           this.concurso = c;
           this.ensureResults();
           this.ensurePreseleccionadas();
+          this.ensurePuntuacion();
           this.iniciarSeguimientoJueces();
         }
       })
@@ -169,6 +176,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
       this.cargarGuia();
       this.recargarPreseleccion();
       this.cargarAprobacion();
+      this.cargarPuntuacion();
     }, 10000);
   }
 
@@ -368,6 +376,65 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     const s = this.aprobacion;
     if (!s) return '—';
     return `${s.approved_count ?? 0}/${s.judges_count ?? 0}`;
+  }
+
+  private ensurePuntuacion() {
+    if (this.concurso?.judging_stage !== 'puntuacion' || !this.concurso?.id) return;
+    this.cargarPuntuacion();
+  }
+
+  private cargarPuntuacion() {
+    if (this.concurso?.judging_stage !== 'puntuacion' || !this.concurso?.id) return;
+    this.cargandoPuntuacion = true;
+    this.contestPuntuacionService.getStatus(this.concurso.id).then(s => {
+      this.puntuacion = s;
+      this.cargandoPuntuacion = false;
+    });
+  }
+
+  votarMetrica(metricAbmId: number) {
+    const id = this.concurso?.id;
+    const imageId = this.currentPhotoId;
+    if (!id || imageId == null || this.votandoMetrica || !this.esJuez) return;
+    this.votandoMetrica = true;
+    this.contestPuntuacionService.votar(id, imageId, metricAbmId).then(() => {
+      this.votandoMetrica = false;
+      this.cargarPuntuacion();
+    });
+  }
+
+  get esPuntuacion(): boolean {
+    return this.concurso?.judging_stage === 'puntuacion';
+  }
+
+  get metricasDisponibles(): Metric[] {
+    return this.puntuacion?.metrics ?? [];
+  }
+
+  get itemPuntuacionFotoActual(): PuntuacionItem | null {
+    const imageId = this.currentPhotoId;
+    if (imageId == null || !this.puntuacion) return null;
+    return this.puntuacion.items.find(i => i.image_id === imageId) ?? null;
+  }
+
+  get miVotoFotoActual(): number | null {
+    return this.itemPuntuacionFotoActual?.my_vote ?? null;
+  }
+
+  get votosFotoActual(): PuntuacionVoteCount[] {
+    return this.itemPuntuacionFotoActual?.votes ?? [];
+  }
+
+  get puntuacionProgreso(): string {
+    const s = this.puntuacion;
+    if (!s) return '—';
+    return `${s.judged_count ?? 0}/${s.total_count ?? 0}`;
+  }
+
+  get metricaActualName(): string {
+    const id = this.miVotoFotoActual;
+    if (id == null) return '';
+    return this.metricasDisponibles.find(m => m.id === id)?.prize ?? '';
   }
 
   private ensureResults() {

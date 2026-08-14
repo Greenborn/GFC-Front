@@ -315,6 +315,53 @@
   cursor: not-allowed;
 }
 
+.juzgamiento-puntuacion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.juzgamiento-metricas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.juzgamiento-metrica {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  background: transparent;
+  color: #495057;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.juzgamiento-metrica:hover {
+  background: #e9ecef;
+}
+
+.juzgamiento-metrica.active {
+  background: #198754;
+  border-color: #198754;
+  color: #fff;
+}
+
+:host-context(.dark) .juzgamiento-metrica {
+  border-color: #495057;
+  color: #ced4da;
+}
+
+:host-context(.dark) .juzgamiento-metrica:hover {
+  background: #343a40;
+}
+
 .juzgamiento-preseleccion {
   display: flex;
   flex-direction: column;
