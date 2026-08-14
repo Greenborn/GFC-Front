@@ -278,6 +278,43 @@
   background: #343a40;
 }
 
+.juzgamiento-aprobacion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px dashed #dee2e6;
+  border-radius: 10px;
+  background: rgba(25, 135, 84, 0.04);
+}
+
+.juzgamiento-aprobacion-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #198754;
+}
+
+:host-context(.dark) .juzgamiento-aprobacion {
+  border-color: #495057;
+}
+
+.juzgamiento-btn--approve {
+  background: #198754;
+}
+
+.juzgamiento-btn--puntuar {
+  background: #0d6efd;
+  margin-top: 4px;
+}
+
+.juzgamiento-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .juzgamiento-preseleccion {
   display: flex;
   flex-direction: column;

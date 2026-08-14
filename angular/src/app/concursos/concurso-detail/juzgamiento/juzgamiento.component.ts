@@ -9,6 +9,8 @@ import { ContestPreselectedPhotoService } from 'src/app/services/contest-presele
 import { ContestPreselectedPhoto, ContestCurrentPhoto } from 'src/app/models/contest-preselected-photo.model';
 import { ContestJudgeService } from 'src/app/services/contest-judge.service';
 import { ContestJudge } from 'src/app/models/contest_judge.model';
+import { ContestApproveService, ContestApprovalStatus } from 'src/app/services/contest-approve.service';
+import { ContestService } from 'src/app/services/contest.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { SSOSocketService } from 'angular-greenborn-sso-front';
@@ -51,6 +53,10 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   isJudging: boolean = false;
   esJuez: boolean = false;
   socketError: string | null = null;
+  aprobacion: ContestApprovalStatus | null = null;
+  cargandoAprobacion: boolean = false;
+  aprobando: boolean = false;
+  cambiandoFase: boolean = false;
 
   private presente: Map<number, { last_active: number; user?: any }> = new Map();
   private subs: Subscription[] = [];
@@ -67,6 +73,8 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     private contestResultsService: ContestResultsService,
     private contestPreselectedPhotoService: ContestPreselectedPhotoService,
     private contestJudgeService: ContestJudgeService,
+    private contestApproveService: ContestApproveService,
+    private contestService: ContestService,
     private authService: AuthService,
     private ssoSocket: SSOSocketService,
     public UIUtilsService: UiUtilsService,
@@ -155,6 +163,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     this.pollTimer = setInterval(() => {
       this.cargarGuia();
       this.recargarPreseleccion();
+      this.cargarAprobacion();
     }, 10000);
   }
 
@@ -242,6 +251,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     if (this.concurso?.judging_stage !== 'preseleccion' || !this.concurso?.id) return;
     this.recargarPreseleccion();
     this.cargarGuia();
+    this.cargarAprobacion();
   }
 
   private recargarPreseleccion() {
@@ -258,6 +268,89 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
       this.guia = g;
       this.cargandoGuia = false;
     });
+  }
+
+  private cargarAprobacion() {
+    if (this.concurso?.judging_stage !== 'preseleccion' || !this.concurso?.id) return;
+    this.cargandoAprobacion = true;
+    this.contestApproveService.getStatus(this.concurso.id).then(s => {
+      this.aprobacion = s;
+      this.cargandoAprobacion = false;
+    });
+  }
+
+  aprobar() {
+    const id = this.concurso?.id;
+    if (!id || this.aprobando || !this.esJuez) return;
+    this.aprobando = true;
+    this.contestApproveService.aprobar(id).then(s => {
+      this.aprobando = false;
+      if (s) {
+        this.aprobacion = s;
+        this.UIUtilsService.mostrarToast(undefined, {
+          message: 'Visto bueno registrado',
+          duration: 1500,
+          position: 'top',
+          color: 'success',
+        });
+      } else {
+        this.UIUtilsService.mostrarToast(undefined, {
+          message: 'No se pudo registrar el visto bueno',
+          duration: 2000,
+          position: 'top',
+          color: 'danger',
+        });
+      }
+    });
+  }
+
+  pasarAPuntuacion() {
+    const id = this.concurso?.id;
+    if (!id || this.cambiandoFase || !this.allAprobado) return;
+    this.cambiandoFase = true;
+    this.contestService.cambiarJudgingStage(id, 'puntuacion').subscribe({
+      next: () => {
+        this.cambiandoFase = false;
+        this.concursoDetailService.loadContest(id).then(() => {
+          this.ensureResults();
+          this.ensurePreseleccionadas();
+        });
+        this.UIUtilsService.mostrarToast(undefined, {
+          message: 'El concurso pasó a fase de Puntuación',
+          duration: 2000,
+          position: 'top',
+          color: 'success',
+        });
+      },
+      error: err => {
+        this.cambiandoFase = false;
+        const msg = err?.response?.data?.message || err?.message || 'No se pudo cambiar de fase';
+        this.UIUtilsService.mostrarToast(undefined, {
+          message: msg,
+          duration: 2500,
+          position: 'top',
+          color: 'danger',
+        });
+      }
+    });
+  }
+
+  get preseleccionCompleta(): boolean {
+    return this.aprobacion?.preseleccion_completa === true;
+  }
+
+  get allAprobado(): boolean {
+    return this.aprobacion?.all_approved === true;
+  }
+
+  get myAprobo(): boolean {
+    return this.aprobacion?.my_approved === true;
+  }
+
+  get aprobacionProgreso(): string {
+    const s = this.aprobacion;
+    if (!s) return '—';
+    return `${s.approved_count ?? 0}/${s.judges_count ?? 0}`;
   }
 
   private ensureResults() {

@@ -97,6 +97,33 @@
         }
 
         @if (esPreseleccion) {
+          <div class="juzgamiento-aprobacion">
+            <div class="juzgamiento-aprobacion-header">
+              <i class="bi bi-flag"></i> Avanzar a Puntuación
+            </div>
+            <p class="text-muted small mb-1">
+              Visto bueno de jueces: <strong>{{ aprobacionProgreso }}</strong>
+            </p>
+            @if (!preseleccionCompleta) {
+              <p class="text-muted small">
+                La preselección aún no está completa: falta votar sobre todas las fotografías.
+              </p>
+            } @else if (esJuez && !myAprobo) {
+              <button type="button" class="juzgamiento-btn juzgamiento-btn--approve" (click)="aprobar()" [disabled]="aprobando">
+                <i class="bi bi-check2-circle"></i> {{ aprobando ? 'Guardando...' : 'Dar visto bueno' }}
+              </button>
+            } @else if (esJuez && myAprobo) {
+              <p class="text-success small mb-0"><i class="bi bi-check-circle-fill"></i> Diste tu visto bueno.</p>
+            }
+            @if (allAprobado && esJuez) {
+              <button type="button" class="juzgamiento-btn juzgamiento-btn--puntuar" (click)="pasarAPuntuacion()" [disabled]="cambiandoFase">
+                <i class="bi bi-arrow-right-circle"></i> {{ cambiandoFase ? 'Cambiando...' : 'Pasar a fase de Puntuación' }}
+              </button>
+            }
+          </div>
+        }
+
+        @if (esPreseleccion) {
           <div class="juzgamiento-preseleccion">
             @if (cargandoGuia) {
               <p class="text-muted small">
