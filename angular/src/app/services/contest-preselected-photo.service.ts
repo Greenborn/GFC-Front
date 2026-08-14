@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { ApiService } from './api.service';
 import { ConfigService } from './config/config.service';
-import { ContestPreselectedPhoto } from '../models/contest-preselected-photo.model';
+import { ContestPreselectedPhoto, ContestCurrentPhoto } from '../models/contest-preselected-photo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,7 @@ export class ContestPreselectedPhotoService extends ApiService<ContestPreselecte
     super('contest-preselected-photo', config)
     this.customBaseUrl = config.data.nodeApiBaseUrl
     this.unwrapResponse = 'items'
+    this.useAuthHeader = true
   }
 
   get template(): ContestPreselectedPhoto {
@@ -34,6 +35,17 @@ export class ContestPreselectedPhotoService extends ApiService<ContestPreselecte
     } catch (error) {
       console.error('Error al listar fotos preseleccionadas', error);
       return [];
+    }
+  }
+
+  async current(contest_id: number): Promise<ContestCurrentPhoto | null> {
+    try {
+      const url = `${this.getBaseUrl()}${this.getPath()}/current?contest_id=${contest_id}`;
+      const res = await axios.get(url, { headers: this.getHeaders() });
+      return res.data as ContestCurrentPhoto;
+    } catch (error) {
+      console.error('Error al obtener foto actual de juzgamiento', error);
+      return null;
     }
   }
 

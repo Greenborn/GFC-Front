@@ -3,7 +3,7 @@
 
     <div class="col-12 col-lg-9 juzgamiento-photo-col">
       <div class="juzgamiento-viewer visor-container" [class.fs]="isFullscreen" [class.controls-hidden]="isFullscreen && !controlesVisibles">
-        @if (hasPhotos) {
+        @if (mostrarVisor) {
           <app-zoomable-image
             [src]="currentSrc"
             [title]="currentTitle"
@@ -13,15 +13,21 @@
             (fullscreenChange)="onFullscreenChange($event)"
           ></app-zoomable-image>
 
-          <button class="btn-nav btn-prev" (click)="anterior()" title="Anterior (←)">
-            <i class="bi bi-chevron-left"></i>
-          </button>
-          <button class="btn-nav btn-next" (click)="siguiente()" title="Siguiente (→)">
-            <i class="bi bi-chevron-right"></i>
-          </button>
+          @if (!modoGuiaActivo) {
+            <button class="btn-nav btn-prev" (click)="anterior()" title="Anterior (←)">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="btn-nav btn-next" (click)="siguiente()" title="Siguiente (→)">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          }
 
           <div class="juzgamiento-counter">
-            {{ currentIndex + 1 }} / {{ resultados.length }}
+            @if (modoGuiaActivo) {
+              {{ guia!.remaining_count }} restantes
+            } @else {
+              {{ currentIndex + 1 }} / {{ resultados.length }}
+            }
           </div>
 
           @if (isFullscreen) {
@@ -47,6 +53,11 @@
               }
             </div>
           }
+        } @else if (todasJuzgadas) {
+          <div class="juzgamiento-empty juzgamiento-empty--done">
+            <i class="bi bi-check-all"></i>
+            <p>¡Juzgaste todas las fotografías!</p>
+          </div>
         } @else {
           <div class="juzgamiento-empty">
             <i class="bi bi-shield-check"></i>
@@ -68,6 +79,16 @@
 
         @if (esPreseleccion) {
           <div class="juzgamiento-preseleccion">
+            @if (cargandoGuia) {
+              <p class="text-muted small">
+                Cargando fotografía...
+              </p>
+            } @else if (todasJuzgadas) {
+              <div class="juzgamiento-done">
+                <i class="bi bi-check-all"></i>
+                <p>Completaste la preselección de este concurso.</p>
+              </div>
+            } @else {
             <p class="text-muted small">
               Presiona <kbd>1</kbd> para aceptar o <kbd>2</kbd> para rechazar la fotografía.
             </p>
@@ -93,6 +114,7 @@
                 </span>
               }
             </div>
+            }
           </div>
         } @else if (!hasPhotos) {
           <p class="text-muted small">

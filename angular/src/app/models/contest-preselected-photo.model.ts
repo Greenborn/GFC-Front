@@ -10,3 +10,20 @@ export interface ContestPreselectedPhoto {
     my_vote?: 'aceptar' | 'rechazar' | null;
     image?: any;
 }
+
+export interface ContestCurrentPhotoImage {
+    image_id: number;
+    code: string;
+    title: string;
+    url: string;
+    section_id: number;
+}
+
+export interface ContestCurrentPhoto {
+    contest_id: number;
+    current_photo: ContestCurrentPhotoImage | null;
+    judged_count: number;
+    total_count: number;
+    remaining_count: number;
+    all_judged: boolean;
+}

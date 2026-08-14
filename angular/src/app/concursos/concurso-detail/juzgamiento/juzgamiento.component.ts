@@ -6,7 +6,7 @@ import { ConcursoDetailService } from '../concurso-detail.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ContestResultsService } from 'src/app/services/contest-results.service';
 import { ContestPreselectedPhotoService } from 'src/app/services/contest-preselected-photo.service';
-import { ContestPreselectedPhoto } from 'src/app/models/contest-preselected-photo.model';
+import { ContestPreselectedPhoto, ContestCurrentPhoto } from 'src/app/models/contest-preselected-photo.model';
 import { ContestJudgeService } from 'src/app/services/contest-judge.service';
 import { ContestJudge } from 'src/app/models/contest_judge.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
@@ -28,6 +28,8 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   resultados: ContestResultExpanded[] = [];
   currentIndex: number = 0;
   preseleccionadas: ContestPreselectedPhoto[] = [];
+  guia: ContestCurrentPhoto | null = null;
+  cargandoGuia: boolean = false;
   isFullscreen: boolean = false;
   controlesVisibles: boolean = true;
   mostrarVotoFs: boolean = false;
@@ -205,12 +207,22 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   private ensurePreseleccionadas() {
     if (this.concurso?.judging_stage !== 'preseleccion' || !this.concurso?.id) return;
     this.recargarPreseleccion();
+    this.cargarGuia();
   }
 
   private recargarPreseleccion() {
     if (this.concurso?.judging_stage !== 'preseleccion' || !this.concurso?.id) return;
     this.contestPreselectedPhotoService.list(this.concurso.id).then(items => {
       this.preseleccionadas = items ?? [];
+    });
+  }
+
+  private cargarGuia() {
+    if (this.concurso?.judging_stage !== 'preseleccion' || !this.concurso?.id) return;
+    this.cargandoGuia = true;
+    this.contestPreselectedPhotoService.current(this.concurso.id).then(g => {
+      this.guia = g;
+      this.cargandoGuia = false;
     });
   }
 
@@ -225,17 +237,34 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     return this.resultados.length > 0;
   }
 
+  get modoGuiaActivo(): boolean {
+    return this.concurso?.judging_stage === 'preseleccion';
+  }
+
+  get guiaFotoActual() {
+    return this.guia?.current_photo ?? null;
+  }
+
+  get todasJuzgadas(): boolean {
+    return this.modoGuiaActivo && !this.cargandoGuia && this.guia !== null &&
+      (this.guia.all_judged === true || this.guiaFotoActual == null);
+  }
+
+  get mostrarVisor(): boolean {
+    return this.modoGuiaActivo ? this.guiaFotoActual != null : this.hasPhotos;
+  }
+
   get current(): ContestResultExpanded | null {
     return this.hasPhotos ? this.resultados[this.currentIndex] : null;
   }
 
   get currentSrc(): string {
-    const url = this.current?.image?.url;
+    const url = this.modoGuiaActivo ? this.guiaFotoActual?.url : this.current?.image?.url;
     return url != null ? this.configService.imageUrl(url) : '';
   }
 
   get currentTitle(): string {
-    return this.current?.image?.title ?? '';
+    return this.modoGuiaActivo ? (this.guiaFotoActual?.title ?? '') : (this.current?.image?.title ?? '');
   }
 
   get etapaJuzgamiento(): string {
@@ -255,7 +284,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   get esPreseleccion(): boolean {
-    return this.concurso?.judging_stage === 'preseleccion' && this.hasPhotos;
+    return this.concurso?.judging_stage === 'preseleccion';
   }
 
   onFullscreenChange(fs: boolean) {
@@ -307,10 +336,12 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   get currentPhotoId(): number | null {
+    if (this.modoGuiaActivo) return this.guiaFotoActual?.image_id ?? null;
     return this.current?.image?.id ?? this.current?.image_id ?? null;
   }
 
   get currentContestId(): number | null {
+    if (this.modoGuiaActivo) return this.guia?.contest_id ?? this.concurso?.id ?? null;
     return this.current?.contest_id ?? this.concurso?.id ?? null;
   }
 
@@ -364,6 +395,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
 
   private async votar(preselected: boolean) {
     if (!this.esPreseleccion) return;
+    if (this.todasJuzgadas || !this.mostrarVisor) return;
     const contestId = this.currentContestId;
     const imageId = this.currentPhotoId;
     if (contestId == null || imageId == null) {
@@ -388,6 +420,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     }
 
     this.actualizarPreseleccionLocal(result);
+    this.cargarGuia();
     if (this.isFullscreen) {
       this.mostrarVotoTemporalmente();
     }
@@ -418,6 +451,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   anterior() {
+    if (this.modoGuiaActivo) return;
     if (!this.hasPhotos) return;
     this.currentIndex--;
     if (this.currentIndex < 0) this.currentIndex = this.resultados.length - 1;
@@ -425,6 +459,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   siguiente() {
+    if (this.modoGuiaActivo) return;
     if (!this.hasPhotos) return;
     this.currentIndex++;
     if (this.currentIndex >= this.resultados.length) this.currentIndex = 0;
