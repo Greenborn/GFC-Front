@@ -146,7 +146,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       }
     }
 
-    if(this.isLogged()){
+    if(this.isLogged() && !this.isUserSignUp){
       this.auth.user.then(u => this.userLogged = u)
       dataPromises.push(
         new Promise(resolve => super.fetch<Role[]>(() => this.roleService.getAll()).subscribe(r => {
