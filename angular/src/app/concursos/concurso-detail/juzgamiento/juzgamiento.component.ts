@@ -64,6 +64,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   private votoFsTimer: any = null;
   private heartbeatTimer: any = null;
   private pollTimer: any = null;
+  private presenciaTimer: any = null;
   private loadedContestId: number | null = null;
   private juecesUpdateHandler: ((payload: any) => void) | null = null;
 
@@ -138,6 +139,10 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
       clearInterval(this.pollTimer);
       this.pollTimer = null;
     }
+    if (this.presenciaTimer != null) {
+      clearInterval(this.presenciaTimer);
+      this.presenciaTimer = null;
+    }
     this.socketError = null;
   }
 
@@ -185,6 +190,18 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     if (this.ssoSocket.isConnected) {
       this.unirseAlConcurso(contestId);
     }
+
+    if (this.presenciaTimer == null) {
+      this.presenciaTimer = setInterval(() => this.refrescarPresencia(), 15000);
+    }
+  }
+
+  private refrescarPresencia() {
+    const id = this.concurso?.id;
+    if (id == null) return;
+    this.contestJudgeService.getActivos(id).then(res => {
+      if (res) this.aplicarPresencia(res);
+    });
   }
 
   private unirseAlConcurso(contestId: number) {

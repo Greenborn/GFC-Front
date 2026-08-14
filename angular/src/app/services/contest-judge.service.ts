@@ -56,4 +56,16 @@ export class ContestJudgeService extends ApiService<ContestJudge> {
       : axios.put(url, model, { headers });
     return from(request.then(r => r.data));
   }
+
+  getActivos(contest_id: number): Promise<{ items: ContestJudge[]; is_judging: boolean } | null> {
+    let params = `contest_id=${contest_id}`;
+    const uniqueId = localStorage.getItem('sso_client_unique_id');
+    if (uniqueId) {
+      params += '&unique_id=' + encodeURIComponent(uniqueId);
+    }
+    const url = `${this.getBaseUrl()}${this.getPath()}/active?${params}`;
+    return axios.get(url, { headers: this.getHeaders() })
+      .then(r => (r.data as any) ?? null)
+      .catch(() => null);
+  }
 }
