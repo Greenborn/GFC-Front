@@ -19,14 +19,21 @@ import { SSOSocketService, SSO_TOKEN_KEY } from 'angular-greenborn-sso-front';
 import { ZoomableImageComponent } from 'src/app/shared/zoomable-image/zoomable-image.component';
 import { Subscription } from 'rxjs';
 
-type FiltroJuzgamiento = 'actual' | 'todas' | 'preseleccionadas' | 'rechazadas' | 'sin_votar';
+type FiltroJuzgamiento = 'actual' | 'todas' | 'preseleccionadas' | 'rechazadas' | 'sin_votar' | 'puntuadas' | 'sin_puntuar';
 
-const FILTROS: { value: FiltroJuzgamiento; label: string; icono: string }[] = [
+const FILTROS_PRESELECCION: { value: FiltroJuzgamiento; label: string; icono: string }[] = [
   { value: 'actual', label: 'Actual', icono: 'bi bi-play-fill' },
   { value: 'todas', label: 'Todas', icono: 'bi bi-grid' },
   { value: 'preseleccionadas', label: 'Preseleccionadas', icono: 'bi bi-check-circle' },
   { value: 'rechazadas', label: 'Rechazadas', icono: 'bi bi-x-circle' },
   { value: 'sin_votar', label: 'Sin votar', icono: 'bi bi-clock' },
+];
+
+const FILTROS_PUNTUACION: { value: FiltroJuzgamiento; label: string; icono: string }[] = [
+  { value: 'actual', label: 'Actual', icono: 'bi bi-play-fill' },
+  { value: 'todas', label: 'Todas', icono: 'bi bi-grid' },
+  { value: 'puntuadas', label: 'Puntuadas', icono: 'bi bi-trophy' },
+  { value: 'sin_puntuar', label: 'Sin puntuar', icono: 'bi bi-clock' },
 ];
 
 @Component({
@@ -42,7 +49,6 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   resultados: ContestResultExpanded[] = [];
   currentIndex: number = 0;
   filtro: FiltroJuzgamiento = 'actual';
-  readonly filtroOpciones = FILTROS;
   preseleccionadas: ContestPreselectedPhoto[] = [];
   guia: ContestCurrentPhoto | null = null;
   cargandoGuia: boolean = false;
@@ -473,8 +479,25 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     return this.resultados.length > 0;
   }
 
+  get filtroOpciones(): { value: FiltroJuzgamiento; label: string; icono: string }[] {
+    return this.esPuntuacion ? FILTROS_PUNTUACION : FILTROS_PRESELECCION;
+  }
+
   get resultadosFiltrados(): ContestResultExpanded[] {
     if (this.filtro === 'actual' || this.filtro === 'todas') return this.resultados;
+
+    if (this.esPuntuacion) {
+      const votos = new Map<number, number>();
+      for (const it of this.puntuacion?.items ?? []) {
+        votos.set(it.image_id, it.total_votes ?? 0);
+      }
+      return this.resultados.filter(r => {
+        const total = votos.get(r.image?.id ?? r.image_id) ?? 0;
+        if (this.filtro === 'puntuadas') return total > 0;
+        if (this.filtro === 'sin_puntuar') return total === 0;
+        return true;
+      });
+    }
 
     const map = new Map<number, ContestPreselectedPhoto>();
     for (const p of this.preseleccionadas) {

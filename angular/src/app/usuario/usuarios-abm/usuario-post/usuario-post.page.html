@@ -131,7 +131,7 @@
                     </div>
                   }
 
-                  @if (isPost && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)) {
+                  @if (isPost && (isUserSignUp || !isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)) {
                     <div class="col-12 col-sm-6 col-lg-4">
                       <label class="form-label">Contraseña</label>
                       <div class="input-group">

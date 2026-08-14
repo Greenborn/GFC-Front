@@ -82,7 +82,7 @@
           </div>
         </div>
 
-        @if (esPreseleccion) {
+        @if (esPreseleccion || esPuntuacion) {
           <div class="juzgamiento-filtros" role="group" aria-label="Filtrar por resultado de votación">
             @for (op of filtroOpciones; track op.value) {
               <button
