@@ -8,22 +8,227 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
+.sticky-top-bar .container-fluid {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.gfc-main {
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+@media (max-width: 767.98px) {
+  .gfc-main {
+    padding-top: 0.75rem;
+    padding-bottom: 1.25rem;
+  }
+}
+
+/* Barra de acciones inferior */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 575.98px) {
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-actions .actions-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-actions app-btn-post {
+    width: 100%;
+  }
+}
+
 .sticky-top-bar app-btn-post {
   --bs-btn-font-size: 0.9rem;
 }
 
-.step-number {
-  width: 20px;
-  height: 20px;
+.gfc-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 0;
+  padding: 0.25rem 0;
+}
+
+/* Móvil: stepper compacto, sin etiquetas */
+@media (max-width: 767.98px) {
+  .gfc-stepper {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .gfc-step {
+    padding: 0.3rem 0.5rem;
+  }
+
+  .gfc-step-label {
+    display: none;
+  }
+
+  .gfc-step:not(:first-child)::before {
+    flex: 0 0 1rem;
+    margin: 0 0.25rem;
+  }
+}
+
+.read-only-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  vertical-align: middle;
+}
+
+.input-readonly {
+  background-color: #e9ecef !important;
+  border-color: #ced4da !important;
+  color: #6c757d !important;
+  cursor: not-allowed !important;
+  opacity: 0.75 !important;
+  pointer-events: none;
+  box-shadow: none !important;
+}
+
+:host-context(body.dark) .input-readonly {
+  background-color: #2a2f36 !important;
+  border-color: #3a424c !important;
+  color: #7c8694 !important;
+}
+
+.gfc-step {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: transparent;
+  border: 0;
+  padding: 0.3rem 0.75rem;
+  border-radius: 0.5rem;
+  color: #6c757d;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.gfc-step:hover {
+  color: #495057;
+}
+
+.gfc-step-dot {
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: var(--bs-body-bg, #fff);
-  border: 1px solid currentColor;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  background: #fff;
+  border: 2px solid #ced4da;
+  color: #6c757d;
+  font-size: 0.85rem;
   font-weight: 700;
+  line-height: 1;
   flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.gfc-step-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Paso activo: verde relleno con texto blanco, alto contraste */
+.gfc-step.active .gfc-step-dot {
+  background: #198754;
+  border-color: #198754;
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.2);
+}
+
+.gfc-step.active .gfc-step-label {
+  color: #198754;
+  font-weight: 600;
+}
+
+/* Paso completado: verde con check */
+.gfc-step.completed .gfc-step-dot {
+  background: #198754;
+  border-color: #198754;
+  color: #fff;
+}
+
+.gfc-step.completed .gfc-step-label {
+  color: #198754;
+}
+
+/* Línea conectora entre pasos */
+.gfc-step:not(:first-child)::before {
+  content: '';
+  flex: 0 0 1.4rem;
+  height: 2px;
+  background: #dee2e6;
+  margin: 0 0.5rem;
+  border-radius: 1px;
+}
+
+.gfc-step.completed:not(:first-child)::before {
+  background: #198754;
+}
+
+/* Modo oscuro */
+:host-context(body.dark) .gfc-step {
+  color: #a7b0bb;
+}
+
+:host-context(body.dark) .gfc-step:hover {
+  color: #cbd3dc;
+}
+
+:host-context(body.dark) .gfc-step-dot {
+  background: #2a2a2a;
+  border-color: #4b5563;
+  color: #cbd3dc;
+}
+
+:host-context(body.dark) .gfc-step.active .gfc-step-dot {
+  background: #20c997;
+  border-color: #20c997;
+  color: #06281d;
+}
+
+:host-context(body.dark) .gfc-step.active .gfc-step-label {
+  color: #20c997;
+}
+
+:host-context(body.dark) .gfc-step.completed .gfc-step-dot {
+  background: #20c997;
+  border-color: #20c997;
+  color: #06281d;
+}
+
+:host-context(body.dark) .gfc-step.completed .gfc-step-label {
+  color: #20c997;
+}
+
+:host-context(body.dark) .gfc-step:not(:first-child)::before {
+  background: #3a424c;
+}
+
+:host-context(body.dark) .gfc-step.completed:not(:first-child)::before {
+  background: #20c997;
 }
 
 .avatar-wrapper {
