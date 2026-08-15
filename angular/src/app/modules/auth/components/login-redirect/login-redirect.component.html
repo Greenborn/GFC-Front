@@ -1,5 +1,8 @@
 <gb-sso-callback
   registerPath="/registro"
   fallbackPath="/"
+  [autoRedirect]="false"
   (success)="onSuccess($event)"
+  (noParams)="onNoParams()"
+  (error)="onError()"
 ></gb-sso-callback>

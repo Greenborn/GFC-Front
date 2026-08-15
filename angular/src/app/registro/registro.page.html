@@ -7,8 +7,16 @@
             [routerLink]="['/']" aria-label="Volver al inicio">
             <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Volver
           </a>
-          <div class="flex-grow-1">
-            <app-btn-post [posting]="posting" [text]="submitBtnText" [disabled]="!hasChanges" (post)="postRegistro()"></app-btn-post>
+          <div class="flex-grow-1 d-flex align-items-center gap-2 flex-wrap">
+            @for (title of stepTitles; track title; let i = $index) {
+              <button type="button" class="btn btn-sm px-3 d-flex align-items-center gap-2"
+                [class.btn-success]="step === i + 1"
+                [class.btn-outline-secondary]="step !== i + 1"
+                (click)="goToStep(i + 1)">
+                <span class="step-number">{{ i + 1 }}</span>
+                <span class="d-none d-md-inline">{{ title }}</span>
+              </button>
+            }
           </div>
         </div>
       </div>
@@ -19,113 +27,158 @@
 <div class="container-fluid py-3">
   <div class="row justify-content-center">
     <div class="col-12 col-lg-10 col-xl-9">
-      <form class="w-100" [formGroup]="form" (ngSubmit)="postRegistro()">
-        <div class="row g-4">
-          <div class="col-12 col-md-3">
-            <div class="card h-100">
-              <div class="card-header">
-                <h5 class="card-title mb-0">Foto de perfil</h5>
-              </div>
-              <div class="card-body d-flex flex-column align-items-center">
-                <div class="avatar-wrapper">
-                  <app-usuario-img [src]="img_url" style="max-width:96px;display:block"></app-usuario-img>
-                  <button class="camera-btn" (click)="openProfileImageModal()" type="button" aria-label="Cambiar foto de perfil">
-                    <i class="bi bi-camera-fill"></i>
-                  </button>
+      <form class="w-100" [formGroup]="form" (ngSubmit)="isLastStep ? postRegistro() : nextStep()">
+
+        @if (step === 1) {
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Datos del perfil</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                  <label class="form-label">Nombre</label>
+                  <input class="form-control" formControlName="name" autocapitalize="words" (blur)="onNameBlur()" required>
+                  @if (form.get('name')?.invalid && form.get('name')?.touched) {
+                    <small class="text-danger">Ingresá tu nombre</small>
+                  }
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label class="form-label">Apellido</label>
+                  <input class="form-control" formControlName="last_name" autocapitalize="words" required>
+                  @if (form.get('last_name')?.invalid && form.get('last_name')?.touched) {
+                    <small class="text-danger">Ingresá tu apellido</small>
+                  }
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label class="form-label">DNI</label>
+                  <input class="form-control" formControlName="dni" required>
+                  @if (form.get('dni')?.invalid && form.get('dni')?.touched) {
+                    <small class="text-danger">Ingresá tu DNI</small>
+                  }
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label class="form-label">Fotoclub/Agrupación/Institución</label>
+                  <select class="form-select" formControlName="fotoclub_id" required>
+                    <option [value]="null" disabled>Seleccioná una opción</option>
+                    @for (f of fotoclubes; track f) {
+                      <option [value]="f.id">{{f.name}}</option>
+                    }
+                  </select>
+                  @if (form.get('fotoclub_id')?.invalid && form.get('fotoclub_id')?.touched) {
+                    <small class="text-danger">Seleccioná tu fotoclub</small>
+                  }
                 </div>
               </div>
             </div>
           </div>
+        }
 
-          <div class="col-12 col-md-9">
-            <div class="card h-100">
-              <div class="card-header">
-                <h5 class="card-title mb-0">Datos del perfil</h5>
+        @if (step === 2) {
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Datos de cuenta</h5>
+            </div>
+            <div class="card-body">
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2" aria-hidden="true"></i>
+                Estas credenciales son <strong>opcionales</strong> y te permiten iniciar sesión con usuario y contraseña
+                sin usar tu cuenta de Google. Si no querés usarlas, omití este paso.
               </div>
-              <div class="card-body">
-                <div class="row g-3">
-                  <div class="col-12 col-sm-6">
-                    <label class="form-label">Nombre</label>
-                    <input class="form-control" formControlName="name" autocapitalize="words" required>
-                  </div>
-                  <div class="col-12 col-sm-6">
-                    <label class="form-label">Apellido</label>
-                    <input class="form-control" formControlName="last_name" autocapitalize="words" required>
-                  </div>
-                  <div class="col-12 col-sm-6">
-                    <label class="form-label">DNI</label>
-                    <input class="form-control" formControlName="dni" required>
-                  </div>
-                  <div class="col-12 col-sm-6">
-                    <label class="form-label">Fotoclub/Agrupación/Institución</label>
-                    <select class="form-select" formControlName="fotoclub_id" required>
-                      @for (f of fotoclubes; track f) {
-                        <option [value]="f.id">{{f.name}}</option>
+              <div class="row g-3">
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <label class="form-label">E-Mail</label>
+                  <input class="form-control" autocapitalize="off" formControlName="email" readonly>
+                  @if (form.get('email')?.invalid && form.get('email')?.touched) {
+                    <small class="text-danger">Ingresá un email válido</small>
+                  }
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <label class="form-label">Nombre de Usuario</label>
+                  <input class="form-control" (focus)="usernameFocus=true" (blur)="usernameFocus=false; form.get('username')?.markAsTouched()"
+                    autocapitalize="off" formControlName="username">
+                  @if (form.get('username')?.invalid && form.get('username')?.touched) {
+                    <small class="text-danger">
+                      @if (form.get('username')?.errors?.['usernameTaken']) {
+                        Ese nombre de usuario ya está en uso.
+                      } @else {
+                        Máximo 20 caracteres alfanuméricos; se permite guion bajo (_).
                       }
-                    </select>
+                    </small>
+                  } @else if (usernameFocus) {
+                    <small class="text-muted">
+                      Máximo 20 caracteres alfanuméricos; se permite guion bajo (_).
+                    </small>
+                  }
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <label class="form-label">Contraseña <span class="text-muted fw-normal">(opcional)</span></label>
+                  <div class="input-group">
+                    <input class="form-control" id="ctr-1" type="password" formControlName="password">
+                    <app-ojo inputId="ctr-1"></app-ojo>
                   </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <label class="form-label">Repetir Contraseña <span class="text-muted fw-normal">(opcional)</span></label>
+                  <input class="form-control" type="password" formControlName="passwordRepeat">
+                </div>
+                <div class="col-12">
+                  @if (form.get('password')?.value && (form.get('passwordRepeat')?.dirty || form.get('password')?.dirty)) {
+                    <small class="text-muted">
+                      @if (form.get('passwordRepeat')?.errors?.['mustMatch']) {
+                        <span class="me-3">- Atención: Las contraseñas no coinciden</span>
+                      }
+                      @if (form.get('password')?.errors?.['minlength']) {
+                        <span>- Atención: Longitud mínima 8 caracteres</span>
+                      }
+                    </small>
+                  }
                 </div>
               </div>
             </div>
           </div>
+        }
 
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="card-title mb-0">Datos de la cuenta</h5>
+        @if (step === 3) {
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Imagen de perfil</h5>
+            </div>
+            <div class="card-body d-flex flex-column align-items-center">
+              <div class="avatar-wrapper">
+                <app-usuario-img [src]="img_url" style="max-width:96px;display:block"></app-usuario-img>
+                <button class="camera-btn" (click)="openProfileImageModal()" type="button" aria-label="Cambiar foto de perfil">
+                  <i class="bi bi-camera-fill"></i>
+                </button>
               </div>
-              <div class="card-body">
-                <div class="row g-3">
-                  <div class="col-12 col-sm-6 col-lg-4">
-                    <label class="form-label">Nombre de Usuario</label>
-                    <input class="form-control" (focus)="usernameFocus=true" (blur)="usernameFocus=false"
-                      autocapitalize="off" formControlName="username" required>
-                    @if (form.get('username')?.invalid && form.get('username')?.touched) {
-                      <small class="text-danger">
-                        Máximo 20 caracteres alfanuméricos sin símbolos ni espacios
-                      </small>
-                    } @else if (usernameFocus) {
-                      <small class="text-muted">
-                        Máximo 20 caracteres alfanuméricos sin símbolos ni espacios
-                      </small>
-                    }
-                  </div>
-                  <div class="col-12 col-sm-6 col-lg-4">
-                    <label class="form-label">E-Mail</label>
-                    <input class="form-control" autocapitalize="off"
-                      pattern="[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+(\.[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+)*@[a-zA-Z0-9_][\-a-zA-Z0-9_]*(\.[\-a-zA-Z0-9_]+)*\.[cC][oO][mM](:[0-9]{1,5})?"
-                      formControlName="email" required>
-                  </div>
-                  <div class="col-12 col-sm-6 col-lg-4">
-                    <label class="form-label">Contraseña</label>
-                    <div class="input-group">
-                      <input class="form-control" id="ctr-1" pattern=".{8,}" type="password"
-                        formControlName="password">
-                      <app-ojo inputId="ctr-1"></app-ojo>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-lg-4">
-                    <label class="form-label">Repetir Contraseña</label>
-                    <input class="form-control" type="password" formControlName="passwordRepeat">
-                  </div>
-                  <div class="col-12">
-                    @if (form.get('passwordRepeat')?.dirty || form.get('password')?.dirty) {
-                      <small class="text-muted">
-                        @if (form.get('passwordRepeat')?.errors?.['mustMatch']) {
-                          <span class="me-3">- Atención: Las contraseñas no coinciden</span>
-                        }
-                        @if (form.get('password')?.errors?.['pattern']) {
-                          <span>- Atención: Longitud mínima 8 caracteres</span>
-                        }
-                      </small>
-                    }
-                  </div>
-                </div>
-              </div>
+              <small class="text-muted mt-2">La imagen es opcional</small>
             </div>
           </div>
+        }
 
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-outline-secondary"
+            [disabled]="step === 1"
+            (click)="prevStep()">
+            <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Volver
+          </button>
+
+          <div class="d-flex gap-2">
+            @if (step === 2) {
+              <button type="button" class="btn btn-outline-secondary" (click)="skipStep2()">
+                Omitir este paso
+              </button>
+            }
+            @if (isLastStep) {
+              <app-btn-post [posting]="posting" [text]="'Crear cuenta'" [disabled]="!hasChanges" (post)="postRegistro()"></app-btn-post>
+            } @else {
+              <button type="button" class="btn btn-success" (click)="nextStep()">
+                Siguiente<i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+              </button>
+            }
+          </div>
         </div>
+
       </form>
     </div>
   </div>
