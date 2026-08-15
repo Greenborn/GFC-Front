@@ -205,15 +205,18 @@ export class RegistroPage extends ApiConsumer implements OnInit {
 
   async postRegistro() {
     if (this.posting) return;
+    this.posting = true;
 
     const email = this.form.get('email')?.value;
     if (!email) {
+      this.posting = false;
       super.displayAlert('Completa el email.');
       return;
     }
 
     const isSSO = this.ssoAuth.isSSOSession();
     if (!isSSO) {
+      this.posting = false;
       super.displayAlert('Debes iniciar sesión con Google para registrarte.');
       return;
     }
@@ -251,10 +254,12 @@ export class RegistroPage extends ApiConsumer implements OnInit {
       const passwordRepeat = this.form.get('passwordRepeat')?.value;
 
       if (password.length < 8) {
+        this.posting = false;
         super.displayAlert("La contraseña debe tener al menos 8 caracteres.");
         return;
       }
       if (passwordRepeat !== password) {
+        this.posting = false;
         super.displayAlert("Las contraseñas no coinciden.");
         return;
       }
@@ -271,7 +276,6 @@ export class RegistroPage extends ApiConsumer implements OnInit {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    this.posting = true;
     await this.UIUtilsService.presentLoading();
     this.createUserService.post(body, undefined, '', headers).subscribe(
       ok => {
