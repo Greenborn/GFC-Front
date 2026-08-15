@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {Location} from '@angular/common';
 
@@ -16,13 +16,10 @@ import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { Profile } from 'src/app/models/profile.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { SSOAuthService } from 'angular-greenborn-sso-front';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
-import { CreateUserService } from 'src/app/services/create-user.service';
-import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
-import { Subject, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { ComparePassword } from 'src/app/modules/auth/validators/password.validator';
 import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
 import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
@@ -51,7 +48,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   public usernameFocus = false
   public passFocus = false
   public isPost: boolean = true;
-  public isUserSignUp:boolean = false;
   public submitBtnText:string = "Guardar";
   public posting: boolean = false;
   public userLogged: User;
@@ -63,7 +59,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private router: Router,
     private auth: AuthService,
     private userService: UserService,
     private profileService: ProfileService,
@@ -74,9 +69,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     public loadingService: LoadingService,
     public configService: ConfigService,
     private UIUtilsService: UiUtilsService,
-    private formBuilder: FormBuilder,
-    private createUserService: CreateUserService,
-    private ssoAuth: SSOAuthService
+    private formBuilder: FormBuilder
   ) { 
     super(alertCtrl)
   }
@@ -137,16 +130,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     const dataPromises: Promise<boolean>[] = [];
     await this.loadingService.present('Cargando...');
 
-    this.isUserSignUp = this.activatedRoute.snapshot.pathFromRoot.some(r => r.routeConfig?.path === 'registro');
-    if (this.isUserSignUp){
-      this.submitBtnText = "Siguiente";
-      const email = this.activatedRoute.snapshot.queryParams['email'];
-      if (email) {
-        this.form.patchValue({ email });
-      }
-    }
-
-    if(this.isLogged() && !this.isUserSignUp){
+    if(this.isLogged()){
       this.auth.user.then(u => this.userLogged = u)
       dataPromises.push(
         new Promise(resolve => super.fetch<Role[]>(() => this.roleService.getAll()).subscribe(r => {
@@ -294,7 +278,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
   }
 
   get hasChanges(): boolean {
-    if (this.isUserSignUp) return true;
     if (this.file != undefined) return true;
     if (!this.form) return false;
     return this.form.dirty;
@@ -315,84 +298,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           //   this.profile.executive = 1
           // }
         }
-        //En caso de que se trate de un formulario de registro de usuario
-      if (this.isUserSignUp){
-        if (this.posting) return;
-        if (this.form.invalid) {
-          Object.keys(this.form.controls).forEach(key => {
-            this.form.get(key)?.markAsTouched();
-          });
-          super.displayAlert('Completa todos los campos.');
-          return;
-        }
-
-        const isSSO = this.ssoAuth.isSSOSession();
-
-        const email = this.form.get('email')?.value;
-        const username = this.form.get('username')?.value;
-        const name = `${this.form.get('name')?.value ?? ''} ${this.form.get('last_name')?.value ?? ''}`.trim() || username;
-
-        const body: any = { email, username, name };
-
-        let headers: Record<string, string> = {};
-
-        if (isSSO) {
-          body.sso = true;
-          body.unique_id = this.ssoAuth.getUniqueId();
-          const token = this.ssoAuth.getToken();
-          if (token) {
-            headers = {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            };
-          }
-        } else {
-          const password = this.form.get('password')?.value;
-          const passwordRepeat = this.form.get('passwordRepeat')?.value;
-
-          if (passwordRepeat !== password){
-            super.displayAlert("Las contraseñas no coinciden.");
-            return;
-          }
-
-          body.password = password;
-        }
-
-        body.img_perfil_b64 = this.file ? await this.resizeImageToBase64(this.file) : null;
-
-        this.posting = true;
-        await this.UIUtilsService.presentLoading();
-        this.createUserService.post(body, undefined, '', headers).subscribe(
-          ok => {
-            this.UIUtilsService.dismissLoading();
-            this.posting = false;
-            if (ok['success'] == false){
-              super.displayAlert(this.errorFilter(ok['error']));
-            } else if (isSSO) {
-              const token = this.ssoAuth.getToken();
-              if (token) {
-                this.auth.token = token;
-              }
-              this.auth.userId = ok['user']?.id;
-              this.auth.updateUser();
-              this.router.navigateByUrl('/');
-            } else {
-              let profileConfirm  = this.UIUtilsService.mostrarModal(ConfirmUserComponent, { 
-                "signUpVerifToken": ok['sign_up_verif_token']
-               });
-            }
-          },
-          err => {
-            this.UIUtilsService.dismissLoading();       
-            this.posting = false;
-            super.displayAlert("Ocurrió un error al intentar realizar la petición de registro de usuario.");
-          }
-        );
-
-        return;
-      }
-
-      //En caso de que se trate de un formulario de ediciòn de usuarios
+        //En caso de que se trate de un formulario de ediciòn de usuarios
       const profilePayload: any = this.getChangedFields(this.originalProfile, this.getCurrentProfileState());
 
       if (this.file != undefined) {
@@ -492,37 +398,6 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     await this.UIUtilsService.mostrarModal(ChangePasswordComponent, {
       userId: this.usuario?.id ?? this.userLogged?.id,
       requireOldPassword: this.isUserProfile
-    });
-  }
-
-  private resizeImageToBase64(file: File): Promise<string | null> {
-    return new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const img = new Image();
-        img.onload = () => {
-          let { width, height } = img;
-          const MAX = 1024;
-          if (width > MAX || height > MAX) {
-            if (width > height) {
-              height = Math.round(height * MAX / width);
-              width = MAX;
-            } else {
-              width = Math.round(width * MAX / height);
-              height = MAX;
-            }
-          }
-          const canvas = document.createElement('canvas');
-          canvas.width = width;
-          canvas.height = height;
-          canvas.getContext('2d')?.drawImage(img, 0, 0, width, height);
-          resolve(canvas.toDataURL('image/jpeg', 0.9));
-        };
-        img.onerror = () => resolve(null);
-        img.src = e.target?.result as string;
-      };
-      reader.onerror = () => resolve(null);
-      reader.readAsDataURL(file);
     });
   }
 

@@ -133,7 +133,7 @@ export const routes: Routes = [
   },
   {
     path: 'registro',
-    loadComponent: () => import('./usuario/usuarios-abm/usuario-post/usuario-post.page').then( m => m.UsuarioPostPage),
+    loadComponent: () => import('./registro/registro.page').then( m => m.RegistroPage),
     pathMatch: 'full'
   },
   {

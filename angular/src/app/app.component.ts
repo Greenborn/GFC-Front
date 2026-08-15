@@ -19,6 +19,10 @@ export class AppComponent implements OnInit, OnDestroy {
   sidebarOpen = false;
   private socketSub: Subscription;
 
+  get showShell(): boolean {
+    return !this.router.url.startsWith('/registro');
+  }
+
   constructor(
     public router: Router,
     public responsiveService: ResponsiveService,

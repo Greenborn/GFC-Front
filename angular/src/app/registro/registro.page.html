@@ -3,8 +3,12 @@
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10 col-xl-9">
         <div class="d-flex gap-2">
+          <a class="btn btn-outline-secondary btn-sm flex-shrink-0 d-flex align-items-center"
+            [routerLink]="['/']" aria-label="Volver al inicio">
+            <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Volver
+          </a>
           <div class="flex-grow-1">
-            <app-btn-post [posting]="posting" [text]="submitBtnText" [disabled]="!hasChanges" (post)="postUsuario()"></app-btn-post>
+            <app-btn-post [posting]="posting" [text]="submitBtnText" [disabled]="!hasChanges" (post)="postRegistro()"></app-btn-post>
           </div>
         </div>
       </div>
@@ -15,7 +19,7 @@
 <div class="container-fluid py-3">
   <div class="row justify-content-center">
     <div class="col-12 col-lg-10 col-xl-9">
-      <form class="w-100" [formGroup]="form" (ngSubmit)="postUsuario()">
+      <form class="w-100" [formGroup]="form" (ngSubmit)="postRegistro()">
         <div class="row g-4">
           <div class="col-12 col-md-3">
             <div class="card h-100">
@@ -54,26 +58,12 @@
                   </div>
                   <div class="col-12 col-sm-6">
                     <label class="form-label">Fotoclub/Agrupación/Institución</label>
-                    <select class="form-select" #sFotoclub formControlName="fotoclub_id" required>
+                    <select class="form-select" formControlName="fotoclub_id" required>
                       @for (f of fotoclubes; track f) {
                         <option [value]="f.id">{{f.name}}</option>
                       }
                     </select>
                   </div>
-                  @if (isAdmin) {
-                    <div class="col-12">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="executive" formControlName="executive">
-                        <label class="form-check-label" for="executive">Es miembro de la comisión directiva</label>
-                      </div>
-                    </div>
-                  }
-                  @if (isAdmin && profileExecutive()) {
-                    <div class="col-12 col-sm-6">
-                      <label class="form-label">Rol en la comisión</label>
-                      <input class="form-control" formControlName="executive_rol" autocapitalize="words" required>
-                    </div>
-                  }
                 </div>
               </div>
             </div>
@@ -81,13 +71,8 @@
 
           <div class="col-12">
             <div class="card">
-              <div class="card-header d-flex align-items-center justify-content-between">
+              <div class="card-header">
                 <h5 class="card-title mb-0">Datos de la cuenta</h5>
-                @if (!isPost && isLogged()) {
-                  <button class="btn btn-warning btn-sm" type="button" (click)="changePassword()">
-                    <i class="bi bi-key me-1"></i>Cambiar contraseña
-                  </button>
-                }
               </div>
               <div class="card-body">
                 <div class="row g-3">
@@ -111,41 +96,18 @@
                       pattern="[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+(\.[\-a-zA-Z0-9~!$%^&amp;*_=+\}\{'?]+)*@[a-zA-Z0-9_][\-a-zA-Z0-9_]*(\.[\-a-zA-Z0-9_]+)*\.[cC][oO][mM](:[0-9]{1,5})?"
                       formControlName="email" required>
                   </div>
-
-                  @if (!isUserProfile && isAdmin && !updatingSelect) {
-                    <div class="col-12 col-sm-6 col-lg-4">
-                      <label class="form-label">Rol</label>
-                      <select class="form-select" #sRol formControlName="role_id" required>
-                        @for (r of roles; track r) {
-                          <option [value]="r.id">{{r.type}}</option>
-                        }
-                      </select>
+                  <div class="col-12 col-sm-6 col-lg-4">
+                    <label class="form-label">Contraseña</label>
+                    <div class="input-group">
+                      <input class="form-control" id="ctr-1" pattern=".{8,}" type="password"
+                        formControlName="password">
+                      <app-ojo inputId="ctr-1"></app-ojo>
                     </div>
-                  }
-
-                  @if (!isPost && isAdmin) {
-                    <div class="col-12">
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch"
-                          id="is_test_enabled" formControlName="is_test_enabled">
-                        <label class="form-check-label" for="is_test_enabled">
-                          <i class="bi bi-flask me-1"></i>Usuario de prueba
-                        </label>
-                      </div>
-                    </div>
-                  }
-
-                  @if (isPost && (!isLogged() || userLogged?.role_id === 1 || userLogged?.role_id === 2)) {
-                    <div class="col-12 col-sm-6 col-lg-4">
-                      <label class="form-label">Contraseña</label>
-                      <div class="input-group">
-                        <input class="form-control" id="ctr-1" pattern=".{8,}" type="password"
-                          formControlName="password">
-                        <app-ojo inputId="ctr-1"></app-ojo>
-                      </div>
-                    </div>
-                  }
-
+                  </div>
+                  <div class="col-12 col-sm-6 col-lg-4">
+                    <label class="form-label">Repetir Contraseña</label>
+                    <input class="form-control" type="password" formControlName="passwordRepeat">
+                  </div>
                   <div class="col-12">
                     @if (form.get('passwordRepeat')?.dirty || form.get('password')?.dirty) {
                       <small class="text-muted">
@@ -168,13 +130,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #spinner>
-  @if ((usuario.role_id == 3 || usuario.role_id == 2)) {
-    <div class="row justify-content-center">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Cargando...</span>
-      </div>
-    </div>
-  }
-</ng-template>
