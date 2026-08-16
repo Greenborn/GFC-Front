@@ -7,6 +7,7 @@ import { MetricAbmService } from 'src/app/services/metric-abm.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
 
 @Component({
@@ -64,7 +65,7 @@ export class MetricasPostComponent extends ApiConsumer implements OnInit {
         err => {
           console.log('error post metric', err)
           this.posting = false
-          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
+          this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) })
         }
       )
       // console.log('posting', model, this.section.id)

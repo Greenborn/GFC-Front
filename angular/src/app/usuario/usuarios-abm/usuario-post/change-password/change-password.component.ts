@@ -8,6 +8,7 @@ import { ApiAdminChangePasswordBody, ApiChangePasswordBody } from 'src/app/model
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { InputOjoComponent } from 'src/app/shared/input-ojo/input-ojo.component';
 import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 
 @Component({
   standalone: true,
@@ -62,7 +63,7 @@ export class ChangePasswordComponent extends ApiConsumer implements OnInit {
       },
       err => {
         this.posting = false;
-        super.displayAlert(this.errorFilter(err.error['message']));
+        super.displayAlert(extractErrorMessage(err));
       }
     );
   }

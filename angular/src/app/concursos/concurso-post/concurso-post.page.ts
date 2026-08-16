@@ -18,6 +18,7 @@ import { ContestCategoryService } from 'src/app/services/contest-category.servic
 import { Section } from 'src/app/models/section.model';
 import { SectionService } from 'src/app/services/section.service';
 import { ContestSectionService } from 'src/app/services/contest-section.service';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 import { ContestSection } from 'src/app/models/contest_section.model';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConfigService } from 'src/app/services/config/config.service';
@@ -567,28 +568,13 @@ get secycat(){
       return 'Error desconocido';
     }
 
-    if (err.error) {
-      if (Array.isArray(err.error)) {
-        return err.error.map((e: any) => e?.message || JSON.stringify(e)).join('<br>');
-      }
-      if (err.error['error-info'] && Array.isArray(err.error['error-info']) && err.error['error-info'].length > 2) {
-        return this.errorFilter(err.error['error-info'][2]);
-      }
-      if (typeof err.error === 'string') {
-        return err.error;
-      }
-      if (err.error.message) {
-        return err.error.message;
-      }
+    const errors = err?.error?.['error-info'] ?? err?.response?.data?.errors;
+    if (Array.isArray(errors)) {
+      const items = errors.map((e: any) => (typeof e === 'string' ? e : e?.message || JSON.stringify(e))).filter(Boolean);
+      if (items.length > 0) return items.join('<br>');
     }
 
-    if (err.message) {
-      return err.message;
-    }
-    if (err.statusText) {
-      return err.statusText;
-    }
-    return 'Error desconocido';
+    return extractErrorMessage(err, 'Error desconocido');
   }
 
   // async agregarCategoria(ev) {

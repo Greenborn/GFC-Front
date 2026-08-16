@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/ro
 import { filter } from 'rxjs/operators';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { LoadingService } from 'src/app/services/ui/loading.service';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 
 import { ImagePostPage, ImagePostParams } from './image-post/image-post.page';
 
@@ -225,7 +226,7 @@ obtenerPx() {
             error: async err => {
               this.UIUtilsService.mostrarAlert({
                 header: 'Error',
-                message: this.errorFilter(err.error['error-info'][2])
+                message: extractErrorMessage(err)
               })
             }
           })
@@ -321,7 +322,7 @@ obtenerPx() {
               await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
               this.concursoDetailService.refreshPhotos.emit()
             },
-            error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
+            error: async err => super.displayAlert(extractErrorMessage(err))
           })
         })
       } else {
@@ -341,7 +342,7 @@ obtenerPx() {
               this.concursoDetailService.refreshPhotos.emit()
             },
             error: async err => {
-              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]) })
+              this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) })
               await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
               this.concursoDetailService.refreshPhotos.emit()
             },
@@ -391,15 +392,15 @@ obtenerPx() {
             this.concursoDetailService.refreshPhotos.emit()
             super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
               next: _ => this.contestResultsService.get_all({ "contest_id": this.concurso.id }),
-              error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
+              error: async err => super.displayAlert(extractErrorMessage(err))
             })
             super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({
               next: _ => {},
-              error: async err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
+              error: async err => super.displayAlert(extractErrorMessage(err))
             })
 
           },
-          error: async err => super.displayAlert(this.errorFilter(err))
+          error: async err => super.displayAlert(extractErrorMessage(err))
         })
       }
     )

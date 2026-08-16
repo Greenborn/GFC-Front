@@ -16,6 +16,7 @@ import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { Profile } from 'src/app/models/profile.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
@@ -360,13 +361,7 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
       } catch (err: any) {
         this.posting = false
         if (err?.name === 'EmptyError') return;
-        if (err?.error?.message) {
-          super.displayAlert(this.errorFilter(err.error.message))
-        } else if (Array.isArray(err?.error) && err.error[0]?.message) {
-          super.displayAlert(this.errorFilter(err.error[0].message))
-        } else {
-          super.displayAlert(`No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario. ${this.errorFilter(err.statusText || err.message || '')}`)
-        }
+        super.displayAlert(extractErrorMessage(err, `No se pudo ${this.usuario.id == undefined ? 'agregar' : 'editar'} el usuario.`))
       }
     //}
     //else {

@@ -5,6 +5,7 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 import { Metric } from 'src/app/models/metric.model';
 import { MetricAbmService } from 'src/app/services/metric-abm.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 import { MetricasPostComponent } from './metricas-post/metricas-post.component';
 
 import { TableEditorComponent } from 'src/app/components/table-editor/table-editor.component';
@@ -145,7 +146,7 @@ export class MetricasAbmPage extends ApiConsumer implements OnInit {
             this.metricas.splice(this.metricas.findIndex(s => s.id == metric.id), 1)
             this.refreshTable()
           },
-          async err => this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
+          async err => this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) })
         )
     })
   }

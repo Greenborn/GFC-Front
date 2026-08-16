@@ -14,6 +14,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { MetricAbmService } from 'src/app/services/metric-abm.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 
 @Component({
   standalone: true,
@@ -70,7 +71,7 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
       super.fetch<Metric>(() => this.metricService.post(metric, this.review.id)).subscribe(
         m => this.dismiss(m),
         err => {
-          this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]) });
+          this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) });
         },
         () => this.posting = false
       )

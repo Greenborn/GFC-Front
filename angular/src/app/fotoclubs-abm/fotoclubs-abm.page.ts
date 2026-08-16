@@ -6,6 +6,7 @@ import { Fotoclub } from '../models/fotoclub.model';
 import { ConfigService } from '../services/config/config.service';
 import { FotoclubService } from '../services/fotoclub.service';
 import { UiUtilsService } from '../services/ui/ui-utils.service';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 import { FotoclubPostComponent } from './fotoclub-post/fotoclub-post.component';
 
 import { TableEditorComponent } from 'src/app/components/table-editor/table-editor.component';
@@ -173,7 +174,7 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
             this.refreshTable()
           },
           async err => {
-            this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
+            this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) })
           }
         )
       }

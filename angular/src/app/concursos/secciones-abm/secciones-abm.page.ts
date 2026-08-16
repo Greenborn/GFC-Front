@@ -5,6 +5,7 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 import { Section } from 'src/app/models/section.model';
 import { SectionService } from 'src/app/services/section.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 import { SeccionPostComponent } from './seccion-post/seccion-post.component';
 
 import { TableEditorComponent } from 'src/app/components/table-editor/table-editor.component';
@@ -144,7 +145,7 @@ export class SeccionesAbmPage extends ApiConsumer implements OnInit {
             this.sections.splice(this.sections.findIndex(s => s.id == section.id), 1)
             this.refreshTable()
           },
-          async err => this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) })
+          async err => this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) })
         )
     })
   }

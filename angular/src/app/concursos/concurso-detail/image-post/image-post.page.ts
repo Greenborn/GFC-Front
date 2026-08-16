@@ -6,6 +6,7 @@ import { AlertService } from 'src/app/services/ui/alert.service';
 import { ContestResultExpanded } from 'src/app/models/contest_result.model';
 import { ContestSectionExpanded } from 'src/app/models/contest_section.model';
 import { Image as GFC_Image } from 'src/app/models/image.model';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { Section } from 'src/app/models/section.model';
 import { ConfigService } from 'src/app/services/config/config.service';
@@ -117,7 +118,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
                   this.dismiss({ image: i, section_id: this.section_id, contest_result: res?.contest_result })
                 },
                 error: async err => {
-                  super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2] || err.message))
+                  super.displayAlert(extractErrorMessage(err))
                   this.posting = false
                 },
               })
@@ -140,7 +141,7 @@ export class ImagePostPage extends ApiConsumer implements OnInit {
                this.dismiss({ image: i, section_id: this.section_id })
              },
               async err => {
-                super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2] || err.message))
+                super.displayAlert(extractErrorMessage(err))
                 this.posting = false
               },
             

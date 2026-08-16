@@ -10,6 +10,7 @@ import { ImageReviewPage } from '../image-review/image-review.page';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { ContestRecord } from '../contest-records/models/contest.record';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContestService } from 'src/app/services/contest.service';
@@ -161,7 +162,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                     this.concursoDetailService.loadProfileContests();
                   }, 
                   error: err => {
-                    this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error['error-info'][2]) });
+                    this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) });
                   }
                 })
   
@@ -236,15 +237,15 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
                   await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
                   super.fetch<null>(() => this.imageService.delete(image_id)).subscribe({
                     next: _ => this.contestResultsService.get_all({ "contest_id": this.concurso.id }),
-                    error: err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
+                    error: err => super.displayAlert(extractErrorMessage(err))
                   })
                   super.fetch<null>(() => this.metricService.delete(metric_id)).subscribe({
                     next: _ => {},
-                    error: err => super.displayAlert(this.errorFilter(err.error?.message || err.error?.['error-info']?.[2]))
+                    error: err => super.displayAlert(extractErrorMessage(err))
                   })
   
                 },
-                error: err => super.displayAlert(this.errorFilter(err))
+                error: err => super.displayAlert(extractErrorMessage(err))
               })
             }
           }
@@ -288,7 +289,7 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
           })
         },
         error: async err => {
-          await this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error?.message || err.error?.['error-info']?.[2] || err) })
+          await this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) })
         }
       })
     })

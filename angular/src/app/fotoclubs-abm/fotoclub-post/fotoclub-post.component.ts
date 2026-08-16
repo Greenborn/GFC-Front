@@ -7,6 +7,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { FotoclubService } from 'src/app/services/fotoclub.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
 
@@ -75,7 +76,7 @@ export class FotoclubPostComponent extends ApiConsumer implements OnInit {
             },
             err => {
               this.posting = false;
-              this.UIUtilsService.mostrarError({ message: this.errorFilter(err.error) });
+              this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) });
             }
           );
       }

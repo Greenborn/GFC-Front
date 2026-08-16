@@ -11,6 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { BtnPostComponent } from 'src/app/shared/btn-post/btn-post.component';
+import { extractErrorMessage } from 'src/app/shared/error-utils';
 
 @Component({
   standalone: true,
@@ -84,7 +85,7 @@ export class InscribirJuecesComponent extends ApiConsumer implements OnInit  {
           },
           err => {
             this.posting = false
-            super.displayAlert(this.errorFilter(err.error['error-info']))
+            super.displayAlert(extractErrorMessage(err))
           },
           () => {
             s.unsubscribe()
