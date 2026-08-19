@@ -86,6 +86,7 @@ export class ContestPreselectedPhotoService extends ApiService<ContestPreselecte
       accept_count: data?.accept_count,
       reject_count: data?.reject_count,
       my_vote: (myVote === 'aceptar' || myVote === 'rechazar') ? myVote : null,
+      judge_votes: Array.isArray(data?.judge_votes) ? data.judge_votes : [],
       image: data?.image,
     };
   }

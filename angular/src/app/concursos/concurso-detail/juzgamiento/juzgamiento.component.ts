@@ -19,7 +19,7 @@ import { SSOSocketService, SSO_TOKEN_KEY } from 'angular-greenborn-sso-front';
 import { ZoomableImageComponent } from 'src/app/shared/zoomable-image/zoomable-image.component';
 import { Subscription } from 'rxjs';
 
-type FiltroJuzgamiento = 'actual' | 'todas' | 'preseleccionadas' | 'rechazadas' | 'sin_votar' | 'puntuadas' | 'sin_puntuar';
+type FiltroJuzgamiento = 'actual' | 'todas' | 'preseleccionadas' | 'rechazadas' | 'sin_votar' | 'puntuadas' | 'sin_puntuar' | 'sin_unanimidad';
 
 const FILTROS_PRESELECCION: { value: FiltroJuzgamiento; label: string; icono: string }[] = [
   { value: 'actual', label: 'Actual', icono: 'bi bi-play-fill' },
@@ -34,6 +34,7 @@ const FILTROS_PUNTUACION: { value: FiltroJuzgamiento; label: string; icono: stri
   { value: 'todas', label: 'Todas', icono: 'bi bi-grid' },
   { value: 'puntuadas', label: 'Puntuadas', icono: 'bi bi-trophy' },
   { value: 'sin_puntuar', label: 'Sin puntuar', icono: 'bi bi-clock' },
+  { value: 'sin_unanimidad', label: 'Sin unanimidad', icono: 'bi bi-patch-exclamation' },
 ];
 
 @Component({
@@ -488,13 +489,21 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
 
     if (this.esPuntuacion) {
       const votos = new Map<number, number>();
+      const sinUnanimidad = new Map<number, boolean>();
       for (const it of this.puntuacion?.items ?? []) {
         votos.set(it.image_id, it.total_votes ?? 0);
+        const distinct = new Set<number>();
+        for (const v of it.votes ?? []) {
+          if ((v.count ?? 0) > 0) distinct.add(v.metric_abm_id);
+        }
+        sinUnanimidad.set(it.image_id, distinct.size > 1);
       }
       return this.resultados.filter(r => {
-        const total = votos.get(r.image?.id ?? r.image_id) ?? 0;
+        const imgId = r.image?.id ?? r.image_id;
+        const total = votos.get(imgId) ?? 0;
         if (this.filtro === 'puntuadas') return total > 0;
         if (this.filtro === 'sin_puntuar') return total === 0;
+        if (this.filtro === 'sin_unanimidad') return sinUnanimidad.get(imgId) === true;
         return true;
       });
     }
@@ -655,6 +664,27 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
 
   get fotoRechazada(): boolean {
     return this.votoPropioDeFotoActual === 'rechazar';
+  }
+
+  get votosPorJuezPreseleccion(): { user_id: number; nombre: string; vote: 'aceptar' | 'rechazar' }[] {
+    return (this.preseleccionDeFotoActual?.judge_votes ?? []).map(jv => ({
+      user_id: jv.user_id,
+      nombre: this.formatJudgeName(jv.name, jv.last_name, jv.username),
+      vote: jv.vote,
+    }));
+  }
+
+  get votosPorJuezPuntuacion(): { user_id: number; nombre: string; metric_abm: Metric | null }[] {
+    return (this.itemPuntuacionFotoActual?.judge_votes ?? []).map(jv => ({
+      user_id: jv.user_id,
+      nombre: this.formatJudgeName(jv.name, jv.last_name, jv.username),
+      metric_abm: jv.metric_abm ?? this.metricasDisponibles.find(m => m.id === jv.metric_abm_id) ?? null,
+    }));
+  }
+
+  private formatJudgeName(name?: string | null, last_name?: string | null, username?: string | null): string {
+    const full = `${name ?? ''} ${last_name ?? ''}`.trim();
+    return full || username || 'Juez';
   }
 
   @HostListener('window:keydown', ['$event'])

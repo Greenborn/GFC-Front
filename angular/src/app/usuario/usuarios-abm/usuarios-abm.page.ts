@@ -154,23 +154,39 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
     })
   }
 
-  getToggleStatusBtn(forToolbar: boolean = false): BtnConfig {
-    return new BtnConfig({
-      key: 'toggle',
-      icon: 'bi bi-toggle-on',
-      severity: 'btn-danger',
-      getLabel: () => {
-        const r = this.selectedRow
-        if (!r) return ''
-        const st = r.user?.status ?? 1
-        return st === 0 ? 'Habilitar' : 'Deshabilitar'
-      },
-      isDisabled: () => forToolbar && !this.selectedRow,
-      onClick: (row: any) => {
-        const r = row || this.selectedRow
-        if (r) this.toggleUsuarioStatus(r)
-      },
-    })
+  getToggleStatusBtn(forToolbar: boolean = false): BtnConfig[] {
+    return [
+      new BtnConfig({
+        key: 'enable',
+        icon: 'bi bi-toggle-on',
+        severity: 'btn-success',
+        label: 'Habilitar',
+        isVisible: () => {
+          const r = this.selectedRow
+          return !!r && (r.status ?? 1) === 0
+        },
+        isDisabled: () => forToolbar && !this.selectedRow,
+        onClick: (row: any) => {
+          const r = row || this.selectedRow
+          if (r) this.toggleUsuarioStatus(r)
+        },
+      }),
+      new BtnConfig({
+        key: 'disable',
+        icon: 'bi bi-toggle-on',
+        severity: 'btn-danger',
+        label: 'Deshabilitar',
+        isVisible: () => {
+          const r = this.selectedRow
+          return !!r && (r.status ?? 1) === 1
+        },
+        isDisabled: () => forToolbar && !this.selectedRow,
+        onClick: (row: any) => {
+          const r = row || this.selectedRow
+          if (r) this.toggleUsuarioStatus(r)
+        },
+      }),
+    ]
   }
 
   getTableConfig() {
@@ -195,7 +211,7 @@ export class UsuariosAbmPage extends ApiConsumer implements OnInit  {
         executive_rol: (row: any) => row.executive_rol || 'No',
       },
       buttons: {
-        toolbar: [this.getCrearBtn(), this.getEditBtn(true), this.getToggleStatusBtn(true)],
+        toolbar: [this.getCrearBtn(), this.getEditBtn(true), ...this.getToggleStatusBtn(true)],
       },
     }
   }

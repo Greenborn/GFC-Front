@@ -173,6 +173,21 @@
               </span>
             </div>
             }
+            <div class="juzgamiento-judge-votos">
+              @for (jv of votosPorJuezPreseleccion; track jv.user_id) {
+                <div class="juzgamiento-judge-voto">
+                  <span class="juzgamiento-judge-voto-nombre">{{ jv.nombre }}</span>
+                  <span class="juzgamiento-judge-voto-valor"
+                    [class.juzgamiento-judge-voto-valor--accept]="jv.vote === 'aceptar'"
+                    [class.juzgamiento-judge-voto-valor--reject]="jv.vote === 'rechazar'">
+                    <i class="bi" [ngClass]="jv.vote === 'aceptar' ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+                    {{ jv.vote === 'aceptar' ? 'Aceptar' : 'Rechazar' }}
+                  </span>
+                </div>
+              } @empty {
+                <span class="text-muted small">Sin votos de jueces aún.</span>
+              }
+            </div>
           </div>
         } @else if (!hasPhotos) {
           <p class="text-muted small">
@@ -210,9 +225,21 @@
                   </span>
                 } @empty {
                   <span class="text-muted small">Sin votos aún.</span>
-                }
-              </div>
+}
+            </div>
             }
+            <div class="juzgamiento-judge-votos">
+              @for (jv of votosPorJuezPuntuacion; track jv.user_id) {
+                <div class="juzgamiento-judge-voto">
+                  <span class="juzgamiento-judge-voto-nombre">{{ jv.nombre }}</span>
+                  <span class="juzgamiento-judge-voto-valor juzgamiento-judge-voto-valor--metric">
+                    <i class="bi bi-trophy"></i> {{ jv.metric_abm?.prize ?? 'Métrica' }}
+                  </span>
+                </div>
+              } @empty {
+                <span class="text-muted small">Sin votos de jueces aún.</span>
+              }
+            </div>
           </div>
         } @else {
           <p class="text-muted small">

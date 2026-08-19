@@ -10,11 +10,21 @@ export interface PuntuacionVoteCount {
   count: number;
 }
 
+export interface PuntuacionJudgeVote {
+  user_id: number;
+  username?: string | null;
+  name?: string | null;
+  last_name?: string | null;
+  metric_abm_id: number;
+  metric_abm?: Metric | null;
+}
+
 export interface PuntuacionItem {
   image_id: number;
   votes: PuntuacionVoteCount[];
   total_votes: number;
   my_vote: number | null;
+  judge_votes?: PuntuacionJudgeVote[];
 }
 
 export interface PuntuacionStatus {

@@ -4,7 +4,7 @@
     <div class="te-toolbar-start">
       <ng-container *ngFor="let btn of toolbarButtons(); trackBy: trackByBtn">
         <button *ngIf="btn.isVisible()"
-          [class]="'btn btn-sm ' + btn.severity + ' ' + btn.class"
+[class]="'btn btn-sm ' + btn.severity + ' ' + btn.class"
           [disabled]="btn.isDisabled()"
           (click)="btn.onClick()"
           [title]="btn.getLabel()">
@@ -218,7 +218,7 @@
             <div class="te-actions-wrap">
               <ng-container *ngFor="let btn of rowActionButtons(); trackBy: trackByBtn">
                 <button *ngIf="btn.isVisible()"
-                  [class]="'btn btn-sm ' + btn.severity + ' ' + btn.class"
+          [class]="'btn btn-sm ' + btn.severity + ' ' + btn.class"
                   [disabled]="btn.isDisabled()"
                   (click)="btn.onClick(row); $event.stopPropagation()"
                   [title]="btn.getLabel()">

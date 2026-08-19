@@ -1,3 +1,11 @@
+export interface PreseleccionJudgeVote {
+    user_id: number;
+    username?: string | null;
+    name?: string | null;
+    last_name?: string | null;
+    vote: 'aceptar' | 'rechazar';
+}
+
 export interface ContestPreselectedPhoto {
     id?: number;
     contest_id: number;
@@ -8,6 +16,7 @@ export interface ContestPreselectedPhoto {
     accept_count?: number;
     reject_count?: number;
     my_vote?: 'aceptar' | 'rechazar' | null;
+    judge_votes?: PreseleccionJudgeVote[];
     image?: any;
 }
 
