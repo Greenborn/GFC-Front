@@ -69,6 +69,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   puntuacion: PuntuacionStatus | null = null;
   cargandoPuntuacion: boolean = false;
   votandoMetrica: boolean = false;
+  finalizando: boolean = false;
 
   private presente: Map<number, { last_active: number; user?: any }> = new Map();
   private subs: Subscription[] = [];
@@ -467,6 +468,57 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     const id = this.miVotoFotoActual;
     if (id == null) return '';
     return this.metricasDisponibles.find(m => m.id === id)?.prize ?? '';
+  }
+
+  get sinUnanimidadCount(): number {
+    return (this.puntuacion?.items ?? []).filter(item => {
+      const distinct = (item.votes ?? []).filter(v => (v.count ?? 0) > 0).length;
+      return distinct !== 1;
+    }).length;
+  }
+
+  get listoParaFinalizar(): boolean {
+    return this.esPuntuacion && this.esJuez &&
+      this.puntuacion?.all_judged === true && this.sinUnanimidadCount === 0;
+  }
+
+  async finalizarJudging() {
+    const id = this.concurso?.id;
+    if (!id || this.finalizando || !this.listoParaFinalizar) return;
+    this.UIUtilsService.mostrarAlert(
+      {
+        header: 'Finalizar juzgamiento',
+        message: 'Se asentará el puntaje de las fotografías y el concurso quedará marcado como juzgado. Esta acción no se puede deshacer. ¿Desea continuar?'
+      },
+      async () => {
+        this.finalizando = true;
+        this.contestService.finalizarJudging(id).subscribe({
+          next: () => {
+            this.finalizando = false;
+            this.concursoDetailService.loadContest(id).then(() => {
+              this.ensureResults();
+              this.ensurePuntuacion();
+            });
+            this.UIUtilsService.mostrarToast(undefined, {
+              message: 'Juzgamiento finalizado. El puntaje quedó asentado en el concurso.',
+              duration: 2500,
+              position: 'top',
+              color: 'success',
+            });
+          },
+          error: err => {
+            this.finalizando = false;
+            const msg = err?.response?.data?.message || err?.message || 'No se pudo finalizar el juzgamiento';
+            this.UIUtilsService.mostrarToast(undefined, {
+              message: msg,
+              duration: 3500,
+              position: 'top',
+              color: 'danger',
+            });
+          }
+        });
+      }
+    );
   }
 
   private ensureResults() {

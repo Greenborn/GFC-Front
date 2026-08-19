@@ -55,4 +55,9 @@ export class ContestService extends ApiService<Contest> {
     const url = `${this.getBaseUrl()}${this.getPath()}/${id}/disable-judging`;
     return from(axios.put(url, {}, { headers: this.getHeaders() }).then(r => r.data));
   }
+
+  finalizarJudging(id: number): Observable<any> {
+    const url = `${this.getBaseUrl()}${this.getPath()}/${id}/finalizar-judging`;
+    return from(axios.put(url, {}, { headers: this.getHeaders() }).then(r => r.data));
+  }
 }

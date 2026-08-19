@@ -225,8 +225,8 @@
                   </span>
                 } @empty {
                   <span class="text-muted small">Sin votos aún.</span>
-}
-            </div>
+                }
+              </div>
             }
             <div class="juzgamiento-judge-votos">
               @for (jv of votosPorJuezPuntuacion; track jv.user_id) {
@@ -240,6 +240,33 @@
                 <span class="text-muted small">Sin votos de jueces aún.</span>
               }
             </div>
+
+            @if (esJuez) {
+              <div class="juzgamiento-aprobacion">
+                <div class="juzgamiento-aprobacion-header">
+                  <i class="bi bi-flag-fill"></i> Confirmar juzgamiento
+                </div>
+                <p class="text-muted small mb-1">
+                  Fotos votadas: <strong>{{ puntuacionProgreso }}</strong>
+                </p>
+                @if (sinUnanimidadCount > 0) {
+                  <p class="text-warning small mb-1">
+                    <i class="bi bi-exclamation-triangle"></i> Hay {{ sinUnanimidadCount }} {{ sinUnanimidadCount === 1 ? 'fotografía sin' : 'fotografías sin' }} unanimidad entre los jueces. Aún no se puede finalizar.
+                  </p>
+                } @else if (puntuacion?.all_judged !== true) {
+                  <p class="text-warning small mb-1">
+                    <i class="bi bi-exclamation-triangle"></i> Faltan fotografías por votar para finalizar el juzgamiento.
+                  </p>
+                }
+                <button
+                  type="button"
+                  class="juzgamiento-btn juzgamiento-btn--puntuar"
+                  (click)="finalizarJudging()"
+                  [disabled]="!listoParaFinalizar || finalizando">
+                  <i class="bi bi-check2-all"></i> {{ finalizando ? 'Finalizando...' : 'Finalizar juzgamiento' }}
+                </button>
+              </div>
+            }
           </div>
         } @else {
           <p class="text-muted small">
