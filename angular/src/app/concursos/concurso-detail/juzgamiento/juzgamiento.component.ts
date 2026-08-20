@@ -166,7 +166,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
       this.contestJudgeService.getAll<ContestJudge>(`contest_id=${contestId}&expand=user,user.profile`).subscribe({
         next: jueces => {
           this.jueces = jueces ?? [];
-          this.esJuez = user?.role_id === 1 || (jueces ?? []).some(j => j.user_id == user?.id);
+          this.esJuez = (jueces ?? []).some(j => j.user_id == user?.id);
           if (this.esJuez && this.heartbeatTimer == null) {
             this.heartbeatTimer = setInterval(() => this.heartbeatSocket(), 25000);
           }
