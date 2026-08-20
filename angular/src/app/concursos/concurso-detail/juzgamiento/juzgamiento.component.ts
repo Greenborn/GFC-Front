@@ -80,6 +80,10 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   private presenciaTimer: any = null;
   private loadedContestId: number | null = null;
   private juecesUpdateHandler: ((payload: any) => void) | null = null;
+  private preselectHandler: ((payload: any) => void) | null = null;
+  private approveHandler: ((payload: any) => void) | null = null;
+  private puntuacionHandler: ((payload: any) => void) | null = null;
+  private ultimoPushTs: number = 0;
 
   constructor(
     public concursoDetailService: ConcursoDetailService,
@@ -146,6 +150,18 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
       this.ssoSocket.off('contest:judges:update', this.juecesUpdateHandler);
       this.juecesUpdateHandler = null;
     }
+    if (this.preselectHandler != null) {
+      this.ssoSocket.off('contest:preselect', this.preselectHandler);
+      this.preselectHandler = null;
+    }
+    if (this.approveHandler != null) {
+      this.ssoSocket.off('contest:approve', this.approveHandler);
+      this.approveHandler = null;
+    }
+    if (this.puntuacionHandler != null) {
+      this.ssoSocket.off('contest:puntuacion', this.puntuacionHandler);
+      this.puntuacionHandler = null;
+    }
     if (this.heartbeatTimer != null) {
       clearInterval(this.heartbeatTimer);
       this.heartbeatTimer = null;
@@ -178,9 +194,9 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   private iniciarSeguimientoEnVivo() {
-    if (this.esJuez) return;
     if (this.pollTimer != null) return;
     this.pollTimer = setInterval(() => {
+      if (Date.now() - this.ultimoPushTs < 10000) return;
       this.cargarGuia();
       this.recargarPreseleccion();
       this.cargarAprobacion();
@@ -192,6 +208,19 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     if (!this.juecesUpdateHandler) {
       this.juecesUpdateHandler = (payload: any) => this.aplicarPresencia(payload);
       this.ssoSocket.on('contest:judges:update', this.juecesUpdateHandler);
+    }
+
+    if (!this.preselectHandler) {
+      this.preselectHandler = (payload: any) => this.onPreselectPush(payload);
+      this.ssoSocket.on('contest:preselect', this.preselectHandler);
+    }
+    if (!this.approveHandler) {
+      this.approveHandler = (payload: any) => this.onApprovePush(payload);
+      this.ssoSocket.on('contest:approve', this.approveHandler);
+    }
+    if (!this.puntuacionHandler) {
+      this.puntuacionHandler = (payload: any) => this.onPuntuacionPush(payload);
+      this.ssoSocket.on('contest:puntuacion', this.puntuacionHandler);
     }
 
     this.subs.push(
@@ -276,6 +305,25 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     if (payload?.is_judging != null) {
       this.isJudging = payload.is_judging === true;
     }
+  }
+
+  private onPreselectPush(payload: any) {
+    if (payload?.contest_id != null && payload.contest_id !== this.concurso?.id) return;
+    this.ultimoPushTs = Date.now();
+    this.recargarPreseleccion();
+    this.cargarGuia();
+  }
+
+  private onApprovePush(payload: any) {
+    if (payload?.contest_id != null && payload.contest_id !== this.concurso?.id) return;
+    this.ultimoPushTs = Date.now();
+    this.cargarAprobacion();
+  }
+
+  private onPuntuacionPush(payload: any) {
+    if (payload?.contest_id != null && payload.contest_id !== this.concurso?.id) return;
+    this.ultimoPushTs = Date.now();
+    this.cargarPuntuacion();
   }
 
   private heartbeatSocket() {
