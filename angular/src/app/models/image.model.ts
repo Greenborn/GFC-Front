@@ -1,4 +1,4 @@
-import { Profile } from "./profile.model";
+import { ProfileExpanded } from "./profile.model";
 
 export interface Image {
     id?: number;
@@ -11,5 +11,5 @@ export interface Image {
 }
 
 export interface ImageExpanded extends Image {
-    profile?: Profile
+    profile?: ProfileExpanded
 }

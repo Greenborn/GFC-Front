@@ -194,6 +194,9 @@
         <small class="text-muted">{{r.section?.name}}</small>
         @if (concurso?.judged || rolificador.esDelegado(u) || rolificador.isAdmin(u)) {
           <small class="text-muted">{{ r.image.profile?.name }} {{ r.image.profile?.last_name }}</small>
+          @if (r.image.profile?.fotoclub?.name) {
+            <small class="text-muted">{{ r.image.profile.fotoclub.name }}</small>
+          }
         }
         @if (!isContestNotFin) {
           <small><b>{{ (r.metric?.prize && r.metric?.prize != '0') ? r.metric.prize : '-' }}</b></small>

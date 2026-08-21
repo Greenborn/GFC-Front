@@ -52,6 +52,11 @@
               <span class="info-label">Autor/a</span>
               <span class="info-value">{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}</span>
             </div>
+            @if (all_data[index]?.image?.profile?.fotoclub?.name) {
+              <div class="info-item">
+                <span class="info-value">{{all_data[index].image.profile.fotoclub.name}}</span>
+              </div>
+            }
           }
         </div>
       </div>
@@ -91,6 +96,11 @@
               <span class="info-label">Autor/a</span>
               <span class="info-value">{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}</span>
             </div>
+            @if (all_data[index]?.image?.profile?.fotoclub?.name) {
+              <div class="info-item">
+                <span class="info-value">{{all_data[index].image.profile.fotoclub.name}}</span>
+              </div>
+            }
           }
         </div>
       }
