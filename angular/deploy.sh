@@ -94,7 +94,7 @@ sshpass -p "$PASS" ssh -o StrictHostKeyChecking=no -p "$PUERTO" "$USUARIO@$IP" "
     });
   '
   if [ \"$BUMP\" != \"ninguna\" ]; then
-    VER=$(node -p 'require(\"./package.json\").version')
+    VER=\$(node -p 'require(\"./package.json\").version')
     git add -A
     git commit -m \"Bump versión a \$VER\" || true
     git push origin \"$BRANCH\" || echo \"AVISO: no se pudo pushear el bump de versión\"

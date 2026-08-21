@@ -42,6 +42,11 @@ export class VerFotografiasComponent implements OnInit {
     return this.user != null;
   }
 
+  get mostrarAutor(): boolean {
+    if (!this.open) return true;
+    return this.user != null && (this.rolificador.isAdmin(this.user) || this.rolificador.esDelegado(this.user));
+  }
+
   get currentSrc(): string {
     const item = this.all_data[this.index];
     return item?.image?.url != null ? this.configService.imageUrl(item.image.url) : '';

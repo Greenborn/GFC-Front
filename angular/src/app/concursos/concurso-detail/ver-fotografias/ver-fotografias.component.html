@@ -47,7 +47,7 @@
               <span class="info-value">{{ all_data[index].metric.prize != '0' && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}</span>
             </div>
           }
-          @if (!open) {
+          @if (mostrarAutor && all_data[index]?.image?.profile) {
             <div class="info-item">
               <span class="info-label">Autor/a</span>
               <span class="info-value">{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}</span>
@@ -69,7 +69,7 @@
       <div class="mobile-info-bar" (click)="toggleMetadata()">
         <div class="mobile-info-text">
           <span class="mobile-info-title">{{all_data[index].image.title}}</span>
-          @if (!metadataOpen && !open) {
+          @if (!metadataOpen && mostrarAutor && all_data[index]?.image?.profile) {
             <span class="mobile-info-subtitle">
               {{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}
             </span>
@@ -91,7 +91,7 @@
               <span class="info-value">{{ all_data[index].metric.prize != '0' && all_data[index].metric.prize != null && all_data[index].metric.prize != undefined ? all_data[index].metric.prize : '-' }}</span>
             </div>
           }
-          @if (!open) {
+          @if (mostrarAutor && all_data[index]?.image?.profile) {
             <div class="info-item">
               <span class="info-label">Autor/a</span>
               <span class="info-value">{{all_data[index]?.image?.profile?.name}} {{all_data[index]?.image?.profile?.last_name}}</span>
