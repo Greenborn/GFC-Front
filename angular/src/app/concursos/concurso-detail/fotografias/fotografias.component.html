@@ -168,12 +168,10 @@
           <input class="form-control form-control-sm" [(ngModel)]="filtroAutor" (input)="onFilterInput()" placeholder="Nombre del autor">
         </div>
       }
-      @if (isContestJudged) {
-        <div class="filter-section">
-          <div class="filter-section-title">Filtrar por código</div>
-          <input class="form-control form-control-sm" [(ngModel)]="filtroCodigo" (input)="onFilterInput()" placeholder="Código de fotografía">
-        </div>
-      }
+      <div class="filter-section">
+        <div class="filter-section-title">Filtrar por código</div>
+        <input class="form-control form-control-sm" [(ngModel)]="filtroCodigo" (input)="onFilterInput()" placeholder="Código de fotografía">
+      </div>
       <button class="btn btn-danger btn-sm w-100 mt-2" (click)="limpiarFiltros()">Limpiar filtros</button>
     </div>
   </div>
