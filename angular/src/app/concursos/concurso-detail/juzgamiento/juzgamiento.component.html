@@ -4,14 +4,14 @@
     <div class="col-12 col-lg-9 juzgamiento-photo-col">
       <div class="juzgamiento-viewer visor-container" [class.fs]="isFullscreen" [class.controls-hidden]="isFullscreen && !controlesVisibles">
         @if (mostrarVisor) {
-          <app-zoomable-image
+          <gb-zoomable-image
             [src]="currentSrc"
             [title]="currentTitle"
             [resetKey]="currentIndex"
             [showDownload]="true"
             [showFullscreen]="true"
             (fullscreenChange)="onFullscreenChange($event)"
-          ></app-zoomable-image>
+          ></gb-zoomable-image>
 
           @if (!modoGuiaActivo) {
             <button class="btn-nav btn-prev" (click)="anterior()" title="Anterior (←)">

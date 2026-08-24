@@ -6,7 +6,7 @@ import { ConcursoDetailService } from '../concurso-detail.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { UserLogged } from 'src/app/models/user.model';
-import { ZoomableImageComponent } from 'src/app/shared/zoomable-image/zoomable-image.component';
+import { ZoomableImageComponent } from 'angular-greenborn-image-detail';
 
 @Component({
   standalone: true,

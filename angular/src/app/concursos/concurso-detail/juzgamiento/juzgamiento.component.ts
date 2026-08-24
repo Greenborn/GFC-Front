@@ -16,7 +16,7 @@ import { ContestService } from 'src/app/services/contest.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { SSOSocketService, SSO_TOKEN_KEY } from 'angular-greenborn-sso-front';
-import { ZoomableImageComponent } from 'src/app/shared/zoomable-image/zoomable-image.component';
+import { ZoomableImageComponent } from 'angular-greenborn-image-detail';
 import { Subscription } from 'rxjs';
 
 type FiltroJuzgamiento = 'actual' | 'todas' | 'preseleccionadas' | 'rechazadas' | 'sin_votar' | 'puntuadas' | 'sin_puntuar' | 'sin_unanimidad';
