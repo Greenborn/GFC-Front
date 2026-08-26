@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { InfiniteScrollDirective } from 'src/app/shared/infinite-scroll.directive';
+import { GfcImgComponent } from 'src/app/shared/gfc-img/gfc-img.component';
 
 import { Contest } from 'src/app/models/contest.model';
 import { ContestCategoryExpanded } from 'src/app/models/contest_category.model';
@@ -32,7 +33,7 @@ import { filter } from 'rxjs/operators';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, InfiniteScrollDirective],
+  imports: [CommonModule, FormsModule, InfiniteScrollDirective, GfcImgComponent],
   selector: 'app-fotografias',
   templateUrl: './fotografias.component.html',
   styleUrls: ['./fotografias.component.scss'],
@@ -74,6 +75,8 @@ export class FotografiasComponent implements OnInit {
   public loadingPage = false;
   public loadingInitial = false;
   private pendingRefresh = false;
+
+  public noPictures = './assets/no-pictures.png';
 
   constructor(
     public concursoDetailService: ConcursoDetailService,

@@ -154,9 +154,9 @@
   <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
     <div class="foto-card w-100">
       <div class="img-wrap" (click)="openImage(i)">
-        <img loading="lazy"
-          [src]="getFotoThumb(r) != '' ? getFotoThumb(r) : './assets/no-pictures.png'"
-          alt="" />
+        <app-gfc-img [src]="getFotoThumb(r)" alt=""
+          priority="lazy" fetchpriority="low" aspectRatio="1 / 1" objectFit="cover"
+          fallback="./assets/no-pictures.png" placeholderIcon="bi bi-image"></app-gfc-img>
       </div>
       <div class="foto-info">
         <p class="mb-0"><b>{{ r.title }}</b></p>

@@ -2,7 +2,9 @@
   <div class="pb-3">
     <div class="info-hero">
       @if (concurso.img_url) {
-        <img [src]="configService.imageUrl(concurso.img_url)" class="info-hero-img" alt="{{ concurso.name }}">
+        <app-gfc-img [src]="concurso.img_url" [srcIsConfig]="true" alt="{{ concurso.name }}"
+          imgClass="info-hero-img" priority="eager" fetchpriority="high" aspectRatio="16 / 9"
+          placeholderIcon="bi bi-image"></app-gfc-img>
       } @else {
         <div class="info-hero-placeholder"></div>
       }

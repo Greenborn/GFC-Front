@@ -30,12 +30,16 @@ export const CONFIG = {
 export class ConfigService {
 
   private local = false;
-  private imageCacheBuster = Date.now();
+  private imageCacheBuster: string = '';
 
-  constructor() { }
+  constructor() {
+    const t = this.getLocalStorage('img_cache_buster');
+    this.imageCacheBuster = t ? t : '';
+  }
 
   bustImageCache(): void {
-    this.imageCacheBuster = Date.now();
+    this.imageCacheBuster = Date.now().toString();
+    this.setLocalStorage('img_cache_buster', this.imageCacheBuster);
   }
 
   get data() {
@@ -88,7 +92,9 @@ export class ConfigService {
     }
     recurso = recurso.replace(/^\/+/, '');
     let url = base.replace(/\/$/, '') + '/' + recurso;
-    url += (url.includes('?') ? '&' : '?') + 't=' + this.imageCacheBuster;
+    if (this.imageCacheBuster) {
+      url += (url.includes('?') ? '&' : '?') + 't=' + this.imageCacheBuster;
+    }
     return url;
   }
 

@@ -35,7 +35,9 @@
             @for (item of group; track trackByItem(i, item); let i = $index) {
               @if (item.tipo === 'concurso') {
                 <div class="cc-card clickeable">
-                  <img class="cc-img" [src]="getImg(item.concurso.img_url)" alt="{{item.concurso.name}}">
+                  <app-gfc-img [src]="item.concurso.img_url" [srcIsConfig]="true" alt="{{item.concurso.name}}"
+                    imgClass="cc-img" height="220px" priority="lazy" fetchpriority="low"
+                    objectFit="cover" placeholderIcon="bi bi-image"></app-gfc-img>
                   <div class="cc-body">
                     <div class="cc-body-col cc-body-col--header">
                       <span class="cc-badge" [class.cc-badge--open]="item.concurso.active" [class.cc-badge--closed]="!item.concurso.active">{{ item.concurso.active ? 'Abierto' : 'Cerrado' }}</span>

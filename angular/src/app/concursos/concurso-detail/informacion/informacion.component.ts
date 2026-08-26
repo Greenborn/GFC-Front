@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
+import { GfcImgComponent } from 'src/app/shared/gfc-img/gfc-img.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { Contest } from 'src/app/models/contest.model';
@@ -31,7 +32,7 @@ import { ContestJudge } from 'src/app/models/contest_judge.model';
 import { ContestResultsService } from 'src/app/services/contest-results.service'
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, UsuarioImgComponent],
+  imports: [CommonModule, RouterModule, UsuarioImgComponent, GfcImgComponent],
   selector: 'app-informacion',
   templateUrl: './informacion.component.html',
   styleUrls: ['./informacion.component.scss'],

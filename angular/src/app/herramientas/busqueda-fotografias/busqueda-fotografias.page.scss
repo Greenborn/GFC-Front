@@ -94,18 +94,16 @@
 .foto-card .img-wrap {
     position: relative;
     width: 100%;
-    padding-top: 75%;
     overflow: hidden;
     background: #eee;
     cursor: pointer;
 }
 
 .foto-card .img-wrap img {
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
 
 .foto-card .foto-info {

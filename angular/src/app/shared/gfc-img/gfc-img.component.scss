@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+
+.gfc-img {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.gfc-img--fixed img {
+  height: 100%;
+}
+
+.gfc-img__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #adb5bd;
+  font-size: 1.5rem;
+  pointer-events: none;
+}
+
+.gfc-img img {
+  width: 100%;
+  display: block;
+}

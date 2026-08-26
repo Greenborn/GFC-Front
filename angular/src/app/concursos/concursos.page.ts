@@ -19,10 +19,11 @@ import { ResponsiveService } from '../services/ui/responsive.service';
 import { FotosDelAnioResponse, ItemConcursoOFoto } from '../models/foto-del-anio.model';
 import { takeUntil } from 'rxjs/operators';
 import { InfiniteScrollDirective } from '../shared/infinite-scroll.directive';
+import { GfcImgComponent } from '../shared/gfc-img/gfc-img.component';
 import { FotosAnioCardComponent } from './fotos-anio-card/fotos-anio-card.component';
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, InfiniteScrollDirective, FotosAnioCardComponent],
+  imports: [CommonModule, FormsModule, RouterModule, InfiniteScrollDirective, FotosAnioCardComponent, GfcImgComponent],
   selector: 'app-concursos',
   templateUrl: './concursos.page.html',
   styleUrls: ['./concursos.page.scss'],

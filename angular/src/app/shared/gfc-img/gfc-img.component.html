@@ -1,0 +1,37 @@
+<div class="gfc-img" [class]="hostClassStr" [style.aspect-ratio]="aspectRatio" [style.height]="height">
+  @if (loading) {
+    <div class="gfc-img__placeholder">
+      <i class="bi {{ placeholderIcon }}"></i>
+    </div>
+  }
+
+  @if (showImage) {
+    <img
+      [src]="finalSrc"
+      [class]="imgClass"
+      [alt]="alt"
+      [attr.loading]="loadingAttr"
+      [attr.decoding]="decodingAttr"
+      [attr.fetchpriority]="fetchPriorityAttr"
+      [style.object-fit]="objectFit"
+      (load)="onLoad()"
+      (error)="onError()"
+    />
+  }
+
+  @if (showFallback) {
+    <img
+      [src]="finalSrc"
+      [class]="imgClass"
+      [alt]="alt"
+      [style.object-fit]="objectFit"
+      (error)="onError()"
+    />
+  }
+
+  @if (!showImage && !showFallback && !loading) {
+    <div class="gfc-img__placeholder">
+      <i class="bi {{ placeholderIcon }}"></i>
+    </div>
+  }
+</div>
