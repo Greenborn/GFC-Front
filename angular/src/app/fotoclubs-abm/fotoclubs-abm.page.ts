@@ -98,7 +98,7 @@ export class FotoclubsAbmPage extends ApiConsumer implements OnInit {
             ? this.configService.imageUrl(row.photo_url)
             : './assets/no-pictures.png'
           const invertStyle = this.aspecto && (!row.photo_url || row.photo_url === '') ? 'filter:invert(100)' : ''
-          return `<img src="${imgSrc}" class="rounded me-2" style="${invertStyle};object-fit:cover;border-radius:6px" width="32" height="32"><span class="align-middle">${row.name}</span>`
+          return `<img src="${imgSrc}" alt="${row.name}" class="rounded me-2" style="${invertStyle};object-fit:cover;border-radius:6px" width="32" height="32"><span class="align-middle">${row.name}</span>`
         },
         _habilitado: (row: any) => {
           const cls = row.enabled ? 'bg-success' : 'bg-danger'

@@ -61,7 +61,7 @@
                             <img class="profile-photo"
                               [src]="configService.imageUrl(rg.img_url)"
                               (error)="$event.target.style.display='none'"
-                              alt="">
+                              [alt]="'Foto de perfil de ' + rg.display_name">
                           } @else {
                             <i class="bi bi-person-circle profile-photo-icon"></i>
                           }

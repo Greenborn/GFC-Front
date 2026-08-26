@@ -57,7 +57,7 @@
                 <label class="form-label">Imágen</label>
                 <input type="file" class="form-control" (change)="handleFileInput($event.target['files'])" />
                 <div class="text-center mt-2" *ngIf="img_url">
-                  <img (error)="img_url=''" [src]="img_url || (fotoclub.photo_url ? configService.imageUrl(fotoclub.photo_url) : '')" alt="" class="fotoclub-preview">
+                  <img (error)="img_url=''" [src]="img_url || (fotoclub.photo_url ? configService.imageUrl(fotoclub.photo_url) : '')" [alt]="(fotoclub.name || 'Fotoclub') + ' (logo)'" class="fotoclub-preview">
                 </div>
               </div>
             </div>

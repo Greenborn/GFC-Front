@@ -22,7 +22,7 @@
                 <div class="col align-self-center">
                   <h6 class="card-subtitle text-muted" title="Código de la obra">{{ image.code }}</h6>
                   <h5 class="card-title" title="Nombre de la obra"><b>{{image.title}}</b></h5>
-                  <div> <img [src]="imgSource" alt=""> </div>
+                  <div> <img [src]="imgSource" [alt]="image.title || 'Obra a puntuar'"> </div>
                 </div>
               </div>
 

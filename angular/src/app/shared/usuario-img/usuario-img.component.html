@@ -4,7 +4,7 @@
       <i class="bi bi-person-circle placeholder-icon"></i>
     }
     @if (src && !imgError) {
-      <span><img src="{{src}}" (error)="imgError = true" /></span>
+      <span><img src="{{src}}" alt="Foto de perfil" (error)="imgError = true" /></span>
     }
   </div>
 </div>

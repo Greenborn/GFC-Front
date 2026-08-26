@@ -18,7 +18,7 @@ export class GfcImgComponent implements OnChanges {
   /** Si true, `src` es un recurso relativo que se completa con imagesBaseUrl. */
   @Input() srcIsConfig = false;
 
-  @Input() alt = '';
+  @Input() alt = 'Imagen';
 
   /** Estrategia de carga: eager (LCP), lazy o auto. */
   @Input() priority: GfcImgPriority = 'auto';
