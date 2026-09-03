@@ -83,6 +83,7 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   private preselectHandler: ((payload: any) => void) | null = null;
   private approveHandler: ((payload: any) => void) | null = null;
   private puntuacionHandler: ((payload: any) => void) | null = null;
+  private stageHandler: ((payload: any) => void) | null = null;
   private ultimoPushTs: number = 0;
 
   constructor(
@@ -162,6 +163,10 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
       this.ssoSocket.off('contest:puntuacion', this.puntuacionHandler);
       this.puntuacionHandler = null;
     }
+    if (this.stageHandler != null) {
+      this.ssoSocket.off('contest:stage', this.stageHandler);
+      this.stageHandler = null;
+    }
     if (this.heartbeatTimer != null) {
       clearInterval(this.heartbeatTimer);
       this.heartbeatTimer = null;
@@ -221,6 +226,10 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     if (!this.puntuacionHandler) {
       this.puntuacionHandler = (payload: any) => this.onPuntuacionPush(payload);
       this.ssoSocket.on('contest:puntuacion', this.puntuacionHandler);
+    }
+    if (!this.stageHandler) {
+      this.stageHandler = (payload: any) => this.onStagePush(payload);
+      this.ssoSocket.on('contest:stage', this.stageHandler);
     }
 
     this.subs.push(
@@ -324,6 +333,19 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
     if (payload?.contest_id != null && payload.contest_id !== this.concurso?.id) return;
     this.ultimoPushTs = Date.now();
     this.cargarPuntuacion();
+  }
+
+  private onStagePush(payload: any) {
+    if (payload?.contest_id != null && payload.contest_id !== this.concurso?.id) return;
+    if (this.concurso?.id == null) return;
+    this.ultimoPushTs = Date.now();
+    this.filtro = 'actual';
+    this.currentIndex = 0;
+    this.concursoDetailService.loadContest(this.concurso.id).then(() => {
+      this.ensureResults();
+      this.ensurePreseleccionadas();
+      this.ensurePuntuacion();
+    });
   }
 
   private heartbeatSocket() {
