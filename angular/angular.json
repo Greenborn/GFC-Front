@@ -29,7 +29,12 @@
                 "output": "assets"
               },
 
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              {
+                "glob": "version.json",
+                "input": "src",
+                "output": "/"
+              }
             ],
             "serviceWorker": "ngsw-config.json",
             "stylePreprocessorOptions": {

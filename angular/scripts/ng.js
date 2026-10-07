@@ -26,10 +26,11 @@ function readDotEnv() {
   return vars;
 }
 
-function generateEnvContent(vars, production) {
+function generateEnvContent(vars, production, buildId) {
   return `export const environment = {
   production: ${production},
   version: ${JSON.stringify(vars.APP_VERSION || (JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version) || '1.0.0')},
+  buildId: ${JSON.stringify(buildId)},
   apiBaseUrl: ${JSON.stringify(vars.API_BASE_URL || '')},
   loginAction: ${JSON.stringify(vars.LOGIN_ACTION || '')},
   appName: ${JSON.stringify(vars.APP_NAME || '')},
@@ -53,11 +54,19 @@ const envVars = readDotEnv();
 const isProduction = command === 'build' && args.some(a => a.includes('production'));
 const root = path.join(__dirname, '..');
 
-// Generate environment files
-const devContent = generateEnvContent(envVars, false);
-const prodContent = generateEnvContent(envVars, true);
+// Generate environment files. buildId identifica este build: se embebe en el bundle
+// y se publica en version.json para que el cliente detecte si quedó una versión vieja.
+const buildId = String(Date.now());
+const devContent = generateEnvContent(envVars, false, buildId);
+const prodContent = generateEnvContent(envVars, true, buildId);
 fs.writeFileSync(path.join(root, 'src', 'environments', 'environment.ts'), devContent);
 fs.writeFileSync(path.join(root, 'src', 'environments', 'environment.prod.ts'), prodContent);
+
+const versionInfo = {
+  version: envVars.APP_VERSION || JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version,
+  buildId
+};
+fs.writeFileSync(path.join(root, 'src', 'version.json'), JSON.stringify(versionInfo, null, 2) + '\n');
 
 console.log(`📝 environment files generated from .env (production: ${isProduction})`);
 

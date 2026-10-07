@@ -6,3 +6,4 @@ www/*
 *.zip
 src/environments/*
 !src/environments/.gitkeep
+src/version.json

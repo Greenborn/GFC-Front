@@ -7,6 +7,7 @@ import { ResponsiveService } from './services/ui/responsive.service';
 import { NavbarComponent } from './nav/navbar/navbar.component';
 import { SidebarComponent } from './nav/sidebar/sidebar.component';
 import { AuthService } from './modules/auth/services/auth.service';
+import { VersionCheckService } from './services/version-check.service';
 
 @Component({
   standalone: true,
@@ -29,10 +30,13 @@ export class AppComponent implements OnInit, OnDestroy {
     private consoleLogService: ConsoleLogService,
     private ssoAuth: SSOAuthService,
     private ssoSocket: SSOSocketService,
-    private auth: AuthService
+    private auth: AuthService,
+    private versionCheck: VersionCheckService
   ) { }
 
   ngOnInit() {
+    this.versionCheck.start();
+
     if (localStorage.getItem('darkMode') === 'true') {
       document.body.classList.add('dark');
       document.documentElement.setAttribute('data-bs-theme', 'dark');
