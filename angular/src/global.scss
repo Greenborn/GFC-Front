@@ -75,19 +75,26 @@ app-table-editor .te-td img { height: 2rem !important; width: 2rem !important; o
  * `.modal-dialog-scrollable` fuerza la altura del diálogo a casi toda la pantalla,
  * dejando un hueco transparente abajo cuando el contenido no la llena.
  * Aquí el diálogo se ajusta al contenido (crece hasta ~100dvh y hace scroll interno).
+ *
+ * Usamos la clase `.image-post-dialog` (agregada explícitamente desde
+ * concurso-detail.page.ts vía `dialogClass`) en lugar de `:has(app-image-post)`
+ * porque `:has()` no está soportado en navegadores mobile viejos que este
+ * proyecto todavía soporta (ej. Samsung Internet), y sin estas reglas el
+ * footer con los botones Cancelar/Guardar queda fuera de pantalla y sin forma
+ * de hacer scroll para alcanzarlo.
  */
-.modal-dialog:has(app-image-post) {
+.modal-dialog.image-post-dialog {
   height: auto !important;
   min-height: auto !important;
   align-items: center;
 }
-.modal-dialog:has(app-image-post) .modal-content {
+.modal-dialog.image-post-dialog .modal-content {
   max-height: calc(100dvh - var(--bs-modal-margin, 0.5rem) * 2) !important;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
-.modal-dialog:has(app-image-post) .inner-content {
+.modal-dialog.image-post-dialog .inner-content {
   background-color: var(--gfc-bg-primary, #fff);
   max-height: calc(100dvh - 6rem);
   overflow-y: auto;

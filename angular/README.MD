@@ -184,7 +184,7 @@ Para soporte técnico o consultas, contactar a través de:
 
 ### **1.20.65** (Agosto de 2026)
 
-
+- Fix: el footer fijo del modal de subir fotografía dependía del selector CSS `:has()`, no soportado en navegadores mobile viejos (ej. Samsung Internet), por lo que el botón "Guardar" seguía invisible y el modal no tenía forma de cerrarse en esos dispositivos. Se reemplazó por una clase explícita (`image-post-dialog`) sin esa dependencia.
 
 ### **1.20.64** (Agosto de 2026)
 

@@ -286,7 +286,7 @@ obtenerPx() {
     }
 
 
-    const data = await this.UIUtilsService.mostrarModal(ImagePostPage, componentProps);
+    const data = await this.UIUtilsService.mostrarModal(ImagePostPage, componentProps, false, 'image-post-dialog');
     console.log('[postImage] data modal:', data);
     const { image, section_id, contest_result } = data ?? {}
     console.log('[postImage] image:', image, 'section_id:', section_id, 'contest_result:', contest_result);
