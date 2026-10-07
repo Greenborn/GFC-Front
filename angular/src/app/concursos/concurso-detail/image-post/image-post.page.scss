@@ -1,3 +1,12 @@
+/* El host se vuelve flex column para que el footer con los botones quede
+   siempre visible y solo el contenido del formulario haga scroll interno. */
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
 /* El input nativo queda oculto; el botón personalizado (label) lo activa. */
 .te-file-input {
   display: none !important;
@@ -86,8 +95,35 @@ body.dark .te-file-name {
   background: #fff;
 }
 
+.image-post-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 .inner-content {
   background-color: var(--gfc-bg-primary, #fff);
-  max-height: calc(100dvh - 6rem);
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
+}
+
+/* Footer fijo: los botones Cancelar/Guardar siempre quedan visibles,
+   aunque el contenido del formulario (ej. la vista previa de la imagen)
+   necesite scroll interno en pantallas chicas. */
+.gfc-modal-footer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--gfc-border-color, #dee2e6);
+  background: var(--gfc-bg-primary, #fff);
+}
+
+body.dark .gfc-modal-footer {
+  background: #161618;
+  border-top-color: #2a2a2a;
 }

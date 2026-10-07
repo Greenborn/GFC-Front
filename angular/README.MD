@@ -188,7 +188,7 @@ Para soporte técnico o consultas, contactar a través de:
 
 ### **1.20.64** (Agosto de 2026)
 
-
+- Fix: en el modal de subir fotografía a un concurso, el botón "Guardar" queda ahora en un footer fijo siempre visible (antes podía quedar fuera de pantalla en mobile al mostrarse la vista previa de la imagen seleccionada).
 
 ### **1.20.63** (Agosto de 2026)
 

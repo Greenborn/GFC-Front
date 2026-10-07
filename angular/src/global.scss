@@ -84,6 +84,8 @@ app-table-editor .te-td img { height: 2rem !important; width: 2rem !important; o
 .modal-dialog:has(app-image-post) .modal-content {
   max-height: calc(100dvh - var(--bs-modal-margin, 0.5rem) * 2) !important;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .modal-dialog:has(app-image-post) .inner-content {
   background-color: var(--gfc-bg-primary, #fff);
