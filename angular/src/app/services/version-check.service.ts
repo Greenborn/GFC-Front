@@ -25,9 +25,10 @@ export class VersionCheckService {
 
     this.check(true);
     setInterval(() => this.check(false), CHECK_INTERVAL_MS);
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) this.check(false);
-    });
+    // Se chequea en ambas direcciones: al ocultarse es cuando check() puede recargar
+    // sin interrumpir al usuario (document.hidden === true en ese momento); al volver
+    // a mostrarse solo actualiza remoteBuildId para la próxima navegación.
+    document.addEventListener('visibilitychange', () => this.check(false));
     window.addEventListener('online', () => this.check(false));
 
     // Si hay una recarga pendiente, se aplica al navegar para no interrumpir un formulario a mitad de carga

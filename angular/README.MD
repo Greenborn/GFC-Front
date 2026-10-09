@@ -127,7 +127,7 @@ IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
 NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 LOGIN_ACTION=login
 APP_NAME=app_gfc_prod-
-APP_VERSION=1.21.0
+APP_VERSION=1.21.1
 ```
 
 ## Build para Producción
@@ -161,6 +161,10 @@ Para soporte técnico o consultas, contactar a través de:
 ---
 
 ## Change Log
+
+### **1.21.1** (Octubre de 2026)
+
+- Fix: `VersionCheckService` no recargaba la app cuando la pestaña quedaba oculta (cambio de pestaña/minimizado) tras detectar una nueva versión en producción, por una condición en el listener de `visibilitychange` que impedía disparar el chequeo en ese momento. Ahora se chequea en ambas direcciones del cambio de visibilidad, permitiendo la actualización silenciosa cuando el usuario no está mirando la pestaña.
 
 ### **1.21.0** (Octubre de 2026)
 
