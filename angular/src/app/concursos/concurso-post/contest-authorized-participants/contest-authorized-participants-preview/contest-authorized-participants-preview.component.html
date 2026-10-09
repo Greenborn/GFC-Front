@@ -1,0 +1,76 @@
+<div class="authorized-participants-preview-root">
+  <div class="gfc-modal-header">
+    <div class="d-flex align-items-center justify-content-between ms-3 me-3 py-2">
+      <h5 class="mb-0">Vista previa del listado</h5>
+      <button class="btn btn-link d-none d-md-block" (click)="cancelar()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="inner-content">
+    <div class="container-fluid">
+      <div class="px-2 px-sm-3 py-3">
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="badge bg-success bg-opacity-10 text-success rounded-pill">
+            {{stats?.valid_rows ?? 0}} válidas
+          </span>
+          @if (stats?.skipped_no_dni) {
+            <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill">
+              {{stats.skipped_no_dni}} excluidas sin DNI
+            </span>
+          }
+          @if (stats?.skipped_duplicate) {
+            <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill">
+              {{stats.skipped_duplicate}} DNI duplicados
+            </span>
+          }
+        </div>
+
+        @if (rows.length > 0) {
+          <div class="table-responsive">
+            <table class="table table-sm table-striped align-middle">
+              <thead>
+                <tr>
+                  <th>Apellido</th>
+                  <th>Nombre</th>
+                  <th>DNI</th>
+                  <th>F. de Nac.</th>
+                  <th>Facultad</th>
+                  <th>Disciplina</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (r of rows; track r) {
+                  <tr>
+                    <td>{{r.last_name || '—'}}</td>
+                    <td>{{r.first_name || '—'}}</td>
+                    <td>{{r.dni}}</td>
+                    <td>{{r.birth_date || '—'}}</td>
+                    <td>{{r.faculty || '—'}}</td>
+                    <td>{{r.discipline || '—'}}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="text-center text-muted py-4">
+            No hay filas válidas para importar.
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+
+  <div class="gfc-modal-footer">
+    <button class="btn btn-outline-secondary" (click)="cancelar()">
+      Cancelar
+    </button>
+    <button class="btn btn-success" [disabled]="rows.length === 0" (click)="confirmar()">
+      Confirmar importación
+    </button>
+  </div>
+</div>

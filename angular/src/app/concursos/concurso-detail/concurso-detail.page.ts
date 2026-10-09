@@ -159,6 +159,7 @@ export class ConcursoDetailPage extends ApiConsumer implements OnInit, OnDestroy
       this.concursoDetailService.loadJueces()
       this.concursoDetailService.loadProfileContests()
       this.concursoDetailService.loadProfileContestsJueces()
+      this.concursoDetailService.loadParticipantesAutorizados()
       this.cargarEsJuezDelConcurso(id)
       
     });

@@ -1,0 +1,35 @@
+.upload-zone {
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.upload-zone:hover {
+  border-color: #86b7fe;
+  background-color: #f8f9ff;
+}
+
+.upload-zone i {
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.upload-zone:hover i {
+  color: #0d6efd;
+}
+
+:host-context(body.dark) .upload-zone {
+  border-color: #444;
+}
+
+:host-context(body.dark) .upload-zone:hover {
+  border-color: #5a9cff;
+  background-color: rgba(90, 156, 255, 0.05);
+}
+
+:host-context(body.dark) .upload-zone:hover i {
+  color: #5a9cff;
+}

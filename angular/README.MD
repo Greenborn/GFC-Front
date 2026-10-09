@@ -127,7 +127,7 @@ IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
 NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 LOGIN_ACTION=login
 APP_NAME=app_gfc_prod-
-APP_VERSION=1.20.70
+APP_VERSION=1.21.0
 ```
 
 ## Build para Producción
@@ -161,6 +161,11 @@ Para soporte técnico o consultas, contactar a través de:
 ---
 
 ## Change Log
+
+### **1.21.0** (Octubre de 2026)
+
+- Feature: en el formulario de edición de concursos, los administradores ahora pueden subir un listado de participantes autorizados (CSV, XLSX o PDF) con apellido, nombre, DNI (único campo obligatorio), fecha de nacimiento, facultad y disciplina. El archivo se parsea en el backend y se muestra una vista previa en un modal antes de confirmar la importación (que reemplaza por completo el listado anterior del concurso). En el listado de concursantes del detalle del concurso se muestra un badge "No habilitado" para los inscriptos cuyo DNI (comparado sin puntos) no figure en el padrón cargado.
+
 
 ### **1.20.70** (Octubre de 2026)
 

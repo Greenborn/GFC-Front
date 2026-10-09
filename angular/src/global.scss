@@ -101,6 +101,31 @@ app-table-editor .te-td img { height: 2rem !important; width: 2rem !important; o
 }
 
 /*
+ * Preview de listado de participantes autorizados: ancho amplio en desktop para
+ * acomodar la tabla de columnas (Apellido/Nombre/DNI/F. Nac./Facultad/Disciplina),
+ * con la misma lógica de clase explícita que `.image-post-dialog` (en vez de
+ * `:has()`, no soportado en navegadores mobile viejos que este proyecto soporta).
+ */
+.modal-dialog.authorized-participants-preview-dialog {
+  height: auto !important;
+  min-height: auto !important;
+  align-items: center;
+  width: min(900px, calc(100vw - 3.5rem)) !important;
+  max-width: calc(100vw - 3.5rem) !important;
+}
+.modal-dialog.authorized-participants-preview-dialog .modal-content {
+  max-height: calc(100dvh - var(--bs-modal-margin, 0.5rem) * 2) !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.modal-dialog.authorized-participants-preview-dialog .inner-content {
+  background-color: var(--gfc-bg-primary, #fff);
+  max-height: calc(100dvh - 6rem);
+  overflow-y: auto;
+}
+
+/*
  * Formulario de organizaciones: ancho doble en desktop, dos columnas y
  * altura adaptada al contenido (crece hasta ~100dvh y hace scroll interno).
  */

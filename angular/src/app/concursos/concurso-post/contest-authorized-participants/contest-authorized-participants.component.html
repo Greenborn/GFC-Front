@@ -1,0 +1,24 @@
+<div class="mb-2 small">
+  @if (status.has_list) {
+    <span class="text-success"><i class="bi bi-check-circle me-1"></i>{{status.count}} participantes cargados</span>
+  } @else {
+    <span class="text-muted">No hay listado cargado</span>
+  }
+</div>
+
+<div class="upload-zone mb-2" (click)="fileInput.click()" [class.pe-none]="uploading">
+  <input type="file" #fileInput hidden accept=".csv,.xlsx,.xls,.pdf" (change)="onFileSelected($event.target)" />
+  @if (uploading) {
+    <div class="spinner-border spinner-border-sm text-primary" role="status">
+      <span class="visually-hidden">Procesando...</span>
+    </div>
+  } @else {
+    <i class="bi bi-cloud-arrow-up fs-2"></i>
+  }
+  <p class="mb-0 small">{{status.has_list ? 'Reemplazar listado' : 'Subir listado'}}</p>
+  <small class="text-muted">CSV, XLSX o PDF</small>
+</div>
+
+<small class="text-muted">
+  Solo se usa para marcar en el listado de concursantes a quienes no figuren en el padrón (por DNI).
+</small>

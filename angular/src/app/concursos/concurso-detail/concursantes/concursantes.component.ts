@@ -40,6 +40,7 @@ export class ConcursantesComponent implements OnInit {
   categoriasInscriptas: ContestCategoryExpanded[] = [];
   resultadosConcurso: any = [];
   juecesProfileIds: Set<number> = new Set();
+  dniAutorizados: Set<string> = new Set();
   
   mostrarFiltro: boolean = false;
   public categoriaSeleccionada: Category = null;
@@ -108,6 +109,11 @@ export class ConcursantesComponent implements OnInit {
       })
     )
     this.subscriptions.push(
+      this.concursoDetailService.participantesAutorizados.subscribe(ps => {
+        this.dniAutorizados = new Set(ps.map(p => p.dni_normalized || this.normalizeDni(p.dni)))
+      })
+    )
+    this.subscriptions.push(
       this.concursoDetailService.concurso.subscribe(c => this.concurso = c)
     )
     this.subscriptions.push(
@@ -144,6 +150,18 @@ export class ConcursantesComponent implements OnInit {
 
   esJuez(profile_id: number): boolean {
     return this.juecesProfileIds.has(profile_id);
+  }
+
+  private normalizeDni(dni: string | undefined | null): string {
+    return (dni ?? '').replace(/[.\s]/g, '').trim();
+  }
+
+  noHabilitado(profile_id: number): boolean {
+    if (this.dniAutorizados.size === 0) return false;
+    const p = this.inscriptos.find(p => p.profile_id == profile_id);
+    const dni = p?.profile?.dni;
+    if (!dni) return false;
+    return !this.dniAutorizados.has(this.normalizeDni(dni));
   }
 
   getFotosCargadas(profile_id: number) {

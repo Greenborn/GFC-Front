@@ -22,6 +22,8 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { filter } from 'rxjs/operators';
 import { ContestResultService } from 'src/app/services/contest-result.service';
 import { InscribirJuecesComponent } from './inscribir-jueces/inscribir-jueces.component';
+import { ContestAuthorizedParticipant } from 'src/app/models/contest_authorized_participant.model';
+import { ContestAuthorizedParticipantService } from 'src/app/services/contest-authorized-participant.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +40,7 @@ export class ConcursoDetailService {
   public seccionesInscriptas: BehaviorSubject<ContestSectionExpanded[]>;
   public resultadosConcurso: BehaviorSubject<ContestResultExpanded[]>;
   public fotoclubs: BehaviorSubject<Fotoclub[]>;
+  public participantesAutorizados: BehaviorSubject<ContestAuthorizedParticipant[]>;
   public desinscribir: EventEmitter<ProfileContestExpanded>;
   public postImage: EventEmitter<ImagePostParams>;
   public reviewImage: EventEmitter<ContestResultExpanded>;
@@ -53,8 +56,9 @@ export class ConcursoDetailService {
     private contestService: ContestService,
     private contestResultService: ContestResultService,
     private rolificador: RolificadorService,
-    private authService: AuthService
-  ) { 
+    private authService: AuthService,
+    private contestAuthorizedParticipantService: ContestAuthorizedParticipantService
+  ) {
 
     this.concurso = new BehaviorSubject<Contest>(this.contestService.template);
     this.concursantes = new BehaviorSubject<ProfileExpanded[]>([]);
@@ -65,6 +69,7 @@ export class ConcursoDetailService {
     this.seccionesInscriptas = new BehaviorSubject<ContestSectionExpanded[]>([]);
     this.resultadosConcurso = new BehaviorSubject<any>([]);
     this.fotoclubs = new BehaviorSubject<Fotoclub[]>([]);
+    this.participantesAutorizados = new BehaviorSubject<ContestAuthorizedParticipant[]>([]);
     this.desinscribir = new EventEmitter<ProfileContestExpanded>();
     this.postImage = new EventEmitter<ImagePostParams>();
     this.reviewImage = new EventEmitter<ContestResultExpanded>();
@@ -186,6 +191,22 @@ export class ConcursoDetailService {
       const s = this.profileContestService.getAll<ProfileExpanded>(`contest_id=${c.id}&expand=fotoclub&role=3`, 'profile-registrable').subscribe(cs => {
         this.concursantes.next(cs)
         s.unsubscribe()
+      })
+    })
+  }
+  async loadParticipantesAutorizados() {
+    this.concurso.pipe(
+      filter(c => c.id != undefined)
+    ).subscribe(c => {
+      const s = this.contestAuthorizedParticipantService.getAll<ContestAuthorizedParticipant>(`contest_id=${c.id}`).subscribe({
+        next: ps => {
+          this.participantesAutorizados.next(ps)
+          s.unsubscribe()
+        },
+        error: () => {
+          this.participantesAutorizados.next([])
+          s.unsubscribe()
+        }
       })
     })
   }

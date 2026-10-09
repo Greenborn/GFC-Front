@@ -25,6 +25,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ContestRecordsComponent } from '../concurso-detail/contest-records/contest-records.component';
+import { ContestAuthorizedParticipantsComponent } from './contest-authorized-participants/contest-authorized-participants.component';
 import { UsuarioImgComponent } from 'src/app/shared/usuario-img/usuario-img.component';
 import { ContestJudgeService } from 'src/app/services/contest-judge.service';
 import { ContestJudge } from 'src/app/models/contest_judge.model';
@@ -35,7 +36,7 @@ import { ProfileExpanded } from 'src/app/models/profile.model';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, SharedModule, ContestRecordsComponent, UsuarioImgComponent],
+  imports: [CommonModule, FormsModule, RouterModule, SharedModule, ContestRecordsComponent, UsuarioImgComponent, ContestAuthorizedParticipantsComponent],
   selector: 'app-concurso-post',
   templateUrl: './concurso-post.page.html',
   styleUrls: ['./concurso-post.page.scss'],
