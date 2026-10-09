@@ -66,6 +66,7 @@ export class FotografiasComponent implements OnInit {
   filtroCodigo: string = '';
   terminoBusqueda: string = '';
   private filterTimeout: any;
+  dniAutorizados: Set<string> = new Set();
 
   public subscriptions = []
 
@@ -239,6 +240,11 @@ export class FotografiasComponent implements OnInit {
     this.subscriptions.push(this.concursoDetailService.inscriptos.subscribe(cs =>{
       this.inscriptos = cs
     }))
+    this.subscriptions.push(
+      this.concursoDetailService.participantesAutorizados.subscribe(ps => {
+        this.dniAutorizados = new Set(ps.map(p => p.dni_normalized || this.normalizeDni(p.dni)))
+      })
+    )
     if (this.concurso === null)
       this.subscriptions.push(this.concursoDetailService.concurso.subscribe(async c => {
         this.concurso = c
@@ -494,6 +500,24 @@ export class FotografiasComponent implements OnInit {
   getFullName(profile_id: number) {
     const p = this.inscriptos.find(p => p.profile_id == profile_id)
     return p != undefined ? `${p.profile.name} ${p.profile.last_name}` : ''
+  }
+
+  private normalizeDni(dni: string | undefined | null): string {
+    return (dni ?? '').replace(/[.\s]/g, '').trim();
+  }
+
+  private getAutorDni(r: any): string {
+    const dni = r?.image?.profile?.dni;
+    if (dni) return dni;
+    const p = this.inscriptos.find(p => p.profile_id == r?.image?.profile_id);
+    return p?.profile?.dni ?? '';
+  }
+
+  noHabilitado(r: any): boolean {
+    if (this.dniAutorizados.size === 0) return false;
+    const dni = this.getAutorDni(r);
+    if (!dni) return false;
+    return !this.dniAutorizados.has(this.normalizeDni(dni));
   }
 
   async postImage(image: Image = undefined, section_id: number = undefined) {

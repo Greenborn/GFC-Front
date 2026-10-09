@@ -28,6 +28,7 @@ export class VerFotografiasComponent implements OnInit {
   public loadingMore: boolean = false;
   public isFullscreen: boolean = false;
   public inscriptos: any[] = [];
+  public dniAutorizados: Set<string> = new Set();
   public user: UserLogged | null = null;
 
   constructor(
@@ -61,6 +62,27 @@ export class VerFotografiasComponent implements OnInit {
     const s2 = this.concursoDetailService.inscriptos.subscribe(cs =>{
       this.inscriptos = cs
     })
+    const s3 = this.concursoDetailService.participantesAutorizados.subscribe(ps => {
+      this.dniAutorizados = new Set(ps.map(p => p.dni_normalized || this.normalizeDni(p.dni)))
+    })
+  }
+
+  private normalizeDni(dni: string | undefined | null): string {
+    return (dni ?? '').replace(/[.\s]/g, '').trim();
+  }
+
+  private getAutorDni(item: any): string {
+    const dni = item?.image?.profile?.dni;
+    if (dni) return dni;
+    const p = this.inscriptos.find(p => p.profile_id == item?.image?.profile_id);
+    return p?.profile?.dni ?? '';
+  }
+
+  noHabilitado(item: any): boolean {
+    if (this.dniAutorizados.size === 0) return false;
+    const dni = this.getAutorDni(item);
+    if (!dni) return false;
+    return !this.dniAutorizados.has(this.normalizeDni(dni));
   }
 
   toggleMetadata(){

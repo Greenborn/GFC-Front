@@ -12,6 +12,12 @@
         <i class="bi bi-chevron-left"></i>
       </button>
 
+      @if (noHabilitado(all_data[index])) {
+        <span class="badge-no-habilitado">
+          <i class="bi bi-exclamation-triangle"></i> No habilitado
+        </span>
+      }
+
       <gb-zoomable-image
         [src]="currentSrc"
         [title]="currentTitle"
@@ -35,6 +41,13 @@
             <span class="info-label">Título</span>
             <span class="info-value">{{all_data[index].image.title}}</span>
           </div>
+          @if (noHabilitado(all_data[index])) {
+            <div class="info-item">
+              <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill align-self-start">
+                <i class="bi bi-exclamation-triangle me-1"></i>No habilitado a participar
+              </span>
+            </div>
+          }
           @if (all_data[index]?.section) {
             <div class="info-item">
               <span class="info-label">Sección</span>
@@ -79,6 +92,13 @@
       </div>
       @if (metadataOpen) {
         <div class="mobile-info-body">
+          @if (noHabilitado(all_data[index])) {
+            <div class="info-item">
+              <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill align-self-start">
+                <i class="bi bi-exclamation-triangle me-1"></i>No habilitado a participar
+              </span>
+            </div>
+          }
           @if (all_data[index]?.section) {
             <div class="info-item">
               <span class="info-label">Sección</span>

@@ -181,6 +181,11 @@
   <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
     <div class="foto-card w-100">
       <div class="img-wrap" (click)="openImage(i, data || undefined)">
+        @if (noHabilitado(r)) {
+          <span class="badge-no-habilitado">
+            <i class="bi bi-exclamation-triangle"></i> No habilitado
+          </span>
+        }
         <app-gfc-img [src]="getFotoThumb(r.image,1)" alt=""
           priority="lazy" fetchpriority="low" aspectRatio="1 / 1" objectFit="cover"
           [fallback]="noPictures" [imgClass]="(getFotoThumb(r.image,1) === '' && aspecto) ? 'invert-filter' : ''"
