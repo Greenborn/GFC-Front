@@ -299,7 +299,54 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           //   this.profile.executive = 1
           // }
         }
-        //En caso de que se trate de un formulario de ediciòn de usuarios
+        //En caso de que se trate de un formulario de alta de usuario
+      if (this.isPost) {
+        if (this.posting) return;
+
+        if (this.form.invalid) {
+          Object.keys(this.form.controls).forEach(key => {
+            this.form.get(key)?.markAsTouched();
+          });
+          super.displayAlert('Completa todos los campos.');
+          return;
+        }
+
+        const profilePayload: any = { ...this.getCurrentProfileState() };
+        if (this.file != undefined) {
+          profilePayload.image_file = this.file;
+        }
+
+        const userPayload: any = {
+          ...this.getCurrentUserState(),
+          password: this.form.get('password')?.value,
+        };
+
+        this.posting = true;
+        try {
+          const profileResult = await firstValueFrom(super.fetch<any>(() => this.profileService.postFormData<any>(profilePayload)));
+          const userPayloadWithProfile = { ...userPayload, profile_id: profileResult?.id };
+          await firstValueFrom(super.fetch<User>(() => this.userService.post(userPayloadWithProfile)));
+
+          this.posting = false;
+          if (this.file != undefined) {
+            this.configService.bustImageCache();
+          }
+
+          await this.UIUtilsService.mostrarAlert({
+            header: 'Éxito',
+            message: 'El usuario se ha creado correctamente.',
+            buttons: [{ text: 'OK', role: 'cancel' }]
+          });
+          this.location.back();
+        } catch (err: any) {
+          this.posting = false;
+          if (err?.name === 'EmptyError') return;
+          super.displayAlert(extractErrorMessage(err, 'No se pudo agregar el usuario.'));
+        }
+        return;
+      }
+
+      //En caso de que se trate de un formulario de ediciòn de usuarios
       const profilePayload: any = this.getChangedFields(this.originalProfile, this.getCurrentProfileState());
 
       if (this.file != undefined) {
