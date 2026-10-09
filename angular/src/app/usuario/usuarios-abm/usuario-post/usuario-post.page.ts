@@ -194,6 +194,9 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
         this.isPost = true
       }
       Promise.all(dataPromises).then(r => {
+        if (this.isPost) {
+          this.applyCreateDefaults()
+        }
         this.updatingSelect = true // pq no se actualizan los select
         setTimeout(() => this.updatingSelect = false)
         this.loadingService.dismiss()
@@ -257,6 +260,40 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
     return diff;
   }
 
+  private applyCreateDefaults(): void {
+    const defaults: any = {};
+    if (this.form.get('role_id')?.value == null) {
+      defaults.role_id = 3;
+    }
+    if (this.form.get('fotoclub_id')?.value == null && this.fotoclubes.length > 0) {
+      defaults.fotoclub_id = this.fotoclubes[0].id;
+    }
+    if (Object.keys(defaults).length > 0) {
+      this.form.patchValue(defaults);
+      this.form.markAsPristine();
+      this.form.markAsUntouched();
+    }
+  }
+
+  private getInvalidFieldsMessage(): string {
+    const labels: Record<string, string> = {
+      name: 'Nombre',
+      last_name: 'Apellido',
+      dni: 'DNI',
+      fotoclub_id: 'Fotoclub/Agrupación/Institución',
+      executive_rol: 'Rol en la comisión',
+      username: 'Nombre de Usuario',
+      email: 'E-Mail',
+      role_id: 'Rol',
+      password: 'Contraseña',
+      passwordRepeat: 'Repetición de contraseña',
+    };
+    const invalid = Object.keys(this.form.controls)
+      .filter(key => this.form.get(key)?.invalid)
+      .map(key => labels[key] ?? key);
+    return invalid.join(', ');
+  }
+
   private getCurrentProfileState(): any {
     return {
       name: this.form.get('name')?.value,
@@ -307,7 +344,8 @@ export class UsuarioPostPage extends ApiConsumer implements OnInit {
           Object.keys(this.form.controls).forEach(key => {
             this.form.get(key)?.markAsTouched();
           });
-          super.displayAlert('Completa todos los campos.');
+          const fields = this.getInvalidFieldsMessage();
+          super.displayAlert(fields ? `Completa los campos requeridos: ${fields}.` : 'Completa todos los campos.');
           return;
         }
 
