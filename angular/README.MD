@@ -170,6 +170,10 @@ Para soporte técnico o consultas, contactar a través de:
 
 - Feature: en el formulario de edición de concursos, los administradores ahora pueden subir un listado de participantes autorizados (CSV, XLSX o PDF) con apellido, nombre, DNI (único campo obligatorio), fecha de nacimiento, facultad y disciplina. El archivo se parsea en el backend y se muestra una vista previa en un modal antes de confirmar la importación (que reemplaza por completo el listado anterior del concurso). En el listado de concursantes del detalle del concurso se muestra un badge "No habilitado" para los inscriptos cuyo DNI (comparado sin puntos) no figure en el padrón cargado.
 
+### **1.20.72** / **1.20.71** (Octubre de 2026)
+
+- Bumps de versión generados automáticamente por `deploy.sh` en el servidor de PRD (sin cambios de código propios); absorbidos por el merge con 1.21.x.
+
 
 ### **1.20.70** (Octubre de 2026)
 
