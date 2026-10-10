@@ -23,6 +23,7 @@ export interface Contest {
     judging_stage?: 'preseleccion' | 'puntuacion' | null;
     is_test?: boolean;
     organization_type?: 'INTERNO' | 'EXTERNO_0' | 'EXTERNO_UNICEN';
+    scoring_mode?: 'TRADICIONAL' | 'ORDEN_MERITO';
 }
 
 export interface ContestExpanded extends Contest {

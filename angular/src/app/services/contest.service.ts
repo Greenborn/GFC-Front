@@ -26,7 +26,9 @@ export class ContestService extends ApiService<Contest> {
       start_date: undefined,
       end_date: undefined,
       max_img_section: 3,
-      sub_title: ''
+      sub_title: '',
+      organization_type: 'INTERNO',
+      scoring_mode: 'TRADICIONAL'
     }
   }
 

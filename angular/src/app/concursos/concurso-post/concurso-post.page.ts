@@ -161,6 +161,7 @@ get secycat(){
           // c.end_date = this.contestService.formatearFechaParaHTML(c.end_date);
           this.concurso = c
           this.concurso.organization_type = this.concurso.organization_type ?? 'INTERNO'
+          this.concurso.scoring_mode = this.concurso.scoring_mode ?? 'TRADICIONAL'
           // Inicializar contestRecords como array vacío, se cargará desde ContestRecordsComponent
           this.concurso.contestRecords = [];
           this.concurso.start_date = new Date(this.concurso.start_date)
@@ -215,6 +216,7 @@ get secycat(){
         this.concurso.start_date = fecha.toISOString()
         this.day_selects[0].selected_str = this.concurso.start_date
         this.concurso.organization_type = this.concurso.organization_type ?? 'INTERNO'
+        this.concurso.scoring_mode = this.concurso.scoring_mode ?? 'TRADICIONAL'
         this.concurso.is_test = this.concurso.is_test ?? false
         
         getCategorias.then(() => {
