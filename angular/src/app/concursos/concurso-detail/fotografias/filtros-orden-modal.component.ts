@@ -31,6 +31,7 @@ export class FiltrosOrdenModalComponent implements OnInit {
   @Input() categoriasInscriptas: ContestCategoryExpanded[];
   @Input() puntajes: Metric[];
   @Input() isContestJudged: boolean;
+  @Input() esOrdenMerito: boolean;
   @Input() canFilterByAuthor: boolean;
   @Input() seccionesSeleccionadas: number[];
   @Input() categoriasSeleccionadas: number[];

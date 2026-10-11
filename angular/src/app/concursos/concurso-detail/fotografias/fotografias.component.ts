@@ -103,6 +103,10 @@ export class FotografiasComponent implements OnInit {
     return finalizado && this.concurso.judged
   }
 
+  get esOrdenMerito(): boolean {
+    return this.concurso?.scoring_mode === 'ORDEN_MERITO';
+  }
+
   get aspecto() {
     return document.body.classList.contains("dark")
   }
@@ -124,7 +128,7 @@ export class FotografiasComponent implements OnInit {
 
   get sortLabel(): string {
     if (!this.sortBy) return '';
-    const labels = { title: 'Título', author: 'Autor', prize: 'Premio' };
+    const labels = { title: 'Título', author: 'Autor', prize: 'Premio', position: 'Posición' };
     const dir = this.sortAsc ? '↑' : '↓';
     return `${labels[this.sortBy] || this.sortBy} ${dir}`;
   }
@@ -346,6 +350,7 @@ export class FotografiasComponent implements OnInit {
         categoriasInscriptas: this.categoriasInscriptas,
         puntajes: this.puntajes,
         isContestJudged: this.isContestJudged,
+        esOrdenMerito: this.esOrdenMerito,
         canFilterByAuthor: this.canFilterByAuthor,
         seccionesSeleccionadas: [...this.seccionesSeleccionadas],
         categoriasSeleccionadas: [...this.categoriasSeleccionadas],

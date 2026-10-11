@@ -65,8 +65,14 @@
           </div>
         }
 
+        @if (directorioBaseValido && cargandoValidacion) {
+          <div class="card border-secondary">
+            <div class="card-body text-secondary">Validando estructura...</div>
+          </div>
+        }
+
         @if (directorioBaseValido && validacionesPremios.length > 0) {
-          <h6>Validaciones de Premios ({{ validacionesPremios.length }}):</h6>
+          <h6>{{ scoringMode === 'ORDEN_MERITO' ? 'Validaciones de Posiciones' : 'Validaciones de Premios' }} ({{ validacionesPremios.length }}):</h6>
           @for (val of validacionesPremios; track val) {
             <div class="card" [ngClass]="'border-' + val.color">
               <div class="card-body">

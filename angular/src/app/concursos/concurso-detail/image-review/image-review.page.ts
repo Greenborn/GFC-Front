@@ -8,6 +8,7 @@ import { Image } from 'src/app/models/image.model';
 import { ContestResult } from 'src/app/models/contest_result.model';
 import { Metric } from 'src/app/models/metric.model';
 import { MetricService } from 'src/app/services/metric.service';
+import { ContestResultService } from 'src/app/services/contest-result.service';
 import { ApiConsumer } from 'src/app/models/ApiConsumer';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { ConfigService } from 'src/app/services/config/config.service';
@@ -30,19 +31,22 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   @Input() image: Image;
   @Input() review: Metric;
   @Input() contestResult: ContestResult;
-  
+  @Input() esOrdenMerito: boolean = false;
+
   public posting: boolean = false;
   public metricas: Metric[] = [];
   public elegida: Metric;
-  
+  public posicion: number;
+
   constructor(
     private metricService: MetricService,
     private metricAbmService: MetricAbmService,
+    private contestResultService: ContestResultService,
     alertService: AlertService,
     public responsiveService: ResponsiveService,
     private configService: ConfigService,
     private UIUtilsService: UiUtilsService
-  ) { 
+  ) {
     super(alertService)
   }
 
@@ -51,39 +55,54 @@ export class ImageReviewPage extends ApiConsumer implements OnInit {
   }
 
   ngOnInit() {
+    if (this.esOrdenMerito) {
+      this.posicion = this.contestResult?.position ?? undefined;
+      return;
+    }
     super.fetch<Metric[]>(() => this.metricAbmService.getAll()).subscribe(s => {
       this.metricas = s
     })
   }
 
   async postReview(f: NgForm) {
-    if (f.valid) {
+    if (!f.valid) return;
 
-      this.posting = true
-
-      const metric: Metric = {
-        id: this.review.id,
-        prize: f.value.elegida.prize,
-        score: f.value.elegida.score
-      }
-      metric.id = this.review.id
-      
-      super.fetch<Metric>(() => this.metricService.post(metric, this.review.id)).subscribe(
-        m => this.dismiss(m),
+    if (this.esOrdenMerito) {
+      this.posting = true;
+      super.fetch<ContestResult>(() => this.contestResultService.post<ContestResult>({ position: this.posicion } as any, this.contestResult.id)).subscribe(
+        cr => this.dismiss(undefined, cr),
         err => {
           this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) });
         },
         () => this.posting = false
       )
-
+      return;
     }
+
+    this.posting = true
+
+    const metric: Metric = {
+      id: this.review.id,
+      prize: f.value.elegida.prize,
+      score: f.value.elegida.score
+    }
+    metric.id = this.review.id
+
+    super.fetch<Metric>(() => this.metricService.post(metric, this.review.id)).subscribe(
+      m => this.dismiss(m),
+      err => {
+        this.UIUtilsService.mostrarError({ message: extractErrorMessage(err) });
+      },
+      () => this.posting = false
+    )
   }
 
-  dismiss(metric: Metric = undefined) {
+  dismiss(metric: Metric = undefined, contestResult: ContestResult = undefined) {
     // using the injected ModalController this page
     // can "dismiss" itself and optionally pass back data
     this.modalController.dismiss({
-      metric
+      metric,
+      contestResult
       // 'image_id': id
     });
   }

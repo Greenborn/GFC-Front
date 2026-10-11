@@ -31,10 +31,17 @@
           <label class="form-check-label">Autor</label>
         </div>
       }
-      <div class="form-check" [class.text-muted]="!isContestJudged" (click)="isContestJudged && onSortChange('prize')">
-        <input class="form-check-input" type="radio" name="sortBy" value="prize" [checked]="localSortBy === 'prize'" [disabled]="!isContestJudged" (change)="isContestJudged && onSortChange('prize')">
-        <label class="form-check-label">Premio</label>
-      </div>
+      @if (esOrdenMerito) {
+        <div class="form-check" [class.text-muted]="!isContestJudged" (click)="isContestJudged && onSortChange('position')">
+          <input class="form-check-input" type="radio" name="sortBy" value="position" [checked]="localSortBy === 'position'" [disabled]="!isContestJudged" (change)="isContestJudged && onSortChange('position')">
+          <label class="form-check-label">Posición</label>
+        </div>
+      } @else {
+        <div class="form-check" [class.text-muted]="!isContestJudged" (click)="isContestJudged && onSortChange('prize')">
+          <input class="form-check-input" type="radio" name="sortBy" value="prize" [checked]="localSortBy === 'prize'" [disabled]="!isContestJudged" (change)="isContestJudged && onSortChange('prize')">
+          <label class="form-check-label">Premio</label>
+        </div>
+      }
     </div>
   </div>
 
@@ -66,7 +73,7 @@
     </div>
   </div>
 
-  @if (isContestJudged) {
+  @if (isContestJudged && !esOrdenMerito) {
     <div class="list-group list-group-flush mb-3">
       <div class="list-group-item fw-bold gfc-list-header">Premios</div>
       <div class="p-3 d-flex flex-wrap gap-2">

@@ -122,9 +122,15 @@
               Autor {{ sortBy === 'author' ? (sortAsc ? '↑' : '↓') : '' }}
             </button>
           }
-          <button class="btn btn-sm" [class.btn-primary]="sortBy === 'prize'" [disabled]="!isContestJudged" (click)="onSortChangeManual('prize')">
-            Premio {{ sortBy === 'prize' ? (sortAsc ? '↑' : '↓') : '' }}
-          </button>
+          @if (esOrdenMerito) {
+            <button class="btn btn-sm" [class.btn-primary]="sortBy === 'position'" [disabled]="!isContestJudged" (click)="onSortChangeManual('position')">
+              Posición {{ sortBy === 'position' ? (sortAsc ? '↑' : '↓') : '' }}
+            </button>
+          } @else {
+            <button class="btn btn-sm" [class.btn-primary]="sortBy === 'prize'" [disabled]="!isContestJudged" (click)="onSortChangeManual('prize')">
+              Premio {{ sortBy === 'prize' ? (sortAsc ? '↑' : '↓') : '' }}
+            </button>
+          }
         </div>
       </div>
       <div class="filter-section">
@@ -149,7 +155,7 @@
           }
         </div>
       </div>
-      @if (isContestJudged) {
+      @if (isContestJudged && !esOrdenMerito) {
         <div class="filter-section">
           <div class="filter-section-title">Premios</div>
           <div class="filter-options">
@@ -201,7 +207,11 @@
           }
         }
         @if (!isContestNotFin) {
-          <small><b>{{ (r.metric?.prize && r.metric?.prize != '0') ? r.metric.prize : '-' }}</b></small>
+          @if (esOrdenMerito) {
+            <small><b>{{ r.position != null ? ('Posición ' + r.position) : '-' }}</b></small>
+          } @else {
+            <small><b>{{ (r.metric?.prize && r.metric?.prize != '0') ? r.metric.prize : '-' }}</b></small>
+          }
         }
         <div class="foto-actions d-flex gap-1 mt-1">
           @if (rolificador.esJuez(u)) {

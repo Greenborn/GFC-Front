@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Category } from '../../models/category.model';
 import { Section } from '../../models/section.model';
 import { ContestResultService } from '../../services/contest-result.service';
+import { ContestService } from '../../services/contest.service';
+import { firstValueFrom } from 'rxjs';
 import axios from 'axios';
 import { ConfigService } from '../../services/config/config.service';
 import { LoadingService } from '../../services/ui/loading.service';
@@ -34,10 +36,13 @@ export class CargaResultadosPage implements OnInit {
   validacionesPremios: {dir: string, mensaje: string, color: string}[] = [];
   fotografiasSinCatalogar: string[] = [];
   validacionesFotografias: {dir: string, mensaje: string, color: string}[] = [];
+  scoringMode: 'TRADICIONAL' | 'ORDEN_MERITO' = 'TRADICIONAL';
+  cargandoValidacion: boolean = true;
 
   constructor(
     private router: Router,
     private contestResultService: ContestResultService,
+    private contestService: ContestService,
     private config: ConfigService,
     private loadingService: LoadingService
   ) {
@@ -45,19 +50,47 @@ export class CargaResultadosPage implements OnInit {
     this.estructura = nav?.extras?.state?.estructura || '';
     this.categorias = nav?.extras?.state?.categorias || [];
     this.secciones = nav?.extras?.state?.secciones || [];
-    
+
     this.directorioBase = this.detectarDirectorioBase(this.estructura);
     this.directorioBaseValido = this.directorioBase.length > 0;
-    
-    if (this.directorioBaseValido) {
-      this.validarCategorias(this.estructura, this.categorias);
-      this.validarSecciones(this.estructura, this.secciones);
-      this.validarCuartoNivel(this.estructura);
-      this.validarQuintoNivel(this.estructura);
-    }
   }
 
-  ngOnInit(): void {}
+  async ngOnInit(): Promise<void> {
+    if (!this.directorioBaseValido) {
+      this.cargandoValidacion = false;
+      return;
+    }
+
+    this.scoringMode = await this.resolverScoringMode();
+
+    this.validarCategorias(this.estructura, this.categorias);
+    this.validarSecciones(this.estructura, this.secciones);
+    this.validarCuartoNivel(this.estructura);
+    this.validarQuintoNivel(this.estructura);
+    this.cargandoValidacion = false;
+  }
+
+  // Detecta el concurso real a partir del id embebido en el nombre de un archivo
+  // (mismo formato que usa el back: [random]_[año]_[id_concurso]_[seccion]_[id_imagen].jpg)
+  // para saber si su scoring_mode es 'ORDEN_MERITO' antes de validar la estructura.
+  private async resolverScoringMode(): Promise<'TRADICIONAL' | 'ORDEN_MERITO'> {
+    const lineas = this.estructura.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const primerArchivo = lineas.find(l => !l.startsWith('[DIR]'));
+    if (!primerArchivo) return 'TRADICIONAL';
+
+    const nombreArchivo = this.obtenerNombreArchivo(primerArchivo);
+    const nombreSinExtension = nombreArchivo.replace('.jpg', '').replace('Copia de ', '');
+    const partes = nombreSinExtension.split('_');
+    const idConcurso = parseInt(partes[2], 10);
+    if (!Number.isFinite(idConcurso)) return 'TRADICIONAL';
+
+    try {
+      const contest = await firstValueFrom(this.contestService.get(idConcurso));
+      return contest?.scoring_mode === 'ORDEN_MERITO' ? 'ORDEN_MERITO' : 'TRADICIONAL';
+    } catch {
+      return 'TRADICIONAL';
+    }
+  }
 
   volver() {
     this.router.navigate(['/herramientas']);
@@ -191,11 +224,19 @@ export class CargaResultadosPage implements OnInit {
       if (segmentos.length === 3) {
         const nombreElemento = segmentos[2];
         const rutaCompleta = `${this.directorioBase}/${segmentos[0]}/${segmentos[1]}/${nombreElemento}`;
-        
-        const premioValido = premiosValidos.find(premio => 
+
+        if (this.scoringMode === 'ORDEN_MERITO') {
+          const esPosicionValida = /^\d+$/.test(nombreElemento.trim());
+          this.validacionesPremios.push(esPosicionValida
+            ? { dir: rutaCompleta, mensaje: `Posición válida: ${nombreElemento.trim()}`, color: 'success' }
+            : { dir: rutaCompleta, mensaje: `Posición inválida (debe ser un número): ${nombreElemento}`, color: 'warning' });
+          return;
+        }
+
+        const premioValido = premiosValidos.find(premio =>
           normalizarNombre(premio) === normalizarNombre(nombreElemento)
         );
-        
+
         if (premioValido) {
           this.validacionesPremios.push({
             dir: rutaCompleta,
@@ -279,7 +320,7 @@ export class CargaResultadosPage implements OnInit {
 
   // Devuelve true si todas las validaciones pasan
   canCargarResultados(): boolean {
-    if (!this.directorioBaseValido) return false;
+    if (!this.directorioBaseValido || this.cargandoValidacion) return false;
     // Todas las validaciones deben ser 'success'
     const todasCategoriasOk = this.validacionesCategorias.every(v => v.color === 'success');
     const todasSeccionesOk = this.validacionesSecciones.every(v => v.color === 'success');

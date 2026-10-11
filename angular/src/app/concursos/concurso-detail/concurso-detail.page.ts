@@ -241,14 +241,18 @@ obtenerPx() {
       "concurso": this.concurso.name,
       "image": r.image,
       "contestResult": r,
-      "review": r.metric
+      "review": r.metric,
+      "esOrdenMerito": this.concurso.scoring_mode === 'ORDEN_MERITO'
     });
 
-    const { metric } = data ?? {}
-    if (metric != undefined) {
-      const r = this.resultadosConcurso.find(e => e.metric_id == metric.id)
+    const { metric, contestResult } = data ?? {}
+    if (metric != undefined || contestResult != undefined) {
+      const r = metric != undefined
+        ? this.resultadosConcurso.find(e => e.metric_id == metric.id)
+        : this.resultadosConcurso.find(e => e.id == contestResult.id)
       if (r != undefined) {
-        r.metric = metric
+        if (metric != undefined) r.metric = metric
+        if (contestResult != undefined) r.position = contestResult.position
         await this.contestResultsService.get_all( { "contest_id" : this.concurso.id} )
         this.concursoDetailService.refreshPhotos.emit()
       }

@@ -32,15 +32,22 @@
                     #formReview="ngForm"
                     (ngSubmit)="postReview(formReview)">
 
-                    <div class="mb-3" class="w-100 mb-3">
-                      <label class="form-label">Premio</label>
+                    @if (esOrdenMerito) {
+                      <div class="mb-3" class="w-100 mb-3">
+                        <label class="form-label">Posición (orden de mérito)</label>
+                        <input class="form-control" type="number" min="1" step="1" name="posicion" [(ngModel)]="posicion" required>
+                      </div>
+                    } @else {
+                      <div class="mb-3" class="w-100 mb-3">
+                        <label class="form-label">Premio</label>
 
-                      <select class="form-select" name="elegida" [(ngModel)]="elegida">
-                        @for (met of metricas; track met) {
-                          <option [value]="met">{{ met.prize }}</option>
-                        }
-                      </select>
-                    </div>
+                        <select class="form-select" name="elegida" [(ngModel)]="elegida">
+                          @for (met of metricas; track met) {
+                            <option [value]="met">{{ met.prize }}</option>
+                          }
+                        </select>
+                      </div>
+                    }
 
                     <div class="row justify-content-end">
                       <div class="col-12">

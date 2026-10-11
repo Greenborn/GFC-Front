@@ -127,7 +127,7 @@ IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
 NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 LOGIN_ACTION=login
 APP_NAME=app_gfc_prod-
-APP_VERSION=1.21.1
+APP_VERSION=1.21.2
 ```
 
 ## Build para Producción
@@ -161,6 +161,11 @@ Para soporte técnico o consultas, contactar a través de:
 ---
 
 ## Change Log
+
+### **1.21.2** (Octubre de 2026)
+
+- Feature: completa la modalidad de calificación "Orden de mérito" (`contest.scoring_mode`, agregado previamente) con el flujo de carga de resultados: el diálogo "Puntuar" muestra un campo numérico de posición en vez del combo de premios, la carga masiva de resultados por selección de directorio acepta carpetas numeradas en el 4º nivel en vez de nombres de premio (`contest_result.position`), y el filtro/orden de la grilla de fotografías suma la opción "Posición" (ascendente = posición 1 primero, la más valiosa), ocultando el filtro de "Premios" para estos concursos.
+- Fix: el diálogo "Puntuar" (asignación de premio) fallaba silenciosamente al editar una foto ya puntuada porque el backend no tenía la ruta `PUT /metric/:id` que el frontend invocaba; se agregó la ruta faltante. De paso, se generalizó `PUT /contest-result/:id` para que también permita reasignar la sección de una fotografía (uso pre-existente del frontend que tampoco tenía ruta).
 
 ### **1.21.1** (Octubre de 2026)
 

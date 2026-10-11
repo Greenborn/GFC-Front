@@ -8,6 +8,7 @@ export interface ContestResult {
     image_id: number;
     metric_id: number;
     section_id: number;
+    position?: number | null;
 }
 
 export interface ContestResultExpanded extends ContestResult {
