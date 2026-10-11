@@ -155,6 +155,19 @@
           }
         </div>
       </div>
+      @if (canFilterByAuthor && fotoclubsInscriptos.length > 0) {
+        <div class="filter-section">
+          <div class="filter-section-title">Fotoclub / Institución</div>
+          <div class="filter-options">
+            <button class="btn btn-sm" [class.btn-primary]="todosFotoclubs" (click)="fotoclubAll()">Todos</button>
+            @for (fc of fotoclubsInscriptos; track fc) {
+              <button class="btn btn-sm"
+                [class.btn-primary]="fotoclubsSeleccionados.has(fc.id)"
+              (click)="toggleFotoclub(fc.id)">{{ fc.name }}</button>
+            }
+          </div>
+        </div>
+      }
       @if (isContestJudged && !esOrdenMerito) {
         <div class="filter-section">
           <div class="filter-section-title">Premios</div>

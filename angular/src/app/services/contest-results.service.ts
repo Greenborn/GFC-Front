@@ -16,6 +16,7 @@ export interface GetContestResultsParams {
   code?: string;
   section_ids?: number[];
   category_ids?: number[];
+  fotoclub_ids?: number[];
   prizes?: string[];
   present_loading?: boolean;
   skipPublish?: boolean;
@@ -65,6 +66,11 @@ export class ContestResultsService {
       if (attr?.category_ids?.length) {
         attr.category_ids.forEach(id => {
           params += '&filter[category_id]=' + id;
+        });
+      }
+      if (attr?.fotoclub_ids?.length) {
+        attr.fotoclub_ids.forEach(id => {
+          params += '&filter[fotoclub_id]=' + id;
         });
       }
       if (attr?.prizes?.length) {

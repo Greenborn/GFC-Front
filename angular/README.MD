@@ -127,7 +127,7 @@ IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
 NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 LOGIN_ACTION=login
 APP_NAME=app_gfc_prod-
-APP_VERSION=1.21.2
+APP_VERSION=1.21.3
 ```
 
 ## Build para Producción
@@ -161,6 +161,11 @@ Para soporte técnico o consultas, contactar a través de:
 ---
 
 ## Change Log
+
+### **1.21.3** (Octubre de 2026)
+
+- Feature: el panel de filtros de fotografías (dentro del detalle de un concurso) suma un filtro por "Fotoclub / Institución", con las opciones calculadas a partir de los fotoclubs de los concursantes inscriptos en el concurso. Se oculta para concursantes antes de que el concurso esté juzgado, igual que el filtro de autor. Backend: nuevo `filter[fotoclub_id]` en `GET /contest-result`.
+
 
 ### **1.21.2** (Octubre de 2026)
 

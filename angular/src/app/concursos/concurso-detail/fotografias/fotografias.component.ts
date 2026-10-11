@@ -47,7 +47,6 @@ export class FotografiasComponent implements OnInit {
   seccionesInscriptas: ContestSectionExpanded[] = [];
   resultadosConcurso: ContestResultExpanded[] = [];
   resultadosConcursoOrig: ContestResultExpanded[] = [];
-  fotoclubs: Fotoclub[] = [];
   user: UserLogged;
 
   puntajes: Metric[] = [];
@@ -61,6 +60,7 @@ export class FotografiasComponent implements OnInit {
   sortAsc: boolean = true;
   seccionesSeleccionadas: Set<number> = new Set();
   categoriasSeleccionadas: Set<number> = new Set();
+  fotoclubsSeleccionados: Set<number> = new Set();
   premiosSeleccionados: Set<string> = new Set();
   filtroAutor: string = '';
   filtroCodigo: string = '';
@@ -115,10 +115,20 @@ export class FotografiasComponent implements OnInit {
     let count = 0;
     if (this.seccionesSeleccionadas.size > 0) count++;
     if (this.categoriasSeleccionadas.size > 0) count++;
+    if (this.fotoclubsSeleccionados.size > 0) count++;
     if (this.premiosSeleccionados.size > 0) count++;
     if (this.filtroAutor && this.canFilterByAuthor) count++;
     if (this.filtroCodigo) count++;
     return count;
+  }
+
+  get fotoclubsInscriptos(): Fotoclub[] {
+    const vistos = new Map<number, Fotoclub>();
+    for (const i of this.inscriptos) {
+      const fc = i.profile?.fotoclub;
+      if (fc?.id != null && !vistos.has(fc.id)) vistos.set(fc.id, fc);
+    }
+    return [...vistos.values()].sort((a, b) => a.name.localeCompare(b.name));
   }
 
   get canFilterByAuthor(): boolean {
@@ -189,6 +199,7 @@ export class FotografiasComponent implements OnInit {
       sort_dir: this.sortBy ? (this.sortAsc ? 'asc' : 'desc') : undefined,
       section_ids: this.seccionesSeleccionadas.size > 0 ? [...this.seccionesSeleccionadas] : undefined,
       category_ids: this.categoriasSeleccionadas.size > 0 ? [...this.categoriasSeleccionadas] : undefined,
+      fotoclub_ids: this.fotoclubsSeleccionados.size > 0 ? [...this.fotoclubsSeleccionados] : undefined,
       prizes: this.premiosSeleccionados.size > 0 ? [...this.premiosSeleccionados] : undefined,
       author: this.filtroAutor || undefined,
       code: this.filtroCodigo || undefined,
@@ -440,6 +451,23 @@ export class FotografiasComponent implements OnInit {
     return this.categoriasSeleccionadas.size === 0;
   }
 
+  toggleFotoclub(id: number) {
+    if (this.fotoclubsSeleccionados.has(id))
+      this.fotoclubsSeleccionados.delete(id);
+    else
+      this.fotoclubsSeleccionados.add(id);
+    this.loadPage(1, true, false);
+  }
+
+  fotoclubAll() {
+    this.fotoclubsSeleccionados.clear();
+    this.loadPage(1, true, false);
+  }
+
+  get todosFotoclubs(): boolean {
+    return this.fotoclubsSeleccionados.size === 0;
+  }
+
   togglePremio(prize: string) {
     if (this.premiosSeleccionados.has(prize))
       this.premiosSeleccionados.delete(prize);
@@ -464,6 +492,7 @@ export class FotografiasComponent implements OnInit {
     this.terminoBusqueda = '';
     this.seccionesSeleccionadas.clear();
     this.categoriasSeleccionadas.clear();
+    this.fotoclubsSeleccionados.clear();
     this.premiosSeleccionados.clear();
     this.filtroAutor = '';
     this.filtroCodigo = '';
@@ -584,6 +613,7 @@ export class FotografiasComponent implements OnInit {
           sort_dir: this.sortBy ? (this.sortAsc ? 'asc' : 'desc') : undefined,
           section_ids: this.seccionesSeleccionadas.size > 0 ? [...this.seccionesSeleccionadas] : undefined,
           category_ids: this.categoriasSeleccionadas.size > 0 ? [...this.categoriasSeleccionadas] : undefined,
+          fotoclub_ids: this.fotoclubsSeleccionados.size > 0 ? [...this.fotoclubsSeleccionados] : undefined,
           prizes: this.premiosSeleccionados.size > 0 ? [...this.premiosSeleccionados] : undefined,
           author: this.filtroAutor || undefined,
           code: this.filtroCodigo || undefined,
