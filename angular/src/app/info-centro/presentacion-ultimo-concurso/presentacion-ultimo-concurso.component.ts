@@ -31,7 +31,7 @@ export class PresentacionUltimoConcursoComponent extends ApiConsumer implements 
   }
 
   ngOnInit() {
-    this.publicContestService.getAll('sort=-id').pipe(
+    this.publicContestService.getAll('sort=-end_date').pipe(
       timeout(8000),
       catchError(err => {
         this.consoleLogService.sendLog('warn', 'Error al cargar concurso destacado', { error: err?.message || err?.toString() });
