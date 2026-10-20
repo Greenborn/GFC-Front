@@ -236,8 +236,15 @@ export class BusquedaFotografiasPage implements OnInit {
     };
   }
 
+  private agregarSinDuplicar(items: SearchResult[]) {
+    const idsExistentes = new Set(this.resultados.map(r => r.id));
+    const nuevos = items.filter(r => !idsExistentes.has(r.id));
+    this.resultados.push(...nuevos);
+    return nuevos;
+  }
+
   async loadMoreImages() {
-    if (!this.hasMorePages || this.loadingPage) {
+    if (!this.hasMorePages || this.loadingPage || this.cargando) {
       return;
     }
     this.loadingPage = true;
@@ -246,7 +253,7 @@ export class BusquedaFotografiasPage implements OnInit {
     const items: SearchResult[] = response?.data || [];
 
     if (items.length > 0) {
-      this.resultados.push(...items);
+      this.agregarSinDuplicar(items);
       this.pageNumber = page;
     }
 
@@ -360,19 +367,19 @@ export class BusquedaFotografiasPage implements OnInit {
       open: true,
       hasMore: this.hasMorePages,
       loadMoreImages: async () => {
-        if (!this.hasMorePages || this.loadingPage) return;
+        if (!this.hasMorePages || this.loadingPage || this.cargando) return;
         this.loadingPage = true;
         const page = this.pageNumber + 1;
         const response: any = await this.imageSearchService.search(this.buildParams(page, false));
         const items: SearchResult[] = response?.data || [];
         if (items.length > 0) {
-          items.forEach(r => {
+          const nuevos = this.agregarSinDuplicar(items);
+          nuevos.forEach(r => {
             this.viewerData.push({
               image: { url: r.url, title: r.title, code: r.code },
               section: r.section ? { name: r.section } : undefined
             });
           });
-          this.resultados.push(...items);
           this.pageNumber = page;
         }
         const meta = response?._meta;
