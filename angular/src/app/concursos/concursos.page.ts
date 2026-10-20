@@ -158,7 +158,7 @@ export class ConcursosPage extends ApiConsumer implements OnInit {
   }
 
   private getPageParams(page: number = this.concursoPage): string {
-    let params = `expand=categories,sections&sort=-id&page=${page}&per-page=${this.concursoPageSize}`;
+    let params = `expand=categories,sections&sort=-end_date&page=${page}&per-page=${this.concursoPageSize}`;
     if (this.currentSearchQuery && this.currentSearchQuery.length > 0) {
       params += `&search=${encodeURIComponent(this.currentSearchQuery)}`;
     }
