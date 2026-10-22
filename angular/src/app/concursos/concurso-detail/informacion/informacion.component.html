@@ -71,8 +71,9 @@
           <button class="info-btn info-btn-outline" [routerLink]="['/concursos', concurso.id, 'fotografias']">
             <i class="bi bi-images"></i> Ver Fotografías
           </button>
-          <button class="info-btn info-btn-outline" (click)="descargarFotografias()">
-            <i class="bi bi-download"></i> Descargar
+          <button class="info-btn info-btn-outline" (click)="descargarFotografias()" [disabled]="descargando">
+            <i class="bi" [class.bi-download]="!descargando" [class.bi-arrow-repeat]="descargando"></i>
+            {{ descargando ? 'Generando...' : 'Descargar' }}
           </button>
           <button class="info-btn info-btn-outline" (click)="compartir()">
             <i class="bi bi-share"></i> Compartir

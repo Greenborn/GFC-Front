@@ -168,7 +168,8 @@ Para soporte técnico o consultas, contactar a través de:
 
 ### **1.21.8** (Octubre de 2026)
 
-
+- Feature: la descarga de fotografías de un concurso juzgado ahora organiza las imágenes dentro de `Categoria/Seccion/<premio>/` (o `<posición>` en concursos de orden de mérito), dejando sueltas las imágenes sin juzgar. El ZIP juzgado se nombra `concurso_<id>_judged.zip`, se reutiliza si ya existe y se invalida al rejuzgar o recargar resultados.
+- Feature: si el ZIP debe generarse, la descarga muestra una barra de progreso con las fases de copiado y compresión. Backend: nuevos endpoints de progreso (`GET /contest/compressed-photos/progress`) y generación asíncrona. El directorio temporal del concurso se elimina al finalizar.
 
 ### **1.21.7** (Octubre de 2026)
 

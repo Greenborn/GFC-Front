@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { ProfileContestExpanded } from 'src/app/models/profile_contest';
 import { ContestRecord } from '../contest-records/models/contest.record';
 import { extractErrorMessage } from 'src/app/shared/error-utils';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContestService } from 'src/app/services/contest.service';
 import { ContestResultService } from 'src/app/services/contest-result.service';
@@ -25,6 +25,8 @@ import { UiUtilsService } from 'src/app/services/ui/ui-utils.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { ResponsiveService } from 'src/app/services/ui/responsive.service';
 import { CompressedPhotosService } from 'src/app/services/compressed-photos.service'
+import { CompressedPhotosProgress } from 'src/app/models/compressed_photos.model'
+import { LoadingService } from 'src/app/services/ui/loading.service'
 import { AlertService } from 'src/app/services/ui/alert.service';
 import { ContestJudgeService } from 'src/app/services/contest-judge.service';
 import { ContestJudge } from 'src/app/models/contest_judge.model';
@@ -47,11 +49,14 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
   jueces: ContestJudge[] = [];
   subs: Subscription[] = [];
   noImg: boolean = false;
+  descargando: boolean = false;
+  private destroyed = false;
 
   constructor( 
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    alertService: AlertService,
+    protected alertService: AlertService,
+    private loadingService: LoadingService,
     public auth: AuthService,
     private sanitizer: DomSanitizer,
     public contestService: ContestService,
@@ -72,6 +77,10 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
    }
 
   async ngOnDestroy() {
+    this.destroyed = true;
+    if (this.descargando) {
+      this.loadingService.dismiss();
+    }
     this.desubsc();  
   }
 
@@ -117,12 +126,65 @@ export class InformacionComponent extends ApiConsumer implements OnInit, OnDestr
     })
   }
 
-  descargarFotografias(){
-    this.compressedPhotosService.getCompressedPhotos(this.concurso.id).subscribe(data => {
+  async descargarFotografias() {
+    const contestId = this.concurso?.id;
+    if (this.descargando || !contestId) return;
+
+    this.descargando = true;
+    try {
+      const data = await firstValueFrom(this.compressedPhotosService.getCompressedPhotos(contestId));
+
       if (data.download_url) {
         window.open(data.download_url, '_blank');
+        return;
       }
-    });
+
+      if (!data.job_id) {
+        throw new Error(data.message || 'No se pudo iniciar la generación del archivo.');
+      }
+
+      await this.esperarArchivo(data.job_id);
+    } catch (err) {
+      this.loadingService.dismiss();
+      await this.alertService.showError({
+        header: 'Error',
+        message: extractErrorMessage(err, 'No se pudo generar el archivo comprimido.')
+      });
+    } finally {
+      this.descargando = false;
+      this.loadingService.dismiss();
+    }
+  }
+
+  private async esperarArchivo(jobId: string) {
+    this.loadingService.presentProgress('Generando archivo de descarga', 'Preparando archivo...');
+
+    while (!this.destroyed) {
+      const progress = await firstValueFrom(this.compressedPhotosService.getCompressedPhotosProgress(jobId));
+
+      if (progress.status === 'error') {
+        throw new Error(progress.error || progress.message || 'Error al generar el archivo.');
+      }
+
+      this.loadingService.updateProgress(progress.percent, this.getProgressMessage(progress));
+
+      if (progress.status === 'done' && progress.download_url) {
+        window.open(progress.download_url, '_blank');
+        return;
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 700));
+    }
+  }
+
+  private getProgressMessage(progress: CompressedPhotosProgress): string {
+    if (progress.phase === 'copying') {
+      return `Copiando imágenes (${progress.processed}/${progress.total})`;
+    }
+    if (progress.phase === 'compressing') {
+      return `Comprimiendo archivo (${progress.percent}%)`;
+    }
+    return progress.message || 'Procesando...';
   }
 
   desubsc() {
