@@ -8,7 +8,6 @@ IP=""
 PASS=""
 BRANCH="master"
 DEPLOY_PATH="/var/www/GFC-Front-PRD"
-BUMP="patch"
 
 usage() {
   echo "Uso: $0 [parámetros]"
@@ -20,7 +19,6 @@ usage() {
   echo "  --port=<puerto>           Puerto SSH (default: 22)"
   echo "  --branch=<rama>           Rama a desplegar (default: master)"
   echo "  --deploy-path=<ruta>      Ruta del despliegue en el server (default: /var/www/GFC-Front-PRD)"
-  echo "  --bump=<tipo>             Incremento de versión en el server: patch|minor|major|ninguna (default: patch)"
   echo ""
   echo "También acepta posiciónales (compatibilidad):"
   echo "  $0 <usuario> <puerto> <ip> <contraseña>"
@@ -28,6 +26,9 @@ usage() {
   echo ""
   echo "Ejemplo completo:"
   echo "  $0 --host=149.50.134.169 --user=root --password='miPass' --branch=master --deploy-path=/var/www/GFC-Front-PRD --port=5842"
+  echo ""
+  echo "La versión se incrementa localmente con 'npm run version' y se pushea antes del deploy."
+  echo "El script de deploy NO crea commits ni pushea desde el servidor."
   exit 1
 }
 
@@ -46,7 +47,7 @@ else
       --port=*)    PUERTO="${arg#*=}" ;;
       --branch=*)  BRANCH="${arg#*=}" ;;
       --deploy-path=*) DEPLOY_PATH="${arg#*=}" ;;
-      --bump=*)    BUMP="${arg#*=}" ;;
+      --bump=*)    echo "AVISO: --bump ya no se usa; el bump de versión debe hacerse localmente con 'npm run version' y pushearse antes del deploy." >&2 ;;
       --help|-h)   usage ;;
       *)           echo "Parámetro desconocido: $arg" >&2; usage ;;
     esac
@@ -61,43 +62,13 @@ fi
 echo "Desplegando GFC-Front a $USUARIO@$IP:$PUERTO"
 echo "  Rama:        $BRANCH"
 echo "  Deploy path: $DEPLOY_PATH"
-echo "  Bump versión: $BUMP"
-
-if [ "$BUMP" != "ninguna" ]; then
-  case "$BUMP" in
-    patch|minor|major) ;;
-    *) echo "Error: --bump inválido: $BUMP. Usa patch|minor|major|ninguna" >&2; exit 1 ;;
-  esac
-fi
 
 sshpass -p "$PASS" ssh -o StrictHostKeyChecking=no -p "$PUERTO" "$USUARIO@$IP" "
   set -e
   cd \"$DEPLOY_PATH/angular\"
-  git stash || true
-  git fetch --all
-  git checkout \"$BRANCH\"
-  git pull origin \"$BRANCH\"
+  git fetch origin \"$BRANCH\"
+  git checkout -f \"$BRANCH\"
+  git reset --hard \"origin/$BRANCH\"
   npm i
-  if [ \"$BUMP\" != \"ninguna\" ]; then
-    npm run version -- $BUMP
-  fi
-  node -e '
-    const fs = require(\"fs\");
-    const ver = JSON.parse(fs.readFileSync(\"package.json\", \"utf8\")).version;
-    const re = /(APP_VERSION=)\\d+\\.\\d+\\.\\d+/;
-    [\".env\", \"config.env\"].forEach(f => {
-      if (!fs.existsSync(f)) return;
-      let c = fs.readFileSync(f, \"utf8\");
-      c = re.test(c) ? c.replace(re, \"\$1\" + ver) : c + \"\\nAPP_VERSION=\" + ver;
-      fs.writeFileSync(f, c);
-      console.log(\"APP_VERSION sincronizado a \" + ver + \" en \" + f);
-    });
-  '
-  if [ \"$BUMP\" != \"ninguna\" ]; then
-    VER=\$(node -p 'require(\"./package.json\").version')
-    git add -A
-    git commit -m \"Bump versión a \$VER\" || true
-    git push origin \"$BRANCH\" || echo \"AVISO: no se pudo pushear el bump de versión\"
-  fi
   npm run build
 "
