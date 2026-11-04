@@ -16,6 +16,17 @@ import { ColumnDef, TableEditorApi } from 'src/app/components/table-editor/table
 const API_SORT_FIELDS = ['id', 'id_usuario', 'evento', 'date_time'];
 const API_FILTER_FIELDS = ['id_usuario', 'evento', 'username', 'date_time'];
 
+/** Formatea una fecha de la API como dd/MM/yyyy HH:mm:ss. */
+function formatFecha(value: any): string {
+  if (!value) return '-'
+  const m = String(value).match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})/)
+  if (m) return `${m[3]}/${m[2]}/${m[1]} ${m[4]}:${m[5]}:${m[6]}`
+  const d = new Date(value)
+  if (isNaN(d.getTime())) return String(value)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
+}
+
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, SharedModule, TableEditorComponent],
@@ -29,7 +40,7 @@ export class LogOperacionesPage extends ApiConsumer implements OnInit {
 
   tableColumns: ColumnDef[] = [
     { field: 'date_time', headerName: 'Fecha', sortable: true },
-    { field: 'username', headerName: 'Usuario', sortable: false },
+    { field: 'username', headerName: 'Cuenta', sortable: false },
     { field: 'evento', headerName: 'Evento', sortable: true },
     { field: 'meta_data', headerName: 'Detalle', sortable: false, css: 'd-none d-md-table-cell' },
   ];
@@ -53,6 +64,7 @@ export class LogOperacionesPage extends ApiConsumer implements OnInit {
       scrollHeight: 'calc(100vh - 200px)',
       elementName: { singular: 'Operación', gender: 'F' },
       valueFormatters: {
+        date_time: (row: any) => formatFecha(row.date_time),
         username: (row: any) => row.username || `#${row.id_usuario ?? '-'}`,
         meta_data: (row: any) => {
           if (!row.meta_data) return '-'
@@ -73,7 +85,8 @@ export class LogOperacionesPage extends ApiConsumer implements OnInit {
         const page = params.page || 1
         const perPage = params.pageSize || 20
         const sort = (params.sortField && API_SORT_FIELDS.includes(params.sortField)) ? params.sortField : 'date_time'
-        const sortDir = params.sortOrder === 'asc' ? 'asc' : 'desc'
+        // Sin orden explícito por columna, la tabla más reciente va primero
+        const sortDir = params.sortField && params.sortOrder === 'asc' ? 'asc' : 'desc'
 
         const filters: Record<string, string> = {}
         if (params.filters) {
