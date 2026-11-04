@@ -127,7 +127,7 @@ IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
 NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 LOGIN_ACTION=login
 APP_NAME=app_gfc_prod-
-APP_VERSION=1.21.9
+APP_VERSION=1.21.10
 ```
 
 ## Build para Producción
@@ -161,6 +161,10 @@ Para soporte técnico o consultas, contactar a través de:
 ---
 
 ## Change Log
+
+### **1.21.10** (Noviembre de 2026)
+
+- Fix (Backend): la descarga de fotos de un concurso aún no juzgado pero ya cerrado (fecha de cierre pasada) ahora reutiliza el ZIP ya generado en disco en lugar de regenerarlo en cada solicitud. Solo los concursos todavía abiertos siguen regenerando el archivo.
 
 ### **1.21.9** (Octubre de 2026)
 
