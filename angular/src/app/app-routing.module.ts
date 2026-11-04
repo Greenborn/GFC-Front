@@ -123,6 +123,10 @@ export const routes: Routes = [
       {
         path: 'carga-resultados',
         loadComponent: () => import('./herramientas/carga-resultados/carga-resultados.page').then(m => m.CargaResultadosPage)
+      },
+      {
+        path: 'log-operaciones',
+        loadComponent: () => import('./herramientas/log-operaciones/log-operaciones.page').then(m => m.LogOperacionesPage)
       }
     ]
   },

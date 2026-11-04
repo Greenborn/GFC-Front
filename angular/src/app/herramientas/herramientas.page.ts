@@ -17,6 +17,8 @@ import { RankingService } from '../services/ranking.service';
 import { ConfigService } from '../services/config/config.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../modules/auth/services/auth.service';
+import { RolificadorService } from '../modules/auth/services/rolificador.service';
 
 @Component({
   standalone: true,
@@ -51,8 +53,14 @@ export class HerramientasPage implements OnInit, OnDestroy {
     private alertService: AlertService,
     private rankingService: RankingService,
     private config: ConfigService,
-    private UIUtilsService: UiUtilsService
+    private UIUtilsService: UiUtilsService,
+    public auth: AuthService,
+    public rolificador: RolificadorService
   ) {}
+
+  irALogOperaciones() {
+    this.router.navigate(['/herramientas/log-operaciones']);
+  }
 
   ngOnInit() {
     // Resetear el input de archivo

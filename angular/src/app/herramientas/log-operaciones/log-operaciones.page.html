@@ -1,0 +1,15 @@
+<div class="container-fluid px-0 py-3" style="height:100%">
+  @if ((auth.user | async); as userLogged) {
+    @if (rolificador.isAdmin(userLogged)) {
+      <app-table-editor
+        #tableEditor
+        id="log-operaciones"
+        [columns]="tableColumns"
+        [config]="getTableConfig()"
+        [api]="getTableApi()"
+      />
+    } @else {
+      <div class="alert alert-danger m-3">No tiene permisos para acceder a esta sección.</div>
+    }
+  }
+</div>
