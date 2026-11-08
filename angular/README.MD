@@ -127,7 +127,7 @@ IMAGES_BASE_URL=https://assets.prod-gfc.greenborn.com.ar
 NODE_API_BASE_URL=https://gfc.api2.greenborn.com.ar/api/
 LOGIN_ACTION=login
 APP_NAME=app_gfc_prod-
-APP_VERSION=1.21.10
+APP_VERSION=1.21.11
 ```
 
 ## Build para Producción
@@ -161,6 +161,13 @@ Para soporte técnico o consultas, contactar a través de:
 ---
 
 ## Change Log
+
+### **1.21.11** (Noviembre de 2026)
+
+- Mejora (Frontend): la descarga individual de una fotografía ahora usa el nombre `[título] - [sección] - [autor] - [fotoclub] - [premio].jpeg`, omitiendo los datos faltantes y eliminando caracteres no permitidos en Windows.
+- Mejora (Frontend): rediseño y ampliación de la Política de Privacidad y las Condiciones de Servicio.
+- Cambio (Frontend): los enlaces legales del pie de página quedan ocultos temporalmente hasta finalizar los trámites; las rutas siguen accesibles por URL.
+
 
 ### **1.21.10** (Noviembre de 2026)
 
