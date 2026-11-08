@@ -1,3 +1,4 @@
+import { buildPhotoFilename } from 'src/app/utils/filename.util';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Contest } from 'src/app/models/contest.model';
@@ -675,7 +676,9 @@ export class JuzgamientoComponent implements OnInit, OnDestroy {
   }
 
   get currentTitle(): string {
-    return this.modoGuiaActivo ? (this.guiaFotoActual?.title ?? '') : (this.current?.image?.title ?? '');
+    return this.modoGuiaActivo
+      ? buildPhotoFilename([this.guiaFotoActual?.title])
+      : buildPhotoFilename([this.current?.image?.title, this.current?.section?.name]);
   }
 
   get etapaJuzgamiento(): string {

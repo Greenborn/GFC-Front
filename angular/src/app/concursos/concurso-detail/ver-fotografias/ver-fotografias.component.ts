@@ -6,6 +6,7 @@ import { ConcursoDetailService } from '../concurso-detail.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { RolificadorService } from 'src/app/modules/auth/services/rolificador.service';
 import { UserLogged } from 'src/app/models/user.model';
+import { buildPhotoFilename } from 'src/app/utils/filename.util';
 import { ZoomableImageComponent } from 'angular-greenborn-image-detail';
 
 @Component({
@@ -54,7 +55,18 @@ export class VerFotografiasComponent implements OnInit {
   }
 
   get currentTitle(): string {
-    return this.all_data[this.index]?.image?.title || '';
+    const item = this.all_data[this.index];
+    if (!item) return buildPhotoFilename([]);
+    const prize = item.metric?.prize;
+    const tienePremio = !this.open && prize != null && prize !== '0' && prize !== 0 && prize !== '';
+    const profile = item.image?.profile;
+    return buildPhotoFilename([
+      item.image?.title,
+      item.section?.name,
+      this.mostrarAutor && profile ? `${profile.name ?? ''} ${profile.last_name ?? ''}` : '',
+      this.mostrarAutor ? profile?.fotoclub?.name : '',
+      tienePremio ? prize : '',
+    ]);
   }
 
   ngOnInit() {
